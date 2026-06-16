@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word不要！宛名ラベル・サンキューカード一括PDFジェネレーター</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; }
+        .mono-num { font-family: 'Roboto Mono', monospace; font-variant-numeric: tabular-nums; }
+        
+        /* A4ラベルシールの超厳格ミリメートル定義（エーワン24面 70mm×33.9mm 規格適合） */
+        .a4-sheet {
+            width: 210mm;
+            height: 297mm;
+            padding-top: 12.9mm;    /* 上余白 */
+            padding-bottom: 12.9mm; /* 下余白 */
+            padding-left: 18.6mm;   /* 左余白 */
+            padding-right: 18.6mm;  /* 右余白 */
+            background: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: repeat(3, 70.0mm); /* 横3列 */
+            grid-template-rows: repeat(8, 33.9mm);    /* 縦8段 */
+            gap: 0mm 3.5mm;                           /* 列間スペース 3.5mm */
+            page-break-after: always;
+            break-after: page;
+        }
+
+        /* 各ラベルマスの定義 */
+        .label-cell {
+            width: 70.0mm;
+            height: 33.9mm;
+            padding: 2.5mm 3.5mm;
+            box-sizing: border-box;
+            border: 1px dashed #cbd5e1; /* 画面確認用の補助線 */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-col: column;
+            justify-content: space-between;
+        }
+
+        /* ツールチップの軽量制御 */
+        .tooltip-box { display: none; position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); z-index: 50; }
+        .tooltip-box.active { display: block; }
+
+        /* 印刷時（@media print）のズレ絶対防止制御 */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0mm; /* ブラウザ標準のヘッダー・フッターを完全に消去するためにマージンをゼロに */
+            }
+            body { background: #ffffff; margin: 0; padding: 0; }
+            .no-print { display: none !important; }
+            .print-container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .a4-sheet {
+                box-shadow: none !important;
+                margin: 0 !important;
+                /* 印刷時は台紙の目印である破線を消して綺麗に出力 */
+                gap: 0mm 3.5mm !important;
+            }
+            .label-cell { border: none !important; } /* ラベルシールに補助線が印刷されるのを防ぐ */
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header class="no-print bg-slate-900 text-white p-4 shadow-md flex flex-wrap justify-between items-center gap-4 sticky top-0 z-40">
+        <div class="flex items-center space-x-2">
+            <span class="text-xl">🏷️</span>
+            <h1 class="text-base font-bold tracking-wider">宛名ラベル＆サンキューカード生成器</h1>
+        </div>
+        
+        <div class="bg-slate-800 p-1 rounded flex space-x-1 border border-slate-700">
+            <button id="btn-mode-label" onclick="switchAppMode('label')" class="px-4 py-1.5 rounded font-medium text-xs transition-all bg-blue-600 text-white shadow">宛名ラベル印刷</button>
+            <button id="btn-mode-card" onclick="switchAppMode('card')" class="px-4 py-1.5 rounded font-medium text-xs transition-all text-slate-400 hover:text-white">サンキューカード</button>
+        </div>
+
+        <div>
+            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2 rounded shadow transition-all">
+                🖨️ 印刷画面を開く（PDF保存）
+            </button>
+        </div>
+    </header>
+
+    <main class="print-container max-w-[1800px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <section class="no-print space-y-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-h-[88vh] overflow-y-auto">
+            
+            <div id="sender-form-block" class="bg-slate-50 p-4 rounded-lg border border-gray-200 space-y-3">
+                <h2 class="text-sm font-bold text-slate-700 border-b pb-1">👤 差出人（送り主）の情報設定</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-500 mb-0.5">氏名・ショップ名</label>
+                        <input type="text" id="form-sender-name" value="山田商店 メルカリ店" oninput="updatePreview()" class="w-full border rounded px-2.5 py-1.5 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-500 mb-0.5">郵便番号</label>
+                        <input type="text" id="form-sender-zip" value="100-0005" oninput="updatePreview()" class="w-full border rounded px-2.5 py-1.5 text-xs mono-num">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[11px] font-bold text-gray-500 mb-0.5">住所</label>
+                        <input type="text" id="form-sender-address" value="東京都千代田区丸の内1-2-3 丸の内ビル10F" oninput="updatePreview()" class="w-full border rounded px-2.5 py-1.5 text-xs">
+                    </div>
+                </div>
+            </div>
+
+            <div id="card-message-block" class="bg-slate-50 p-4 rounded-lg border border-gray-200 space-y-2">
+                <h2 class="text-sm font-bold text-slate-700 border-b pb-1">💌 サンキューカード用メッセージ</h2>
+                <textarea id="form-card-msg" rows="2" oninput="updatePreview()" class="w-full border rounded p-2 text-xs resize-none leading-relaxed">この度はご購入いただき誠にありがとうございました！\nまたのご縁がございましたらよろしくお願いいたします。</textarea>
+            </div>
+
+            <div class="space-y-2">
+                <h2 class="text-sm font-bold text-slate-700 flex items-center justify-between border-b pb-1">
+                    <span class="flex items-center gap-1">📋 お届け先リストの一括貼り付け</span>
+                    <span class="text-slate-400 cursor-pointer text-xs relative font-normal" onclick="toggleTooltip(event, 'tip-bulk-paste')">ⓘ
+                        <span id="tip-bulk-paste" class="tooltip-box bg-slate-800 text-white font-normal p-2.5 rounded text-[11px] w-64 leading-normal shadow-xl">Excelやスプレッドシートの「郵便番号」「住所」「名前」の列をまとめてコピーし、下の枠にそのまま貼り付ける（コピペする）だけで一瞬でリストに変換されます。</span>
+                    </span>
+                </h2>
+                <textarea id="form-bulk-textarea" rows="4" placeholder="【ExcelやExcelからここにコピペ可能】&#10;100-0001 東京都千代田区千代田1-1 日本 太郎&#10;200-0002 大阪府大阪市北区梅田2-2 浪速 花子" class="w-full border border-gray-300 rounded-lg p-2 text-xs font-mono leading-normal focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
+                <div class="flex justify-end">
+                    <button onclick="processBulkPaste()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-colors">📋 リストへ一括反映する</button>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-slate-700">✍️ 宛名データの個別編集・確認</h2>
+                    <button onclick="addNewRecipientRow()" class="bg-slate-100 border text-slate-700 text-xs px-2.5 py-1 rounded hover:bg-gray-200">＋ 行を追加</button>
+                </div>
+                <div class="overflow-x-auto max-h-[300px] border border-gray-200 rounded-lg">
+                    <table class="w-full text-left text-xs text-gray-600">
+                        <thead class="bg-gray-50 text-gray-700 font-bold sticky top-0 border-b border-gray-200">
+                            <tr>
+                                <th class="p-2 w-24">郵便番号</th>
+                                <th class="p-2">住所</th>
+                                <th class="p-2 w-32">お名前</th>
+                                <th class="p-2 w-10 text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipient-table-body" class="divide-y divide-gray-100">
+                            </tbody>
+                    </table>
+                </div>
+                <div id="label-count-indicator" class="text-right text-[11px] text-gray-400 font-medium">出力対象：0件</div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-bold text-slate-800">💾 作成リストの履歴・データ管理</h3>
+                    <div class="flex space-x-1.5">
+                        <button onclick="exportBackupData()" class="bg-gray-50 border text-[11px] px-2 py-1 rounded text-gray-600 hover:bg-gray-100">バックアップファイルの保存</button>
+                        <label class="bg-gray-50 border text-[11px] px-2 py-1 rounded text-gray-600 hover:bg-gray-100 cursor-pointer">
+                            バックアップから復元
+                            <input type="file" accept=".json" onchange="importBackupData(this)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="storage-save-title" placeholder="管理用の保存名（例：メルカリ6月15日発送分）" class="flex-1 border rounded px-3 py-1 text-xs">
+                    <button onclick="saveCurrentData()" class="bg-slate-900 text-white text-xs font-bold px-4 py-1.5 rounded shadow">履歴に保存</button>
+                </div>
+                <div class="overflow-x-auto border rounded-lg">
+                    <table class="w-full text-left text-xs bg-slate-50">
+                        <tbody id="history-list-rows" class="divide-y">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="flex justify-center items-start overflow-x-auto bg-slate-200 p-4 rounded-xl border border-gray-300">
+            <div id="print-preview-container" class="print-container">
+                </div>
+        </section>
+    </main>
+
+    <script>
+        let currentMode = 'label'; // 'label' または 'card'
+        let recipientList = [];   // 宛名オブジェクトの配列 { zip, address, name }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFromLocalStorage();
+            if (recipientList.length === 0) {
+                // 初回起動時の分かりやすいサンプルデータ
+                recipientList = [
+                    { zip: "150-0043", address: "東京都渋谷区道玄坂2-2-1 渋谷ビル4F", name: "鈴木 一郎" },
+                    { zip: "530-0001", address: "大阪府大阪市北区梅田3-1-1 グランフロント梅田南館12F", name: "佐藤 花子" },
+                    { zip: "450-0002", address: "愛知県名古屋市中村区名駅4-7-1 ミッドランドスクエア8F", name: "高橋 次郎" }
+                ];
+            }
+            renderRecipientTable();
+            updatePreview();
+            document.addEventListener("click", () => closeAllTooltips());
+        });
+
+        // モード（宛名 vs サンキュー）切り替え
+        function switchAppMode(mode) {
+            currentMode = mode;
+            document.getElementById('btn-mode-label').className = mode === 'label' ? "px-4 py-1.5 rounded font-medium text-xs transition-all bg-blue-600 text-white shadow" : "px-4 py-1.5 rounded font-medium text-xs transition-all text-slate-400 hover:text-white";
+            document.getElementById('btn-mode-card').className = mode === 'card' ? "px-4 py-1.5 rounded font-medium text-xs transition-all bg-blue-600 text-white shadow" : "px-4 py-1.5 rounded font-medium text-xs transition-all text-slate-400 hover:text-white";
+            
+            // フォーム表示の連動調整
+            document.getElementById('sender-form-block').classList.toggle('hidden', mode === 'card');
+            
+            updatePreview();
+        }
+
+        // テーブルリストの描画
+        function renderRecipientTable() {
+            const tbody = document.getElementById("recipient-table-body");
+            tbody.innerHTML = "";
+            
+            recipientList.forEach((item, index) => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-1"><input type="text" value="${escapeHtml(item.zip)}" oninput="updateRecipientProperty(${index}, 'zip', this.value)" placeholder="123-4567" class="w-full border rounded px-1.5 py-1 mono-num"></td>
+                    <td class="p-1"><input type="text" value="${escapeHtml(item.address)}" oninput="updateRecipientProperty(${index}, 'address', this.value)" placeholder="住所" class="w-full border rounded px-1.5 py-1"></td>
+                    <td class="p-1"><input type="text" value="${escapeHtml(item.name)}" oninput="updateRecipientProperty(${index}, 'name', this.value)" placeholder="氏名" class="w-full border rounded px-1.5 py-1 font-bold"></td>
+                    <td class="p-1 text-center"><button onclick="deleteRecipientRow(${index})" class="text-rose-500 hover:text-rose-700 font-bold">✕</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById("label-count-indicator").innerText = `出力対象：${recipientList.length} 件`;
+        }
+
+        function updateRecipientProperty(index, key, value) {
+            recipientList[index][key] = value;
+            updatePreview();
+        }
+
+        function addNewRecipientRow() {
+            recipientList.push({ zip: "", address: "", name: "" });
+            renderRecipientTable();
+            updatePreview();
+        }
+
+        function deleteRecipientRow(index) {
+            recipientList.splice(index, 1);
+            renderRecipientTable();
+            updatePreview();
+        }
+
+        // Excel / CSV からの一括貼り付け解析ロジック
+        function processBulkPaste() {
+            const textarea = document.getElementById("form-bulk-textarea");
+            const rawText = textarea.value.trim();
+            if (!rawText) return;
+
+            // 行ごとに分割
+            const rows = rawText.split(/\r?\n/);
+            const parsedList = [];
+
+            rows.forEach(row => {
+                // タブ、カンマ、または連続する空白文字でデータを分割
+                let tokens = row.split(/\t|,| {2,}/);
+                
+                // もし1つの文字列のままなら、簡易的にスペース1つでも分割を試みる
+                if (tokens.length < 2) {
+                    tokens = row.split(/\s+/);
+                }
+
+                // トークンが空でないものを抽出
+                tokens = tokens.map(t => t.trim()).filter(t => t.length > 0);
+
+                if (tokens.length >= 2) {
+                    let zip = "";
+                    let address = "";
+                    let name = "";
+
+                    // 1番目が郵便番号っぽいか判定 (数字やハイフン)
+                    if (/^\d{3}-?\d{4}$|^\d{3,7}$/.test(tokens[0])) {
+                        zip = tokens[0];
+                        address = tokens[1];
+                        name = tokens[2] || "";
+                    } else {
+                        // 郵便番号がないデータの場合
+                        address = tokens[0];
+                        name = tokens[1] || "";
+                    }
+
+                    parsedList.push({ zip, address, name });
+                }
+            });
+
+            if (parsedList.length > 0) {
+                if (confirm(`${parsedList.length} 件の宛名データを解析しました。現在のリストに追加しますか？`)) {
+                    recipientList = recipientList.filter(item => item.zip || item.address || item.name); // 空行を掃除
+                    recipientList = recipientList.concat(parsedList);
+                    renderRecipientTable();
+                    updatePreview();
+                    textarea.value = "";
+                }
+            } else {
+                alert("データの解析に失敗しました。フォーマットをご確認ください。");
+            }
+        }
+
+        // A4・24面プレビューのリアルタイム動的構築エンジン
+        function updatePreview() {
+            const previewContainer = document.getElementById("print-preview-container");
+            previewContainer.innerHTML = "";
+
+            const sName = document.getElementById("form-sender-name").value;
+            const sZip = document.getElementById("form-sender-zip").value;
+            const sAddress = document.getElementById("form-sender-address").value;
+            const cardMsg = document.getElementById("form-card-msg").value;
+
+            // 24面ごとにページ(シート)を分割して生成
+            const totalLabels = Math.max(recipientList.length, 24); // 最低1ページ分(24枠)は担保
+            const pageCount = Math.ceil(totalLabels / 24);
+
+            for (let p = 0; dPage = p < pageCount; p++) {
+                const sheet = document.createElement("div");
+                sheet.className = "a4-sheet scale-[0.45] md:scale-[0.55] lg:scale-[0.65] xl:scale-[0.75] origin-top-left -mb-[150mm] md:-mb-[120mm] lg:-mb-[90mm] xl:-mb-[60mm]";
+                
+                // 24つのセルを枠線通りに充填
+                for (let c = 0; c < 24; c++) {
+                    const dataIndex = p * 24 + c;
+                    const cell = document.createElement("div");
+                    cell.className = "label-cell";
+
+                    if (dataIndex < recipientList.length) {
+                        const item = recipientList[dataIndex];
+
+                        if (currentMode === 'label') {
+                            // 🔍 【宛名ラベルモード】のレイアウト
+                            // 住所の長さによってフォントサイズを3段階で自動フィッティング調整
+                            let addressFontSizeClass = "text-[10px]";
+                            if (item.address.length > 35) addressFontSizeClass = "text-[8px] leading-tight";
+                            else if (item.address.length > 25) addressFontSizeClass = "text-[9px] leading-snug";
+
+                            cell.innerHTML = `
+                                <div class="w-full space-y-0.5">
+                                    <div class="text-[9px] font-bold text-blue-700 mono-num border-b border-blue-100 pb-0.5 flex justify-between">
+                                        <span>〒 ${escapeHtml(item.zip)}</span>
+                                        <span class="text-[7px] text-gray-400 font-normal">TO</span>
+                                    </div>
+                                    <div class="${addressFontSizeClass} text-gray-900 font-medium break-all select-all pt-0.5 leading-tight min-h-[10mm]">
+                                        ${escapeHtml(item.address || "（住所未入力）")}
+                                    </div>
+                                    <div class="text-right text-xs font-bold text-slate-900 pr-2 truncate">
+                                        <span class="text-sm font-black">${escapeHtml(item.name || "🔲 氏名未入力")}</span> 様
+                                    </div>
+                                </div>
+                                <div class="w-full text-[7px] text-gray-500 scale-95 origin-bottom border-t border-gray-100 pt-0.5 flex justify-between items-end leading-none">
+                                    <div class="truncate max-w-[48mm]">
+                                        <span>〒${escapeHtml(sZip)} </span>
+                                        <span class="truncate">${escapeHtml(sAddress)}</span>
+                                    </div>
+                                    <div class="font-bold text-gray-700 whitespace-nowrap">${escapeHtml(sName)}</div>
+                                </div>
+                            `;
+                        } else {
+                            // 🔍 【サンキューカードモード】のレイアウト
+                            cell.innerHTML = `
+                                <div class="w-full h-full flex flex-col justify-between text-center">
+                                    <div class="text-[8px] font-bold text-emerald-600 tracking-wider border-b border-emerald-100 pb-0.5 flex justify-between">
+                                        <span>🌸 THANK YOU</span>
+                                        <span>For You</span>
+                                    </div>
+                                    <div class="text-[8.5px] text-slate-700 font-medium whitespace-pre-line leading-relaxed px-1 py-1">
+                                        ${escapeHtml(cardMsg)}
+                                    </div>
+                                    <div class="text-[7.5px] text-slate-400 font-bold tracking-tight text-right pr-1">
+                                        ショップ名: ${escapeHtml(sName || "山田商店")}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        // データのない空きマス
+                        cell.innerHTML = `<div class="w-full h-full flex items-center justify-center text-[9px] text-slate-200 select-none font-medium">（空き枠）</div>`;
+                    }
+
+                    sheet.appendChild(cell);
+                }
+                previewContainer.appendChild(sheet);
+            }
+        }
+
+        // LocalStorageへの履歴の保存および管理システム
+        function saveCurrentData() {
+            let label = document.getElementById("storage-save-title").value.trim();
+            if (!label) {
+                label = `宛名データ_${recipientList.length}件_${new Date().toISOString().slice(5, 10).replace('-', '')}`;
+            }
+
+            const payload = {
+                id: "list-" + Date.now(),
+                storageLabel: label,
+                timestamp: new Date().toLocaleString(),
+                currentMode: currentMode,
+                recipients: recipientList,
+                sender: {
+                    name: document.getElementById("form-sender-name").value,
+                    zip: document.getElementById("form-sender-zip").value,
+                    address: document.getElementById("form-sender-address").value,
+                    msg: document.getElementById("form-card-msg").value
+                }
+            };
+
+            let history = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+            const existingIndex = history.findIndex(x => x.storageLabel === label);
+            if (existingIndex > -1) history[existingIndex] = payload; else history.push(payload);
+
+            localStorage.setItem("address_label_history_v1", JSON.stringify(history));
+            document.getElementById("storage-save-title").value = label;
+            alert(`「${label}」を保存しました。`);
+            refreshHistoryListTable();
+        }
+
+        function refreshHistoryListTable() {
+            const tbody = document.getElementById("history-list-rows");
+            tbody.innerHTML = "";
+            const history = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td class="p-3 text-center text-gray-400 italic">保存された履歴履歴はありません</td></tr>`;
+                return;
+            }
+
+            history.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-100/50";
+                tr.innerHTML = `
+                    <td class="p-2 font-medium text-slate-700 truncate max-w-[160px]" title="${escapeHtml(item.storageLabel)}">${escapeHtml(item.storageLabel)}</td>
+                    <td class="p-2 text-slate-400 text-[10px] mono-num">${escapeHtml(item.timestamp.slice(5))}</td>
+                    <td class="p-2 text-right space-x-1 whitespace-nowrap">
+                        <button onclick="restoreHistorySnapshot('${item.id}')" class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold text-[10px]">呼出</button>
+                        <button onclick="deleteHistorySnapshot('${item.id}')" class="text-rose-600 text-[10px] font-bold px-1">削除</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function restoreHistorySnapshot(id) {
+            const history = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+            const data = history.find(x => x.id === id);
+            if (!data) return;
+
+            document.getElementById("storage-save-title").value = data.storageLabel;
+            recipientList = data.recipients || [];
+            
+            if (data.sender) {
+                document.getElementById("form-sender-name").value = data.sender.name || "";
+                document.getElementById("form-sender-zip").value = data.sender.zip || "";
+                document.getElementById("form-sender-address").value = data.sender.address || "";
+                document.getElementById("form-card-msg").value = data.sender.msg || "";
+            }
+
+            renderRecipientTable();
+            switchAppMode(data.currentMode || 'label');
+        }
+
+        function deleteHistorySnapshot(id) {
+            if (!confirm("この履歴データを削除してもよろしいですか？")) return;
+            let history = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+            history = history.filter(x => x.id !== id);
+            localStorage.setItem("address_label_history_v1", JSON.stringify(history));
+            refreshHistoryListTable();
+        }
+
+        function loadFromLocalStorage() {
+            refreshHistoryListTable();
+            const history = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+            if (history.length > 0) restoreHistorySnapshot(history[history.length - 1].id);
+        }
+
+        // バックアップ保存・復元処理（専門用語JSONを一切使わない日本語表記統一）
+        function exportBackupData() {
+            const data = localStorage.getItem("address_label_history_v1") || "[]";
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+            const label = document.getElementById("storage-save-title").value.trim() || "一括データ";
+            
+            // ファイル自動自動命名規則: 【宛名ラベル】日付_管理名.json
+            const filename = `【宛名ラベル】${dateStr}_${label}.json`;
+
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = filename; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importBackupData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (!Array.isArray(parsed)) throw new Error();
+                    if (confirm("バックアップファイルからデータを復元しますか？（現在の履歴データと統合されます）")) {
+                        let current = JSON.parse(localStorage.getItem("address_label_history_v1") || "[]');
+                        parsed.forEach(item => {
+                            const matchIdx = current.findIndex(c => c.storageLabel === item.storageLabel);
+                            if (matchIdx > -1) current[matchIdx] = item; else current.push(item);
+                        });
+                        localStorage.setItem("address_label_history_v1", JSON.stringify(current));
+                        refreshHistoryListTable();
+                        loadFromLocalStorage();
+                        alert("バックアップからデータを正常に復元しました。");
+                    }
+                } catch { alert("読み込みに失敗しました。正しいバックアップファイルではありません。"); }
+            };
+            reader.readAsText(file);
+        }
+
+        // 軽量ツールチップ・ヘルパー
+        function toggleTooltip(e, id) {
+            e.stopPropagation();
+            const box = document.getElementById(id);
+            const isActive = box.classList.contains("active");
+            closeAllTooltips();
+            if (!isActive) box.classList.add("active");
+        }
+        function closeAllTooltips() { document.querySelectorAll(".tooltip-box").forEach(b => b.classList.remove("active")); }
+        function formatDate(val) { if (!val) return ""; const d = val.split("-"); return d.length === 3 ? `${d[0]}年${parseInt(d[1])}月${parseInt(d[2])}日` : val; }
+        function escapeHtml(str) { return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : ""; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="言葉にできないモヤモヤを大人の語彙に言い換え。ブラウザだけで完結、データは送信しません。">
+    <title>大人の語彙力・逆引き辞典 | SUGUDASU</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+        ブラウザ内完結・入力は外部に送信しません
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">言いたいことをそのまま書く</h2>
+
+            <div>
+                <label for="form-situation" class="block text-xs font-semibold text-slate-600 mb-1.5">使う場面</label>
+                <select id="form-situation" class="sg-input text-sm">
+                    <option value="business" selected>ビジネスメール・社内文書</option>
+                    <option value="sns">SNS・キャッチコピー</option>
+                    <option value="apology">お詫び・謝罪</option>
+                    <option value="novel">エッセイ・情景描写</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="form-moyamoya-text" class="block text-xs font-semibold text-slate-600 mb-1.5">言葉にできないニュアンス</label>
+                <textarea id="form-moyamoya-text" rows="10" class="sg-input text-sm leading-relaxed resize-y"
+                    placeholder="例：相手の気持ちを先回りして配慮する感じ&#10;例：すごすぎて言葉が出ない&#10;例：大変な状況を耐え忍んで頑張る様子"></textarea>
+                <p id="input-error" class="hidden text-xs text-rose-600 mt-1.5">ひとことでも入力してください。</p>
+            </div>
+
+            <button type="button" id="btn-lookup"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-lg transition-colors">
+                言い換えを表示
+            </button>
+        </section>
+
+        <section class="flex flex-col gap-4">
+            <div class="bg-slate-100 p-1 rounded-lg grid grid-cols-2 gap-1 border border-slate-200">
+                <button type="button" id="tab-btn-local"
+                    class="py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm">
+                    すぐ使える言い換え
+                </button>
+                <button type="button" id="tab-btn-gemini"
+                    class="py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800">
+                    AIで広げる（Gemini）
+                </button>
+            </div>
+
+            <div class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
+                <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
+                    <div class="flex justify-between items-center">
+                        <span id="local-pool-count" class="text-[11px] font-semibold text-slate-500">該当: 0件</span>
+                    </div>
+                    <div id="local-cards-deck" class="flex-1 overflow-y-auto max-h-[480px] space-y-3">
+                        <p class="text-xs text-slate-400 text-center py-10 border border-dashed border-slate-200 rounded-lg bg-slate-50">
+                            左にモヤモヤを書いて「言い換えを表示」を押してください。
+                        </p>
+                    </div>
+                </div>
+
+                <div id="tab-content-gemini" class="hidden flex flex-col gap-3 flex-1">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
+                        <span class="text-[11px] font-semibold text-slate-600">Gemini に貼る用の文章</span>
+                        <button type="button" id="btn-gemini"
+                            class="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg">
+                            コピーして Gemini を開く
+                        </button>
+                    </div>
+                    <textarea id="output-gemini-prompt" readonly rows="14"
+                        class="w-full flex-1 border border-slate-200 rounded-lg p-3 text-xs font-mono bg-slate-50 text-slate-800 leading-relaxed resize-none"
+                        placeholder="「言い換えを表示」のあと、ここに指示文が作られます。"></textarea>
+                </div>
+            </div>
+
+            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">大人の語彙・言い換えのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>ビジネスメールで「気を使う」をもっと格式ある言葉に言い換えたい</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>「忖度」「配慮」「慮る」などの候補が表示されます。場面を「ビジネスメール」に選ぶと、敬語文脈に合った例文つきで提案されます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>もっと候補を増やしたいときは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>「AIで広げる」タブで Gemini 用の指示文をコピーできます。入力内容は外部に自動送信されず、ご自身で Gemini に貼り付けて使います。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>モヤモヤした日本語は外部に送られますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。辞書検索はブラウザ内で完結します。Gemini 連携はコピー操作をした場合のみ、ご利用の AI サービス側に送信されます。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    'use strict';
+
+    const DICTIONARY_DATABASE = [
+        { word: '忖度', reading: 'そんたく', mean: '相手の意向を先回りして配慮すること。', sample: 'お取引先様のご意向を忖度し、スケジュールを前倒しで調整いたします。', tags: ['配慮', '気遣い', '先回り', 'ビジネス'] },
+        { word: '慮る', reading: 'おもんばかる', mean: '相手や状況を深く考えて配慮すること。', sample: '周囲の懸念を慮り、仕様決定は一度見送るべきと存じます。', tags: ['気遣い', '配慮', '考える'] },
+        { word: '配慮', reading: 'はいりょ', mean: '他人の事情や気持ちに思いをめぐらすこと。', sample: 'ご多忙のところ恐縮ですが、ご配慮いただけますと幸いです。', tags: ['気遣い', '先回り', 'ビジネス'] },
+        { word: '気遣い', reading: 'きづかい', mean: '相手の状態や心情に注意を払うこと。', sample: '細やかな気遣いに感謝しております。', tags: ['配慮', '思いやり', '気持ち'] },
+        { word: '感無量', reading: 'かんむりょう', mean: '感慨が言葉にならないほどの感動。', sample: 'ご支援いただき、誠に感無量でございます。', tags: ['感動', 'すごい', '言葉が出ない', '胸がいっぱい'] },
+        { word: '言葉を失う', reading: 'ことばをうしなう', mean: '驚きや感動で次の言葉が出ないこと。', sample: 'その完成度の高さに、思わず言葉を失いました。', tags: ['すごい', '言葉が出ない', '驚き'] },
+        { word: '感銘', reading: 'かんめい', mean: '深く心に感じ入ること。', sample: 'ご提案の深さに感銘を受けました。', tags: ['感動', 'すごい', 'ビジネス'] },
+        { word: '銘記', reading: 'めいき', mean: '心に深く刻み覚えること。', sample: '今回の教訓は胸に銘記いたします。', tags: ['覚える', '教訓', 'ビジネス'] },
+        { word: '深謝', reading: 'しんしゃ', mean: '心からの深い感謝やお詫び。', sample: '多大なるご迷惑をおかけし、深謝申し上げます。', tags: ['謝罪', 'お詫び', '感謝'] },
+        { word: '拝承', reading: 'はいしょう', mean: '「承知しました」の格式ある言い方。', sample: 'ご指摘の件、拝承いたしました。', tags: ['了解', '承知', 'ビジネス'] },
+        { word: '平素', reading: 'へいそ', mean: '「いつも」の改まった言い方。', sample: '平素より格別のご高配を賜り厚く御礼申し上げます。', tags: ['いつも', '挨拶'] },
+        { word: '平身低頭', reading: 'へいしんていとう', mean: '深く頭を下げて誠意を示すこと。', sample: '納期遅延について平身低頭お詫び申し上げます。', tags: ['謝罪', 'お詫び', '誠実'] },
+        { word: '苦言', reading: 'くげん', mean: 'ためになる厳しい助言。', sample: 'ご苦言ありがとうございます。真摯に受け止めます。', tags: ['アドバイス', 'ビジネス'] },
+        { word: '健闘', reading: 'けんとう', mean: '困難に立ち向かって頑張ること。', sample: '厳しい状況の中での健闘に敬意を表します。', tags: ['頑張る', '努力', '大変'] },
+        { word: '臥薪嘗胆', reading: 'がしんしょうたん', mean: '将来のために苦労を重ね忍び耐えること。', sample: '臥薪嘗胆の思いで開発に取り組んできました。', tags: ['耐える', '努力', '我慢'] },
+        { word: '万雷の拍手', reading: 'ばんらいのはくしゅ', mean: '鳴り響くほどの大喝采。', sample: '披露の瞬間、会場は万雷の拍手に包まれました。', tags: ['すごい', '拍手', 'SNS'] },
+        { word: '琴線に触れる', reading: 'きんせんにふれる', mean: '心の奥に響く感動を与えること。', sample: 'その一文が、読者の琴線に触れています。', tags: ['感動', '心に響く', 'エモ'] },
+        { word: '愁眉を開く', reading: 'しゅうびをひらく', mean: '心配が解けて安心する様子。', sample: '対策完了で、チーム一同愁眉を開きました。', tags: ['安心', '解決', 'ホッとする'] },
+        { word: '心酔', reading: 'しんすい', mean: '心からうっとり敬服すること。', sample: 'その姿勢に心酔させられました。', tags: ['すごい', '感動', 'SNS'] },
+        { word: '衷心', reading: 'ちゅうしん', mean: '心の奥底からの真意。', sample: '衷心より感謝申し上げます。', tags: ['感謝', '誠意', 'ビジネス'] },
+        { word: '重ね重ね', reading: 'かさねがさね', mean: '何度も繰り返す様子。改まった表現。', sample: '重ね重ねお願い申し上げます。', tags: ['お願い', 'ビジネス'] },
+        { word: '誠に', reading: 'まことに', mean: '「本当に」の改まった強調。', sample: '誠にありがとうございます。', tags: ['感謝', 'ビジネス'] },
+        { word: '目を見張る', reading: 'めをみはる', mean: '驚くほどすばらしいこと。', sample: 'その成長の速さに目を見張りました。', tags: ['すごい', '驚き'] },
+        { word: '言語化', reading: 'げんごか', mean: '漠然とした気持ちを言葉にすること。', sample: 'モヤモヤを言語化するのが苦手です。', tags: ['言葉', 'モヤモヤ', 'SNS'] }
+    ];
+
+    const TAB_ACTIVE = 'py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm';
+    const TAB_IDLE = 'py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800';
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function tokenize(text) {
+        return text.toLowerCase()
+            .split(/[,、\s.・／/]+/)
+            .map(t => t.trim())
+            .filter(t => t.length >= 2);
+    }
+
+    function scoreMatch(item, tokens, rawLower) {
+        const pool = (item.word + ' ' + item.reading + ' ' + item.mean + ' ' + item.tags.join(' ')).toLowerCase();
+        let score = 0;
+        for (const token of tokens) {
+            if (pool.includes(token)) score += 10;
+        }
+        if (rawLower.includes(item.word.toLowerCase())) score += 5;
+        for (const tag of item.tags) {
+            if (rawLower.includes(tag.toLowerCase())) score += 8;
+        }
+        return score;
+    }
+
+    function switchTab(target) {
+        const local = target === 'local';
+        document.getElementById('tab-btn-local').className = local ? TAB_ACTIVE : TAB_IDLE;
+        document.getElementById('tab-btn-gemini').className = local ? TAB_IDLE : TAB_ACTIVE;
+        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
+        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
+    }
+
+    async function copyText(text, feedbackEl) {
+        if (!text) return false;
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+        if (feedbackEl) {
+            const prev = feedbackEl.textContent;
+            feedbackEl.textContent = 'コピーしました';
+            setTimeout(() => { feedbackEl.textContent = prev; }, 1200);
+        }
+        return true;
+    }
+
+    function buildGeminiPrompt(rawText, situation, matchedWords) {
+        const situationMap = {
+            business: 'ビジネスメール・社内文書（簡潔で丁寧）',
+            sns: 'SNS投稿・キャッチコピー（短く印象的）',
+            apology: 'お詫び・謝罪（誠実で責任感がある）',
+            novel: 'エッセイ・情景描写（情緒豊か）'
+        };
+        const sitLabel = situationMap[situation] || situationMap.business;
+        return `あなたは日本語の編集者です。
+
+【言いたいニュアンス】
+${rawText}
+
+【使う場面】
+${sitLabel}
+
+【参考になった語彙（あれば）】
+${matchedWords || '（なし）'}
+
+上記のニュアンスを、大人向けの言い換え語彙として10個提案してください。
+各語について「語彙」「読み」「意味」「例文（1文）」をセットで、箇条書きで出力してください。`;
+    }
+
+    function renderCards(results) {
+        const deck = document.getElementById('local-cards-deck');
+        deck.innerHTML = '';
+
+        if (results.length === 0) {
+            deck.innerHTML = `<p class="text-xs text-slate-500 text-center py-8 border border-dashed border-slate-200 rounded-lg bg-slate-50 leading-relaxed">
+                内蔵辞書に該当がありませんでした。<br>
+                「AIで広げる」タブで Gemini 用の文章をコピーしてお試しください。
+            </p>`;
+            return;
+        }
+
+        results.forEach(item => {
+            const card = document.createElement('article');
+            card.className = 'p-4 rounded-lg border border-slate-200 bg-white space-y-2';
+            const copyPayload = `${item.word}（${item.reading}）\n${item.mean}\n例：${item.sample}`;
+            card.innerHTML = `
+                <div class="flex justify-between items-start gap-2">
+                    <h3 class="text-sm font-bold text-slate-900">${escapeHtml(item.word)}
+                        <span class="text-[10px] font-normal text-slate-400">（${escapeHtml(item.reading)}）</span>
+                    </h3>
+                    <button type="button" class="copy-word shrink-0 text-[10px] font-semibold text-blue-600 hover:text-blue-800">コピー</button>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.mean)}</p>
+                <p class="text-[11px] text-slate-500 bg-slate-50 p-2 rounded border border-slate-100">${escapeHtml(item.sample)}</p>
+            `;
+            card.querySelector('.copy-word').addEventListener('click', (e) => {
+                copyText(copyPayload, e.currentTarget);
+            });
+            deck.appendChild(card);
+        });
+    }
+
+    function executeReverseLookup() {
+        const rawText = document.getElementById('form-moyamoya-text').value.trim();
+        const err = document.getElementById('input-error');
+        if (!rawText) {
+            err.classList.remove('hidden');
+            document.getElementById('form-moyamoya-text').focus();
+            return;
+        }
+        err.classList.add('hidden');
+
+        const situation = document.getElementById('form-situation').value;
+        const tokens = tokenize(rawText);
+        const rawLower = rawText.toLowerCase();
+
+        const matchedResults = DICTIONARY_DATABASE
+            .map(item => ({ item, score: scoreMatch(item, tokens, rawLower) }))
+            .filter(x => x.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .map(x => x.item);
+
+        document.getElementById('local-pool-count').textContent = `該当: ${matchedResults.length}件`;
+        renderCards(matchedResults);
+
+        const matchedWords = matchedResults.map(r => r.word).join('、');
+        document.getElementById('output-gemini-prompt').value =
+            buildGeminiPrompt(rawText, situation, matchedWords);
+
+        switchTab('local');
+    }
+
+    async function copyAndOpenGemini() {
+        const text = document.getElementById('output-gemini-prompt').value.trim();
+        if (!text) {
+            alert('先に「言い換えを表示」を押してください。');
+            return;
+        }
+        await copyText(text);
+        window.open('https://gemini.google.com/', '_blank', 'noopener,noreferrer');
+    }
+
+    document.getElementById('btn-lookup').addEventListener('click', executeReverseLookup);
+    document.getElementById('btn-gemini').addEventListener('click', copyAndOpenGemini);
+    document.getElementById('tab-btn-local').addEventListener('click', () => switchTab('local'));
+    document.getElementById('tab-btn-gemini').addEventListener('click', () => switchTab('gemini'));
+})();
+</script>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>SUGUDASU_SHELL.mount({ title: '逆引き辞典', print: false });</script>
+</body>
+</html>

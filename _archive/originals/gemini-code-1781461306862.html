@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+）としてそのまま丸ごと埋め込んで残してください。
+
+外部の重いAPIやサーバーサイドは一切使用せず、HTML/CSS/JavaScriptのみの完全サーバーレスで実装してください。Tailwind CSSを使用した、美しく洗練されたギフトショップのようなUI（レスポンシブ対応）にしてください。
+
+【機能・画面構成要件】
+1. 画面構成:
+   - PC表示時は左側50%が条件入力フォーム、右側50%がサジェスト結果のリアルタイムプレビュー（スマホ表示時は縦並び）。
+   - 画面の端（サイドバーや下部など）には、Google AdSense広告（インプレッション型）を配置するためのダミーの広告枠（灰色背景のコンテナなど）をデザインを崩さないように綺麗に組み込んでおいてください。
+
+2. 入力フォーム（左側）:
+   - 「ご予算（上限金額）」の選択（3,000円 / 5,000円 / 10,000円 / 30,000円 / 上限なし）。
+   - 「相手との関係性」の選択（恋人・パートナー / 友人 / 会社の同僚 / 上司・目上の人）。
+   - 「相手の趣味・好きなもの・推し」のテキスト入力エリア（例: コーヒー好き、サウナ、虎党など）。
+   - 【最重要：引き算の視点】「絶対に踏んではいけない地雷・NG」のテキスト入力エリア（例: 甲殻類アレルギー、巨人のもの、甘いものはダメなど）。
+   - 【過去のギフト評価（フィードバック変数）】:
+     - 「前回贈ったもの（テキスト入力）」
+     - 「その時の相手の反応（大成功 / 普通 / 微妙 の3段階選択）」
+     - 「その理由・原因（自由記述テキスト / 例: 甘いものが苦手だった、家で豆から挽く本格派だった等）」
+
+3. サジェスト＆地雷除外ロジック（JavaScript）:
+   - JavaScriptの内部データとして、様々な予算・ジャンルに対応する「豊富なギフトアイデアのベース配列（マスターデータ）」をあらかじめ100件程度を目安に定義しておいてください（各アイデアには、タイトル、想定価格、ジャンル、関連キーワード、および含まれる要素のタグを持たせる）。
+   - ユーザーが「プレゼントを提案する」ボタンを押した際、入力された「地雷・NGワード」をJavaScriptが解析し、そのワード（または関連するキーワード）が含まれるギフト候補を【100%確実に配列から除外】するフィルタリングロジックを実装してください。
+     - 例: 「甲殻類」ならエビ・カニ系のグルメを除外、「巨人のもの」ならジャイアンツ関連のグッズを除外、「甘いもの」ならスイーツ全般を除外。
+   - 【フィードバック連動】: 過去の反応が「大成功」の場合、そのジャンルや理由に関連するキーワードのスコアを「加点（優先表示）」。反応が「微妙」の場合、そのアイテム名や理由に含まれるキーワードを自動的に「除外・減点キーワード」として扱い、今回の提案で同じ失敗を絶対に繰り返さないように候補をフィルタリングしてください。
+
+4. プレビュー表示（右側）と遊び心（サジェスト属性）:
+   - 提案されるプレゼントは、ただランダムに並べるのではなく、以下の「3つの明確なコンセプト（属性）」を持ったカードとして合計3つを動的に抽出して出力してください。各カードにはポップなバッジデザインで属性名を表示してください。
+     ①「【安全牌】迷ったらこれ！絶対にスベらない大人の選択」: 100人中99人が喜ぶ、王道で上質なギフトを地雷を避けて提案。
+     ②「【ちょっとニッチ】お、センスいいじゃん！と思われる実用派」: 相手の趣味に寄り添った、自分では買わないけれど貰ったら嬉しい名作を提案。
+     ③「【奇をてらう】地雷は100%回避！会話が爆発する攻めの逸品」: NGワードは完璧に避けつつ、相手の「好きなもの・推し」の要素をユーモラスかつ斜め上に解釈した、渡した瞬間に笑顔と会話が生まれるインパクトギフトを提案。
+   - なぜその攻め度合い（または守り度合い）でこの商品を選んだのか、そして【どのように地雷や過去の失敗を回避したか】を説明する「AIの言い訳（納得とクスッと笑える理由メッセージ）」を自動生成して添えてください。
+
+5. マネタイズ・Amazonアソシエイト連携:
+   - 提案された3つの各プレゼントカードの最下部に、目立つデザイン（Amazonのブランドカラー）で「Amazonで詳細・価格を見る」という導線ボタン（aタグ）を設置してください。
+   - リンク先（href）は、各ギフトのキーワードでAmazon内を検索した結果のURL（ https://www.amazon.co.jp/s?k=キーワード ）に、開発者のAmazonアソシエイトID（コード内の最上部で const AMZ_TRACKING_ID = 'sugudasu-22'; のように変数として定義し、後から簡単に書き換え可能にしておく）がアソシエイトタグ（ &tag=... ）として自動的に末尾に結合されるロジックを実装してください。リンクは必ず別タブ（ target="_blank" ）で開くようにしてください。
+================================================================================
+-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地雷完全回避！大人のプレゼントサジェスター | sugudasu.online</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #faf9f6; }
+        .serif-title { font-family: 'Marcellus', 'Noto Sans JP', serif; }
+    </style>
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-stone-900 text-stone-100 py-5 px-4 shadow-sm border-b border-stone-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🎁</span>
+                <div>
+                    <h1 class="serif-title text-base font-bold tracking-widest text-amber-400">GIFT SUGGESTER</h1>
+                    <p class="text-[10px] text-stone-400 tracking-wider">地雷完全回避！大人のプレゼントサジェスター</p>
+                </div>
+            </div>
+            <span class="text-xs font-mono text-stone-500 tracking-tight hidden sm:inline">sugudasu.online/present</span>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] w-full mx-auto p-4 lg:p-6 grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 items-start">
+        
+        <div class="hidden xl:block xl:col-span-1 bg-stone-200 border border-stone-300 text-[10px] text-stone-500 text-center rounded-lg p-2 h-[600px] sticky top-6">
+            <div class="font-bold mb-1 border-b border-stone-300 pb-1">広告</div>
+            <div class="h-full flex items-center justify-center text-stone-400 leading-relaxed">バナー<br>(160x600)</div>
+        </div>
+
+        <div class="col-span-12 xl:col-span-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <section class="bg-white p-5 lg:p-6 rounded-2xl shadow-xs border border-stone-200 space-y-5">
+                <div class="border-b border-stone-100 pb-2">
+                    <h2 class="text-sm font-bold text-stone-900 flex items-center gap-1.5">
+                        <span class="text-amber-600">⚖️</span> ターゲット分析＆「引き算」の条件
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">💵 ご予算（上限金額）</label>
+                        <select id="form-budget" class="w-full border border-stone-200 rounded-xl p-2 text-xs font-medium bg-stone-50 outline-none focus:ring-1 focus:ring-amber-500">
+                            <option value="3000">3,000円以内</option>
+                            <option value="5000" selected>5,000円以内</option>
+                            <option value="10000">10,000円以内</option>
+                            <option value="30000">30,000円以内</option>
+                            <option value="999999">上限なし（至高のギフト）</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">🤝 相手との関係性</label>
+                        <select id="form-relationship" class="w-full border border-stone-200 rounded-xl p-2 text-xs font-medium bg-stone-50 outline-none focus:ring-1 focus:ring-amber-500">
+                            <option value="partner">恋人・パートナー</option>
+                            <option value="friend" selected>友人</option>
+                            <option value="colleague">会社の同僚</option>
+                            <option value="boss">上司・目上の人</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">❤️ 相手の趣味・好きなもの・推し</label>
+                    <input type="text" id="form-interests" placeholder="例: コーヒー好き、サウナ、虎党、ガジェット、猫" class="w-full border border-stone-200 rounded-xl px-3 py-2 text-xs bg-stone-50 outline-none focus:ring-1 focus:ring-amber-500 placeholder:text-stone-400">
+                </div>
+
+                <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200/60">
+                    <label class="block text-xs font-bold text-rose-900 mb-1 flex items-center gap-1">
+                        ⚠️ 絶対に踏んではいけない地雷・NG（最優先除外キーワード）
+                    </label>
+                    <input type="text" id="form-mine-words" placeholder="例: 甲殻類アレルギー、巨人のもの、甘いものはダメ、お酒NG" class="w-full border border-rose-200 rounded-xl px-3 py-2 text-xs bg-white text-rose-900 font-medium outline-none focus:ring-1 focus:ring-rose-400 placeholder:text-stone-400">
+                    <p class="text-[10px] text-rose-600 mt-1.5 leading-normal">※ここに入力された言葉（または関連する言葉）を含むギフトは、提案プールから**100%確実に消去**されます。</p>
+                </div>
+
+                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3">
+                    <h3 class="text-xs font-bold text-stone-700 flex items-center gap-1">🔄 過去のギフト評価（フィードバック学習連動）</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-medium text-stone-500 mb-0.5">前回贈ったもの</label>
+                            <input type="text" id="form-prev-item" placeholder="例: 高級チョコレート、ビール" class="w-full border border-stone-200 rounded-lg p-1.5 text-xs bg-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-stone-500 mb-0.5">その時の相手の反応</label>
+                            <select id="form-prev-reaction" class="w-full border border-stone-200 rounded-lg p-1.5 text-xs bg-white outline-none">
+                                <option value="none">-- 選択なし --</option>
+                                <option value="success">🎉 大成功 (関連ジャンルを優先表示)</option>
+                                <option value="normal">👍 普通 (現状維持)</option>
+                                <option value="fail">🚨 微妙 (同じ過ち・関連ワードを永久追放)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-medium text-stone-500 mb-0.5">その理由・原因（自由記述）</label>
+                        <input type="text" id="form-prev-reason" placeholder="例: 甘いものが苦手だった、家で豆を挽く本格派だった" class="w-full border border-stone-200 rounded-lg p-1.5 text-xs bg-white outline-none">
+                    </div>
+                </div>
+
+                <button onclick="generateGiftSuggestions()" class="w-full bg-stone-900 hover:bg-stone-800 text-amber-400 font-bold py-3 rounded-xl text-xs tracking-widest transition-all shadow-md">
+                    🎁 プレゼントを提案する（地雷審査を実行）
+                </button>
+            </section>
+
+            <section class="space-y-4">
+                <div class="bg-stone-900 text-stone-100 p-3 rounded-xl shadow-sm flex justify-between items-center">
+                    <h3 class="text-xs font-bold tracking-widest text-amber-400 uppercase">✨ 厳選提案（3つのコンセプト属性）</h3>
+                    <span id="match-pool-count" class="text-[9px] bg-stone-800 text-stone-400 px-2 py-0.5 rounded font-mono">適合プール: 100件</span>
+                </div>
+
+                <div id="suggestions-deck" class="space-y-4">
+                    <div class="bg-white p-8 rounded-2xl border border-dashed border-stone-300 text-center text-stone-400 text-xs">
+                        左側で条件を指定して「プレゼントを提案する」ボタンを押してください。<br>地雷をすり抜けた3通りのアプローチがここに展開されます。
+                    </div>
+                </div>
+
+                <div class="bg-stone-200 border border-stone-300 text

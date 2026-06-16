@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+）としてそのまま丸ごと埋め込んで残してください。
+
+外部のAPIキーやサーバーサイドは一切使用せず、HTML/CSS/JavaScriptのみの完全サーバーレスで実装してください。Tailwind CSSを使用した、モダンで知的な辞書・ノート風のUI（レスポンシブ対応）にしてください。
+
+【機能・画面構成要件】
+1. 画面構成:
+   - PC表示時は左側50%がモヤモヤ入力フォーム、右側50%が逆引き結果およびプロンプト自動合成のプレビュー（スマホ表示時は縦並び）。
+   - 画面のデザインを崩さない位置に、Google AdSense広告（インプレッション型）を配置するためのダミーの広告枠（灰色背景のコンテナなど）を綺麗に組み込んでおいてください。
+
+2. 入力フォーム（左側）:
+   - 「言葉にできないモヤモヤ・ニュアンス」の広大なテキストエリア。ユーザーが「相手の気持ちを先回りして配慮する感じ」「すごすぎて言葉が出ない」といった普通の言葉を自由に打ち込む場所。
+   - 「使いたいシチュエーション」の選択（ビジネスメール・文書 / SNS投稿・キャッチコピー / 謝罪・お詫び / 小説・エッセイ風エモ表現）。
+
+3. 2モード切り替えのプレビューエリア（右側）:
+   ユーザーが「逆引きを実行する」ボタンを押した際、右側に以下の2つの結果を動的に生成してください（ワンクリックコピーボタン付き）。
+
+   ①【ローカル逆引き即答（社外秘・安全モード）】
+     - JavaScriptの内部データとして、定番の言い換え語彙（例: 忖度、慮る、言葉を失う、感無量など）とそれに対応する検索用キーワードのマスター配列を数十件持たせておいてください。
+     - ユーザーの入力テキストと部分一致、または関連する大人の語彙をJSが超高速で抽出し、意味とセットで美しいカード形式で一瞬で表示させてください。
+
+   ②【公式Gemini用・語彙力爆上げプロンプト自動合成（本命機能）】
+     - 入力された「モヤモヤ表現」と「シチュエーション」をJavaScriptが統合し、**公式の無料ブラウザ版Geminiに貼り付けるだけで、そのニュアンスを120%言語化した『大人の言い換え語彙・美しい日本語リスト（意味・例文付き）』をリアルタイムに考えてもらうための、高度に調教されたプロンプト（指示文）**を自動合成して表示。
+     - その横に「プロンプトをコピーして公式Geminiを開く」という神ボタンを設置。このボタンを押すと、プロンプトが自動コピーされ、公式のブラウザ版Gemini（ https://gemini.google.com/ ）が別タブ（target="_blank"）でパッと開くJavaScript連携を実装してください。
+================================================================================
+-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大人の語彙力・逆引き辞典 | sugudasu.online</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #fcfbf9; }
+        .serif-font { font-family: 'Shippori Mincho', serif; }
+        .mono-num { font-family: 'Inter', monospace; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body class="text-stone-800 min-h-screen flex flex-col antialiased">
+
+    <header class="bg-stone-900 text-stone-100 border-b border-stone-800 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-600 text-stone-900 p-2 rounded-lg font-black text-sm">逆引</div>
+                <div>
+                    <h1 class="serif-font text-base font-bold tracking-widest text-amber-400">大人の語彙力・逆引き辞典</h1>
+                    <p class="text-[10px] text-stone-400 tracking-wider">sugudasu.online/reverse</p>
+                </div>
+            </div>
+            <div class="text-[11px] text-stone-400 bg-stone-800/80 border border-stone-700/60 px-3 py-1.5 rounded-full font-medium">
+                🛡️ 完全サーバーレス・プライバシー保護仕様
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1650px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 items-start">
+        
+        <div class="hidden xl:block xl:col-span-1 bg-stone-100 border border-stone-200 text-[10px] text-stone-400 text-center rounded-xl p-2 h-[600px] sticky top-24">
+            <div class="font-bold mb-2 border-b border-stone-200 pb-1 text-stone-400 uppercase tracking-widest scale-90">ADVERTISEMENT</div>
+            <div class="h-[calc(100%-35px)] flex items-center justify-center font-mono">Google<br>AdSense<br>(160x600)</div>
+        </div>
+
+        <div class="col-span-12 xl:col-span-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <section class="bg-white rounded-2xl shadow-xs border border-stone-200/60 p-5 lg:p-6 space-y-5">
+                <div class="flex items-center space-x-2 border-b border-stone-100 pb-2.5">
+                    <span class="text-base">💭</span>
+                    <h2 class="text-sm font-bold text-stone-900 tracking-wide">言葉にできないニュアンスの言語化</h2>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1.5">🎯 使いたいシチュエーション</label>
+                    <select id="form-situation" class="w-full border border-stone-200 rounded-xl px-3 py-2.5 text-xs font-medium bg-stone-50/50 outline-none focus:ring-1 focus:ring-amber-500/50 transition-all">
+                        <option value="business" selected>💼 ビジネスメール・公的文書 (洗練されたスマートさ)</option>
+                        <option value="sns">📢 SNS投稿・キャッチコピー (短く刺さる言葉)</option>
+                        <option value="apology">🙇 謝罪・お詫び (誠実さと深い反省)</option>
+                        <option value="novel">✍️ 小説・エッセイ風エモ表現 (情景と情緒豊かな描写)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1.5 flex justify-between items-center">
+                        <span>📝 言葉にできないモヤモヤ・ニュアンス</span>
+                        <span class="text-[10px] text-stone-400 font-normal">いつもの言葉で自由に記述</span>
+                    </label>
+                    <textarea id="form-moyamoya-text" rows="12" placeholder="例：相手の気持ちを先回りしてあれこれ配慮する感じ、気遣う感じ&#11;例：すごすぎて言葉が出ない、感動して胸がいっぱいになる&#11;例：大変な状況をなんとか耐え忍んで次に繋げる様子" class="w-full border border-stone-200 rounded-xl p-3.5 text-xs bg-stone-50/50 outline-none focus:bg-white focus:ring-1 focus:ring-amber-500/50 transition-all leading-relaxed placeholder:text-stone-400"></textarea>
+                </div>
+
+                <button onclick="executeReverseLookup()" class="w-full bg-stone-900 hover:bg-stone-800 text-amber-400 font-bold py-3.5 px-4 rounded-xl text-xs tracking-widest shadow-xs hover:shadow transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                    <span>🔍 語彙の逆引き・プロンプト生成</span>
+                </button>
+            </section>
+
+            <section class="flex flex-col space-y-4">
+                
+                <div class="bg-stone-200/60 p-1 rounded-xl grid grid-cols-2 gap-1 border border-stone-300/20">
+                    <button id="tab-btn-local" onclick="switchTab('local')" class="py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer bg-white text-stone-900 shadow-2xs">
+                        🔒 ① 安全ローカル逆引き即答
+                    </button>
+                    <button id="tab-btn-gemini" onclick="switchTab('gemini')" class="py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer text-stone-500 hover:text-stone-900">
+                        ✨ ② Gemini用プロンプト合成
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-xs border border-stone-200/60 p-5 lg:p-6 flex-1 flex flex-col space-y-4 min-h-[500px]">
+                    
+                    <div id="tab-content-local" class="flex-1 flex flex-col space-y-3">
+                        <div class="flex justify-between items-center border-b border-stone-100 pb-1.5">
+                            <span id="local-pool-count" class="text-[11px] font-bold text-stone-400 tracking-wider">辞書データベース適合: 0件</span>
+                        </div>
+                        
+                        <div id="local-cards-deck" class="flex-1 overflow-y-auto max-h-[530px] space-y-3 pr-1">
+                            <div class="text-center text-stone-400 text-xs py-12 border border-dashed border-stone-200 rounded-xl bg-stone-50/50">
+                                モヤモヤを入力して「逆引きを実行する」を押してください。<br>内蔵の定番語彙からマッチした表現を即座に抽出します。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-content-gemini" class="hidden flex-1 flex flex-col space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b border-stone-100 pb-1.5">
+                            <span class="text-[11px] font-bold text-amber-700 tracking-wider flex items-center gap-1">
+                                🚀 無料ブラウザ版Gemini専用・調教指示スクリプト
+                            </span>
+                            
+                            <button onclick="copyAndRedirectToGemini()" class="text-xs font-bold text-white bg-gradient-to-r from-amber-600 to-stone-800 hover:from-amber-700 hover:to-stone-900 px-3.5 py-1.5 rounded-xl shadow-xs transition-all flex items-center space-x-1.5 cursor-pointer">
+                                <span>🔥 コピーして公式Geminiを開起</span>
+                            </button>
+                        </div>
+                        <textarea id="output-gemini-prompt" readonly class="w-full flex-1 border border-stone-200 rounded-xl p-3.5 text-xs font-mono bg-stone-900 text-stone-100 leading-relaxed outline-none resize-none focus:ring-0" placeholder="公式ブラウザ版Geminiを大人の言い換え専門AIへ変貌させるプロンプトコードが自動出力されます。"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="bg-stone-100 border border-stone-200 text-[10px] text-stone-400 text-center rounded-2xl p-3 w-full">
+                    <div class="font-bold text-[9px] text-stone-400 mb-1 tracking-wider uppercase">SPONSORED LINK</div>
+                    <div class="border border-dashed border-stone-200 py-3.5 bg-white rounded-xl font-mono">Google AdSense (横長レスポンシブ自動最適化枠)</div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="hidden xl:block xl:col-span-1 bg-stone-100 border border-stone-200 text-[10px] text-stone-400 text-center rounded-xl p-2 h-[600px] sticky top-24">
+            <div class="font-bold mb-2 border-b border-stone-200 pb-1 text-stone-400 uppercase tracking-widest scale-90">ADVERTISEMENT</div>
+            <div class="h-[calc(100%-35px)] flex items-center justify-center font-mono">Google<br>AdSense<br>(160x600)</div>
+        </div>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-500 text-center py-4 text-[10px] tracking-wider border-t border-stone-800 mt-auto font-medium">
+        &copy; 大人の語彙力・逆引き辞典 PRO. Powered by sugudasu.online.
+    </footer>
+
+    <script>
+        // ================= 📦 連想逆引き用コアマスター語彙データベース =================
+        const DICTIONARY_DATABASE = [
+            { word: "忖度", reading: "そんたく", mean: "他人の心をおしはかること。特に、相手の意向や感情を先回りして配慮し、行動すること。", sample: "お取引先様の意向を忖度し、スケジュールを前倒しで調整いたします。", tags: ["配慮", "気遣い", "先回り", "ビジネス", "メール"] },
+            { word: "慮る", reading: "おもんばかる", mean: "周囲の状況や、相手の心情を深く細やかに深く考える。慎重に配慮する。", sample: "周囲の懸念を慮り、今回のプロジェクト仕様決定は一度慎重に見送るべきと存じます。", tags: ["気遣い", "配慮", "考える", "ビジネス", "小説", "エモ"] },
+            { word: "感無量", reading: "かんむりょう", mean: "感慨が言葉に表せないほど、胸いっぱいに広がり深く感動すること。", sample: "長年のプロジェクトが無事ローンチを迎え、メンバー一同、誠に感無量でございます。", tags: ["感動", "すごい", "言葉が出ない", "胸がいっぱい", "ビジネス", "SNS"] },
+            { word: "言葉を失う", reading: "ことばをうしなう", mean: "あまりの驚き、呆れ、または感動の凄まじさに、次の発言が分からなくなる様子。", sample: "完成した圧倒的な新プロダクトのUIデザインを前に、私は思わず言葉を失った。", tags: ["すごい", "言葉が出ない", "驚き", "感動", "小説", "SNS"] },
+            { word: "臥薪嘗胆", reading: "がしんしょうたん", mean: "将来の成功や復讐のために、長い間苦難に耐え忍び、あらゆる努力を重ねること。", sample: "競合他社に遅れをとった苦い経験から、臥薪嘗胆の思いで本システムの開発に心血を注いできました。", tags: ["耐える", "我慢", "大変", "努力", "リベンジ", "ビジネス"] },
+            { word: "万雷の拍手", reading: "ばんらいのはくしゅ", mean: "激しい雷が鳴り響くかのように、会場全体から鳴り響く凄まじい大喝采の拍手。", sample: "基調講演が終了した瞬間、会場からは万雷の拍手が沸き起こった。", tags: ["すごい", "拍手", "喝采", "イベント", "SNS"] },
+            { word: "深謝", reading: "しんしゃ", mean: "心からの深い感謝、または誠心誠意の深いお詫び（謝罪）を伝える大人の言葉。", sample: "この度のシステム障害に関しまして、多大なるご迷惑をおかけしましたことを深謝申し上げます。", tags: ["謝罪", "お詫び", "感謝", "ビジネス", "メール"] },
+            { word: "拝承", reading: "はいしょう", mean: "「承知いたしました」「分かりました」の極めて洗練されたビジネス上級表現。", sample: "ご指摘いただきました修正要望の件、確かに拝承いたしました。明日中に修正版を提出します。", tags: ["分かりました", "了解", "承知", "ビジネス", "メール"] },
+            { word: "平素", reading: "へいそ", mean: "「いつも」「普段」の格式高い言い換え表現。ビジネス文書の枕詞。", sample: "平素は格別のご高配を賜り、厚く御礼申し上げます。", tags: ["いつも", "普段", "挨拶", "ビジネス", "メール"] },
+            { word: "平身低頭", reading: "へいしんていとう", mean: "ひたすら恐縮し、頭を低く下げて深くお詫びやお願いをする誠実な姿勢。", sample: "度重なる納期の遅延に対し、平身低頭してクライアントにお詫びを申し入れました。", tags: ["謝罪", "お詫び", "誠実", "頭を下げる", "ビジネス"] },
+            { word: "琴線に触れる", reading: "きんせんにふれる", mean: "相手の心の奥底にある純粋な感情や感動を呼び起こし、強く共感させること。", sample: "彼の綴るエッセイの言葉は、読む者すべての琴線に触れる瑞々しさがある。", tags: ["感動", "心に響く", "共感", "小説", "エモ", "SNS"] },
+            { word: "愁眉を開く", reading: "しゅうびをひらく", mean: "それまでの心配事やトラブルが解決し、ホッとして安心した表情（笑顔）になること。", sample: "懸念されていた決済バグの恒久対策が完了し、ようやくチーム一同愁眉を開いた。", tags: ["解決", "安心", "ホッとする", "笑顔", "ビジネス"] }
+        ];
+
+        // タブ制御切り替え
+        function switchTab(target) {
+            const btnLocal = document.getElementById('tab-btn-local');
+            const btnGemini = document.getElementById('tab-btn-gemini');
+            const contentLocal = document.getElementById('tab-content-local');
+            const contentGemini = document.getElementById('tab-content-gemini');
+
+            if (target === 'local') {
+                btnLocal.className = "py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer bg-white text-stone-900 shadow-2xs";
+                btnGemini.className = "py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer text-stone-500 hover:text-stone-900";
+                contentLocal.classList.remove('hidden');
+                contentGemini.classList.add('hidden');
+            } else {
+                btnGemini.className = "py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer bg-white text-amber-800 shadow-2xs";
+                btnLocal.className = "py-2 rounded-lg text-xs font-bold text-center transition-all cursor-pointer text-stone-500 hover:text-stone-900";
+                contentGemini.classList.remove('hidden');
+                contentLocal.classList.add('hidden');
+            }
+        }
+
+        // 逆引き辞典処理メインコアパイプライン
+        function executeReverseLookup() {
+            const rawText = document.getElementById('form-moyamoya-text').value.trim();
+            const situation = document.getElementById('form-situation').value;
+
+            if (!rawText) {
+                alert("言葉にできない「モヤモヤ・ニュアンス」をテキストエリアに入力してください。");
+                return;
+            }
+
+            // --- ① 【ローカル逆引き即答】部分一致多重フィルター走査 ---
+            const deck = document.getElementById("local-cards-deck");
+            deck.innerHTML = "";
+
+            // テキストを形態素に擬して簡易キーワード分割
+            const inputTokens = rawText.toLowerCase().split(/[,、\s.▫️・]+/);
+
+            let matchedResults = DICTIONARY_DATABASE.filter(item => {
+                // 部分一致スコアリング用ターゲットテキストの結合
+                const searchablePool = (item.word + " " + item.reading + " " + item.mean + " " + item.tags.join(" ")).toLowerCase();
+                
+                // トークンが1つでも含まれる、またはタグと直接連想されるか判定
+                return inputTokens.some(token => {
+                    if (token.length < 1) return false;
+                    return searchablePool.includes(token);
+                });
+            });
+
+            // マッチ件数のバッジ表示同期
+            document.getElementById("local-pool-count").innerText = `辞書データベース適合: ${matchedResults.length}件`;
+
+            if (matchedResults.length === 0) {
+                deck.innerHTML = `
+                    <div class="text-center text-stone-500 text-xs py-10 bg-stone-50 rounded-xl border border-dashed border-stone-200">
+                        ⚠️ 内蔵の簡易辞書に直接合致する語彙が見つかりませんでした。<br>
+                        右上の『② Gemini用プロンプト合成』タブから、AIに高度な連想検索を行わせることを推奨します。
+                    </div>
+                `;
+            } else {
+                // 適合カードの動的生成ループ
+                matchedResults.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "p-4 rounded-xl border border-stone-200 bg-stone-50/50 hover:bg-white hover:border-amber-500/40 transition-all space-y-1.5";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-baseline">
+                            <h4 class="text-base font-bold text-stone-900 serif-font select-all">${escapeHtml(item.word)} <span class="text-[10px] text-stone-400 font-normal font-sans">（${escapeHtml(item.reading)}）</span></h4>
+                            <span class="text-[9px] bg-stone-200 text-stone-600 font-bold px-1.5 py-0.2 rounded">ローカル即答</span>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed font-medium select-all">${escapeHtml(item.mean)}</p>
+                        <div class="text-[11px] text-stone-500 bg-white p-2 rounded-lg border border-stone-100 leading-normal">
+                            <span class="font-bold text-[9px] text-amber-700 block mb-0.5">例文</span>
+                            <span class="select-all">${escapeHtml(item.sample)}</span>
+                        </div>
+                    `;
+                    deck.appendChild(tr = card);
+                });
+            }
+
+            // --- ② 【Gemini用最強プロンプト】ビジネス

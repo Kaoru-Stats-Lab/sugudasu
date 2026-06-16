@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2ヶ月シームレス・シフト表 | SUGUDASU</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<div id="sg-chrome-top"></div>
+
+    <main class="print-layout print-target flex-1 p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start max-w-[1920px] mx-auto">
+        
+        <section class="no-print space-y-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 overflow-y-auto max-h-[calc(100vh-100px)]">
+
+            <p class="text-xs text-slate-600 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 leading-relaxed">① 対象月とスタッフを登録 → ②「シフト自動生成」→ ③ FIX（確定）して印刷</p>
+            
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-1.5">シフト基盤・ルール設定</h2>
+                <button type="button" onclick="saveCurrentDataToStorage()" class="no-print bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition-all">データ保存</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">📅 対象月(当月)</label>
+                    <input type="month" id="cfg-target-month" onchange="initCalendarStructure()" class="w-full border rounded-lg p-2 text-sm bg-white font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">🔗 最大連勤数の制限</label>
+                    <select id="cfg-max-consecutive" class="w-full border rounded-lg p-2 text-sm bg-white font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="3">3連勤まで</option>
+                        <option value="4" selected>4連勤まで</option>
+                        <option value="5">5連勤まで</option>
+                        <option value="6">6連勤まで</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">⚠️ 役割・職種重複NGキーワード</label>
+                    <input type="text" id="cfg-duplicate-ng-tag" value="新人" placeholder="例: 新人" class="w-full border rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none font-medium">
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <h3 class="text-xs font-bold text-slate-700">🔒 店休日設定（自動生成・集計から完全除外）</h3>
+                <div>
+                    <label class="block text-[11px] text-slate-500 font-bold mb-1">毎週の定休日（曜日選択）</label>
+                    <div class="flex flex-wrap gap-3 bg-white p-2.5 rounded-lg border" id="cfg-regular-holidays-wrap">
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="0" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>日</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="1" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>月</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="2" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>火</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="3" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>水</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="4" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>木</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="5" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>金</span></label>
+                        <label class="inline-flex items-center space-x-1 text-xs font-medium cursor-pointer"><input type="checkbox" name="cfg-regular-holidays" value="6" onchange="renderPreview()" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500"><span>土</span></label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-500 font-bold mb-1">特定日の臨時休業日（ピンポイント指定）</label>
+                    <div class="flex gap-2">
+                        <input type="date" id="cfg-temp-holiday-input" class="border rounded-lg p-1.5 text-xs bg-white">
+                        <button onclick="addTemporaryHoliday()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all shadow-xs">休業日を追加</button>
+                    </div>
+                    <div id="temp-holidays-badges" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                    <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1">👥 メンバー構成＆扶養内上限ルール</h3>
+                    <button onclick="addNewStaffRow()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-2.5 py-1.5 rounded-lg shadow-xs transition-all">＋ スタッフを追加</button>
+                </div>
+                <div id="staff-rows-container" class="space-y-2">
+                    </div>
+            </div>
+
+            <div class="bg-slate-900 text-slate-100 p-4 rounded-xl space-y-2 shadow-inner">
+                <h4 class="text-xs font-bold text-slate-400 flex items-center gap-1">📊 メンバー別当月集計実績カウンター</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs" id="form-metrics-dashboard">
+                    </div>
+            </div>
+
+        </section>
+
+        <section class="space-y-4 print-full relative">
+            
+            <div class="no-print bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs font-bold text-slate-500">書類ステータス:</span>
+                    <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border">
+                        <button id="status-draft-btn" onclick="toggleDocumentLock(false)" class="px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm transition-all">仮（調整中）</button>
+                        <button id="status-fix-btn" onclick="toggleDocumentLock(true)" class="px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-slate-700 transition-all">FIX（確定）</button>
+                    </div>
+                </div>
+                
+                <button id="action-shuffle-btn" onclick="executeAutoGenerateAlgorithm()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1">
+                    🎲 シフト自動生成（シャッフル）
+                </button>
+            </div>
+
+            <div id="seamless-calendar-root" class="space-y-8 print-full">
+                </div>
+
+        </section>
+    </main>
+
+    <section class="no-print sg-faq-section">
+        <div class="sg-faq-inner">
+            <h2 class="sg-faq-title">シフト表・勤務表のよくある質問</h2>
+            <div class="sg-faq-list">
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>2ヶ月分のシフトを公平に自動で作れますか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>スタッフと勤務パターンを登録し、「シフト自動生成（シャッフル）」で割当を試行します。希望休・定休日を考慮しながら、偏りを抑えるロジックで組み立てます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>確定したシフトを印刷・PDFにしたい</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>状態を「FIX（確定）」にすると下書きの透かしが消えます。ヘッダーの「印刷 / PDF」から A4 横レイアウトで出力できます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>スタッフ名やシフトデータはクラウドに保存されますか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>ブラウザのローカルストレージにのみ保存され、当サイトのサーバーへ送信はされません。別端末では引き継がれない点にご注意ください。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // グローバル状態管理
+        let isDocumentFixed = false;
+        let staffCollection = [];
+        let temporaryHolidays = [];
+        let globalShiftData = {}; // キー: "YYYY-MM-DD", 値: { t1:{type,val}, t2:{type,val}, t3:{type,val}, note:"" }
+
+        // 初期セットアップ
+        document.addEventListener("DOMContentLoaded", () => {
+            setInitialDefaultDates();
+            loadSnapshotFromStorage();
+            if (staffCollection.length === 0) {
+                // デフォルトのモックスタッフ
+                staffCollection = [
+                    { id: "st-1", name: "田中", tag: "ベテラン", maxDays: 20 },
+                    { id: "st-2", name: "鈴木", tag: "新人", maxDays: 12 },
+                    { id: "st-3", name: "佐藤", tag: "新人", maxDays: 15 },
+                    { id: "st-4", name: "渡辺", tag: "中堅", maxDays: 22 },
+                    { id: "st-5", name: "高橋", tag: "パート", maxDays: 8 }
+                ];
+            }
+            buildStaffFormRows();
+            initCalendarStructure();
+        });
+
+        // 日付初期設定 (2026年基準または現在の未来月)
+        function setInitialDefaultDates() {
+            const now = new Date();
+            const year = now.getFullYear() < 2026 ? 2026 : now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            document.getElementById("cfg-target-month").value = `${year}-${month}`;
+        }
+
+        // カレンダーの日数・構造構築
+        function initCalendarStructure() {
+            const months = getTargetTwoMonths();
+            if (months.length === 0) return;
+
+            // 既存の入力値を壊さないように初期化
+            months.forEach(m => {
+                const daysInMonth = new Date(m.year, m.month + 1, 0).getDate();
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateKey = `${m.year}-${String(m.month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                    if (!globalShiftData[dateKey]) {
+                        globalShiftData[dateKey] = {
+                            t1: { type: "staff", val: "" },
+                            t2: { type: "staff", val: "" },
+                            t3: { type: "staff", val: "" },
+                            note: ""
+                        };
+                    }
+                }
+            });
+            renderPreview();
+        }
+
+        // 対象の2ヶ月（当月・翌月）の年月オブジェクトを取得
+        function getTargetTwoMonths() {
+            const targetVal = document.getElementById("cfg-target-month").value;
+            if (!targetVal) return [];
+            const [y, m] = targetVal.split("-").map(Number);
+            
+            const currentMonth = { year: y, month: m - 1 }; // 0-indexed
+            const nextMonthDate = new Date(y, m, 1);
+            const nextMonth = { year: nextMonthDate.getFullYear(), month: nextMonthDate.getMonth() };
+            
+            return [currentMonth, nextMonth];
+        }
+
+        // 臨時休業日の追加
+        function addTemporaryHoliday() {
+            const input = document.getElementById("cfg-temp-holiday-input");
+            const val = input.value;
+            if (!val) return;
+            if (!temporaryHolidays.includes(val)) {
+                temporaryHolidays.push(val);
+                temporaryHolidays.sort();
+            }
+            input.value = "";
+            renderTemporaryHolidayBadges();
+            renderPreview();
+        }
+
+        function removeTemporaryHoliday(val) {
+            temporaryHolidays = temporaryHolidays.filter(d => d !== val);
+            renderTemporaryHolidayBadges();
+            renderPreview();
+        }
+
+        function renderTemporaryHolidayBadges() {
+            const container = document.getElementById("temp-holidays-badges");
+            container.innerHTML = "";
+            temporaryHolidays.forEach(d => {
+                const badge = document.createElement("span");
+                badge.className = "inline-flex items-center gap-1 bg-slate-200 text-slate-800 text-xs px-2 py-1 rounded-md font-medium";
+                badge.innerHTML = `${d} <button onclick="removeTemporaryHoliday('${d}')" class="text-slate-400 hover:text-rose-600 font-bold ml-0.5">✕</button>`;
+                container.appendChild(badge);
+            });
+        }
+
+        // 店休日（定休・臨時含む）チェック判定
+        function checkIsShopClosed(dateKey) {
+            const dateObj = new Date(dateKey);
+            const dayOfWeek = dateObj.getDay();
+            
+            // 定休日チェック
+            const regularHolidays = [];
+            document.querySelectorAll('input[name="cfg-regular-holidays"]:checked').forEach(cb => {
+                regularHolidays.push(parseInt(cb.value, 10));
+            });
+            if (regularHolidays.includes(dayOfWeek)) return true;
+
+            // 臨時休業日チェック
+            if (temporaryHolidays.includes(dateKey)) return true;
+
+            return false;
+        }
+
+        // スタッフ設定フォーム行の描画
+        function buildStaffFormRows() {
+            const container = document.getElementById("staff-rows-container");
+            container.innerHTML = "";
+            staffCollection.forEach(s => {
+                const div = document.createElement("div");
+                div.className = "grid grid-cols-12 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200 items-center text-xs";
+                div.innerHTML = `
+                    <div class="col-span-4">
+                        <input type="text" value="${escapeHtml(s.name)}" oninput="updateStaffProperty('${s.id}', 'name', this.value)" placeholder="名前" class="w-full border rounded-md p-1.5 bg-white font-bold">
+                    </div>
+                    <div class="col-span-4">
+                        <input type="text" value="${escapeHtml(s.tag)}" oninput="updateStaffProperty('${s.id}', 'tag', this.value)" placeholder="役割・タグ(例:新人)" class="w-full border rounded-md p-1.5 bg-white">
+                    </div>
+                    <div class="col-span-3 flex items-center space-x-1">
+                        <span class="text-[10px] text-slate-400 whitespace-nowrap">上限:</span>
+                        <input type="number" value="${s.maxDays}" oninput="updateStaffProperty('${s.id}', 'maxDays', parseInt(this.value, 10))" class="w-full border rounded-md p-1.5 bg-white text-center font-bold">
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <button onclick="deleteStaffRow('${s.id}')" class="text-slate-400 hover:text-rose-600 font-bold p-1">✕</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addNewStaffRow() {
+            const id = "st-" + Date.now();
+            staffCollection.push({ id, name: "新スタッフ", tag: "", maxDays: 20 });
+            buildStaffFormRows();
+            renderPreview();
+        }
+
+        function deleteStaffRow(id) {
+            staffCollection = staffCollection.filter(s => s.id !== id);
+            buildStaffFormRows();
+            renderPreview();
+        }
+
+        function updateStaffProperty(id, key, value) {
+            const staff = staffCollection.find(s => s.id === id);
+            if (staff) {
+                staff[key] = value;
+                renderPreview();
+            }
+        }
+
+        // ドキュメントの仮・確定ロック切り替え
+        function toggleDocumentLock(isLock) {
+            isDocumentFixed = isLock;
+            const draftBtn = document.getElementById("status-draft-btn");
+            const fixBtn = document.getElementById("status-fix-btn");
+            const shuffleBtn = document.getElementById("action-shuffle-btn");
+
+            if (isLock) {
+                draftBtn.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-slate-700 transition-all";
+                fixBtn.className = "px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm transition-all";
+                shuffleBtn.setAttribute("disabled", "true");
+                shuffleBtn.className = "bg-slate-300 text-slate-500 font-bold px-5 py-2 rounded-xl text-xs cursor-not-allowed transition-all flex items-center gap-1";
+            } else {
+                draftBtn.className = "px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm transition-all";
+                fixBtn.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-400 hover:text-slate-700 transition-all";
+                shuffleBtn.removeAttribute("disabled");
+                shuffleBtn.className = "bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1";
+            }
+            renderPreview();
+        }
+
+        // 手動でのシフト選択・テキスト書き換え制御
+        function handleShiftCellUpdate(dateKey, shiftSlot, selectElement) {
+            if (isDocumentFixed) return;
+            const value = selectElement.value;
+
+            if (value === "__FREE_TEXT__") {
+                const inputElement = selectElement.nextElementSibling;
+                selectElement.classList.add("hidden");
+                inputElement.classList.remove("hidden");
+                inputElement.focus();
+                globalShiftData[dateKey][shiftSlot] = { type: "custom", val: "" };
+            } else {
+                globalShiftData[dateKey][shiftSlot] = { type: "staff", val: value };
+                renderPreview();
+            }
+        }
+
+        function handleCustomTextBlur(dateKey, shiftSlot, inputElement) {
+            globalShiftData[dateKey][shiftSlot] = { type: "custom", val: inputElement.value };
+            renderPreview();
+        }
+
+        function handleDailyNoteUpdate(dateKey, value) {
+            if (isDocumentFixed) return;
+            globalShiftData[dateKey].note = value;
+            // リアルタイムにアラート表示を切り替え
+            const alertContainer = document.getElementById(`alert-box-${dateKey}`);
+            if (alertContainer) {
+                if (value.trim()) {
+                    alertContainer.innerText = `⚠️ ${value}`;
+                    alertContainer.classList.remove("hidden");
+                } else {
+                    alertContainer.classList.add("hidden");
+                }
+            }
+        }
+
+
+        // ================= 🧠 3大店長救済ルール搭載 自動生成アルゴリズム =================
+        function executeAutoGenerateAlgorithm() {
+            if (isDocumentFixed || staffCollection.length === 0) return;
+
+            const months = getTargetTwoMonths();
+            if (months.length === 0) return;
+
+            const maxConsecutiveLimit = parseInt(document.getElementById("cfg-max-consecutive").value, 10);
+            const duplicateNgKeyword = document.getElementById("cfg-duplicate-ng-tag").value.trim();
+
+            // 全連続対象日付けキーの配列をフラットに作成
+            const allTimelineKeys = [];
+            months.forEach(m => {
+                const daysInMonth = new Date(m.year, m.month + 1, 0).getDate();
+                for (let d = 1; d <= daysInMonth; d++) {
+                    allTimelineKeys.push(`${m.year}-${String(m.month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`);
+                }
+            });
+
+            // 集計・管理用の内部カウンター
+            const totalAssignedCounter = {};
+            const weekendAssignedCounter = {};
+            const consecutiveTracker = {};
+
+            staffCollection.forEach(s => {
+                totalAssignedCounter[s.id] = 0;
+                weekendAssignedCounter[s.id] = 0;
+                consecutiveTracker[s.id] = 0; // 当該日付直前の連続勤務数
+            });
+
+            // 全タイムラインを走査して自動配置
+            allTimelineKeys.forEach((dateKey) => {
+                const dateObj = new Date(dateKey);
+                const isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6);
+                
+                // 元の備考・メモを退避
+                const existingNote = globalShiftData[dateKey]?.note || "";
+
+                // 店休日の場合は強制スキップ
+                if (checkIsShopClosed(dateKey)) {
+                    globalShiftData[dateKey] = {
+                        t1: { type: "staff", val: "" }, t2: { type: "staff", val: "" }, t3: { type: "staff", val: "" },
+                        note: existingNote, isClosed: true
+                    };
+                    // 店休日は連勤カウントをリセット
+                    staffCollection.forEach(s => consecutiveTracker[s.id] = 0);
+                    return;
+                }
+
+                // 初期化
+                globalShiftData[dateKey] = {
+                    t1: { type: "staff", val: "" }, t2: { type: "staff", val: "" }, t3: { type: "staff", val: "" },
+                    note: existingNote, isClosed: false
+                };
+
+                const slots = ["t1", "t2", "t3"];
+                const dailyAssignedIds = [];
+
+                slots.forEach(slot => {
+                    // 候補者のスクリーニング
+                    let candidates = staffCollection.filter(staff => {
+                        // 1日1回まで
+                        if (dailyAssignedIds.includes(staff.id)) return false;
+                        
+                        // 扶養内上限制限に達している場合は自動生成から除外
+                        if (totalAssignedCounter[staff.id] >= staff.maxDays) return false;
+
+                        // ②【最大連勤数の制限ルール】
+                        if (consecutiveTracker[staff.id] >= maxConsecutiveLimit) return false;
+
+                        // ③【役割・職種重複NGルール】
+                        if (duplicateNgKeyword && staff.tag && staff.tag.includes(duplicateNgKeyword)) {
+                            // 同日同枠（同じ時間帯内）に既に同じ重複禁止タグを持つメンバーがいるかチェック
+                            const hasConflict = dailyAssignedIds.some(assignedId => {
+                                const prevStaff = staffCollection.find(s => s.id === assignedId);
+                                return prevStaff && prevStaff.tag && prevStaff.tag.includes(duplicateNgKeyword);
+                            });
+                            if (hasConflict) return false;
+                        }
+
+                        return true;
+                    });
+
+                    if (candidates.length > 0) {
+                        // ①【出勤日数の平準化・土日偏り回避ロジック】でソート
+                        candidates.sort((a, b) => {
+                            if (isWeekend) {
+                                // 土日出勤回数が少ない人を最優先
+                                if (weekendAssignedCounter[a.id] !== weekendAssignedCounter[b.id]) {
+                                    return weekendAssignedCounter[a.id] - weekendAssignedCounter[b.id];
+                                }
+                            }
+                            // 全体出勤日数が少ない人を優先して平準化
+                            if (totalAssignedCounter[a.id] !== totalAssignedCounter[b.id]) {
+                                return totalAssignedCounter[a.id] - totalAssignedCounter[b.id];
+                            }
+                            // 完全に並んだ場合はランダムシャッフル
+                            return Math.random() - 0.5;
+                        });
+
+                        const selectedStaff = candidates[0];
+                        globalShiftData[dateKey][slot] = { type: "staff", val: selectedStaff.id };
+                        dailyAssignedIds.push(selectedStaff.id);
+                        
+                        // カウンター増分
+                        totalAssignedCounter[selectedStaff.id]++;
+                        if (isWeekend) weekendAssignedCounter[selectedStaff.id]++;
+                    }
+                });
+
+                // 連勤トラッカーの更新（本日入った人は+1、入らなかった人はリセット）
+                staffCollection.forEach(s => {
+                    if (dailyAssignedIds.includes(s.id)) {
+                        consecutiveTracker[s.id]++;
+                    } else {
+                        consecutiveTracker[s.id] = 0;
+                    }
+                });
+            });
+
+            renderPreview();
+        }
+
+
+        // ================= 🎨 レンダリング・集計システム =================
+        function renderPreview() {
+            const root = document.getElementById("seamless-calendar-root");
+            root.innerHTML = "";
+
+            const months = getTargetTwoMonths();
+            if (months.length === 0) return;
+
+            // リアルタイム実績カウンターデータ集計用オブジェクトの初期化
+            const currentMonthMetrics = {};
+            staffCollection.forEach(s => {
+                currentMonthMetrics[s.id] = { total: 0, weekend: 0 };
+            });
+
+            // 2ヶ月分のカレンダーをループ生成してシームレスに縦連結
+            months.forEach((m, monthIndex) => {
+                const monthContainer = document.createElement("div");
+                // 印刷時は1ヶ月ごとに強制改ページ（page-break-before）
+                monthContainer.className = `bg-white p-5 rounded-2xl shadow-sm border border-slate-200 relative card-shadow-none print-color-adjust ${monthIndex > 0 ? 'page-break' : ''} ${!isDocumentFixed ? 'watermark-active' : ''}`;
+                
+                // カレンダーヘッダー
+                let html = `
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">${m.year}年 ${m.month + 1}月 シフト表</h3>
+                        </div>
+                        <div class="no-print text-xs text-slate-400 font-medium">曜日グリッド完全同期ライン</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1.5 text-center font-bold text-xs text-slate-500 mb-2">
+                        <div class="text-rose-500 bg-rose-50 py-1 rounded-md">日</div>
+                        <div class="bg-slate-100 py-1 rounded-md">月</div>
+                        <div class="bg-slate-100 py-1 rounded-md">火</div>
+                        <div class="bg-slate-100 py-1 rounded-md">水</div>
+                        <div class="bg-slate-100 py-1 rounded-md">木</div>
+                        <div class="bg-slate-100 py-1 rounded-md">金</div>
+                        <div class="text-blue-500 bg-blue-50 py-1 rounded-md">土</div>
+                    </div>
+                `;
+
+                const grid = document.createElement("div");
+                grid.className = "grid grid-cols-7 gap-1.5 text-[11px]";
+
+                // 1. 各月の1日の曜日位置に揃えるための空白セル挿入（曜日の縦ライン完全同期のコア）
+                const firstDayIdx = new Date(m.year, m.month, 1).getDay();
+                for (let b = 0; b < firstDayIdx; b++) {
+                    const blank = document.createElement("div");
+                    blank.className = "min-h-[130px] bg-slate-50/30 border border-dashed border-slate-100 rounded-xl";
+                    grid.appendChild(blank);
+                }
+
+                // 2. 日付セルの生成
+                const daysInMonth = new Date(m.year, m.month + 1, 0).getDate();
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateKey = `${m.year}-${String(m.month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                    const currentDayOfWeek = new Date(m.year, m.month, d).getDay();
+                    const isWeekend = (currentDayOfWeek === 0 || currentDayOfWeek === 6);
+
+                    const isClosed = checkIsShopClosed(dateKey);
+                    const dayData = globalShiftData[dateKey] || { t1:{type:"staff",val:""}, t2:{type:"staff",val:""}, t3:{type:"staff",val:""}, note:"" };
+                    
+                    // 実績カウンターのリアルタイム加算（店休日ではない、かつ当月(1ヶ月目)のみ集計）
+                    if (!isClosed && monthIndex === 0) {
+                        ["t1", "t2", "t3"].forEach(slot => {
+                            if (dayData[slot] && dayData[slot].type === "staff" && dayData[slot].val) {
+                                const sId = dayData[slot].val;
+                                if (currentMonthMetrics[sId]) {
+                                    currentMonthMetrics[sId].total++;
+                                    if (isWeekend) currentMonthMetrics[sId].weekend++;
+                                }
+                            }
+                        });
+                    }
+
+                    // 役割ごとのリアルタイム日枠集計（不満シャットアウト機能：日次）
+                    const dailyRoleCount = {};
+                    if (!isClosed) {
+                        ["t1", "t2", "t3"].forEach(slot => {
+                            if (dayData[slot] && dayData[slot].type === "staff" && dayData[slot].val) {
+                                const staff = staffCollection.find(s => s.id === dayData[slot].val);
+                                if (staff && staff.tag) {
+                                    dailyRoleCount[staff.tag] = (dailyRoleCount[staff.tag] || 0) + 1;
+                                }
+                            }
+                        });
+                    }
+                    const roleSummaryString = Object.keys(dailyRoleCount).map(tag => `${tag}:${dailyRoleCount[tag]}`).join(" | ") || "-";
+
+                    // 日付カードのカラー選定
+                    let cardBg = "bg-white border-slate-200";
+                    if (currentDayOfWeek === 0) cardBg = "bg-rose-50/40 border-rose-100";
+                    if (currentDayOfWeek === 6) cardBg = "bg-blue-50/40 border-blue-100";
+                    if (isClosed) cardBg = "bg-slate-100 text-slate-400 border-slate-200";
+
+                    const cellCard = document.createElement("div");
+                    cellCard.className = `border rounded-xl p-1.5 flex flex-col justify-between min-h-[142px] relative transition-all ${cardBg}`;
+
+                    // セル内の時間枠生成（手動微調整・ドロップダウン・自由入力）
+                    const makeSlotHtml = (slotKey, slotLabel) => {
+                        const state = dayData[slotKey] || { type: "staff", val: "" };
+                        
+                        if (isDocumentFixed) {
+                            if (state.type === "custom") return `<span class="font-bold text-blue-600 truncate">${escapeHtml(state.val || "-")}</span>`;
+                            const matched = staffCollection.find(s => s.id === state.val);
+                            return `<span class="font-bold text-slate-800">${matched ? escapeHtml(matched.name) : "-"}</span>`;
+                        }
+
+                        if (state.type === "custom") {
+                            return `<input type="text" value="${escapeHtml(state.val)}" onblur="handleCustomTextBlur('${dateKey}', '${slotKey}', this)" class="w-full text-[10px] py-0.5 border border-blue-300 rounded text-center bg-blue-50 font-bold text-blue-700 outline-none">`;
+                        }
+
+                        return `
+                            <select onchange="handleShiftCellUpdate('${dateKey}', '${slotKey}', this)" class="w-full text-[10px] bg-transparent border-none text-right font-bold text-slate-700 p-0 focus:ring-0 cursor-pointer">
+                                <option value="">-</option>
+                                ${staffCollection.map(s => `<option value="${s.id}" ${s.id === state.val ? "selected" : ""}>${escapeHtml(s.name)}</option>`).join("")}
+                                <option value="__FREE_TEXT__" class="text-blue-600 font-bold">自由入力...</option>
+                            </select>
+                        `;
+                    };
+
+                    // カード内部構造の結合（店休日と通常営業日で切り替え）
+                    if (isClosed) {
+                        cellCard.innerHTML = `
+                            <div class="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                                <span class="mono">${d}</span>
+                                <span class="bg-slate-200 text-slate-500 text-[9px] px-1 py-0.2 rounded">休</span>
+                            </div>
+                            <div class="text-center font-bold text-slate-400 tracking-wider text-xs my-auto">店休日</div>
+                            <div class="no-print mt-1">
+                                <input type="text" value="${escapeHtml(dayData.note || '')}" oninput="handleDailyNoteUpdate('${dateKey}', this.value)" placeholder="備考欄" ${isDocumentFixed?'disabled':''} class="w-full text-[9px] p-0.5 border rounded border-slate-200 bg-white/60 text-center truncate text-slate-400">
+                            </div>
+                        `;
+                    } else {
+                        cellCard.innerHTML = `
+                            <div id="alert-box-${dateKey}" class="text-[9px] font-bold text-amber-800 bg-amber-100 rounded border border-amber-300 px-1 py-0.5 mb-1 truncate text-center ${dayData.note?.trim() ? "" : "hidden"}">
+                                ⚠️ ${escapeHtml(dayData.note || "")}
+                            </div>
+
+                            <div class="flex justify-between items-center text-[10px] font-bold text-slate-500 mb-1">
+                                <span class="mono">${d}</span>
+                            </div>
+                            
+                            <div class="space-y-1 flex-1 flex flex-col justify-center">
+                                <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
+                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">早</span>
+                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t1", "早番")}</div>
+                                </div>
+                                <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
+                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">遅</span>
+                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t2", "遅番")}</div>
+                                </div>
+                                <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
+                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">夜</span>
+                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t3", "夜勤")}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="no-print mt-1.5">
+                                <input type="text" value="${escapeHtml(dayData.note || '')}" oninput="handleDailyNoteUpdate('${dateKey}', this.value)" placeholder="当日のイベント・備考" ${isDocumentFixed?'disabled':''} class="w-full text-[9px] p-0.5 border border-slate-200 rounded-md bg-white/50 text-slate-600 focus:bg-white outline-none text-center truncate">
+                            </div>
+
+                            <div class="mt-1 pt-0.5 border-t border-dashed border-slate-100 text-[8px] text-slate-400 text-center truncate">
+                                ${escapeHtml(roleSummaryString)}
+                            </div>
+                        `;
+                    }
+
+                    grid.appendChild(cellCard);
+                }
+
+                monthContainer.appendChild(grid);
+                root.appendChild(monthContainer);
+            });
+
+            // フォーム側のメンバー実績ダッシュボードへのリアルタイム反映（扶養内制限警告対応）
+            renderFormMetricsDashboard(currentMonthMetrics);
+        }
+
+        // メンバー別集計実績カウンターの描画（扶養内制限アラート連動）
+        function renderFormMetricsDashboard(metrics) {
+            const board = document.getElementById("form-metrics-dashboard");
+            board.innerHTML = "";
+
+            staffCollection.forEach(s => {
+                const data = metrics[s.id] || { total: 0, weekend: 0 };
+                // 扶養内制限を超えた場合、赤色に変化する警告ロジック
+                const isOverLimit = data.total > s.maxDays;
+                const badgeColorClass = isOverLimit ? "bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded animate-pulse" : "text-emerald-400 font-bold";
+                const numColorClass = isOverLimit ? "text-rose-600 font-bold border-b-2 border-rose-500" : "text-slate-200";
+
+                const item = document.createElement("div");
+                item.className = `p-2 rounded-lg border ${isOverLimit ? 'bg-rose-50 border-rose-300 text-slate-900' : 'bg-slate-800 text-slate-300 border-slate-700'}`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold ${isOverLimit ? 'text-rose-700' : 'text-white'}">${escapeHtml(s.name)} <span class="text-[9px] font-normal text-slate-400">[${escapeHtml(s.tag || '一般')}]</span></span>
+                        ${isOverLimit ? `<span class="${badgeColorClass}">扶養上限オーバー!</span>` : ""}
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] mt-1">
+                        <div>出勤: <span class="text-sm mono ${isOverLimit ? 'text-rose-600' : 'text-emerald-400'} font-bold">${data.total}</span> / ${s.maxDays}日</div>
+                        <div>土日: <span class="mono text-amber-400 font-bold">${data.weekend}</span> 回</div>
+                    </div>
+                `;
+                board.appendChild(item);
+            });
+        }
+
+
+        // ================= 💾 LocalStorage スナップショットデータ管理 =================
+        function saveCurrentDataToStorage() {
+            const targetMonth = document.getElementById("cfg-target-month").value;
+            const maxConsecutive = document.getElementById("cfg-max-consecutive").value;
+            const duplicateNgTag = document.getElementById("cfg-duplicate-ng-tag").value;
+            
+            const regularHolidays = [];
+            document.querySelectorAll('input[name="cfg-regular-holidays"]:checked').forEach(cb => {
+                regularHolidays.push(parseInt(cb.value, 10));
+            });
+
+            const snapshot = {
+                targetMonth, maxConsecutive, duplicateNgTag, regularHolidays,
+                temporaryHolidays, staffCollection, globalShiftData, isDocumentFixed
+            };
+
+            localStorage.setItem("sugudasu_pro_snapshot", JSON.stringify(snapshot));
+            alert("現在のすべてのシフトデータ・店休日・メンバー構成をLocalStorageに完全保存しました。次回アクセス時に自動復元されます。");
+        }
+
+        function loadSnapshotFromStorage() {
+            const raw = localStorage.getItem("sugudasu_pro_snapshot");
+            if (!raw) return;
+            try {
+                const snapshot = JSON.parse(raw);
+                if (snapshot.targetMonth) document.getElementById("cfg-target-month").value = snapshot.targetMonth;
+                if (snapshot.maxConsecutive) document.getElementById("cfg-max-consecutive").value = snapshot.maxConsecutive;
+                if (snapshot.duplicateNgTag) document.getElementById("cfg-duplicate-ng-tag").value = snapshot.duplicateNgTag;
+                
+                if (snapshot.regularHolidays) {
+                    snapshot.regularHolidays.forEach(val => {
+                        const cb = document.querySelector(`input[name="cfg-regular-holidays"][value="${val}"]`);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                if (snapshot.temporaryHolidays) {
+                    temporaryHolidays = snapshot.temporaryHolidays;
+                    renderTemporaryHolidayBadges();
+                }
+                if (snapshot.staffCollection) staffCollection = snapshot.staffCollection;
+                if (snapshot.globalShiftData) globalShiftData = snapshot.globalShiftData;
+                if (snapshot.isDocumentFixed !== undefined) toggleDocumentLock(snapshot.isDocumentFixed);
+            } catch (e) {
+                console.error("Storageデータ復元エラー", e);
+            }
+        }
+
+        // HTMLエスケープ安全処理
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>SUGUDASU_SHELL.mount({ title: 'シフト表', print: true, landscape: true });</script>
+</body>
+</html>

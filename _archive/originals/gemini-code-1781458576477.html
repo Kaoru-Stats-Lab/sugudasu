@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大人の傾斜割り勘メーカー PRO | sugudasu.online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; }
+        .mono { font-family: 'Roboto Mono', monospace; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <header class="bg-slate-900 text-white p-4 shadow-md flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">⚖️</span>
+            <h1 class="text-base font-bold tracking-wider">大人の傾斜割り勘メーカー <span class="text-xs font-normal text-slate-400">PRO</span></h1>
+        </div>
+        
+        <div class="inline-flex rounded-lg p-0.5 bg-slate-800 border border-slate-700">
+            <button id="mode-normal-btn" onclick="changeAppEventMode('normal')" class="px-4 py-1 text-xs font-bold rounded bg-slate-700 text-white shadow-sm transition-all">通常飲み会</button>
+            <button id="mode-gokon-btn" onclick="changeAppEventMode('gokon')" class="px-4 py-1 text-xs font-bold rounded text-slate-400 hover:text-white transition-all">🔥 合コン・イベント</button>
+        </div>
+    </header>
+
+    <main class="p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-[1600px] mx-auto">
+        
+        <section class="lg:col-span-6 space-y-5 bg-white p-5 lg:p-6 rounded-2xl shadow-sm border border-slate-200">
+            
+            <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
+                <h2 class="text-sm font-bold text-slate-700 flex items-center gap-1.5">💰 会計・丸めルール入力</h2>
+                <span id="current-mode-badge" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">通常モード</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">お会計総額（税込）</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-sm">¥</span>
+                        <input type="number" id="input-total-amount" value="48000" oninput="calculateWarikan()" class="w-full border rounded-xl pl-8 pr-3 py-2 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-slate-400 bg-slate-50/50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">精算の端数丸め単位</label>
+                    <select id="select-round-unit" onchange="calculateWarikan()" class="w-full border rounded-xl p-2 text-sm font-medium bg-white text-slate-700 outline-none focus:ring-2 focus:ring-slate-400">
+                        <option value="100" selected>100円単位（四捨五入）</option>
+                        <option value="500">500円単位（四捨五入）</option>
+                        <option value="1000">1000円単位（四捨五入）</option>
+                        <option value="1">1円単位（丸めなし）</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                    <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1">👥 傾斜配分・金額固定設定</h3>
+                    <button onclick="addNewGroupRow()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-2.5 py-1 rounded shadow-xs transition-all">＋ 階級を追加</button>
+                </div>
+                
+                <div class="grid grid-cols-12 gap-1 text-[10px] font-bold text-slate-400 px-2 hidden sm:grid">
+                    <div class="col-span-4">階級・グループ名</div>
+                    <div class="col-span-2 text-center">傾斜係数</div>
+                    <div class="col-span-2 text-center">人数</div>
+                    <div class="col-span-3 text-center">🔒 金額固定</div>
+                    <div class="col-span-1"></div>
+                </div>
+
+                <div id="group-rows-container" class="space-y-2"></div>
+            </div>
+
+            <button onclick="calculateWarikan()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs tracking-wider transition-all">
+                🔄 割り勘を再計算する
+            </button>
+
+        </section>
+
+        <section class="lg:col-span-6 space-y-4">
+            
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b pb-1.5">📊 1人あたりの精算金額</h3>
+                
+                <div id="preview-result-list" class="space-y-2"></div>
+
+                <div id="preview-balance-card" class="p-3 rounded-xl border flex flex-col sm:flex-row justify-between items-center gap-2 transition-all"></div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <div class="flex flex-wrap justify-between items-center border-b border-slate-100 pb-1.5 gap-2">
+                    <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border text-[11px] font-bold">
+                        <button id="tab-pub-btn" onclick="switchTextTab('public')" class="px-3 py-1 rounded-md bg-white text-slate-800 shadow-xs">全員向け（表）</button>
+                        <button id="tab-priv-btn" onclick="switchTextTab('private')" class="px-3 py-1 rounded-md text-slate-400 hover:text-slate-700">男性陣専用（裏・ガチ清算）</button>
+                    </div>
+                    
+                    <button onclick="copyGeneratedText()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-xs transition-all">
+                        📋 選択中の文章をコピー
+                    </button>
+                </div>
+                
+                <textarea id="output-line-text" rows="10" readonly class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 focus:outline-none resize-none"></textarea>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        let currentEventMode = 'normal'; // 'normal' または 'gokon'
+        let currentTextTab = 'public';  // 'public' または 'private'
+        let groupList = [];
+        
+        // 算出済みのキャッシュデータ（LINE文面切り替え用）
+        let cachedMetrics = { total: 0, collected: 0, diff: 0, roundedGroups: [] };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            changeAppEventMode('normal'); // 通常モードで初期起動
+        });
+
+        // イベントモード切り替えハンドラ
+        function changeAppEventMode(mode) {
+            currentEventMode = mode;
+            const nBtn = document.getElementById("mode-normal-btn");
+            const gBtn = document.getElementById("mode-gokon-btn");
+            const badge = document.getElementById("current-mode-badge");
+
+            if (mode === 'normal') {
+                nBtn.className = "px-4 py-1 text-xs font-bold rounded bg-slate-700 text-white shadow-sm transition-all";
+                gBtn.className = "px-4 py-1 text-xs font-bold rounded text-slate-400 hover:text-white transition-all";
+                badge.innerText = "通常飲み会モード";
+                badge.className = "text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold";
+
+                // 通常

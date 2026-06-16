@@ -1,0 +1,13 @@
+{
+  "name": "sugudasu",
+  "private": true,
+  "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
+  "scripts": {
+    "build:pages": "node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "guard:pages-free": "node scripts/verify-pages-free-plan.mjs",
+    "guard:pages-budget": "node scripts/guard-pages-build-budget.mjs check",
+    "guard:pages-budget:show": "node scripts/guard-pages-build-budget.mjs show",
+    "release:pages:free": "npm run build:pages && npm run guard:pages-budget && node scripts/guard-pages-build-budget.mjs consume",
+    "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080"
+  }
+}

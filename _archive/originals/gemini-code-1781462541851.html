@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+）としてそのまま丸ごと埋め込んで残してください。
+
+外部のAPIキーやサーバーサイドは一切使用せず、HTML/CSS/JavaScriptのみの完全サーバーレスで実装してください。Tailwind CSSを使用した、オフィスワークに馴染むモダンで洗練されたUI（レスポンシブ対応）にしてください。
+
+【機能・画面構成要件】
+1. 画面構成:
+   - PC表示時は左側50%が条件入力フォーム、右側50%が整形結果およびプロンプト自動合成のプレビュー（スマホ表示時は縦並び）。
+   - 画面の端に、Google AdSense広告（インプレッション型）を配置するためのダミーの広告枠（灰色背景のコンテナなど）を綺麗に組み込んでおいてください。
+
+2. 入力フォーム（左側）:
+   - 「文書の種類」の選択（会議議事録 / 週報・日報 / トラブル・不具合報告書 / イベント・プロジェクト報告書）。
+   - 「基本情報」の入力（日付、場所・URL、参加者・報告者名、件名・議題）。
+   - 「殴り書きメモ・内容」の広大なテキストエリア（会議中の箇条書きや、適当なキーワードのメモをそのまま貼り付ける場所）。
+
+3. 2モード切り替えのプレビューエリア（右側）:
+   ユーザーが「文書を整形・生成する」ボタンを押した際、右側に以下の2つのタブを用意し、JavaScriptで動的にテキストを生成してください（ワンクリックコピーボタン付き）。
+
+   ①【タブ1：ローカル整形テキスト（社外秘・安全モード）】
+     - 外部のAIとは一切通信せず、JavaScriptのみで「基本情報」と「殴り書きメモ」を組み合わせ、日本の標準的なビジネス文書のフォーマット（インデントや記書き、見出し）に一瞬で綺麗に整えたプレビューを表示。社外秘の情報でも安心してその場でコピーして使える設計。
+
+   ②【タブ2：公式Gemini用・最強プロンプト自動合成】
+     - 入力されたすべての情報（文書の種類、日時、参加者、議題、殴り書きメモ）をJavaScriptが統合し、**公式の無料ブラウザ版Geminiに貼り付けるだけで「完璧な要約、決定事項、ネクストタスクがビジネス表現で整理された、極上の議事録」を生成させるための、高度に調教されたプロンプト（指示文）**を自動合成して表示。
+     - その横に「プロンプトをコピーして公式Geminiを開く」という神ボタンを設置。このボタンを押すと、
+       1) 生成されたプロンプトがクリップボードに自動コピーされ、
+       2) 公式のブラウザ版Gemini（ https://gemini.google.com/ ）が別タブ（target="_blank"）で開く
+       というJavaScript連携を実装してください。
+================================================================================
+-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>議事録・報告書「穴埋め」＆テキスト整形ツール | sugudasu.online</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold text-slate-900 tracking-tight">sugudasu.online/report</h1>
+                    <p class="text-[11px] text-slate-500 font-medium">議事録・報告書「穴埋め」＆テキスト整形ツール</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs font-medium text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>完全ローカル処理・安全モード搭載</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 items-start">
+        
+        <div class="hidden xl:block xl:col-span-1 bg-slate-100 border border-slate-200 text-[11px] text-slate-400 text-center rounded-2xl p-2 h-[600px] sticky top-24">
+            <div class="font-bold mb-2 text-slate-400 border-b border-slate-200 pb-1 uppercase tracking-wider">広告</div>
+            <div class="h-[calc(100%-30px)] flex items-center justify-center text-slate-400 font-mono">AdSense<br>(160x600)</div>
+        </div>
+
+        <div class="col-span-12 xl:col-span-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <section class="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-5 lg:p-6 space-y-5">
+                <div class="flex items-center space-x-2 border-b border-slate-100 pb-3">
+                    <span class="text-lg">✍️</span>
+                    <h2 class="text-sm font-bold text-slate-900 tracking-wide">基本情報入力・構成パネル</h2>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">📄 文書の種類</label>
+                    <select id="doc-type" onchange="updatePlaceholders()" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                        <option value="meeting" selected>📅 会議議事録 (デフォルト)</option>
+                        <option value="weekly">📝 週報・日報</option>
+                        <option value="trouble">🚨 トラブル・不具合報告書</option>
+                        <option value="event">🚀 イベント・プロジェクト報告書</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="label-date">📅 実施日付</label>
+                        <input type="text" id="doc-date" placeholder="例: 2026年6月15日(月) 14:00-15:00" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="label-location">📍 場所・URL</label>
+                        <input type="text" id="doc-location" placeholder="例: 第1会議室 / Google Meet" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="label-title">📌 件名・議題</label>
+                        <input type="text" id="doc-title" placeholder="例: 新規プロジェクトキックオフミーティング" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="label-members">👥 参加者・報告者名</label>
+                        <input type="text" id="doc-members" placeholder="例: 山田（議事）、佐藤、鈴木、高橋（クライアント）" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5 flex justify-between items-center">
+                        <span>💡 殴り書きメモ・内容（ここへ自由に記述・ペースト）</span>
+                        <span class="text-[10px] text-slate-400 font-normal">※箇条書きや単語だけでもOK</span>
+                    </label>
+                    <textarea id="doc-raw-notes" rows="12" placeholder="・A機能の納期についてクライアントから前倒しの打診あり。&#11;・鈴木：現状のリソースでは厳しいが、開発会社への一部切り出しを検討可能。&#11;・次回までに高橋様より詳細な要件スケジュールを共有いただく。&#11;・決定事項：基本設計の着手日を3日早める方向で社内調整する。" class="w-full border border-slate-200 rounded-xl p-3 text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all font-mono leading-relaxed placeholder:text-slate-400"></textarea>
+                </div>
+
+                <button onclick="processBusinessReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs tracking-wider shadow-md hover:shadow-lg active:scale-[0.99] transition-all flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span>文書を整形・プロンプト生成する</span>
+                </button>
+            </section>
+
+            <section class="flex flex-col space-y-4">
+                
+                <div class="bg-slate-200/60 p-1.5 rounded-xl grid grid-cols-2 gap-1.5">
+                    <button id="tab-btn-local" onclick="switchPreviewTab('local')" class="py-2.5 text-xs font-bold rounded-lg text-center transition-all cursor-pointer bg-white text-indigo-700 shadow-xs">
+                        🔒 ① 安全ローカル整形 (社外秘用)
+                    </button>
+                    <button id="tab-btn-gemini" onclick="switchPreviewTab('gemini')" class="py-2.5 text-xs font-bold rounded-lg text-center transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-300/40">
+                        ✨ ② Gemini用・最強プロンプト
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-xs border border-slate-200/80 p-5 lg:p-6 flex-1 flex flex-col space-y-4 min-h-[500px]">
+                    
+                    <div id="tab-content-local" class="flex-1 flex flex-col space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">📋 出力プレビュー（標準ビジネステンプレート）</span>
+                            <button onclick="copyToClipboard('output-local-text')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg border border-indigo-200/50 transition-all flex items-center space-x-1 cursor-pointer">
+                                <span>📄 コピー</span>
+                            </button>
+                        </div>
+                        <textarea id="output-local-text" readonly class="w-full flex-1 border border-slate-100 rounded-xl p-4 text-xs font-mono bg-slate-50 text-slate-800 leading-relaxed outline-none resize-none" placeholder="生成された安全な整形文書がここに表示されます。サーバー送信は一切ありません。"></textarea>
+                    </div>
+
+                    <div id="tab-content-gemini" class="hidden flex-1 flex flex-col space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                            <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider flex items-center gap-1">
+                                🚀 自動合成されたシステム調教型プロンプト
+                            </span>
+                            
+                            <button onclick="copyAndOpenGemini()" class="text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-700 hover:to-indigo-700 px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all flex items-center space-x-1.5 cursor-pointer animate-pulse-slow">
+                                <span>🔥 コピーして公式Geminiを開く</span>
+                            </button>
+                        </div>
+                        <textarea id="output-gemini-prompt" readonly class="w-full flex-1 border border-slate-100 rounded-xl p-4 text-xs font-mono bg-slate-900 text-slate-100 leading-relaxed outline-none resize-none focus:ring-0" placeholder="公式ブラウザ版Geminiを極上チューニングするためのプロンプト指示書が自動合成されます。"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="bg-slate-100 border border-slate-200 text-[11px] text-slate-400 text-center rounded-2xl p-3 w-full">
+                    <div class="font-bold text-[10px] text-slate-400 mb-1 tracking-wider uppercase">SPONSORED LINK</div>
+                    <div class="border border-dashed border-slate-200 py-4 bg-white rounded-xl text-slate-400 font-mono">Google AdSense (レスポンシブ自動最適化バナー枠)</div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="hidden xl:block xl:col-span-1 bg-slate-100 border border-slate-200 text-[11px] text-slate-400 text-center rounded-lg p-2 h-[600px] sticky top-24">
+            <div class="font-bold mb-2 text-slate-400 border-b border-slate-200 pb-1 uppercase tracking-wider">広告</div>
+            <div class="h-[calc(100%-30px)] flex items-center justify-center text-slate-400 font-mono">AdSense<br>(160x600)</div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 text-center py-4 text-[11px] tracking-wider border-t border-slate-800 mt-auto font-medium">
+        &copy; 議事録・報告書「穴埋め」＆テキスト整形ツール PRO. Powered by sugudasu.online.
+    </footer>
+
+    <script>
+        // タブ切り替え管理変数
+        let currentTab = 'local';
+
+        // 文書の種類に応じたプレースホルダーの自動更新切り替え
+        function updatePlaceholders() {
+            const type = document.getElementById('doc-type').value;
+            
+            const labels = {
+                date: document.getElementById('label-date'),
+                location: document.getElementById('label-location'),
+                title: document.getElementById('label-title'),
+                members: document.getElementById('label-members')
+            };
+
+            const inputs = {
+                date: document.getElementById('doc-date'),
+                location: document.getElementById('doc-location'),
+                title: document.getElementById('doc-title'),
+                members: document.getElementById('doc-members'),
+                notes: document.getElementById('doc-raw-notes')
+            };
+
+            if (type === 'meeting') {
+                labels.date.innerText = "📅 実施日付";
+                inputs.date.placeholder = "例: 2026年6月15日(月) 14:00-15:00";
+                labels.location.innerText = "📍 場所・URL";
+                inputs.location.placeholder = "例: 第1会議室 / Google Meet";
+                labels.title.innerText = "📌 件名・議題";
+                inputs.title.placeholder = "例: 新規プロジェクトキックオフミーティング";
+                labels.members.innerText = "👥 参加者・報告者名";
+                inputs.members.placeholder = "例: 山田（議事）、佐藤、鈴木、高橋（クライアント）";
+                inputs.notes.placeholder = "・A機能の納期についてクライアントから前倒しの打診あり。\n・鈴木：現状のリソースでは厳しいが、一部切り出しを検討可能。\n・次回までにスケジュール詳細を共有。\n・決定事項：基本設計の着手日を3日早める。";
+            } else if (type === 'weekly') {
+                labels.date.innerText = "📅 対象期間";
+                inputs.date.placeholder = "例: 2026年6月第3週 (6/15〜6/19)";
+                labels.location.innerText = "📍 所属・部署名";
+                inputs.location.placeholder = "例: デジタルマーケティング部 開発チーム";
+                labels.title.innerText = "📌 今週の主要目標";
+                inputs.title.placeholder = "例: 新サービスLPのフロントエンド実装およびテスト完了";
+                labels.members.innerText = "👥 報告者氏名";
+                inputs.members.placeholder = "例: 山田 太郎";
+                inputs.notes.placeholder = "【今週の成果】\n・LPの主要コーディング完了。レスポンシブ対応まで済。\n・デザイナーとの最終文言チェッククリア。\n【発生した課題】\n・一部コンポーネントでアニメーション遅延発生。来週初頭にリファクタリング実施予定。\n【翌週の予定】\n・本番環境へのデプロイと動作検証。";
+            } else if (type === 'trouble') {
+                labels.date.innerText = "📅 発生日時・発覚日";
+                inputs.date.placeholder = "例: 2026年6月15日(月) 09:23頃";
+                labels.location.innerText = "📍 対象システム・環境";
+                inputs.location.placeholder = "例: 本番環境 決済マイクロサービスサーバー";
+                labels.title.innerText = "📌 不具合・トラブル件名";
+                inputs.title.placeholder = "例: クレジットカード決済時の502 Bad Gatewayエラー検知";
+                labels.members.innerText = "👥 対応担当者・報告者";
+                inputs.members.placeholder = "例: 鈴木（インフラ）、佐藤（フロント）";
+                inputs.notes.placeholder = "【事象・現在の状況】\n・一部ユーザーから決済完了画面に遷移せず502エラーが出るとの報告多数。\n【原因分析】\n・直前のパッチ適用時の環境変数のタイポによるルーティング破損。\n【暫定処置・結果】\n・当該パッチを前バージョンへロールバック。10:15に復旧完了。\n【今後の恒久対策】\n・CI/CDパイプラインへのステージング環境自動テストの追加強化。";
+            } else if (type === 'event') {
+                labels.date.innerText = "📅 開催期間・日時";
+                inputs.date.placeholder = "例: 2026年6月13日(土)〜6月14日(日)";
+                labels.location.innerText = "📍 イベント会場・プラットフォーム";
+                inputs.location.placeholder = "例: 幕張メッセ 国際展示場 / YouTube Live";
+                labels.title.innerText = "📌 プロジェクト・イベント名称";
+                inputs.title.placeholder = "例: テックカンファレンス 2026 Summer";
+                labels.members.innerText = "👥 運営メンバー・主幹部署";
+                inputs.members.placeholder = "例: 企画チーム、広報部（総勢15名）";
+                inputs.notes.placeholder = "【目的・達成目標】\n・新規プロダクトの知名度拡大およびエンジニア採用のリード獲得。\n【主な成果・数値】\n・来場者数計：2,500名（目標値の120%達成）。新規リード：450件獲得。\n【反省点・改善要望】\n・ブース配布用パンフレットが初日午後に枯渇したため、増刷調整に追われた。次回は配分マニュアルを見直す。";
+            }
+        }
+
+        // タブ切り替えロジック
+        function switchPreviewTab(target) {
+            currentTab = target;
+            const btnLocal = document.getElementById('tab-btn-local');
+            const btnGemini = document.getElementById('tab-btn-gemini');
+            const contentLocal = document.getElementById('tab-content-local');
+            const contentGemini = document.getElementById('tab-content-gemini');
+
+            if (target === 'local') {
+                btnLocal.className = "py-2.5 text-xs font-bold rounded-lg text-center transition-all cursor-pointer bg-white text-indigo-700 shadow-xs";
+                btnGemini.className = "py-2.5 text-xs font-bold rounded-lg text-center transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-300/4

@@ -1,0 +1,382 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+/* SUGUDASU design tokens — docs/DESIGN_GUIDELINE.md §2–4, §7 */
+
+:root {
+  --sg-bg: #f1f5f9;
+  --sg-surface: #ffffff;
+  --sg-border: #e2e8f0;
+  --sg-text: #1e293b;
+  --sg-muted: #64748b;
+  --sg-primary: #2563eb;
+  --sg-primary-hover: #1d4ed8;
+  --sg-header: #0f172a;
+  --sg-print-cta: #059669;
+  --sg-warning: #d97706;
+  --sg-error: #dc2626;
+}
+
+/* —— Base —— */
+body.sg-body {
+  font-family: 'Noto Sans JP', 'Inter', sans-serif;
+  background-color: var(--sg-bg);
+  color: var(--sg-text);
+}
+
+.sg-mono,
+.mono,
+.mono-num {
+  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* —— Components —— */
+.sg-card {
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+.sg-input {
+  width: 100%;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: #fff;
+}
+.sg-input:focus {
+  outline: none;
+  border-color: var(--sg-primary);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.15);
+}
+
+.sg-btn-primary {
+  background: var(--sg-primary);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+.sg-btn-primary:hover { background: var(--sg-primary-hover); }
+
+.sg-btn-secondary {
+  background: #fff;
+  border: 1px solid var(--sg-border);
+  color: var(--sg-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.sg-btn-secondary:hover { background: #f8fafc; }
+
+.sg-trust-badge {
+  font-size: 11px;
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.ad-slot {
+  border: 1px dashed var(--sg-border);
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  color: var(--sg-muted);
+  font-size: 10px;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 1.5rem; /* CTA から最低 24px（AdSense 誤タップ防止） */
+}
+
+/* 結果表示の直下に置く広告枠（本番 AdSense 配置の正本） */
+.ad-slot--result {
+  margin-top: 1.5rem;
+  min-height: 90px;
+}
+
+/* 入力フォーム内への配置は禁止（誤タップ対策・各 HTML で結果側に ad-slot--result を使う） */
+.sg-input-zone .ad-slot {
+  display: none;
+}
+
+/* ヘッダーナビ（アイコン + 短ラベル） */
+.sg-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.sg-nav-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+.sg-nav-label {
+  font-size: 11px;
+}
+
+/* FAQ（ツール共通・index 含む） */
+.sg-faq-section {
+  margin-top: 2rem;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid var(--sg-border);
+  background: #fff;
+}
+.sg-faq-inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+.sg-faq-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+}
+.sg-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+details.sg-faq summary::-webkit-details-marker { display: none; }
+details.sg-faq[open] summary svg { transform: rotate(180deg); }
+
+/* —— A4 paper (screen) —— */
+.sg-a4-portrait,
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+}
+
+.sg-a4-landscape {
+  width: 297mm;
+  min-height: 210mm;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+}
+
+/* Invoice (index.html) */
+.a4-page {
+  padding: 20mm;
+}
+
+.preview-container {
+  transform-origin: top left;
+}
+
+.stamp-box { position: relative; }
+.stamp-img {
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.sortable-row {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sortable-row.dragging {
+  opacity: 0.5;
+  background-color: #e2e8f0;
+  border-style: dashed;
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* Label (label.html) */
+.a4-sheet {
+  width: 210mm;
+  height: 297mm;
+  background: #fff;
+  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1);
+  box-sizing: border-box;
+  display: grid;
+  page-break-after: always;
+  break-after: page;
+}
+
+.label-cell {
+  box-sizing: border-box;
+  border: 1px dashed #cbd5e1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#label-spec-select option.spec-highlight {
+  background-color: #dbeafe;
+  font-weight: bold;
+}
+
+.spec-search-hit {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.25);
+}
+
+.tooltip-box {
+  display: none;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+.tooltip-box.active { display: block; }
+
+/* Shift (shift.html) */
+.watermark-active::before {
+  content: "下書き / 調整中";
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-size: 5.5rem;
+  font-weight: 900;
+  color: rgb(226 232 240 / 0.45);
+  z-index: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* SNS (sns.html) */
+.deco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.deco-card { min-height: 4.5rem; }
+.deco-sample { word-break: break-all; line-height: 1.4; }
+.deco-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.15em;
+  min-height: 8rem;
+  margin: 0 auto;
+}
+
+/* —— Print (shared) —— */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  @page landscape {
+    size: A4 landscape;
+    margin: 5mm;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-target,
+  .preview-section {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  .preview-scaler,
+  .preview-wrapper {
+    transform: none !important;
+    scale: 1 !important;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .preview-container {
+    transform: scale(1) !important;
+    transform-origin: top left !important;
+  }
+
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .sg-a4-portrait,
+  .sg-a4-landscape,
+  .a4-page,
+  .a4-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .sg-a4-portrait:last-child,
+  .sg-a4-landscape:last-child,
+  .a4-page:last-child,
+  .a4-sheet:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .a4-page {
+    padding: 15mm !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+  }
+
+  .label-cell {
+    border: none !important;
+  }
+
+  /* Shift landscape */
+  body.sg-print-landscape {
+    font-size: 9px;
+  }
+
+  body.sg-print-landscape .sg-shift-sheet {
+    page: landscape;
+  }
+
+  body.sg-print-landscape .print-layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  body.sg-print-landscape .page-break {
+    page-break-before: always;
+    break-before: page;
+    margin-top: 20px;
+  }
+
+  body.sg-print-landscape .card-shadow-none {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

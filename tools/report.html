@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="殴り書きメモから議事録・週報を整形。ブラウザ内完結、データは送信しません。">
+    <title>議事録・報告書の穴埋め | SUGUDASU</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+        ブラウザ内完結・メモは外部に送信しません
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">メモを書く</h2>
+
+            <div>
+                <label for="doc-type" class="block text-xs font-semibold text-slate-600 mb-1.5">文書の種類</label>
+                <select id="doc-type" class="sg-input text-sm">
+                    <option value="meeting" selected>会議議事録</option>
+                    <option value="weekly">週報・日報</option>
+                    <option value="trouble">トラブル・不具合報告</option>
+                    <option value="event">イベント・プロジェクト報告</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="doc-date" class="block text-xs font-semibold text-slate-600 mb-1.5" id="label-date">日付・期間</label>
+                    <input type="text" id="doc-date" class="sg-input text-sm" placeholder="例: 2026年6月15日(月) 14:00-15:00">
+                </div>
+                <div>
+                    <label for="doc-location" class="block text-xs font-semibold text-slate-600 mb-1.5" id="label-location">場所</label>
+                    <input type="text" id="doc-location" class="sg-input text-sm" placeholder="例: 第1会議室 / Google Meet">
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="doc-title" class="block text-xs font-semibold text-slate-600 mb-1.5" id="label-title">件名</label>
+                    <input type="text" id="doc-title" class="sg-input text-sm" placeholder="例: 新規プロジェクトキックオフ">
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="doc-members" class="block text-xs font-semibold text-slate-600 mb-1.5" id="label-members">参加者・報告者</label>
+                    <input type="text" id="doc-members" class="sg-input text-sm" placeholder="例: 山田（議事）、佐藤、鈴木">
+                </div>
+            </div>
+
+            <div>
+                <label for="doc-raw-notes" class="block text-xs font-semibold text-slate-600 mb-1.5">殴り書きメモ</label>
+                <textarea id="doc-raw-notes" rows="10" class="sg-input text-sm font-mono leading-relaxed resize-y"
+                    placeholder="箇条書きや単語だけでもOK&#10;・納期の前倒し打診あり&#10;・次回までにスケジュール共有"></textarea>
+                <p id="notes-error" class="hidden text-xs text-rose-600 mt-1.5">メモを入力してください。</p>
+            </div>
+
+            <button type="button" id="btn-generate"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-lg">
+                文書を整形する
+            </button>
+        </section>
+
+        <section class="flex flex-col gap-4">
+            <div class="bg-slate-100 p-1 rounded-lg grid grid-cols-2 gap-1 border border-slate-200">
+                <button type="button" id="tab-btn-local"
+                    class="py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm">
+                    そのまま使える文面
+                </button>
+                <button type="button" id="tab-btn-gemini"
+                    class="py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800">
+                    AIで仕上げる（Gemini）
+                </button>
+            </div>
+
+            <div class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
+                <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[11px] font-semibold text-slate-600">整形結果（社外秘OK）</span>
+                        <button type="button" id="btn-copy-local"
+                            class="text-xs font-semibold text-blue-600 hover:text-blue-800 px-2 py-1">
+                            コピー
+                        </button>
+                    </div>
+                    <textarea id="output-local-text" readonly rows="16"
+                        class="w-full flex-1 border border-slate-200 rounded-lg p-3 text-xs font-mono bg-slate-50 leading-relaxed resize-none"
+                        placeholder="「文書を整形する」を押すとここに表示されます。"></textarea>
+                </div>
+
+                <div id="tab-content-gemini" class="hidden flex flex-col gap-3 flex-1">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
+                        <span class="text-[11px] font-semibold text-slate-600">Gemini に貼る用の文章</span>
+                        <button type="button" id="btn-gemini"
+                            class="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg">
+                            コピーして Gemini を開く
+                        </button>
+                    </div>
+                    <textarea id="output-gemini-prompt" readonly rows="14"
+                        class="w-full flex-1 border border-slate-200 rounded-lg p-3 text-xs font-mono bg-slate-50 leading-relaxed resize-none"
+                        placeholder="整形後にここへ指示文が作られます。"></textarea>
+                </div>
+            </div>
+
+            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">議事録・週報・報告書のよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>会議のメモをそのまま議事録フォーマットに整えたい</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>書類種別で「会議議事録」を選び、日時・参加者・決定事項を入力して「文書を整形する」を押すと、社内共有しやすい体裁にまとまります。コピーしてメールやチャットに貼れます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>週報やトラブル報告書にも使えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。週報・日報、トラブル報告、イベント報告のテンプレートを切り替えられます。ラベルやプレースホルダも種別に合わせて変わります。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>入力した会議内容はサーバーに保存されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。整形処理はブラウザ内で完結し、議事内容を外部サーバーへ送信する機能はありません。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    'use strict';
+
+    const TAB_ACTIVE = 'py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm';
+    const TAB_IDLE = 'py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800';
+
+    const TYPE_LABELS = {
+        meeting: '会議議事録',
+        weekly: '週報・日報',
+        trouble: 'トラブル・不具合報告書',
+        event: 'イベント・プロジェクト報告書'
+    };
+
+    const PLACEHOLDERS = {
+        meeting: {
+            date: '例: 2026年6月15日(月) 14:00-15:00',
+            location: '例: 第1会議室 / Google Meet',
+            title: '例: 新規プロジェクトキックオフ',
+            members: '例: 山田（議事）、佐藤、鈴木',
+            notes: '・納期の前倒し打診あり\n・次回までにスケジュール共有\n・決定：基本設計の着手を3日早める',
+            labels: { date: '日付・時間', location: '場所', title: '件名・議題', members: '参加者' }
+        },
+        weekly: {
+            date: '例: 2026年6月第3週 (6/15〜6/19)',
+            location: '例: マーケティング部',
+            title: '例: LP実装とテスト完了',
+            members: '例: 山田 太郎',
+            notes: '【成果】\n・コーディング完了\n【課題】\n・一部パフォーマンス改善が必要\n【来週】\n・本番デプロイ',
+            labels: { date: '対象期間', location: '所属', title: '今週の目標', members: '報告者' }
+        },
+        trouble: {
+            date: '例: 2026年6月15日 09:23頃',
+            location: '例: 本番 決済サービス',
+            title: '例: 決済時の502エラー',
+            members: '例: 鈴木（インフラ）',
+            notes: '【事象】\n・502エラー多数\n【原因】\n・環境変数の誤設定\n【対応】\n・ロールバックで復旧',
+            labels: { date: '発生日時', location: '対象システム', title: '件名', members: '担当者' }
+        },
+        event: {
+            date: '例: 2026年6月13日〜14日',
+            location: '例: 幕張メッセ',
+            title: '例: テックカンファレンス 2026',
+            members: '例: 企画チーム（15名）',
+            notes: '【目的】\n・採用リード獲得\n【成果】\n・来場2,500名\n【改善】\n・配布物の増刷手順見直し',
+            labels: { date: '開催期間', location: '会場', title: 'イベント名', members: '関係者' }
+        }
+    };
+
+    function switchTab(target) {
+        const local = target === 'local';
+        document.getElementById('tab-btn-local').className = local ? TAB_ACTIVE : TAB_IDLE;
+        document.getElementById('tab-btn-gemini').className = local ? TAB_IDLE : TAB_ACTIVE;
+        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
+        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
+    }
+
+    function updatePlaceholders() {
+        const type = document.getElementById('doc-type').value;
+        const cfg = PLACEHOLDERS[type] || PLACEHOLDERS.meeting;
+        document.getElementById('label-date').textContent = cfg.labels.date;
+        document.getElementById('label-location').textContent = cfg.labels.location;
+        document.getElementById('label-title').textContent = cfg.labels.title;
+        document.getElementById('label-members').textContent = cfg.labels.members;
+        document.getElementById('doc-date').placeholder = cfg.date;
+        document.getElementById('doc-location').placeholder = cfg.location;
+        document.getElementById('doc-title').placeholder = cfg.title;
+        document.getElementById('doc-members').placeholder = cfg.members;
+        document.getElementById('doc-raw-notes').placeholder = cfg.notes;
+    }
+
+    function formatBullets(notes) {
+        return notes.split(/\n/).map(l => l.trim()).filter(Boolean)
+            .map(l => `・${l.replace(/^[・\-*]\s*/, '')}`).join('\n');
+    }
+
+    function buildLocalText(type, fields, bulletBody) {
+        const u = (v) => v || '（未入力）';
+        if (type === 'meeting') {
+            return `【議事録】\n件名：${u(fields.title)}\n日時：${u(fields.date)}\n場所：${u(fields.location)}\n参加者：${u(fields.members)}\n\n■ 議事内容\n${bulletBody}\n\n■ 決定事項\n（追記）\n\n■ 次回アクション\n（担当・期限を追記）\n\n以上`;
+        }
+        if (type === 'weekly') {
+            return `【週報・日報】\n報告者：${u(fields.members)}\n期間：${u(fields.date)}\n所属：${u(fields.location)}\nテーマ：${u(fields.title)}\n\n${bulletBody}\n\n以上、ご確認のほどよろしくお願いいたします。`;
+        }
+        if (type === 'trouble') {
+            return `【トラブル・不具合報告書】\n件名：${u(fields.title)}\n発生日時：${u(fields.date)}\n対象：${u(fields.location)}\n担当：${u(fields.members)}\n\n■ 事象・状況\n${bulletBody}\n\n■ 原因分析\n（追記）\n\n■ 暫定処置・恒久対策\n（追記）`;
+        }
+        return `【イベント・プロジェクト報告書】\n名称：${u(fields.title)}\n期間：${u(fields.date)}\n場所：${u(fields.location)}\n関係者：${u(fields.members)}\n\n${bulletBody}\n\n以上`;
+    }
+
+    function buildGeminiPrompt(typeLabel, fields, notes) {
+        return `あなたは日本のビジネス文書作成の専門家です。
+
+【文書の種類】${typeLabel}
+【日付・期間】${fields.date || '未入力'}
+【場所】${fields.location || '未入力'}
+【件名】${fields.title || '未入力'}
+【参加者・報告者】${fields.members || '未入力'}
+
+【メモ】
+${notes}
+
+上記をもとに、${typeLabel}として提出できる文書に整えてください。
+含めること：要約、決定事項（または成果）、課題、ネクストアクション（担当・期限）。
+敬体のビジネス日本語で、見出しと箇条書きで読みやすく。`;
+    }
+
+    async function copyText(text, btn) {
+        if (!text) return false;
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+        if (btn) {
+            const prev = btn.textContent;
+            btn.textContent = 'コピーしました';
+            setTimeout(() => { btn.textContent = prev; }, 1200);
+        }
+        return true;
+    }
+
+    function processBusinessReport() {
+        const type = document.getElementById('doc-type').value;
+        const fields = {
+            date: document.getElementById('doc-date').value.trim(),
+            location: document.getElementById('doc-location').value.trim(),
+            title: document.getElementById('doc-title').value.trim(),
+            members: document.getElementById('doc-members').value.trim()
+        };
+        const notes = document.getElementById('doc-raw-notes').value.trim();
+        const err = document.getElementById('notes-error');
+
+        if (!notes) {
+            err.classList.remove('hidden');
+            document.getElementById('doc-raw-notes').focus();
+            return;
+        }
+        err.classList.add('hidden');
+
+        const bulletBody = formatBullets(notes);
+        const typeLabel = TYPE_LABELS[type] || TYPE_LABELS.meeting;
+
+        document.getElementById('output-local-text').value = buildLocalText(type, fields, bulletBody);
+        document.getElementById('output-gemini-prompt').value = buildGeminiPrompt(typeLabel, fields, notes);
+        switchTab('local');
+    }
+
+    document.getElementById('doc-type').addEventListener('change', updatePlaceholders);
+    document.getElementById('btn-generate').addEventListener('click', processBusinessReport);
+    document.getElementById('tab-btn-local').addEventListener('click', () => switchTab('local'));
+    document.getElementById('tab-btn-gemini').addEventListener('click', () => switchTab('gemini'));
+    document.getElementById('btn-copy-local').addEventListener('click', (e) => {
+        const text = document.getElementById('output-local-text').value.trim();
+        if (!text) {
+            alert('先に「文書を整形する」を押してください。');
+            return;
+        }
+        copyText(text, e.currentTarget);
+    });
+    document.getElementById('btn-gemini').addEventListener('click', async (e) => {
+        const text = document.getElementById('output-gemini-prompt').value.trim();
+        if (!text) {
+            alert('先に「文書を整形する」を押してください。');
+            return;
+        }
+        await copyText(text, e.currentTarget);
+        window.open('https://gemini.google.com/', '_blank', 'noopener,noreferrer');
+    });
+
+    updatePlaceholders();
+})();
+</script>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>SUGUDASU_SHELL.mount({ title: '議事録・報告書', print: false });</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幹事が得も損もしない！大人の傾斜割り勘メーカー | SUGUDASU</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top"></div>
+
+    <main class="flex-1 p-4 lg:p-6 max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+        <!-- 左: 入力 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
+            <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span>💰</span> 会計・傾斜設定
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="input-total" class="block text-xs font-bold text-slate-600 mb-1.5">お会計総額（税込）</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold">¥</span>
+                        <input type="number" id="input-total" value="48000" min="0" step="1"
+                            class="w-full border border-slate-200 rounded-xl pl-8 pr-3 py-2.5 text-sm font-bold mono bg-slate-50 focus:ring-2 focus:ring-slate-400 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label for="select-round" class="block text-xs font-bold text-slate-600 mb-1.5">端数丸め単位</label>
+                    <select id="select-round"
+                        class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-white focus:ring-2 focus:ring-slate-400 outline-none">
+                        <option value="100" selected>100円単位（四捨五入）</option>
+                        <option value="500">500円単位（四捨五入）</option>
+                        <option value="1000">1000円単位（四捨五入）</option>
+                        <option value="1">1円単位（丸めなし）</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold text-slate-700">人数・傾斜（グループ）</h3>
+                    <button type="button" id="btn-add-group"
+                        class="text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg transition-colors">
+                        ＋ グループを追加
+                    </button>
+                </div>
+                <div class="hidden sm:grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-400 px-1">
+                    <div class="col-span-5">グループ名</div>
+                    <div class="col-span-2 text-center">傾斜係数</div>
+                    <div class="col-span-2 text-center">人数</div>
+                    <div class="col-span-2 text-center">理論額</div>
+                    <div class="col-span-1"></div>
+                </div>
+                <div id="group-rows" class="space-y-2"></div>
+            </div>
+
+            <button type="button" id="btn-calculate"
+                class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-sm tracking-wide transition-colors">
+                🔄 割り勘を計算する
+            </button>
+            <p class="text-[10px] text-slate-400 text-center">入力変更時は自動で再計算されます</p>
+        </section>
+
+        <!-- 右: 結果 -->
+        <section class="space-y-4">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-4">
+                <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2">📊 1人あたりの精算金額</h2>
+                <div id="result-cards" class="space-y-3">
+                    <p class="text-xs text-slate-400 text-center py-8 border border-dashed border-slate-200 rounded-xl">
+                        左のフォームを入力して計算してください
+                    </p>
+                </div>
+                <div id="balance-panel" class="hidden rounded-xl border p-4 space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-3">
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-2">
+                    <h2 class="text-sm font-bold text-slate-800">📱 LINE / Slack 清算テキスト</h2>
+                    <button type="button" id="btn-copy"
+                        class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm transition-colors">
+                        📋 ワンクリックコピー
+                    </button>
+                </div>
+                <textarea id="output-text" rows="12" readonly
+                    class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
+                    placeholder="計算後に清算用テキストが自動生成されます"></textarea>
+            </div>
+            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </main>
+
+    <section class="no-print sg-faq-section">
+        <div class="sg-faq-inner">
+            <h2 class="sg-faq-title">傾斜割り勘・飲み会精算のよくある質問</h2>
+            <div class="sg-faq-list">
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>上司と新人で飲み会の割り勘を公平にするには？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>グループごとに「傾斜係数」と人数を設定します。役員・上司は係数2.0、一般は1.0のようにすると、幹事が得をしたり損をしたりせず、係数に応じた金額を自動計算できます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>端数はどう丸めますか？合計と一致しません</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>100円・500円・1000円単位で四捨五入できます。丸めによる差額は画面下部のバランス表示で確認でき、幹事への調整額も案内されます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>LINEやSlackに貼れる清算文は作れますか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>計算後に清算テキストが自動生成されます。「ワンクリックコピー」でグループチャットにそのまま貼り付けできます。</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const DEFAULT_GROUPS = [
+            { name: '役員・上司', coeff: 2.0, count: 1 },
+            { name: '先輩・主賓', coeff: 1.5, count: 1 },
+            { name: '新人・一般', coeff: 1.0, count: 2 }
+        ];
+
+        let groups = [];
+        let rowSeq = 0;
+        let lastResult = null;
+
+        function init() {
+            groups = DEFAULT_GROUPS.map(g => ({ ...g, id: ++rowSeq }));
+            renderRows();
+            bindEvents();
+            calculate();
+        }
+
+        function bindEvents() {
+            document.getElementById('btn-add-group').addEventListener('click', () => {
+                groups.push({ id: ++rowSeq, name: '新しいグループ', coeff: 1.0, count: 1 });
+                renderRows();
+                calculate();
+            });
+            document.getElementById('btn-calculate').addEventListener('click', calculate);
+            document.getElementById('btn-copy').addEventListener('click', copyText);
+            document.getElementById('input-total').addEventListener('input', calculate);
+            document.getElementById('select-round').addEventListener('change', calculate);
+        }
+
+        function renderRows() {
+            const container = document.getElementById('group-rows');
+            container.innerHTML = groups.map(g => `
+                <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 border border-slate-100 rounded-xl p-2.5" data-id="${g.id}">
+                    <input type="text" value="${escAttr(g.name)}" data-field="name"
+                        class="col-span-12 sm:col-span-5 border rounded-lg px-2 py-1.5 text-xs font-bold">
+                    <input type="number" step="0.1" min="0" value="${g.coeff}" data-field="coeff"
+                        class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
+                    <input type="number" min="0" step="1" value="${g.count}" data-field="count"
+                        class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
+                    <span class="col-span-3 sm:col-span-2 text-[10px] text-slate-400 text-center mono theoretical-${g.id}">—</span>
+                    <button type="button" data-remove="${g.id}"
+                        class="col-span-1 text-slate-400 hover:text-rose-600 text-sm font-bold" title="削除">✕</button>
+                </div>
+            `).join('');
+
+            container.querySelectorAll('[data-field]').forEach(el => {
+                el.addEventListener('input', e => {
+                    const row = e.target.closest('[data-id]');
+                    const id = parseInt(row.dataset.id, 10);
+                    const g = groups.find(x => x.id === id);
+                    if (!g) return;
+                    const field = e.target.dataset.field;
+                    if (field === 'name') g.name = e.target.value;
+                    else if (field === 'coeff') g.coeff = Math.max(0, parseFloat(e.target.value) || 0);
+                    else if (field === 'count') g.count = Math.max(0, parseInt(e.target.value, 10) || 0);
+                    calculate();
+                });
+            });
+
+            container.querySelectorAll('[data-remove]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (groups.length <= 1) {
+                        alert('最低1つのグループが必要です。');
+                        return;
+                    }
+                    const id = parseInt(btn.dataset.remove, 10);
+                    groups = groups.filter(g => g.id !== id);
+                    renderRows();
+                    calculate();
+                });
+            });
+        }
+
+        function roundToUnit(amount, unit) {
+            if (unit <= 1) return Math.round(amount);
+            return Math.round(amount / unit) * unit;
+        }
+
+        function formatYen(n) {
+            return (n || 0).toLocaleString('ja-JP');
+        }
+
+        function calculate() {
+            const total = Math.max(0, parseInt(document.getElementById('input-total').value, 10) || 0);
+            const roundUnit = parseInt(document.getElementById('select-round').value, 10) || 100;
+
+            const active = groups.filter(g => g.count > 0 && g.coeff > 0);
+            const totalWeight = active.reduce((s, g) => s + g.coeff * g.count, 0);
+
+            const cardsEl = document.getElementById('result-cards');
+            const balanceEl = document.getElementById('balance-panel');
+
+            if (total === 0 || totalWeight === 0 || active.length === 0) {
+                cardsEl.innerHTML = '<p class="text-xs text-rose-600 text-center py-6">総額・人数・傾斜係数を正しく入力してください。</p>';
+                balanceEl.classList.add('hidden');
+                document.getElementById('output-text').value = '';
+                lastResult = null;
+                return;
+            }
+
+            const results = active.map(g => {
+                const theoretical = (total * g.coeff) / totalWeight;
+                const rounded = roundToUnit(theoretical, roundUnit);
+                return { ...g, theoretical, rounded, subtotal: rounded * g.count };
+            });
+
+            active.forEach(g => {
+                const el = document.querySelector(`.theoretical-${g.id}`);
+                const r = results.find(x => x.id === g.id);
+                if (el && r) el.textContent = `¥${formatYen(Math.round(r.theoretical))}`;
+            });
+
+            const collected = results.reduce((s, r) => s + r.subtotal, 0);
+            const diff = total - collected;
+            lastResult = { total, collected, diff, results, roundUnit };
+
+            cardsEl.innerHTML = results.map(r => `
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 rounded-xl bg-gradient-to-r from-slate-50 to-white border border-slate-200">
+                    <div>
+                        <p class="text-xs font-bold text-slate-500">${escHtml(r.name)} <span class="text-slate-400">× ${r.count}名 · 傾斜 ${r.coeff}</span></p>
+                        <p class="text-[10px] text-slate-400 mono mt-0.5">理論額 ¥${formatYen(Math.round(r.theoretical))} → 丸め後</p>
+                    </div>
+                    <p class="mono text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                        ¥${formatYen(r.rounded)}<span class="text-sm font-bold text-slate-500">/人</span>
+                    </p>
+                </div>
+            `).join('');
+
+            const diffLabel = diff === 0
+                ? { text: 'ぴったり一致（幹事の得損ゼロ）', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800' }
+                : diff > 0
+                    ? { text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 負担）`, cls: 'border-amber-200 bg-amber-50 text-amber-900' }
+                    : { text: `¥${formatYen(Math.abs(diff))} 余り（幹事が ¥${formatYen(Math.abs(diff))} お釣り）`, cls: 'border-blue-200 bg-blue-50 text-blue-900' };
+
+            balanceEl.className = `rounded-xl border p-4 space-y-2 ${diffLabel.cls}`;
+            balanceEl.classList.remove('hidden');
+            balanceEl.innerHTML = `
+                <div class="flex justify-between text-xs font-bold">
+                    <span>集まる総額</span>
+                    <span class="mono">¥${formatYen(collected)}</span>
+                </div>
+                <div class="flex justify-between text-xs font-bold">
+                    <span>お会計総額</span>
+                    <span class="mono">¥${formatYen(total)}</span>
+                </div>
+                <div class="pt-2 border-t border-current/20 text-sm font-bold text-center">
+                    ${escHtml(diffLabel.text)}
+                </div>
+            `;
+
+            buildLineText();
+        }
+
+        function buildLineText() {
+            if (!lastResult) return;
+            const { total, collected, diff, results } = lastResult;
+
+            const lines = results.map(r =>
+                `・${r.name}（${r.count}名）→ お一人 ¥${formatYen(r.rounded)}`
+            );
+
+            let diffLine;
+            if (diff === 0) {
+                diffLine = '端数調整後、お会計と集金額はぴったり一致します（幹事の得損なし）。';
+            } else if (diff > 0) {
+                diffLine = `端数丸めの関係で ¥${formatYen(diff)} 不足します。幹事が ¥${formatYen(diff)} 負担いただく形で透明に精算します。`;
+            } else {
+                diffLine = `端数丸めの関係で ¥${formatYen(Math.abs(diff))} 余ります。幹事が ¥${formatYen(Math.abs(diff))} お釣りとして受け取る想定です。`;
+            }
+
+            const text = [
+                '【お会計清算のお願い】',
+                `お会計総額：¥${formatYen(total)}（税込）`,
+                '',
+                '■ お一人様のご負担額',
+                ...lines,
+                '',
+                '■ 精算の透明性（幹事メモ）',
+                `集まる総額：¥${formatYen(collected)}`,
+                diffLine,
+                '',
+                'お手数ですが上記の通りお振込み／お支払いをお願いいたします🙇',
+                '幹事より'
+            ].join('\n');
+
+            document.getElementById('output-text').value = text;
+        }
+
+        async function copyText() {
+            const text = document.getElementById('output-text').value.trim();
+            if (!text) {
+                alert('先に割り勘を計算してください。');
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const ta = document.getElementById('output-text');
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+            }
+            alert('清算テキストをコピーしました。LINEやSlackに貼り付けてください。');
+        }
+
+        function escHtml(s) {
+            return String(s || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escAttr(s) {
+            return escHtml(s);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>SUGUDASU_SHELL.mount({ title: '傾斜割り勘', print: false });</script>
+</body>
+</html>
