@@ -49,6 +49,7 @@ for (const file of htmlFiles) {
   fs.writeFileSync(path.join(DIST, file), rewriteHtml(raw), 'utf8');
 }
 
+// ポータルは dist/index.html（/）。請求書は invoice.html（上書きしない）。
 const hub = fs.readFileSync(path.join(DIST, 'hub.html'), 'utf8');
 fs.writeFileSync(path.join(DIST, 'index.html'), hub, 'utf8');
 

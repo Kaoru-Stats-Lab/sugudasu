@@ -5,7 +5,7 @@
 (function (global) {
   const TOOLS = [
     { id: 'hub', file: 'hub.html', label: '一覧', icon: '🏠' },
-    { id: 'index', file: 'index.html', label: '請求書', icon: '📄' },
+    { id: 'invoice', file: 'invoice.html', label: '請求書', icon: '📄' },
     { id: 'label', file: 'label.html', label: 'ラベル', icon: '🏷️' },
     { id: 'shift', file: 'shift.html', label: 'シフト', icon: '📅' },
     { id: 'report', file: 'report.html', label: '議事録', icon: '📝' },
@@ -27,9 +27,10 @@
   }
 
   function currentFile() {
-    const path = (global.location.pathname || '').split('/').pop() || 'index.html';
-    if (path === '' || path === '/') return 'hub.html';
-    return path;
+    let seg = (global.location.pathname || '').split('/').filter(Boolean).pop() || '';
+    if (!seg || seg === 'index.html') return 'hub.html';
+    if (!seg.endsWith('.html')) seg += '.html';
+    return seg;
   }
 
   function navHtml(activeFile) {

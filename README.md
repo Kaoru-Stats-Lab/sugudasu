@@ -18,7 +18,7 @@ python -m http.server 8080
 | ファイル | 名称 | 印刷 |
 |----------|------|------|
 | [hub.html](tools/hub.html) | ポータル（全ツール入口） | — |
-| [index.html](tools/index.html) | 見積・納品・請求書（インボイス） | PDF |
+| [invoice.html](tools/invoice.html) | 見積・納品・請求書（インボイス） | PDF |
 | [present.html](tools/present.html) | ギフトサジェスター（地雷回避） | — |
 | [label.html](tools/label.html) | 宛名ラベル・サンキューカード | PDF |
 | [shift.html](tools/shift.html) | 2ヶ月シフト表 | A4横 |

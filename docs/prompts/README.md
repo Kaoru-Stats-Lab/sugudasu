@@ -4,7 +4,7 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 
 | ファイル | 対応ツール |
 |----------|------------|
-| [index-invoice.md](index-invoice.md) | `tools/index.html` 請求書 |
+| [index-invoice.md](index-invoice.md) | `tools/invoice.html` 請求書 |
 | [present.md](present.md) | `tools/present.html` ギフト |
 | [label.md](label.md) | `tools/label.html` ラベル |
 | [shift.md](shift.md) | `tools/shift.html` シフト |

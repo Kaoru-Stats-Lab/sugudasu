@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TOOLS_DIR = path.join(__dirname, '..', 'tools');
 
 const CONFIG = {
-  'index.html': { title: '見積・納品・請求書', print: true },
+  'invoice.html': { title: '見積・納品・請求書', print: true },
   'present.html': { title: 'ギフトサジェスター', print: false },
   'shift.html': { title: 'シフト表', print: true },
   'report.html': { title: '議事録・報告書', print: false },
@@ -110,7 +110,7 @@ function injectChrome(html, cfg) {
 }
 
 function addPrintClasses(html, file) {
-  if (file === 'index.html') {
+  if (file === 'invoice.html') {
     html = html.replace(/class="preview-section/g, 'class="print-target preview-section');
     if (!html.includes('preview-scaler')) {
       html = html.replace(/id="preview-wrapper"/g, 'id="preview-wrapper" class="preview-scaler"');
