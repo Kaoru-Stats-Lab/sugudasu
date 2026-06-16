@@ -12,6 +12,7 @@ const ROOT = path.resolve(__dirname, '..');
 const TOOLS = path.join(ROOT, 'tools');
 const ASSETS = path.join(ROOT, 'assets');
 const DIST = path.join(ROOT, 'dist');
+const ADS_TXT = path.join(ROOT, 'ads.txt');
 
 function rmrf(dir) {
   if (fs.existsSync(dir)) {
@@ -52,6 +53,11 @@ for (const file of htmlFiles) {
 // ポータルは dist/index.html（/）。請求書は invoice.html（上書きしない）。
 const hub = fs.readFileSync(path.join(DIST, 'hub.html'), 'utf8');
 fs.writeFileSync(path.join(DIST, 'index.html'), hub, 'utf8');
+
+// AdSense 審査向け ads.txt を公開ルートへ配置
+if (fs.existsSync(ADS_TXT)) {
+  fs.copyFileSync(ADS_TXT, path.join(DIST, 'ads.txt'));
+}
 
 const count = htmlFiles.length;
 console.log(`build:pages OK — ${count} tools + index → ${DIST}`);

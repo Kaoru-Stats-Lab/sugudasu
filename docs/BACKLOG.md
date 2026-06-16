@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-16 21:10 JST  
+更新: 2026-06-16 23:58 JST  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -86,7 +86,7 @@
   - [x] 入力フォーム上部への配置禁止（結果領域側へ集約）
 - [ ] ページ別配置案（1st）
   - [x] `hub.html`: カード群下に 1枠
-  - [ ] `index.html`: フォーム下 1枠 + FAQ前 1枠
+  - [ ] `invoice.html`: フォーム下 1枠 + FAQ前 1枠
   - [ ] `shift.html`: フォーム下 1枠（印刷対象外）
   - [x] `report.html` / `reverse.html`: 結果領域の下 1枠
   - [x] `present.html`: 提案カード群の末尾 1枠
@@ -109,8 +109,16 @@
 - [x] ヘッダー回遊強化（ラッコ型）
   - [x] `assets/sugudasu-shell.js` の 9本ナビを「アイコン + 短ラベル」に更新
 - [x] FAQ 最適化（Omnicalculator型）
-  - [x] `index.html` FAQ を 7問 → 4問に圧縮
+  - [x] `invoice.html` FAQ を 7問 → 4問に圧縮
   - [x] `reverse` / `present` / `report` / `sns` / `warikan` / `shift` / `label` に 3問FAQを追加
+- [x] チャット共有導線（Phase 1）
+  - [x] `invoice.html` に `Slack / Chatwork / Google Chat / Teams / LINE WORKS` 共有ボタンを追加
+  - [x] 共有ボタン押下で「送付文面コピー + 送信先チャットURL起動」を実装
+  - [x] 送信先URL設定（ローカル保存）を実装
+- [ ] チャット共有導線（Phase 2）
+  - [ ] `report.html` に同等の共有ボタンを追加
+  - [ ] `shift.html` に同等の共有ボタンを追加
+  - [ ] ボタン押下イベント計測（クリック率）を追加
 - [ ] 各ツール結果の下に「次のすぐだす」導線を1ブロック追加
 - [ ] 曜日/用途別おすすめロジック（簡易版）を `hub.html` に追加
 - [ ] 完了時CTAテンプレートを共通化（shell or CSS utility）
@@ -126,10 +134,10 @@
   - [x] `terms.html`（利用規約）
   - [x] `disclaimer.html`（免責 + 広告/アフィリエイト表記）
 - [x] `hub.html` / footer から上記3ページへリンク
-- [ ] 表現監査
-  - [ ] 「100%安全」等の過剰断定を回避
-  - [ ] インボイス「完全準拠」表現は根拠文言に調整
-- [ ] `ads.txt` 設置（AdSense有効化時）
+- [x] 表現監査
+  - [x] 「100%安全」等の過剰断定を回避
+  - [x] インボイス「完全準拠」表現は根拠文言に調整
+- [x] `ads.txt` 設置（AdSense有効化時）
 - [ ] 連絡導線の段階運用
   - [x] 審査前は公開メール連絡先を法務3ページに記載（運営者: `SUGUDASU運営` / 連絡先: `banzai.millionaire@gmail.com`）
   - [ ] AdSense審査通過後、連絡先を Google Form に切替（privacy/terms/disclaimer の文言と運用フローを同時更新）
@@ -140,7 +148,7 @@
 
 ### 4-1. P0（最優先）
 
-- [ ] `index.html`: 税計算、負数値引き、複数税率、印刷崩れ
+- [ ] `invoice.html`: 税計算、負数値引き、複数税率、印刷崩れ
 - [ ] `label.html`: 規格寸法、改ページ、CSV大件数
 - [ ] `shift.html`: 自動生成公平性、改ページ、FIXロック
 
@@ -166,7 +174,7 @@
 ### 5-1. 事前チェック
 
 - [x] `npm run build:pages` 成功
-- [ ] `dist/` の実表示チェック（全9ページ）
+- [x] `dist/` の実表示チェック（全9ページ）
 - [ ] 404導線（存在しないURL時）方針決定
 
 ### 5-2. 本番設定
@@ -185,13 +193,33 @@
 
 ---
 
-## 6) 直近スプリント提案（次の5手）
+## 6) 優先順位キュー（P0 / P1 / P2）
 
-1. 法務3ページ (`privacy/terms/disclaimer`) を追加  
-2. `hub.html` と footer に法務リンクを常設  
-3. `ad-slot` 本番埋め込み設計（配置固定・誤タップ防止）  
-4. `present.html` Amazon 導線のクリック計測導入  
-5. Cloudflare Pages に first deploy（`dist` 配信）
+優先度定義:
+- **P0**: 収益・公開品質・主要導線に直結。先に止めると機会損失が大きい
+- **P1**: 主要価値を強化する機能。P0 完了後に連続実装
+- **P2**: 改善・最適化・拡張。P1 の成果を見て実行
+
+### P0（最優先）
+
+1. `invoice.html` の品質担保（税計算 / 負数値引き / 複数税率 / 印刷崩れ）  
+2. Cloudflare 本番運用の安定化（`dist` 実表示の最終確認、404導線方針）  
+3. 法務表現監査（過剰断定の除去、インボイス文言の根拠化）  
+4. `ads.txt` 設置（AdSense準備の必須項目）
+
+### P1（高優先）
+
+1. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
+2. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
+3. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
+4. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）
+
+### P2（通常優先）
+
+1. 完了時CTAテンプレート共通化  
+2. `hub.html` の曜日/用途別おすすめロジック  
+3. `label.html` 文具導線追加（必要最小限）  
+4. `sns.html` / `warikan.html` などの長文・境界ケース最適化
 
 ---
 
@@ -203,3 +231,69 @@
 - `assets/sugudasu.css`
 - `assets/sugudasu-shell.js`
 - `scripts/build-pages.mjs`
+
+---
+
+## 8) 意思決定ログ（背景・思想・別Agent向け）
+
+この章は「なぜその実装/運用にしたか」を残すための判断ログ。  
+別Agentは、ここを読んでから設計変更を提案すること。
+
+### 8-1. URL設計: `index` はポータル、請求書は `invoice`
+
+- **決定**
+  - `https://sugudasu.pages.dev/`（`index.html`）= ツール一覧ポータル
+  - 請求書ツール = `invoice.html`（`/invoice`）
+- **背景**
+  - Cloudflare Pagesでは `index.html` がルート `/` の正本になる。
+  - 旧構成では `build-pages.mjs` が `hub.html` を `dist/index.html` にコピーするため、請求書を `index.html` に置くと上書き衝突が起きる。
+- **思想**
+  - 1 URL 1責務（情報設計の衝突を回避）
+  - トップは回遊導線を最大化し、実務ツールは個別URLで運用する。
+
+### 8-2. Cloudflare Free枠ガードをビルドに強制
+
+- **決定**
+  - `npm run build:pages` に `verify-pages-free-plan.mjs` を組み込み、上限超過時は build fail。
+  - 月間ビルド数は `guard-pages-build-budget.mjs`（ローカル台帳）で運用ゲート化。
+- **背景**
+  - Free plan の制限超過はデプロイ失敗や運用事故を起こしやすい。
+  - 人手チェックは漏れるため、自動失敗で守る方が安全。
+- **思想**
+  - 「ルールは文章でなく仕組みで守る」
+  - 失敗を早い段階（ローカル/CI）で起こす。
+
+### 8-3. 共有機能は Phase 分割（いきなりWebhookしない）
+
+- **決定**
+  - `invoice.html` にチャット共有 Phase 1 を実装:
+    - Slack / Chatwork / Google Chat / Teams / LINE WORKS
+    - 送付文面コピー + 設定済み送信先URL起動
+    - 送信先URLは `localStorage` 保存
+- **背景**
+  - 実ユーザーのペインは「書類作成後にチャット報告が面倒」。
+  - ただしWebhook直叩きは、秘密URL漏えい・誤送信のリスクが高い。
+- **思想**
+  - まず「最小摩擦で安全な導線」を作る（MVP）
+  - 高リスク連携（Webhook/外部送信）は Phase 2 以降で検証。
+
+### 8-4. 法務ページ先行の理由
+
+- **決定**
+  - `privacy` / `terms` / `disclaimer` を先行実装し、フッター常設リンク化。
+- **背景**
+  - AdSense審査・公開信頼性の土台として法務が不足していた。
+  - 「安全」「準拠」など断定表現は監査対象になりやすい。
+- **思想**
+  - 収益化より先に信頼基盤を固める。
+  - 断定ではなく運用可能な表現へ寄せる。
+
+### 8-5. Backlog運用ルール（引き継ぎ）
+
+- **完了条件**
+  - 実装 + ビルド通過 + 動作確認の3点が揃ってから `[x]`。
+- **記述ルール**
+  - ファイル名は現行名（`invoice.html`）を使う。旧名 `index.html` を残さない。
+  - 新規機能は「Phase」で分割し、リスクの高い案は後段へ逃がす。
+- **更新ルール**
+  - 大きい方針変更時はこの章（8章）に必ず「背景」と「思想」を追記する。
