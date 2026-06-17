@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
 
 /* SUGUDASU design tokens — docs/DESIGN_GUIDELINE.md §2–4, §7 */
 
@@ -11,6 +11,18 @@
   --sg-primary: #2563eb;
   --sg-primary-hover: #1d4ed8;
   --sg-header: #0f172a;
+  --sg-brand-navy: #001f3f;
+  --sg-brand-orange: #ff851b;
+  /* Logo type — 案B（標準）を正本。A/C は .sg-logo--type-a / --type-c で切替 */
+  --sg-logo-gap: 0.32rem;
+  --sg-logo-mark-size: 1.9rem;
+  --sg-logo-mark-size-lg: 2.15rem;
+  --sg-logo-word-weight: 800;
+  --sg-logo-word-tracking: 0.04em;
+  --sg-logo-word-size: 1.74rem;
+  --sg-logo-word-size-lg: 1.96rem;
+  --sg-logo-word-size-sm: 1.48rem;
+  --sg-logo-word-size-xs: 1.32rem;
   --sg-print-cta: #059669;
   --sg-warning: #d97706;
   --sg-error: #dc2626;
@@ -108,18 +120,147 @@ body.sg-body {
   display: none;
 }
 
-/* ヘッダーナビ（アイコン + 短ラベル） */
-.sg-nav-link {
+/* Brand logo — mark: logo-mark.png · type: Montserrat 800 */
+.sg-site-header__brand {
+  background: #fff;
+  border-bottom: 1px solid var(--sg-border);
+}
+.sg-site-header__inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.sg-site-header__left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+.sg-logo {
   display: inline-flex;
   align-items: center;
+  gap: var(--sg-logo-gap);
+  flex-shrink: 0;
+  text-decoration: none;
+  line-height: 1;
+}
+.sg-logo__mark {
+  display: block;
+  height: var(--sg-logo-mark-size);
+  width: auto;
+  max-width: var(--sg-logo-mark-size);
+  object-fit: contain;
+  flex-shrink: 0;
+  transform: translateY(-0.05rem);
+}
+.sg-logo__word {
+  color: var(--sg-brand-navy);
+  font-family: 'Montserrat', 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: var(--sg-logo-word-size);
+  font-weight: var(--sg-logo-word-weight);
+  letter-spacing: var(--sg-logo-word-tracking);
+  line-height: 1;
+  transform: translateY(0.03rem);
+  text-rendering: geometricPrecision;
+}
+/* 案A — 軽快・ワイド（700 / 0.06em / やや小） */
+.sg-logo--type-a {
+  --sg-logo-gap: 0.4rem;
+  --sg-logo-mark-size: 1.85rem;
+  --sg-logo-mark-size-lg: 2.05rem;
+  --sg-logo-word-weight: 700;
+  --sg-logo-word-tracking: 0.06em;
+  --sg-logo-word-size: 1.62rem;
+  --sg-logo-word-size-lg: 1.82rem;
+  --sg-logo-word-size-sm: 1.42rem;
+  --sg-logo-word-size-xs: 1.26rem;
+}
+/* 案C — コンパクト（800 / タイト / ヘッダー省幅） */
+.sg-logo--type-c {
+  --sg-logo-gap: 0.28rem;
+  --sg-logo-mark-size: 1.78rem;
+  --sg-logo-mark-size-lg: 1.98rem;
+  --sg-logo-word-weight: 800;
+  --sg-logo-word-tracking: 0.015em;
+  --sg-logo-word-size: 1.56rem;
+  --sg-logo-word-size-lg: 1.74rem;
+  --sg-logo-word-size-sm: 1.36rem;
+  --sg-logo-word-size-xs: 1.22rem;
+}
+@media (min-width: 640px) {
+  .sg-logo__mark {
+    height: var(--sg-logo-mark-size-lg);
+    max-width: var(--sg-logo-mark-size-lg);
+  }
+  .sg-logo__word { font-size: var(--sg-logo-word-size-lg); }
+}
+@media (max-width: 430px) {
+  .sg-logo__word { font-size: var(--sg-logo-word-size-sm); }
+}
+@media (max-width: 360px) {
+  .sg-logo__word { font-size: var(--sg-logo-word-size-xs); }
+}
+.sg-site-header__pagetitle {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--sg-border);
+}
+@media (max-width: 479px) {
+  .sg-site-header__pagetitle {
+    display: none;
+  }
+}
+
+/* ヘッダーナビ（アイコン + 短ラベル） */
+.sg-nav-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  width: 100%;
+}
+.sg-nav-item {
+  min-width: 0;
+}
+.sg-nav-link {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   gap: 0.25rem;
+  min-height: 2.15rem;
 }
 .sg-nav-icon {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
 }
 .sg-nav-label {
-  font-size: 11px;
+  font-size: 10px;
+}
+@media (min-width: 640px) {
+  .sg-nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .sg-nav-link {
+    width: auto;
+    min-height: 0;
+    justify-content: flex-start;
+  }
+  .sg-nav-icon { font-size: 12px; }
+  .sg-nav-label { font-size: 11px; }
 }
 
 /* FAQ（ツール共通・index 含む） */

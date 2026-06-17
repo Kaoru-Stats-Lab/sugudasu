@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-06-17",
+      "type": "feature",
+      "title": "SUGUDASU ブランドロゴ（Canva正本画像）",
+      "body": "ヘッダー左上に Canva 出力のロゴ PNG（sugudasu-logo.png）を配置。ファビコンはロケットシンボル単体の favicon.png。手書き SVG パスは廃止。",
+      "tools": ["hub.html"]
+    },
+    {
+      "date": "2026-06-17",
       "type": "improve",
       "title": "SNSデコ：お手本ギャラリーとパーツチップのUI改善",
       "body": "プロフィールお手本をギャラリーカード化（文面中心・コンパクトなコピー操作）。飾りパーツはカテゴリ別チップでタップコピー。変換結果カードもラベル＋ピル型コピーに整理。",

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ロゴタイプ比較 — SUGUDASU</title>
+  <link rel="stylesheet" href="../assets/sugudasu.css" id="sg-brand-css">
+  <script>
+    (function () {
+      var base = /\/tools\//.test(location.pathname) ? '../assets/' : 'assets/';
+      document.getElementById('sg-brand-css').href = base + 'sugudasu.css';
+      document.querySelectorAll('.sg-logo__mark').forEach(function (img) {
+        img.src = base + 'logo-mark.png';
+      });
+    })();
+  </script>
+  <style>
+    body { margin: 0; padding: 1.5rem 1rem 3rem; background: var(--sg-bg); }
+    h1 { font-size: 1rem; font-weight: 700; margin: 0 0 0.35rem; color: #0f172a; }
+    p.lead { font-size: 12px; color: var(--sg-muted); margin: 0 0 1.25rem; line-height: 1.6; }
+    .row {
+      background: #fff;
+      border: 1px solid var(--sg-border);
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .row--final { border-color: #86efac; box-shadow: 0 0 0 1px #bbf7d0 inset; }
+    .row h2 { font-size: 11px; font-weight: 700; color: var(--sg-muted); margin: 0 0 0.65rem; }
+    .row--final h2 { color: #047857; }
+    .spec { font-size: 10px; font-family: ui-monospace, monospace; color: #64748b; margin-top: 0.5rem; }
+    .phone {
+      max-width: 390px;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+      padding: 0.75rem 0.85rem;
+      background: #fff;
+      margin-top: 0.5rem;
+    }
+    .phone-label { font-size: 9px; color: #94a3b8; margin-bottom: 0.35rem; }
+  </style>
+</head>
+<body>
+  <h1>ロゴタイプ 3案比較</h1>
+  <p class="lead">本番は <strong>案B（:root 既定）</strong>。切替は <code>.sg-logo--type-a</code> / <code>--type-c</code> を <code>logoHtml()</code> の class に付与。</p>
+
+  <div class="row">
+    <h2>案A — 軽快・ワイド</h2>
+    <a href="#" class="sg-logo sg-logo--type-a" onclick="return false">
+      <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+      <span class="sg-logo__word">SUGUDASU</span>
+    </a>
+    <p class="spec">weight 700 · tracking 0.06em · 1.62 / 1.82rem · gap 0.4rem</p>
+    <div class="phone"><div class="phone-label">390px 想定</div>
+      <a href="#" class="sg-logo sg-logo--type-a" onclick="return false">
+        <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+        <span class="sg-logo__word">SUGUDASU</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="row row--final">
+    <h2>案B — 標準（採用・本番）</h2>
+    <a href="#" class="sg-logo" onclick="return false">
+      <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+      <span class="sg-logo__word">SUGUDASU</span>
+    </a>
+    <p class="spec">weight 800 · tracking 0.04em · 1.68 / 1.88rem · gap 0.32rem</p>
+    <div class="phone"><div class="phone-label">390px 想定</div>
+      <a href="#" class="sg-logo" onclick="return false">
+        <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+        <span class="sg-logo__word">SUGUDASU</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>案C — コンパクト</h2>
+    <a href="#" class="sg-logo sg-logo--type-c" onclick="return false">
+      <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+      <span class="sg-logo__word">SUGUDASU</span>
+    </a>
+    <p class="spec">weight 800 · tracking 0.015em · 1.56 / 1.74rem · gap 0.28rem</p>
+    <div class="phone"><div class="phone-label">390px 想定</div>
+      <a href="#" class="sg-logo sg-logo--type-c" onclick="return false">
+        <img class="sg-logo__mark" src="../assets/logo-mark.png" alt="" width="56" height="56">
+        <span class="sg-logo__word">SUGUDASU</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

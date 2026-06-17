@@ -44,6 +44,11 @@ rmrf(DIST);
 fs.mkdirSync(DIST, { recursive: true });
 copyDir(ASSETS, path.join(DIST, 'assets'));
 
+const faviconSrc = path.join(ASSETS, 'favicon.png');
+if (fs.existsSync(faviconSrc)) {
+  fs.copyFileSync(faviconSrc, path.join(DIST, 'favicon.png'));
+}
+
 const htmlFiles = fs.readdirSync(TOOLS).filter((f) => f.endsWith('.html'));
 for (const file of htmlFiles) {
   const raw = fs.readFileSync(path.join(TOOLS, file), 'utf8');
