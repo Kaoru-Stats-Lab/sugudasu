@@ -644,6 +644,9 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
   gap: 0.75rem;
 }
 .deco-card { min-height: 4.5rem; }
+.deco-card--muted { background: #f8fafc; border-color: #e2e8f0; }
+.deco-unsupported { min-height: 2.5rem; display: flex; align-items: center; }
+.deco-hint { line-height: 1.35; }
 .deco-sample { word-break: break-all; line-height: 1.4; }
 .deco-vertical {
   writing-mode: vertical-rl;

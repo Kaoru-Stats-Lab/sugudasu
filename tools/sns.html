@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="インスタ・Xのプロフィール用に英数字をおしゃれフォントへ一括変換。丸囲み・サンセリフ・スクリプト体など30種以上。ログイン不要・ブラウザ完結。">
     <title>SNSデコ文字・縦書き変換 | SUGUDASU</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
@@ -15,8 +16,12 @@
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
         <div>
             <label for="input-text" class="block text-xs font-semibold text-slate-600 mb-1.5">変換したい文字列</label>
-            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: 今日も一日お疲れ様でした">すぐだす</textarea>
+            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: sugudasu / Profile 2026">sugudasu</textarea>
         </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed">
+            <strong class="text-slate-600">英字・数字</strong>がいちばんきれいに変換されます（インスタのプロフィール名向け）。
+            日本語はキラキラ装飾など一部スタイルのみ対応です。
+        </p>
         <div class="flex flex-wrap gap-2">
             <button type="button" id="btn-generate" class="sg-btn-primary">一括変換</button>
             <button type="button" id="btn-clear" class="text-xs font-semibold text-slate-600 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
@@ -41,11 +46,20 @@
         <div class="sg-faq-list">
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>日本語（ひらがな・漢字）は使えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>特殊フォント（Unicode装飾）は<strong>英字・数字向け</strong>です。日本語を入れると装飾が効かないカードがあります。打ち消し線・下線などは日本語と相性が悪いため、日本語入力時は非対応と表示します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>インスタやXで使える特殊文字フォントはどうやって作りますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>左の欄に文字を入れると、丸囲み・太字サンセリフ・縦書きなど20種類以上に一括変換されます。気に入ったカードの「コピー」でそのままSNSに貼り付けできます。</p>
+                    <p>左の欄に<strong>英字・数字</strong>（例: <code>sugudasu</code>）を入れると、丸囲み・太字サンセリフ・スクリプト体などが一括変換されます。気に入ったカードの「コピー」でそのままインスタやXのプロフィールに貼り付けできます。</p>
                 </div>
             </details>
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -75,69 +89,92 @@
 <script>
 SUGUDASU_SHELL.mount({ title: 'SNSデコ文字', print: false });
 
-const TRANSFORMS = [
-    { id: 'fullwidth', label: '全角英数', fn: s => s.replace(/[A-Za-z0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 0xFEE0)) },
-    { id: 'circled', label: '丸囲み', fn: s => [...s].map(c => {
+const JA_RE = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uFF66-\uFF9D]/;
+
+function hasJapanese(s) {
+    return JA_RE.test(s);
+}
+
+function mapMathAlpha(s, upperBase, lowerBase, digitBase) {
+    return [...s].map(c => {
+        const n = c.charCodeAt(0);
+        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(upperBase + (n - 0x41));
+        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(lowerBase + (n - 0x61));
+        if (digitBase != null && n >= 0x30 && n <= 0x39) return String.fromCharCode(digitBase + (n - 0x30));
+        return c;
+    }).join('');
+}
+
+function mapCircled(s) {
+    return [...s].map(c => {
         const n = c.charCodeAt(0);
         if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x24B6 + (n - 0x41));
         if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x24D0 + (n - 0x61));
-        if (n >= 0x30 && n <= 0x39) return String.fromCharCode(0x2460 + (n - 0x30) - 1);
+        if (n >= 0x30 && n <= 0x39) {
+            if (n === 0x30) return '\u24EA';
+            return String.fromCharCode(0x2460 + (n - 0x31));
+        }
         return c;
-    }).join('') },
-    { id: 'bold-sans', label: '太字サンセリフ', fn: s => [...s].map(c => {
+    }).join('');
+}
+
+function applyCombining(s, mark) {
+    return [...s].map(c => (/[A-Za-z0-9]/.test(c) ? c + mark : c)).join('');
+}
+
+const TRANSFORMS = [
+    { id: 'sans', label: 'サンセリフ（細）', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D5A0, 0x1D5BA, 0x1D7E2) },
+    { id: 'bold-sans', label: '太字サンセリフ', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D5D4, 0x1D5EE, 0x1D7EC) },
+    { id: 'script', label: 'スクリプト体', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D49C, 0x1D4B6, null) },
+    { id: 'fraktur', label: 'フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D504, 0x1D51E, null) },
+    { id: 'bold-fraktur', label: 'ボールド・フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D56C, 0x1D586, null) },
+    { id: 'monospace', label: '等幅', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D670, 0x1D68A, 0x1D7F6) },
+    { id: 'double-struck', label: '二重線', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8) },
+    { id: 'fullwidth', label: '全角英数', latinOnly: true, fn: s => s.replace(/[A-Za-z0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 0xFEE0)) },
+    { id: 'circled', label: '丸囲み（大小）', latinOnly: true, fn: mapCircled },
+    { id: 'circled-lower', label: '小文字丸囲み', latinOnly: true, fn: s => [...s.toLowerCase()].map(c => {
         const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x1D5D4 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x1D5EE + (n - 0x61));
-        if (n >= 0x30 && n <= 0x39) return String.fromCharCode(0x1D7EC + (n - 0x30));
+        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x24D0 + (n - 0x61));
+        if (n >= 0x30 && n <= 0x39) return n === 0x30 ? '\u24EA' : String.fromCharCode(0x2460 + (n - 0x31));
         return c;
     }).join('') },
-    { id: 'script', label: 'スクリプト体', fn: s => [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x1D49C + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x1D4B6 + (n - 0x61));
-        return c;
-    }).join('') },
-    { id: 'fraktur', label: 'フラクトゥール', fn: s => [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x1D504 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x1D51E + (n - 0x61));
-        return c;
-    }).join('') },
-    { id: 'monospace', label: '等幅', fn: s => [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x1D670 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x1D68A + (n - 0x61));
-        if (n >= 0x30 && n <= 0x39) return String.fromCharCode(0x1D7F6 + (n - 0x30));
-        return c;
-    }).join('') },
-    { id: 'double-struck', label: '二重線', fn: s => [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x1D538 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x1D552 + (n - 0x61));
-        if (n >= 0x30 && n <= 0x39) return String.fromCharCode(0x1D7D8 + (n - 0x30));
-        return c;
-    }).join('') },
-    { id: 'small-caps', label: '小型大文字風', fn: s => s.toUpperCase() },
-    { id: 'strike', label: '打ち消し線', fn: s => [...s].map(c => c + '\u0336').join('') },
-    { id: 'underline', label: '下線', fn: s => [...s].map(c => c + '\u0332').join('') },
-    { id: 'overline', label: '上線', fn: s => [...s].map(c => c + '\u0305').join('') },
+    { id: 'small-caps', label: '小型大文字風', latinOnly: true, fn: s => s.toUpperCase() },
+    { id: 'leetspeak', label: 'Leet風', latinOnly: true, fn: s => s.replace(/a/gi,'4').replace(/e/gi,'3').replace(/i/gi,'1').replace(/o/gi,'0').replace(/s/gi,'5') },
+    { id: 'spaced-sparkle', label: 'スペース + ✨', fn: s => [...s].join(' ') + ' ✨' },
     { id: 'sparkle', label: 'キラキラ', fn: s => '✧ ' + s + ' ✧' },
     { id: 'bracket', label: '括弧装飾', fn: s => '【 ' + s + ' 】' },
     { id: 'angle', label: '山括弧', fn: s => '《 ' + s + ' 》' },
+    { id: 'parenthesis', label: '丸括弧', fn: s => '（ ' + s + ' ）' },
     { id: 'wave', label: '波線', fn: s => '〜' + s + '〜' },
     { id: 'dot', label: 'ドット区切り', fn: s => [...s].join('・') },
     { id: 'space-wide', label: '字間広め', fn: s => [...s].join('　') },
-    { id: 'reverse', label: '逆順', fn: s => [...s].reverse().join('') },
-    { id: 'kaomoji-wrap', label: '顔文字ラップ', fn: s => '(๑•̀ㅂ•́)و✧ ' + s },
     { id: 'hash-tag', label: 'ハッシュ風', fn: s => '#' + s.replace(/\s+/g, '') },
-    { id: 'vertical', label: '縦書き（CSS）', fn: s => s, vertical: true },
+    { id: 'kaomoji-wrap', label: '顔文字ラップ', fn: s => '(๑•̀ㅂ•́)و✧ ' + s },
     { id: 'mirror', label: 'ミラー風', fn: s => s + ' | ' + [...s].reverse().join('') },
-    { id: 'leetspeak', label: 'Leet風', fn: s => s.replace(/a/gi,'4').replace(/e/gi,'3').replace(/i/gi,'1').replace(/o/gi,'0').replace(/s/gi,'5') },
-    { id: 'katakana-mix', label: 'カタカナ化（簡易）', fn: s => s.replace(/[ぁ-ん]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60)) }
+    { id: 'reverse', label: '逆順', fn: s => [...s].reverse().join('') },
+    { id: 'strike', label: '打ち消し線', combining: true, fn: s => applyCombining(s, '\u0336') },
+    { id: 'underline', label: '下線', combining: true, fn: s => applyCombining(s, '\u0332') },
+    { id: 'overline', label: '上線', combining: true, fn: s => applyCombining(s, '\u0305') },
+    { id: 'katakana-mix', label: 'カタカナ化（簡易）', jaOnly: true, fn: s => s.replace(/[ぁ-ん]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60)) },
+    { id: 'vertical', label: '縦書き（CSS）', fn: s => s, vertical: true }
 ];
 
 function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function evaluateTransform(t, raw) {
+    if (t.combining && hasJapanese(raw)) {
+        return { kind: 'unsupported', message: '※ひらがな・カタカナ・漢字には対応していません' };
+    }
+    if (t.jaOnly && !hasJapanese(raw) && !/[ぁ-ん]/.test(raw)) {
+        return { kind: 'hint', text: raw, message: '※ひらがな入力でカタカナ化します' };
+    }
+    const text = t.fn(raw);
+    if (t.latinOnly && hasJapanese(raw) && text === raw) {
+        return { kind: 'hint', text, message: '※英字・数字のみ装飾されます' };
+    }
+    return { kind: 'ok', text };
 }
 
 function render() {
@@ -151,20 +188,36 @@ function render() {
         return;
     }
     hint.classList.add('hidden');
-    out.innerHTML = TRANSFORMS.map((t, i) => {
-        const result = t.fn(raw);
-        const sampleClass = t.vertical ? 'deco-sample deco-vertical' : 'deco-sample text-sm';
-        return `<div class="deco-card sg-card p-3 flex flex-col gap-2" data-idx="${i}">
-            <p class="text-[10px] font-bold text-slate-500">${esc(t.label)}</p>
-            <div class="${sampleClass} text-slate-900 deco-result">${esc(result)}</div>
-            <button type="button" class="mt-auto text-[10px] font-semibold text-blue-600 hover:text-blue-800 text-left deco-copy-btn">コピー</button>
+
+    const evaluated = TRANSFORMS.map(t => ({ t, ...evaluateTransform(t, raw) }));
+    const copyableCount = evaluated.filter(e => e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw)).length;
+
+    out.innerHTML = evaluated.map((e, i) => {
+        const sampleClass = e.t.vertical ? 'deco-sample deco-vertical' : 'deco-sample text-sm';
+        let body;
+        if (e.kind === 'unsupported') {
+            body = `<p class="deco-unsupported text-[11px] leading-relaxed text-slate-500">${esc(e.message)}</p>`;
+        } else {
+            const note = e.message ? `<p class="deco-hint text-[10px] text-amber-700 mt-1">${esc(e.message)}</p>` : '';
+            body = `<div class="${sampleClass} text-slate-900 deco-result">${esc(e.text)}</div>${note}`;
+        }
+        const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
+        const copyDisabled = !canCopy;
+        return `<div class="deco-card sg-card p-3 flex flex-col gap-2${e.kind === 'unsupported' ? ' deco-card--muted' : ''}" data-idx="${i}">
+            <p class="text-[10px] font-bold text-slate-500">${esc(e.t.label)}</p>
+            ${body}
+            <button type="button" class="mt-auto text-[10px] font-semibold text-left deco-copy-btn ${copyDisabled ? 'text-slate-300 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800'}" ${copyDisabled ? 'disabled' : ''}>コピー</button>
         </div>`;
     }).join('');
-    document.getElementById('result-count').textContent = TRANSFORMS.length + ' 種類';
-    const results = TRANSFORMS.map(t => t.fn(raw));
+
+    document.getElementById('result-count').textContent = copyableCount + ' 種類';
+
     out.querySelectorAll('.deco-card').forEach((card, i) => {
+        const e = evaluated[i];
+        const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
+        if (!canCopy) return;
         card.querySelector('.deco-copy-btn').addEventListener('click', async () => {
-            const text = results[i];
+            const text = e.text;
             try { await navigator.clipboard.writeText(text); }
             catch {
                 const ta = document.createElement('textarea');
@@ -187,6 +240,7 @@ document.getElementById('btn-clear').addEventListener('click', () => {
     render();
 });
 document.getElementById('input-text').addEventListener('input', render);
+render();
 </script>
 </body>
 </html>
