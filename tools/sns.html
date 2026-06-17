@@ -11,7 +11,17 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top"></div>
 
-<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">インスタ・X プロフィール向け</p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            プロフィール名・自己紹介・ハッシュタグを<strong>おしゃれな飾り文字フォント</strong>に一括変換。
+            コピペお手本とプレビュー付きで、「どこにどう貼るか」がすぐイメージできます。
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
     <section class="sg-card p-5 lg:p-6 space-y-4">
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
         <div>
@@ -27,6 +37,41 @@
             <button type="button" id="btn-clear" class="text-xs font-semibold text-slate-600 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
         </div>
         <p class="text-[11px] text-slate-500">入力すると自動で変換します。各カードからコピーできます。</p>
+
+        <!-- プレビュー（インスタ / X） -->
+        <div class="border-t border-slate-100 pt-4 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+                <h3 class="text-xs font-bold text-slate-800">貼り付けイメージ</h3>
+                <div class="flex rounded-lg border border-slate-200 p-0.5 bg-slate-50" role="tablist" aria-label="プレビュー切替">
+                    <button type="button" id="pv-tab-insta" class="sns-pv-tab sns-pv-tab--active" data-pv="insta" role="tab" aria-selected="true">Instagram風</button>
+                    <button type="button" id="pv-tab-x" class="sns-pv-tab" data-pv="x" role="tab" aria-selected="false">X風</button>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-400">左の入力がリアルタイムで反映されます（実機と完全一致はしません）</p>
+
+            <div id="pv-insta" class="sns-preview sns-preview--insta" role="tabpanel">
+                <div class="sns-preview__insta-head">
+                    <div class="sns-preview__avatar" aria-hidden="true"></div>
+                    <div class="sns-preview__insta-meta">
+                        <p id="pv-insta-handle" class="sns-preview__handle">@sugudasu</p>
+                        <p id="pv-insta-name" class="sns-preview__display-name">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎</p>
+                    </div>
+                </div>
+                <pre id="pv-insta-bio" class="sns-preview__bio">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎 ✨
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+リンクはここ 👇</pre>
+            </div>
+
+            <div id="pv-x" class="sns-preview sns-preview--x hidden" role="tabpanel" hidden>
+                <div class="sns-preview__x-banner" aria-hidden="true"></div>
+                <div class="sns-preview__x-body">
+                    <div class="sns-preview__avatar sns-preview__avatar--x" aria-hidden="true"></div>
+                    <p id="pv-x-name" class="sns-preview__x-name">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎</p>
+                    <p id="pv-x-handle" class="sns-preview__handle">@sugudasu</p>
+                    <pre id="pv-x-bio" class="sns-preview__bio sns-preview__bio--x">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎 ✨</pre>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="sg-card p-5 lg:p-6 space-y-4">
@@ -38,6 +83,29 @@
         <p id="empty-hint" class="text-xs text-slate-400 text-center py-8">左で文字を入力して「一括変換」を押してください</p>
         <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
     </section>
+    </div>
+
+    <!-- お手本テンプレート -->
+    <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="tpl-heading">
+        <div class="border-b border-slate-100 pb-3 space-y-1">
+            <h2 id="tpl-heading" class="text-sm font-bold text-slate-900">💡 コピペで使える！プロフィールお手本集</h2>
+            <p class="text-xs text-slate-500 leading-relaxed">
+                フォント単体ではなく、<strong>枠ごとコピー</strong>して文字だけ差し替えればインスタの自己紹介が完成します。
+                「インスタ プロフィール おしゃれ」「飾り文字」で検索して来た方の定番レイアウトです。
+            </p>
+        </div>
+        <div id="profile-templates" class="sns-tpl-grid"></div>
+    </section>
+
+    <!-- 飾りパーツ -->
+    <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="parts-heading">
+        <div class="border-b border-slate-100 pb-3 space-y-1">
+            <h2 id="parts-heading" class="text-sm font-bold text-slate-900">✂️ 区切り線・飾り文字パーツ</h2>
+            <p class="text-xs text-slate-500">海外インフルエンサーがよく使うライン・記号をワンタップコピー。プロフィールの区切りに。</p>
+        </div>
+        <div id="deco-parts" class="sns-parts-grid"></div>
+    </section>
+
 </main>
 
 <section class="no-print sg-faq-section">
@@ -159,6 +227,186 @@ const TRANSFORMS = [
     { id: 'vertical', label: '縦書き（CSS）', fn: s => s, vertical: true }
 ];
 
+function boldSans(s) { return mapMathAlpha(s, 0x1D5D4, 0x1D5EE, 0x1D7EC); }
+function thinSans(s) { return mapMathAlpha(s, 0x1D5A0, 0x1D5BA, 0x1D7E2); }
+function mono(s) { return mapMathAlpha(s, 0x1D670, 0x1D68A, 0x1D7F6); }
+function boldFraktur(s) { return mapMathAlpha(s, 0x1D56C, 0x1D586, null); }
+function doubleStruck(s) { return mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8); }
+
+async function copyToClipboard(text, btn, okLabel) {
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+    }
+    if (!btn) return;
+    const prev = btn.textContent;
+    btn.textContent = okLabel || 'コピーしました';
+    setTimeout(() => { btn.textContent = prev; }, 1200);
+}
+
+function buildProfileTemplates() {
+    return [
+        {
+            id: 'lifestyle',
+            icon: '💅',
+            title: 'カフェ・ライフスタイル系',
+            tag: '女子ウケ',
+            text: [
+                '─── ' + boldSans('Lifestyle Blog') + ' ───',
+                '🔖 ' + thinSans('Tokyo') + ' / ' + doubleStruck('23'),
+                '🛒 ' + mono('My favorites') + ' 👇',
+                '(リンクをここに貼る)',
+            ].join('\n'),
+        },
+        {
+            id: 'business',
+            icon: '💻',
+            title: '副業・ビジネス運用系',
+            tag: 'ガチ勢ウケ',
+            text: [
+                '─── ' + boldFraktur('SUGUDASU LAB') + ' ───',
+                '🚀 ' + thinSans('X Growth') + '：+' + doubleStruck('10,000') + ' followers',
+                '📈 再現性を高めるSNSマーケのリアル',
+            ].join('\n'),
+        },
+        {
+            id: 'creator',
+            icon: '🎬',
+            title: 'クリエイター・配信者',
+            tag: 'TikTok / YouTube',
+            text: [
+                '✦ ' + boldSans('Creator') + ' ✦',
+                '▶ ' + mono('New video every Fri'),
+                '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈',
+                '▼ 最新動画はここ ▼',
+            ].join('\n'),
+        },
+        {
+            id: 'shop',
+            icon: '🛍️',
+            title: 'ハンドメイド・ショップ',
+            tag: 'minne / BASE',
+            text: [
+                boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE'),
+                '✿ ' + thinSans('Handmade accessories') + ' ✿',
+                '📦 ' + mono('Ships in 3 days'),
+                '↓ お買い物はこちら ↓',
+            ].join('\n'),
+        },
+        {
+            id: 'minimal',
+            icon: '🤍',
+            title: 'ミニマル・モノトーン',
+            tag: '大人女子',
+            text: [
+                boldSans('profile'),
+                '────────────',
+                thinSans('less is more'),
+                '· · ·',
+            ].join('\n'),
+        },
+    ];
+}
+
+const DECO_PARTS = [
+    { label: '細ライン', text: '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈' },
+    { label: '実線', text: '────────────' },
+    { label: '二重線', text: '════════════' },
+    { label: 'キラキラ区切り', text: '✦ ─── ✦ ─── ✦' },
+    { label: '星飾り', text: '⋆｡°✩°｡⋆' },
+    { label: '花飾り', text: '✿╮リンク╭✿' },
+    { label: 'OPEN/CLOSE', text: boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE') },
+    { label: '矢印CTA', text: '▼ リンクはここ ▼' },
+    { label: '点線リード', text: '· · · 👇 · · ·' },
+    { label: '波括弧', text: '〜〜〜〜〜〜〜〜〜〜' },
+    { label: 'ハッシュ風', text: '#おしゃれフォント #インスタプロフィール' },
+    { label: '区切りドット', text: '• • • • • • • • • •' },
+];
+
+function renderProfileTemplates() {
+    const root = document.getElementById('profile-templates');
+    if (!root) return;
+    root.innerHTML = buildProfileTemplates().map((tpl) => `
+        <article class="sns-tpl-card sg-card p-4 flex flex-col gap-3">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-lg" aria-hidden="true">${tpl.icon}</span>
+                <h3 class="text-xs font-bold text-slate-900">${esc(tpl.title)}</h3>
+                <span class="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">${esc(tpl.tag)}</span>
+            </div>
+            <pre class="sns-tpl-preview text-xs leading-relaxed text-slate-800 whitespace-pre-wrap">${esc(tpl.text)}</pre>
+            <button type="button" class="sns-tpl-copy mt-auto text-xs font-bold text-blue-600 hover:text-blue-800 text-left" data-tpl-id="${esc(tpl.id)}">📋 枠ごとコピー</button>
+        </article>
+    `).join('');
+
+    const templates = buildProfileTemplates();
+    root.querySelectorAll('.sns-tpl-copy').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const tpl = templates.find((t) => t.id === btn.getAttribute('data-tpl-id'));
+            if (tpl) copyToClipboard(tpl.text, btn, 'コピーしました');
+        });
+    });
+}
+
+function renderDecoParts() {
+    const root = document.getElementById('deco-parts');
+    if (!root) return;
+    root.innerHTML = DECO_PARTS.map((p, i) => `
+        <div class="sns-part-card sg-card p-3 flex flex-col gap-2">
+            <p class="text-[10px] font-bold text-slate-500">${esc(p.label)}</p>
+            <p class="sns-part-text text-xs text-slate-800 break-all">${esc(p.text)}</p>
+            <button type="button" class="sns-part-copy text-[10px] font-semibold text-blue-600 hover:text-blue-800 text-left" data-part-idx="${i}">コピー</button>
+        </div>
+    `).join('');
+
+    root.querySelectorAll('.sns-part-copy').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const idx = Number(btn.getAttribute('data-part-idx'));
+            const part = DECO_PARTS[idx];
+            if (part) copyToClipboard(part.text, btn, 'コピーしました');
+        });
+    });
+}
+
+let previewMode = 'insta';
+
+function setPreviewMode(mode) {
+    previewMode = mode;
+    const insta = document.getElementById('pv-insta');
+    const x = document.getElementById('pv-x');
+    const tabInsta = document.getElementById('pv-tab-insta');
+    const tabX = document.getElementById('pv-tab-x');
+    const isInsta = mode === 'insta';
+    insta.classList.toggle('hidden', !isInsta);
+    insta.hidden = !isInsta;
+    x.classList.toggle('hidden', isInsta);
+    x.hidden = isInsta;
+    tabInsta.classList.toggle('sns-pv-tab--active', isInsta);
+    tabX.classList.toggle('sns-pv-tab--active', !isInsta);
+    tabInsta.setAttribute('aria-selected', isInsta ? 'true' : 'false');
+    tabX.setAttribute('aria-selected', !isInsta ? 'true' : 'false');
+}
+
+function updatePreview(raw) {
+    const base = raw || 'sugudasu';
+    const handle = '@' + base.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'sugudasu';
+    const display = boldSans(base.split(/\s+/)[0].slice(0, 24) || 'sugudasu');
+    const bioMain = thinSans(base.slice(0, 40));
+    const bioInsta = bioMain + ' ✨\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\nリンクはここ 👇';
+    const bioX = bioMain + ' ✨\n' + mono('sugudasu.com');
+
+    document.getElementById('pv-insta-handle').textContent = handle;
+    document.getElementById('pv-insta-name').textContent = display;
+    document.getElementById('pv-insta-bio').textContent = bioInsta;
+    document.getElementById('pv-x-name').textContent = display;
+    document.getElementById('pv-x-handle').textContent = handle;
+    document.getElementById('pv-x-bio').textContent = bioX;
+}
+
 function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -179,6 +427,7 @@ function evaluateTransform(t, raw) {
 
 function render() {
     const raw = document.getElementById('input-text').value.trim();
+    updatePreview(raw);
     const out = document.getElementById('deco-output');
     const hint = document.getElementById('empty-hint');
     if (!raw) {
@@ -218,18 +467,7 @@ function render() {
         if (!canCopy) return;
         card.querySelector('.deco-copy-btn').addEventListener('click', async () => {
             const text = e.text;
-            try { await navigator.clipboard.writeText(text); }
-            catch {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-            }
-            const btn = card.querySelector('.deco-copy-btn');
-            btn.textContent = 'コピーしました';
-            setTimeout(() => { btn.textContent = 'コピー'; }, 1200);
+            copyToClipboard(text, card.querySelector('.deco-copy-btn'), 'コピーしました');
         });
     });
 }
@@ -240,6 +478,11 @@ document.getElementById('btn-clear').addEventListener('click', () => {
     render();
 });
 document.getElementById('input-text').addEventListener('input', render);
+document.getElementById('pv-tab-insta').addEventListener('click', () => setPreviewMode('insta'));
+document.getElementById('pv-tab-x').addEventListener('click', () => setPreviewMode('x'));
+
+renderProfileTemplates();
+renderDecoParts();
 render();
 </script>
 </body>
