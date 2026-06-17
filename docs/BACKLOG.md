@@ -41,6 +41,10 @@
   - `shift.html` オンボーディング1行 + 定休日UI不具合修正
   - `label.html` モード切替の補足文追加
   - `index.html` FAQ見出しの平易化
+  - OGP / Twitter カード最適化（`hub` + 9ツール）
+  - `title` / `meta description` をSEO語彙へ調整（`hub` + 9ツール）
+  - FAQPage 構造化データ（JSON-LD）を 9ツールへ実装
+  - CTA文言の外出し（`data/cta.json` + `sugudasu-shell.js` 適用）
 
 ### 1-3. ドキュメント整備
 
@@ -59,6 +63,24 @@
   - `npm run preview:pages`
 - `.gitignore` 追加（`dist/`, `node_modules/`）
 - ビルド実行確認済み（成功）
+
+### 1-5. FAQ導線・ユーモア強化（2026-06-17）
+
+- [x] 9ツールの表示FAQに「隠し1問（クスッと要素）」を追記
+  - [x] `invoice.html`
+  - [x] `receipt.html`
+  - [x] `label.html`
+  - [x] `report.html`
+  - [x] `shift.html`
+  - [x] `present.html`
+  - [x] `reverse.html`
+  - [x] `warikan.html`
+  - [x] `sns.html`
+- [x] 9ツールの `FAQPage` JSON-LD（`data-sg-faq`）に同内容の隠し1問を追加し、表示FAQと構造化データを統一
+- [x] `hub.html` の全ツールカードに FAQ 回遊導線を追加
+  - [x] 導線文言を「クスッとFAQあり →」に統一
+  - [x] 補助導線として可読性を微調整（主張しすぎないトーン）
+- [x] 追加後の lint エラーなしを確認
 
 ---
 
@@ -121,7 +143,8 @@
   - [ ] ボタン押下イベント計測（クリック率）を追加
 - [ ] 各ツール結果の下に「次のすぐだす」導線を1ブロック追加
 - [ ] 曜日/用途別おすすめロジック（簡易版）を `hub.html` に追加
-- [ ] 完了時CTAテンプレートを共通化（shell or CSS utility）
+- [x] 完了時CTAテンプレートを共通化（shell or CSS utility）— `data/cta.json` へ外出し済み
+- [x] `hub.html` から各ツールFAQへの回遊補助文言を追加（「クスッとFAQあり →」）
 
 ### 2-5. AdSense 逆算 · グロースマーケ MECE（正本 · 2026-06-17）
 
@@ -168,14 +191,14 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 - [ ] **P0** Search Console · `sugudasu.com` プロパティ登録
 - [ ] **P1** ツール別ロングテール（title / h1 / リード / FAQ = 検索質問文）
-  - [ ] `invoice` — 請求書 無料 · インボイス · 源泉
-  - [ ] `receipt` — 手取り 逆引き · 領収書
-  - [ ] `warikan` — 割り勘 幹事 · 合コン
-  - [ ] `shift` — シフト表 自動作成
-  - [ ] `label` · `report` · `reverse` · `present` · `sns` — 各1テーマ
+  - [x] `invoice` — 請求書 無料 · インボイス · 源泉（title/meta反映）
+  - [x] `receipt` — 手取り 逆引き · 領収書（title/meta反映）
+  - [x] `warikan` — 割り勘 幹事 · 合コン（title/meta反映）
+  - [x] `shift` — シフト表 自動作成（title/meta反映）
+  - [x] `label` · `report` · `reverse` · `present` · `sns` — 各1テーマ（title/meta反映）
 - [ ] **P1** 内部リンク — hub ↔ 各ツール · 関連ツール相互（例: invoice ↔ receipt）
 - [ ] **P2** プログラムSEO — `calc.html`（メルカリ/ラクマ手数料 · `calc-furima.md`）
-- [ ] **P2** `FAQPage` / `WebApplication` 構造化データ（ツール単位）
+- [x] **P2** `FAQPage` / `WebApplication` 構造化データ（ツール単位）※FAQPageは `hub` を除く9ツールへ実装済み
 - [ ] **P2** sitemap.xml · `robots.txt`（`sugudasu.com`）
 
 ##### A2 ソーシャル（Push）— 認知拡散
@@ -218,7 +241,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | FAQ からの内部リンク | 関連ツールへ誘導 | [ ] P2 |
 | `updates.html` | 新機能で再訪動機 | [x] ページ · [ ] 発信 |
 
-- [ ] **P1** 完了時CTAテンプレ共通化（shell / CSS utility）— §2-4
+- [x] **P1** 完了時CTAテンプレ共通化（shell / CSS utility）— `data/cta.json` + `SUGUDASU_SHELL.applyCtaLabels`
 - [ ] **P1** ツール間「よく一緒に使われる」静的マップ（例: invoice → receipt → warikan）
 
 ---
@@ -392,9 +415,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 1. ~~**新規ツール `receipt.html`（手取り逆引き・領収書）MVP**~~ — 完了（`docs/prompts/receipt.md`）  
 2. ~~**`updates.html`（更新履歴・改善レポート）**~~ — 完了 · 詳細 §11 · SSOT: `data/changelog.json`  
 3. **§2-5 A2** `updates.html` の X / Zenn 発信（認知 · 被リンク）  
-4. **§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）  
+4. ~~**§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）~~ — title/meta/OG/Twitter 反映済  
 5. **§2-5 A2** 結果画面シェア導線（warikan · receipt · invoice）  
-6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ  
+6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ（未実装）  
 7. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
 8. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
 9. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
@@ -402,7 +425,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ### P2（通常優先）
 
-1. 完了時CTAテンプレート共通化  
+1. ~~完了時CTAテンプレート共通化~~（`data/cta.json` 運用へ移行）  
 2. **§2-5** `calc.html` プログラムSEO（フリマ手数料 · `calc-furima.md`）  
 3. **§2-5** 構造化データ · Search Console · sitemap  
 4. **§2-5** ブロガー紹介依頼 · 知恵袋運用テンプレ  
@@ -654,6 +677,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 ### 11-4. 運用ルール
 
 - 公開 changelog は **編集済み・過去形のみ**（生のユーザー投稿は載せない）
+- ユーザー向け公開は **ツール更新情報を中心** とし、運用改善の内部ログは公開 changelog に混在させない（History 側で管理）
 - 計算ツール修正行には **対象ツール名・基準日** を含める
 - リリース commit 時に `changelog.json` を同時更新
 - **Form 回答のトリアージ**は [`docs/FEEDBACK_TRIAGE.md`](FEEDBACK_TRIAGE.md) + [回答スプレッドシート](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit)（提督のみ）。Status: inbox / 要件定義 / planned / done / wontfix / duplicate

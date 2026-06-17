@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="地雷を避けてプレゼントを提案。ブラウザ内完結、データは送信しません。">
-    <title>プレゼント提案（地雷回避） | SUGUDASU</title>
+    <meta name="description" content="ギフト提案・贈り物選びをサポートするAIサジェスター。NGな品（地雷）を回避し、提案された商品をAmazon導線からすぐ確認できます。">
+    <title>AIギフト提案（地雷回避・Amazon導線） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="AIギフト提案（地雷回避・Amazon）">
+    <meta property="og:description" content="贈る相手やシーンに合わせて、地雷アイテムをスマートに回避。AI提案の贈り物をAmazonリンクからすぐ確認できます。">
+    <meta property="og:url" content="https://sugudasu.com/present.html">
+    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="マナー違反の地雷を避ける！AIギフト提案サジェスター">
+    <meta name="twitter:description" content="お祝いや記念日のプレゼント選びで失敗したくない人向け。登録不要で最適な贈り物をAI提案し、Amazon確認までスムーズ。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。NGキーワード設定で不適切な候補を除外し、相手に合わせた提案を表示できます。","@type":"Answer"},"name":"地雷になりやすい贈り物を避けられますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。候補からAmazon導線で商品ページを確認でき、比較・購入検討がスムーズです。","@type":"Answer"},"name":"提案されたギフトをそのまま確認できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ログイン不要で、条件入力だけですぐ提案を確認できます。","@type":"Answer"},"name":"会員登録なしで使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"結果が良いと「気が利く人」という印象が残りやすいです。ツールは裏方なので、表に出るのはあなたの思いやりとして伝わります。","@type":"Answer"},"name":"AIで外さないギフトを選び続けたら、センスを疑われませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
 <div id="sg-chrome-top"></div>
@@ -76,9 +86,9 @@
                 </div>
             </div>
 
-            <button type="button" onclick="generateGiftSuggestions()"
+            <button type="button" id="btn-generate-gift" onclick="generateGiftSuggestions()"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-lg">
-                プレゼントを提案する
+                提案をみる（登録不要でAI検索）
             </button>
         </section>
 
@@ -90,7 +100,7 @@
 
             <div id="suggestions-deck" class="space-y-4">
                 <p class="sg-card p-8 text-center text-xs text-slate-400">
-                    左で条件を入れて「プレゼントを提案する」を押してください。
+                    左で条件を入れて「提案をみる（登録不要でAI検索）」を押してください。
                 </p>
             </div>
 
@@ -128,6 +138,15 @@
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>いいえ。条件のマッチングはブラウザ内で行います。Amazon リンクを開くのはご自身の操作時のみです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>AIで外さないギフトを選び続けたら、センスを疑われませんか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>結果が良いと「気が利く人」という印象が残りやすいです。ツールは裏方なので、表に出るのはあなたの思いやりとして伝わります。</p>
                 </div>
             </details>
         </div>

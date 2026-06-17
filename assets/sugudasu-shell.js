@@ -3,6 +3,7 @@
  * docs/DESIGN_GUIDELINE.md §3.1, §7
  */
 (function (global) {
+  const GA4_MEASUREMENT_ID = 'G-WBB6PTTYF7';
   const TOOLS = [
     { id: 'hub', file: 'hub.html', label: '一覧', icon: '🏠' },
     { id: 'invoice', file: 'invoice.html', label: '請求書', icon: '📄' },
@@ -27,6 +28,17 @@
     return '../assets/' + path;
   }
 
+  /** 開発(tools/) と本番(dist/) 両対応 */
+  function dataUrl(path) {
+    const link = document.querySelector('link[href*="sugudasu.css"]');
+    if (link && link.getAttribute('href')) {
+      const href = link.getAttribute('href');
+      const base = href.replace(/assets\/sugudasu\.css.*$/, '');
+      return base + 'data/' + path;
+    }
+    return '../data/' + path;
+  }
+
   function currentFile() {
     let seg = (global.location.pathname || '').split('/').filter(Boolean).pop() || '';
     if (!seg || seg === 'index.html') return 'hub.html';
@@ -36,12 +48,12 @@
 
   function navHtml(activeFile) {
     return `<nav class="no-print bg-slate-800 border-b border-slate-700" aria-label="SUGUDASU ツール">
-      <div class="max-w-7xl mx-auto px-2 sm:px-4 overflow-x-auto">
-        <ul class="flex gap-1 py-1.5 min-w-max text-[11px] font-semibold">
+      <div class="max-w-7xl mx-auto px-2 sm:px-4">
+        <ul class="sg-nav-list py-1.5 text-[11px] font-semibold">
           ${TOOLS.map(t => {
             const active = t.file === activeFile;
             const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-            return `<li><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+            return `<li class="sg-nav-item"><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
               active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }">${icon}<span class="sg-nav-label">${t.label}</span></a></li>`;
           }).join('')}
@@ -50,17 +62,50 @@
     </nav>`;
   }
 
+  function logoHtml() {
+    const markSrc = assetUrl('logo-mark.png?v=2');
+    return `<a href="hub.html" class="sg-logo" aria-label="SUGUDASU ホーム">
+      <img class="sg-logo__mark" src="${markSrc}" alt="" width="56" height="56" decoding="async">
+      <span class="sg-logo__word">SUGUDASU</span>
+    </a>`;
+  }
+
+  function ensureFavicon() {
+    if (document.querySelector('link[data-sg-favicon]')) return;
+    const links = [
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16.png?v=3' },
+      { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32.png?v=3' },
+      { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'favicon-48.png?v=3' },
+      { rel: 'icon', type: 'image/png', href: 'favicon.png?v=3' },
+      { rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180', href: 'apple-touch-icon.png?v=3' }
+    ];
+    links.forEach((item) => {
+      const link = document.createElement('link');
+      link.rel = item.rel;
+      if (item.type) link.type = item.type;
+      if (item.sizes) link.sizes = item.sizes;
+      link.href = assetUrl(item.href);
+      link.setAttribute('data-sg-favicon', '1');
+      document.head.appendChild(link);
+    });
+  }
+
   function headerHtml(title, showPrint) {
     const printBtn = showPrint
       ? `<button type="button" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
       : '';
-    return `<header class="no-print bg-slate-900 text-slate-100 border-b border-slate-800 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <div class="min-w-0">
-          <p class="text-[10px] text-slate-400 tracking-wide"><a href="hub.html" class="hover:text-white">SUGUDASU</a></p>
-          <h1 class="text-sm font-bold truncate">${title}</h1>
+    const pageTitle = title && title !== 'SUGUDASU'
+      ? `<p class="sg-site-header__pagetitle">${title}</p>`
+      : '';
+    return `<header class="sg-site-header no-print sticky top-0 z-50">
+      <div class="sg-site-header__brand">
+        <div class="sg-site-header__inner">
+          <div class="sg-site-header__left">
+            ${logoHtml()}
+            ${pageTitle}
+          </div>
+          ${printBtn}
         </div>
-        ${printBtn}
       </div>
     </header>`;
   }
@@ -101,6 +146,9 @@
       document.body.classList.add('sg-print-landscape');
     }
 
+    ensureFavicon();
+    loadGa4();
+
     if (top) {
       top.innerHTML = headerHtml(title, showPrint) + navHtml(file);
     }
@@ -109,6 +157,27 @@
     }
 
     loadGrowthScript();
+    applyCtaLabels(file);
+  }
+
+  function loadGa4() {
+    if (!GA4_MEASUREMENT_ID) return;
+    const host = String(global.location && global.location.hostname || '');
+    if (host === 'localhost' || host === '127.0.0.1') return;
+    if (global.gtag || document.querySelector('script[data-sg-ga4-lib]')) return;
+
+    global.dataLayer = global.dataLayer || [];
+    global.gtag = function gtag() {
+      global.dataLayer.push(arguments);
+    };
+    global.gtag('js', new Date());
+    global.gtag('config', GA4_MEASUREMENT_ID);
+
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA4_MEASUREMENT_ID);
+    s.setAttribute('data-sg-ga4-lib', '1');
+    document.head.appendChild(s);
   }
 
   function loadGrowthScript() {
@@ -128,5 +197,32 @@
     document.head.appendChild(s);
   }
 
-  global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl };
+  let ctaConfigCache = null;
+  async function loadCtaConfig() {
+    if (ctaConfigCache) return ctaConfigCache;
+    try {
+      const res = await fetch(dataUrl('cta.json'), { cache: 'no-store' });
+      if (!res.ok) return null;
+      ctaConfigCache = await res.json();
+      return ctaConfigCache;
+    } catch {
+      return null;
+    }
+  }
+
+  async function applyCtaLabels(file) {
+    const cfg = await loadCtaConfig();
+    if (!cfg || !cfg.pages) return;
+    const pageId = String(file || '').replace(/\.html$/, '');
+    const page = cfg.pages[pageId];
+    if (!page || !Array.isArray(page.items)) return;
+    page.items.forEach((item) => {
+      if (!item || !item.selector || !item.text) return;
+      const el = document.querySelector(item.selector);
+      if (!el) return;
+      el.textContent = item.text;
+    });
+  }
+
+  global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl, dataUrl, logoHtml };
 })(window);

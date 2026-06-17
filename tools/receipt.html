@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="手取りジャスト金額から本体価格・消費税・源泉徴収を逆算。領収書をその場で印刷・共有。ブラウザ完結・登録不要。">
-    <title>手取り逆引き・領収書ジェネレーター | SUGUDASU</title>
+    <meta name="description" content="手取り逆引き・領収書作成が登録不要で完結。源泉徴収税や消費税を自動逆算し、インボイス対応の領収書PDFをその場で保存・印刷できます。">
+    <title>手取り逆引き・領収書作成（インボイスPDF対応） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="手取り逆引き・領収書作成ツール">
+    <meta property="og:description" content="源泉徴収税や消費税を自動で逆算。手取り金額からの逆引き計算と、インボイス対応領収書PDFの発行・印刷が登録なしで完了。">
+    <meta property="og:url" content="https://sugudasu.com/receipt.html">
+    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="【源泉・消費税を自動逆算】手取り逆引き領収書作成">
+    <meta name="twitter:description" content="フリーランスや店舗運営で重宝する税金逆算ツール。金額を入れるだけでインボイス対応の領収書PDFをブラウザ完結で作成。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。源泉徴収税と消費税を自動逆算し、領収書作成に必要な金額をすばやく算出できます。","@type":"Answer"},"name":"手取り金額から税金を逆算できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。適格請求書の要件に合わせた記載項目に対応し、PDF保存や印刷も行えます。","@type":"Answer"},"name":"インボイス対応の領収書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。計算と作成はブラウザ内で処理されるため、外部サーバーへ送信されません。","@type":"Answer"},"name":"入力した金額データは安全ですか？","@type":"Question"},{"acceptedAnswer":{"text":"電卓で悩む時間が消えるので、周囲からは「数字に強い人」に見られがちです。実際はツール活用でも、結果として意思決定が速くなるのは大きな強みです。","@type":"Answer"},"name":"手取り逆算を一瞬で出したら、できすぎて怪しまれませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top"></div>
@@ -175,6 +185,15 @@
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>計算・プレビューはブラウザ内で完結します。「URLで共有」を使った場合のみ、URLにデータが含まれます。チャット共有は文面をコピーするだけで、当サイトサーバーへは送信しません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>手取り逆算を一瞬で出したら、できすぎて怪しまれませんか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>電卓で悩む時間が消えるので、周囲からは「数字に強い人」に見られがちです。実際はツール活用でも、結果として意思決定が速くなるのは大きな強みです。</p>
                 </div>
             </details>
         </div>

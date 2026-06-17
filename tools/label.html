@@ -3,9 +3,20 @@
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宛名ラベル・サンキューカード | SUGUDASU</title>
+    <meta name="description" content="宛名ラベル印刷がブラウザだけで完結する無料ツール。主要メーカーのシール型番検索に対応し、Excel/CSV読み込みで一括印刷できます。">
+    <title>宛名ラベル・シール一括印刷（型番検索対応） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="宛名ラベル・シール一括印刷">
+    <meta property="og:description" content="主要メーカーの型番検索に対応したラベル印刷ツール。ExcelやCSVを読み込むだけで、文字崩れを抑えた宛名シールを即印刷。">
+    <meta property="og:url" content="https://sugudasu.com/label.html">
+    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CSV読み込みで文字崩れなし！宛名ラベル一括印刷">
+    <meta name="twitter:description" content="面倒な位置調整や専用ソフトは不要。主要メーカーのシール型番に合わせ、ExcelやCSVから宛名ラベルを一括印刷できます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。主要メーカーの型番検索に対応し、選択した規格に合わせてレイアウトを反映できます。","@type":"Answer"},"name":"主要メーカーの型番から印刷レイアウトを選べますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。住所録データを読み込み、複数宛先をまとめてラベルへ配置して印刷できます。","@type":"Answer"},"name":"ExcelやCSVを一括取り込みできますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。取り込んだ住所データはブラウザ内で処理され、外部送信しません。","@type":"Answer"},"name":"住所データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"「ラベル印刷の守護神」みたいな扱いになることがあります。調整地獄を回避できるので、余った時間を確認作業や発送準備に回せます。","@type":"Answer"},"name":"一発で位置ズレなし印刷できたら、周囲に驚かれませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
 <div id="sg-chrome-top"></div>
@@ -80,7 +91,7 @@
                 </h2>
                 <textarea id="form-bulk-textarea" rows="4" placeholder="【ExcelやExcelからここにコピペ可能】&#10;100-0001 東京都千代田区千代田1-1 日本 太郎&#10;200-0002 大阪府大阪市北区梅田2-2 浪速 花子" class="w-full border border-gray-300 rounded-lg p-2 text-xs font-mono leading-normal focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
                 <div class="flex justify-end">
-                    <button onclick="processBulkPaste()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-colors">📋 リストへ一括反映する</button>
+                    <button id="btn-process-bulk" onclick="processBulkPaste()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-colors">📋 リストへ一括反映する</button>
                 </div>
             </div>
 
@@ -166,6 +177,15 @@
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                         <p>いいえ。CSVの読み込みとレイアウト計算はすべてブラウザ内で完結します。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>一発で位置ズレなし印刷できたら、周囲に驚かれませんか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>「ラベル印刷の守護神」みたいな扱いになることがあります。調整地獄を回避できるので、余った時間を確認作業や発送準備に回せます。</p>
                     </div>
                 </details>
             </div>
