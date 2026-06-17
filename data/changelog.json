@@ -1,0 +1,81 @@
+{
+  "updatedAt": "2026-06-17",
+  "entries": [
+    {
+      "date": "2026-06-17",
+      "type": "feature",
+      "title": "ブックマーク誘導とXシェア（既存アカウント向け）",
+      "body": "ツール利用完了後にホーム画面追加の案内バナーを表示。割り勘・請求書・領収書の結果から、ログイン中のXアカウントで投稿画面を開けるシェアボタンを追加しました。updates.html には運営向けの初回投稿文面も掲載しています。",
+      "whenToUse": "幹事が割り勘結果をXで共有したいとき、フリーランスが請求書・領収書ツールを紹介したいとき。",
+      "highlight": "新規Xアカウントは不要。twitter.com/intent/tweet で既存アカウントの投稿画面を開きます。",
+      "tools": ["warikan.html", "invoice.html", "receipt.html", "updates.html"]
+    },
+    {
+      "date": "2026-06-17",
+      "type": "improve",
+      "title": "シフト表：枠数1〜3・名称を自由に変更",
+      "body": "早番・遅番・夜勤固定だった表示を、左パネル「1日あたりのシフト枠」から変更できるようにしました。1シフトのみの店舗は1枠にするとカレンダーと自動生成が1行に揃います。",
+      "whenToUse": "日勤だけ・2交代制・「準夜」「深夜」など独自の呼び方を使っている現場。",
+      "highlight": "Googleフォームから届いた改善リクエスト（2026/06/17）を反映しました。",
+      "tools": ["shift.html"]
+    },
+    {
+      "date": "2026-06-17",
+      "type": "feature",
+      "title": "「更新履歴・改善レポート」ページを公開",
+      "body": "data/changelog.json を正本とするタイムラインと、不具合・要望の mailto 報告導線を追加。全ページフッターからリンクできます。",
+      "tools": ["updates.html"]
+    },
+    {
+      "date": "2026-06-17",
+      "type": "feature",
+      "title": "割り勘に「固定額モード（合コン等）」",
+      "body": "画面上部のモード切替から選べます。固定側の1人あたり金額×人数を差し引き、残りを「残り按分」グループで均等割りしました。傾斜係数モードも従来どおり使えます。",
+      "whenToUse": "合コン・懇親会で「女性（または特定グループ）だけ3,000円」と決めて、残りを男性全員で割りたいとき。係数2.0/1.0より、金額が最初から決まっている現場向けです。",
+      "highlight": "幹事が「総額 − 固定×人数」を電卓で割る手間をなくし、端数丸め後の過不足表示とLINE清算文まで一括で出せます。",
+      "tools": ["warikan.html"]
+    },
+    {
+      "date": "2026-06-17",
+      "type": "feature",
+      "title": "新ツール「手取り逆引き・領収書」を公開",
+      "body": "手取りジャスト金額から本体・消費税・源泉徴収を逆算。1枚印刷・A4マルチ・チャット共有・URL共有に対応しました。",
+      "tools": ["receipt.html"]
+    },
+    {
+      "date": "2026-06-16",
+      "type": "feature",
+      "title": "請求書ツールにチャット共有（Phase 1）",
+      "body": "Slack / Chatwork / Google Chat / Teams / LINE WORKS 向けに、送付文面のコピーと送信先URL起動を追加しました。",
+      "tools": ["invoice.html"]
+    },
+    {
+      "date": "2026-06-16",
+      "type": "improve",
+      "title": "AdSense 所有権確認用 ads.txt を公開",
+      "body": "サイトルートに ads.txt を配置しました（審査申請は別途）。",
+      "tools": []
+    },
+    {
+      "date": "2026-06-16",
+      "type": "fix",
+      "title": "ツール一覧（index）と請求書 URL を分離",
+      "body": "トップ `/` はポータル、請求書は `/invoice` に統一。リンク迷子を解消しました。",
+      "tools": ["hub.html", "invoice.html"]
+    },
+    {
+      "date": "2026-06-16",
+      "type": "improve",
+      "title": "全ツールに FAQ・広告枠基盤を整備",
+      "body": "ad-slot--result と sg-faq-section を各ツールへ展開。ヘッダーナビにアイコン＋短ラベルを追加しました。",
+      "tools": []
+    },
+    {
+      "date": "2026-06-16",
+      "type": "feature",
+      "title": "法務3ページ（プライバシー・利用規約・免責）を公開",
+      "body": "フッターから常時リンク。AdSense 審査・信頼基盤として先行整備しました。",
+      "tools": ["privacy.html", "terms.html", "disclaimer.html"]
+    }
+  ]
+}

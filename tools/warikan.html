@@ -102,10 +102,15 @@
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-3">
                 <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-2">
                     <h2 class="text-sm font-bold text-slate-800">📱 LINE / Slack 清算テキスト</h2>
-                    <button type="button" id="btn-copy"
-                        class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm transition-colors">
-                        📋 ワンクリックコピー
-                    </button>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" id="btn-copy"
+                            class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm transition-colors">
+                            📋 ワンクリックコピー
+                        </button>
+                        <button type="button" id="btn-x-share" class="sg-btn-x" title="ログイン中のXアカウントで投稿画面を開きます">
+                            𝕏 結果をシェア
+                        </button>
+                    </div>
                 </div>
                 <textarea id="output-text" rows="12" readonly
                     class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
@@ -205,6 +210,7 @@
             });
             document.getElementById('btn-calculate').addEventListener('click', calculate);
             document.getElementById('btn-copy').addEventListener('click', copyText);
+            document.getElementById('btn-x-share').addEventListener('click', shareToX);
             document.getElementById('input-total').addEventListener('input', calculate);
             document.getElementById('select-round').addEventListener('change', calculate);
         }
@@ -470,6 +476,7 @@
             `;
 
             buildLineText();
+            if (window.SUGUDASU_GROWTH) window.SUGUDASU_GROWTH.recordToolSuccess();
         }
 
         function buildLineText() {
@@ -529,6 +536,17 @@
                 document.execCommand('copy');
             }
             alert('清算テキストをコピーしました。LINEやSlackに貼り付けてください。');
+        }
+
+        function shareToX() {
+            if (!lastResult || !window.SUGUDASU_GROWTH) {
+                alert('先に割り勘を計算してください。');
+                return;
+            }
+            window.SUGUDASU_GROWTH.shareXWarikan(() => ({
+                total: '¥' + formatYen(lastResult.total),
+                hint: lastResult.mode === 'fixed' ? '合コン固定額モード対応' : '傾斜係数で公平精算',
+            }));
         }
 
         function escHtml(s) {

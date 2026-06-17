@@ -42,6 +42,35 @@
             </div>
 
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <h3 class="text-xs font-bold text-slate-700">⏱ 1日あたりのシフト枠</h3>
+                <p class="text-[11px] text-slate-500 leading-relaxed">店舗によって1シフトのみの日もあるため、枠数と表示名を変更できます。</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="cfg-shift-count" class="block text-[11px] text-slate-500 font-bold mb-1">枠数</label>
+                        <select id="cfg-shift-count" onchange="applyShiftSlotCountFromUI()" class="w-full border rounded-lg p-2 text-sm bg-white font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="1">1枠（1シフトのみ）</option>
+                            <option value="2">2枠</option>
+                            <option value="3" selected>3枠（早・遅・夜）</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="shift-slot-labels" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div>
+                        <label for="cfg-shift-label-0" class="block text-[11px] text-slate-500 font-bold mb-1">枠1の名称</label>
+                        <input type="text" id="cfg-shift-label-0" maxlength="12" value="早番" oninput="applyShiftSlotLabelsFromUI()" class="w-full border rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div id="shift-label-wrap-1">
+                        <label for="cfg-shift-label-1" class="block text-[11px] text-slate-500 font-bold mb-1">枠2の名称</label>
+                        <input type="text" id="cfg-shift-label-1" maxlength="12" value="遅番" oninput="applyShiftSlotLabelsFromUI()" class="w-full border rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div id="shift-label-wrap-2">
+                        <label for="cfg-shift-label-2" class="block text-[11px] text-slate-500 font-bold mb-1">枠3の名称</label>
+                        <input type="text" id="cfg-shift-label-2" maxlength="12" value="夜勤" oninput="applyShiftSlotLabelsFromUI()" class="w-full border rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                 <h3 class="text-xs font-bold text-slate-700">🔒 店休日設定（自動生成・集計から完全除外）</h3>
                 <div>
                     <label class="block text-[11px] text-slate-500 font-bold mb-1">毎週の定休日（曜日選択）</label>
@@ -128,6 +157,15 @@
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>早番・遅番・夜勤以外のシフト名にしたい／1シフトだけの店舗</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>左パネルの「1日あたりのシフト枠」で、枠数（1〜3）と各枠の名称（例: 日勤・準夜・深夜）を変更できます。1枠のみの店舗ではカレンダーが1行表示になり、自動生成もその1枠だけを割り当てます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>スタッフ名やシフトデータはクラウドに保存されますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
@@ -145,6 +183,59 @@
         let staffCollection = [];
         let temporaryHolidays = [];
         let globalShiftData = {}; // キー: "YYYY-MM-DD", 値: { t1:{type,val}, t2:{type,val}, t3:{type,val}, note:"" }
+        const SHIFT_SLOT_IDS = ["t1", "t2", "t3"];
+        let shiftSlotConfig = { count: 3, labels: ["早番", "遅番", "夜勤"] };
+
+        function getActiveShiftSlotIds() {
+            const count = Math.min(3, Math.max(1, shiftSlotConfig.count || 3));
+            return SHIFT_SLOT_IDS.slice(0, count);
+        }
+
+        function getShiftSlotLabel(slotId) {
+            const idx = SHIFT_SLOT_IDS.indexOf(slotId);
+            if (idx < 0) return slotId;
+            return (shiftSlotConfig.labels && shiftSlotConfig.labels[idx]) || `枠${idx + 1}`;
+        }
+
+        function getShiftSlotShortLabel(slotId) {
+            const label = getShiftSlotLabel(slotId);
+            return label.length <= 2 ? label : label.slice(0, 2);
+        }
+
+        function applyShiftSlotCountFromUI() {
+            const count = parseInt(document.getElementById("cfg-shift-count").value, 10) || 3;
+            shiftSlotConfig.count = Math.min(3, Math.max(1, count));
+            syncShiftSlotLabelsUI();
+            renderPreview();
+        }
+
+        function applyShiftSlotLabelsFromUI() {
+            shiftSlotConfig.labels = SHIFT_SLOT_IDS.map((_, i) => {
+                const el = document.getElementById(`cfg-shift-label-${i}`);
+                return el ? el.value.trim() || `枠${i + 1}` : `枠${i + 1}`;
+            });
+            renderPreview();
+        }
+
+        function syncShiftSlotLabelsUI() {
+            const countSelect = document.getElementById("cfg-shift-count");
+            if (countSelect) countSelect.value = String(shiftSlotConfig.count || 3);
+
+            SHIFT_SLOT_IDS.forEach((_, i) => {
+                const input = document.getElementById(`cfg-shift-label-${i}`);
+                const wrap = document.getElementById(`shift-label-wrap-${i}`);
+                if (input) input.value = (shiftSlotConfig.labels && shiftSlotConfig.labels[i]) || `枠${i + 1}`;
+                const active = i < (shiftSlotConfig.count || 3);
+                if (wrap) wrap.classList.toggle("opacity-40", !active);
+                if (input) input.disabled = !active;
+            });
+        }
+
+        function readShiftSlotConfigFromUI() {
+            const countEl = document.getElementById("cfg-shift-count");
+            shiftSlotConfig.count = countEl ? Math.min(3, Math.max(1, parseInt(countEl.value, 10) || 3)) : 3;
+            applyShiftSlotLabelsFromUI();
+        }
 
         // 初期セットアップ
         document.addEventListener("DOMContentLoaded", () => {
@@ -161,6 +252,7 @@
                 ];
             }
             buildStaffFormRows();
+            syncShiftSlotLabelsUI();
             initCalendarStructure();
         });
 
@@ -418,7 +510,7 @@
                     note: existingNote, isClosed: false
                 };
 
-                const slots = ["t1", "t2", "t3"];
+                const slots = getActiveShiftSlotIds();
                 const dailyAssignedIds = [];
 
                 slots.forEach(slot => {
@@ -550,7 +642,7 @@
                     
                     // 実績カウンターのリアルタイム加算（店休日ではない、かつ当月(1ヶ月目)のみ集計）
                     if (!isClosed && monthIndex === 0) {
-                        ["t1", "t2", "t3"].forEach(slot => {
+                        getActiveShiftSlotIds().forEach(slot => {
                             if (dayData[slot] && dayData[slot].type === "staff" && dayData[slot].val) {
                                 const sId = dayData[slot].val;
                                 if (currentMonthMetrics[sId]) {
@@ -564,7 +656,7 @@
                     // 役割ごとのリアルタイム日枠集計（不満シャットアウト機能：日次）
                     const dailyRoleCount = {};
                     if (!isClosed) {
-                        ["t1", "t2", "t3"].forEach(slot => {
+                        getActiveShiftSlotIds().forEach(slot => {
                             if (dayData[slot] && dayData[slot].type === "staff" && dayData[slot].val) {
                                 const staff = staffCollection.find(s => s.id === dayData[slot].val);
                                 if (staff && staff.tag) {
@@ -581,8 +673,11 @@
                     if (currentDayOfWeek === 6) cardBg = "bg-blue-50/40 border-blue-100";
                     if (isClosed) cardBg = "bg-slate-100 text-slate-400 border-slate-200";
 
+                    const activeSlots = getActiveShiftSlotIds();
+                    const cellMinH = activeSlots.length === 1 ? "min-h-[100px]" : activeSlots.length === 2 ? "min-h-[120px]" : "min-h-[142px]";
+
                     const cellCard = document.createElement("div");
-                    cellCard.className = `border rounded-xl p-1.5 flex flex-col justify-between min-h-[142px] relative transition-all ${cardBg}`;
+                    cellCard.className = `border rounded-xl p-1.5 flex flex-col justify-between ${cellMinH} relative transition-all ${cardBg}`;
 
                     // セル内の時間枠生成（手動微調整・ドロップダウン・自由入力）
                     const makeSlotHtml = (slotKey, slotLabel) => {
@@ -630,18 +725,11 @@
                             </div>
                             
                             <div class="space-y-1 flex-1 flex flex-col justify-center">
+                                ${activeSlots.map(slotKey => `
                                 <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
-                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">早</span>
-                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t1", "早番")}</div>
-                                </div>
-                                <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
-                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">遅</span>
-                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t2", "遅番")}</div>
-                                </div>
-                                <div class="flex justify-between items-center bg-white/80 rounded border border-slate-100 px-1 py-0.5 shadow-2xs">
-                                    <span class="text-[9px] text-slate-400 scale-90 origin-left">夜</span>
-                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml("t3", "夜勤")}</div>
-                                </div>
+                                    <span class="text-[9px] text-slate-400 scale-90 origin-left truncate max-w-[2.5rem]" title="${escapeHtml(getShiftSlotLabel(slotKey))}">${escapeHtml(getShiftSlotShortLabel(slotKey))}</span>
+                                    <div class="min-w-0 flex-1 text-right">${makeSlotHtml(slotKey, getShiftSlotLabel(slotKey))}</div>
+                                </div>`).join("")}
                             </div>
                             
                             <div class="no-print mt-1.5">
@@ -705,9 +793,12 @@
                 regularHolidays.push(parseInt(cb.value, 10));
             });
 
+            readShiftSlotConfigFromUI();
+
             const snapshot = {
                 targetMonth, maxConsecutive, duplicateNgTag, regularHolidays,
-                temporaryHolidays, staffCollection, globalShiftData, isDocumentFixed
+                temporaryHolidays, staffCollection, globalShiftData, isDocumentFixed,
+                shiftSlotConfig
             };
 
             localStorage.setItem("sugudasu_pro_snapshot", JSON.stringify(snapshot));
@@ -735,6 +826,18 @@
                 }
                 if (snapshot.staffCollection) staffCollection = snapshot.staffCollection;
                 if (snapshot.globalShiftData) globalShiftData = snapshot.globalShiftData;
+                if (snapshot.shiftSlotConfig) {
+                    shiftSlotConfig = {
+                        count: Math.min(3, Math.max(1, snapshot.shiftSlotConfig.count || 3)),
+                        labels: Array.isArray(snapshot.shiftSlotConfig.labels)
+                            ? snapshot.shiftSlotConfig.labels.slice(0, 3)
+                            : ["早番", "遅番", "夜勤"]
+                    };
+                    while (shiftSlotConfig.labels.length < 3) {
+                        shiftSlotConfig.labels.push(`枠${shiftSlotConfig.labels.length + 1}`);
+                    }
+                    syncShiftSlotLabelsUI();
+                }
                 if (snapshot.isDocumentFixed !== undefined) toggleDocumentLock(snapshot.isDocumentFixed);
             } catch (e) {
                 console.error("Storageデータ復元エラー", e);

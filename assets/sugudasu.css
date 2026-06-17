@@ -148,6 +148,188 @@ body.sg-body {
 details.sg-faq summary::-webkit-details-marker { display: none; }
 details.sg-faq[open] summary svg { transform: rotate(180deg); }
 
+/* Growth: bookmark banner (§2-5 A4) */
+.sg-bookmark-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  padding: 0.75rem;
+  pointer-events: none;
+}
+.sg-bookmark-banner__inner {
+  pointer-events: auto;
+  max-width: 42rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  border: 1px solid #334155;
+}
+.sg-bookmark-banner__title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+.sg-bookmark-banner__body {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+.sg-bookmark-banner__hint {
+  font-size: 0.625rem;
+  color: #94a3b8;
+  margin-top: 0.35rem;
+}
+.sg-bookmark-banner__close {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  background: #334155;
+  color: #f8fafc;
+  border: none;
+  cursor: pointer;
+}
+.sg-bookmark-banner__close:hover { background: #475569; }
+
+.sg-btn-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid #1d9bf0;
+  background: #fff;
+  color: #0f1419;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sg-btn-x:hover { background: #eff9ff; }
+
+/* —— Changelog (updates.html) —— */
+.sg-changelog {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 2px solid var(--sg-border);
+  margin-left: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.sg-changelog-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.sg-changelog-item:last-child {
+  padding-bottom: 0;
+}
+
+.sg-changelog-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.25rem - 5px);
+  top: 0.35rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sg-primary);
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.sg-changelog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.sg-changelog-date {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sg-muted);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.sg-changelog-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.sg-changelog-badge--feature {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.sg-changelog-badge--fix {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.sg-changelog-badge--improve {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.sg-changelog-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.35rem;
+}
+
+.sg-changelog-body {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--sg-muted);
+  margin: 0;
+}
+
+.sg-changelog-tools {
+  font-size: 11px;
+  margin-top: 0.5rem;
+  color: var(--sg-muted);
+}
+
+.sg-changelog-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  margin-right: 0.35rem;
+}
+
+.sg-changelog-when,
+.sg-changelog-highlight {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0.5rem 0 0;
+  color: #334155;
+}
+
+.sg-changelog-highlight {
+  color: #0f766e;
+}
+
 /* —— Receipt (receipt.html) —— */
 .rcpt-desc-chip {
   font-size: 10px;

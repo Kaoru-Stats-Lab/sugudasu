@@ -110,7 +110,8 @@ python -m http.server 8080
 | ビルド出力ディレクトリ | `dist` |
 | Node バージョン | 20 以上（環境変数 `NODE_VERSION=20`） |
 
-- カスタムドメイン例: `https://sugudasu.online/`
+- 本番 URL: **https://sugudasu.com/**（2026-06-17 確認済）
+- 暫定: `https://sugudasu.pages.dev/`
 - **Framework preset**: None（静的サイト）
 - Git 連携時は `sugudasu` リポジトリルートをプロジェクトルートに
 

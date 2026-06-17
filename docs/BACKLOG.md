@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-17 JST  
+更新: 2026-06-17（Gemini グロース MECE · `sugudasu.com` 本番）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -123,6 +123,170 @@
 - [ ] 曜日/用途別おすすめロジック（簡易版）を `hub.html` に追加
 - [ ] 完了時CTAテンプレートを共通化（shell or CSS utility）
 
+### 2-5. AdSense 逆算 · グロースマーケ MECE（正本 · 2026-06-17）
+
+**役割:** 「サイトを知ってもらう」施策と「知った後に稼ぐ」施策を **漏れなく・重複なく** 分解し、実装 TODO に落とす。  
+**フェーズ:** `sugudasu.com` 本番 · AdSense サイト承認待ち  
+**SUGUDASU の構造的特性:** ログイン不要 · 単機能ツール · 高インテント（今すぐ計算/書類）· ローカル完結 → **SEO + リピート + 結果シェア** が最もレバレッジが高い。
+
+---
+
+#### 0. 逆算方程式（北極星）
+
+**簡略式（KGI）**
+
+$$\text{AdSense収益} \approx \text{PV} \times \text{CTR} \times \text{CPC}$$
+
+**分解式（施策マッピング用）**
+
+$$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \times \underbrace{\text{PV/セッション}}_{\text{B 深化}} \times \underbrace{\text{広告表示/ PV}}_{\text{C-1 在庫}} \times \underbrace{\text{CTR}}_{\text{C-2 配置}} \times \underbrace{\text{CPC}}_{\text{C-3 文脈}}$$
+
+| レバー | 意味 | 主な施策ブロック |
+|--------|------|------------------|
+| セッション数 | 新規＋再訪の「来訪」 | **A** 認知・獲得 |
+| PV/セッション | 1人来訪あたりのページ深さ | **B** セッション深化 |
+| 広告表示/PV | ポリシー内のインプレッション | **C-1** 在庫（枠数・審査） |
+| CTR | クリック率 | **C-2** UI/UX |
+| CPC | 単価 | **C-3** コンテキスト |
+
+**SUGUDASU で CTR×CPC を稼ぐ前提:** ユーザーは「作業モード」。**入力フォーム上**に広告を置くと離脱 · ポリシー違反。**結果表示の直下・作業区切り**が唯一の勝ち筋（§2-2 済方針）。
+
+---
+
+#### A. 認知・獲得 —「サイトを知ってもらう」（チャネル MECE）
+
+ユーザーが **初めて SUGUDASU に到達する経路** で4分割（Paid は将来枠として分離）。
+
+| チャネル | 定義 | SUGUDASU での勝ち筋 |
+|----------|------|---------------------|
+| **A1 検索（Pull）** | 悩みキーワードで自走流入 | **最優先 · 生命線** |
+| **A2 ソーシャル（Push）** | X 等で認知・拡散 | 結果シェア · 開発ログ |
+| **A3 紹介（Referral）** | 他メディア・リンク | 個人開発 narrative · 被リンク |
+| **A4 直接（Direct）** | ブックマーク・再訪 | ホーム画面追加 · リピート |
+
+##### A1 検索（Pull）— SEO
+
+- [ ] **P0** Search Console · `sugudasu.com` プロパティ登録
+- [ ] **P1** ツール別ロングテール（title / h1 / リード / FAQ = 検索質問文）
+  - [ ] `invoice` — 請求書 無料 · インボイス · 源泉
+  - [ ] `receipt` — 手取り 逆引き · 領収書
+  - [ ] `warikan` — 割り勘 幹事 · 合コン
+  - [ ] `shift` — シフト表 自動作成
+  - [ ] `label` · `report` · `reverse` · `present` · `sns` — 各1テーマ
+- [ ] **P1** 内部リンク — hub ↔ 各ツール · 関連ツール相互（例: invoice ↔ receipt）
+- [ ] **P2** プログラムSEO — `calc.html`（メルカリ/ラクマ手数料 · `calc-furima.md`）
+- [ ] **P2** `FAQPage` / `WebApplication` 構造化データ（ツール単位）
+- [ ] **P2** sitemap.xml · `robots.txt`（`sugudasu.com`）
+
+##### A2 ソーシャル（Push）— 認知拡散
+
+- [x] **P1** 計算結果シェア（X）— `warikan` · `receipt` · `invoice` 優先（`sugudasu-growth.js` · intent 起動）
+- [ ] **P1** **開発透明性の発信** — `updates.html` + Form 窓口
+  - [x] 初回投稿文面（既存Xアカウント用）— `updates.html` + `OPERATOR_X_POSTS.launch`
+  - [ ] Zenn / Qiita 短記事（個人開発 × 実用ツール）
+- [ ] **P2** チャット共有 Phase 2（`report` · `shift`）— §2-4
+- [ ] **P2** 季節・時事フック投稿（年末調整 · 確定申告 · 歓送迎会割り勘）
+
+##### A3 紹介（Referral）— 被リンク・第三者
+
+- [ ] **P2** フリーランス / 副業ブロガーへの紹介依頼（神ツール系記事）
+- [ ] **P2** 知恵袋・Q&A 回答テンプレ（手動 · スパム禁止 · 価値先行）
+- [ ] **P2** 被リンク監視（Search Console · 参照元）
+- [ ] **P3** ツール埋め込み / iframe 提供 — 要セキュリティ・コスト検討
+
+##### A4 直接（Direct）— 再訪・囲い込み
+
+- [x] **P0** ホーム画面追加 / ブックマーク誘導（初回完了後 · `localStorage` · `sugudasu-growth.js`）
+- [ ] **P1** GA4 で Direct / 再訪率を追跡
+- [ ] **P2** 「よく使うツール」— 最終利用を `localStorage` で hub に表示（ログイン不要）
+
+##### A5 有料広告（将来 · 今はやらない）
+
+- [ ] **P3** 検索広告 · SNS広告 — ROAS 未定 · オーガニック優先後に検討
+
+---
+
+#### B. セッション深化 —「知った後に PV を増やす」（体験 MECE）
+
+初回流入だけでは収益が伸びない。**1セッション内のツール横断**で PV/セッションを上げる。
+
+| 施策 | 内容 | 優先 |
+|------|------|------|
+| ヘッダー9本ナビ | 常時ツール切替 | [x] |
+| 完了後「次のすぐだす」 | 結果下の関連ツール1ブロック | [ ] P1 |
+| hub おすすめロジック | 曜日/用途別（月末=請求書等） | [ ] P2 |
+| FAQ からの内部リンク | 関連ツールへ誘導 | [ ] P2 |
+| `updates.html` | 新機能で再訪動機 | [x] ページ · [ ] 発信 |
+
+- [ ] **P1** 完了時CTAテンプレ共通化（shell / CSS utility）— §2-4
+- [ ] **P1** ツール間「よく一緒に使われる」静的マップ（例: invoice → receipt → warikan）
+
+---
+
+#### C. 収益構造 — CTR × CPC × 在庫（マネタイズ MECE）
+
+##### C-1 在庫（インプレッション）
+
+- [ ] **P0** AdSense サイト承認待ち（2026-06-17 申請済）
+- [ ] **P0** 承認後: 全主要ツールに `ad-slot--result` 本番タグ — §2-2
+- [ ] **P1** 未配置ページ完了（`invoice` · `shift` · `label`）
+- [ ] **禁止** フォーム直上 · CTA 密着 · 印刷対象内広告
+
+##### C-2 CTR（配置・視線）
+
+- [ ] **P0** 配置原則: **計算結果直下** → 広告 → 次操作（24px+）
+- [ ] **P1** モバイル: アンカー広告は UX 監査後に限定
+- [ ] **P1** 誤タップ監査 — `docs/PRODUCT_UX_AUDIT.md` 再確認
+
+##### C-3 CPC（文脈・オークション品質）
+
+- [ ] **P1** 高単価文脈の自然な解説（インボイス · 源泉 · フリーランス · 確定申告）
+- [ ] **P1** `hub.html` リードをビジネス文脈に拡張
+- [ ] **禁止** キーワード詰め込み · 虚偽の専門性
+
+##### C-4 補助収益（AdSense 以外）
+
+- [ ] **P1** Amazon — `present.html` 主戦場 · §2-3
+- [ ] **P2** `label.html` 文具アフィ（最小）
+
+---
+
+#### D. 信頼・計測 — 施策が効いているか（横断）
+
+| 領域 | TODO |
+|------|------|
+| E-E-A-T | [x] 法務3ページ · [x] `updates.html` · [x] Form 窓口 |
+| 計測 | [ ] GA4（`sugudasu.com`）· [ ] SC インデックス · [ ] ツール別 PV |
+| 実験 | [ ] 広告位置 A/B（承認後）· [ ] シェアボタン CTR |
+| フィードバック | [x] Form + GAS + `FEEDBACK_TRIAGE.md` |
+
+---
+
+#### E. 実行ロードマップ（リソース有限前提）
+
+**同時並行は最大3本。** AdSense 承認前後でフェーズを分ける。
+
+| フェーズ | タイミング | 打つ施策（最大3） |
+|----------|------------|-------------------|
+| **今週** | 審査待ち | ①ブックマーク誘導 ②`updates` X発信 ③SC登録 |
+| **承認直後** | タグ設置 | ①結果直下 AdSense ②invoice/shift 枠 ③GA4 |
+| **30日** | オーガニック種まき | ①SEO文言5ツール ②結果シェア3ツール ③完了CTA |
+| **90日** | 拡張 | ①calc pSEO ②構造化データ ③ブロガーアウトリーチ |
+
+---
+
+#### 附録: Gemini 提案（2026-06-17）との対応
+
+| Gemini | 本 MECE |
+|--------|---------|
+| Ⅰ 集客4分類 | **A1〜A4**（+A5 Paid） |
+| Ⅱ 構造 CTR/CPC | **C-2 / C-3** |
+| 神の一手① ブックマーク | **A4 · P0** |
+| 神の一手② 改善レポート | **`updates.html` · A2/A3**（`report.html` ではない） |
+| 神の一手③ 結果下広告 | **C-2 · P0（審査後）** |
+
+**やらない（方針）:** 施策一括投入 · フォーム上広告 · スパム的知恵袋 · 露骨アフィ · 有料広告（当面）
+
 ---
 
 ## 3) AdSense 審査・法務 Backlog（優先度高）
@@ -179,18 +343,19 @@
 
 ### 5-2. 本番設定
 
-- [ ] Cloudflare Pages プロジェクト作成
-  - Build command: `npm run build:pages`
-  - Output: `dist`
-  - `NODE_VERSION=20`
-- [ ] カスタムドメイン接続
-- [ ] 初回公開後の表示確認（PC/スマホ）
+- [x] Cloudflare Pages プロジェクト（`sugudasu.pages.dev` 稼働中）
+- [x] カスタムドメイン `sugudasu.com` 接続（お名前.com · 2026-06-17 本番確認済）
+  - [x] Cloudflare にサイト追加 · NS をお名前から CF へ
+  - [x] Pages: `sugudasu.com` · SSL 有効 · `https://sugudasu.com/` 表示確認
+  - [ ] `www.sugudasu.com` Active 後 · www→apex リダイレクト
+  - [ ] `ads.txt` / 主要ツール URL を apex で最終確認
+  - [ ] AdSense に `sugudasu.com` 登録 · 審査待ち（2026-06-17 有効化手順完了）
 
 ### 5-3. 公開後
 
 - [x] AdSense 所有権の確認（`ads.txt`）完了
-- [ ] AdSense 審査申請（未実施）
-- [ ] AdSense 審査申請タイミング判断（法務3ページ後）
+- [x] AdSense サイト追加・有効化手順（`sugudasu.com` · 同意メッセージ済 · 2026-06-17）
+- [ ] AdSense **サイト承認**待ち（メール通知）
 - [ ] 収益導線のABテスト設計（広告位置・回遊CTA）
 
 ---
@@ -205,25 +370,36 @@
 ### P0（最優先）
 
 1. `invoice.html` の品質担保（税計算 / 負数値引き / 複数税率 / 印刷崩れ）  
-2. Cloudflare 本番運用の安定化（`dist` 実表示の最終確認、404導線方針）  
+2. ~~Cloudflare 本番運用~~ — `sugudasu.com` 本番確認済（§5-2）· 404 導線は未  
 3. 法務表現監査（過剰断定の除去、インボイス文言の根拠化）  
-4. `ads.txt` 設置（AdSense準備の必須項目）
+4. ~~`ads.txt` 設置~~ — 完了 · AdSense 審査待ち  
+5. **§2-5 A4** ホーム画面追加 / ブックマーク誘導 · **P0**  
+6. **§2-5 C-2** AdSense 承認後 · 結果直下広告本番タグ · **P0**  
+7. **§2-5 A1** Search Console 登録 · **P0**
 
 ### P1（高優先）
 
 1. ~~**新規ツール `receipt.html`（手取り逆引き・領収書）MVP**~~ — 完了（`docs/prompts/receipt.md`）  
-2. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
-3. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
-4. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
-5. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）
+2. ~~**`updates.html`（更新履歴・改善レポート）**~~ — 完了 · 詳細 §11 · SSOT: `data/changelog.json`  
+3. **§2-5 A2** `updates.html` の X / Zenn 発信（認知 · 被リンク）  
+4. **§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）  
+5. **§2-5 A2** 結果画面シェア導線（warikan · receipt · invoice）  
+6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ  
+7. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
+8. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
+9. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
+10. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）
 
 ### P2（通常優先）
 
 1. 完了時CTAテンプレート共通化  
-2. `hub.html` の曜日/用途別おすすめロジック  
-3. `label.html` 文具導線追加（必要最小限）  
-4. `sns.html` / `warikan.html` などの長文・境界ケース最適化  
-5. **新規ツール `calc.html`（フリマ送料・手数料比較）** — 仕様: `docs/prompts/calc-furima.md` · 詳細 §10
+2. **§2-5** `calc.html` プログラムSEO（フリマ手数料 · `calc-furima.md`）  
+3. **§2-5** 構造化データ · Search Console · sitemap  
+4. **§2-5** ブロガー紹介依頼 · 知恵袋運用テンプレ  
+5. **§2-5** アンカー広告（UX 監査後）  
+6. `hub.html` の曜日/用途別おすすめロジック  
+7. `label.html` 文具導線追加（必要最小限）  
+8. `sns.html` / `warikan.html` などの長文・境界ケース最適化  
 
 ---
 
@@ -235,6 +411,8 @@
 - `assets/sugudasu.css`
 - `assets/sugudasu-shell.js`
 - `scripts/build-pages.mjs`
+- `data/changelog.json`（更新履歴 SSOT）
+- **§2-5** AdSense 逆算 · グロースマーケ MECE（正本）
 
 ---
 
@@ -246,7 +424,7 @@
 ### 8-1. URL設計: `index` はポータル、請求書は `invoice`
 
 - **決定**
-  - `https://sugudasu.pages.dev/`（`index.html`）= ツール一覧ポータル
+  - `https://sugudasu.com/`（`index.html`）= ツール一覧ポータル · **2026-06-17 本番確認済**
   - 請求書ツール = `invoice.html`（`/invoice`）
 - **背景**
   - Cloudflare Pagesでは `index.html` がルート `/` の正本になる。
@@ -313,6 +491,19 @@
 - **思想**
   - 「厳密さ」より「出品前3秒の比較」に価値を置く。
   - 免責は画面を汚さずツールチップ + アコーディオン。基準日は常時1行表示。
+
+### 8-7. 更新履歴は `updates.html` + JSON SSOT（`report.html` ではない）
+
+- **決定**
+  - 改善レポート = `tools/updates.html` + 正本 `data/changelog.json`
+  - 議事録ツール `report.html` とは URL を分離
+  - 報告は Google Form（主）+ mailto（代替）
+- **背景**
+  - 静的ホストではフォーム POST 不可。信頼ページはビルド可能な SSOT が必要
+  - 生のバグ報告をそのまま SEO 公開すると品質・プライバシーリスク
+- **思想**
+  - 「生きてるサイト」を **編集済み changelog** で示す
+  - 手数最小の報告 = 文面コピー or mailto 1タップ
 
 ---
 
@@ -412,3 +603,124 @@
 - 議論の筋: **良い**（巨大マスタ回避は正しいアーキテクチャ判断）
 - ニーズ: **ある**（ただしエピソード利用・リピート弱め）
 - SUGUDASU適合: **7〜8割**（手数最小・クライアント完結と一致。数値鮮度が信頼リスク）
+
+---
+
+## 11) 更新履歴・改善レポート: `updates.html`
+
+**状態:** 実装済み（Phase A: 静的 changelog + mailto 報告）  
+**仕様SSOT:** `data/changelog.json` · 表示: `tools/updates.html`  
+**優先度:** P1（信頼・EEAT・鮮度シグナル）  
+**注意:** `report.html` は議事録ツールのため **使わない**
+
+### 11-1. なぜやるか
+
+- ログイン不要サイトの「誰が運営？」不安を、**更新の可視化**で解消
+- 料金改定・計算修正の履歴で数値ツールの信頼性を補強
+- Google 向け「生きたコンテンツ」シグナル（過度な期待はしない）
+
+### 11-2. 実装方針（採用）
+
+| レイヤ | 内容 |
+|--------|------|
+| 正本 | `data/changelog.json` — リリース時に1エントリ追記 |
+| ビルド | `build-pages.mjs` が `dist/data/` へコピー |
+| 表示 | `updates.html` が fetch で JSON 読込 → タイムライン描画 |
+| 報告 | Google Form（主）+ mailto（折りたたみ代替） |
+| 導線 | 全ページフッター + hub 1行リンク（ツールナビには載せない） |
+
+### 11-3. 実装TODO
+
+- [x] `data/changelog.json` 初回エントリ（receipt / warikan 合コン / invoice 等）
+- [x] `tools/updates.html`（タイムライン + 報告フォーム）
+- [x] `build-pages.mjs` data コピー
+- [x] `sugudasu-shell.js` フッターに「更新履歴」
+- [x] `hub.html` からリンク
+- [x] `sg-changelog` CSS
+- [x] Google Form へ報告導線（[フォーム](https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform) · `updates.html` 主CTA）
+- [x] Form 着信通知 GAS 設置（`gas/README.md` · FB-ID 自動 · メール）— 2026-06-17 トリガー `onFormSubmitNotify` 設置・テスト送信済
+- [ ] Phase B: ロードマップ（Planned）セクション — 任意
+
+### 11-4. 運用ルール
+
+- 公開 changelog は **編集済み・過去形のみ**（生のユーザー投稿は載せない）
+- 計算ツール修正行には **対象ツール名・基準日** を含める
+- リリース commit 時に `changelog.json` を同時更新
+- **Form 回答のトリアージ**は [`docs/FEEDBACK_TRIAGE.md`](FEEDBACK_TRIAGE.md) + [回答スプレッドシート](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit)（提督のみ）。Status: inbox / 要件定義 / planned / done / wontfix / duplicate
+- 公開は **changelog のみ**（スプシは非公開）。着信 → トリアージ doc → 実装 → changelog の順（詳細は `FEEDBACK_TRIAGE.md`）
+
+### 11-5. Changelog 記載ガイド（メタ・SSOT）
+
+**目的:** 「機能を足した」だけでなく、**いつ使うか・なぜ嬉しいか**まで書き、信頼と SEO の両方に効く1行ログにする。
+
+#### JSON 1エントリの構造
+
+| キー | 必須 | 役割 | 文字数目安 |
+|------|------|------|------------|
+| `date` | ○ | 公開日（`YYYY-MM-DD`） | — |
+| `type` | ○ | `feature` / `fix` / `improve` | — |
+| `title` | ○ | **何が変わったか**（名詞句・28字以内） | ≤28 |
+| `body` | ○ | **変更内容**（過去形・事実のみ） | 1〜2文 · ≤120字 |
+| `whenToUse` | 推奨 | **どんな場面で使うか**（ユーザー語） | 1文 · ≤100字 |
+| `highlight` | 推奨 | **刺さるポイント**（省ける手間・得する理由） | 1文 · ≤100字 |
+| `tools` | 任意 | 関連 HTML（リンク用） | ファイル名配列 |
+
+#### 書き方テンプレ（思考順）
+
+1. **title** — 「ツール名 + 変更の核」（例: 割り勘に固定額モード（合コン等））
+2. **body** — 実装事実。「〜を追加しました」「〜を修正しました」
+3. **whenToUse** — 「〇〇のとき」「〇〇な現場向け」
+4. **highlight** — 「幹事が△△しなくてよい」「1秒で□□」
+
+#### 禁止・注意
+
+- 生のユーザー報告文の転載 · 「完全対応」「100%正確」等の断定
+- 未リリースの予告（ロードマップは別 Phase）
+- `body` に whenToUse/highlight を詰め込まない（役割分担を崩す）
+
+#### 表示
+
+- `whenToUse` / `highlight` があるエントリは `updates.html` でラベル付き表示
+- 無い旧エントリは `body` のみ（後方互換）
+
+#### 例（feature · 割り勘固定額）
+
+```json
+{
+  "date": "2026-06-17",
+  "type": "feature",
+  "title": "割り勘に「固定額モード（合コン等）」",
+  "body": "一方グループの1人あたり金額を固定し、残りをもう一方で按分するモードを追加しました。",
+  "whenToUse": "合コンで女性のみ3,000円固定・男性が残りを割るときなど、金額が先に決まっている場面向け。",
+  "highlight": "「総額−固定×人数」の電卓計算とLINE清算文作成をワンストップで済ませられます。",
+  "tools": ["warikan.html"]
+}
+```
+
+### 11-6. 意思決定（8章参照 §8-7）
+
+§8-7 に追記済み。
+
+---
+
+## 12) Form 由来 · shift.html 改善（FB キュー）
+
+**トリアージ正本:** `docs/FEEDBACK_TRIAGE.md`  
+**スプシ:** [回答シート](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit)
+
+### 12-1. FB-20260617-001 — シフト枠の可変化
+
+- [x] 枠数 1〜3 · 名称変更 UI（2026-06-17 反映 · changelog 済）
+
+### 12-2. FB-20260617-002 — 複数人配置 + 新人のみ禁止
+
+**Status:** 要件定義（P2）
+
+- [ ] 1シフト帯あたり **複数スタッフ**（データモデル: `val` 配列化）
+- [ ] **新人のみの帯を禁止**（帯単位。現行「重複NGキーワード」は同一日2新人回避で別ロジック）
+- [ ] 自動生成が対象か / 手動のみか — 要件確定
+- [ ] 印刷レイアウト（セル内複数行）
+- [ ] 要件確定後 `docs/prompts/shift.md` に追記
+
+**現状の近い機能:** 「役割・職種重複NGキーワード」（既定 `新人`）= 同一営業日に新人タグ2人を避ける。帯内複数名・新人単独禁止とは **未対応**。
+

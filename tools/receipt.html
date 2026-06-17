@@ -123,6 +123,7 @@
                 <button type="button" data-chat="teams" class="rcpt-chat-btn">Teams</button>
                 <button type="button" data-chat="lineworks" class="rcpt-chat-btn">LINE WORKS</button>
                 <button type="button" id="btn-chat-config" class="rcpt-chat-btn text-slate-500">送信先URL設定</button>
+                <button type="button" id="btn-x-share" class="sg-btn-x col-span-2 sm:col-span-1" title="ログイン中のXアカウントで投稿画面を開きます">𝕏 にシェア</button>
             </div>
             <button type="button" id="btn-share-url" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs">
                 URLで領収書を共有
@@ -376,6 +377,7 @@
                 taxRatePct
             });
             renderCalcSummary(calc, opts);
+            if (net > 0 && window.SUGUDASU_GROWTH) window.SUGUDASU_GROWTH.recordToolSuccess();
             return;
         }
 
@@ -396,6 +398,8 @@
         root.innerHTML = parts.join('');
         const firstCalc = calcFromNet(entries[0]?.net || 0, opts);
         renderCalcSummary(firstCalc, opts, entries.length > 1 ? `（1人目の内訳・全${entries.length}名）` : '');
+        const hasNet = entries.some((e) => e.net > 0);
+        if (hasNet && window.SUGUDASU_GROWTH) window.SUGUDASU_GROWTH.recordToolSuccess();
     }
 
     function renderCalcSummary(calc, opts, suffix) {
@@ -503,6 +507,18 @@
         }
         window.open(dest, '_blank', 'noopener');
         alert(`${CHAT_LABELS[tool]} 向け文面をコピーしました。貼り付けて送信してください。`);
+    }
+
+    function shareToX() {
+        if (!window.SUGUDASU_GROWTH) return;
+        const net = outputMode === 'single'
+            ? Number(document.getElementById('in-net').value) || 0
+            : (getMultiEntries().find((e) => e.net > 0)?.net || 0);
+        if (net <= 0) {
+            alert('先に手取り金額を入力してください。');
+            return;
+        }
+        window.SUGUDASU_GROWTH.shareXReceipt(() => ({ net: yen(net) }));
     }
 
     function configureChat() {
@@ -615,6 +631,7 @@
 
         document.getElementById('btn-print').addEventListener('click', () => window.print());
         document.getElementById('btn-share-url').addEventListener('click', shareUrl);
+        document.getElementById('btn-x-share').addEventListener('click', shareToX);
         document.getElementById('btn-chat-config').addEventListener('click', configureChat);
         document.querySelectorAll('[data-chat]').forEach((btn) => {
             btn.addEventListener('click', () => shareToChat(btn.getAttribute('data-chat')));

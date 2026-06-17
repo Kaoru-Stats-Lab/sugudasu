@@ -59,6 +59,19 @@ if (fs.existsSync(ADS_TXT)) {
   fs.copyFileSync(ADS_TXT, path.join(DIST, 'ads.txt'));
 }
 
+// 更新履歴 SSOT → dist/data/
+const DATA_DIR = path.join(ROOT, 'data');
+const DIST_DATA = path.join(DIST, 'data');
+if (fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DIST_DATA, { recursive: true });
+  for (const name of fs.readdirSync(DATA_DIR)) {
+    const src = path.join(DATA_DIR, name);
+    if (fs.statSync(src).isFile()) {
+      fs.copyFileSync(src, path.join(DIST_DATA, name));
+    }
+  }
+}
+
 const count = htmlFiles.length;
 console.log(`build:pages OK — ${count} tools + index → ${DIST}`);
 console.log('  Preview: cd dist && python -m http.server 8080');

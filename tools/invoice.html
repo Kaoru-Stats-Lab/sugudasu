@@ -119,6 +119,7 @@
                     <button type="button" onclick="shareToBusinessChat('teams')" class="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl py-2 text-[11px] font-bold text-slate-700">Teamsに共有</button>
                     <button type="button" onclick="shareToBusinessChat('lineworks')" class="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl py-2 text-[11px] font-bold text-slate-700">LINE WORKSに共有</button>
                     <button type="button" onclick="configureChatShareTargets()" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl py-2 text-[11px] font-bold text-slate-600">送信先URLを設定</button>
+                    <button type="button" onclick="shareToX()" class="sg-btn-x col-span-2 sm:col-span-1" title="ログイン中のXアカウントで投稿画面を開きます">𝕏 にシェア</button>
                 </div>
                 <p class="text-[10px] text-slate-500">押すと送付文面をコピーし、設定済みのチャットURLを新規タブで開きます（初回はURL設定が必要）。</p>
             </div>
@@ -645,6 +646,18 @@
             }).catch(() => {
                 alert('コピーに失敗しました。URL欄から直接コピーしてください。');
             });
+        }
+
+        function shareToX() {
+            if (!window.SUGUDASU_GROWTH) return;
+            const total = document.getElementById('calc-total').innerText || '';
+            const title = document.getElementById('in-title').value.trim();
+            if (title || total !== '¥0') {
+                window.SUGUDASU_GROWTH.recordToolSuccess();
+            }
+            window.SUGUDASU_GROWTH.shareXInvoice(() => ({
+                total: total !== '¥0' ? total : '',
+            }));
         }
 
         function updatePreview() {

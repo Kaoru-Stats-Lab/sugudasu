@@ -42,6 +42,10 @@
   - Framework preset: `None`
   - `NODE_VERSION=20`
 
+- **カスタムドメイン `sugudasu.com`（お名前.com 取得）**
+  - 手順正本: [`docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md`](notes/CUSTOM_DOMAIN_SUGUDASU_COM.md)
+  - 推奨: お名前の NS → Cloudflare · Pages に apex + www 追加
+
 - **重要**
   - リリース前は必ず `npm run release:pages:free` を通す
   - 台帳: `.ops/cloudflare-pages-build-budget.json`（Git 管理外）

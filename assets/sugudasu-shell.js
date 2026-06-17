@@ -70,6 +70,8 @@
       <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
         <p class="text-xs text-slate-500">ブラウザ内完結 · データは外部に送信しません</p>
         <p class="text-[11px] text-slate-500">
+          <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
+          <span class="text-slate-300 mx-1">|</span>
           <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>
           <span class="text-slate-300 mx-1">|</span>
           <a href="terms.html" class="text-blue-600 hover:underline">利用規約</a>
@@ -105,6 +107,25 @@
     if (bottom) {
       bottom.innerHTML = footerHtml();
     }
+
+    loadGrowthScript();
+  }
+
+  function loadGrowthScript() {
+    if (global.SUGUDASU_GROWTH) {
+      global.SUGUDASU_GROWTH.init();
+      return;
+    }
+    const existing = document.querySelector('script[data-sg-growth]');
+    if (existing) return;
+    const s = document.createElement('script');
+    s.src = assetUrl('sugudasu-growth.js');
+    s.async = true;
+    s.setAttribute('data-sg-growth', '1');
+    s.onload = function () {
+      if (global.SUGUDASU_GROWTH) global.SUGUDASU_GROWTH.init();
+    };
+    document.head.appendChild(s);
   }
 
   global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl };
