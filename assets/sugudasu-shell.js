@@ -23,7 +23,11 @@
     if (link && link.getAttribute('href')) {
       const href = link.getAttribute('href');
       const base = href.replace(/sugudasu\.css.*$/, '');
-      return base + path;
+      if (base) return base + path;
+    }
+    const host = String(global.location && global.location.hostname || '');
+    if (host === 'sugudasu.com' || host.endsWith('.pages.dev')) {
+      return '/assets/' + path;
     }
     return '../assets/' + path;
   }
@@ -34,9 +38,20 @@
     if (link && link.getAttribute('href')) {
       const href = link.getAttribute('href');
       const base = href.replace(/assets\/sugudasu\.css.*$/, '');
-      return base + 'data/' + path;
+      if (base) return base + 'data/' + path;
+    }
+    const host = String(global.location && global.location.hostname || '');
+    if (host === 'sugudasu.com' || host.endsWith('.pages.dev')) {
+      return '/data/' + path;
     }
     return '../data/' + path;
+  }
+
+  function homeHref() {
+    const link = document.querySelector('link[href*="sugudasu.css"]');
+    const href = link && link.getAttribute('href');
+    if (href && href.startsWith('/')) return 'index.html';
+    return 'hub.html';
   }
 
   function currentFile() {
@@ -64,9 +79,9 @@
 
   function logoHtml() {
     const markSrc = assetUrl('logo-mark.png?v=2');
-    return `<a href="hub.html" class="sg-logo" aria-label="SUGUDASU ホーム">
-      <img class="sg-logo__mark" src="${markSrc}" alt="" width="56" height="56" decoding="async">
-      <span class="sg-logo__word">SUGUDASU</span>
+    return `<a href="${homeHref()}" class="sg-logo inline-flex items-center gap-1.5 shrink-0 no-underline leading-none" aria-label="SUGUDASU ホーム">
+      <img class="sg-logo__mark h-8 w-auto max-h-9 object-contain" src="${markSrc}" alt="" width="56" height="56" decoding="async">
+      <span class="sg-logo__word font-extrabold text-[#001f3f] tracking-wide">SUGUDASU</span>
     </a>`;
   }
 
@@ -95,12 +110,12 @@
       ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
       : '';
     const pageTitle = title && title !== 'SUGUDASU'
-      ? `<p class="sg-site-header__pagetitle">${title}</p>`
+      ? `<p class="sg-site-header__pagetitle text-xs font-semibold text-slate-500 border-l border-slate-200 pl-3 truncate">${title}</p>`
       : '';
-    return `<header class="sg-site-header no-print sticky top-0 z-50">
-      <div class="sg-site-header__brand">
-        <div class="sg-site-header__inner">
-          <div class="sg-site-header__left">
+    return `<header class="sg-site-header">
+      <div class="sg-site-header__brand bg-white border-b border-slate-200">
+        <div class="sg-site-header__inner flex min-h-14 max-w-7xl mx-auto px-4 items-center justify-between gap-3">
+          <div class="sg-site-header__left flex items-center gap-3 min-w-0 flex-1">
             ${logoHtml()}
             ${pageTitle}
           </div>
@@ -108,6 +123,10 @@
         </div>
       </div>
     </header>`;
+  }
+
+  function chromeHtml(title, showPrint, activeFile) {
+    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint)}${navHtml(activeFile)}</div>`;
   }
 
   function footerHtml() {
@@ -150,7 +169,7 @@
     loadGa4();
 
     if (top) {
-      top.innerHTML = headerHtml(title, showPrint) + navHtml(file);
+      top.innerHTML = chromeHtml(title, showPrint, file);
     }
     if (bottom) {
       bottom.innerHTML = footerHtml();

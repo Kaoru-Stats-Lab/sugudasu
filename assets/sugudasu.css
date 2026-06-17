@@ -704,6 +704,17 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
   transform-origin: top left;
 }
 
+/* Invoice — 明細は縦伸び・プレビューは PC で sticky（入力照合） */
+@media (min-width: 1024px) {
+  .invoice-preview-section {
+    position: sticky;
+    top: 7.5rem; /* sg-chrome（白ヘッダー + ナビ）高さ */
+    align-self: start;
+    overflow: visible;
+    z-index: 10;
+  }
+}
+
 .stamp-box { position: relative; }
 .stamp-img {
   mix-blend-mode: multiply;
@@ -719,6 +730,28 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
   border-style: dashed;
   border-color: #cbd5e1;
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.invoice-detail-spacer-row {
+  background-color: #f8fafc;
+}
+
+@media print {
+  tr.invoice-preview-empty {
+    display: none !important;
+  }
+
+  tr.invoice-preview-spacer td {
+    color: transparent !important;
+    border-color: #e2e8f0 !important;
+    height: 1.6rem;
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+  }
+
+  tr.invoice-preview-spacer .no-print {
+    display: none !important;
+  }
 }
 
 /* Label (label.html) */

@@ -17,13 +17,17 @@
     <!-- Tailwind CSS v4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。会員登録なしで見積書・納品書・請求書を作成でき、登録番号の記載にも対応しています。","@type":"Answer"},"name":"登録不要でインボイス対応の請求書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ブラウザの印刷機能からPDF保存・印刷が可能です。実務で使える体裁で出力できます。","@type":"Answer"},"name":"作成した書類はPDF保存できますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。基本処理はブラウザ内で完結し、入力した顧客情報や金額データは外部送信しません。","@type":"Answer"},"name":"入力データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"むしろ「仕事が早すぎる人」として評価されることが多いです。整ったPDFを即提出できるため、周囲には“段取りの達人”として映ります。","@type":"Answer"},"name":"会員登録すらせず一瞬で請求書を出したら、手抜きだと思われませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。会員登録なしで見積書・納品書・請求書を作成でき、登録番号の記載にも対応しています。","@type":"Answer"},"name":"登録不要でインボイス対応の請求書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ブラウザの印刷機能からPDF保存・印刷が可能です。実務で使える体裁で出力できます。","@type":"Answer"},"name":"作成した書類はPDF保存できますか？","@type":"Question"},{"acceptedAnswer":{"text":"PDFは送付用の完成版です。下書きデータはあとから編集したり別PCで開き直したりするためのファイルで、会計ソフトへの直接取込はできません。","@type":"Answer"},"name":"PDFと下書きデータの保存の違いは？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。基本処理はブラウザ内で完結し、入力した顧客情報や金額データは外部送信しません。","@type":"Answer"},"name":"入力データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"むしろ「仕事が早すぎる人」として評価されることが多いです。整ったPDFを即提出できるため、周囲には“段取りの達人”として映ります。","@type":"Answer"},"name":"会員登録すらせず一瞬で請求書を出したら、手抜きだと思われませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top"></div>
 
     <!-- メインコンテンツ -->
     <main class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
+
+        <div class="no-print col-span-1 lg:col-span-12 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note" aria-label="利用環境の推奨">
+            <strong class="font-bold">PC推奨</strong> — 帳票の最終確認・PDF保存・印刷はパソコン向けに最適化しています。スマホは入力や下書きの確認程度を想定しています。
+        </div>
         
         <!-- 左側：入力フォームパネル -->
         <section class="no-print lg:col-span-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-6">
@@ -97,9 +101,12 @@
 
             <!-- 明細項目 -->
             <div class="border-t border-slate-100 pt-4 space-y-3">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-wrap justify-between items-center gap-2">
                     <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">📊 項目明細（☰ドラッグで並び替え / 値引きは単価を負数入力）</h3>
-                    <button type="button" onclick="addDetailRow()" class="bg-slate-900 hover:bg-slate-800 text-white font-medium text-[11px] px-2.5 py-1 rounded-md transition-all cursor-pointer">+ 行を追加</button>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button type="button" onclick="addDetailRow()" class="bg-slate-900 hover:bg-slate-800 text-white font-medium text-[11px] px-2.5 py-1 rounded-md transition-all cursor-pointer">+ 行を追加</button>
+                        <button type="button" id="btn-add-spacer-row" onclick="addSpacerRow()" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium text-[11px] px-2.5 py-1 rounded-md transition-all cursor-pointer" title="印刷時の改ページ位置を手動で調整">+ 改ページ用空行</button>
+                    </div>
                 </div>
                 <div class="grid grid-cols-12 gap-2 px-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider hidden sm:grid">
                     <div class="col-span-5 pl-7">品名・内容</div>
@@ -108,7 +115,8 @@
                     <div class="col-span-2 text-center">税率</div>
                     <div class="col-span-1"></div>
                 </div>
-                <div id="form-item-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
+                <div id="form-item-container" class="space-y-2"></div>
+                <p class="text-[10px] text-slate-500 leading-relaxed">未入力の行は印刷されません。明細が多いときは「改ページ用空行」で1枚目の区切りを調整できます（印刷時は余白のみ）。</p>
             </div>
 
             <!-- 備考欄編集エリア -->
@@ -117,11 +125,26 @@
                 <textarea id="in-note" oninput="updatePreview()" rows="3" class="w-full border border-slate-200 rounded-lg p-2 text-xs bg-slate-50 focus:bg-white outline-none leading-relaxed font-mono" placeholder="お振込先や特記事項を入力してください。"></textarea>
             </div>
 
+            <!-- 下書きデータの保存・読み込み -->
+            <div class="border-t border-slate-100 pt-4 space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">💾 下書きデータの保存・読み込み</h3>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button type="button" id="btn-export-draft" onclick="exportInvoiceDraft()" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg text-slate-700 font-bold cursor-pointer">下書きデータの保存</button>
+                        <label class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg text-slate-700 font-bold cursor-pointer">
+                            下書きデータを読み込む
+                            <input type="file" id="input-import-draft" accept=".json,application/json" onchange="importInvoiceDraft(this)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-relaxed">PDFは送付・印刷用の完成版です。下書きデータはあとから直したり、社内で保管したりするためのファイルです（会計ソフトへの直接取込はできません）。</p>
+            </div>
+
             <!-- クライアント送付・チャット共有 -->
             <div class="border-t border-slate-100 pt-4 space-y-3">
                 <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">🔗 共有・クライアント送付</h3>
                 <button type="button" id="btn-copy-tool-url" onclick="copyToolUrl()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-sm">
-                    <span>🔗 ツールURLをコピーして送付</span>
+                    <span>📋 送付文面をコピー（URL付き）</span>
                 </button>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <button type="button" id="btn-share-slack" onclick="shareToBusinessChat('slack')" class="bg-white hover:bg-slate-50 border border-slate-200 rounded-xl py-2 text-[11px] font-bold text-slate-700">Slackに共有</button>
@@ -132,7 +155,7 @@
                     <button type="button" id="btn-config-chat-targets" onclick="configureChatShareTargets()" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl py-2 text-[11px] font-bold text-slate-600">送信先URLを設定</button>
                     <button type="button" id="btn-share-x" onclick="shareToX()" class="sg-btn-x col-span-2 sm:col-span-1" title="ログイン中のXアカウントで投稿画面を開きます">𝕏 にシェア</button>
                 </div>
-                <p class="text-[10px] text-slate-500">押すと送付文面をコピーし、設定済みのチャットURLを新規タブで開きます（初回はURL設定が必要）。</p>
+                <p class="text-[10px] text-slate-500">このページはクラウド保存型ではありません。共有時は「送付文面コピー」または各チャット共有を使ってください（初回のみ送信先URL設定）。</p>
             </div>
 
             <!-- 広告枠 -->
@@ -143,7 +166,7 @@
         </section>
 
         <!-- 右側：A4プレビューパネル -->
-        <section class="print-target preview-section lg:col-span-6 flex justify-center lg:justify-start overflow-hidden">
+        <section class="print-target preview-section invoice-preview-section lg:col-span-6 flex justify-center lg:justify-start">
             <div class="preview-scaler preview-wrapper" id="preview-wrapper">
                 <div class="preview-container" id="preview-container">
                     <div id="pdf-paper" class="a4-page flex flex-col justify-between">
@@ -275,6 +298,16 @@
 
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4 transition-all">
                 <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>PDFと下書きデータの保存の違いは？</span>
+                    <span class="ml-1.5 shrink-0 transition-transform duration-200"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
+                    <p><strong>PDF</strong>は取引先へ送る完成版です。<strong>下書きデータ</strong>は、同じ内容をあとから編集したり、別のPCで開き直したりするためのファイルです。会計ソフト（freee・弥生など）へのそのまま取込はできませんが、社内バックアップや将来の変換用データとして使えます。</p>
+                </div>
+            </details>
+
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4 transition-all">
+                <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>入力した顧客情報や社印画像は外部に送信されますか？</span>
                     <span class="ml-1.5 shrink-0 transition-transform duration-200"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
                 </summary>
@@ -306,6 +339,9 @@
             { id: 2, name: 'フロントエンド開発 (Tailwind CSSコンポーネント化)', qty: 1, price: 200000, taxRate: 10 },
             { id: 3, name: '出精値引き (インボイス考慮減算)', qty: 1, price: -50000, taxRate: 10 }
         ];
+
+        const INVOICE_DRAFT_FORMAT = 'sugudasu.invoice';
+        const INVOICE_DRAFT_VERSION = 1;
 
         const DOC_CONFIG = {
             estimate: {
@@ -447,18 +483,34 @@
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
+        function isSpacerRow(item) {
+            return !!item.spacer;
+        }
+
+        function isEmptyContentRow(item) {
+            if (isSpacerRow(item)) return false;
+            const name = String(item.name || '').trim();
+            const price = Number(item.price) || 0;
+            return !name && price === 0;
+        }
+
         function reorderDetailItems() {
             const container = document.getElementById('form-item-container');
             const rows = [...container.querySelectorAll('.sortable-row')];
             
             const newOrderItems = rows.map(row => {
-                const id = parseInt(row.dataset.id);
+                const id = parseInt(row.dataset.id, 10);
+                const prev = detailItems.find(i => i.id === id);
+                if (prev && isSpacerRow(prev)) {
+                    return { id, name: '', qty: 1, price: 0, taxRate: 10, spacer: true };
+                }
+
                 const name = document.getElementById(`item-name-${id}`).value;
                 const qty = parseFloat(document.getElementById(`item-qty-${id}`).value) || 0;
                 const price = parseFloat(document.getElementById(`item-price-${id}`).value) || 0;
-                const taxRate = parseInt(document.getElementById(`item-tax-${id}`).value);
+                const taxRate = parseInt(document.getElementById(`item-tax-${id}`).value, 10);
                 
-                return { id, name, qty, price, taxRate };
+                return { id, name, qty, price, taxRate, spacer: false };
             });
 
             detailItems = newOrderItems;
@@ -477,10 +529,27 @@
 
             detailItems.forEach((item) => {
                 const row = document.createElement('div');
-                row.className = 'sortable-row grid grid-cols-12 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 items-center select-none';
+                row.className = 'sortable-row grid grid-cols-12 gap-2 p-2.5 rounded-xl border items-center select-none';
                 row.setAttribute('draggable', 'true');
                 row.setAttribute('data-id', item.id);
 
+                if (isSpacerRow(item)) {
+                    row.classList.add('invoice-detail-spacer-row', 'bg-slate-50', 'border-dashed', 'border-slate-300');
+                    row.innerHTML = `
+                        <div class="col-span-11 flex items-center gap-2 min-w-0">
+                            <div class="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 text-sm px-1 select-none shrink-0" title="ドラッグして並び替え">☰</div>
+                            <span class="text-xs text-slate-500 truncate">改ページ用空行（印刷時は余白のみ）</span>
+                        </div>
+                        <div class="col-span-1 text-center">
+                            <button type="button" aria-label="削除" class="text-rose-500 hover:text-rose-700 font-bold text-xs cursor-pointer w-full py-1">✕</button>
+                        </div>
+                    `;
+                    row.querySelector('button').addEventListener('click', () => deleteDetailRow(item.id));
+                    container.appendChild(row);
+                    return;
+                }
+
+                row.classList.add('bg-slate-50', 'border-slate-200');
                 row.innerHTML = `
                     <div class="col-span-5 flex items-center space-x-2">
                         <div class="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 text-sm px-1 select-none" title="ドラッグして並び替え">☰</div>
@@ -523,7 +592,7 @@
 
         function updateItem(id, field, value) {
             const item = detailItems.find(i => i.id === id);
-            if (!item) return;
+            if (!item || isSpacerRow(item)) return;
 
             if (field === 'qty' || field === 'price' || field === 'taxRate') {
                 const num = parseFloat(value);
@@ -536,7 +605,7 @@
 
         function addDetailRow() {
             const newId = detailItems.length > 0 ? Math.max(...detailItems.map(i => i.id)) + 1 : 1;
-            detailItems.push({ id: newId, name: '', qty: 1, price: 0, taxRate: 10 });
+            detailItems.push({ id: newId, name: '', qty: 1, price: 0, taxRate: 10, spacer: false });
             renderFormRows();
             updatePreview();
             requestAnimationFrame(() => {
@@ -545,10 +614,162 @@
             });
         }
 
+        function addSpacerRow() {
+            const newId = detailItems.length > 0 ? Math.max(...detailItems.map(i => i.id)) + 1 : 1;
+            detailItems.push({ id: newId, name: '', qty: 1, price: 0, taxRate: 10, spacer: true });
+            renderFormRows();
+            updatePreview();
+        }
+
         function deleteDetailRow(id) {
             detailItems = detailItems.filter(item => item.id !== id);
             renderFormRows();
             updatePreview();
+        }
+
+        function getImageDataUrl(containerId) {
+            const img = document.getElementById(containerId)?.querySelector('img');
+            if (!img || !img.src || !img.src.startsWith('data:')) return '';
+            return img.src;
+        }
+
+        function setImageFromDataUrl(containerId, dataUrl, targetWidth) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            if (!dataUrl) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = `<img src="${dataUrl}" style="width: ${targetWidth}px; height: auto;" class="object-contain">`;
+        }
+
+        function collectInvoiceDraft() {
+            return {
+                format: INVOICE_DRAFT_FORMAT,
+                version: INVOICE_DRAFT_VERSION,
+                exportedAt: new Date().toISOString(),
+                docType: currentDocType,
+                date: document.getElementById('in-date').value,
+                deadline: document.getElementById('in-deadline').value,
+                number: document.getElementById('in-number').value,
+                title: document.getElementById('in-title').value,
+                clientName: document.getElementById('in-client-name').value,
+                clientDetails: document.getElementById('in-client-details').value,
+                issuerName: document.getElementById('in-issuer-name').value,
+                issuerDetails: document.getElementById('in-issuer-details').value,
+                issuerInvoice: document.getElementById('in-issuer-invoice').value,
+                note: document.getElementById('in-note').value,
+                items: detailItems.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    qty: item.qty,
+                    price: item.price,
+                    taxRate: item.taxRate,
+                    spacer: !!item.spacer
+                })),
+                images: {
+                    logo: getImageDataUrl('view-logo-container'),
+                    stampUser: getImageDataUrl('view-stamp-user-container'),
+                    stampComp: getImageDataUrl('view-stamp-comp-container')
+                }
+            };
+        }
+
+        function normalizeImportedItems(items) {
+            if (!Array.isArray(items) || items.length === 0) {
+                return [{ id: 1, name: '', qty: 1, price: 0, taxRate: 10 }];
+            }
+            return items.map((item, index) => {
+                const taxRaw = parseInt(item.taxRate, 10);
+                const taxRate = taxRaw === 8 || taxRaw === 0 ? taxRaw : 10;
+                return {
+                    id: Number.isFinite(item.id) ? item.id : index + 1,
+                    name: typeof item.name === 'string' ? item.name : '',
+                    qty: Number.isFinite(item.qty) ? item.qty : (parseFloat(item.qty) || 0),
+                    price: Number.isFinite(item.price) ? item.price : (parseFloat(item.price) || 0),
+                    taxRate,
+                    spacer: !!item.spacer
+                };
+            });
+        }
+
+        function applyInvoiceDraft(data) {
+            const docType = DOC_CONFIG[data.docType] ? data.docType : 'estimate';
+            currentDocType = docType;
+            setDocType(docType);
+
+            const setVal = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = typeof value === 'string' ? value : (value ?? '');
+            };
+
+            setVal('in-date', data.date);
+            setVal('in-deadline', data.deadline);
+            setVal('in-number', data.number);
+            setVal('in-title', data.title);
+            setVal('in-client-name', data.clientName);
+            setVal('in-client-details', data.clientDetails);
+            setVal('in-issuer-name', data.issuerName);
+            setVal('in-issuer-details', data.issuerDetails);
+            setVal('in-issuer-invoice', data.issuerInvoice);
+            setVal('in-note', data.note);
+
+            detailItems = normalizeImportedItems(data.items);
+
+            const images = data.images && typeof data.images === 'object' ? data.images : {};
+            setImageFromDataUrl('view-logo-container', images.logo || '', 120);
+            setImageFromDataUrl('view-stamp-user-container', images.stampUser || '', 42);
+            setImageFromDataUrl('view-stamp-comp-container', images.stampComp || '', 62);
+
+            renderFormRows();
+            updatePreview();
+            setupPreviewScale();
+        }
+
+        function safeDraftFilenamePart(text) {
+            return String(text || '下書き').replace(/[\\/:*?"<>|]/g, '_').trim().slice(0, 40) || '下書き';
+        }
+
+        function exportInvoiceDraft() {
+            const snapshot = collectInvoiceDraft();
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const label = safeDraftFilenamePart(
+                document.getElementById('in-number').value.trim()
+                || document.getElementById('in-title').value.trim()
+            );
+            const filename = `【見積請求】${dateStr}_${label}.json`;
+            const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = filename;
+            anchor.click();
+            URL.revokeObjectURL(url);
+            alert('下書きデータを保存しました。PDFとは別に、社内フォルダ等へ保管してください。');
+        }
+
+        function importInvoiceDraft(input) {
+            const file = input.files[0];
+            input.value = '';
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const parsed = JSON.parse(event.target.result);
+                    if (!parsed || parsed.format !== INVOICE_DRAFT_FORMAT || parsed.version !== INVOICE_DRAFT_VERSION) {
+                        throw new Error('invalid format');
+                    }
+                    if (!confirm('下書きデータを読み込みます。現在の入力内容は上書きされます。よろしいですか？')) {
+                        return;
+                    }
+                    applyInvoiceDraft(parsed);
+                    alert('下書きデータを読み込みました。内容を確認してからPDF保存してください。');
+                } catch {
+                    alert('読み込みに失敗しました。SUGUDASUで保存した下書きデータファイルかご確認ください。');
+                }
+            };
+            reader.readAsText(file);
         }
 
         const CHAT_TARGETS_KEY = 'sugudasu.invoice.chat.targets';
@@ -583,6 +804,7 @@
 
         function configureChatShareTargets() {
             const targets = loadChatTargets();
+            alert('各チャットの「投稿先URL（チャンネル/ルームURL）」を順に設定します。不要な項目は空欄のままでOKです。');
             const slack = prompt('Slackの送信先URL（チャンネル/DM URL）', targets.slack || '');
             if (slack === null) return;
             const chatwork = prompt('Chatworkの送信先URL（ルームURL）', targets.chatwork || '');
@@ -601,7 +823,7 @@
                 teams: teams.trim(),
                 lineworks: lineworks.trim()
             });
-            alert('チャット送信先URLを保存しました。');
+            alert('チャット送信先URLを保存しました。次回から共有ボタンで送付文面コピー + URL起動ができます。');
         }
 
         function buildShareMessage() {
@@ -659,13 +881,13 @@
             alert(`${getChatLabel(tool)} 向けの送付文面をコピーしました。貼り付けて送信してください。`);
         }
 
-        // URLコピーによる送付共有アクション
+        // 送付文面コピー（確認URL付き）
         function copyToolUrl() {
-            const currentUrl = window.location.origin + window.location.pathname;
-            navigator.clipboard.writeText(currentUrl).then(() => {
-                alert('ツールURLをクリップボードにコピーしました。');
+            const message = buildShareMessage();
+            navigator.clipboard.writeText(message).then(() => {
+                alert('送付文面（確認URL付き）をクリップボードにコピーしました。');
             }).catch(() => {
-                alert('コピーに失敗しました。URL欄から直接コピーしてください。');
+                alert('コピーに失敗しました。ブラウザ権限をご確認ください。');
             });
         }
 
@@ -723,7 +945,69 @@
                 tr.innerHTML = `<td colspan="5" class="py-6 text-center text-slate-400 text-xs">明細がありません</td>`;
                 tbody.appendChild(tr);
             } else {
+                let visibleRowCount = 0;
                 detailItems.forEach(item => {
+                    if (isSpacerRow(item)) {
+                        visibleRowCount += 1;
+                        const tr = document.createElement('tr');
+                        tr.className = 'invoice-preview-spacer border-b border-dashed border-slate-200 text-slate-700';
+
+                        const tdName = document.createElement('td');
+                        tdName.className = 'py-2 px-3';
+                        tdName.innerHTML = '<span class="no-print text-slate-400 text-xs">改ページ用空行</span>';
+
+                        const tdQty = document.createElement('td');
+                        tdQty.className = 'py-2 px-3 text-right font-mono';
+                        tdQty.innerHTML = '&nbsp;';
+
+                        const tdPrice = document.createElement('td');
+                        tdPrice.className = 'py-2 px-3 text-right font-mono';
+                        tdPrice.innerHTML = '&nbsp;';
+
+                        const tdTax = document.createElement('td');
+                        tdTax.className = 'py-2 px-3 text-center text-slate-500';
+                        tdTax.innerHTML = '&nbsp;';
+
+                        const tdAmount = document.createElement('td');
+                        tdAmount.className = 'py-2 px-3 text-right font-mono';
+                        tdAmount.innerHTML = '&nbsp;';
+
+                        tr.append(tdName, tdQty, tdPrice, tdTax, tdAmount);
+                        tbody.appendChild(tr);
+                        return;
+                    }
+
+                    if (isEmptyContentRow(item)) {
+                        visibleRowCount += 1;
+                        const tr = document.createElement('tr');
+                        tr.className = 'invoice-preview-empty border-b border-slate-100 text-slate-700';
+
+                        const tdName = document.createElement('td');
+                        tdName.className = 'py-2 px-3 select-all';
+                        tdName.innerText = '（未入力）';
+
+                        const tdQty = document.createElement('td');
+                        tdQty.className = 'py-2 px-3 text-right font-mono select-all';
+                        tdQty.innerText = item.qty.toLocaleString('ja-JP');
+
+                        const tdPrice = document.createElement('td');
+                        tdPrice.className = 'py-2 px-3 text-right font-mono select-all';
+                        tdPrice.innerText = '¥0';
+
+                        const tdTax = document.createElement('td');
+                        tdTax.className = 'py-2 px-3 text-center text-slate-500 select-all';
+                        tdTax.innerText = item.taxRate > 0 ? `${item.taxRate}%` : '対象外';
+
+                        const tdAmount = document.createElement('td');
+                        tdAmount.className = 'py-2 px-3 text-right font-mono select-all text-slate-900';
+                        tdAmount.innerText = '¥0';
+
+                        tr.append(tdName, tdQty, tdPrice, tdTax, tdAmount);
+                        tbody.appendChild(tr);
+                        return;
+                    }
+
+                    visibleRowCount += 1;
                     const lineAmount = Math.round(item.qty * item.price);
                     totalSubtotal += lineAmount;
 
@@ -759,6 +1043,13 @@
                     tr.append(tdName, tdQty, tdPrice, tdTax, tdAmount);
                     tbody.appendChild(tr);
                 });
+
+                if (visibleRowCount === 0) {
+                    tbody.innerHTML = '';
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td colspan="5" class="py-6 text-center text-slate-400 text-xs">明細がありません</td>`;
+                    tbody.appendChild(tr);
+                }
             }
 
             const calcBase10 = Math.max(0, base10);

@@ -33,15 +33,33 @@ function copyDir(src, dest) {
   }
 }
 
+const ASSET_V = process.env.SG_ASSET_V || '20260617';
+
 function rewriteHtml(html) {
-  return html
+  let out = html
     .replace(/\.\.\/assets\//g, '/assets/')
+    .replace(/\.\.\/data\//g, '/data/')
     .replace(/href="assets\//g, 'href="/assets/')
     .replace(/src="assets\//g, 'src="/assets/');
+  out = out.replace(/\/assets\/sugudasu\.css"/g, `/assets/sugudasu.css?v=${ASSET_V}"`);
+  out = out.replace(/\/assets\/sugudasu-shell\.js"/g, `/assets/sugudasu-shell.js?v=${ASSET_V}"`);
+  return out;
 }
 
-rmrf(DIST);
-fs.mkdirSync(DIST, { recursive: true });
+function prepareDist() {
+  try {
+    rmrf(DIST);
+  } catch (err) {
+    if (err && err.code === 'EPERM') {
+      console.warn('build:pages — dist is locked; syncing in place');
+    } else {
+      throw err;
+    }
+  }
+  fs.mkdirSync(DIST, { recursive: true });
+}
+
+prepareDist();
 copyDir(ASSETS, path.join(DIST, 'assets'));
 
 const faviconSrc = path.join(ASSETS, 'favicon.png');
