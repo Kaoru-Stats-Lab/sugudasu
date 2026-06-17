@@ -26,11 +26,13 @@
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
         <div>
             <label for="input-text" class="block text-xs font-semibold text-slate-600 mb-1.5">変換したい文字列</label>
-            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: sugudasu / Profile 2026">sugudasu</textarea>
+            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: sugudasu（2行目にキャッチコピー可）">sugudasu</textarea>
+            <div id="input-char-count" class="sns-char-bar mt-2" aria-live="polite"></div>
         </div>
         <p class="text-[11px] text-slate-500 leading-relaxed">
-            <strong class="text-slate-600">英字・数字</strong>がいちばんきれいに変換されます（インスタのプロフィール名向け）。
-            日本語はキラキラ装飾など一部スタイルのみ対応です。
+            <strong class="text-slate-600">1行目＝名前・ブランド</strong>（テンプレの見出しに反映）。
+            2行目を入れるとキャッチコピー行にも差し替わります。
+            英字・数字がいちばんきれいに変換されます。
         </p>
         <div class="flex flex-wrap gap-2">
             <button type="button" id="btn-generate" class="sg-btn-primary">一括変換</button>
@@ -90,8 +92,8 @@
         <div class="border-b border-slate-100 pb-3 space-y-1">
             <h2 id="tpl-heading" class="text-sm font-bold text-slate-900">💡 コピペで使える！プロフィールお手本集</h2>
             <p class="text-xs text-slate-500 leading-relaxed">
-                フォント単体ではなく、<strong>枠ごとコピー</strong>して文字だけ差し替えればインスタの自己紹介が完成します。
-                「インスタ プロフィール おしゃれ」「飾り文字」で検索して来た方の定番レイアウトです。
+                左の<strong>1行目・2行目</strong>がテンプレに自動反映されます。
+                <strong>「自分用にコピー」</strong>で枠ごと差し替え済み文面を取得できます（Instagram 150字 / X 160字を表示）。
             </p>
         </div>
         <div id="profile-templates" class="sns-tpl-grid"></div>
@@ -233,6 +235,53 @@ function mono(s) { return mapMathAlpha(s, 0x1D670, 0x1D68A, 0x1D7F6); }
 function boldFraktur(s) { return mapMathAlpha(s, 0x1D56C, 0x1D586, null); }
 function doubleStruck(s) { return mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8); }
 
+const PROFILE_LIMITS = { insta: 150, x: 160 };
+
+function countChars(s) {
+    return [...String(s || '')].length;
+}
+
+function charCountMeta(len) {
+    const instaRem = PROFILE_LIMITS.insta - len;
+    const xRem = PROFILE_LIMITS.x - len;
+    return {
+        len,
+        instaRem,
+        xRem,
+        instaOver: instaRem < 0,
+        xOver: xRem < 0,
+        anyOver: instaRem < 0 || xRem < 0,
+    };
+}
+
+function charCountMarkup(len) {
+    const m = charCountMeta(len);
+    const instaCls = m.instaOver ? 'sns-cc--over' : m.instaRem <= 20 ? 'sns-cc--warn' : '';
+    const xCls = m.xOver ? 'sns-cc--over' : m.xRem <= 20 ? 'sns-cc--warn' : '';
+    return `<span class="sns-cc ${instaCls}">Instagram ${m.len}/${PROFILE_LIMITS.insta}</span><span class="sns-cc ${xCls}">X ${m.len}/${PROFILE_LIMITS.x}</span>`;
+}
+
+function charRemainderText(len) {
+    const m = charCountMeta(len);
+    if (m.anyOver) {
+        const parts = [];
+        if (m.instaOver) parts.push(`IG ${Math.abs(m.instaRem)}字オーバー`);
+        if (m.xOver) parts.push(`X ${Math.abs(m.xRem)}字オーバー`);
+        return parts.join(' · ');
+    }
+    const minRem = Math.min(m.instaRem, m.xRem);
+    return `あと${minRem}文字`;
+}
+
+function getTemplateContext() {
+    const raw = document.getElementById('input-text').value.trim();
+    const lines = raw.split('\n').map((l) => l.trim()).filter(Boolean);
+    const name = (lines[0] || 'sugudasu').slice(0, 40);
+    const tagline = (lines[1] || name).slice(0, 40);
+    const handle = name.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'sugudasu';
+    return { name, tagline, handle, raw };
+}
+
 async function copyToClipboard(text, btn, okLabel) {
     try { await navigator.clipboard.writeText(text); }
     catch {
@@ -249,66 +298,131 @@ async function copyToClipboard(text, btn, okLabel) {
     setTimeout(() => { btn.textContent = prev; }, 1200);
 }
 
-function buildProfileTemplates() {
+    setTimeout(() => { btn.textContent = prev; }, 1200);
+}
+
+function copyWithLimitCheck(text, btn, okLabel) {
+    const len = countChars(text);
+    const m = charCountMeta(len);
+    if (m.anyOver) {
+        const parts = [];
+        if (m.instaOver) parts.push(`Instagram（${PROFILE_LIMITS.insta}字）が${Math.abs(m.instaRem)}字オーバー`);
+        if (m.xOver) parts.push(`X（${PROFILE_LIMITS.x}字）が${Math.abs(m.xRem)}字オーバー`);
+        if (!confirm(parts.join('／') + '。\nこのままコピーしますか？')) return;
+    }
+    copyToClipboard(text, btn, okLabel);
+}
+
+function buildProfileTemplateDefs() {
     return [
         {
             id: 'lifestyle',
             icon: '💅',
             title: 'カフェ・ライフスタイル系',
             tag: '女子ウケ',
-            text: [
-                '─── ' + boldSans('Lifestyle Blog') + ' ───',
-                '🔖 ' + thinSans('Tokyo') + ' / ' + doubleStruck('23'),
-                '🛒 ' + mono('My favorites') + ' 👇',
-                '(リンクをここに貼る)',
-            ].join('\n'),
+            buildDemo() {
+                return [
+                    '─── ' + boldSans('Lifestyle Blog') + ' ───',
+                    '🔖 ' + thinSans('Tokyo') + ' / ' + doubleStruck('23'),
+                    '🛒 ' + mono('My favorites') + ' 👇',
+                    '(リンクをここに貼る)',
+                ].join('\n');
+            },
+            build(ctx) {
+                return [
+                    '─── ' + boldSans(ctx.name) + ' ───',
+                    '🔖 ' + thinSans(ctx.tagline) + ' / ' + doubleStruck('23'),
+                    '🛒 ' + mono(ctx.name) + ' 👇',
+                    '(リンクをここに貼る)',
+                ].join('\n');
+            },
         },
         {
             id: 'business',
             icon: '💻',
             title: '副業・ビジネス運用系',
             tag: 'ガチ勢ウケ',
-            text: [
-                '─── ' + boldFraktur('SUGUDASU LAB') + ' ───',
-                '🚀 ' + thinSans('X Growth') + '：+' + doubleStruck('10,000') + ' followers',
-                '📈 再現性を高めるSNSマーケのリアル',
-            ].join('\n'),
+            buildDemo() {
+                return [
+                    '─── ' + boldFraktur('SUGUDASU LAB') + ' ───',
+                    '🚀 ' + thinSans('X Growth') + '：+' + doubleStruck('10,000') + ' followers',
+                    '📈 再現性を高めるSNSマーケのリアル',
+                ].join('\n');
+            },
+            build(ctx) {
+                const brand = ctx.name.toUpperCase().slice(0, 24);
+                return [
+                    '─── ' + boldFraktur(brand) + ' ───',
+                    '🚀 ' + thinSans(ctx.tagline) + '：+' + doubleStruck('10,000') + ' followers',
+                    '📈 ' + ctx.name + 'のリアルな発信記録',
+                ].join('\n');
+            },
         },
         {
             id: 'creator',
             icon: '🎬',
             title: 'クリエイター・配信者',
             tag: 'TikTok / YouTube',
-            text: [
-                '✦ ' + boldSans('Creator') + ' ✦',
-                '▶ ' + mono('New video every Fri'),
-                '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈',
-                '▼ 最新動画はここ ▼',
-            ].join('\n'),
+            buildDemo() {
+                return [
+                    '✦ ' + boldSans('Creator') + ' ✦',
+                    '▶ ' + mono('New video every Fri'),
+                    '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈',
+                    '▼ 最新動画はここ ▼',
+                ].join('\n');
+            },
+            build(ctx) {
+                return [
+                    '✦ ' + boldSans(ctx.name) + ' ✦',
+                    '▶ ' + mono(ctx.tagline),
+                    '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈',
+                    '▼ @' + ctx.handle + ' ▼',
+                ].join('\n');
+            },
         },
         {
             id: 'shop',
             icon: '🛍️',
             title: 'ハンドメイド・ショップ',
             tag: 'minne / BASE',
-            text: [
-                boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE'),
-                '✿ ' + thinSans('Handmade accessories') + ' ✿',
-                '📦 ' + mono('Ships in 3 days'),
-                '↓ お買い物はこちら ↓',
-            ].join('\n'),
+            buildDemo() {
+                return [
+                    boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE'),
+                    '✿ ' + thinSans('Handmade accessories') + ' ✿',
+                    '📦 ' + mono('Ships in 3 days'),
+                    '↓ お買い物はこちら ↓',
+                ].join('\n');
+            },
+            build(ctx) {
+                return [
+                    boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE'),
+                    '✿ ' + thinSans(ctx.name) + ' ✿',
+                    '📦 ' + mono(ctx.tagline),
+                    '↓ お買い物はこちら ↓',
+                ].join('\n');
+            },
         },
         {
             id: 'minimal',
             icon: '🤍',
             title: 'ミニマル・モノトーン',
             tag: '大人女子',
-            text: [
-                boldSans('profile'),
-                '────────────',
-                thinSans('less is more'),
-                '· · ·',
-            ].join('\n'),
+            buildDemo() {
+                return [
+                    boldSans('profile'),
+                    '────────────',
+                    thinSans('less is more'),
+                    '· · ·',
+                ].join('\n');
+            },
+            build(ctx) {
+                return [
+                    boldSans(ctx.name),
+                    '────────────',
+                    thinSans(ctx.tagline),
+                    '· · ·',
+                ].join('\n');
+            },
         },
     ];
 }
@@ -331,25 +445,49 @@ const DECO_PARTS = [
 function renderProfileTemplates() {
     const root = document.getElementById('profile-templates');
     if (!root) return;
-    root.innerHTML = buildProfileTemplates().map((tpl) => `
-        <article class="sns-tpl-card sg-card p-4 flex flex-col gap-3">
+    const ctx = getTemplateContext();
+    const defs = buildProfileTemplateDefs();
+
+    root.innerHTML = defs.map((tpl) => {
+        const personalized = tpl.build(ctx);
+        const len = countChars(personalized);
+        const remCls = charCountMeta(len).anyOver ? 'sns-char-remainder--over' : '';
+        return `
+        <article class="sns-tpl-card sg-card p-4 flex flex-col gap-3" data-tpl-id="${esc(tpl.id)}">
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-lg" aria-hidden="true">${tpl.icon}</span>
                 <h3 class="text-xs font-bold text-slate-900">${esc(tpl.title)}</h3>
                 <span class="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">${esc(tpl.tag)}</span>
             </div>
-            <pre class="sns-tpl-preview text-xs leading-relaxed text-slate-800 whitespace-pre-wrap">${esc(tpl.text)}</pre>
-            <button type="button" class="sns-tpl-copy mt-auto text-xs font-bold text-blue-600 hover:text-blue-800 text-left" data-tpl-id="${esc(tpl.id)}">📋 枠ごとコピー</button>
-        </article>
-    `).join('');
+            <pre class="sns-tpl-preview text-xs leading-relaxed text-slate-800 whitespace-pre-wrap">${esc(personalized)}</pre>
+            <div class="sns-char-bar sns-char-bar--compact">${charCountMarkup(len)}</div>
+            <p class="sns-char-remainder text-[10px] ${remCls}">${esc(charRemainderText(len))}</p>
+            <div class="flex flex-col gap-1.5 mt-auto">
+                <button type="button" class="sns-tpl-copy-me text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-left" data-tpl-id="${esc(tpl.id)}">✨ 自分用にコピー</button>
+                <button type="button" class="sns-tpl-copy-demo text-[10px] font-semibold text-slate-500 hover:text-slate-700 text-left" data-tpl-id="${esc(tpl.id)}">お手本のままコピー</button>
+            </div>
+        </article>`;
+    }).join('');
 
-    const templates = buildProfileTemplates();
-    root.querySelectorAll('.sns-tpl-copy').forEach((btn) => {
+    root.querySelectorAll('.sns-tpl-copy-me').forEach((btn) => {
         btn.addEventListener('click', () => {
-            const tpl = templates.find((t) => t.id === btn.getAttribute('data-tpl-id'));
-            if (tpl) copyToClipboard(tpl.text, btn, 'コピーしました');
+            const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
+            if (tpl) copyWithLimitCheck(tpl.build(getTemplateContext()), btn, 'コピーしました');
         });
     });
+    root.querySelectorAll('.sns-tpl-copy-demo').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
+            if (tpl) copyWithLimitCheck(tpl.buildDemo(), btn, 'コピーしました');
+        });
+    });
+}
+
+function updateInputCharCount(raw) {
+    const el = document.getElementById('input-char-count');
+    if (!el) return;
+    const len = countChars(raw);
+    el.innerHTML = charCountMarkup(len) + `<span class="sns-char-remainder ${charCountMeta(len).anyOver ? 'sns-char-remainder--over' : ''}">${esc(charRemainderText(len))}</span>`;
 }
 
 function renderDecoParts() {
@@ -367,7 +505,7 @@ function renderDecoParts() {
         btn.addEventListener('click', () => {
             const idx = Number(btn.getAttribute('data-part-idx'));
             const part = DECO_PARTS[idx];
-            if (part) copyToClipboard(part.text, btn, 'コピーしました');
+            if (part) copyWithLimitCheck(part.text, btn, 'コピーしました');
         });
     });
 }
@@ -428,6 +566,8 @@ function evaluateTransform(t, raw) {
 function render() {
     const raw = document.getElementById('input-text').value.trim();
     updatePreview(raw);
+    updateInputCharCount(raw);
+    renderProfileTemplates();
     const out = document.getElementById('deco-output');
     const hint = document.getElementById('empty-hint');
     if (!raw) {
@@ -452,9 +592,14 @@ function render() {
         }
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         const copyDisabled = !canCopy;
+        const textLen = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw) ? countChars(e.text) : 0;
+        const ccLine = textLen
+            ? `<div class="sns-char-bar sns-char-bar--compact mt-1">${charCountMarkup(textLen)}</div>`
+            : '';
         return `<div class="deco-card sg-card p-3 flex flex-col gap-2${e.kind === 'unsupported' ? ' deco-card--muted' : ''}" data-idx="${i}">
             <p class="text-[10px] font-bold text-slate-500">${esc(e.t.label)}</p>
             ${body}
+            ${ccLine}
             <button type="button" class="mt-auto text-[10px] font-semibold text-left deco-copy-btn ${copyDisabled ? 'text-slate-300 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800'}" ${copyDisabled ? 'disabled' : ''}>コピー</button>
         </div>`;
     }).join('');
@@ -465,9 +610,8 @@ function render() {
         const e = evaluated[i];
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         if (!canCopy) return;
-        card.querySelector('.deco-copy-btn').addEventListener('click', async () => {
-            const text = e.text;
-            copyToClipboard(text, card.querySelector('.deco-copy-btn'), 'コピーしました');
+        card.querySelector('.deco-copy-btn').addEventListener('click', () => {
+            copyWithLimitCheck(e.text, card.querySelector('.deco-copy-btn'), 'コピーしました');
         });
     });
 }
@@ -481,7 +625,6 @@ document.getElementById('input-text').addEventListener('input', render);
 document.getElementById('pv-tab-insta').addEventListener('click', () => setPreviewMode('insta'));
 document.getElementById('pv-tab-x').addEventListener('click', () => setPreviewMode('x'));
 
-renderProfileTemplates();
 renderDecoParts();
 render();
 </script>

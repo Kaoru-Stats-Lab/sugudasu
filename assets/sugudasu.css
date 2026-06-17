@@ -758,6 +758,32 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
 }
 .sns-part-text { min-height: 2rem; line-height: 1.4; }
 
+.sns-char-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+.sns-char-bar--compact { font-size: 10px; }
+.sns-cc {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 0.15rem 0.5rem;
+}
+.sns-cc--warn { color: #b45309; border-color: #fde68a; background: #fffbeb; }
+.sns-cc--over { color: #b91c1c; border-color: #fecaca; background: #fef2f2; }
+.sns-char-remainder {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 600;
+}
+.sns-char-remainder--over { color: #b91c1c; }
+
 /* —— Print (shared) —— */
 @media print {
   @page {
