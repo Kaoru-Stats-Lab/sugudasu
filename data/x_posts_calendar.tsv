@@ -1,0 +1,121 @@
+﻿投稿ID	型	ツール	シーズン	文字数	メモ	改訂メモ	ステータス	本文
+W1-D1	①	hub	常時	147	ピン固定用ハブ投稿	初稿の文面を維持し、ピン固定用として文字数と改訂ノートを追記。	未投稿	"フリーランス・店舗向け、登録不要の実務ツール9本。まとめはここ。
+顧客名も印鑑も、データはあなたの端末内だけで処理する安心設計です。ブックマークしておくと、いざという時1秒で作業が終わります。
+https://sugudasu.com/?utm_source=x&utm_medium=social&utm_campaign=pin_hub"
+W1-D2	①	invoice	常時	142	ローンチ用2本目	6月開始に合わせ、最優先ツールであるinvoiceの課題解決型を配置。	未投稿	"見積の内容、そのまま請求書にしたいのにコピペ地獄になっていませんか？
+SUGUDASUなら「下書き保存 → 読込 → 書類タブ切り替え」だけで一瞬で書類転用ができます。会員登録はもちろん不要。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_pain"
+W1-D3	②	invoice	常時	161	インボイスFAQ（トーンダウン改訂版）	「敏腕秘書」「オーラ」等の誇張表現を排除し、作業効率と正確な転用を軸にリライト。	未投稿	"Q：会員登録すらサボって1秒で請求書を作って送ったら、「手抜きしたな」と怒られませんか？
+A：SUGUDASUなら作業効率が上がるだけでなく、正確な書類を即座に転用作成できます。手抜きではなく、業務のスマートな最適化です。登録不要。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_faq"
+W1-D4	①	receipt	1〜3月（再投稿用）	133	ローンチ用4本目	優先ツールである手取り逆算の基本訴求。シーズンは1〜3月対象とし明記。	未投稿	"「手取りジャストで振り込みたいから領収書作って」と言われて、源泉徴収や消費税の逆算で脳がバグりそうな人へ。
+金額を入れるだけで自動逆算。登録不要・ブラウザ内完結です。
+https://sugudasu.com/receipt?utm_source=x&utm_medium=social&utm_campaign=receipt_season"
+W1-D5	④	invoice	常時	159	changelog連動（時系列順）	changelog正本の事実に基づき、「一括作成」から案内追加の事実に厳密化。	未投稿	"【SUGUDASU改善】
+見積・請求書ツールにて、見積で保存した下書きデータを読み込み、書類種別タブで納品書・請求書に切り替えて転用できる旨の案内を画面上やFAQに追加しました。同じ案件の書類作成がさらにスムーズに。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=changelog_invoice_convert"
+W2-D1	①	warikan	随時	147	初期優先ツール投下	6月初期運用として、label/shiftに代わり優先順位の高い割り勘ツールを前倒し。	未投稿	"「上司は多めで」「遅刻者は1000円引きで」「お酒飲まない人は少なめで」
+飲み会後のこんな複雑な割り勘計算を、電卓片手に冷や汗を流しながらやるのは終わり。条件を入れるだけでLINEにそのまま貼れる精算文が出せます。
+https://sugudasu.com/warikan?utm_source=x&utm_medium=social&utm_campaign=warikan_pain"
+W2-D2	①	report	随時	138	初期優先ツール投下	6月初期運用に適合させるため、優先指定された議事録整形ツールを前配置。	未投稿	"会議中に急いでメモした不揃いな箇条書き。上司に出せる議事録に整形し直すだけの単純作業で残業していませんか？
+雑多な羅列をワンクリックでビジネステキストに自動整形。その場でコピーして即共有できます。
+https://sugudasu.com/report?utm_source=x&utm_medium=social&utm_campaign=report_pain"
+W2-D3	②	receipt	1〜3月（再投稿用）	164	手取り逆算FAQ（トーンダウン改訂版）	「サイボーグ」「天才数学者」等のカルト表現を完全に排除し、正確性と実利を訴求。	未投稿	"Q：手取り金額から逆算して書類を作ると、計算ミスが起きませんか？
+A：SUGUDASUなら希望の手取り額を入力するだけで、源泉徴収税や消費税が自動で正確に逆算されます。登録不要でその場で終わるため、手計算の迷いやミスをゼロにできます。
+https://sugudasu.com/receipt?utm_source=x&utm_medium=social&utm_campaign=receipt_faq"
+W2-D4	①	sns	随時	134		随時需要のあるSNSデコ文字ツールの基本課題解決型をバランスよく配置。	未投稿	"InstagramやXのプロフィールで、海外アカウントのようなおしゃれな英字フォントや縦書きの文字を使いたいときありませんか？
+入力するだけで文字化けのないデコ文字に一括変換。コピペ用の枠ごとテンプレも完備。
+https://sugudasu.com/sns?utm_source=x&utm_medium=social&utm_campaign=sns_pain"
+W2-D5	④	sns	随時	162	changelog連動（時系列順）	changelog正本に準拠し、追加されたカウンター機能と仕様を正しく網羅。	未投稿	"【SUGUDASU新機能】
+SNSデコ文字ツールにプロフィールお手本に連動した「自分用にコピー」機能（入力内容の自動差し替え）や、Instagram（150字）/ X（160字）対応の文字数カウンターを実装。制限超過時のコピー前確認が可能です。
+https://sugudasu.com/sns?utm_source=x&utm_medium=social&utm_campaign=changelog_sns_counter"
+W3-D1	①	reverse	随時	137		日常のライティング課題に刺さる逆引き辞典の訴求を第3週の開始にセット。	未投稿	"「お世話になっております」のバリエーションが尽きて、毎回同じようなビジネスメールを送っていませんか？
+頭の中の抽象的なニュアンスや意味から言い換え表現を爆速検索。文章の説得力を高める逆引き類語辞典。
+https://sugudasu.com/reverse?utm_source=x&utm_medium=social&utm_campaign=reverse_pain"
+W3-D2	①	present	随時	139		ギフト提案ツールの基本訴求を、他優先ツールの合間に自然に配置。	未投稿	"取引先の昇進祝いや友人への結婚祝い。マナー違反や「地雷アイテム」を贈ってしまわないか、裏でヒヤヒヤしていませんか？
+贈る相手の関係性を数タップ選ぶだけでAIが失敗しないギフトをサジェスト。Amazonで即確認。
+https://sugudasu.com/present?utm_source=x&utm_medium=social&utm_campaign=present_pain"
+W3-D3	②	warikan	随時	154	割り勘FAQ（トーンダウン改訂版）	「終身名誉幹事」「涙する」を削除。実務的な精算作業の効率化へ補正。	未投稿	"Q：細かい端数調整や傾斜計算をスマートに済ませたら、次も幹事を押し付けられませんか？
+A：集金が早く終わるため次回も頼まれる可能性はありますが、丸め処理やLINE用精算文の一括出力により、幹事の精算作業自体を圧倒的に効率化できます。
+https://sugudasu.com/warikan?utm_source=x&utm_medium=social&utm_campaign=warikan_faq"
+W3-D4	①	invoice	4月・10月	164	監査指摘箇所の前倒し配置	監査指摘に基づき「ローカル保存対応」を「登録番号入力・税区分自動集計」に修正。	未投稿	"毎月末の請求書発行、わざわざ重たいクラウドソフトにログインして、過去のデータを書き直す手間にうんざりしていませんか？
+SUGUDASUならサイトを開いて1秒で入力開始。適格請求書発行事業者の登録番号入力、税区分自動集計もブラウザ内完結。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_pain2"
+W3-D5	①	hub	常時	154	月1信頼投稿（1回目）	機密情報を扱うツール群の防壁として、月1回の信頼明示ルールを厳守。	未投稿	"【SUGUDASUからのお約束】
+ツールに入力した顧客名、金額、印鑑、住所データなどは、うちのサーバーへ送信・保存されることは構造上ありません。
+すべてブラウザ内のローカル環境で処理されます。実務の機密情報も安心してお使いください。
+https://sugudasu.com/?utm_source=x&utm_medium=social&utm_campaign=privacy_trust"
+W4-D1	①	invoice	4月・10月	149		4月・10月のインボイス対応需要を捉えた混在計算の課題解決テキスト。	未投稿	"「インボイス制度の計算、区分ごとの消費税の内訳を電卓で検算するのが毎月本当に面倒…」
+SUGUDASUの見積・請求書ツールなら、10%と8%の混在取引も明細を入れるだけで自動集計。PDF保存・印刷もブラウザ完結。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_pain3"
+W4-D2	①	receipt	1〜3月（再投稿用）	150		手取り領収書の利便性を再提示。単発書類作成ニーズのインテントを刺激。	未投稿	"急な店舗の経費精算やフリマの取引で、手取り金額に合わせたインボイス制度対応の領収書が今すぐ1枚だけ必要なときありませんか？
+会員登録もログインも一切不要。ブラウザ上で金額を入力するだけで、綺麗な領収書PDFが即完了。
+https://sugudasu.com/receipt?utm_source=x&utm_medium=social&utm_campaign=receipt_pain2"
+W4-D3	②	report	随時	151	議事録FAQ（トーンダウン改訂版）	「宇宙の真理に迷い込み」「勘違いされる」を削除し、実利と正確性に補正。	未投稿	"Q：メモを自動整形して即座に共有したら、手抜きだと思われませんか？
+A：構造化された見やすい議事録や報告書を素早く展開できるため、むしろ作業が減るだけでなく、正確で迅速な情報共有を行うデキる担当者として業務効率を高められます。
+https://sugudasu.com/report?utm_source=x&utm_medium=social&utm_campaign=report_faq"
+W4-D4	①	warikan	随時	152		新機能である固定額モードの課題解決訴求を第4週後半に配置。	未投稿	"合コンや親睦会で「女性は一律3,000円、残りを男性陣の人数で均等割り」のような、固定額を差し引く割り勘精算で計算ミスしていませんか？
+固定額モードを選べば、端数丸め後の過不足からLINE送付文まで一発で算出します。
+https://sugudasu.com/warikan?utm_source=x&utm_medium=social&utm_campaign=warikan_pain2"
+W4-D5	④	invoice	常時	159	changelog連動（時系列順）	未入力項目非表示の改善アップデートを、規約に則りそのまま表現。	未投稿	"【SUGUDASU改善】
+見積・請求書ツールにて、印刷・PDF出力時に未入力のヘッダー項目（宛名・件名・番号・備考など）を自動で非表示にする機能を実装しました。空欄のままでも余計なラベルが出ず、スマートな書類に仕上がります。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=changelog_invoice_hidelabel"
+W5-D1	①	receipt	1〜3月（再投稿用）	147		手取り領収書の税逆算機能について、具体的ペルソナへの訴求を継続。	未投稿	"フリーランスの報酬計算や、店舗運営での急な支払いで「消費税と源泉徴収税を引いた手取り金額」から逆算書類を作る必要はありませんか？
+希望の手取り額を入れるだけで内訳を自動逆算し、インボイス簡易要件の領収書を即発行。
+https://sugudasu.com/receipt?utm_source=x&utm_medium=social&utm_campaign=receipt_pain3"
+W5-D2	①	warikan	随時	147		集金現場のリアルな小銭課題を突く、丸め処理機能の課題解決型発信。	未投稿	"大人数のイベント会計時、10円や50円単位の小銭が集まらず精算がグダグダになっていませんか？
+SUGUDASUなら「100円単位で切り上げ」「500円単位で丸める」端数処理がワンタップ。幹事のスマートな集金をサポート。
+https://sugudasu.com/warikan?utm_source=x&utm_medium=social&utm_campaign=warikan_pain3"
+W5-D3	②	reverse	随時	151	類語逆引きFAQ（トーンダウン改訂版）	「偽装」「ハードルが上がる」「重鎮」の煽り表現を消去し、実利ベースへ変更。	未投稿	"Q：この辞典で語彙力を補ってメールを送っても、不自然になりませんか？
+A：ビジネスシーンに適合した適切な言い換え表現や類語がニュアンスから的確に見つかるため、文章の説得力を自然に高め、誠実でプロフェッショナルな関係構築をアシストできます。
+https://sugudasu.com/reverse?utm_source=x&utm_medium=social&utm_campaign=reverse_faq"
+W5-D4	①	report	随時	139		チャット共有時の整形手間にフォーカスした、議事録ツールの別訴求。	未投稿	"「本日の会議の議事録、忘れないうちにチャットに貼っておいて」
+そう言われて、メモの文字装飾や改行位置の手直しに15分も拘束されていませんか？
+箇条書きをビジネス文書の体裁へワンクリック自動整形。登録不要。
+https://sugudasu.com/report?utm_source=x&utm_medium=social&utm_campaign=report_pain2"
+W5-D5	④	warikan	随時	152	changelog連動（時系列順）	「新機能」表現をchangelogに合わせ「機能改善（improve）」の文脈へ微修正。	未投稿	"【SUGUDASU機能改善】
+割り勘計算ツールに、合コンや親睦会で便利な「固定額モード」を搭載。特定グループの固定額を総額から差し引き、残額を均等按分。端数処理後の清算文まで一括出力し、幹事の精算手間を削減します。
+https://sugudasu.com/warikan?utm_source=x&utm_medium=social&utm_campaign=changelog_warikan_fixedmode"
+W6-D1	①	reverse	随時	137		メールの冷たいニュアンス回避という、ビジネスに直結する課題解決発信。	未投稿	"「こちらの件、確認してください」だと少し冷たい。メールの語彙力が足りずに、誠実なニュアンスが相手に伝わらないと悩んでいませんか？
+ビジネスシーンに最適な「言い換え表現」が意味からすぐ見つかる無料の逆引き辞典。
+https://sugudasu.com/reverse?utm_source=x&utm_medium=social&utm_campaign=reverse_pain2"
+W6-D2	①	present	随時	145		ギフト選び迷子をターゲットにした、プレゼントサジェストの課題解決文。	未投稿	"上司の退職祝いや、知人の引っ越し祝い。定番すぎる品物だと他の人と被るし、マナー違反も怖いと迷宮入りしていませんか？
+AIが関係性と価格帯にジャストフィットした「外さない贈り物」を提案。登録不要で今すぐ試せます。
+https://sugudasu.com/present?utm_source=x&utm_medium=social&utm_campaign=present_pain2"
+W6-D3	②	present	随時	147	ギフトFAQ（トーンダウン改訂版）	「嘘をつく」「おもてなしの化身」「代行を詰め寄られる」を削り、健全な実利へ修正。	未投稿	"Q：AIを使ってプレゼントを選んだら、相手にバレて気まずくなりませんか？
+A：相手との関係性やNGマナーを考慮した最適な贈り物がロジカルにサジェストされるため、純粋に「外さない安全な選択肢」としてギフト選びの精度をスマートに高められます。
+https://sugudasu.com/present?utm_source=x&utm_medium=social&utm_campaign=present_faq"
+W6-D4	①	sns	随時	131		デコ文字ツールのパーツチップコピー機能に触れた、若年層向け課題解決。	未投稿	"Instagramの自己紹介欄、みんなと同じ普通の文字で見劣りしていませんか？
+英数字を打ち込むだけで、スクリプト体やフラクトゥールなどのおしゃれな特殊フォントへ一括変換。タップするだけでパーツもコピー可能。
+https://sugudasu.com/sns?utm_source=x&utm_medium=social&utm_campaign=sns_pain2"
+W6-D5	①	hub	常時	155	月1信頼投稿（2回目）	月1回の防壁セキュリティ明示タスク。定点観測データとして運用。	未投稿	"【SUGUDASUからのお約束】
+ツールに入力した顧客名、金額、印鑑、住所データなどは、うちのサーバーへ送信・保存されることは構造上ありません。
+すべてブラウザ内のローカル環境で処理されます。実務の機密情報も安心してお使いください。
+https://sugudasu.com/?utm_source=x&utm_medium=social&utm_campaign=privacy_trust2"
+W7-D1	①	invoice	常時	153	changelogの事実を①に応用	changelogにある「0円明細出力仕様」の事実を、実務上の課題解決テキストに昇華。	未投稿	"品名が入っていれば単価0円（無償サンプル提供等）の明細行も、SUGUDASUの見積・請求書ならしっかりとPDF出力対象になります。印刷時に消えるのは、品名も単価も完全に空の行だけなので安心です。登録不要。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_zero_row"
+W7-D2	①	invoice	4月・10月	143	changelogの事実を①に応用	PC推奨案内と改ページ用空行追加のアップデート事実を組み合わせた①の投稿。	未投稿	"PCでの最終確認やPDF保存を推奨しているSUGUDASUの見積・請求書。明細数が多くなって1枚目の区切りがズレそうなときは、新機能の「改ページ用空行」を追加すれば綺麗に調整可能です。会員登録不要。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_page_break"
+W7-D3	②	sns	随時	149	SNSデコFAQ（トーンダウン改訂版）	「話しかけられないか」「引き止め師」を削除。豆腐文字化け回避の実利を明記。	未投稿	"Q：プロフィールを英語フォントで飾ったら、かえって文字化けして読みづらくなりませんか？
+A：日本語入力時は自動で安全な装飾スタイルに誘導し、英数字は崩れにくい最適化フォントを一括出力するため、バグを未然に防ぎながら安全におしゃれに装飾できます。
+https://sugudasu.com/sns?utm_source=x&utm_medium=social&utm_campaign=sns_faq"
+W7-D4	①	invoice	常時	154	changelogの事実を①に応用	確認URL削除およびチャット共有UI見直しの事実を、正確・安全な実利として発信。	未投稿	"送付文面のコピー機能から確認URLを削除し、純粋に入力済みの件名・番号・合計金額などのみを取得できるようUIを見直しました。チャット共有ボタンも「Slackで送る」等に統一され、実務上の誤送信や混乱を防ぎます。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=invoice_ui_clean"
+W7-D5	④	invoice	常時	161	changelog連動（時系列順）	下書き保存機能の最大アップデート。もっとも実務インパクトの大きい事実。	未投稿	"【SUGUDASU機能追加】
+見積・請求書ツールにて、入力明細や画像をPC内に編集用データとして残せる「下書きデータ保存・読み込み」機能を搭載しました。PDF送信後の後日の微修正や、別PCへのデータ共有が会員登録なしで安全に行えます。
+https://sugudasu.com/invoice?utm_source=x&utm_medium=social&utm_campaign=changelog_invoice_draftsave"
+8月以降（W8-D1）	①	label	GW・年末	142	監査指示に基づき8月以降へ移動	監査指示通り、季節性のあるlabelツールを「8月以降」のインデックスへリロケート。	未投稿	"手元にあるExcelの住所録を宛名ラベルに印刷したいだけなのに、専用ソフトの文字崩れや位置ズレと格闘して時間を溶かしていませんか？
+主要メーカーの型番検索に対応。CSVを流し込むだけで一発印刷完了。
+https://sugudasu.com/label?utm_source=x&utm_medium=social&utm_campaign=label_pain"
+8月以降（W8-D2）	①	shift	GW・年末	145	監査指示に基づき8月以降へ移動	監査指示通り、店舗管理系のshiftツールを「8月以降」のインデックスへ後退配置。	未投稿	"毎月スタッフの希望休パズルを解くためだけに、頭を抱えて2時間を無駄にするのはもうやめましょう。
+固定休みと希望休を入れるだけで、出勤の偏りを自動考慮した公平な予定表を1秒で生成します。ログイン不要。
+https://sugudasu.com/shift?utm_source=x&utm_medium=social&utm_campaign=shift_pain"
+8月以降（W8-D3）	②	label	GW・年末	148	宛名ラベルFAQ（トーンダウン改訂版）	「無駄遣い大臣」「コーヒーを飲む」等を排除し、型番による正確配置の実利へ。	未投稿	"Q：差出人宛名シールの印刷位置を手動で微調整するのに、毎回失敗してしまいます。
+A：主要メーカーの型番検索からレイアウト枠を自動でジャスト配置。手動微調整によるシールの無駄遣いやズレを防ぎ、安全に一括印刷が行えます。
+https://sugudasu.com/label?utm_source=x&utm_medium=social&utm_campaign=label_faq"
+8月以降（W8-D4）	①	label	GW・年末	147	8月以降へ移動	Word枠調整のズレ問題に切り込むlabel訴求を8月以降カレンダーへ配置。	未投稿	"「シールの型番に合わせてWordのレイアウト枠を手動で微調整しているけど、印刷すると毎回数ミリズレる」
+そのストレスはSUGUDASUで解消。型番検索から自動で枠をジャスト配置。データ送信なしの安全設計です。
+https://sugudasu.com/label?utm_source=x&utm_medium=social&utm_campaign=label_pain3"
+8月以降（W8-D5）	④	shift	GW・年末	157	changelog連動（8月以降へ移動）	改善要望反映のshiftアップデートを、カレンダー指示に基づき8月枠へ配置。	未投稿	"【SUGUDASU機能改善】
+シフト表自動生成ツールにて、店舗運用に合わせて「1日あたりのシフト枠数（1〜3枠）」や「名称」を左パネルから自由変更できる仕様に拡張。日勤のみの店舗や独自の二交代制の現場にも柔軟に対応可能です。
+https://sugudasu.com/shift?utm_source=x&utm_medium=social&utm_campaign=changelog_shift_flexslots"

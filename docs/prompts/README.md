@@ -16,6 +16,7 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [calc-furima.md](calc-furima.md) | `tools/calc.html` フリマ送料・手数料比較（提案・未実装） |
 | [legal-3docs-gemini.md](legal-3docs-gemini.md) | 法務3文書ドラフト生成（Gemini依頼用） |
 | [google-form-feedback-gemini.md](google-form-feedback-gemini.md) | 改善リクエスト用 Google Form（Gemini作成用） |
+| [../x_guideline.md](../x_guideline.md) | 公式X運用ガイドライン（投稿ネタ · UTM · NG） |
 
 **Form 回答のトリアージ:** [FEEDBACK_TRIAGE.md](../FEEDBACK_TRIAGE.md)（スプシ + Status + Backlog 連携）
 
