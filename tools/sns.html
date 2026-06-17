@@ -88,24 +88,23 @@
     </div>
 
     <!-- お手本テンプレート -->
-    <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="tpl-heading">
-        <div class="border-b border-slate-100 pb-3 space-y-1">
-            <h2 id="tpl-heading" class="text-sm font-bold text-slate-900">💡 コピペで使える！プロフィールお手本集</h2>
-            <p class="text-xs text-slate-500 leading-relaxed">
-                左の<strong>1行目・2行目</strong>がテンプレに自動反映されます。
-                <strong>「自分用にコピー」</strong>で枠ごと差し替え済み文面を取得できます（Instagram 150字 / X 160字を表示）。
+    <section class="sns-section" aria-labelledby="tpl-heading">
+        <div class="sns-section__head">
+            <h2 id="tpl-heading" class="sns-section__title">プロフィールお手本</h2>
+            <p class="sns-section__lead">
+                左の1行目・2行目が各カードに反映されます。文面を見比べて、好みのレイアウトをコピーしてください。
             </p>
         </div>
-        <div id="profile-templates" class="sns-tpl-grid"></div>
+        <div id="profile-templates" class="sns-gallery"></div>
     </section>
 
     <!-- 飾りパーツ -->
-    <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="parts-heading">
-        <div class="border-b border-slate-100 pb-3 space-y-1">
-            <h2 id="parts-heading" class="text-sm font-bold text-slate-900">✂️ 区切り線・飾り文字パーツ</h2>
-            <p class="text-xs text-slate-500">海外インフルエンサーがよく使うライン・記号をワンタップコピー。プロフィールの区切りに。</p>
+    <section class="sns-section" aria-labelledby="parts-heading">
+        <div class="sns-section__head">
+            <h2 id="parts-heading" class="sns-section__title">区切り線・飾りパーツ</h2>
+            <p class="sns-section__lead">チップをタップでコピー。プロフィールの区切りや見出しにそのまま貼れます。</p>
         </div>
-        <div id="deco-parts" class="sns-parts-grid"></div>
+        <div id="deco-parts" class="sns-parts"></div>
     </section>
 
 </main>
@@ -273,6 +272,20 @@ function charRemainderText(len) {
     return `あと${minRem}文字`;
 }
 
+function charCountShort(len) {
+    const m = charCountMeta(len);
+    if (m.anyOver) return { text: charRemainderText(len), over: true };
+    if (m.instaRem <= 20 || m.xRem <= 20) return { text: charRemainderText(len), over: false, warn: true };
+    return { text: `${len}字 · 余裕あり`, over: false, warn: false };
+}
+
+function charCountOneLine(len) {
+    const m = charCountMeta(len);
+    const insta = m.instaOver ? `IG超${Math.abs(m.instaRem)}` : `IG${m.len}/${PROFILE_LIMITS.insta}`;
+    const x = m.xOver ? `X超${Math.abs(m.xRem)}` : `X${m.len}/${PROFILE_LIMITS.x}`;
+    return `${insta} · ${x}`;
+}
+
 function getTemplateContext() {
     const raw = document.getElementById('input-text').value.trim();
     const lines = raw.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -425,19 +438,25 @@ function buildProfileTemplateDefs() {
 }
 
 const DECO_PARTS = [
-    { label: '細ライン', text: '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈' },
-    { label: '実線', text: '────────────' },
-    { label: '二重線', text: '════════════' },
-    { label: 'キラキラ区切り', text: '✦ ─── ✦ ─── ✦' },
-    { label: '星飾り', text: '⋆｡°✩°｡⋆' },
-    { label: '花飾り', text: '✿╮リンク╭✿' },
-    { label: 'OPEN/CLOSE', text: boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE') },
-    { label: '矢印CTA', text: '▼ リンクはここ ▼' },
-    { label: '点線リード', text: '· · · 👇 · · ·' },
-    { label: '波括弧', text: '〜〜〜〜〜〜〜〜〜〜' },
-    { label: 'ハッシュ風', text: '#おしゃれフォント #インスタプロフィール' },
-    { label: '区切りドット', text: '• • • • • • • • • •' },
+    { cat: 'line', label: '細ライン', text: '┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈' },
+    { cat: 'line', label: '実線', text: '────────────' },
+    { cat: 'line', label: '二重線', text: '════════════' },
+    { cat: 'line', label: '波括弧', text: '〜〜〜〜〜〜〜〜〜〜' },
+    { cat: 'line', label: '区切りドット', text: '• • • • • • • • • •' },
+    { cat: 'symbol', label: 'キラキラ区切り', text: '✦ ─── ✦ ─── ✦' },
+    { cat: 'symbol', label: '星飾り', text: '⋆｡°✩°｡⋆' },
+    { cat: 'symbol', label: '花飾り', text: '✿╮リンク╭✿' },
+    { cat: 'symbol', label: 'OPEN/CLOSE', text: boldFraktur('OPEN') + ' ─── ' + boldFraktur('CLOSE') },
+    { cat: 'symbol', label: 'ハッシュ風', text: '#おしゃれフォント #インスタプロフィール' },
+    { cat: 'cta', label: '矢印CTA', text: '▼ リンクはここ ▼' },
+    { cat: 'cta', label: '点線リード', text: '· · · 👇 · · ·' },
 ];
+
+const PART_GROUP_LABELS = {
+    line: '区切り線',
+    symbol: '記号・装飾',
+    cta: '誘導・CTA',
+};
 
 function renderProfileTemplates() {
     const root = document.getElementById('profile-templates');
@@ -448,34 +467,40 @@ function renderProfileTemplates() {
     root.innerHTML = defs.map((tpl) => {
         const personalized = tpl.build(ctx);
         const len = countChars(personalized);
-        const remCls = charCountMeta(len).anyOver ? 'sns-char-remainder--over' : '';
+        const meta = charCountShort(len);
+        const metaCls = meta.over ? 'sns-gallery-card__status--over' : meta.warn ? 'sns-gallery-card__status--warn' : '';
         return `
-        <article class="sns-tpl-card sg-card p-4 flex flex-col gap-3" data-tpl-id="${esc(tpl.id)}">
-            <div class="flex flex-wrap items-center gap-2">
-                <span class="text-lg" aria-hidden="true">${tpl.icon}</span>
-                <h3 class="text-xs font-bold text-slate-900">${esc(tpl.title)}</h3>
-                <span class="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">${esc(tpl.tag)}</span>
+        <article class="sns-gallery-card" data-tpl-id="${esc(tpl.id)}">
+            <header class="sns-gallery-card__head">
+                <div class="sns-gallery-card__identity">
+                    <span class="sns-gallery-card__icon" aria-hidden="true">${tpl.icon}</span>
+                    <div class="sns-gallery-card__titles">
+                        <h3 class="sns-gallery-card__title">${esc(tpl.title)}</h3>
+                        <span class="sns-gallery-card__tag">${esc(tpl.tag)}</span>
+                    </div>
+                </div>
+                <p class="sns-gallery-card__status ${metaCls}" title="Instagram ${PROFILE_LIMITS.insta}字 / X ${PROFILE_LIMITS.x}字">${esc(meta.text)}</p>
+            </header>
+            <div class="sns-gallery-card__bio-frame" aria-label="自己紹介プレビュー">
+                <pre class="sns-gallery-card__bio">${esc(personalized)}</pre>
             </div>
-            <pre class="sns-tpl-preview text-xs leading-relaxed text-slate-800 whitespace-pre-wrap">${esc(personalized)}</pre>
-            <div class="sns-char-bar sns-char-bar--compact">${charCountMarkup(len)}</div>
-            <p class="sns-char-remainder text-[10px] ${remCls}">${esc(charRemainderText(len))}</p>
-            <div class="flex flex-col gap-1.5 mt-auto">
-                <button type="button" class="sns-tpl-copy-me text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-left" data-tpl-id="${esc(tpl.id)}">✨ 自分用にコピー</button>
-                <button type="button" class="sns-tpl-copy-demo text-[10px] font-semibold text-slate-500 hover:text-slate-700 text-left" data-tpl-id="${esc(tpl.id)}">お手本のままコピー</button>
-            </div>
+            <footer class="sns-gallery-card__foot">
+                <button type="button" class="sns-copy-btn sns-copy-btn--primary sns-tpl-copy-me" data-tpl-id="${esc(tpl.id)}">自分用コピー</button>
+                <button type="button" class="sns-copy-btn sns-copy-btn--ghost sns-tpl-copy-demo" data-tpl-id="${esc(tpl.id)}">お手本</button>
+            </footer>
         </article>`;
     }).join('');
 
     root.querySelectorAll('.sns-tpl-copy-me').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
-            if (tpl) copyWithLimitCheck(tpl.build(getTemplateContext()), btn, 'コピーしました');
+            if (tpl) copyWithLimitCheck(tpl.build(getTemplateContext()), btn, 'コピー済');
         });
     });
     root.querySelectorAll('.sns-tpl-copy-demo').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
-            if (tpl) copyWithLimitCheck(tpl.buildDemo(), btn, 'コピーしました');
+            if (tpl) copyWithLimitCheck(tpl.buildDemo(), btn, 'コピー済');
         });
     });
 }
@@ -490,19 +515,32 @@ function updateInputCharCount(raw) {
 function renderDecoParts() {
     const root = document.getElementById('deco-parts');
     if (!root) return;
-    root.innerHTML = DECO_PARTS.map((p, i) => `
-        <div class="sns-part-card sg-card p-3 flex flex-col gap-2">
-            <p class="text-[10px] font-bold text-slate-500">${esc(p.label)}</p>
-            <p class="sns-part-text text-xs text-slate-800 break-all">${esc(p.text)}</p>
-            <button type="button" class="sns-part-copy text-[10px] font-semibold text-blue-600 hover:text-blue-800 text-left" data-part-idx="${i}">コピー</button>
-        </div>
-    `).join('');
+    const groups = ['line', 'symbol', 'cta'];
 
-    root.querySelectorAll('.sns-part-copy').forEach((btn) => {
+    root.innerHTML = groups.map((cat) => {
+        const items = DECO_PARTS.map((p, i) => ({ ...p, idx: i })).filter((p) => p.cat === cat);
+        if (!items.length) return '';
+        const chips = items.map((p) => `
+            <button type="button" class="sns-part-chip" data-part-idx="${p.idx}" title="${esc(p.label)}をコピー">
+                <span class="sns-part-chip__label">${esc(p.label)}</span>
+                <span class="sns-part-chip__text">${esc(p.text)}</span>
+            </button>
+        `).join('');
+        return `
+        <div class="sns-parts-group">
+            <p class="sns-parts-group__label">${esc(PART_GROUP_LABELS[cat])}</p>
+            <div class="sns-parts-chips">${chips}</div>
+        </div>`;
+    }).join('');
+
+    root.querySelectorAll('.sns-part-chip').forEach((btn) => {
         btn.addEventListener('click', () => {
             const idx = Number(btn.getAttribute('data-part-idx'));
             const part = DECO_PARTS[idx];
-            if (part) copyWithLimitCheck(part.text, btn, 'コピーしました');
+            if (!part) return;
+            copyWithLimitCheck(part.text, btn, 'コピー済');
+            btn.classList.add('sns-part-chip--copied');
+            setTimeout(() => btn.classList.remove('sns-part-chip--copied'), 900);
         });
     });
 }
@@ -590,14 +628,16 @@ function render() {
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         const copyDisabled = !canCopy;
         const textLen = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw) ? countChars(e.text) : 0;
-        const ccLine = textLen
-            ? `<div class="sns-char-bar sns-char-bar--compact mt-1">${charCountMarkup(textLen)}</div>`
+        const metaLine = textLen
+            ? `<p class="deco-card__meta">${esc(charCountOneLine(textLen))}</p>`
             : '';
-        return `<div class="deco-card sg-card p-3 flex flex-col gap-2${e.kind === 'unsupported' ? ' deco-card--muted' : ''}" data-idx="${i}">
-            <p class="text-[10px] font-bold text-slate-500">${esc(e.t.label)}</p>
+        return `<div class="deco-card${e.kind === 'unsupported' ? ' deco-card--muted' : ''}" data-idx="${i}">
+            <div class="deco-card__head">
+                <p class="deco-card__label">${esc(e.t.label)}</p>
+                <button type="button" class="deco-card__copy deco-copy-btn ${copyDisabled ? 'deco-card__copy--disabled' : ''}" ${copyDisabled ? 'disabled' : ''}>コピー</button>
+            </div>
             ${body}
-            ${ccLine}
-            <button type="button" class="mt-auto text-[10px] font-semibold text-left deco-copy-btn ${copyDisabled ? 'text-slate-300 cursor-not-allowed' : 'text-blue-600 hover:text-blue-800'}" ${copyDisabled ? 'disabled' : ''}>コピー</button>
+            ${metaLine}
         </div>`;
     }).join('');
 
@@ -608,7 +648,7 @@ function render() {
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         if (!canCopy) return;
         card.querySelector('.deco-copy-btn').addEventListener('click', () => {
-            copyWithLimitCheck(e.text, card.querySelector('.deco-copy-btn'), 'コピーしました');
+            copyWithLimitCheck(e.text, card.querySelector('.deco-copy-btn'), '済');
         });
     });
 }
