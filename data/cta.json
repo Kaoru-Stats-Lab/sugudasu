@@ -1,0 +1,108 @@
+{
+  "version": "2026-06-17-cta-multipoint",
+  "pages": {
+    "hub": {
+      "items": [
+        { "selector": "a[href=\"invoice.html\"]", "label": "hub_card_invoice" },
+        { "selector": "a[href=\"receipt.html\"]", "label": "hub_card_receipt" },
+        { "selector": "a[href=\"label.html\"]", "label": "hub_card_label" },
+        { "selector": "a[href=\"report.html\"]", "label": "hub_card_report" },
+        { "selector": "a[href=\"shift.html\"]", "label": "hub_card_shift" },
+        { "selector": "a[href=\"present.html\"]", "label": "hub_card_present" },
+        { "selector": "a[href=\"reverse.html\"]", "label": "hub_card_reverse" },
+        { "selector": "a[href=\"warikan.html\"]", "label": "hub_card_warikan" },
+        { "selector": "a[href=\"sns.html\"]", "label": "hub_card_sns" }
+      ]
+    },
+    "invoice": {
+      "items": [
+        { "selector": "#btn-type-estimate", "label": "invoice_doctype_estimate" },
+        { "selector": "#btn-type-delivery", "label": "invoice_doctype_delivery" },
+        { "selector": "#btn-type-invoice", "label": "invoice_doctype_invoice" },
+        { "selector": "#sg-btn-print", "label": "invoice_print_pdf" },
+        { "selector": "#btn-copy-tool-url", "label": "invoice_copy_tool_url" },
+        { "selector": "#btn-share-slack", "label": "invoice_share_slack" },
+        { "selector": "#btn-share-chatwork", "label": "invoice_share_chatwork" },
+        { "selector": "#btn-share-googlechat", "label": "invoice_share_googlechat" },
+        { "selector": "#btn-share-teams", "label": "invoice_share_teams" },
+        { "selector": "#btn-share-lineworks", "label": "invoice_share_lineworks" },
+        { "selector": "#btn-config-chat-targets", "label": "invoice_config_chat_targets" },
+        { "selector": "#btn-share-x", "label": "invoice_share_x" }
+      ]
+    },
+    "receipt": {
+      "items": [
+        { "selector": "#btn-mode-single", "label": "receipt_mode_single" },
+        { "selector": "#btn-mode-multi", "label": "receipt_mode_multi" },
+        { "selector": "#btn-bulk-apply", "label": "receipt_bulk_apply" },
+        { "selector": "#btn-print", "text": "逆算する（登録不要でPDF出力）", "label": "receipt_calculate_print" },
+        { "selector": "#sg-btn-print", "label": "receipt_print_pdf" },
+        { "selector": "#btn-chat-config", "label": "receipt_config_chat_targets" },
+        { "selector": "#btn-x-share", "label": "receipt_share_x" },
+        { "selector": "#btn-share-url", "label": "receipt_copy_tool_url" },
+        { "selector": "button[data-chat=\"slack\"]", "label": "receipt_share_slack" },
+        { "selector": "button[data-chat=\"chatwork\"]", "label": "receipt_share_chatwork" },
+        { "selector": "button[data-chat=\"googlechat\"]", "label": "receipt_share_googlechat" },
+        { "selector": "button[data-chat=\"teams\"]", "label": "receipt_share_teams" },
+        { "selector": "button[data-chat=\"lineworks\"]", "label": "receipt_share_lineworks" }
+      ]
+    },
+    "label": {
+      "items": [
+        { "selector": "#btn-mode-label", "label": "label_mode_label" },
+        { "selector": "#btn-mode-card", "label": "label_mode_card" },
+        { "selector": "#btn-process-bulk", "text": "印刷する（登録不要で一括出力）", "label": "label_process_bulk" },
+        { "selector": "#btn-add-recipient-row", "label": "label_add_recipient_row" },
+        { "selector": "#btn-save-history", "label": "label_save_history" },
+        { "selector": "#sg-btn-print", "label": "label_print_pdf" }
+      ]
+    },
+    "report": {
+      "items": [
+        { "selector": "#btn-generate", "text": "整形する（登録不要で即コピー）", "label": "report_generate" },
+        { "selector": "#btn-copy-local", "label": "report_copy_local" },
+        { "selector": "#btn-gemini", "label": "report_copy_gemini_prompt" }
+      ]
+    },
+    "present": {
+      "items": [
+        { "selector": "#btn-generate-gift", "text": "提案をみる（登録不要でAI検索）", "label": "present_generate" }
+      ]
+    },
+    "reverse": {
+      "items": [
+        { "selector": "#btn-lookup", "text": "検索してその場で類語を見つける", "label": "reverse_lookup" },
+        { "selector": "#btn-gemini", "label": "reverse_copy_gemini_prompt" }
+      ]
+    },
+    "warikan": {
+      "items": [
+        { "selector": "#btn-mode-coeff", "label": "warikan_mode_coeff" },
+        { "selector": "#btn-mode-fixed", "label": "warikan_mode_fixed" },
+        { "selector": "#btn-add-group", "label": "warikan_add_group" },
+        { "selector": "#btn-calculate", "text": "計算してその場で精算を終わらせる", "label": "warikan_calculate" },
+        { "selector": "#btn-copy", "label": "warikan_copy_result" },
+        { "selector": "#btn-x-share", "label": "warikan_share_x" }
+      ]
+    },
+    "sns": {
+      "items": [
+        { "selector": "#btn-generate", "text": "変換する（登録不要で一括コピペ）", "label": "sns_generate" },
+        { "selector": "#btn-clear", "label": "sns_clear_input" },
+        { "selector": "#pv-tab-insta", "label": "sns_preview_tab_insta" },
+        { "selector": "#pv-tab-x", "label": "sns_preview_tab_x" }
+      ]
+    },
+    "shift": {
+      "items": [
+        { "selector": "#btn-save-shift-data", "label": "shift_save_data" },
+        { "selector": "#btn-add-temp-holiday", "label": "shift_add_temp_holiday" },
+        { "selector": "#btn-add-staff-row", "label": "shift_add_staff_row" },
+        { "selector": "#status-draft-btn", "label": "shift_set_draft" },
+        { "selector": "#status-fix-btn", "label": "shift_set_fix" },
+        { "selector": "#action-shuffle-btn", "text": "生成してその場でシフトを作る", "label": "shift_auto_generate" },
+        { "selector": "#sg-btn-print", "label": "shift_print_pdf" }
+      ]
+    }
+  }
+}

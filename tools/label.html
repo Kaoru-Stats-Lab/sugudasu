@@ -98,7 +98,7 @@
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold text-slate-700">✍️ 宛名データの個別編集・確認</h2>
-                    <button onclick="addNewRecipientRow()" class="bg-slate-100 border text-slate-700 text-xs px-2.5 py-1 rounded hover:bg-gray-200">＋ 行を追加</button>
+                    <button id="btn-add-recipient-row" onclick="addNewRecipientRow()" class="bg-slate-100 border text-slate-700 text-xs px-2.5 py-1 rounded hover:bg-gray-200">＋ 行を追加</button>
                 </div>
                 <div class="overflow-x-auto max-h-[300px] border border-gray-200 rounded-lg">
                     <table class="w-full text-left text-xs text-gray-600">
@@ -130,7 +130,7 @@
                 </div>
                 <div class="flex gap-2">
                     <input type="text" id="storage-save-title" placeholder="管理用の保存名（例：メルカリ6月15日発送分）" class="flex-1 border rounded px-3 py-1 text-xs">
-                    <button onclick="saveCurrentData()" class="bg-slate-900 text-white text-xs font-bold px-4 py-1.5 rounded shadow">履歴に保存</button>
+                    <button id="btn-save-history" onclick="saveCurrentData()" class="bg-slate-900 text-white text-xs font-bold px-4 py-1.5 rounded shadow">履歴に保存</button>
                 </div>
                 <div class="overflow-x-auto border rounded-lg">
                     <table class="w-full text-left text-xs bg-slate-50">

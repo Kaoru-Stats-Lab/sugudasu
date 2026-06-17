@@ -92,7 +92,7 @@
 
   function headerHtml(title, showPrint) {
     const printBtn = showPrint
-      ? `<button type="button" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
+      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
       : '';
     const pageTitle = title && title !== 'SUGUDASU'
       ? `<p class="sg-site-header__pagetitle">${title}</p>`
@@ -180,6 +180,17 @@
     document.head.appendChild(s);
   }
 
+  function trackGaEvent(name, params) {
+    if (!name || typeof global.gtag !== 'function') return;
+    try {
+      global.gtag('event', name, Object.assign({
+        event_source: 'sugudasu_shell',
+      }, params || {}));
+    } catch (_) {
+      // noop: tracking failure should never block UI
+    }
+  }
+
   function loadGrowthScript() {
     if (global.SUGUDASU_GROWTH) {
       global.SUGUDASU_GROWTH.init();
@@ -217,12 +228,24 @@
     const page = cfg.pages[pageId];
     if (!page || !Array.isArray(page.items)) return;
     page.items.forEach((item) => {
-      if (!item || !item.selector || !item.text) return;
-      const el = document.querySelector(item.selector);
-      if (!el) return;
-      el.textContent = item.text;
+      if (!item || !item.selector) return;
+      const targets = document.querySelectorAll(item.selector);
+      if (!targets.length) return;
+      targets.forEach((el) => {
+        if (item.text) el.textContent = item.text;
+        if (el.dataset.sgCtaTracked) return;
+        el.dataset.sgCtaTracked = '1';
+        el.addEventListener('click', () => {
+          trackGaEvent('sg_cta_click', {
+            page_id: pageId,
+            page_path: global.location.pathname || '',
+            cta_selector: item.selector,
+            cta_label: item.label || item.text || el.textContent || '',
+          });
+        });
+      });
     });
   }
 
-  global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl, dataUrl, logoHtml };
+  global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl, dataUrl, logoHtml, trackGaEvent };
 })(window);

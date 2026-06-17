@@ -29,7 +29,7 @@
             
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 class="text-base font-bold text-slate-800 flex items-center gap-1.5">シフト基盤・ルール設定</h2>
-                <button type="button" onclick="saveCurrentDataToStorage()" class="no-print bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition-all">データ保存</button>
+                <button type="button" id="btn-save-shift-data" onclick="saveCurrentDataToStorage()" class="no-print bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition-all">データ保存</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -99,7 +99,7 @@
                     <label class="block text-[11px] text-slate-500 font-bold mb-1">特定日の臨時休業日（ピンポイント指定）</label>
                     <div class="flex gap-2">
                         <input type="date" id="cfg-temp-holiday-input" class="border rounded-lg p-1.5 text-xs bg-white">
-                        <button onclick="addTemporaryHoliday()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all shadow-xs">休業日を追加</button>
+                        <button id="btn-add-temp-holiday" onclick="addTemporaryHoliday()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all shadow-xs">休業日を追加</button>
                     </div>
                     <div id="temp-holidays-badges" class="flex flex-wrap gap-1.5 mt-2"></div>
                 </div>
@@ -108,7 +108,7 @@
             <div class="space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                     <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1">👥 メンバー構成＆扶養内上限ルール</h3>
-                    <button onclick="addNewStaffRow()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-2.5 py-1.5 rounded-lg shadow-xs transition-all">＋ スタッフを追加</button>
+                    <button id="btn-add-staff-row" onclick="addNewStaffRow()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-2.5 py-1.5 rounded-lg shadow-xs transition-all">＋ スタッフを追加</button>
                 </div>
                 <div id="staff-rows-container" class="space-y-2">
                     </div>
