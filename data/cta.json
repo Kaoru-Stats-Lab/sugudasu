@@ -29,8 +29,7 @@
         { "selector": "#btn-share-googlechat", "label": "invoice_share_googlechat" },
         { "selector": "#btn-share-teams", "label": "invoice_share_teams" },
         { "selector": "#btn-share-lineworks", "label": "invoice_share_lineworks" },
-        { "selector": "#btn-config-chat-targets", "label": "invoice_config_chat_targets" },
-        { "selector": "#btn-share-x", "label": "invoice_share_x" }
+        { "selector": "#btn-config-chat-targets", "label": "invoice_config_chat_targets" }
       ]
     },
     "receipt": {

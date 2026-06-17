@@ -741,6 +741,14 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
     display: none !important;
   }
 
+  .invoice-print-omit {
+    display: none !important;
+  }
+
+  tr.invoice-preview-empty-placeholder {
+    display: none !important;
+  }
+
   tr.invoice-preview-spacer td {
     color: transparent !important;
     border-color: #e2e8f0 !important;

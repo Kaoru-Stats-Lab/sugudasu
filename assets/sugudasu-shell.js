@@ -142,6 +142,12 @@
           <span class="text-slate-300 mx-1">|</span>
           <a href="disclaimer.html" class="text-blue-600 hover:underline">免責事項</a>
         </p>
+        <p>
+          <a href="https://x.com/sugudasu" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-800 transition-colors" aria-label="SUGUDASU公式X（@sugudasu）">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>@sugudasu</span>
+          </a>
+        </p>
         <p class="text-[10px] text-slate-400">&copy; SUGUDASU（すぐだす）</p>
       </div>
     </footer>`;
