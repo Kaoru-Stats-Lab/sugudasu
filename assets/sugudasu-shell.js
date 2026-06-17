@@ -1,11 +1,12 @@
 /**
- * SUGUDASU shared chrome — header · 8ツール+一覧ナビ · footer
+ * SUGUDASU shared chrome — header · 9ツール+一覧ナビ · footer
  * docs/DESIGN_GUIDELINE.md §3.1, §7
  */
 (function (global) {
   const TOOLS = [
     { id: 'hub', file: 'hub.html', label: '一覧', icon: '🏠' },
     { id: 'invoice', file: 'invoice.html', label: '請求書', icon: '📄' },
+    { id: 'receipt', file: 'receipt.html', label: '領収書', icon: '🧾' },
     { id: 'label', file: 'label.html', label: 'ラベル', icon: '🏷️' },
     { id: 'shift', file: 'shift.html', label: 'シフト', icon: '📅' },
     { id: 'report', file: 'report.html', label: '議事録', icon: '📝' },

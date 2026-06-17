@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="手取りジャスト金額から本体価格・消費税・源泉徴収を逆算。領収書をその場で印刷・共有。ブラウザ完結・登録不要。">
+    <title>手取り逆引き・領収書ジェネレーター | SUGUDASU</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top"></div>
+
+<main class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
+
+    <!-- 入力パネル -->
+    <section class="no-print lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
+        <p class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+            ブラウザ内完結・計算データは外部に送信しません
+        </p>
+
+        <div>
+            <label for="in-net" class="block text-xs font-bold text-slate-600 mb-1">💴 希望手取り金額（円）</label>
+            <input type="number" id="in-net" min="0" step="1" placeholder="10000"
+                class="sg-input text-lg font-mono font-bold">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+            <label class="flex items-center gap-2 cursor-pointer bg-slate-50 rounded-lg px-3 py-2 border border-slate-200">
+                <input type="checkbox" id="in-withholding" checked class="rounded">
+                <span class="font-semibold">源泉徴収 10.21%</span>
+            </label>
+            <div>
+                <label for="in-tax-rate" class="block text-[10px] font-bold text-slate-500 mb-0.5">消費税率</label>
+                <select id="in-tax-rate" class="sg-input text-xs py-1.5">
+                    <option value="10" selected>10%</option>
+                    <option value="8">8%（軽減）</option>
+                    <option value="0">免税 0%</option>
+                </select>
+            </div>
+            <div>
+                <label for="in-tax-type" class="block text-[10px] font-bold text-slate-500 mb-0.5">税の扱い</label>
+                <select id="in-tax-type" class="sg-input text-xs py-1.5">
+                    <option value="ext" selected>外税</option>
+                    <option value="inc">内税</option>
+                </select>
+            </div>
+            <div>
+                <label for="in-round" class="block text-[10px] font-bold text-slate-500 mb-0.5">端数処理</label>
+                <select id="in-round" class="sg-input text-xs py-1.5">
+                    <option value="round" selected>四捨五入</option>
+                    <option value="floor">切り捨て</option>
+                    <option value="ceil">切り上げ</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <p class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">📤 出力モード</p>
+            <div class="bg-slate-100 p-1 rounded-xl grid grid-cols-2 gap-1 border border-slate-200">
+                <button type="button" id="btn-mode-single" class="py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm">1枚出力</button>
+                <button type="button" id="btn-mode-multi" class="py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900">A4マルチ印刷</button>
+            </div>
+        </div>
+
+        <div id="panel-single" class="space-y-3 border-t border-slate-100 pt-3">
+            <div>
+                <label for="in-to" class="block text-xs font-bold text-slate-600 mb-1">宛名（お支払先）</label>
+                <input type="text" id="in-to" placeholder="株式会社〇〇 御中" class="sg-input text-sm">
+            </div>
+            <div>
+                <label for="in-issuer" class="block text-xs font-bold text-slate-600 mb-1">発行者名（受領者）</label>
+                <input type="text" id="in-issuer" placeholder="山田 太郎" class="sg-input text-sm">
+            </div>
+        </div>
+
+        <div id="panel-multi" class="hidden space-y-3 border-t border-slate-100 pt-3">
+            <div class="flex flex-wrap items-center gap-2 justify-between">
+                <label for="in-multi-count" class="text-xs font-bold text-slate-600">人数</label>
+                <select id="in-multi-count" class="sg-input text-xs w-24 py-1">
+                    <option value="3" selected>3名</option>
+                    <option value="4">4名</option>
+                </select>
+                <button type="button" id="btn-bulk-apply" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline">一括反映（金額・但し書き）</button>
+            </div>
+            <div id="multi-rows" class="space-y-2 max-h-48 overflow-y-auto"></div>
+        </div>
+
+        <div class="space-y-2 border-t border-slate-100 pt-3">
+            <label for="in-desc" class="block text-xs font-bold text-slate-600 mb-1">但し書き</label>
+            <input type="text" id="in-desc" placeholder="アルバイト代として" class="sg-input text-sm">
+            <div class="flex flex-wrap gap-1.5">
+                <button type="button" data-desc="アルバイト代として" class="rcpt-desc-chip">アルバイト代</button>
+                <button type="button" data-desc="作業手間賃として" class="rcpt-desc-chip">作業手間賃</button>
+                <button type="button" data-desc="WEB制作費として" class="rcpt-desc-chip">WEB制作費</button>
+                <button type="button" data-desc="お車代として" class="rcpt-desc-chip">お車代</button>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+            <label for="in-date" class="text-xs font-bold text-slate-600">📅 発行日</label>
+            <input type="date" id="in-date" class="sg-input text-xs w-40 py-1.5">
+        </div>
+
+        <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700">
+            <input type="checkbox" id="in-stamp" checked class="rounded">
+            受領印（赤丸スタンプ）を表示
+        </label>
+
+        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 space-y-2">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">内訳（参考計算）</p>
+            <div id="calc-summary" class="text-xs font-mono space-y-1 text-slate-700"></div>
+        </div>
+
+        <div class="space-y-2 border-t border-slate-100 pt-3">
+            <button type="button" id="btn-print" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm">
+                PDF保存・印刷
+            </button>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <button type="button" data-chat="slack" class="rcpt-chat-btn">Slackに共有</button>
+                <button type="button" data-chat="chatwork" class="rcpt-chat-btn">Chatworkに共有</button>
+                <button type="button" data-chat="googlechat" class="rcpt-chat-btn">Google Chat</button>
+                <button type="button" data-chat="teams" class="rcpt-chat-btn">Teams</button>
+                <button type="button" data-chat="lineworks" class="rcpt-chat-btn">LINE WORKS</button>
+                <button type="button" id="btn-chat-config" class="rcpt-chat-btn text-slate-500">送信先URL設定</button>
+            </div>
+            <button type="button" id="btn-share-url" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs">
+                URLで領収書を共有
+            </button>
+            <p class="text-[10px] text-slate-500">URL共有は宛名・金額がリンクに含まれます。共有前に確認ダイアログを表示します。</p>
+        </div>
+    </section>
+
+    <!-- プレビュー -->
+    <section class="print-target preview-section lg:col-span-7 flex justify-center lg:justify-start overflow-hidden">
+        <div class="preview-scaler preview-wrapper w-full flex justify-center" id="preview-wrapper">
+            <div class="preview-container" id="preview-container">
+                <div id="receipt-paper" class="a4-page rcpt-paper">
+                    <div id="receipt-root"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<aside class="no-print ad-slot ad-slot--result max-w-xl mx-auto px-4 mb-4">広告枠</aside>
+
+<section class="no-print sg-faq-section border-t border-slate-200">
+    <div class="sg-faq-inner px-4 sm:px-6">
+        <h2 class="sg-faq-title">手取り逆引き・領収書のよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>手取り10,000円ちょうど払いたいとき、請求本体はいくら？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>外税・源泉10.21%・消費税10%の場合、本体価格はおおよそ <strong>9,214円</strong> 前後になります（端数処理で±1円）。本ツールが自動逆算し、手取りがジャストになるよう調整します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>源泉徴収税はいつ必要ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>報酬・料金の支払いで、個人への業務委託などに該当する場合に発生することがあります。取引内容により異なるため、最終判断はご自身の経理・税理士にご確認ください。本ツールは参考計算です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>入力した宛名や金額は外部に送られますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>計算・プレビューはブラウザ内で完結します。「URLで共有」を使った場合のみ、URLにデータが含まれます。チャット共有は文面をコピーするだけで、当サイトサーバーへは送信しません。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    const WITHHOLDING_RATE = 0.1021;
+    const STAMP_THRESHOLD = 50000;
+    const CHAT_TARGETS_KEY = 'sugudasu.invoice.chat.targets';
+    const DEFAULT_CHAT_TARGETS = { slack: '', chatwork: '', googlechat: '', teams: '', lineworks: '' };
+
+    let outputMode = 'single';
+    let multiCount = 3;
+
+    function yen(n) {
+        const v = Math.round(Number(n) || 0);
+        return '¥' + v.toLocaleString('ja-JP');
+    }
+
+    function applyRound(n, mode) {
+        if (mode === 'floor') return Math.floor(n);
+        if (mode === 'ceil') return Math.ceil(n);
+        return Math.round(n);
+    }
+
+    function getOptions() {
+        return {
+            withholding: document.getElementById('in-withholding').checked,
+            taxRate: Number(document.getElementById('in-tax-rate').value) / 100,
+            taxType: document.getElementById('in-tax-type').value,
+            roundMode: document.getElementById('in-round').value
+        };
+    }
+
+    /** @returns {{ base, tax, withholding, net, gross, taxExcl }} */
+    function calcFromNet(netY, opts) {
+        const Y = Math.max(0, Math.round(Number(netY) || 0));
+        if (Y === 0) {
+            return { base: 0, tax: 0, withholding: 0, net: 0, gross: 0, taxExcl: 0 };
+        }
+
+        const W = opts.withholding ? WITHHOLDING_RATE : 0;
+        const T = opts.taxRate;
+        const r = opts.roundMode;
+
+        if (opts.taxType === 'ext') {
+            const denom = 1 + T - W;
+            if (denom <= 0) {
+                return { base: 0, tax: 0, withholding: 0, net: Y, gross: 0, taxExcl: 0 };
+            }
+            let base = applyRound(Y / denom, r);
+            for (let i = 0; i < 20; i++) {
+                const tax = applyRound(base * T, r);
+                const wh = opts.withholding ? applyRound(base * W, r) : 0;
+                const net = base + tax - wh;
+                if (net === Y) {
+                    return { base, tax, withholding: wh, net, gross: base + tax, taxExcl: base };
+                }
+                base += net < Y ? 1 : -1;
+                if (base < 0) break;
+            }
+            const tax = applyRound(base * T, r);
+            const wh = opts.withholding ? applyRound(base * W, r) : 0;
+            return { base, tax, withholding: wh, net: base + tax - wh, gross: base + tax, taxExcl: base };
+        }
+
+        const denom = 1 + T - W;
+        let gross = denom > 0 ? applyRound((Y * (1 + T)) / denom, r) : Y;
+        for (let i = 0; i < 20; i++) {
+            const taxExcl = applyRound(gross / (1 + T), r);
+            const tax = gross - taxExcl;
+            const wh = opts.withholding ? applyRound(taxExcl * W, r) : 0;
+            const net = gross - wh;
+            if (net === Y) {
+                return { base: gross, tax, withholding: wh, net, gross, taxExcl };
+            }
+            gross += net < Y ? 1 : -1;
+            if (gross < 0) break;
+        }
+        const taxExcl = applyRound(gross / (1 + T), r);
+        const tax = gross - taxExcl;
+        const wh = opts.withholding ? applyRound(taxExcl * W, r) : 0;
+        return { base: gross, tax, withholding: wh, net: gross - wh, gross, taxExcl };
+    }
+
+    function stampHtml(show) {
+        if (!show) return '';
+        return '<div class="rcpt-stamp" aria-hidden="true"><span>受領</span></div>';
+    }
+
+    function stampNoteHtml(net) {
+        if (net <= STAMP_THRESHOLD) return '';
+        return '<p class="rcpt-stamp-note">※電子データにつき印紙税不適用</p>';
+    }
+
+    function formatDateJa(iso) {
+        if (!iso) return '----年--月--日';
+        const [y, m, d] = iso.split('-');
+        if (!y || !m || !d) return iso;
+        return `${y}年${Number(m)}月${Number(d)}日`;
+    }
+
+    function receiptCardHtml(data) {
+        const { to, issuer, desc, date, calc, showStamp, taxType, taxRatePct } = data;
+        const taxLabel = taxType === 'ext' ? '消費税（外税）' : 'うち消費税（内税）';
+        const baseLabel = taxType === 'ext' ? '本体価格（税抜）' : '本体価格（税込）';
+
+        return `
+        <article class="rcpt-card">
+            <header class="rcpt-card-head">
+                <h2 class="rcpt-title">領　収　書</h2>
+                <p class="rcpt-date">${formatDateJa(date)}</p>
+            </header>
+            <p class="rcpt-to">${escapeHtml(to || '（宛名未入力）')} <span class="rcpt-sama">様</span></p>
+            <div class="rcpt-amount-row">
+                <span class="rcpt-amount-label">金額</span>
+                <span class="rcpt-amount mono-num">${yen(calc.net)}</span>
+            </div>
+            <p class="rcpt-desc">但し、${escapeHtml(desc || '（但し書き未入力）')}</p>
+            <p class="rcpt-paid">上記正に領収いたしました。</p>
+            <table class="rcpt-breakdown">
+                <tbody>
+                    <tr><th>${baseLabel}</th><td class="mono-num">${yen(taxType === 'ext' ? calc.taxExcl : calc.base)}</td></tr>
+                    <tr><th>${taxLabel} ${taxRatePct}%</th><td class="mono-num">${yen(calc.tax)}</td></tr>
+                    ${calc.withholding > 0 ? `<tr><th>源泉徴収税</th><td class="mono-num">−${(calc.withholding).toLocaleString('ja-JP')}円</td></tr>` : ''}
+                    <tr class="rcpt-breakdown-total"><th>差引支給（手取り）</th><td class="mono-num">${yen(calc.net)}</td></tr>
+                </tbody>
+            </table>
+            <footer class="rcpt-footer">
+                <div class="rcpt-issuer-wrap">
+                    <p class="rcpt-issuer">${escapeHtml(issuer || '（発行者未入力）')}</p>
+                    ${stampHtml(showStamp)}
+                </div>
+                ${stampNoteHtml(calc.net)}
+            </footer>
+        </article>`;
+    }
+
+    function escapeHtml(s) {
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function renderMultiRows() {
+        const container = document.getElementById('multi-rows');
+        container.innerHTML = '';
+        for (let i = 0; i < multiCount; i++) {
+            const row = document.createElement('div');
+            row.className = 'grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200';
+            row.innerHTML = `
+                <span class="col-span-1 text-[10px] font-bold text-slate-400">${i + 1}</span>
+                <input type="text" class="multi-name sg-input text-xs col-span-5 py-1" placeholder="氏名" data-idx="${i}">
+                <input type="number" class="multi-net sg-input text-xs col-span-6 py-1 font-mono" placeholder="手取り" data-idx="${i}" min="0">
+            `;
+            container.appendChild(row);
+        }
+    }
+
+    function getMultiEntries() {
+        const names = [...document.querySelectorAll('.multi-name')];
+        const nets = [...document.querySelectorAll('.multi-net')];
+        const defaultNet = document.getElementById('in-net').value;
+        const entries = [];
+        for (let i = 0; i < multiCount; i++) {
+            entries.push({
+                name: names[i]?.value.trim() || `（${i + 1}）`,
+                net: Number(nets[i]?.value) || Number(defaultNet) || 0
+            });
+        }
+        return entries;
+    }
+
+    function updatePreview() {
+        const opts = getOptions();
+        const date = document.getElementById('in-date').value;
+        const desc = document.getElementById('in-desc').value.trim();
+        const showStamp = document.getElementById('in-stamp').checked;
+        const taxRatePct = document.getElementById('in-tax-rate').value;
+        const root = document.getElementById('receipt-root');
+        const paper = document.getElementById('receipt-paper');
+
+        if (outputMode === 'single') {
+            paper.classList.remove('rcpt-multi-sheet');
+            const net = Number(document.getElementById('in-net').value) || 0;
+            const calc = calcFromNet(net, opts);
+            root.innerHTML = receiptCardHtml({
+                to: document.getElementById('in-to').value.trim(),
+                issuer: document.getElementById('in-issuer').value.trim(),
+                desc, date, calc, showStamp,
+                taxType: opts.taxType,
+                taxRatePct
+            });
+            renderCalcSummary(calc, opts);
+            return;
+        }
+
+        paper.classList.add('rcpt-multi-sheet');
+        const entries = getMultiEntries();
+        const parts = entries.map((e, idx) => {
+            const calc = calcFromNet(e.net, opts);
+            const card = receiptCardHtml({
+                to: e.name,
+                issuer: document.getElementById('in-issuer').value.trim(),
+                desc, date, calc, showStamp,
+                taxType: opts.taxType,
+                taxRatePct
+            });
+            const cut = idx < entries.length - 1 ? '<div class="rcpt-cut" aria-hidden="true"></div>' : '';
+            return card + cut;
+        });
+        root.innerHTML = parts.join('');
+        const firstCalc = calcFromNet(entries[0]?.net || 0, opts);
+        renderCalcSummary(firstCalc, opts, entries.length > 1 ? `（1人目の内訳・全${entries.length}名）` : '');
+    }
+
+    function renderCalcSummary(calc, opts, suffix) {
+        const el = document.getElementById('calc-summary');
+        const whLine = calc.withholding > 0
+            ? `<div class="flex justify-between"><span>源泉徴収</span><span>−${yen(calc.withholding)}</span></div>`
+            : '';
+        const baseLabel = opts.taxType === 'ext' ? '本体（税抜）' : '本体（税込）';
+        el.innerHTML = `
+            <p class="text-[10px] text-slate-500 mb-1">${suffix || '現在の設定での逆算結果'}</p>
+            <div class="flex justify-between"><span>${baseLabel}</span><span>${yen(opts.taxType === 'ext' ? calc.taxExcl : calc.base)}</span></div>
+            <div class="flex justify-between"><span>消費税</span><span>${yen(calc.tax)}</span></div>
+            ${whLine}
+            <div class="flex justify-between font-bold border-t border-slate-200 pt-1 mt-1"><span>手取り</span><span>${yen(calc.net)}</span></div>
+        `;
+    }
+
+    function setMode(mode) {
+        outputMode = mode;
+        const single = mode === 'single';
+        document.getElementById('btn-mode-single').className = single
+            ? 'py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm'
+            : 'py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900';
+        document.getElementById('btn-mode-multi').className = !single
+            ? 'py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm'
+            : 'py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900';
+        document.getElementById('panel-single').classList.toggle('hidden', !single);
+        document.getElementById('panel-multi').classList.toggle('hidden', single);
+        updatePreview();
+    }
+
+    function scalePreview() {
+        const wrapper = document.getElementById('preview-wrapper');
+        const container = document.getElementById('preview-container');
+        const paper = document.getElementById('receipt-paper');
+        if (!wrapper || !container || !paper) return;
+        const parentW = wrapper.clientWidth;
+        const paperW = paper.offsetWidth || 794;
+        const scale = Math.min(1, (parentW - 8) / paperW);
+        container.style.transform = scale < 1 ? `scale(${scale})` : '';
+        container.style.transformOrigin = 'top center';
+        wrapper.style.height = scale < 1 ? `${paper.offsetHeight * scale}px` : '';
+    }
+
+    function loadChatTargets() {
+        try {
+            const raw = localStorage.getItem(CHAT_TARGETS_KEY);
+            if (!raw) return { ...DEFAULT_CHAT_TARGETS };
+            return { ...DEFAULT_CHAT_TARGETS, ...JSON.parse(raw) };
+        } catch {
+            return { ...DEFAULT_CHAT_TARGETS };
+        }
+    }
+
+    function saveChatTargets(targets) {
+        localStorage.setItem(CHAT_TARGETS_KEY, JSON.stringify({ ...DEFAULT_CHAT_TARGETS, ...targets }));
+    }
+
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch {
+            const area = document.createElement('textarea');
+            area.value = text;
+            document.body.appendChild(area);
+            area.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(area);
+            return ok;
+        }
+    }
+
+    function buildShareMessage() {
+        const opts = getOptions();
+        const net = Number(document.getElementById('in-net').value) || 0;
+        const calc = calcFromNet(net, opts);
+        const to = document.getElementById('in-to').value.trim() || '（宛名未入力）';
+        return `お疲れ様です。本日の作業代金の領収書データをお送りします。
+【内訳】
+・総額（手取り）：${yen(calc.net)}
+・本体価格：${yen(opts.taxType === 'ext' ? calc.taxExcl : calc.base)}
+・消費税：${yen(calc.tax)}
+・源泉徴収税：${yen(calc.withholding)}
+宛先：${to}
+
+ご確認のほど、よろしくお願いいたします。`;
+    }
+
+    const CHAT_LABELS = {
+        slack: 'Slack', chatwork: 'Chatwork', googlechat: 'Google Chat',
+        teams: 'Teams', lineworks: 'LINE WORKS'
+    };
+
+    async function shareToChat(tool) {
+        const dest = loadChatTargets()[tool];
+        if (!dest) {
+            alert(`${CHAT_LABELS[tool] || tool} の送信先URLが未設定です。「送信先URL設定」から登録してください。`);
+            return;
+        }
+        const copied = await copyText(buildShareMessage());
+        if (!copied) {
+            alert('文面のコピーに失敗しました。');
+            return;
+        }
+        window.open(dest, '_blank', 'noopener');
+        alert(`${CHAT_LABELS[tool]} 向け文面をコピーしました。貼り付けて送信してください。`);
+    }
+
+    function configureChat() {
+        const t = loadChatTargets();
+        const slack = prompt('Slackの送信先URL', t.slack || '');
+        if (slack === null) return;
+        const chatwork = prompt('Chatworkの送信先URL', t.chatwork || '');
+        if (chatwork === null) return;
+        const googlechat = prompt('Google Chatの送信先URL', t.googlechat || '');
+        if (googlechat === null) return;
+        const teams = prompt('Teamsの送信先URL', t.teams || '');
+        if (teams === null) return;
+        const lineworks = prompt('LINE WORKSの送信先URL', t.lineworks || '');
+        if (lineworks === null) return;
+        saveChatTargets({
+            slack: slack.trim(), chatwork: chatwork.trim(), googlechat: googlechat.trim(),
+            teams: teams.trim(), lineworks: lineworks.trim()
+        });
+        alert('送信先URLを保存しました。');
+    }
+
+    function buildShareUrl() {
+        const params = new URLSearchParams();
+        params.set('mode', outputMode);
+        params.set('y', String(document.getElementById('in-net').value || '0'));
+        params.set('to', document.getElementById('in-to').value.trim());
+        params.set('issuer', document.getElementById('in-issuer').value.trim());
+        params.set('desc', document.getElementById('in-desc').value.trim());
+        params.set('date', document.getElementById('in-date').value);
+        params.set('wh', document.getElementById('in-withholding').checked ? '1' : '0');
+        params.set('tr', document.getElementById('in-tax-rate').value);
+        params.set('tt', document.getElementById('in-tax-type').value);
+        params.set('rd', document.getElementById('in-round').value);
+        params.set('stamp', document.getElementById('in-stamp').checked ? '1' : '0');
+        if (outputMode === 'multi') {
+            params.set('mc', String(multiCount));
+            getMultiEntries().forEach((e, i) => {
+                params.set(`n${i}`, e.name);
+                params.set(`y${i}`, String(e.net));
+            });
+        }
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    }
+
+    async function shareUrl() {
+        const msg = '共有URLには宛名・金額などが含まれます。チャットやメールで送る相手に注意して共有してください。続行しますか？';
+        if (!confirm(msg)) return;
+        const url = buildShareUrl();
+        const copied = await copyText(url);
+        alert(copied ? '共有URLをクリップボードにコピーしました。' : `コピーできませんでした。URL:\n${url}`);
+    }
+
+    function applyQueryParams() {
+        const q = new URLSearchParams(window.location.search);
+        if (!q.toString()) return;
+        if (q.has('y')) document.getElementById('in-net').value = q.get('y');
+        if (q.has('to')) document.getElementById('in-to').value = q.get('to');
+        if (q.has('issuer')) document.getElementById('in-issuer').value = q.get('issuer');
+        if (q.has('desc')) document.getElementById('in-desc').value = q.get('desc');
+        if (q.has('date')) document.getElementById('in-date').value = q.get('date');
+        if (q.has('wh')) document.getElementById('in-withholding').checked = q.get('wh') === '1';
+        if (q.has('tr')) document.getElementById('in-tax-rate').value = q.get('tr');
+        if (q.has('tt')) document.getElementById('in-tax-type').value = q.get('tt');
+        if (q.has('rd')) document.getElementById('in-round').value = q.get('rd');
+        if (q.has('stamp')) document.getElementById('in-stamp').checked = q.get('stamp') !== '0';
+        if (q.get('mode') === 'multi') {
+            multiCount = Number(q.get('mc')) === 4 ? 4 : 3;
+            document.getElementById('in-multi-count').value = String(multiCount);
+            renderMultiRows();
+            for (let i = 0; i < multiCount; i++) {
+                const n = document.querySelector(`.multi-name[data-idx="${i}"]`);
+                const y = document.querySelector(`.multi-net[data-idx="${i}"]`);
+                if (n && q.has(`n${i}`)) n.value = q.get(`n${i}`);
+                if (y && q.has(`y${i}`)) y.value = q.get(`y${i}`);
+            }
+            setMode('multi');
+        }
+    }
+
+    function bindEvents() {
+        const inputs = document.querySelectorAll('#in-net, #in-to, #in-issuer, #in-desc, #in-date, #in-withholding, #in-tax-rate, #in-tax-type, #in-round, #in-stamp');
+        inputs.forEach((el) => el.addEventListener('input', updatePreview));
+        inputs.forEach((el) => el.addEventListener('change', updatePreview));
+
+        document.getElementById('btn-mode-single').addEventListener('click', () => setMode('single'));
+        document.getElementById('btn-mode-multi').addEventListener('click', () => setMode('multi'));
+
+        document.getElementById('in-multi-count').addEventListener('change', (e) => {
+            multiCount = Number(e.target.value) === 4 ? 4 : 3;
+            renderMultiRows();
+            updatePreview();
+        });
+
+        document.getElementById('multi-rows').addEventListener('input', updatePreview);
+
+        document.getElementById('btn-bulk-apply').addEventListener('click', () => {
+            const net = document.getElementById('in-net').value;
+            const desc = document.getElementById('in-desc').value;
+            document.querySelectorAll('.multi-net').forEach((el) => { el.value = net; });
+            if (desc) document.getElementById('in-desc').value = desc;
+            updatePreview();
+        });
+
+        document.querySelectorAll('.rcpt-desc-chip').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                document.getElementById('in-desc').value = btn.getAttribute('data-desc');
+                updatePreview();
+            });
+        });
+
+        document.getElementById('btn-print').addEventListener('click', () => window.print());
+        document.getElementById('btn-share-url').addEventListener('click', shareUrl);
+        document.getElementById('btn-chat-config').addEventListener('click', configureChat);
+        document.querySelectorAll('[data-chat]').forEach((btn) => {
+            btn.addEventListener('click', () => shareToChat(btn.getAttribute('data-chat')));
+        });
+
+        window.addEventListener('resize', scalePreview);
+    }
+
+    function init() {
+        const today = new Date();
+        document.getElementById('in-date').value = today.toISOString().slice(0, 10);
+        renderMultiRows();
+        bindEvents();
+        applyQueryParams();
+        updatePreview();
+        requestAnimationFrame(scalePreview);
+    }
+
+    SUGUDASU_SHELL.mount({ title: '手取り逆引き・領収書', print: true });
+    init();
+})();
+</script>
+</body>
+</html>

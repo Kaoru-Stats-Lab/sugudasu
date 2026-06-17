@@ -12,6 +12,8 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [reverse.md](reverse.md) | `tools/reverse.html` 逆引き |
 | [warikan.md](warikan.md) | `tools/warikan.html` 割り勘 |
 | [sns.md](sns.md) | `tools/sns.html` SNSデコ |
+| [receipt.md](receipt.md) | `tools/receipt.html` 手取り逆引き・領収書 |
+| [calc-furima.md](calc-furima.md) | `tools/calc.html` フリマ送料・手数料比較（提案・未実装） |
 | [legal-3docs-gemini.md](legal-3docs-gemini.md) | 法務3文書ドラフト生成（Gemini依頼用） |
 
 実装時は [DESIGN_GUIDELINE.md](../DESIGN_GUIDELINE.md) と [assets/sugudasu-shell.js](../../assets/sugudasu-shell.js) を優先してください。

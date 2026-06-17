@@ -148,6 +148,212 @@ body.sg-body {
 details.sg-faq summary::-webkit-details-marker { display: none; }
 details.sg-faq[open] summary svg { transform: rotate(180deg); }
 
+/* —— Receipt (receipt.html) —— */
+.rcpt-desc-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--sg-border);
+  background: #fff;
+  color: var(--sg-text);
+  cursor: pointer;
+}
+.rcpt-desc-chip:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+.rcpt-chat-btn {
+  background: #fff;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+}
+.rcpt-chat-btn:hover { background: #f8fafc; }
+
+.rcpt-paper {
+  padding: 18mm;
+}
+
+.rcpt-card {
+  color: #0f172a;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.rcpt-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.rcpt-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  margin: 0;
+}
+
+.rcpt-date {
+  font-size: 11px;
+  color: #475569;
+  margin: 0;
+}
+
+.rcpt-to {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 0.35rem;
+}
+
+.rcpt-sama { font-size: 0.85em; font-weight: 600; }
+
+.rcpt-amount-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.rcpt-amount-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.rcpt-amount {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.rcpt-desc,
+.rcpt-paid {
+  margin: 0.35rem 0;
+  font-size: 12px;
+}
+
+.rcpt-breakdown {
+  width: 100%;
+  margin: 1.25rem 0;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.rcpt-breakdown th,
+.rcpt-breakdown td {
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.6rem;
+}
+
+.rcpt-breakdown th {
+  background: #f8fafc;
+  font-weight: 600;
+  text-align: left;
+  width: 55%;
+}
+
+.rcpt-breakdown td { text-align: right; }
+
+.rcpt-breakdown-total th,
+.rcpt-breakdown-total td {
+  font-weight: 700;
+  background: #f1f5f9;
+}
+
+.rcpt-footer {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.rcpt-issuer-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rcpt-issuer {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  min-width: 8rem;
+  border-bottom: 1px solid #94a3b8;
+  padding-bottom: 0.25rem;
+}
+
+.rcpt-stamp {
+  width: 52px;
+  height: 52px;
+  border: 3px solid #dc2626;
+  border-radius: 50%;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  transform: rotate(-12deg);
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+
+.rcpt-stamp-note {
+  font-size: 9px;
+  color: #94a3b8;
+  margin: 0;
+  text-align: right;
+}
+
+.rcpt-multi-sheet {
+  padding: 10mm 12mm !important;
+}
+
+.rcpt-multi-sheet .rcpt-card {
+  font-size: 10px;
+  padding-bottom: 0;
+}
+
+.rcpt-multi-sheet .rcpt-title { font-size: 1.1rem; letter-spacing: 0.25em; }
+.rcpt-multi-sheet .rcpt-amount { font-size: 1.25rem; }
+.rcpt-multi-sheet .rcpt-card-head { margin-bottom: 0.65rem; }
+.rcpt-multi-sheet .rcpt-footer { margin-top: 0.75rem; }
+.rcpt-multi-sheet .rcpt-breakdown { margin: 0.65rem 0; }
+.rcpt-multi-sheet .rcpt-stamp { width: 40px; height: 40px; font-size: 9px; }
+
+.rcpt-cut {
+  border-bottom: 1px dashed #94a3b8;
+  margin: 6mm 0;
+  height: 0;
+}
+
+@media print {
+  .rcpt-multi-sheet {
+    padding: 8mm 10mm !important;
+    min-height: auto !important;
+  }
+
+  .rcpt-multi-sheet .rcpt-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .rcpt-cut {
+    margin: 4mm 0;
+  }
+}
+
 /* —— A4 paper (screen) —— */
 .sg-a4-portrait,
 .a4-page {

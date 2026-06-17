@@ -15,8 +15,24 @@
         <!-- 左: 入力 -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
             <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
-                <span>💰</span> 会計・傾斜設定
+                <span>💰</span> 会計・割り勘設定
             </h2>
+
+            <div class="bg-slate-100 p-1 rounded-xl grid grid-cols-2 gap-1 border border-slate-200" role="tablist">
+                <button type="button" id="btn-mode-coeff" class="py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm" aria-selected="true">
+                    傾斜係数モード
+                </button>
+                <button type="button" id="btn-mode-fixed" class="py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900" aria-selected="false">
+                    固定額モード（合コン等）
+                </button>
+            </div>
+            <p id="mode-hint-coeff" class="text-[10px] text-slate-500 leading-relaxed">
+                係数×人数で理論額を按分。上司2.0・一般1.0など飲み会向け。
+            </p>
+            <p id="mode-hint-fixed" class="hidden text-[10px] text-slate-500 leading-relaxed">
+                特定グループの1人あたり金額を固定し、<strong class="text-slate-700">残りをもう一方のグループ</strong>で割り勘。
+                例：総額 − 女性3,000円×2名 ＝ 男性側の合計 → 男性人数で按分。
+            </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -47,11 +63,18 @@
                         ＋ グループを追加
                     </button>
                 </div>
-                <div class="hidden sm:grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-400 px-1">
+                <div class="hidden sm:grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-400 px-1" id="group-header-coeff">
                     <div class="col-span-5">グループ名</div>
                     <div class="col-span-2 text-center">傾斜係数</div>
                     <div class="col-span-2 text-center">人数</div>
                     <div class="col-span-2 text-center">理論額</div>
+                    <div class="col-span-1"></div>
+                </div>
+                <div class="hidden sm:grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-400 px-1" id="group-header-fixed">
+                    <div class="col-span-5">グループ名</div>
+                    <div class="col-span-3 text-center">1人あたり（固定）</div>
+                    <div class="col-span-2 text-center">人数</div>
+                    <div class="col-span-1 text-center">小計</div>
                     <div class="col-span-1"></div>
                 </div>
                 <div id="group-rows" class="space-y-2"></div>
@@ -98,11 +121,20 @@
             <div class="sg-faq-list">
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>合コンで女性だけ固定額（例3,000円）、男性は残りを割り勘したい</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>「固定額モード（合コン等）」を選び、女性側に1人あたりの固定金額と人数を入力。男性側の1人あたり欄は空欄（残り按分）のまま人数だけ入れると、総額から自動計算されます。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>上司と新人で飲み会の割り勘を公平にするには？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>グループごとに「傾斜係数」と人数を設定します。役員・上司は係数2.0、一般は1.0のようにすると、幹事が得をしたり損をしたりせず、係数に応じた金額を自動計算できます。</p>
+                        <p>「傾斜係数モード」でグループごとに係数と人数を設定します。役員・上司は2.0、一般は1.0のようにすると、幹事が得をしたり損をしたりせず、係数に応じた金額を自動計算できます。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -128,26 +160,46 @@
     </section>
 
     <script>
-        const DEFAULT_GROUPS = [
+        const DEFAULT_GROUPS_COEFF = [
             { name: '役員・上司', coeff: 2.0, count: 1 },
             { name: '先輩・主賓', coeff: 1.5, count: 1 },
             { name: '新人・一般', coeff: 1.0, count: 2 }
         ];
 
+        const DEFAULT_GROUPS_FIXED = [
+            { name: '女性', fixedAmount: 3000, count: 2, isRemainder: false },
+            { name: '男性', fixedAmount: null, count: 2, isRemainder: true }
+        ];
+
+        let mode = 'coeff';
         let groups = [];
         let rowSeq = 0;
         let lastResult = null;
 
         function init() {
-            groups = DEFAULT_GROUPS.map(g => ({ ...g, id: ++rowSeq }));
+            groups = DEFAULT_GROUPS_COEFF.map(g => ({ ...g, id: ++rowSeq }));
+            document.getElementById('group-header-fixed').classList.add('hidden');
             renderRows();
             bindEvents();
             calculate();
         }
 
         function bindEvents() {
+            document.getElementById('btn-mode-coeff').addEventListener('click', () => setMode('coeff'));
+            document.getElementById('btn-mode-fixed').addEventListener('click', () => setMode('fixed'));
             document.getElementById('btn-add-group').addEventListener('click', () => {
-                groups.push({ id: ++rowSeq, name: '新しいグループ', coeff: 1.0, count: 1 });
+                if (mode === 'coeff') {
+                    groups.push({ id: ++rowSeq, name: '新しいグループ', coeff: 1.0, count: 1 });
+                } else {
+                    const hasRemainder = groups.some(g => g.isRemainder);
+                    groups.push({
+                        id: ++rowSeq,
+                        name: '新しいグループ',
+                        fixedAmount: hasRemainder ? 0 : null,
+                        count: 1,
+                        isRemainder: !hasRemainder
+                    });
+                }
                 renderRows();
                 calculate();
             });
@@ -157,21 +209,63 @@
             document.getElementById('select-round').addEventListener('change', calculate);
         }
 
+        function setMode(next) {
+            if (mode === next) return;
+            mode = next;
+            rowSeq = 0;
+            groups = (mode === 'coeff' ? DEFAULT_GROUPS_COEFF : DEFAULT_GROUPS_FIXED).map(g => ({
+                ...g,
+                id: ++rowSeq
+            }));
+
+            const active = 'py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm';
+            const idle = 'py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900';
+            document.getElementById('btn-mode-coeff').className = mode === 'coeff' ? active : idle;
+            document.getElementById('btn-mode-fixed').className = mode === 'fixed' ? active : idle;
+            document.getElementById('mode-hint-coeff').classList.toggle('hidden', mode !== 'coeff');
+            document.getElementById('mode-hint-fixed').classList.toggle('hidden', mode !== 'fixed');
+            document.getElementById('group-header-coeff').classList.toggle('hidden', mode !== 'coeff');
+            document.getElementById('group-header-fixed').classList.toggle('hidden', mode !== 'fixed');
+
+            renderRows();
+            calculate();
+        }
+
         function renderRows() {
             const container = document.getElementById('group-rows');
-            container.innerHTML = groups.map(g => `
-                <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 border border-slate-100 rounded-xl p-2.5" data-id="${g.id}">
-                    <input type="text" value="${escAttr(g.name)}" data-field="name"
-                        class="col-span-12 sm:col-span-5 border rounded-lg px-2 py-1.5 text-xs font-bold">
-                    <input type="number" step="0.1" min="0" value="${g.coeff}" data-field="coeff"
-                        class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
-                    <input type="number" min="0" step="1" value="${g.count}" data-field="count"
-                        class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
-                    <span class="col-span-3 sm:col-span-2 text-[10px] text-slate-400 text-center mono theoretical-${g.id}">—</span>
-                    <button type="button" data-remove="${g.id}"
-                        class="col-span-1 text-slate-400 hover:text-rose-600 text-sm font-bold" title="削除">✕</button>
-                </div>
-            `).join('');
+            if (mode === 'coeff') {
+                container.innerHTML = groups.map(g => `
+                    <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 border border-slate-100 rounded-xl p-2.5" data-id="${g.id}">
+                        <input type="text" value="${escAttr(g.name)}" data-field="name"
+                            class="col-span-12 sm:col-span-5 border rounded-lg px-2 py-1.5 text-xs font-bold">
+                        <input type="number" step="0.1" min="0" value="${g.coeff}" data-field="coeff"
+                            class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
+                        <input type="number" min="0" step="1" value="${g.count}" data-field="count"
+                            class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
+                        <span class="col-span-3 sm:col-span-2 text-[10px] text-slate-400 text-center mono theoretical-${g.id}">—</span>
+                        <button type="button" data-remove="${g.id}"
+                            class="col-span-1 text-slate-400 hover:text-rose-600 text-sm font-bold" title="削除">✕</button>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = groups.map(g => `
+                    <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 border border-slate-100 rounded-xl p-2.5" data-id="${g.id}">
+                        <input type="text" value="${escAttr(g.name)}" data-field="name"
+                            class="col-span-12 sm:col-span-5 border rounded-lg px-2 py-1.5 text-xs font-bold">
+                        <div class="col-span-6 sm:col-span-3">
+                            ${g.isRemainder
+                                ? '<span class="block text-[10px] text-blue-600 font-bold text-center py-1.5 border border-dashed border-blue-200 rounded-lg bg-blue-50">残り按分</span>'
+                                : `<input type="number" min="0" step="1" value="${g.fixedAmount ?? 0}" data-field="fixedAmount"
+                                    class="w-full border rounded-lg px-2 py-1.5 text-xs text-center mono" placeholder="固定額">`}
+                        </div>
+                        <input type="number" min="0" step="1" value="${g.count}" data-field="count"
+                            class="col-span-4 sm:col-span-2 border rounded-lg px-2 py-1.5 text-xs text-center mono">
+                        <span class="col-span-1 sm:col-span-1 text-[10px] text-slate-400 text-center mono subtotal-${g.id}">—</span>
+                        <button type="button" data-remove="${g.id}"
+                            class="col-span-1 text-slate-400 hover:text-rose-600 text-sm font-bold" title="削除">✕</button>
+                    </div>
+                `).join('');
+            }
 
             container.querySelectorAll('[data-field]').forEach(el => {
                 el.addEventListener('input', e => {
@@ -183,6 +277,7 @@
                     if (field === 'name') g.name = e.target.value;
                     else if (field === 'coeff') g.coeff = Math.max(0, parseFloat(e.target.value) || 0);
                     else if (field === 'count') g.count = Math.max(0, parseInt(e.target.value, 10) || 0);
+                    else if (field === 'fixedAmount') g.fixedAmount = Math.max(0, parseInt(e.target.value, 10) || 0);
                     calculate();
                 });
             });
@@ -194,7 +289,12 @@
                         return;
                     }
                     const id = parseInt(btn.dataset.remove, 10);
+                    const removed = groups.find(g => g.id === id);
                     groups = groups.filter(g => g.id !== id);
+                    if (mode === 'fixed' && removed && removed.isRemainder && !groups.some(g => g.isRemainder)) {
+                        groups[groups.length - 1].isRemainder = true;
+                        groups[groups.length - 1].fixedAmount = null;
+                    }
                     renderRows();
                     calculate();
                 });
@@ -210,28 +310,15 @@
             return (n || 0).toLocaleString('ja-JP');
         }
 
-        function calculate() {
-            const total = Math.max(0, parseInt(document.getElementById('input-total').value, 10) || 0);
-            const roundUnit = parseInt(document.getElementById('select-round').value, 10) || 100;
-
+        function calculateCoeff(total, roundUnit) {
             const active = groups.filter(g => g.count > 0 && g.coeff > 0);
             const totalWeight = active.reduce((s, g) => s + g.coeff * g.count, 0);
-
-            const cardsEl = document.getElementById('result-cards');
-            const balanceEl = document.getElementById('balance-panel');
-
-            if (total === 0 || totalWeight === 0 || active.length === 0) {
-                cardsEl.innerHTML = '<p class="text-xs text-rose-600 text-center py-6">総額・人数・傾斜係数を正しく入力してください。</p>';
-                balanceEl.classList.add('hidden');
-                document.getElementById('output-text').value = '';
-                lastResult = null;
-                return;
-            }
+            if (totalWeight === 0 || active.length === 0) return null;
 
             const results = active.map(g => {
                 const theoretical = (total * g.coeff) / totalWeight;
                 const rounded = roundToUnit(theoretical, roundUnit);
-                return { ...g, theoretical, rounded, subtotal: rounded * g.count };
+                return { ...g, theoretical, rounded, subtotal: rounded * g.count, isRemainder: false };
             });
 
             active.forEach(g => {
@@ -240,21 +327,125 @@
                 if (el && r) el.textContent = `¥${formatYen(Math.round(r.theoretical))}`;
             });
 
+            return results;
+        }
+
+        function calculateFixed(total, roundUnit) {
+            const remainderGroups = groups.filter(g => g.isRemainder && g.count > 0);
+            const fixedGroups = groups.filter(g => !g.isRemainder && g.count > 0);
+
+            if (remainderGroups.length !== 1) {
+                return { error: '固定額モードでは「残り按分」グループを1つだけ設定してください。' };
+            }
+            if (fixedGroups.some(g => g.fixedAmount == null || g.fixedAmount < 0)) {
+                return { error: '固定側グループに1人あたり金額を入力してください。' };
+            }
+
+            const remainderGroup = remainderGroups[0];
+            const fixedTotal = fixedGroups.reduce((s, g) => s + g.fixedAmount * g.count, 0);
+            const remainderPool = total - fixedTotal;
+
+            if (remainderPool < 0) {
+                return { error: `固定額の合計（¥${formatYen(fixedTotal)}）がお会計総額を超えています。` };
+            }
+            if (remainderGroup.count <= 0) {
+                return { error: '残り按分グループの人数を入力してください。' };
+            }
+
+            const theoretical = remainderPool / remainderGroup.count;
+            const rounded = roundToUnit(theoretical, roundUnit);
+            const results = [];
+
+            fixedGroups.forEach(g => {
+                results.push({
+                    ...g,
+                    theoretical: g.fixedAmount,
+                    rounded: g.fixedAmount,
+                    subtotal: g.fixedAmount * g.count,
+                    isRemainder: false
+                });
+                const subEl = document.querySelector(`.subtotal-${g.id}`);
+                if (subEl) subEl.textContent = `¥${formatYen(g.fixedAmount * g.count)}`;
+            });
+
+            results.push({
+                ...remainderGroup,
+                theoretical,
+                rounded,
+                subtotal: rounded * remainderGroup.count,
+                isRemainder: true,
+                remainderPool
+            });
+
+            const subEl = document.querySelector(`.subtotal-${remainderGroup.id}`);
+            if (subEl) subEl.textContent = `¥${formatYen(rounded * remainderGroup.count)}`;
+
+            return results;
+        }
+
+        function calculate() {
+            const total = Math.max(0, parseInt(document.getElementById('input-total').value, 10) || 0);
+            const roundUnit = parseInt(document.getElementById('select-round').value, 10) || 100;
+
+            const cardsEl = document.getElementById('result-cards');
+            const balanceEl = document.getElementById('balance-panel');
+
+            if (total === 0) {
+                cardsEl.innerHTML = '<p class="text-xs text-rose-600 text-center py-6">お会計総額を入力してください。</p>';
+                balanceEl.classList.add('hidden');
+                document.getElementById('output-text').value = '';
+                lastResult = null;
+                return;
+            }
+
+            let results;
+            if (mode === 'coeff') {
+                results = calculateCoeff(total, roundUnit);
+                if (!results) {
+                    cardsEl.innerHTML = '<p class="text-xs text-rose-600 text-center py-6">総額・人数・傾斜係数を正しく入力してください。</p>';
+                    balanceEl.classList.add('hidden');
+                    document.getElementById('output-text').value = '';
+                    lastResult = null;
+                    return;
+                }
+            } else {
+                const out = calculateFixed(total, roundUnit);
+                if (out && out.error) {
+                    cardsEl.innerHTML = `<p class="text-xs text-rose-600 text-center py-6">${escHtml(out.error)}</p>`;
+                    balanceEl.classList.add('hidden');
+                    document.getElementById('output-text').value = '';
+                    lastResult = null;
+                    return;
+                }
+                results = out;
+            }
+
             const collected = results.reduce((s, r) => s + r.subtotal, 0);
             const diff = total - collected;
-            lastResult = { total, collected, diff, results, roundUnit };
+            lastResult = { total, collected, diff, results, roundUnit, mode };
 
-            cardsEl.innerHTML = results.map(r => `
+            cardsEl.innerHTML = results.map(r => {
+                const badge = r.isRemainder
+                    ? '<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded ml-1">残り按分</span>'
+                    : (mode === 'fixed' ? '<span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded ml-1">固定</span>' : '');
+                const meta = mode === 'coeff'
+                    ? `<span class="text-slate-400">× ${r.count}名 · 傾斜 ${r.coeff}</span>`
+                    : `<span class="text-slate-400">× ${r.count}名</span>${badge}`;
+                const theoryLine = r.isRemainder && mode === 'fixed'
+                    ? `<p class="text-[10px] text-slate-400 mono mt-0.5">残り ¥${formatYen(r.remainderPool)} ÷ ${r.count}名 → 丸め後</p>`
+                    : `<p class="text-[10px] text-slate-400 mono mt-0.5">理論額 ¥${formatYen(Math.round(r.theoretical))} → 丸め後</p>`;
+
+                return `
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 rounded-xl bg-gradient-to-r from-slate-50 to-white border border-slate-200">
                     <div>
-                        <p class="text-xs font-bold text-slate-500">${escHtml(r.name)} <span class="text-slate-400">× ${r.count}名 · 傾斜 ${r.coeff}</span></p>
-                        <p class="text-[10px] text-slate-400 mono mt-0.5">理論額 ¥${formatYen(Math.round(r.theoretical))} → 丸め後</p>
+                        <p class="text-xs font-bold text-slate-500">${escHtml(r.name)} ${meta}</p>
+                        ${theoryLine}
                     </div>
                     <p class="mono text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                         ¥${formatYen(r.rounded)}<span class="text-sm font-bold text-slate-500">/人</span>
                     </p>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
 
             const diffLabel = diff === 0
                 ? { text: 'ぴったり一致（幹事の得損ゼロ）', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800' }
@@ -283,11 +474,12 @@
 
         function buildLineText() {
             if (!lastResult) return;
-            const { total, collected, diff, results } = lastResult;
+            const { total, collected, diff, results, mode: resultMode } = lastResult;
 
-            const lines = results.map(r =>
-                `・${r.name}（${r.count}名）→ お一人 ¥${formatYen(r.rounded)}`
-            );
+            const lines = results.map(r => {
+                const tag = r.isRemainder ? '（残り按分）' : (resultMode === 'fixed' ? '（固定）' : '');
+                return `・${r.name}${tag}（${r.count}名）→ お一人 ¥${formatYen(r.rounded)}`;
+            });
 
             let diffLine;
             if (diff === 0) {
@@ -298,9 +490,15 @@
                 diffLine = `端数丸めの関係で ¥${formatYen(Math.abs(diff))} 余ります。幹事が ¥${formatYen(Math.abs(diff))} お釣りとして受け取る想定です。`;
             }
 
+            const modeLine = resultMode === 'fixed'
+                ? '■ 計算方式：固定額モード（一部グループ固定 → 残り按分）'
+                : '■ 計算方式：傾斜係数モード';
+
             const text = [
                 '【お会計清算のお願い】',
                 `お会計総額：¥${formatYen(total)}（税込）`,
+                '',
+                modeLine,
                 '',
                 '■ お一人様のご負担額',
                 ...lines,
