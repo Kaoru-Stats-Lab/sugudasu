@@ -214,19 +214,21 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ##### A3 紹介（Referral）— 被リンク・第三者
 
-**正本:** §14（ゼロイチ認知マーケ）· 原稿 `docs/PR_TIMES_LAUNCH_2026.md` · 推敲 `docs/prompts/grok-pr-times-review.md`
+**正本:** §14（ゼロイチ認知マーケ）· 原稿 `docs/PR_TIMES_LAUNCH_2026.md`（**pending · 資産のみ**）
 
-- [ ] **P1** **PR TIMES** 第一弾入稿（代表カオル）
+- [ ] **PENDING** **PR TIMES** 第一弾入稿 — **見送り（2026-06）** · 税抜3万円/本 · スタートアップチャレンジ対象外 · 収益化前は費用対効果が合わない
   - [x] 入稿原稿ドラフト（`docs/PR_TIMES_LAUNCH_2026.md`）
   - [x] Grok Pass1〜4 監査（`grok-pr-times-review.md` · 原稿 §6 にログ）
   - [x] Gemini §6 メタ解析（`pr-times-gemini-meta.md` · 原稿 §7）
   - [x] Claude/Cursor で SSOT 照合・原稿マージ（Grok+Gemini反映済）
   - [x] 運営者プロフィール SSOT（`docs/operator-profile.md` L0〜L4）
-- [x] L3-press 表現確定（`docs/private/L3-press.md` · 322字）
-- [x] 社名公開境界 — 記者向け PR TIMES 担当者欄のみ（`operator-profile.md`）
-  - [ ] 提督最終確認・PR TIMES 入稿（担当者欄に private/L3-press を貼付）
-  - [ ] アイキャッチ（`press/assets/` — logo-sugudasu · invoice 01/02）
-  - [ ] 配信 **火〜木 09:00〜10:00 JST** · 同日 X（`x_guideline.md` W1-D2 等）
+  - [x] L3-press 表現確定（`docs/private/L3-press.md` · 322字）
+  - [x] 社名公開境界 — 記者向け PR TIMES 担当者欄のみ（`operator-profile.md`）
+  - [x] アイキャッチ素材（`press/assets/`）
+  - [ ] 再開条件: AdSense 収益 or 有料プラン検討時 · 原稿はそのまま流用可
+- [ ] **P1** **X v2** ローンチ週（ピン + W1 カレンダー · `x_guideline.md`）— **PR TIMES 代替の主軸**
+- [ ] **P1** **Zenn / note**「30秒で使える」1本（invoice 訴求 · 自前被リンク）— 原稿の L2 切り口を転用可
+- [ ] **P1** デモGIF（invoice 入力→PDF）— X · note 共通素材
 - [ ] **P2** 運営者紹介のサイト公開（L4 → `updates.html` 等）
 - [ ] **P2** PR TIMES 季節再送（§14-2）
 - [ ] **P2** Product Hunt（**国内記事1本 or X初動後** · 英語1段落＋同GIF）
@@ -314,11 +316,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | フェーズ | タイミング | 打つ施策（最大3） |
 |----------|------------|-------------------|
-| **今週** | 審査待ち | ①PR TIMES原稿推敲→入稿 ②X v2（ピン+W1）③invoice GIF |
-| **PR直後** | 配信週 | ①X告知 ②Zenn/note 1本 ③はてブ等はURL1本のみ |
+| **今週** | 審査待ち | ①**X v2**（ピン+W1）②**Zenn/note** 1本 ③**invoice GIF** |
+| **ローンチ週** | X 告知 | ①Xスレッド/固定 ②はてブ等 URL1本 ③ツールまとめ登録1件 |
 | **承認直後** | タグ設置 | ①結果直下 AdSense ②invoice/shift 枠 ③GA4 |
 | **30日** | オーガニック種まき | ①SEO内部リンク ②マイクロインフルエンサー ③完了CTA |
-| **90日** | 拡張 | ①calc pSEO ②PR季節再送 ③Product Hunt |
+| **90日** | 拡張 | ①calc pSEO ②Product Hunt ③PR TIMES 再検討（pending） |
 
 ---
 
@@ -332,7 +334,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 神の一手② 改善レポート | **`updates.html` · A2/A3**（`report.html` ではない） |
 | 神の一手③ 結果下広告 | **C-2 · P0（審査後）** |
 
-**やらない（方針）:** 施策一括投入 · フォーム上広告 · スパム的知恵袋 · 露骨アフィ · 有料広告（当面）· **Gemini への原稿遂行委任** · LINE文末ブランディング
+**やらない（方針）:** 施策一括投入 · フォーム上広告 · スパム的知恵袋 · 露骨アフィ · 有料広告（当面）· **PR TIMES 有料配信（pending）** · **Gemini への原稿遂行委任** · LINE文末ブランディング
 
 **AI役割（PR）:** Grok=`grok-pr-times-review.md` · Gemini=`pr-times-gemini-meta.md` · Claude=SSOT照合・入稿確定
 
@@ -443,8 +445,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 1. ~~**新規ツール `receipt.html`（手取り逆引き・領収書）MVP**~~ — 完了（`docs/prompts/receipt.md`）  
 2. ~~**`updates.html`（更新履歴・改善レポート）**~~ — 完了 · 詳細 §11 · SSOT: `data/changelog.json`  
-3. **§2-5 A2** `updates.html` の X / Zenn 発信（認知 · 被リンク）  
-3b. **§2-5 A3 / §14** PR TIMES 第一弾入稿（Grok推敲 → Geminiメタ → マージ）  
+3. **§2-5 A2** `updates.html` の X / Zenn 発信（認知 · 被リンク）— **主軸（PR TIMES 見送り後）**  
+3b. ~~**§2-5 A3 / §14** PR TIMES 第一弾入稿~~ — **PENDING**（原稿・素材は完成 · 税抜3万/本）  
 4. ~~**§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）~~ — title/meta/OG/Twitter 反映済  
 5. **§2-5 A2** 結果画面シェア導線（warikan · receipt · invoice）  
 6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ（未実装）  
@@ -896,31 +898,33 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 **Gemini向け:** 上表の適合度採点のみ（`pr-times-gemini-meta.md`）— **原稿遂行はさせない**
 
-### 14-2. PR TIMES 戦略
+### 14-2. PR TIMES 戦略 — **PENDING（2026-06 見送り）**
+
+> 税抜3万円/本 · 無料枠（スタートアップチャレンジ）対象外。**原稿・`press/assets/` は資産として保持。** 再開は AdSense 収益化後 or 明示的な広報予算時。
 
 | 弾 | 時期 | 切り口 | 原稿 |
 |----|------|--------|------|
-| **第一弾** | 今週〜 | 案① 時流×カウンター（インボイス・登録不要・非送信） | `PR_TIMES_LAUNCH_2026.md` |
-| 第二弾 | 7〜8月 | 案② 幹事・店長（割り勘固定額 · シフト） | 未作成 |
-| 第三弾 | 10月 | 案① 再送（インボイス集中） | 第一弾差分 |
+| **第一弾** | **pending** | 案① 時流×カウンター | `PR_TIMES_LAUNCH_2026.md`（完成） |
+| 第二弾 | 7〜8月 | 案② 幹事・店長 | 未作成 · PR再開時 |
+| 第三弾 | 10月 | 案① 再送 | 第一弾差分 |
 | 第四弾 | 12〜1月 | receipt · 確定申告文脈 | 未作成 |
 
-**配信:** PR TIMES · 火〜木 09:00〜10:00 JST · ジャンル IT/Web · 代表 **カオル**  
-**素材:** ロゴ · hub9カードスクショ · invoice 入力→PDF GIF  
-**成功指標（30日）:** 二次記事 **2本+** OR ブランド検索開始 OR `/invoice` 週50セッション+
+**代替の主軸（今すぐ）:** X v2 · Zenn/note · invoice GIF · ツールまとめ登録  
+**成功指標（30日・無料ルート）:** X インプレ増 · `/invoice` 週50セッション+ · 自社記事1本インデックス
 
 ### 14-3. PR以外のゼロイチ施策（優先 Tier）
 
 | Tier | 施策 | 優先 | 備考 |
 |------|------|------|------|
-| **1** | X v2 カレンダー（`x_guideline.md`） | P1 | PR配信日と同期 |
-| **1** | デモGIF 3本 | P2 | invoice / warikan / receipt |
-| **1** | Zenn or note「30秒で使える」 | P2 | 自前被リンク |
+| **1** | X v2 カレンダー（`x_guideline.md`） | **P1** | **ローンチ主軸**（PR TIMES 代替） |
+| **1** | Zenn or note「30秒で使える」 | **P1** | 原稿 L2 転用 · 自前被リンク |
+| **1** | デモGIF invoice | **P1** | X · note 共通 |
+| **1** | デモGIF warikan / receipt | P2 | 横展開 |
 | **2** | マイクロインフルエンサー・ギブ型 | P2 | 有料PR禁止 · 10人リスト |
 | **2** | 国内ツールまとめ登録 | P2 | 週1ペース |
 | **2** | 知恵袋・Q&A（価値回答） | P2 | 月5件上限 |
 | **3** | Product Hunt | P2 | 国内記事 or X初動 **後** |
-| **3** | 季節PR再送 | P2 | §14-2 |
+| **3** | PR TIMES（有料） | **pending** | 原稿完成済 · §14-2 |
 
 ### 14-4. AI役割分担（PRワークフロー）
 

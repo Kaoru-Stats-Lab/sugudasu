@@ -1,5 +1,7 @@
 # PR TIMES 入稿原稿 — SUGUDASU 正式ローンチ（2026-06）
 
+> **Status: PENDING（2026-06 見送り）** — 税抜3万円/本・無料枠対象外。原稿は資産として保持。公開は X / Zenn/note 等の無料ルートを優先（`docs/BACKLOG.md` §14）。
+
 **Status:** Grok · Gemini §6 反映済 · **入稿待ち** · **代表:** カオル  
 **配信先:** [PR TIMES](https://prtimes.jp/) · ジャンル: Webサービス・アプリ / ビジネス実務  
 **関連:** `docs/BACKLOG.md` §14 · `docs/prompts/grok-pr-times-review.md` · `data/changelog.json`
