@@ -12,6 +12,7 @@
 | `logo-type-sugudasu.png` | ロゴタイプ（横組み等） |
 | `invoice-sugudasu01.png` | 請求書ツール画面スクショ ① |
 | `invoice-sugudasu02.png` | 請求書ツール画面スクショ ② |
+| `x-pin-hub-v2.png` | **X 固定ピン用**（1200×675 · §8 オーダー · 未作成可） |
 
 サイト用の軽量ロゴは `assets/logo-mark.png` · `assets/sugudasu-logo.png` を正とする。
 

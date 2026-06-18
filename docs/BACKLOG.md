@@ -227,7 +227,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - [x] 社名公開境界 — 記者向け PR TIMES 担当者欄のみ（`operator-profile.md`）
   - [x] アイキャッチ素材（`press/assets/`）
   - [ ] 再開条件: AdSense 収益 or 有料プラン検討時 · 原稿はそのまま流用可
-- [ ] **P1** **X v2** ローンチ週（ピン + W1 カレンダー · `x_guideline.md`）— **PR TIMES 代替の主軸**
+- [ ] **P1** **X v2** ローンチ週（ピン v2 + W1 カレンダー · `x_guideline.md` §8）— **PR TIMES 代替の主軸**
+  - [x] 固定ピン文面 v2（W1-D1 · `pin_hub_v2` · 画像オーダー §8）
 - [ ] **P1** **Zenn / note**「30秒で使える」1本（invoice 訴求 · 自前被リンク）— 原稿の L2 切り口を転用可
 - [ ] **P1** デモGIF（invoice 入力→PDF）— X · note 共通素材
 - [ ] **P2** 運営者紹介のサイト公開（L4 → `updates.html` 等）
@@ -917,7 +918,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | Tier | 施策 | 優先 | 備考 |
 |------|------|------|------|
-| **1** | X v2 カレンダー（`x_guideline.md`） | **P1** | **ローンチ主軸**（PR TIMES 代替） |
+| **1** | X v2 カレンダー（`x_guideline.md`） | **P1** | **ローンチ主軸** · ピン v2 文面確定 |
 | **1** | Zenn or note「30秒で使える」 | **P1** | 原稿 L2 転用 · 自前被リンク |
 | **1** | デモGIF invoice | **P1** | X · note 共通 |
 | **1** | デモGIF warikan / receipt | P2 | 横展開 |
@@ -955,4 +956,34 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - 競合名での誹謗 · 「100%正確」等の断定
 - LINE精算文への Powered by 強制
 - Gemini への **プレスリリース遂行** 委任
+
+### 14-7. ターゲットメディア（統合 MECE · 2026-06-18）
+
+**前提:** PR TIMES pending · 無料ルート（X · Zenn/note · Qiita · 読者投稿）中心。
+
+| 軸 | 代表メディア | 刺さる訴求 |
+|----|--------------|------------|
+| **A ライフハック・生産性** | ライフハッカーJP · Lifehacking.jp · ITライフハック · DIME | タイパ · 登録不要 |
+| **B ガジェット・Webツール** | GIGAZINE · 窓の杜 · ASCII · Gizmodo/Engadget · Vector | ブラウザ完結 · URL1本 |
+| **C ビジネス実務・FL** | @IT · ITmedia Biz/NEWS · 日経xTECH · Workship · さくマガ | インボイス · 見積→請求 |
+| **D 開発者・個人開発** | Zenn · Qiita · note · #個人開発 | 職人UX · 低コスト運用 |
+| **E バイラル・二次拡散** | ねとらぼ · Yahoo!ニュース · はてブ | 軽いお悩み解決 |
+
+**特化枠（必要時のみ）:** F プライバシー/セキュリティ · G UX/デザイン · H 法務制度
+
+| 優先 | チャネル / メディア | やること |
+|------|---------------------|----------|
+| **P0** | X + 固定ピン · Zenn/note · Qiita · はてブ | 自分発信（§14-3 Tier1） |
+| **P1** | 窓の杜 · GIGAZINE · ITライフハック · ライフハッカー · @IT · Vector | 掲載申請 / 読者投稿 |
+| **P2** | ASCII · 日経xTECH · ねとらぼ · ツールまとめ · マイクロインフルエンサー | 余力時 |
+| **P3** | PR TIMES · TC Japan · SmartNews直接 | pending / 初動後 |
+
+| ツール / 切り口 | 最優先軸 |
+|-----------------|----------|
+| invoice（非送信・インボイス） | **B → C → A** |
+| warikan / shift | **A → C** |
+| 開発者ストーリー | **D → A** |
+| ポータル9本 | **B** |
+
+**実行順（同時3本）:** 今週 Xピン+W1 → Zenn/note → invoice GIF · 次週 Qiita → 窓の杜/Vector検討 → まとめサイト1件
 

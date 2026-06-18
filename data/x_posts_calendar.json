@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "updatedAt": "2026-06-17",
+  "updatedAt": "2026-06-18",
   "posts": [
     {
       "date_index": "W1-D1",
       "type": "①",
       "tool": "hub",
       "season": "常時",
-      "body": "フリーランス・店舗向け、登録不要の実務ツール9本。まとめはここ。\n顧客名も印鑑も、データはあなたの端末内だけで処理する安心設計です。ブックマークしておくと、いざという時1秒で作業が終わります。\nhttps://sugudasu.com/?utm_source=x&utm_medium=social&utm_campaign=pin_hub",
-      "char_count": 147,
-      "remarks": "ピン固定用ハブ投稿",
-      "revision_note": "初稿の文面を維持し、ピン固定用として文字数と改訂ノートを追記。"
+      "body": "見積の数字、請求書で打ち直していませんか？\n\n登録不要・データ非送信の実務ツール9本「SUGUDASU」\n見積下書き → 書類タブ切替 → PDF。インボイス対応。\n\n割り勘・シフト・領収書も同じポータル。端末内だけで処理します。\n\nhttps://sugudasu.com/?utm_source=x&utm_medium=social&utm_campaign=pin_hub_v2",
+      "char_count": 168,
+      "remarks": "ピン固定用ハブ投稿 v2",
+      "revision_note": "痛みフック（見積→請求）・転用フロー明示・ブックマークCTA削除・pin_hub_v2。画像オーダーは x_guideline.md §8。"
     },
     {
       "date_index": "W1-D2",
