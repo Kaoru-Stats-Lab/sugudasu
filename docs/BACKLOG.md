@@ -200,8 +200,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] **P2** プログラムSEO — `calc.html`（メルカリ/ラクマ手数料 · `calc-furima.md`）
 - [x] **P2** `FAQPage` / `WebApplication` 構造化データ（ツール単位）※FAQPageは `hub` を除く9ツールへ実装済み
 - [x] **P2** sitemap.xml 送信（`https://sugudasu.com/sitemap.xml` · 2026-06-17）
+- [x] **P2** `sitemap.xml` / `robots.txt` を `build-pages.mjs` で `dist/` 生成（2026-06-18 · HTML誤配信を修正）
 - [x] **P2** PageSpeed Insights 初回計測（Search Console 経由 · 2026-06-17 · 詳細 §13）
-- [ ] **P2** `robots.txt` 最終整備（`sugudasu.com`）
+- [x] **P2** `robots.txt`（`build-pages.mjs` · Sitemap 行付き · 2026-06-18）
 
 ##### A2 ソーシャル（Push）— 認知拡散
 
