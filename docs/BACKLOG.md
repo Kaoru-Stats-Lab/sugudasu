@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-17（Gemini グロース MECE · `sugudasu.com` 本番）  
+更新: 2026-06-17（Gemini グロース MECE · PR/ゼロイチマーケ · `sugudasu.com` 本番）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -200,6 +200,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] **P2** プログラムSEO — `calc.html`（メルカリ/ラクマ手数料 · `calc-furima.md`）
 - [x] **P2** `FAQPage` / `WebApplication` 構造化データ（ツール単位）※FAQPageは `hub` を除く9ツールへ実装済み
 - [x] **P2** sitemap.xml 送信（`https://sugudasu.com/sitemap.xml` · 2026-06-17）
+- [x] **P2** PageSpeed Insights 初回計測（Search Console 経由 · 2026-06-17 · 詳細 §13）
 - [ ] **P2** `robots.txt` 最終整備（`sugudasu.com`）
 
 ##### A2 ソーシャル（Push）— 認知拡散
@@ -213,10 +214,31 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ##### A3 紹介（Referral）— 被リンク・第三者
 
+**正本:** §14（ゼロイチ認知マーケ）· 原稿 `docs/PR_TIMES_LAUNCH_2026.md` · 推敲 `docs/prompts/grok-pr-times-review.md`
+
+- [ ] **P1** **PR TIMES** 第一弾入稿（代表カオル）
+  - [x] 入稿原稿ドラフト（`docs/PR_TIMES_LAUNCH_2026.md`）
+  - [x] Grok Pass1〜4 監査（`grok-pr-times-review.md` · 原稿 §6 にログ）
+  - [x] Gemini §6 メタ解析（`pr-times-gemini-meta.md` · 原稿 §7）
+  - [x] Claude/Cursor で SSOT 照合・原稿マージ（Grok+Gemini反映済）
+  - [x] 運営者プロフィール SSOT（`docs/operator-profile.md` L0〜L4）
+- [x] L3-press 表現確定（`docs/private/L3-press.md` · 322字）
+- [x] 社名公開境界 — 記者向け PR TIMES 担当者欄のみ（`operator-profile.md`）
+  - [ ] 提督最終確認・PR TIMES 入稿（担当者欄に private/L3-press を貼付）
+  - [ ] アイキャッチ（`press/assets/` — logo-sugudasu · invoice 01/02）
+  - [ ] 配信 **火〜木 09:00〜10:00 JST** · 同日 X（`x_guideline.md` W1-D2 等）
+- [ ] **P2** 運営者紹介のサイト公開（L4 → `updates.html` 等）
+- [ ] **P2** PR TIMES 季節再送（§14-2）
+- [ ] **P2** Product Hunt（**国内記事1本 or X初動後** · 英語1段落＋同GIF）
+- [ ] **P2** ツール系アグリゲーター登録（国内まとめ · 週1本ペース）
+- [ ] **P2** マイクロインフルエンサー ギブ型アプローチ（フリーランス・Excel系 · 10人リスト）
 - [ ] **P2** フリーランス / 副業ブロガーへの紹介依頼（神ツール系記事）
-- [ ] **P2** 知恵袋・Q&A 回答テンプレ（手動 · スパム禁止 · 価値先行）
-- [ ] **P2** 被リンク監視（Search Console · 参照元）
+- [ ] **P2** 知恵袋・Q&A 回答テンプレ（手動 · 月5件上限 · スパム禁止）
+- [ ] **P2** Zenn / note「使い方30秒」1本（PRの裏取り・自前被リンク）
+- [ ] **P2** 被リンク監視（Search Console · 参照元 · 二次掲載URLを§14に追記）
+- [ ] **P2** デモGIF 3本（invoice / warikan / receipt）— PR・X・PH 共通素材
 - [ ] **P3** ツール埋め込み / iframe 提供 — 要セキュリティ・コスト検討
+- [ ] **禁止** LINE精算文への Powered by 強制（幹事UX悪化）· X `intent` シェアのみ可
 
 ##### A4 直接（Direct）— 再訪・囲い込み
 
@@ -280,7 +302,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 領域 | TODO |
 |------|------|
 | E-E-A-T | [x] 法務3ページ · [x] `updates.html` · [x] Form 窓口 |
-| 計測 | [ ] GA4（`sugudasu.com`）· [ ] SC インデックス · [ ] ツール別 PV |
+| 計測 | [ ] GA4（`sugudasu.com`）· [ ] SC インデックス · [ ] ツール別 PV · [x] PSI ベースライン（2026-06-17 · §13） |
 | 実験 | [ ] 広告位置 A/B（承認後）· [ ] シェアボタン CTR |
 | フィードバック | [x] Form + GAS + `FEEDBACK_TRIAGE.md` |
 
@@ -292,10 +314,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | フェーズ | タイミング | 打つ施策（最大3） |
 |----------|------------|-------------------|
-| **今週** | 審査待ち | ①ブックマーク誘導 ②`updates` X発信 ③SC登録 |
+| **今週** | 審査待ち | ①PR TIMES原稿推敲→入稿 ②X v2（ピン+W1）③invoice GIF |
+| **PR直後** | 配信週 | ①X告知 ②Zenn/note 1本 ③はてブ等はURL1本のみ |
 | **承認直後** | タグ設置 | ①結果直下 AdSense ②invoice/shift 枠 ③GA4 |
-| **30日** | オーガニック種まき | ①SEO文言5ツール ②結果シェア3ツール ③完了CTA |
-| **90日** | 拡張 | ①calc pSEO ②構造化データ ③ブロガーアウトリーチ |
+| **30日** | オーガニック種まき | ①SEO内部リンク ②マイクロインフルエンサー ③完了CTA |
+| **90日** | 拡張 | ①calc pSEO ②PR季節再送 ③Product Hunt |
 
 ---
 
@@ -309,7 +332,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 神の一手② 改善レポート | **`updates.html` · A2/A3**（`report.html` ではない） |
 | 神の一手③ 結果下広告 | **C-2 · P0（審査後）** |
 
-**やらない（方針）:** 施策一括投入 · フォーム上広告 · スパム的知恵袋 · 露骨アフィ · 有料広告（当面）
+**やらない（方針）:** 施策一括投入 · フォーム上広告 · スパム的知恵袋 · 露骨アフィ · 有料広告（当面）· **Gemini への原稿遂行委任** · LINE文末ブランディング
+
+**AI役割（PR）:** Grok=`grok-pr-times-review.md` · Gemini=`pr-times-gemini-meta.md` · Claude=SSOT照合・入稿確定
 
 ---
 
@@ -419,6 +444,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 1. ~~**新規ツール `receipt.html`（手取り逆引き・領収書）MVP**~~ — 完了（`docs/prompts/receipt.md`）  
 2. ~~**`updates.html`（更新履歴・改善レポート）**~~ — 完了 · 詳細 §11 · SSOT: `data/changelog.json`  
 3. **§2-5 A2** `updates.html` の X / Zenn 発信（認知 · 被リンク）  
+3b. **§2-5 A3 / §14** PR TIMES 第一弾入稿（Grok推敲 → Geminiメタ → マージ）  
 4. ~~**§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）~~ — title/meta/OG/Twitter 反映済  
 5. **§2-5 A2** 結果画面シェア導線（warikan · receipt · invoice）  
 6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ（未実装）  
@@ -451,6 +477,13 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - `scripts/build-pages.mjs`
 - `data/changelog.json`（更新履歴 SSOT）
 - **§2-5** AdSense 逆算 · グロースマーケ MECE（正本）
+- **§13** PageSpeed Insights ベースライン（2026-06-17）
+- **§14** ゼロイチ認知マーケ（PR · 紹介 · UGC）
+- `docs/PR_TIMES_LAUNCH_2026.md`（PR TIMES 入稿原稿 · 代表カオル）
+- `docs/prompts/grok-pr-times-review.md`（Grok推敲 5パス）
+- `docs/prompts/pr-times-gemini-meta.md`（Gemini PRメタ解析 · 書き直し禁止）
+- `docs/operator-profile.md`（運営者 L0〜L4 · 代表カオル）
+- `press/assets/`（PR TIMES アイキャッチ · 本番非配信）
 
 ---
 
@@ -800,4 +833,121 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] 要件確定後 `docs/prompts/shift.md` に追記
 
 **現状の近い機能:** 「役割・職種重複NGキーワード」（既定 `新人`）= 同一営業日に新人タグ2人を避ける。帯内複数名・新人単独禁止とは **未対応**。
+
+---
+
+## 13) PageSpeed Insights ベースライン（2026-06-17）
+
+**きっかけ:** Search Console → PageSpeed Insights 初回計測  
+**対象 URL:** `https://sugudasu.com/`（トップ / hub）  
+**レポート作成:** 2026-06-17 09:46:51 JST  
+**レポート ID:** `3qjiv55dvy`
+
+### 13-1. レポートリンク
+
+| form_factor | URL |
+|-------------|-----|
+| **mobile** | [PageSpeed Insights（携帯）](https://pagespeed.web.dev/analysis/https-sugudasu-com/3qjiv55dvy?utm_source=search_console&form_factor=mobile&hl=ja) |
+| **desktop** | [PageSpeed Insights（デスクトップ）](https://pagespeed.web.dev/analysis/https-sugudasu-com/3qjiv55dvy?utm_source=search_console&form_factor=desktop&hl=ja) |
+
+### 13-2. フィールドデータ（CrUX · 実ユーザー）
+
+| 項目 | mobile | desktop |
+|------|--------|---------|
+| Chrome UX Report | **データなし** | **データなし** |
+
+- PSI 上「このページの実際の速度データが十分にありません」— トラフィック蓄積前の新規ドメイン想定。
+- Core Web Vitals の **検索ランキング信号**は、CrUX が出るまで未評価。SC の「体験」タブも同様に様子見。
+
+### 13-3. ラボデータ（Lighthouse · 診断）
+
+- 同一レポート内の **「パフォーマンスの問題を診断する」** = Lighthouse 計測（シミュレーション）。
+- スコア・監査項目の正本は上記 PSI リンク（UI）。数値の転記は **次回再計測時に差分比較**する運用とする（本日は CrUX 未成立が主記録）。
+
+### 13-4. 解釈メモ（SUGUDASU 前提）
+
+- 静的 HTML + Cloudflare Pages · サーバー送信データなし → ラボ側は比較的良好になりやすい構成。
+- **AdSense 本番タグ設置後**は第三者 JS 増加のため **§13 と同手順で再計測**（§2-5 C-1 承認後ゲート）。
+- ツール個別 URL（`/invoice` 等）は未計測。必要なら hub と同様に PSI を追加。
+
+### 13-5. TODO
+
+- [ ] **P2** CrUX が表示されたら LCP · INP · CLS を §13-2 表に追記
+- [ ] **P2** Lighthouse Performance が 90 未満なら静的資産（CSS/JS サイズ · フォント · 画像）を監査
+- [ ] **P2** AdSense 承認・タグ設置後に mobile/desktop を再計測し §13 に追記行を追加
+- [ ] **P3** 高トラフィックツール（`invoice` · `warikan`）の個別 URL 計測
+
+---
+
+## 14) ゼロイチ認知マーケ（PR · 紹介 · UGC）
+
+**目的:** 広告費ゼロで **A3 紹介** と **A2 拡散** をレバレッジする。正本は §2-5 A3 の TODO と連動。  
+**ポジション:** クラウド巨人の足元にある **No-Account Fast Tool**（ログイン不要 · ローカル完結 · 単機能爆速）
+
+### 14-1. メディアが動く5メタフック（記事化の免罪符）
+
+| # | フック | SUGUDASUでの刺さり | 第一弾PRでの配分 |
+|---|--------|-------------------|------------------|
+| 1 | 時流・社会課題 | インボイス · クラウド疲れ · フリーランス実務 | **主軸** |
+| 2 | 逆張り・カウンター | 登録不要 · データ非送信 | **主軸** |
+| 3 | タイパ・数字 | 開いて即作業 · 見積→請求転用 | サブ（具体1機能） |
+| 4 | 開発者ストーリー | 非エンジニア×AI×Cloudflare低コスト | 段落5行以内 |
+| 5 | すぐ試せる拡散性 | URL1本 · Xシェア · changelog | 末尾CTA |
+
+**Gemini向け:** 上表の適合度採点のみ（`pr-times-gemini-meta.md`）— **原稿遂行はさせない**
+
+### 14-2. PR TIMES 戦略
+
+| 弾 | 時期 | 切り口 | 原稿 |
+|----|------|--------|------|
+| **第一弾** | 今週〜 | 案① 時流×カウンター（インボイス・登録不要・非送信） | `PR_TIMES_LAUNCH_2026.md` |
+| 第二弾 | 7〜8月 | 案② 幹事・店長（割り勘固定額 · シフト） | 未作成 |
+| 第三弾 | 10月 | 案① 再送（インボイス集中） | 第一弾差分 |
+| 第四弾 | 12〜1月 | receipt · 確定申告文脈 | 未作成 |
+
+**配信:** PR TIMES · 火〜木 09:00〜10:00 JST · ジャンル IT/Web · 代表 **カオル**  
+**素材:** ロゴ · hub9カードスクショ · invoice 入力→PDF GIF  
+**成功指標（30日）:** 二次記事 **2本+** OR ブランド検索開始 OR `/invoice` 週50セッション+
+
+### 14-3. PR以外のゼロイチ施策（優先 Tier）
+
+| Tier | 施策 | 優先 | 備考 |
+|------|------|------|------|
+| **1** | X v2 カレンダー（`x_guideline.md`） | P1 | PR配信日と同期 |
+| **1** | デモGIF 3本 | P2 | invoice / warikan / receipt |
+| **1** | Zenn or note「30秒で使える」 | P2 | 自前被リンク |
+| **2** | マイクロインフルエンサー・ギブ型 | P2 | 有料PR禁止 · 10人リスト |
+| **2** | 国内ツールまとめ登録 | P2 | 週1ペース |
+| **2** | 知恵袋・Q&A（価値回答） | P2 | 月5件上限 |
+| **3** | Product Hunt | P2 | 国内記事 or X初動 **後** |
+| **3** | 季節PR再送 | P2 | §14-2 |
+
+### 14-4. AI役割分担（PRワークフロー）
+
+```
+原稿 SSOT (PR_TIMES_LAUNCH_2026.md)
+  → Grok Pass1-4（スキップ理由・タイトル・法務・短文化）
+  → Gemini §6（`pr-times-gemini-meta.md` · 表のみ · リライト禁止）
+  → Claude/Cursor（changelog・URL照合・マージ・Backlog更新）
+  → 提督入稿
+```
+
+| AI | やる | やらない |
+|----|------|----------|
+| **Grok** | 記者目線の批判 · タイトル多案 · 誇大表現の言い換え | 入稿確定 · 事実追加 |
+| **Gemini** | メタフック採点 · 文脈案の比較表 · 見出し候補 | 礼賛リライト · 全文推敲 |
+| **Claude/Cursor** | SSOT照合 · 原稿更新 · Backlog | Grok案の無批判採用 |
+
+### 14-5. 二次掲載ログ（着信後に追記）
+
+| 日付 | メディア | URL | きっかけ |
+|------|----------|-----|----------|
+| — | — | — | — |
+
+### 14-6. やらないこと（ゼロイチ）
+
+- 有料広告 · 大インフルエンサー有料PR · 施策同時10本
+- 競合名での誹謗 · 「100%正確」等の断定
+- LINE精算文への Powered by 強制
+- Gemini への **プレスリリース遂行** 委任
 

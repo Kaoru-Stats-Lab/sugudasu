@@ -82,12 +82,13 @@ if (fs.existsSync(ADS_TXT)) {
   fs.copyFileSync(ADS_TXT, path.join(DIST, 'ads.txt'));
 }
 
-// 更新履歴 SSOT → dist/data/
+// 更新履歴 SSOT → dist/data/（JSON のみ · PNG 等は press/ へ）
 const DATA_DIR = path.join(ROOT, 'data');
 const DIST_DATA = path.join(DIST, 'data');
 if (fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DIST_DATA, { recursive: true });
   for (const name of fs.readdirSync(DATA_DIR)) {
+    if (!name.endsWith('.json') && !name.endsWith('.tsv')) continue;
     const src = path.join(DATA_DIR, name);
     if (fs.statSync(src).isFile()) {
       fs.copyFileSync(src, path.join(DIST_DATA, name));

@@ -1205,6 +1205,15 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
     padding: 0 !important;
     background: #fff !important;
     color: #000 !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  body.sg-body,
+  main {
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .no-print {
@@ -1244,7 +1253,16 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
 
   .sg-a4-portrait,
   .sg-a4-landscape,
-  .a4-page,
+  .a4-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* ラベル複数枚のみ枚間改ページ */
   .a4-sheet {
     box-shadow: none !important;
     margin: 0 !important;
@@ -1252,9 +1270,6 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
     break-after: page;
   }
 
-  .sg-a4-portrait:last-child,
-  .sg-a4-landscape:last-child,
-  .a4-page:last-child,
   .a4-sheet:last-child {
     page-break-after: auto;
     break-after: auto;
@@ -1263,6 +1278,12 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
   .a4-page {
     padding: 15mm !important;
     width: 210mm !important;
+    min-height: auto !important;
+    max-height: 297mm;
+  }
+
+  #pdf-paper.a4-page,
+  #receipt-paper.a4-page {
     min-height: 297mm !important;
   }
 
