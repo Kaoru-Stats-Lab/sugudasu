@@ -4,6 +4,13 @@
     {
       "date": "2026-06-19",
       "type": "fix",
+      "title": "共通ヘッダー：data属性自動マウントとビルド検証",
+      "body": "高頻度だったヘッダー未表示を防ぐため、sg-chrome-top の data-sg-title で shell が自動マウントする方式に統一。verify-chrome-mount を build に組込み、defer と inline mount を禁止しました。",
+      "tools": ["hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "fix",
       "title": "共通ヘッダーが表示されない不具合を修正",
       "body": "本番ビルドで sugudasu-shell.js と mount 呼び出しに defer を付けていたため、実行順が崩れ SUGUDASU_SHELL.mount が失敗していました。shell は同期読み込みに戻しました。",
       "tools": ["hub.html"]

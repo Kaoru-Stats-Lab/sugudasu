@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top"></div>
+<div id="sg-chrome-top" data-sg-title="更新履歴"></div>
 
 <main class="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
@@ -258,7 +258,6 @@
         el.href = FEEDBACK_FORM_URL;
     });
 
-    SUGUDASU_SHELL.mount({ title: '更新履歴', print: false });
     initOperatorX();
     loadChangelog();
 })();

@@ -90,21 +90,30 @@ function ensureSgBody(html) {
 }
 
 function injectChrome(html, cfg) {
+  const attrs = [`data-sg-title="${cfg.title}"`];
+  if (cfg.print) attrs.push('data-sg-print="true"');
+  if (cfg.landscape) attrs.push('data-sg-landscape="true"');
+  const top = `<div id="sg-chrome-top" ${attrs.join(' ')}></div>`;
   if (!html.includes('id="sg-chrome-top"')) {
-    html = html.replace(/<body[^>]*>/, (m) => `${m}\n<div id="sg-chrome-top"></div>\n`);
+    html = html.replace(/<body[^>]*>/, (m) => `${m}\n${top}\n`);
+  } else {
+    html = html.replace(/<div id="sg-chrome-top"[^>]*><\/div>/, top);
   }
   html = html.replace(
     /<script src="\.\.\/assets\/sugudasu-shell\.js"><\/script>[\s\S]*?SUGUDASU_SHELL\.mount\([^)]*\);[\s\S]*?<\/script>/g,
     ''
   );
-  const mount = `SUGUDASU_SHELL.mount({ title: '${cfg.title}', print: ${cfg.print} });`;
+  html = html.replace(/\n\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*/g, '\n');
   if (!html.includes('sg-chrome-bottom')) {
     html = html.replace(
       /<\/body>/i,
-      `<div id="sg-chrome-bottom"></div>\n<script src="../assets/sugudasu-shell.js"></script>\n<script>\n${mount}\n</script>\n</body>`
+      `<div id="sg-chrome-bottom"></div>\n<script src="../assets/sugudasu-shell.js"></script>\n</body>`
     );
-  } else {
-    html = html.replace(/SUGUDASU_SHELL\.mount\([^)]*\);/, mount);
+  } else if (!html.includes('sugudasu-shell.js')) {
+    html = html.replace(
+      /<div id="sg-chrome-bottom"><\/div>/,
+      `<div id="sg-chrome-bottom"></div>\n<script src="../assets/sugudasu-shell.js"></script>`
+    );
   }
   return html;
 }

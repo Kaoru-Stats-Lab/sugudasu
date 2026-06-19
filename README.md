@@ -44,8 +44,9 @@ python -m http.server 8080
 ```html
 <link rel="stylesheet" href="../assets/sugudasu.css">
 <script src="../assets/sugudasu-shell.js"></script>
-<script>SUGUDASU_SHELL.mount({ title: 'ページ名', print: true/false });</script>
 ```
+
+`#sg-chrome-top` に `data-sg-title`（必須）· `data-sg-print` · `data-sg-landscape` を付与。詳細は `docs/notes/CHROME_HEADER_GUARDRAILS.md`。
 
 ## ドキュメント
 

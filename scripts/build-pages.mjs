@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execSync } from 'node:child_process';
+import { execSync, spawnSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -156,7 +156,7 @@ function copyDir(src, dest) {
   }
 }
 
-const ASSET_V = process.env.SG_ASSET_V || '20260619a';
+const ASSET_V = process.env.SG_ASSET_V || '20260619b';
 
 const FONT_HEAD = `    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -209,8 +209,16 @@ function rewriteHtml(html) {
     `src="/assets/sugudasu-segment.js?v=${ASSET_V}"`
   );
 
-  // shell → mount は末尾で同期実行（defer だと inline mount が shell より先に走りヘッダーが空になる）
+  // 回帰禁止: defer 付与・inline mount 復活（docs/notes/CHROME_HEADER_GUARDRAILS.md）
+  if (/sugudasu-shell\.js[^"]*"\s+defer/.test(out)) {
+    throw new Error('rewriteHtml: sugudasu-shell.js に defer を付けてはいけません');
+  }
+  if (/<script[^>]*defer[^>]*>[\s\S]*?SUGUDASU_SHELL\.mount/.test(out)) {
+    throw new Error('rewriteHtml: SUGUDASU_SHELL.mount に defer を付けてはいけません');
+  }
   out = out.replace(/<script defer>\s*\nSUGUDASU_SHELL\.mount/g, '<script>\nSUGUDASU_SHELL.mount');
+  out = out.replace(/\n\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*/g, '\n');
+  out = out.replace(/\n<script>\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*<\/script>\s*/g, '\n');
 
   return out;
 }
@@ -275,3 +283,10 @@ const count = htmlFiles.length;
 console.log(`build:pages OK — ${count} tools + index → ${DIST}`);
 console.log(`  SEO: sitemap.xml (${lastmod}) · robots.txt · _redirects`);
 console.log('  Preview: cd dist && python -m http.server 8080');
+
+const verifyChrome = spawnSync(process.execPath, [path.join(__dirname, 'verify-chrome-mount.mjs')], {
+  stdio: 'inherit',
+});
+if (verifyChrome.status !== 0) {
+  process.exit(verifyChrome.status || 1);
+}

@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。主要メーカーの型番検索に対応し、選択した規格に合わせてレイアウトを反映できます。","@type":"Answer"},"name":"主要メーカーの型番から印刷レイアウトを選べますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。住所録データを読み込み、複数宛先をまとめてラベルへ配置して印刷できます。","@type":"Answer"},"name":"ExcelやCSVを一括取り込みできますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。取り込んだ住所データはブラウザ内で処理され、外部送信しません。","@type":"Answer"},"name":"住所データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"「ラベル印刷の守護神」みたいな扱いになることがあります。調整地獄を回避できるので、余った時間を確認作業や発送準備に回せます。","@type":"Answer"},"name":"一発で位置ズレなし印刷できたら、周囲に驚かれませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
-<div id="sg-chrome-top"></div>
+<div id="sg-chrome-top" data-sg-title="宛名ラベル" data-sg-print="true"></div>
 
     <main class="print-container flex-1 max-w-[1800px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         
@@ -714,6 +714,5 @@
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
-<script>SUGUDASU_SHELL.mount({ title: '宛名ラベル', print: true });</script>
 </body>
 </html>

@@ -89,6 +89,13 @@
 - [x] 主CTA `.sg-btn-primary` へ寄せ: `report` · `reverse` · `warikan` · `present`（他は段階適用可）
 - **ペルソナ・3層アクション・設計根拠の正本:** [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) §0–§3.3（本 Backlog には重複記載しない）
 
+### 1-7. 共通ヘッダー再発防止（2026-06-19）
+
+- [x] `data-sg-title` + `shell.js` 自動マウント（inline `mount` 廃止）
+- [x] `scripts/verify-chrome-mount.mjs` を `build:pages` に組込み
+- [x] `build-pages` で `defer` / inline `mount` をビルド時拒否
+- **インシデント正本:** [`docs/notes/CHROME_HEADER_GUARDRAILS.md`](notes/CHROME_HEADER_GUARDRAILS.md)
+
 ---
 
 ## 2) 収益戦略 Backlog（AdSense + Amazon 統合）

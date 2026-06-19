@@ -179,14 +179,33 @@
     loadGa4();
 
     if (top) {
+      if (top.querySelector('.sg-chrome')) return;
       top.innerHTML = chromeHtml(title, showPrint, file);
     }
-    if (bottom) {
+    if (bottom && !bottom.innerHTML.trim()) {
       bottom.innerHTML = footerHtml();
     }
 
     loadGrowthScript();
     applyCtaLabels(file);
+  }
+
+  /** #sg-chrome-top の data-sg-* から同期マウント（inline mount 不要 · defer 事故防止） */
+  function readMountOptsFromDom() {
+    const top = document.getElementById('sg-chrome-top');
+    if (!top) return null;
+    const title = top.getAttribute('data-sg-title');
+    if (!title) return null;
+    return {
+      title,
+      print: top.getAttribute('data-sg-print') === 'true',
+      landscape: top.getAttribute('data-sg-landscape') === 'true',
+    };
+  }
+
+  function bootstrapChromeFromDom() {
+    const opts = readMountOptsFromDom();
+    if (opts) mount(opts);
   }
 
   function loadGa4() {
@@ -276,5 +295,15 @@
     });
   }
 
-  global.SUGUDASU_SHELL = { mount, TOOLS, assetUrl, dataUrl, logoHtml, trackGaEvent };
+  global.SUGUDASU_SHELL = {
+    mount,
+    bootstrapChromeFromDom,
+    TOOLS,
+    assetUrl,
+    dataUrl,
+    logoHtml,
+    trackGaEvent,
+  };
+
+  bootstrapChromeFromDom();
 })(window);
