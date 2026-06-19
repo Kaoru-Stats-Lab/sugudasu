@@ -22,6 +22,7 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [../x_guideline.md](../x_guideline.md) | 公式X運用ガイドライン（投稿ネタ · UTM · NG） |
 | [grok-pr-times-review.md](grok-pr-times-review.md) | PR TIMES推敲（Grok 5パス） |
 | [pr-times-gemini-meta.md](pr-times-gemini-meta.md) | PR TIMESメタ解析（Gemini · 書き直し禁止） |
+| [zenn-editorial-gemini.md](zenn-editorial-gemini.md) | Zenn編集カレンダー・テーマ設計（Gemini · 本文執筆禁止） |
 | [../PR_TIMES_LAUNCH_2026.md](../PR_TIMES_LAUNCH_2026.md) | PR TIMES 入稿原稿（代表カオル） |
 
 **Form 回答のトリアージ:** [FEEDBACK_TRIAGE.md](../FEEDBACK_TRIAGE.md)（スプシ + Status + Backlog 連携）

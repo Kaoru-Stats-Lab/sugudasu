@@ -209,7 +209,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [x] **P1** 計算結果シェア（X）— `warikan` · `receipt` · `invoice` 優先（`sugudasu-growth.js` · intent 起動）
 - [ ] **P1** **開発透明性の発信** — `updates.html` + Form 窓口
   - [x] 初回投稿文面（既存Xアカウント用）— `updates.html` + `OPERATOR_X_POSTS.launch`
-  - [ ] Zenn / Qiita 短記事（個人開発 × 実用ツール）
+  - [x] **Zenn** #1 予約投稿済み（2026-06-18 · invoice 見積→請求 · `docs/notes/ZENN_ARTICLE_01_DRAFT.md`）
+  - [ ] **Zenn** #2以降（`docs/notes/ZENN_EDITORIAL_PLAN.md`）
 - [ ] **P2** チャット共有 Phase 2（`report` · `shift`）— §2-4
 - [ ] **P2** 季節・時事フック投稿（年末調整 · 確定申告 · 歓送迎会割り勘）
 
@@ -229,8 +230,12 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - [ ] 再開条件: AdSense 収益 or 有料プラン検討時 · 原稿はそのまま流用可
 - [ ] **P1** **X v2** ローンチ週（ピン v2 + W1 カレンダー · `x_guideline.md` §8）— **PR TIMES 代替の主軸**
   - [x] 固定ピン文面 v2（W1-D1 · `pin_hub_v2` · 画像オーダー §8）
-- [ ] **P1** **Zenn / note**「30秒で使える」1本（invoice 訴求 · 自前被リンク）— 原稿の L2 切り口を転用可
-- [ ] **P1** デモGIF（invoice 入力→PDF）— X · note 共通素材
+- [x] **P1** **Zenn**「見積→請求転用」1本（invoice · 案A · **#1 P0**）— **予約投稿済み** 2026-06-18
+  - [x] 本文（技術用語 · JSON 補足 · Zenn AI 指摘反映）
+  - [x] スクショ差し替え · Zenn 予約投稿
+  - [ ] 公開当日〜翌日: X で記事 URL 共有（`article_01_invoice_convert`）
+  - 正本: `docs/notes/ZENN_EDITORIAL_PLAN.md` · `docs/notes/ZENN_ARTICLE_01_DRAFT.md`
+- [ ] **P1** デモGIF（invoice 入力→PDF）— X · Zenn 共通素材
 - [ ] **P2** 運営者紹介のサイト公開（L4 → `updates.html` 等）
 - [ ] **P2** PR TIMES 季節再送（§14-2）
 - [ ] **P2** Product Hunt（**国内記事1本 or X初動後** · 英語1段落＋同GIF）
@@ -238,7 +243,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] **P2** マイクロインフルエンサー ギブ型アプローチ（フリーランス・Excel系 · 10人リスト）
 - [ ] **P2** フリーランス / 副業ブロガーへの紹介依頼（神ツール系記事）
 - [ ] **P2** 知恵袋・Q&A 回答テンプレ（手動 · 月5件上限 · スパム禁止）
-- [ ] **P2** Zenn / note「使い方30秒」1本（PRの裏取り・自前被リンク）
+- [ ] **P2** note「5分でわかる使い方」（案C · Zenn 初稿の補助 · 被リンク）
 - [ ] **P2** 被リンク監視（Search Console · 参照元 · 二次掲載URLを§14に追記）
 - [ ] **P2** デモGIF 3本（invoice / warikan / receipt）— PR・X・PH 共通素材
 - [ ] **P3** ツール埋め込み / iframe 提供 — 要セキュリティ・コスト検討
@@ -318,7 +323,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | フェーズ | タイミング | 打つ施策（最大3） |
 |----------|------------|-------------------|
-| **今週** | 審査待ち | ①**X v2**（ピン+W1）②**Zenn/note** 1本 ③**invoice GIF** |
+| **今週** | 審査待ち | ①**X v2**（ピン+W1）②**Zenn #1** 予約投稿済 ③**invoice GIF** |
 | **ローンチ週** | X 告知 | ①Xスレッド/固定 ②はてブ等 URL1本 ③ツールまとめ登録1件 |
 | **承認直後** | タグ設置 | ①結果直下 AdSense ②invoice/shift 枠 ③GA4 |
 | **30日** | オーガニック種まき | ①SEO内部リンク ②マイクロインフルエンサー ③完了CTA |
@@ -911,7 +916,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 第三弾 | 10月 | 案① 再送 | 第一弾差分 |
 | 第四弾 | 12〜1月 | receipt · 確定申告文脈 | 未作成 |
 
-**代替の主軸（今すぐ）:** X v2 · Zenn/note · invoice GIF · ツールまとめ登録  
+**代替の主軸（今すぐ）:** X v2 · **Zenn** · invoice GIF · ツールまとめ登録  
 **成功指標（30日・無料ルート）:** X インプレ増 · `/invoice` 週50セッション+ · 自社記事1本インデックス
 
 ### 14-3. PR以外のゼロイチ施策（優先 Tier）
@@ -919,8 +924,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | Tier | 施策 | 優先 | 備考 |
 |------|------|------|------|
 | **1** | X v2 カレンダー（`x_guideline.md`） | **P1** | **ローンチ主軸** · ピン v2 文面確定 |
-| **1** | Zenn or note「30秒で使える」 | **P1** | 原稿 L2 転用 · 自前被リンク |
-| **1** | デモGIF invoice | **P1** | X · note 共通 |
+| **1** | **Zenn**「見積→請求転用」等（案A） | **P1** | **#1 予約投稿済** 2026-06-18 · 公開後 X 連動待ち |
+| **1** | デモGIF invoice | **P1** | X · Zenn 共通 |
+| **2** | note 使い方ガイド（案C） | P2 | Zenn のライト版 · 月1本まで |
 | **1** | デモGIF warikan / receipt | P2 | 横展開 |
 | **2** | マイクロインフルエンサー・ギブ型 | P2 | 有料PR禁止 · 10人リスト |
 | **2** | 国内ツールまとめ登録 | P2 | 週1ペース |
@@ -959,7 +965,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ### 14-7. ターゲットメディア（統合 MECE · 2026-06-18）
 
-**前提:** PR TIMES pending · 無料ルート（X · Zenn/note · Qiita · 読者投稿）中心。
+**前提:** PR TIMES pending · 無料ルート（X · **Zenn** · Qiita · note補助）中心。
 
 | 軸 | 代表メディア | 刺さる訴求 |
 |----|--------------|------------|
@@ -973,7 +979,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | 優先 | チャネル / メディア | やること |
 |------|---------------------|----------|
-| **P0** | X + 固定ピン · Zenn/note · Qiita · はてブ | 自分発信（§14-3 Tier1） |
+| **P0** | X + 固定ピン · **Zenn** · Qiita · はてブ | 自分発信（§14-3 Tier1） |
 | **P1** | 窓の杜 · GIGAZINE · ITライフハック · ライフハッカー · @IT · Vector | 掲載申請 / 読者投稿 |
 | **P2** | ASCII · 日経xTECH · ねとらぼ · ツールまとめ · マイクロインフルエンサー | 余力時 |
 | **P3** | PR TIMES · TC Japan · SmartNews直接 | pending / 初動後 |
@@ -985,5 +991,31 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 開発者ストーリー | **D → A** |
 | ポータル9本 | **B** |
 
-**実行順（同時3本）:** 今週 Xピン+W1 → Zenn/note → invoice GIF · 次週 Qiita → 窓の杜/Vector検討 → まとめサイト1件
+**実行順（同時3本）:** Xピン+W1 → **Zenn #1 予約済** → invoice GIF · **公開日 X 連動** · 次週 Qiita → 窓の杜/Vector検討 → まとめサイト1件
 
+### 14-8. Zenn 運用（note より優先 · 2026-06-18）
+
+**なぜ Zenn:** Tech/個人開発読者に届きやすい · 実装・設計の信頼が積み上がる · 被リンク品質が note より検索向き。note は「5分使い方」など案Cの補助（P2）。
+
+| 項目 | 方針 |
+|------|------|
+| **ペルソナ** | 案A — 静かな実務職人・カオル（`operator-profile.md` L2） |
+| **文体** | です・ます · 礼賛しない · 社名・勤務先は出さない |
+| **初稿** | 「見積下書きを請求書に転用するまで」+ `sugudasu.com/invoice` |
+| **頻度** | 月2〜4本（更新時 + 背景1本） |
+| **混ぜ方** | 本丸A · 月1までB（開発エピソード）· note にCを逃がす |
+
+**タグ例:** `#個人開発` `#フリーランス` `#インボイス` — ハッシュタグ盛りすぎない
+
+**Gemini 企画:** `docs/prompts/zenn-editorial-gemini.md`（テーマ・スケジュールのみ · 本文は提督執筆）  
+**Gemini 聞き方・API:** `docs/prompts/GEMINI_COLLABORATION_GUIDE.md` · `scripts/gemini/editorial-plan.mjs`  
+**採用プラン:** `docs/notes/ZENN_EDITORIAL_PLAN.md`（§2 テーマ10 · 6〜8月5本 · #1 P0）
+
+**#1 ステータス（2026-06-18）**
+
+| 項目 | 状態 |
+|------|------|
+| タイトル | 登録不要で、見積の下書きを請求書に転用するまで |
+| 投稿 | Zenn **予約投稿済み**（スクショ差し替え済） |
+| ドラフト | `docs/notes/ZENN_ARTICLE_01_DRAFT.md`（Zenn エディタが公開時の正本） |
+| 残 | 公開当日〜翌日 X で URL 共有 · Zenn URL 控え |
