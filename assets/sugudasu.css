@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
+/* Web fonts: injected in production HTML head (build-pages.mjs). Noto + Montserrat only. */
 
 /* SUGUDASU design tokens — docs/DESIGN_GUIDELINE.md §2–4, §7 */
 
@@ -30,7 +30,7 @@
 
 /* —— Base —— */
 body.sg-body {
-  font-family: 'Noto Sans JP', 'Inter', sans-serif;
+  font-family: 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', sans-serif;
   background-color: var(--sg-bg);
   color: var(--sg-text);
 }
@@ -38,7 +38,7 @@ body.sg-body {
 .sg-mono,
 .mono,
 .mono-num {
-  font-family: 'Roboto Mono', 'Inter', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Roboto Mono', monospace;
   font-variant-numeric: tabular-nums;
 }
 
@@ -76,6 +76,18 @@ body.sg-body {
 }
 .sg-btn-primary:hover { background: var(--sg-primary-hover); }
 
+.sg-btn-print {
+  background: #059669;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+.sg-btn-print:hover { background: #10b981; }
+
 .sg-btn-secondary {
   background: #fff;
   border: 1px solid var(--sg-border);
@@ -87,6 +99,116 @@ body.sg-body {
   cursor: pointer;
 }
 .sg-btn-secondary:hover { background: #f8fafc; }
+
+/* —— Mode segment (sg-segment) — DESIGN_GUIDELINE §3.3 —— */
+.sg-segment {
+  position: relative;
+  display: grid;
+  gap: 0;
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--sg-border);
+  background: #f1f5f9;
+}
+
+.sg-segment--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.sg-segment--cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.sg-segment__pill {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  width: 0;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  border: 1px solid rgb(37 99 235 / 0.12);
+  transition:
+    transform 180ms cubic-bezier(0.2, 0, 0, 1),
+    width 180ms cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width;
+}
+
+.sg-segment__btn {
+  position: relative;
+  z-index: 1;
+  padding: 0.5rem 0.35rem;
+  border: none;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 0.5rem;
+  transition: color 120ms ease;
+}
+
+.sg-segment__btn:hover { color: #1e293b; }
+
+.sg-segment__btn[aria-selected='true'] {
+  font-weight: 700;
+}
+
+.sg-segment--mode-estimate .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
+.sg-segment--mode-delivery .sg-segment__btn[aria-selected='true'] { color: #334155; }
+.sg-segment--mode-invoice .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-single .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
+.sg-segment--mode-multi .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-coeff .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
+.sg-segment--mode-fixed .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-local .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
+.sg-segment--mode-gemini .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-label .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
+.sg-segment--mode-card .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+
+.sg-segment__btn[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0.15rem;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.sg-segment__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(37 99 235 / 0.35);
+}
+
+.sg-segment-hint {
+  margin-top: 0.5rem;
+  font-size: 10px;
+  line-height: 1.55;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e0e7ff;
+  background: rgb(238 242 255 / 0.85);
+  color: #312e81;
+  transition: opacity 150ms ease;
+}
+
+.sg-segment-hint.is-fading { opacity: 0; }
+
+.sg-preview-fade {
+  transition: opacity 200ms ease;
+}
+
+.sg-preview-fade.is-updating { opacity: 0.88; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-segment__pill,
+  .sg-segment-hint,
+  .sg-preview-fade {
+    transition: none;
+  }
+}
 
 .sg-trust-badge {
   font-size: 11px;
@@ -118,6 +240,11 @@ body.sg-body {
 /* 入力フォーム内への配置は禁止（誤タップ対策・各 HTML で結果側に ad-slot--result を使う） */
 .sg-input-zone .ad-slot {
   display: none;
+}
+
+/* Shell 注入前のレイアウトシフト抑止 */
+#sg-chrome-top:empty {
+  min-height: 6.5rem;
 }
 
 /* Brand logo — mark: logo-mark.png · type: Montserrat 800 */
@@ -161,7 +288,7 @@ body.sg-body {
 }
 .sg-logo__word {
   color: var(--sg-brand-navy);
-  font-family: 'Montserrat', 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Montserrat', system-ui, sans-serif;
   font-size: var(--sg-logo-word-size);
   font-weight: var(--sg-logo-word-weight);
   letter-spacing: var(--sg-logo-word-tracking);
@@ -403,7 +530,7 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
   font-size: 11px;
   font-weight: 700;
   color: var(--sg-muted);
-  font-family: 'Roboto Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
 }
 
 .sg-changelog-badge {

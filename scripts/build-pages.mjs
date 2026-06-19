@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -112,11 +113,25 @@ function writeRedirects(htmlFiles) {
 
 function writeHeaders() {
   const headers = [
+    '/assets/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
+    '',
+    '/data/*',
+    '  Cache-Control: public, max-age=3600',
+    '',
+    '/*.html',
+    '  Cache-Control: public, max-age=600',
+    '',
+    '/',
+    '  Cache-Control: public, max-age=600',
+    '',
     '/sitemap.xml',
     '  Content-Type: application/xml; charset=utf-8',
+    '  Cache-Control: public, max-age=86400',
     '',
     '/robots.txt',
     '  Content-Type: text/plain; charset=utf-8',
+    '  Cache-Control: public, max-age=86400',
     '',
   ].join('\n');
   fs.writeFileSync(path.join(DIST, '_headers'), headers, 'utf8');
@@ -141,7 +156,24 @@ function copyDir(src, dest) {
   }
 }
 
-const ASSET_V = process.env.SG_ASSET_V || '20260617';
+const ASSET_V = process.env.SG_ASSET_V || '20260619';
+
+const FONT_HEAD = `    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Noto+Sans+JP:wght@400;700&display=swap">`;
+
+function compileTailwind() {
+  const entry = path.join(ASSETS, 'tailwind-entry.css');
+  const out = path.join(ASSETS, 'tw-build.css');
+  if (!fs.existsSync(entry)) {
+    throw new Error('tailwind-entry.css not found');
+  }
+  console.log('build:pages — compile Tailwind (no browser CDN in dist)…');
+  const cli = path.join(ROOT, 'node_modules', '@tailwindcss', 'cli', 'dist', 'index.mjs');
+  execSync(`node "${cli}" -i "${entry}" -o "${out}" --minify`, { cwd: ROOT, stdio: 'inherit' });
+  const kb = (fs.statSync(out).size / 1024).toFixed(1);
+  console.log(`  tw-build.css ${kb} KiB`);
+}
 
 function rewriteHtml(html) {
   let out = html
@@ -149,8 +181,34 @@ function rewriteHtml(html) {
     .replace(/\.\.\/data\//g, '/data/')
     .replace(/href="assets\//g, 'href="/assets/')
     .replace(/src="assets\//g, 'src="/assets/');
+
+  out = out.replace(
+    /<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@tailwindcss\/browser@4"><\/script>\s*/g,
+    ''
+  );
+
+  if (!out.includes('fonts.googleapis.com')) {
+    out = out.replace(/(<meta charset="UTF-8">)/, `$1\n${FONT_HEAD}`);
+  }
+
   out = out.replace(/\/assets\/sugudasu\.css"/g, `/assets/sugudasu.css?v=${ASSET_V}"`);
-  out = out.replace(/\/assets\/sugudasu-shell\.js"/g, `/assets/sugudasu-shell.js?v=${ASSET_V}"`);
+
+  if (!out.includes('tw-build.css')) {
+    out = out.replace(
+      /(<link rel="stylesheet" href="\/assets\/sugudasu\.css[^"]*">)/,
+      `$1\n    <link rel="stylesheet" href="/assets/tw-build.css?v=${ASSET_V}">`
+    );
+  }
+
+  out = out.replace(
+    /src="\/assets\/sugudasu-shell\.js[^"]*"/g,
+    `src="/assets/sugudasu-shell.js?v=${ASSET_V}" defer`
+  );
+  out = out.replace(
+    /<script>\s*SUGUDASU_SHELL\.mount/g,
+    '<script defer>\nSUGUDASU_SHELL.mount'
+  );
+
   return out;
 }
 
@@ -168,6 +226,7 @@ function prepareDist() {
 }
 
 prepareDist();
+compileTailwind();
 copyDir(ASSETS, path.join(DIST, 'assets'));
 
 const faviconSrc = path.join(ASSETS, 'favicon.png');

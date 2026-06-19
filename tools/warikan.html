@@ -10,8 +10,11 @@
     <meta property="og:title" content="傾斜割り勘・イベント精算計算">
     <meta property="og:description" content="上司と後輩、遅刻者、飲まない人の比率を細かく調整可能。イベント精算の不満を減らし、幹事の信頼を守る透明な精算を算出。">
     <meta property="og:url" content="https://sugudasu.com/warikan.html">
-    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="遅刻・飲まない人の比率も調整！幹事の傾斜割り勘計算">
     <meta name="twitter:description" content="飲み会やイベント精算で揉めないための割り勘計算ツール。立場や飲食量に応じた傾斜計算をログインなしで完了できます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -29,21 +32,16 @@
                 <span>💰</span> 会計・割り勘設定
             </h2>
 
-            <div class="bg-slate-100 p-1 rounded-xl grid grid-cols-2 gap-1 border border-slate-200" role="tablist">
-                <button type="button" id="btn-mode-coeff" class="py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm" aria-selected="true">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-coeff" id="warikan-mode-segment" role="tablist" aria-label="割り勘モード">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" id="btn-mode-coeff" data-segment-value="coeff" class="sg-segment__btn" aria-selected="true">
                     傾斜係数モード
                 </button>
-                <button type="button" id="btn-mode-fixed" class="py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900" aria-selected="false">
+                <button type="button" role="tab" id="btn-mode-fixed" data-segment-value="fixed" class="sg-segment__btn" aria-selected="false">
                     固定額モード（合コン等）
                 </button>
             </div>
-            <p id="mode-hint-coeff" class="text-[10px] text-slate-500 leading-relaxed">
-                係数×人数で理論額を按分。上司2.0・一般1.0など飲み会向け。
-            </p>
-            <p id="mode-hint-fixed" class="hidden text-[10px] text-slate-500 leading-relaxed">
-                特定グループの1人あたり金額を固定し、<strong class="text-slate-700">残りをもう一方のグループ</strong>で割り勘。
-                例：総額 − 女性3,000円×2名 ＝ 男性側の合計 → 男性人数で按分。
-            </p>
+            <p class="sg-segment-hint" id="warikan-mode-hint" role="note">係数×人数で理論額を按分。上司2.0・一般1.0など飲み会向け。</p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -92,7 +90,7 @@
             </div>
 
             <button type="button" id="btn-calculate"
-                class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-sm tracking-wide transition-colors">
+                class="w-full sg-btn-primary font-bold py-3 rounded-xl text-sm tracking-wide">
                 計算してその場で精算を終わらせる
             </button>
             <p class="text-[10px] text-slate-400 text-center">入力変更時は自動で再計算されます</p>
@@ -196,22 +194,39 @@
             { name: '男性', fixedAmount: null, count: 2, isRemainder: true }
         ];
 
+        const WARIKAN_MODE_HINTS = {
+            coeff: '係数×人数で理論額を按分。上司2.0・一般1.0など飲み会向け。',
+            fixed: '特定グループの1人あたり金額を固定し、<strong class="text-slate-700">残りをもう一方のグループ</strong>で割り勘。例：総額 − 女性3,000円×2名 ＝ 男性側の合計 → 男性人数で按分。',
+        };
+
         let mode = 'coeff';
         let groups = [];
         let rowSeq = 0;
         let lastResult = null;
+        let warikanModeSegmentCtrl = null;
 
         function init() {
             groups = DEFAULT_GROUPS_COEFF.map(g => ({ ...g, id: ++rowSeq }));
             document.getElementById('group-header-fixed').classList.add('hidden');
             renderRows();
             bindEvents();
+            warikanModeSegmentCtrl = SUGUDASU_SEGMENT.mount({
+                segmentId: 'warikan-mode-segment',
+                order: ['coeff', 'fixed'],
+                initial: 'coeff',
+                hintId: 'warikan-mode-hint',
+                hints: WARIKAN_MODE_HINTS,
+                modeClassMap: {
+                    coeff: 'sg-segment--mode-coeff',
+                    fixed: 'sg-segment--mode-fixed',
+                },
+                previewSelector: '#result-cards',
+                onChange: applyWarikanMode,
+            });
             calculate();
         }
 
         function bindEvents() {
-            document.getElementById('btn-mode-coeff').addEventListener('click', () => setMode('coeff'));
-            document.getElementById('btn-mode-fixed').addEventListener('click', () => setMode('fixed'));
             document.getElementById('btn-add-group').addEventListener('click', () => {
                 if (mode === 'coeff') {
                     groups.push({ id: ++rowSeq, name: '新しいグループ', coeff: 1.0, count: 1 });
@@ -235,7 +250,7 @@
             document.getElementById('select-round').addEventListener('change', calculate);
         }
 
-        function setMode(next) {
+        function applyWarikanMode(next) {
             if (mode === next) return;
             mode = next;
             rowSeq = 0;
@@ -243,18 +258,15 @@
                 ...g,
                 id: ++rowSeq
             }));
-
-            const active = 'py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm';
-            const idle = 'py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-900';
-            document.getElementById('btn-mode-coeff').className = mode === 'coeff' ? active : idle;
-            document.getElementById('btn-mode-fixed').className = mode === 'fixed' ? active : idle;
-            document.getElementById('mode-hint-coeff').classList.toggle('hidden', mode !== 'coeff');
-            document.getElementById('mode-hint-fixed').classList.toggle('hidden', mode !== 'fixed');
             document.getElementById('group-header-coeff').classList.toggle('hidden', mode !== 'coeff');
             document.getElementById('group-header-fixed').classList.toggle('hidden', mode !== 'fixed');
-
             renderRows();
             calculate();
+        }
+
+        function setMode(next) {
+            if (warikanModeSegmentCtrl) warikanModeSegmentCtrl.select(next, { silent: true });
+            applyWarikanMode(next);
         }
 
         function renderRows() {
@@ -585,6 +597,7 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 <div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>SUGUDASU_SHELL.mount({ title: '傾斜割り勘', print: false });</script>
 </body>

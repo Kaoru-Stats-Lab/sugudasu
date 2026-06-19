@@ -10,8 +10,11 @@
     <meta property="og:title" content="議事録・業務報告書の自動整形">
     <meta property="og:description" content="箇条書きなどの雑多なメモをワンクリックでビジネス文章へ整形・コピー。登録不要・データ非送信の安全な環境で下書きを作成。">
     <meta property="og:url" content="https://sugudasu.com/report.html">
-    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="雑なメモをビジネス文章へ！議事録・報告書自動整形">
     <meta name="twitter:description" content="散らばった箇条書きメモを整形してコピーできる無料ツール。必要に応じてGemini下書き作成にも対応し、ブラウザ完結で使えます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -67,24 +70,24 @@
             </div>
 
             <button type="button" id="btn-generate"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-lg">
+                class="w-full sg-btn-primary text-sm font-semibold py-3 rounded-lg">
                 整形する（登録不要で即コピー）
             </button>
         </section>
 
         <section class="flex flex-col gap-4">
-            <div class="bg-slate-100 p-1 rounded-lg grid grid-cols-2 gap-1 border border-slate-200">
-                <button type="button" id="tab-btn-local"
-                    class="py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local" id="output-tab-segment" role="tablist" aria-label="出力タブ">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" id="tab-btn-local" data-segment-value="local" class="sg-segment__btn" aria-selected="true">
                     そのまま使える文面
                 </button>
-                <button type="button" id="tab-btn-gemini"
-                    class="py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800">
+                <button type="button" role="tab" id="tab-btn-gemini" data-segment-value="gemini" class="sg-segment__btn" aria-selected="false">
                     AIで仕上げる（Gemini）
                 </button>
             </div>
+            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong class="text-slate-800">そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。</p>
 
-            <div class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
+            <div id="output-panel-card" class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
                 <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
                     <div class="flex justify-between items-center">
                         <span class="text-[11px] font-semibold text-slate-600">整形結果（社外秘OK）</span>
@@ -165,10 +168,23 @@
 (function () {
     'use strict';
 
-    const TAB_ACTIVE = 'py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm';
-    const TAB_IDLE = 'py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800';
+    const OUTPUT_TAB_HINTS = {
+        local: '<strong class="text-slate-800">そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。',
+        gemini: '<strong class="text-slate-800">AIで仕上げる：</strong>Gemini用の指示文をコピーして貼り付け。本文はご自身の判断で送信してください。',
+    };
 
-    const TYPE_LABELS = {
+    let outputTabSegmentCtrl = null;
+
+    function applyOutputTab(target) {
+        const local = target === 'local';
+        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
+        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
+    }
+
+    function switchTab(target) {
+        if (outputTabSegmentCtrl) outputTabSegmentCtrl.select(target, { silent: true });
+        applyOutputTab(target);
+    }
         meeting: '会議議事録',
         weekly: '週報・日報',
         trouble: 'トラブル・不具合報告書',
@@ -210,15 +226,7 @@
         }
     };
 
-    function switchTab(target) {
-        const local = target === 'local';
-        document.getElementById('tab-btn-local').className = local ? TAB_ACTIVE : TAB_IDLE;
-        document.getElementById('tab-btn-gemini').className = local ? TAB_IDLE : TAB_ACTIVE;
-        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
-        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
-    }
-
-    function updatePlaceholders() {
+    const TYPE_LABELS = {
         const type = document.getElementById('doc-type').value;
         const cfg = PLACEHOLDERS[type] || PLACEHOLDERS.meeting;
         document.getElementById('label-date').textContent = cfg.labels.date;
@@ -316,8 +324,6 @@ ${notes}
 
     document.getElementById('doc-type').addEventListener('change', updatePlaceholders);
     document.getElementById('btn-generate').addEventListener('click', processBusinessReport);
-    document.getElementById('tab-btn-local').addEventListener('click', () => switchTab('local'));
-    document.getElementById('tab-btn-gemini').addEventListener('click', () => switchTab('gemini'));
     document.getElementById('btn-copy-local').addEventListener('click', (e) => {
         const text = document.getElementById('output-local-text').value.trim();
         if (!text) {
@@ -336,10 +342,25 @@ ${notes}
         window.open('https://gemini.google.com/', '_blank', 'noopener,noreferrer');
     });
 
+    outputTabSegmentCtrl = SUGUDASU_SEGMENT.mount({
+        segmentId: 'output-tab-segment',
+        order: ['local', 'gemini'],
+        initial: 'local',
+        hintId: 'output-tab-hint',
+        hints: OUTPUT_TAB_HINTS,
+        modeClassMap: {
+            local: 'sg-segment--mode-local',
+            gemini: 'sg-segment--mode-gemini',
+        },
+        previewSelector: '#output-panel-card',
+        onChange: applyOutputTab,
+    });
+
     updatePlaceholders();
 })();
 </script>
 <div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>SUGUDASU_SHELL.mount({ title: '議事録・報告書', print: false });</script>
 </body>

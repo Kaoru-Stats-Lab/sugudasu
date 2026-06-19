@@ -10,8 +10,11 @@
     <meta property="og:title" content="宛名ラベル・シール一括印刷">
     <meta property="og:description" content="主要メーカーの型番検索に対応したラベル印刷ツール。ExcelやCSVを読み込むだけで、文字崩れを抑えた宛名シールを即印刷。">
     <meta property="og:url" content="https://sugudasu.com/label.html">
-    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="CSV読み込みで文字崩れなし！宛名ラベル一括印刷">
     <meta name="twitter:description" content="面倒な位置調整や専用ソフトは不要。主要メーカーのシール型番に合わせ、ExcelやCSVから宛名ラベルを一括印刷できます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -26,15 +29,14 @@
         <section class="no-print space-y-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 max-h-[88vh] overflow-y-auto">
 
             <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-3">
-                <div>
-                    <h2 class="text-sm font-bold text-slate-900">モード切替</h2>
-                    <p class="text-[11px] text-slate-500 mt-0.5">宛名ラベルとサンキューカードはここで切り替え</p>
-                </div>
-                <div class="bg-slate-100 p-1 rounded-lg flex gap-1 border border-slate-200">
-                    <button id="btn-mode-label" onclick="switchAppMode('label')" class="px-4 py-1.5 rounded-md font-semibold text-xs transition-all bg-blue-600 text-white shadow-sm">宛名ラベル</button>
-                    <button id="btn-mode-card" onclick="switchAppMode('card')" class="px-4 py-1.5 rounded-md font-semibold text-xs transition-all text-slate-600 hover:text-slate-900">サンキューカード</button>
+                <h2 class="text-sm font-bold text-slate-900">モード切替</h2>
+                <div class="sg-segment sg-segment--cols-2 sg-segment--mode-label" id="label-mode-segment" role="tablist" aria-label="出力モード">
+                    <span class="sg-segment__pill" aria-hidden="true"></span>
+                    <button type="button" role="tab" id="btn-mode-label" data-segment-value="label" class="sg-segment__btn" aria-selected="true">宛名ラベル</button>
+                    <button type="button" role="tab" id="btn-mode-card" data-segment-value="card" class="sg-segment__btn" aria-selected="false">サンキューカード</button>
                 </div>
             </div>
+            <p class="sg-segment-hint" id="label-mode-hint" role="note"><strong class="text-slate-800">宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。</p>
 
             <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 border-b border-blue-100 pb-1.5 flex items-center gap-1">
@@ -339,8 +341,39 @@
             cell.style.padding = spec.cellPad;
         }
 
+        const LABEL_MODE_HINTS = {
+            label: '<strong class="text-slate-800">宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。',
+            card: '<strong class="text-slate-800">サンキューカード：</strong>メッセージ中心のカード面。差出人フォームは非表示になります。',
+        };
+
+        let labelModeSegmentCtrl = null;
+
+        function applyLabelMode(mode) {
+            currentMode = mode;
+            document.getElementById('sender-form-block').classList.toggle('hidden', mode === 'card');
+            updatePreview();
+        }
+
+        function switchAppMode(mode) {
+            if (labelModeSegmentCtrl) labelModeSegmentCtrl.select(mode, { silent: true });
+            applyLabelMode(mode);
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             initLabelSpecSelect();
+            labelModeSegmentCtrl = SUGUDASU_SEGMENT.mount({
+                segmentId: 'label-mode-segment',
+                order: ['label', 'card'],
+                initial: 'label',
+                hintId: 'label-mode-hint',
+                hints: LABEL_MODE_HINTS,
+                modeClassMap: {
+                    label: 'sg-segment--mode-label',
+                    card: 'sg-segment--mode-card',
+                },
+                previewSelector: '#print-preview-container',
+                onChange: applyLabelMode,
+            });
             loadFromLocalStorage();
             if (recipientList.length === 0) {
                 // 初回起動時の分かりやすいサンプルデータ
@@ -355,17 +388,7 @@
             document.addEventListener("click", () => closeAllTooltips());
         });
 
-        // モード（宛名 vs サンキュー）切り替え
-        function switchAppMode(mode) {
-            currentMode = mode;
-            document.getElementById('btn-mode-label').className = mode === 'label' ? "px-4 py-1.5 rounded font-medium text-xs transition-all bg-blue-600 text-white shadow" : "px-4 py-1.5 rounded font-medium text-xs transition-all text-slate-400 hover:text-white";
-            document.getElementById('btn-mode-card').className = mode === 'card' ? "px-4 py-1.5 rounded font-medium text-xs transition-all bg-blue-600 text-white shadow" : "px-4 py-1.5 rounded font-medium text-xs transition-all text-slate-400 hover:text-white";
-            
-            // フォーム表示の連動調整
-            document.getElementById('sender-form-block').classList.toggle('hidden', mode === 'card');
-            
-            updatePreview();
-        }
+        // モード（宛名 vs サンキュー）切り替え — sg-segment 連動は switchAppMode / applyLabelMode
 
         // テーブルリストの描画
         function renderRecipientTable() {
@@ -689,6 +712,7 @@
         function escapeHtml(str) { return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : ""; }
     </script>
 <div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>SUGUDASU_SHELL.mount({ title: '宛名ラベル', print: true });</script>
 </body>

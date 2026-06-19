@@ -68,9 +68,9 @@
 
 ### #2 開発の裏側（7月3週）
 
-- **状態:** ドラフト `docs/notes/ZENN_ARTICLE_02_DRAFT.md`（提督レビュー待ち）
+- **状態:** アウトライン `docs/notes/ZENN_ARTICLE_02_OUTLINE.md`（§4 同名キーワード節追記済 · 執筆前）
 - **リード:** プログラミング未経験の視点から、AIと並走して作った知見を共有します。
-- **H2:** AIの使い分け / Cloudflare Pages の選択 / Form→changelog の速度
+- **H2:** AIの使い分け / Cloudflare Pages の選択 / Form→changelog の速度 / **「スグダス」同名キーワードと Query Disambiguation**
 - **CTA:** https://sugudasu.com/?utm_source=zenn&utm_medium=social&utm_campaign=article_02_hub_devstory
 
 ### #3 固定額割り勘（7月1週）

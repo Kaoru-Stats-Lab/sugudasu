@@ -10,10 +10,14 @@
     <meta property="og:title" content="登録不要・無料ビジネスツール9選">
     <meta property="og:description" content="ログイン不要で今すぐ使える実務ツール集。請求書作成やシフト生成など、データ送信なしのローカル処理で毎日の事務作業を効率化します。">
     <meta property="og:url" content="https://sugudasu.com/">
-    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="【登録なし】ブラウザで完結する実務ツール9選">
     <meta name="twitter:description" content="フリーランスや店舗運営の事務をラクにする無料ツール集。会員登録ゼロ、データ非送信の安全設計で必要な書類や計算がすぐ完了。">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SUGUDASU","alternateName":["スグダス","すぐだす"],"url":"https://sugudasu.com/","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"登録不要の無料ビジネスツール集（請求書・領収書・シフト表など）。SUBARUの中古車サービス「SUGDAS」とは無関係の別サービスです。","browserRequirements":"Requires JavaScript"}</script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
@@ -25,6 +29,17 @@
         <h2 class="text-xl font-bold text-slate-900">ブラウザだけで完結。登録不要。</h2>
         <p class="text-sm text-slate-600 max-w-xl mx-auto">入力データは外部に送信しません。フリーランス・店舗・オフィス・フリマの「すぐ終わる」作業を9つのツールで。</p>
         <p class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">完全ローカル処理</p>
+    </section>
+
+    <section id="sg-homonym-banner" class="hidden max-w-2xl mx-auto rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left" role="note" aria-label="サービス名称の案内">
+        <div class="flex gap-3 items-start">
+            <p class="text-xs text-amber-950 leading-relaxed flex-1">
+                <strong>「スグダス」で検索して中古車のページを探していませんか？</strong>
+                ここは書類用の <strong>SUGUDASU</strong>（SUBARUの中古車サービス「SUGDAS」とは別物）です。
+                <a href="not-a-car.html" class="text-blue-700 font-semibold hover:underline whitespace-nowrap">詳しく見る</a>
+            </p>
+            <button type="button" id="sg-homonym-dismiss" class="shrink-0 text-[10px] text-amber-800 hover:text-amber-950 underline" aria-label="この案内を閉じる">閉じる</button>
+        </div>
     </section>
 
     <section class="text-center">
@@ -90,6 +105,22 @@
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
-<script>SUGUDASU_SHELL.mount({ title: 'ツール一覧', print: false });</script>
+<script>
+(function () {
+    if (!localStorage.getItem('sg-homonym-dismiss')) {
+        var banner = document.getElementById('sg-homonym-banner');
+        if (banner) banner.classList.remove('hidden');
+    }
+    var btn = document.getElementById('sg-homonym-dismiss');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            localStorage.setItem('sg-homonym-dismiss', '1');
+            var el = document.getElementById('sg-homonym-banner');
+            if (el) el.classList.add('hidden');
+        });
+    }
+})();
+SUGUDASU_SHELL.mount({ title: 'ツール一覧', print: false });
+</script>
 </body>
 </html>

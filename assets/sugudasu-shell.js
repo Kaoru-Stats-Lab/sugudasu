@@ -148,6 +148,10 @@
             <span>@sugudasu</span>
           </a>
         </p>
+        <p class="text-[10px] text-slate-400">
+          SUGUDASUはビジネスツールです。
+          <a href="not-a-car.html" class="underline hover:text-slate-600">SUBARUの中古車「SUGDAS」とは別サービス</a>
+        </p>
         <p class="text-[10px] text-slate-400">&copy; SUGUDASU（すぐだす）</p>
       </div>
     </footer>`;

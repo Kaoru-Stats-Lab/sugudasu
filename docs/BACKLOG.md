@@ -82,6 +82,13 @@
   - [x] 補助導線として可読性を微調整（主張しすぎないトーン）
 - [x] 追加後の lint エラーなしを確認
 
+### 1-6. UI 統一 — `sg-segment` 全モード切替ツール展開（2026-06-19）
+
+- [x] 共有資産: `assets/sugudasu.css`（`.sg-segment*`）· `assets/sugudasu-segment.js`（`SUGUDASU_SEGMENT.mount`）
+- [x] 適用: `invoice` · `receipt` · `warikan` · `report` · `reverse` · `label`
+- [x] 主CTA `.sg-btn-primary` へ寄せ: `report` · `reverse` · `warikan` · `present`（他は段階適用可）
+- **ペルソナ・3層アクション・設計根拠の正本:** [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) §0–§3.3（本 Backlog には重複記載しない）
+
 ---
 
 ## 2) 収益戦略 Backlog（AdSense + Amazon 統合）
@@ -999,7 +1006,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 | 項目 | 方針 |
 |------|------|
-| **ペルソナ** | 案A — 静かな実務職人・カオル（`operator-profile.md` L2） |
+| **ペルソナ（Zenn読者向けトーン）** | 案A — 静かな実務職人・カオル（`operator-profile.md` L2）· **プロダクトの想定ユーザー像は** [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) §1.1 |
 | **文体** | です・ます · 礼賛しない · 社名・勤務先は出さない |
 | **初稿** | 「見積下書きを請求書に転用するまで」+ `sugudasu.com/invoice` |
 | **頻度** | 月2〜4本（更新時 + 背景1本） |

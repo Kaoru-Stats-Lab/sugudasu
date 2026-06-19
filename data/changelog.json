@@ -1,6 +1,41 @@
 {
-  "updatedAt": "2026-06-17",
+  "updatedAt": "2026-06-19",
   "entries": [
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "全モード切替ツール：sg-segment と3層アクションを統一",
+      "body": "見積・領収・割り勘・議事録・逆引き・宛名ラベルのモード切替をスライドピル（sg-segment）に統一。主CTAは sg-btn-primary、印刷はヘッダー緑のまま。ペルソナと設計根拠は DESIGN_GUIDELINE §0–1 に追記しました。",
+      "tools": ["invoice.html", "receipt.html", "warikan.html", "report.html", "reverse.html", "label.html", "present.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "見積・請求書：書類種別セグメントを sg-segment に刷新",
+      "body": "見積・納品・請求の切替にスライドピルアニメ（180ms）・モード別ヒントフェード・プレビュー連動を追加。キーボード左右キー対応。他ツール展開用の sg-segment を sugudasu.css に定義しました。",
+      "tools": ["invoice.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "同名キーワード対策（スバル SUGDAS との差別化）",
+      "body": "「スグダス」検索の迷子向けに not-a-car.html・hub 案内バナー・フッター注記を追加。請求書・領収書に中古車販売・整備向けFAQを追加。Xガイドラインに複合語投稿テンプレを追記しました。",
+      "tools": ["hub.html", "not-a-car.html", "invoice.html", "receipt.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "全ページ：PageSpeed向けパフォーマンス改善",
+      "body": "本番ビルドで Tailwind を事前コンパイル（browser CDN 廃止）・Webフォントを Noto+Montserrat に絞り preconnect・静的アセット長期キャッシュ・ヘッダー注入前の CLS 抑止を実施しました。",
+      "tools": ["hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "全ページ：SNS向けOG画像を共通カードに統一",
+      "body": "X等でリンクプレビューが見やすいよう、透過ロゴから白背景の og-card.png（1200×630）へ変更。og:image と twitter:card（summary_large_image）を全主要ツールで共通にしました。",
+      "tools": ["hub.html", "invoice.html", "warikan.html", "receipt.html", "shift.html", "label.html", "report.html", "reverse.html", "present.html", "sns.html"]
+    },
     {
       "date": "2026-06-17",
       "type": "improve",

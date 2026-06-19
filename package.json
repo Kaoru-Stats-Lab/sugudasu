@@ -10,5 +10,9 @@
     "release:pages:free": "npm run build:pages && npm run guard:pages-budget && node scripts/guard-pages-build-budget.mjs consume",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
     "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "tailwindcss": "^4.3.1"
   }
 }

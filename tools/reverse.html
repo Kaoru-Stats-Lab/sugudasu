@@ -10,8 +10,11 @@
     <meta property="og:title" content="逆引き類語辞典・言い換え検索">
     <meta property="og:description" content="表現したいニュアンスや意味から最適な言葉をすばやく検索。会員登録なしで語彙力やビジネス文章の説得力を高める言い換えが見つかる。">
     <meta property="og:url" content="https://sugudasu.com/reverse.html">
-    <meta property="og:image" content="https://sugudasu.com/assets/logo-mark.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="ニュアンスから言葉を探す！逆引き類語辞典と言い換え">
     <meta name="twitter:description" content="「あの言葉が出てこない」を解決。文章作成やメールライティングの語彙不足をブラウザ上で即補える登録不要ツール。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -48,24 +51,24 @@
             </div>
 
             <button type="button" id="btn-lookup"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-lg transition-colors">
+                class="w-full sg-btn-primary text-sm font-semibold py-3 rounded-lg">
                 検索してその場で類語を見つける
             </button>
         </section>
 
         <section class="flex flex-col gap-4">
-            <div class="bg-slate-100 p-1 rounded-lg grid grid-cols-2 gap-1 border border-slate-200">
-                <button type="button" id="tab-btn-local"
-                    class="py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local" id="output-tab-segment" role="tablist" aria-label="出力タブ">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" id="tab-btn-local" data-segment-value="local" class="sg-segment__btn" aria-selected="true">
                     すぐ使える言い換え
                 </button>
-                <button type="button" id="tab-btn-gemini"
-                    class="py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800">
+                <button type="button" role="tab" id="tab-btn-gemini" data-segment-value="gemini" class="sg-segment__btn" aria-selected="false">
                     AIで広げる（Gemini）
                 </button>
             </div>
+            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong class="text-slate-800">すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。</p>
 
-            <div class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
+            <div id="output-panel-card" class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
                 <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
                     <div class="flex justify-between items-center">
                         <span id="local-pool-count" class="text-[11px] font-semibold text-slate-500">該当: 0件</span>
@@ -171,8 +174,23 @@
         { word: '言語化', reading: 'げんごか', mean: '漠然とした気持ちを言葉にすること。', sample: 'モヤモヤを言語化するのが苦手です。', tags: ['言葉', 'モヤモヤ', 'SNS'] }
     ];
 
-    const TAB_ACTIVE = 'py-2 text-xs font-semibold rounded-md bg-white text-slate-900 shadow-sm';
-    const TAB_IDLE = 'py-2 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-800';
+    const OUTPUT_TAB_HINTS = {
+        local: '<strong class="text-slate-800">すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。',
+        gemini: '<strong class="text-slate-800">AIで広げる：</strong>ニュアンスをGemini用プロンプトに変換。貼り付けはご自身の判断で行ってください。',
+    };
+
+    let outputTabSegmentCtrl = null;
+
+    function applyOutputTab(target) {
+        const local = target === 'local';
+        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
+        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
+    }
+
+    function switchTab(target) {
+        if (outputTabSegmentCtrl) outputTabSegmentCtrl.select(target, { silent: true });
+        applyOutputTab(target);
+    }
 
     function escapeHtml(str) {
         return String(str || '')
@@ -200,14 +218,6 @@
             if (rawLower.includes(tag.toLowerCase())) score += 8;
         }
         return score;
-    }
-
-    function switchTab(target) {
-        const local = target === 'local';
-        document.getElementById('tab-btn-local').className = local ? TAB_ACTIVE : TAB_IDLE;
-        document.getElementById('tab-btn-gemini').className = local ? TAB_IDLE : TAB_ACTIVE;
-        document.getElementById('tab-content-local').classList.toggle('hidden', !local);
-        document.getElementById('tab-content-gemini').classList.toggle('hidden', local);
     }
 
     async function copyText(text, feedbackEl) {
@@ -328,11 +338,24 @@ ${matchedWords || '（なし）'}
 
     document.getElementById('btn-lookup').addEventListener('click', executeReverseLookup);
     document.getElementById('btn-gemini').addEventListener('click', copyAndOpenGemini);
-    document.getElementById('tab-btn-local').addEventListener('click', () => switchTab('local'));
-    document.getElementById('tab-btn-gemini').addEventListener('click', () => switchTab('gemini'));
+
+    outputTabSegmentCtrl = SUGUDASU_SEGMENT.mount({
+        segmentId: 'output-tab-segment',
+        order: ['local', 'gemini'],
+        initial: 'local',
+        hintId: 'output-tab-hint',
+        hints: OUTPUT_TAB_HINTS,
+        modeClassMap: {
+            local: 'sg-segment--mode-local',
+            gemini: 'sg-segment--mode-gemini',
+        },
+        previewSelector: '#output-panel-card',
+        onChange: applyOutputTab,
+    });
 })();
 </script>
 <div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>SUGUDASU_SHELL.mount({ title: '逆引き辞典', print: false });</script>
 </body>
