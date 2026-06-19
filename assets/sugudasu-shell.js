@@ -88,11 +88,11 @@
   function ensureFavicon() {
     if (document.querySelector('link[data-sg-favicon]')) return;
     const links = [
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16.png?v=3' },
-      { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32.png?v=3' },
-      { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'favicon-48.png?v=3' },
-      { rel: 'icon', type: 'image/png', href: 'favicon.png?v=3' },
-      { rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180', href: 'apple-touch-icon.png?v=3' }
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: 'favicon-16.png?v=4' },
+      { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'favicon-32.png?v=4' },
+      { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'favicon-48.png?v=4' },
+      { rel: 'icon', type: 'image/png', href: 'favicon.png?v=4' },
+      { rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180', href: 'apple-touch-icon.png?v=4' }
     ];
     links.forEach((item) => {
       const link = document.createElement('link');

@@ -4,6 +4,7 @@
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
     "build:pages": "node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "generate:favicons": "node scripts/generate-favicons.mjs",
     "guard:pages-free": "node scripts/verify-pages-free-plan.mjs",
     "guard:pages-budget": "node scripts/guard-pages-build-budget.mjs check",
     "guard:pages-budget:show": "node scripts/guard-pages-build-budget.mjs show",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.1",
+    "sharp": "^0.35.1",
     "tailwindcss": "^4.3.1"
   }
 }

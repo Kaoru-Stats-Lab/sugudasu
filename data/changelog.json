@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-06-19",
+      "type": "improve",
+      "title": "ファビコンを白背景ロケットに更新",
+      "body": "512pxマスター（384/416）から16・32・48・180を生成。透過PNGから白背景に変更し、ダークタブでも視認しやすくしました。",
+      "tools": ["hub.html"]
+    },
+    {
+      "date": "2026-06-19",
       "type": "fix",
       "title": "共通ヘッダー：data属性自動マウントとビルド検証",
       "body": "高頻度だったヘッダー未表示を防ぐため、sg-chrome-top の data-sg-title で shell が自動マウントする方式に統一。verify-chrome-mount を build に組込み、defer と inline mount を禁止しました。",

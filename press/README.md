@@ -15,6 +15,7 @@
 | `x-pin-hub-v2.png` | **X 固定ピン用**（1200×675 · §8 オーダー · 未作成可） |
 
 サイト用の軽量ロゴは `assets/logo-mark.png` · `assets/sugudasu-logo.png` を正とする。  
+ファビコンは `assets/favicon-master-384.png`（タブ16/32）· `favicon-master-416.png`（48/180）から `npm run generate:favicons` で生成。  
 **SNS / OGP 共通** は `assets/og-card.png`（1200×630 · 白背景 · 全ツール共通 `og:image`）。
 
 ## 関連
