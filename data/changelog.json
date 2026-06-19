@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-06-19",
+      "type": "fix",
+      "title": "共通ヘッダーが表示されない不具合を修正",
+      "body": "本番ビルドで sugudasu-shell.js と mount 呼び出しに defer を付けていたため、実行順が崩れ SUGUDASU_SHELL.mount が失敗していました。shell は同期読み込みに戻しました。",
+      "tools": ["hub.html"]
+    },
+    {
+      "date": "2026-06-19",
       "type": "improve",
       "title": "全モード切替ツール：sg-segment と3層アクションを統一",
       "body": "見積・領収・割り勘・議事録・逆引き・宛名ラベルのモード切替をスライドピル（sg-segment）に統一。主CTAは sg-btn-primary、印刷はヘッダー緑のまま。ペルソナと設計根拠は DESIGN_GUIDELINE §0–1 に追記しました。",

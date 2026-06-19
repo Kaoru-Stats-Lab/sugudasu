@@ -156,7 +156,7 @@ function copyDir(src, dest) {
   }
 }
 
-const ASSET_V = process.env.SG_ASSET_V || '20260619';
+const ASSET_V = process.env.SG_ASSET_V || '20260619a';
 
 const FONT_HEAD = `    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -202,12 +202,15 @@ function rewriteHtml(html) {
 
   out = out.replace(
     /src="\/assets\/sugudasu-shell\.js[^"]*"/g,
-    `src="/assets/sugudasu-shell.js?v=${ASSET_V}" defer`
+    `src="/assets/sugudasu-shell.js?v=${ASSET_V}"`
   );
   out = out.replace(
-    /<script>\s*SUGUDASU_SHELL\.mount/g,
-    '<script defer>\nSUGUDASU_SHELL.mount'
+    /src="\/assets\/sugudasu-segment\.js"/g,
+    `src="/assets/sugudasu-segment.js?v=${ASSET_V}"`
   );
+
+  // shell → mount は末尾で同期実行（defer だと inline mount が shell より先に走りヘッダーが空になる）
+  out = out.replace(/<script defer>\s*\nSUGUDASU_SHELL\.mount/g, '<script>\nSUGUDASU_SHELL.mount');
 
   return out;
 }
