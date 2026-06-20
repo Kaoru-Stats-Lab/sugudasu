@@ -8,6 +8,7 @@ import {
 } from './prize-law-eval.js';
 import {
   assignWithConstraints,
+  classifyConstraintPre,
   entriesToNameSet,
   hasActiveConstraints,
   parseBundlesText,
@@ -25,7 +26,8 @@ import {
   parseTableText,
 } from './group-split-columns.js';
 
-export const TOOL_VERSION = '1.2.1';
+export const TOOL_VERSION = '1.2.4';
+export const SESSION_SNAPSHOT_VERSION = 1;
 /** 硬上限 FIX（Phase C · 2026-06-20）— 複数属性ソルバ · 研修規模 */
 export const ROSTER_MAX = 250;
 /** 典型ブレイクアウト — 超えたら TSV 推奨のソフト警告 */
@@ -285,8 +287,63 @@ export function seedBufFromHex(seedHex) {
 }
 
 /**
+ * @param {ReturnType<typeof parseRosterEntries>} parsed
+ * @param {import('./group-split-constraints.js').GroupSplitConstraints} [baseConstraints]
+ * @param {{ constraints?: import('./group-split-constraints.js').GroupSplitConstraints, constraintsInput?: { bundlesText?: string, fixedText?: string, pairsText?: string, spreadTags?: boolean, requiredTag?: string, hardMax?: number, attrRules?: import('./group-split-constraints.js').AttrColumnRule[] } }} opts
+ * @param {number} groupCount
+ */
+function resolveConstraintsForRun(parsed, opts, groupCount, baseConstraints = {}) {
+  /** @type {import('./group-split-constraints.js').GroupSplitConstraints} */
+  let constraints = opts.constraints || baseConstraints;
+  if (opts.constraintsInput) {
+    const nameSet = entriesToNameSet(parsed.entries);
+    const ci = opts.constraintsInput;
+    const attrRules = ci.attrRules?.length
+      ? normalizeAttrRules(ci.attrRules)
+      : (parsed.columnMapping?.attrRules || []);
+    constraints = {
+      bundles: ci.bundlesText ? parseBundlesText(ci.bundlesText, nameSet) : [],
+      fixedToGroup: ci.fixedText ? parseFixedText(ci.fixedText, nameSet, groupCount) : new Map(),
+      separatePairs: ci.pairsText ? parsePairsText(ci.pairsText, nameSet) : [],
+      spreadTags: !!ci.spreadTags && !attrRules.some((r) => r.spread),
+      requiredTag: attrRules.length ? '' : String(ci.requiredTag || '').trim(),
+      hardMax: Number(ci.hardMax) || 0,
+      attrRules,
+    };
+  } else if (parsed.columnMapping?.attrRules?.length) {
+    constraints = {
+      ...constraints,
+      attrRules: normalizeAttrRules(parsed.columnMapping.attrRules),
+    };
+  }
+  return constraints;
+}
+
+/**
+ * 実行前の各組必須可否（UI ヒント用）
  * @param {string[] | string} rosterInput
- * @param {{ mode?: 'perSize' | 'groupCount', param?: number, sessionLabel?: string, seedHex?: string, seedBuf?: Uint8Array, columnMapping?: import('./group-split-columns.js').ColumnMapping | null, constraints?: import('./group-split-constraints.js').GroupSplitConstraints, constraintsInput?: { bundlesText?: string, fixedText?: string, pairsText?: string, spreadTags?: boolean, requiredTag?: string, hardMax?: number, attrRules?: import('./group-split-constraints.js').AttrColumnRule[] } }} [opts]
+ * @param {{ mode?: 'perSize' | 'groupCount', param?: number, columnMapping?: import('./group-split-columns.js').ColumnMapping | null, constraints?: import('./group-split-constraints.js').GroupSplitConstraints, constraintsInput?: { bundlesText?: string, fixedText?: string, pairsText?: string, spreadTags?: boolean, requiredTag?: string, hardMax?: number, attrRules?: import('./group-split-constraints.js').AttrColumnRule[] } }} [opts]
+ */
+export function previewConstraintFeasibility(rosterInput, opts = {}) {
+  const mode = opts.mode === 'groupCount' ? 'groupCount' : 'perSize';
+  const param = Number(opts.param) || (mode === 'perSize' ? 4 : 5);
+  const parsed = parseRosterEntries(rosterInput, { columnMapping: opts.columnMapping });
+  const lines = parsed.entries.map((e) => e.name);
+  const validation = validateSplitInput(lines, mode, param);
+  if (!validation.ok) {
+    return { ok: false, validationError: validation.message, blocking: [], warnings: [], groupCount: 0 };
+  }
+  const constraints = resolveConstraintsForRun(parsed, opts, validation.groupCount);
+  if (!hasActiveConstraints(constraints)) {
+    return { ok: true, blocking: [], warnings: [], groupCount: validation.groupCount };
+  }
+  const { blocking, warnings } = classifyConstraintPre(parsed.entries, validation.groupCount, constraints);
+  return { ok: blocking.length === 0, blocking, warnings, groupCount: validation.groupCount };
+}
+
+/**
+ * @param {string[] | string} rosterInput
+ * @param {{ mode?: 'perSize' | 'groupCount', param?: number, sessionLabel?: string, seedHex?: string, seedBuf?: Uint8Array, columnMapping?: import('./group-split-columns.js').ColumnMapping | null, constraints?: import('./group-split-constraints.js').GroupSplitConstraints, constraintsInput?: { bundlesText?: string, fixedText?: string, pairsText?: string, spreadTags?: boolean, requiredTag?: string, hardMax?: number, attrRules?: import('./group-split-constraints.js').AttrColumnRule[] }, relaxRequiredEach?: boolean }} [opts]
  */
 export async function runGroupSplit(rosterInput, opts = {}) {
   const mode = opts.mode === 'groupCount' ? 'groupCount' : 'perSize';
@@ -316,31 +373,11 @@ export async function runGroupSplit(rosterInput, opts = {}) {
   const targetSize = mode === 'perSize' ? param : Math.ceil(lines.length / groupCount);
 
   /** @type {import('./group-split-constraints.js').GroupSplitConstraints} */
-  let constraints = opts.constraints || {};
-  if (opts.constraintsInput) {
-    const nameSet = entriesToNameSet(rich.entries);
-    const ci = opts.constraintsInput;
-    const attrRules = ci.attrRules?.length
-      ? normalizeAttrRules(ci.attrRules)
-      : (parsed.columnMapping?.attrRules || []);
-    constraints = {
-      bundles: ci.bundlesText ? parseBundlesText(ci.bundlesText, nameSet) : [],
-      fixedToGroup: ci.fixedText ? parseFixedText(ci.fixedText, nameSet, groupCount) : new Map(),
-      separatePairs: ci.pairsText ? parsePairsText(ci.pairsText, nameSet) : [],
-      spreadTags: !!ci.spreadTags && !attrRules.some((r) => r.spread),
-      requiredTag: attrRules.length ? '' : String(ci.requiredTag || '').trim(),
-      hardMax: Number(ci.hardMax) || 0,
-      attrRules,
-    };
-  } else if (parsed.columnMapping?.attrRules?.length) {
-    constraints = {
-      ...constraints,
-      attrRules: normalizeAttrRules(parsed.columnMapping.attrRules),
-    };
-  }
+  const constraints = resolveConstraintsForRun(rich, opts, groupCount);
 
   const constrained = hasActiveConstraints(constraints);
   const usesMultiAttr = (constraints.attrRules || []).length > 0;
+  const relaxRequiredEach = !!opts.relaxRequiredEach;
 
   let seedBuf = opts.seedBuf;
   let seedHex = opts.seedHex;
@@ -358,6 +395,11 @@ export async function runGroupSplit(rosterInput, opts = {}) {
   let overflowReasons = Array.from({ length: groupCount }, () => []);
   let algorithm = 'deterministic-seed-shuffle-round-robin-v1';
 
+  /** @type {Array<{ groupId: number, label: string, value: string }>} */
+  let unmetRequired = [];
+  /** @type {string[]} */
+  let relaxedWarnings = [];
+
   if (constrained) {
     const result = assignWithConstraints(
       rich.entries,
@@ -366,14 +408,24 @@ export async function runGroupSplit(rosterInput, opts = {}) {
       constraints,
       randomFn,
       shuffleUnits,
+      { relaxRequiredEach },
     );
     buckets = result.groups;
     overflowReasons = result.overflowReasons;
+    unmetRequired = result.unmetRequired || [];
+    relaxedWarnings = result.relaxedWarnings || [];
     algorithm = 'deterministic-seed-constraint-greedy-v1';
     if (usesMultiAttr) algorithm = 'deterministic-seed-constraint-multi-attr-v1';
   } else {
     const shuffled = seededFullShuffle(lines, randomFn);
     buckets = assignRoundRobin(shuffled, groupCount);
+  }
+
+  const unmetByGroup = new Map();
+  for (const u of unmetRequired) {
+    const list = unmetByGroup.get(u.groupId) || [];
+    list.push({ label: u.label, value: u.value });
+    unmetByGroup.set(u.groupId, list);
   }
 
   const groups = buckets.map((members, i) => {
@@ -389,6 +441,7 @@ export async function runGroupSplit(rosterInput, opts = {}) {
       overflow,
       overflowDelta: overflow ? size - targetSize : 0,
       overflowReasons: reasons,
+      unmetRequired: unmetByGroup.get(i + 1) || [],
     };
   });
 
@@ -441,6 +494,9 @@ export async function runGroupSplit(rosterInput, opts = {}) {
     } : null,
     overflowGroups: groups.filter((g) => g.overflow).map((g) => g.id),
     preOverflowHint: constrained && willLikelyOverflow(constraints, targetSize),
+    constraintRelaxed: relaxRequiredEach && relaxedWarnings.length > 0,
+    relaxedWarnings,
+    unmetRequired,
   };
 }
 
@@ -639,6 +695,98 @@ export function resolveGroupsPreviewLayout(visibleCount) {
     scroll: true,
     maxHeightRem: DOM_GROUP_PREVIEW_VIEWPORT_GROUPS * DOM_GROUP_PREVIEW_ROW_REM,
   };
+}
+
+/**
+ * @param {string} line
+ */
+function nameFromPlainRosterLine(line) {
+  const trimmed = String(line).trim();
+  if (!trimmed) return '';
+  if (trimmed.includes('\t')) {
+    return trimmed.split('\t')[0].trim();
+  }
+  if (trimmed.includes(',')) {
+    const parts = trimmed.split(',').map((s) => s.trim()).filter(Boolean);
+    return parts[0] || '';
+  }
+  return trimmed;
+}
+
+/**
+ * 名簿テキストから指定氏名の行を除去（M02 · 属性列付き対応）
+ * @param {string} rosterText
+ * @param {string | string[]} namesToRemove
+ * @param {import('./group-split-columns.js').ColumnMapping | null} [columnMapping]
+ */
+export function removeNamesFromRoster(rosterText, namesToRemove, columnMapping = null) {
+  const remove = new Set(
+    (Array.isArray(namesToRemove) ? namesToRemove : [namesToRemove])
+      .map((n) => String(n).trim())
+      .filter(Boolean),
+  );
+  if (!remove.size) return String(rosterText ?? '');
+
+  const text = String(rosterText ?? '');
+  const table = parseTableText(text);
+  if (isMultiColumnTable(table)) {
+    const map = columnMapping || guessColumnMapping(table);
+    const ni = map.nameColumnIndex;
+    const delim = table.delimiter === 'comma' ? ',' : '\t';
+    const out = [];
+    if (table.hasHeader) {
+      out.push(table.headers.join(delim));
+    }
+    for (const row of table.rows) {
+      const name = (row[ni] || '').trim();
+      if (name && remove.has(name)) continue;
+      out.push(row.join(delim));
+    }
+    return out.join('\n');
+  }
+
+  const kept = [];
+  for (const line of text.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    const name = nameFromPlainRosterLine(trimmed);
+    if (name && remove.has(name)) continue;
+    kept.push(trimmed);
+  }
+  return kept.join('\n');
+}
+
+/**
+ * @param {Record<string, unknown>} state
+ */
+export function buildSessionSnapshot(state) {
+  return {
+    version: SESSION_SNAPSHOT_VERSION,
+    tool: 'group-split',
+    toolVersion: TOOL_VERSION,
+    roster: state.roster ?? '',
+    sessionLabel: state.sessionLabel ?? '',
+    mode: state.mode === 'groupCount' ? 'groupCount' : 'perSize',
+    param: Number(state.param) || 4,
+    constraints: state.constraints ?? {},
+    columnMapping: state.columnMapping ?? null,
+    attrSlotCols: Array.isArray(state.attrSlotCols) ? state.attrSlotCols : [-1, -1, -1],
+    seedHex: state.seedHex ?? null,
+  };
+}
+
+/**
+ * @param {string | Record<string, unknown>} raw
+ */
+export function parseSessionSnapshot(raw) {
+  const o = typeof raw === 'string' ? JSON.parse(raw) : raw;
+  if (!o || o.tool !== 'group-split') {
+    throw Object.assign(new Error('group-split のセッションJSONではありません'), { code: 'session_invalid' });
+  }
+  if (Number(o.version) !== SESSION_SNAPSHOT_VERSION) {
+    throw Object.assign(new Error(`セッション version ${o.version} は未対応です`), { code: 'session_version' });
+  }
+  return /** @type {ReturnType<typeof buildSessionSnapshot>} */ (o);
 }
 
 export { willLikelyOverflow } from './group-split-constraints.js';

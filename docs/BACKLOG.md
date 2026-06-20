@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-19（§1-11 T11 group-split 企画FIX · §8-11 · webp-to-jpg）  
+更新: 2026-06-20（§1-11 提督実体験 · M13 スイッチャー対応表 · v1.2.3 緩和モード）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -176,6 +176,42 @@
 - [x] Phase B — 固定班 · 固定配置 · 離すペア · 定員超過表示
 - [x] Phase C — Excel複数列 · 属性2〜3 · 分散/各組必須 · **cap 250名**
 - [x] **UX C1** — Step ①〜④ · 列マッピング優先の説明 · 制約件数サマリ · 名簿ピッカー（固定班/固定/離すペア）· preset「各組に役員1名」
+- [x] **M02 Resilience** v1.2.2 — 結果タップ除外 · セッション JSON
+- [x] **各組必須・緩和モード** v1.2.3 — 人数不足時「可能な限り」実行 · 未充足組バッジ
+
+#### 提督実体験 · 2モード（2026-06-20）
+
+**正本:** [`GROUP_SPLIT_SWITCHER_PREP.md`](notes/GROUP_SPLIT_SWITCHER_PREP.md) · SPEC §1-2
+
+| モード | 体験 | 欠席 | SUGUDASU 優先 |
+|--------|------|------|----------------|
+| **バッファ型** | 納会 · 円卓（事業部×職種シャッフル） | 料理・グラスで吸収 · 再編ほぼ不要 | 属性分散 · 事前1回 · TSV |
+| **ゼロバッファ型** | ハッカソンオンライン | エンジニア0人 → 即再編 | 各組必須 · M02 · **スイッチャー向け出力** |
+| **緩和型** | **アイディアソン** | 班分けは大きな問題になりにくい | 分散 · 均等 · **各組必須は使わない** |
+
+ハッカソンでは **班決定 ≠ 完了**。BR 案内 · Slack 部屋割当 · Zoom 手動移動がセット。**スイッチャー**が班表を見ながら BR を操作する（Zoom 画面に属性は出ない）。
+
+**アイディアソン（提督）:** 班分けは問題にならなかった。**非エンジニアへの役割説明**はツール外 — 名簿の職能ラベル定義 · 事前ブリーフが先（FAQ/Zenn P2）。
+
+#### スイッチャーが事前に準備すると楽（要約）
+
+| 必須 | 内容 |
+|------|------|
+| 班 ↔ BR 対応表 | `G1=BR-A` … 1枚（印刷 or スプシ） |
+| 班 ↔ Slack 対応表 | `#team-01` 等 · 案内文コピー用 |
+| 名簿 + 職能列 | 各組必須の入力元 |
+| 班分け正本 | TSV + シード + 名簿指紋 |
+| BR 数 = 組数 | ルーム名をグループ番号順に揃える |
+| ホスト権限 | BR 手動割当できるアカウント |
+
+| 当日 | 内容 |
+|------|------|
+| 欠席 → 再実行 | 幹事が SUGUDASU · **差分1行**をスイッチャーへ DM |
+| 2画面 | ① Zoom ② 班表/対応表（スマホ可） |
+| 案内再投稿 | Slack 用テキストを最新班で上書き |
+
+詳細チェックリスト14項目 · 当日オペ手順: **`GROUP_SPLIT_SWITCHER_PREP.md`**  
+**Agent 引き継ぎ:** [`GROUP_SPLIT_AGENT_HANDOFF.md`](notes/GROUP_SPLIT_AGENT_HANDOFF.md)
 
 #### UX / 機能 Backlog（group-split）
 
@@ -185,6 +221,7 @@
 | P1 | 名簿から選ぶピッカー（手打ち廃止） | [x] C1 |
 | P1 | preset · Step番号 · 制約件数サマリ | [x] C1 |
 | P1 | FAQ 2層化（班分け基本 + ツール）· `data/group-split-faq.json` | [x] C1 |
+| **P1** | **M13 スイッチャー対応表（O8）** — BR名·Slack列テンプレ + 班員結合 TSV/Slack · 再編差分1行 | [ ] |
 | P2 | 制約 Excel インポート | [ ] |
 | **見送り** | 年齢バランス · 性別比の数値目標 · 属性上限/組 | ソルバ外 · SPEC に明記 |
 | **見送り** | ドラッグ卓割り · 100%最適保証 | スコープ外 |
@@ -208,8 +245,10 @@
 | **B 安心（ロングテール）** | 研修 班分け 欠席 調整 · グループ分け やり直し | 刺さるが検索入口には弱い | meta 1句 · FAQ · Zenn 後半 |
 | **C 見送り** | Zoom ブレイクアウト自動 · 出欠管理 · 座席リアルタイム | スコープ外 | 追わない |
 
+**M13（O8）スコープ FIX:** Zoom/Slack **API 連携・自動部屋作成はしない**。幹事が BR 名・チャンネル名を入力 → 班員と結合した **コピー用1枚** を出す（非送信維持）。再編差分は M02 タップ除外後の **1行サマリ**。
+
 **方針:** 「班分けツール」で検索に載せ、**イベント直前の再編**は meta + FAQ + 記事で伝える（ページ内コピー乱立はしない）。  
-**参照:** `group-split-gemini-research-RESULT.md` §5 · `data/group-split-faq.json` 欠席 FAQ
+**参照:** `group-split-gemini-research-RESULT.md` §5 · `data/group-split-faq.json` 欠席 FAQ · **`GROUP_SPLIT_SWITCHER_PREP.md`**
 
 #### 背景（なぜやるか）
 
@@ -222,6 +261,55 @@
 1. `GROUP_SPLIT_TOOL_SPEC.md` §4b · §7c
 2. `npm run test:group-split` · `build:pages`
 3. UX 変更は **列マッピング = メイン · 名前ルール = 任意** を崩さない
+
+### 1-12. スマホキラープロダクト — Gemini ブレスト（2026-06-20）
+
+**正本:** [`docs/notes/MOBILE_KILLER_GEMINI_RESULT.md`](notes/MOBILE_KILLER_GEMINI_RESULT.md)（生出力 + Cursor 突合）  
+**需要検証:** [`group-split-mobile-resilience-gemini-RESULT.md`](notes/group-split-mobile-resilience-gemini-RESULT.md) — **条件付き Go（案B）** · 競合 [GroupMixer /ja](https://groupmixer.app/ja)
+
+#### M02 スコープ FIX（2026-06-20 · リサーチ後）
+
+| v1 やる | v1 やらない |
+|---------|-------------|
+| 結果一覧でメンバー **タップ除外** → 名簿同期 → **再実行** | **部分移動・最適候補提示**（§1 Pain の「1タップ移動先」） |
+| 同一端末（PC 実行 → スマホ幅 or 同タブ） | Session JSON（案C）— インタビュー後 |
+| 対面 / hybrid / ハッカソン | 完全オンライン（Zoom/Teams 優先）· **遅刻者の再追加** |
+
+**競合:** GroupMixer /ja — 部分参加・属性均衡あり。**差別化:** 非送信 · TSV/Slack · 幹事3分 · 事後タップ除外（事前シナリオ設定不要）。
+
+#### 採用優先（Cursor 突合後）
+
+| 順 | ID | 内容 | 種別 | 優先 |
+|----|-----|------|------|------|
+| 1 | **M02** | group-split **Resilience UX**（タップ除外 · セッションJSON） | 拡張 | **P1 実装済 v1.2.2** |
+| 2 | **M13** | group-split **スイッチャー対応表（O8）** — BR/Slack 列 + 班員 TSV · 再編差分 | 拡張 | **P1** |
+| 3 | **M01** | **T13** イベント進行タイムライン（`timeline.html`） | 新規 | **P0** |
+| 4 | **M03** | warikan **送金リンク**（PayPay 等 · 仕様スパイク後） | 拡張 | **P1** |
+| 5 | **M07** | normalize **モバイルSNS用プリセット**（新ツール不要） | 拡張 | **P2** |
+| 6 | **M10** | receipt **スマホ初回価値**導線改善 | 拡張 | **P2** |
+
+#### HOLD / 見送り
+
+| ID | 判定 | 理由 |
+|----|------|------|
+| M04 | 実装済相当 | fair-draw チャットコピー · P2 磨きのみ |
+| M05 | P2 HOLD | group-split ソルバ共通化後に座席UI |
+| M06,M08,M09 | P3 HOLD | Ledger T18/T19/T15 · コモディティ |
+| M03 | P1 まで HOLD | T14 — PayPay URL 端末差（Gemini Tier S は楽観） |
+
+#### 検証 TODO（§1-12）
+
+- [ ] **P0** group-split: モバイル結果UI · 名前タップ除外 → `runSplit` 再実行プロトタイプ
+- [ ] **P0** timeline: コマ所要分配列 · 1コマ変更で後続時刻連動（`assets/timeline.js` 想定）
+- [ ] **P1** group-split **M13**: BR名·Slack列入力 UI · O8 TSV/Slack 出力 · 再編差分1行（`GROUP_SPLIT_SWITCHER_PREP.md` §4）
+- [ ] **P1** warikan: PayPay / 送金 Web URL · ディープリンクの端末別可否メモ（実装はスパイク後）
+- [ ] **P2** fair-draw: Phase0 スマホ1画面 · CWV（**景表「20%」表記は誤り · 10% 正**）
+- [x] コピーフラッシュ — `assets/sg-copy-feedback.js` 済 · 未適用ツールへ横展開
+
+#### 思想（Desktop-first との共存）
+
+- **PC:** 名簿ETL · 帳票 · 大規模Excel — invoice / group-split 準備
+- **スマホ:** 当日例外 · 司会進行 · その場集金 · 結果共有 — **3分完結**がキラー条件
 
 ---
 

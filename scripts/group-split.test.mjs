@@ -18,9 +18,13 @@ import {
   parseRosterText,
   resolveGroupCount,
   runGroupSplit,
+  previewConstraintFeasibility,
   seededFullShuffle,
   validateSplitInput,
   resolveGroupsPreviewLayout,
+  removeNamesFromRoster,
+  buildSessionSnapshot,
+  parseSessionSnapshot,
 } from '../assets/group-split.js';
 import { parseTableText } from '../assets/group-split-columns.js';
 import {
@@ -28,6 +32,7 @@ import {
   countNameConstraints,
   formatConstraintSummary,
   formatPairLine,
+  pruneConstraintsAfterNameRemoval,
 } from '../assets/group-split-constraint-form.js';
 
 const SEED = '0123456789abcdef0123456789abcdef';
@@ -346,6 +351,40 @@ assert.equal(ROSTER_MAX, 250);
   assert.ok(tsv.includes('性別'));
 }
 
+// Phase C — 各組必須が人数不足のとき strict は soft エラー
+{
+  const lines = ['氏名\t所属'];
+  for (let i = 0; i < 22; i++) lines.push(`S${i}\t営業サポート`);
+  for (let i = 0; i < 68; i++) lines.push(`M${i}\t営業`);
+  const roster = lines.join('\n');
+  const baseOpts = {
+    mode: 'groupCount',
+    param: 23,
+    seedHex: SEED,
+    constraintsInput: {
+      attrRules: [{ columnIndex: 1, label: '所属', spread: false, requiredEach: ['営業サポート'] }],
+    },
+  };
+  const preview = previewConstraintFeasibility(roster, baseOpts);
+  assert.equal(preview.warnings.length, 1);
+  assert.ok(preview.warnings[0].includes('営業サポート'));
+  let threw = false;
+  try {
+    await runGroupSplit(roster, baseOpts);
+  } catch (e) {
+    threw = true;
+    assert.equal(e.code, 'constraint_soft');
+  }
+  assert.ok(threw);
+  const r = await runGroupSplit(roster, { ...baseOpts, relaxRequiredEach: true });
+  assert.equal(r.constraintRelaxed, true);
+  assert.equal(r.unmetRequired.length, 1);
+  const groupsWithSupport = r.groups.filter((g) =>
+    g.members.some((m) => r.memberAttrs[m].所属 === '営業サポート'),
+  );
+  assert.equal(groupsWithSupport.length, 22);
+}
+
 // Phase C — 各組必須属性値
 {
   const roster = `氏名\t役職
@@ -398,6 +437,115 @@ F\t一般`;
   });
   assert.ok(formatSlack(r).includes('研修Day2'));
   assert.ok(formatAnnounce(r).includes('研修Day2'));
+}
+
+// M02 — 名簿から氏名除去
+{
+  const text = '田中\t営業\n佐藤\t開発\n鈴木\t営業';
+  const mapping = { nameColumnIndex: 0, attrRules: [{ columnIndex: 1, label: '所属', spread: true, requiredEach: [] }] };
+  const next = removeNamesFromRoster(text, ['佐藤'], mapping);
+  assert.ok(!next.includes('佐藤'));
+  assert.ok(next.includes('田中'));
+  assert.ok(next.includes('鈴木'));
+}
+
+// M02 — 除外後も同一シードで再現（人数のみ変化）
+{
+  const full = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const partial = ['A', 'B', 'C', 'D', 'E'];
+  const a = await runGroupSplit(full, { mode: 'groupCount', param: 2, seedHex: SEED });
+  const b = await runGroupSplit(partial, { mode: 'groupCount', param: 2, seedHex: SEED });
+  assert.equal(a.seedHex, b.seedHex);
+  assert.equal(b.rosterCount, 5);
+}
+
+// M02 — セッション JSON 往復で同じ班（PC→会場スマホ想定）
+{
+  const roster = `氏名\t所属
+A\t営業
+B\t人事
+C\t営業
+D\t人事
+E\t営業
+F\t人事`;
+  const first = await runGroupSplit(roster, {
+    mode: 'groupCount',
+    param: 3,
+    seedHex: SEED,
+    constraintsInput: {
+      attrRules: [{ columnIndex: 1, label: '所属', spread: true, requiredEach: [] }],
+    },
+  });
+  const snap = buildSessionSnapshot({
+    roster,
+    mode: 'groupCount',
+    param: 3,
+    seedHex: first.seedHex,
+    constraints: {
+      bundlesText: '',
+      fixedText: '',
+      pairsText: '',
+      attrRules: [{ columnIndex: 1, label: '所属', spread: true, requiredEach: [] }],
+    },
+  });
+  const parsed = parseSessionSnapshot(JSON.stringify(snap));
+  const second = await runGroupSplit(parsed.roster, {
+    mode: parsed.mode,
+    param: parsed.param,
+    seedHex: parsed.seedHex,
+    constraintsInput: parsed.constraints,
+  });
+  assert.equal(second.rosterSha256, first.rosterSha256);
+  assert.equal(second.seedHex, first.seedHex);
+  assert.deepEqual(
+    second.groups.map((g) => g.members.sort().join(',')),
+    first.groups.map((g) => g.members.sort().join(',')),
+  );
+}
+
+// M02 — タップ除外相当: 名簿から1名削除 + 同一シードで再実行
+{
+  const roster = `氏名\t所属
+A\tエンジニア
+B\t企画
+C\tエンジニア
+D\t企画
+E\tエンジニア
+F\t企画
+G\tエンジニア`;
+  const mapping = { nameColumnIndex: 0, attrRules: [{ columnIndex: 1, label: '所属', spread: false, requiredEach: ['エンジニア'] }] };
+  const first = await runGroupSplit(roster, {
+    mode: 'groupCount',
+    param: 3,
+    seedHex: SEED,
+    constraintsInput: { attrRules: mapping.attrRules },
+  });
+  const after = removeNamesFromRoster(roster, ['A'], mapping);
+  const second = await runGroupSplit(after, {
+    mode: 'groupCount',
+    param: 3,
+    seedHex: first.seedHex,
+    constraintsInput: { attrRules: mapping.attrRules },
+    relaxRequiredEach: true,
+  });
+  assert.equal(second.seedHex, first.seedHex);
+  assert.equal(second.rosterCount, 6);
+  assert.ok(!second.groups.some((g) => g.members.includes('A')));
+}
+
+// M02 — 制約の prune
+{
+  const pruned = pruneConstraintsAfterNameRemoval(
+    {
+      bundlesText: 'A, B, C\nD, E',
+      fixedText: 'A=1\nE=2',
+      pairsText: 'A, B\nC, D',
+    },
+    ['A'],
+  );
+  assert.ok(!pruned.bundlesText.includes('A'));
+  assert.ok(!pruned.fixedText.includes('A=1'));
+  assert.ok(!pruned.pairsText.includes('A, B'));
 }
 
 console.log('group-split.test.mjs: all passed');

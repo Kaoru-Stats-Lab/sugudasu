@@ -74,9 +74,9 @@
     "group-split": {
       "file": "group-split.html",
       "name": "グループ分け",
-      "version": "1.2.1",
+      "version": "1.2.4",
       "stage": "beta",
-      "statusNote": "Phase C + UX C1 名簿ピッカー · 250名cap · T11"
+      "statusNote": "PC→スマホ同期メモ · 緩和モード · M02 タップ再編 · セッションJSON · Phase C · 250名cap · T11"
     },
     "present": {
       "file": "present.html",

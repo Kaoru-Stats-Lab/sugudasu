@@ -179,11 +179,13 @@
 | **OUT** | スコープ外 | T04, T10, T16 |
 
 **T03 SSOT:** `docs/notes/NORMALIZE_TEXT_TOOL_SPEC.md`（500行cap · 行数Before/After · 用途プリセット）  
-**T11 SSOT:** `docs/notes/GROUP_SPLIT_TOOL_SPEC.md`（**企画FIX · 未実装** · 主=人事研修 · 均等グループ · `/group-split`）
+**T11 SSOT:** `docs/notes/GROUP_SPLIT_TOOL_SPEC.md`（Phase A–C 実装済 · `/group-split`）  
+**T13 SSOT:** 未作成 — Backlog **§1-12 M01** · `MOBILE_KILLER_GEMINI_RESULT.md`
+
+**モバイルブレスト（2026-06-20）:** M01–M10 → `docs/notes/MOBILE_KILLER_GEMINI_RESULT.md` §Cursor突合
 
 **推奨リリース順（ディレクター案・lottery除く）:**  
-1) T03 文字列正規化 → 2) T09 webp-to-jpg → **3) T11 group-split** → 4) T13 タイムライン  
-（lottery は店長優先で **並行または最優先** 可）
+1) T03 normalize ✓ → 2) T09 webp ✓ → 3) T11 group-split ✓ → **4) T13 timeline（M01 · P0）** → 5) group-split モバイル Resilience（M02 · P0）
 
 ---
 

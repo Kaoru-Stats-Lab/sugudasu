@@ -4,6 +4,27 @@
     {
       "date": "2026-06-20",
       "type": "improve",
+      "title": "group-split PC→スマホ（同期メモ）",
+      "body": "セッションJSONパネルを結果に常時表示。Google Keep等の同期メモ経由でPC→会場スマホ復元・欠席タップの手順を明示。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "group-split 各組必須の緩和モード",
+      "body": "人数不足で全組を満たせないとき、チェックまたは確認ダイアログで「可能な限り」実行。不足組を結果に表示。矛盾（固定班×離すペア等）は従来どおり停止。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "feature",
+      "title": "group-split M02 Resilience（タップ除外 · セッションJSON）",
+      "body": "結果の名前タップで欠席扱い→シード維持で再構成。PC→会場用セッションJSONのコピー/読込。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
       "title": "group-split UX C1（Step UI · 名簿ピッカー · preset）",
       "body": "①〜④ Step表示。属性条件=メイン・名前ルール=任意。固定班/離すペア/固定配置を名簿から選択。各組に役員preset。",
       "tools": ["group-split.html"]

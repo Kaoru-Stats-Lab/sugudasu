@@ -202,13 +202,14 @@ function pairConflictIfAdded(members, groupMembers, pairs) {
 }
 
 /**
- * @param {RosterEntry[]} entries
- * @param {number} groupCount
- * @param {GroupSplitConstraints} constraints
+ * 制約の事前検証 — blocking（矛盾）と warnings（各組必須の人数不足）
+ * @returns {{ blocking: string[], warnings: string[] }}
  */
-export function validateConstraintsPre(entries, groupCount, constraints) {
+export function classifyConstraintPre(entries, groupCount, constraints) {
   /** @type {string[]} */
-  const errors = [];
+  const blocking = [];
+  /** @type {string[]} */
+  const warnings = [];
   const bundles = constraints.bundles || [];
   const fixed = constraints.fixedToGroup || new Map();
   const pairs = constraints.separatePairs || [];
@@ -217,7 +218,7 @@ export function validateConstraintsPre(entries, groupCount, constraints) {
     for (let i = 0; i < bundle.length; i++) {
       for (let j = i + 1; j < bundle.length; j++) {
         if (arePaired(bundle[i], bundle[j], pairs)) {
-          errors.push(`固定班（${bundle.join('、')}）に離すペア ${bundle[i]}・${bundle[j]} が含まれています。`);
+          blocking.push(`固定班（${bundle.join('、')}）に離すペア ${bundle[i]}・${bundle[j]} が含まれています。`);
         }
       }
     }
@@ -227,7 +228,7 @@ export function validateConstraintsPre(entries, groupCount, constraints) {
     const ga = fixed.get(a);
     const gb = fixed.get(b);
     if (ga != null && gb != null && ga === gb) {
-      errors.push(`離すペア ${a}・${b} が同じ固定グループ ${ga} に指定されています。`);
+      blocking.push(`離すペア ${a}・${b} が同じ固定グループ ${ga} に指定されています。`);
     }
   }
 
@@ -235,7 +236,7 @@ export function validateConstraintsPre(entries, groupCount, constraints) {
     const rt = constraints.requiredTag.trim();
     const count = entries.filter((e) => e.tag === rt || e.attrs?.['タグ'] === rt).length;
     if (count < groupCount) {
-      errors.push(`タグ「${rt}」が ${count} 名 · グループ ${groupCount} 組 — 各組1名以上を満たせません。`);
+      warnings.push(`タグ「${rt}」が ${count} 名 · グループ ${groupCount} 組 — 各組1名以上を満たせません。`);
     }
   }
 
@@ -243,7 +244,7 @@ export function validateConstraintsPre(entries, groupCount, constraints) {
     for (const reqVal of rule.requiredEach || []) {
       const count = entries.filter((e) => e.attrs?.[rule.label] === reqVal).length;
       if (count < groupCount) {
-        errors.push(`「${rule.label}=${reqVal}」が ${count} 名 · グループ ${groupCount} 組 — 各組1名以上を満たせません。`);
+        warnings.push(`「${rule.label}=${reqVal}」が ${count} 名 · グループ ${groupCount} 組 — 各組1名以上を満たせません。`);
       }
     }
   }
@@ -252,12 +253,22 @@ export function validateConstraintsPre(entries, groupCount, constraints) {
     for (const bundle of bundles) {
       const unassigned = bundle.filter((m) => !fixed.has(m));
       if (unassigned.length > constraints.hardMax) {
-        errors.push(`固定班（${unassigned.join('、')}）が物理上限 ${constraints.hardMax} 名を超えています。`);
+        blocking.push(`固定班（${unassigned.join('、')}）が物理上限 ${constraints.hardMax} 名を超えています。`);
       }
     }
   }
 
-  return errors;
+  return { blocking, warnings };
+}
+
+/**
+ * @param {RosterEntry[]} entries
+ * @param {number} groupCount
+ * @param {GroupSplitConstraints} constraints
+ */
+export function validateConstraintsPre(entries, groupCount, constraints) {
+  const { blocking, warnings } = classifyConstraintPre(entries, groupCount, constraints);
+  return [...blocking, ...warnings];
 }
 
 /**
@@ -464,6 +475,45 @@ function repairRequiredAttr(groups, rule, reqVal, attrsByName, pairs, hardMax) {
   }
 }
 
+function countRequiredInGroup(grp, rule, reqVal, attrsByName) {
+  return grp.filter((m) => attrValueOf(m, attrsByName, rule.label) === reqVal).length;
+}
+
+/** 余剰組から不足組へ required 値を移し、各組1名カバーを最大化 */
+function maximizeRequiredAttrCoverage(groups, rule, reqVal, attrsByName, pairs, hardMax) {
+  const gCount = groups.length;
+  for (let round = 0; round < gCount; round++) {
+    const deficit = [];
+    const surplus = [];
+    for (let i = 0; i < gCount; i++) {
+      const c = countRequiredInGroup(groups[i], rule, reqVal, attrsByName);
+      if (c === 0) deficit.push(i);
+      else if (c > 1) surplus.push(i);
+    }
+    if (!deficit.length || !surplus.length) break;
+    let moved = false;
+    for (const g of deficit) {
+      for (const h of surplus) {
+        const donorIdx = groups[h].findIndex((m) => attrValueOf(m, attrsByName, rule.label) === reqVal);
+        if (donorIdx < 0) continue;
+        const recvIdx = groups[g].findIndex((m) => attrValueOf(m, attrsByName, rule.label) !== reqVal);
+        if (recvIdx < 0) continue;
+        const donor = groups[h][donorIdx];
+        const recv = groups[g][recvIdx];
+        if (pairConflictIfAdded([donor], groups[g].filter((m) => m !== recv), pairs)) continue;
+        if (pairConflictIfAdded([recv], groups[h].filter((m) => m !== donor), pairs)) continue;
+        if (groups[g].length >= hardMax || groups[h].length >= hardMax) continue;
+        groups[g][recvIdx] = donor;
+        groups[h][donorIdx] = recv;
+        moved = true;
+        break;
+      }
+      if (moved) break;
+    }
+    if (!moved) break;
+  }
+}
+
 /**
  * @param {RosterEntry[]} entries
  * @param {number} groupCount
@@ -471,20 +521,31 @@ function repairRequiredAttr(groups, rule, reqVal, attrsByName, pairs, hardMax) {
  * @param {GroupSplitConstraints} constraints
  * @param {(n: number) => Uint32Array} randomFn
  * @param {(arr: AssignUnit[], fn: (n: number) => Uint32Array) => AssignUnit[]} shuffleUnits
+ * @param {{ relaxRequiredEach?: boolean }} [assignOpts]
  */
-export function assignWithConstraints(entries, groupCount, targetSize, constraints, randomFn, shuffleUnits) {
+export function assignWithConstraints(entries, groupCount, targetSize, constraints, randomFn, shuffleUnits, assignOpts = {}) {
   const tagByName = entryTagMap(entries);
   const attrsByName = entryAttrsMap(entries);
   const fixed = constraints.fixedToGroup || new Map();
   const pairs = constraints.separatePairs || [];
+  const relax = !!assignOpts.relaxRequiredEach;
 
-  const preErrors = validateConstraintsPre(entries, groupCount, constraints);
-  if (preErrors.length) {
-    const err = new Error(preErrors.join('\n'));
+  const { blocking, warnings } = classifyConstraintPre(entries, groupCount, constraints);
+  if (blocking.length) {
+    const err = new Error(blocking.join('\n'));
     err.code = 'constraint_invalid';
-    err.details = preErrors;
+    err.details = blocking;
     throw err;
   }
+  if (warnings.length && !relax) {
+    const err = new Error(warnings.join('\n'));
+    err.code = 'constraint_soft';
+    err.details = warnings;
+    throw err;
+  }
+
+  /** @type {Array<{ groupId: number, label: string, value: string }>} */
+  const unmetRequired = [];
 
   /** @type {string[][]} */
   const groups = Array.from({ length: groupCount }, () => []);
@@ -543,12 +604,20 @@ export function assignWithConstraints(entries, groupCount, targetSize, constrain
   if (constraints.requiredTag) {
     const rt = constraints.requiredTag.trim();
     const hardMax = constraints.hardMax && constraints.hardMax > 0 ? constraints.hardMax : Infinity;
-    repairRequiredTag(groups, rt, tagByName, pairs, hardMax);
+    for (let pass = 0; pass < groupCount; pass++) {
+      repairRequiredTag(groups, rt, tagByName, pairs, hardMax);
+      const stillMissing = groups.some((grp) => !grp.some((m) => tagByName.get(m) === rt));
+      if (!stillMissing) break;
+    }
     for (let g = 0; g < groupCount; g++) {
       if (!groups[g].some((m) => tagByName.get(m) === rt)) {
-        const err = new Error(`グループ${g + 1}にタグ「${rt}」を配置できませんでした。`);
-        err.code = 'required_tag_fail';
-        throw err;
+        if (relax) {
+          unmetRequired.push({ groupId: g + 1, label: 'タグ', value: rt });
+        } else {
+          const err = new Error(`グループ${g + 1}にタグ「${rt}」を配置できませんでした。`);
+          err.code = 'required_tag_fail';
+          throw err;
+        }
       }
     }
   }
@@ -556,18 +625,29 @@ export function assignWithConstraints(entries, groupCount, targetSize, constrain
   const hardMax = constraints.hardMax && constraints.hardMax > 0 ? constraints.hardMax : Infinity;
   for (const rule of constraints.attrRules || []) {
     for (const reqVal of rule.requiredEach || []) {
-      repairRequiredAttr(groups, rule, reqVal, attrsByName, pairs, hardMax);
+      for (let pass = 0; pass < groupCount; pass++) {
+        repairRequiredAttr(groups, rule, reqVal, attrsByName, pairs, hardMax);
+        const stillMissing = groups.some(
+          (grp) => !grp.some((m) => attrValueOf(m, attrsByName, rule.label) === reqVal),
+        );
+        if (!stillMissing) break;
+      }
+      maximizeRequiredAttrCoverage(groups, rule, reqVal, attrsByName, pairs, hardMax);
       for (let g = 0; g < groupCount; g++) {
         if (!groups[g].some((m) => attrValueOf(m, attrsByName, rule.label) === reqVal)) {
-          const err = new Error(`グループ${g + 1}に「${rule.label}=${reqVal}」を配置できませんでした。`);
-          err.code = 'required_attr_fail';
-          throw err;
+          if (relax) {
+            unmetRequired.push({ groupId: g + 1, label: rule.label, value: reqVal });
+          } else {
+            const err = new Error(`グループ${g + 1}に「${rule.label}=${reqVal}」を配置できませんでした。`);
+            err.code = 'required_attr_fail';
+            throw err;
+          }
         }
       }
     }
   }
 
-  return { groups, overflowReasons, targetSize };
+  return { groups, overflowReasons, targetSize, unmetRequired, relaxedWarnings: relax ? warnings : [] };
 }
 
 /**

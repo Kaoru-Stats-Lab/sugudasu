@@ -83,3 +83,59 @@ export function formatBundleLine(members) {
 export function formatFixedLine(name, groupNum) {
   return `${String(name).trim()}=${Math.floor(Number(groupNum) || 0)}`;
 }
+
+/**
+ * 名簿から除外した名前を制約欄からも落とす（M02 Resilience）
+ * @param {{ bundlesText?: string, fixedText?: string, pairsText?: string, spreadTags?: boolean, requiredTag?: string, hardMax?: number, attrRules?: unknown[] }} input
+ * @param {string[]} removedNames
+ */
+export function pruneConstraintsAfterNameRemoval(input, removedNames) {
+  const removed = new Set(
+    (removedNames || []).map((n) => String(n).trim()).filter(Boolean),
+  );
+  if (!removed.size) return { ...input };
+
+  const bundlesText = String(input.bundlesText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((line) =>
+      line
+        .split(/[,、\t]/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .filter((m) => !removed.has(m)),
+    )
+    .filter((members) => members.length >= 2)
+    .map((members) => members.join(', '))
+    .join('\n');
+
+  const fixedText = String(input.fixedText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((line) => {
+      const eq = line.match(/^(.+?)\s*[=→]\s*(\d+)\s*$/);
+      const name = eq ? eq[1].trim() : line.split(/[,、\t]/)[0]?.trim();
+      return name && !removed.has(name);
+    })
+    .join('\n');
+
+  const pairsText = String(input.pairsText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((line) => {
+      const parts = line.split(/[,、\t]/).map((s) => s.trim()).filter(Boolean);
+      if (parts.length < 2) return false;
+      return !removed.has(parts[0]) && !removed.has(parts[1]);
+    })
+    .join('\n');
+
+  return {
+    ...input,
+    bundlesText,
+    fixedText,
+    pairsText,
+  };
+}

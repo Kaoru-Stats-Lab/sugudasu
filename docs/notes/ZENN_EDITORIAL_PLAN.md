@@ -1,6 +1,6 @@
 # Zenn 編集カレンダー（Gemini 企画 · SSOT）
 
-**更新:** 2026-06-19  
+**更新:** 2026-06-20  
 **生成:** `docs/prompts/zenn-editorial-gemini.md`  
 **採否:** Claude/Cursor 突合済 · 提督執筆前提（Gemini 本文禁止）
 
@@ -53,9 +53,11 @@
 | 10 | SNSプロフィールを文字化けさせずに飾る | A | /sns | SNS運用者 | フォント・文字数カウンター | P2 | 1,600 | article_10_sns |
 | 11 | （候補 · 未確定）fair-draw — Excel抽選卒業 / 景表法一次整理 | A (+B) | /fair-draw | マーケ幹事 · FL | 公平抽選 · 証跡3点 · 非送信 | **P2** | 2,000 | article_11_fairdraw_* |
 | 12 | Excel列コピーと全角半角サイトの「あるある」— 行数チェック付き正規化 | A (+B) | /normalize | EC·名簿担当 · FL | Gemini事故カタログ · 非送信 · コピーゲート | **P1** | 2,000 | article_12_normalize_oops |
+| **14** | **研修の班分けを Excel の RAND() からやめる** — 納会・ハッカソンで重さが違う | A (+B) | /group-split | 人事 · 研修 · **ハッカソン運営** | 非送信 · 職能名簿 · スイッチャー · TSV/Slack | **P1** | 2,200 | article_14_group_split |
 
 **#11 詳細:** [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](ZENN_FAIR_DRAW_DRAFT_MEMO.md)  
-**#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**
+**#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**  
+**#14 詳細:** [`docs/notes/ZENN_GROUP_SPLIT_DRAFT_MEMO.md`](ZENN_GROUP_SPLIT_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_14_DRAFT.md`](ZENN_ARTICLE_14_DRAFT.md)
 
 **避けること（共通）:** 競合名指し · 100%安全/完全対応 · 未実装機能 · Vibe Coding
 

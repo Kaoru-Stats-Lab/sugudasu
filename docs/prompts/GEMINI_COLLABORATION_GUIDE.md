@@ -64,6 +64,7 @@
 | 用途 | ファイル |
 |------|----------|
 | Zenn 編集カレンダー | `docs/prompts/zenn-editorial-gemini.md` |
+| **スマホキラープロダクト・ブレスト** | `docs/prompts/mobile-killer-product-gemini.md` + `docs/GEMINI_SESSION_SNAPSHOT.md` |
 | X 文案のトーンチェック | 依頼文 + `docs/x_guideline.md` 抜粋 |
 | PR TIMES メタ（表のみ） | `docs/PR_TIMES_LAUNCH_2026.md` §6 手順 |
 | 記事ドラフト監査 | 下記「監査用ミニプロンプト」 |
@@ -178,6 +179,8 @@ console.log(response.text);
 
 | ファイル | 内容 |
 |----------|------|
+| `docs/GEMINI_SESSION_SNAPSHOT.md` | チャット開始用スナップショット（陳腐化防止） |
+| `docs/prompts/mobile-killer-product-gemini.md` | スマホキラー企画ブレスト |
 | `docs/prompts/zenn-editorial-gemini.md` | Zenn 企画（チャット正本） |
 | `docs/notes/ZENN_EDITORIAL_PLAN.md` | 採用済み企画 SSOT |
 | `docs/operator-profile.md` | 公開境界 |
