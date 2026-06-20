@@ -319,7 +319,7 @@
 #### 実装 TODO
 
 - [x] **P1** `tools/statements.html` · shell フッター · meta/OGP · JSON-LD · sitemap
-- [x] **P2** fair-draw / group-split FAQ から **各1リンク** · hub 更新履歴横
+- [x] **P2** fair-draw / group-split FAQ から **各1リンク**（hub 本体へのリンクは置かない · フッターで十分）
 
 #### 受け入れ条件 — 済
 
