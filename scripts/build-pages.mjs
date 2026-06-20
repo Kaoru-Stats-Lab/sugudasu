@@ -108,6 +108,9 @@ function writeRedirects(htmlFiles) {
     lines.push(`/${file} /${slug} 301`);
   }
 
+  lines.push('/imgconv /webp-to-jpg 301');
+  lines.push('/webp-to-png /webp-to-jpg 301');
+
   fs.writeFileSync(path.join(DIST, '_redirects'), `${lines.join('\n')}\n`, 'utf8');
 }
 

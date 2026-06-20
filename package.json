@@ -10,7 +10,12 @@
     "guard:pages-budget:show": "node scripts/guard-pages-build-budget.mjs show",
     "release:pages:free": "npm run build:pages && npm run guard:pages-budget && node scripts/guard-pages-build-budget.mjs consume",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
-    "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs"
+    "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs",
+    "test:prize-law": "node scripts/prize-law-eval.test.mjs",
+    "test:lottery": "node scripts/prize-law-eval.test.mjs",
+    "test:normalize": "node scripts/text-normalize.test.mjs",
+    "test:webp-to-jpg": "node scripts/webp-to-jpg.test.mjs",
+    "test:group-split": "node scripts/group-split.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.1",

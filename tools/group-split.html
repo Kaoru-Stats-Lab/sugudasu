@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="研修・イベントの班分けをブラウザ内で。Excel名簿・属性条件・TSV/Slackコピー。欠席時は名簿貼り直しで再構成。非送信・シード再現。">
+    <title>研修・グループ分け（非送信 · TSV/Slack出力） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="研修・グループ分け — 名簿非送信 · Copy-first">
+    <meta property="og:description" content="Excel名簿で公平に班分け。属性条件対応。欠席時は貼り直して再構成。TSV・Slack即コピー。名簿非送信。">
+    <meta property="og:url" content="https://sugudasu.com/group-split">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="研修の班分け — Excel/Slackに貼れる非送信ツール">
+    <meta name="twitter:description" content="班分けを非送信で。欠席が出ても名簿貼り直し→再実行。TSV/Slackに即出力。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やブレイクアウトで班分けが必要なのはどんなとき？","acceptedAnswer":{"@type":"Answer","text":"新入社員研修のグループワーク、異動者研修、ハッカソンのチーム編成、社内ワークショップの卓割りなど、参加者全員をいくつかの組に分け、事前または当日に共有したい場面です。SUGUDASU の班分けはその場の演出より、幹事の事務作業（割当 · 共有 · 説明責任）を助ける位置づけです。"}},{"@type":"Question","name":"ランダムに分けると公平になりますか？","acceptedAnswer":{"@type":"Answer","text":"完全なランダムは恣意的な偏りを避ける手段として有効ですが、所属の固まりや特定ペアの回避など、現場のルールも必要になります。公平性は誰が決めたか説明できることと、ルールを守った結果を記録できることも含みます。本ツールはシード値と名簿指紋で再現可能にします。"}},{"@type":"Question","name":"Excel の RAND() や手作業との違いは？","acceptedAnswer":{"@type":"Answer","text":"RAND() はセル再計算で班構成が変わりうるほか、制約の実装が手間です。手作業は小規模なら可能ですが、再現説明と共有用テキストの作成に時間がかかります。班分けツールは1回決めた結果を TSV/Slack 用にそのまま出すことに特化します。"}},{"@type":"Question","name":"投影用ルーレットと事務向け班分けの違いは？","acceptedAnswer":{"@type":"Answer","text":"教室やイベント会場向けのルーレット演出は、画面に映して盛り上げる用途向けです。SUGUDASU の班分けは、名簿を非送信で処理し、Excel TSV や Slack 用テキストをコピーして共有する幹事の2次利用向けです。目的が異なります。"}},{"@type":"Question","name":"所属や性別など属性を考慮した班分けは？","acceptedAnswer":{"@type":"Answer","text":"同じ部署が固まらない、各組に役員を1名以上などは、氏名だけでなく所属 · 性別 · 役職などの列を使った条件になります。SUGUDASU では Excel 名簿の属性列（最大3）で分散 · 各組必須を指定できます。"}},{"@type":"Question","name":"当日欠席が出たときはどうする？","acceptedAnswer":{"@type":"Answer","text":"欠席者を名簿から除いて貼り直し、再実行または再シャッフルするのが確実です。シードを変えずに名簿だけ更新すれば、残りの人で新しい班構成をすぐ共有できます。"}},{"@type":"Question","name":"名簿は外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。"}},{"@type":"Question","name":"使い方の流れは？（Step ①〜④）","acceptedAnswer":{"@type":"Answer","text":"① Excel 名簿を貼り付け → ② 複数列なら属性条件 → ③ 必要なら名前ルール → ④ 人数または組数を指定して実行。結果は TSV · Slack · 告知文などを1クリックコピーできます。"}},{"@type":"Question","name":"属性条件（②）と名前ルール（③）の違いは？","acceptedAnswer":{"@type":"Answer","text":"② は列ベース（所属の分散 · 各組に役員1名など）。③ は氏名ベースの例外（同組 · 別組 · 組番号固定）。多くの研修班分けは ② だけで足り、③ は少数の例外用です。"}},{"@type":"Question","name":"同じ班構成を再現できますか？","acceptedAnswer":{"@type":"Answer","text":"同じ名簿 · 同じ条件 · 同じシード値なら同じ班構成になります。seed と名簿指紋を記録してください。"}},{"@type":"Question","name":"人数が割り切れないときは？","acceptedAnswer":{"@type":"Answer","text":"制約なしの均等分割では、各グループの人数差は最大1名です。固定班や属性条件がある場合は、目標定員からずれることがあります。"}},{"@type":"Question","name":"目標定員より多いグループになりますか？","acceptedAnswer":{"@type":"Answer","text":"固定班を分割しない · メンター配置など、制約を満たすために目標定員を超える組が出る場合があります。超過組には理由を表示します。"}},{"@type":"Question","name":"Excel や Slack にそのまま貼れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Excel 用 TSV がデフォルトです。Slack/Teams · LINE · 告知 · JSON もコピーできます。名簿上限は250名です。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="グループ分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">研修 · ブレイクアウト · 名簿非送信</p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            Excel 名簿（氏名＋所属・性別など）を貼って<strong>公平に班分け</strong>。属性条件にも対応し、結果は Excel 用 TSV や Slack 用テキストを<strong>1クリックコピー</strong>。
+            教室投影の<strong>ルーレット演出</strong>向けではなく、研修・人事の<strong>事務作業 · 2次利用</strong>（共有 · 記録 · 再現）向けです。
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">名簿 · 設定</h2>
+
+            <div class="space-y-1">
+                <p class="text-[10px] font-bold text-violet-700 uppercase tracking-wide">① 名簿</p>
+                <label for="gs-roster" class="block text-xs font-semibold text-slate-600 mb-1">参加者名簿（Excelから貼り付け可）</label>
+                <textarea id="gs-roster" rows="12" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="氏名	所属	性別&#10;佐藤 拓	営業	男&#10;松本 あゆ美	役員	女&#10;…"></textarea>
+                <div class="flex flex-wrap items-center gap-2 mt-2">
+                    <span id="gs-line-counter" class="text-xs font-bold font-mono px-2 py-1 rounded-md bg-slate-100 text-slate-700" aria-live="polite">0 / 250 名</span>
+                    <span id="gs-soft-warn" class="hidden text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">200名超 — Excel TSV 推奨</span>
+                    <span id="gs-dup-warn" class="hidden text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full"></span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">複数列は <strong>氏名＋属性2〜3列</strong> · 最大 <strong>250名</strong> · <a href="normalize.html" class="text-violet-700 underline">正規化</a></p>
+            </div>
+
+            <div id="gs-column-panel" class="hidden border border-violet-200 bg-violet-50/60 rounded-lg p-3 space-y-3">
+                <p class="text-[10px] font-bold text-violet-700 uppercase tracking-wide">② 属性条件（メイン）</p>
+                <p class="text-[11px] text-violet-900 leading-relaxed"><strong>所属・性別の分散</strong>や<strong>各組に役員1名</strong>などはここで指定。名前の手打ちは不要です。</p>
+                <div class="flex flex-wrap items-center gap-2">
+                    <label for="gs-name-col" class="text-[11px] font-semibold text-slate-700 shrink-0">氏名列</label>
+                    <select id="gs-name-col" class="sg-input text-xs py-1.5 min-w-[8rem]"></select>
+                    <button type="button" id="gs-preset-executive" class="text-[10px] font-bold text-violet-800 bg-white border border-violet-300 rounded-md px-2 py-1 hover:bg-violet-100">各組に「役員」1名</button>
+                </div>
+                <div id="gs-attr-rows" class="space-y-2"></div>
+            </div>
+            <p id="gs-step2-single-hint" class="text-[11px] text-slate-500">単名列のみのときは ② をスキップし、必要なら ③ の名前ルールへ。</p>
+
+            <details class="border border-slate-200 rounded-lg bg-slate-50/80" id="gs-name-rules">
+                <summary class="cursor-pointer select-none text-xs font-bold text-slate-800 px-3 py-2">③ 名前ルール（任意 · 少数だけ）</summary>
+                <div class="px-3 pb-3 space-y-4 text-xs">
+                    <p class="text-[11px] text-slate-600 leading-relaxed border-l-2 border-violet-300 pl-2">所属・性別など<strong>属性の条件は ②</strong>。ここは<strong>特定の人だけ</strong>の例外（固定班 · 離すペア · 組番号固定）。空のままでOK。</p>
+                    <p id="gs-constraint-summary" class="text-[11px] font-semibold text-slate-700 bg-white border border-slate-200 rounded-md px-2 py-1.5" role="status">名前ルール: 未設定</p>
+
+                    <div class="rounded-lg border border-slate-200 bg-white p-2.5 space-y-2">
+                        <p class="font-bold text-slate-800">一緒にしたい人（固定班）</p>
+                        <p class="text-[10px] text-slate-500">1班=1行 · 分割不可。例: 事前に決まった2人組。</p>
+                        <div id="gs-picker-bundle" class="hidden flex flex-wrap items-center gap-2 gs-picker-row">
+                            <select id="gs-pick-bundle-name" class="sg-input text-[11px] py-1 min-w-[8rem] flex-1" aria-label="固定班に追加する名前"></select>
+                            <button type="button" id="gs-bundle-add" class="text-[10px] font-bold bg-slate-700 text-white px-2 py-1 rounded">班に追加</button>
+                            <button type="button" id="gs-bundle-commit" class="text-[10px] font-bold bg-violet-700 text-white px-2 py-1 rounded">班を確定</button>
+                        </div>
+                        <div id="gs-bundle-draft" class="hidden text-[10px] text-violet-800 font-semibold"></div>
+                        <textarea id="gs-bundles" rows="2" class="sg-input font-mono text-[11px]" placeholder="佐藤 のぞみ, 黒石 宏和&#10;（上のピッカーで追加、または直接編集）"></textarea>
+                    </div>
+
+                    <div class="rounded-lg border border-slate-200 bg-white p-2.5 space-y-2">
+                        <p class="font-bold text-slate-800">組番号を固定（固定配置）</p>
+                        <p class="text-[10px] text-slate-500">ファシリ・メンターを特定組へ。先に ④ で組数を決めてから 1〜M を指定。</p>
+                        <div id="gs-picker-fixed" class="hidden flex flex-wrap items-center gap-2 gs-picker-row">
+                            <select id="gs-pick-fixed-name" class="sg-input text-[11px] py-1 min-w-[8rem] flex-1" aria-label="固定配置する名前"></select>
+                            <label class="text-[10px] text-slate-600 shrink-0">→ グループ</label>
+                            <input type="number" id="gs-pick-fixed-group" class="sg-input text-[11px] w-14 py-1" min="1" max="50" value="1" aria-label="グループ番号">
+                            <button type="button" id="gs-fixed-add" class="text-[10px] font-bold bg-slate-700 text-white px-2 py-1 rounded">追加</button>
+                        </div>
+                        <textarea id="gs-fixed" rows="2" class="sg-input font-mono text-[11px]" placeholder="松本 あゆ美=1&#10;中村 かつら=2"></textarea>
+                    </div>
+
+                    <div class="rounded-lg border border-slate-200 bg-white p-2.5 space-y-2">
+                        <p class="font-bold text-slate-800">別々にしたい人（離すペア）</p>
+                        <p class="text-[10px] text-slate-500">同組禁止 · 1行1ペア。例: 上司と部下 · 前回同組にしたくない2人。</p>
+                        <div id="gs-picker-pair" class="hidden flex flex-wrap items-center gap-2 gs-picker-row">
+                            <select id="gs-pick-pair-a" class="sg-input text-[11px] py-1 min-w-[7rem] flex-1" aria-label="離すペア1人目"></select>
+                            <span class="text-slate-400 text-[10px]">×</span>
+                            <select id="gs-pick-pair-b" class="sg-input text-[11px] py-1 min-w-[7rem] flex-1" aria-label="離すペア2人目"></select>
+                            <button type="button" id="gs-pair-add" class="text-[10px] font-bold bg-slate-700 text-white px-2 py-1 rounded">追加</button>
+                        </div>
+                        <textarea id="gs-pairs" rows="2" class="sg-input font-mono text-[11px]" placeholder="丸山 涼太, 坂倉 幸太郎"></textarea>
+                    </div>
+
+                    <div class="gs-legacy-tag hidden space-y-2 border-t border-slate-200 pt-2">
+                        <p class="text-[10px] font-bold text-slate-500">1列名簿のみ（旧形式）</p>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="gs-spread-tags" class="rounded border-slate-300">
+                            <span>2列目タグを分散</span>
+                        </label>
+                        <div class="flex flex-wrap gap-3 items-end">
+                            <div>
+                                <label for="gs-required-tag" class="block font-semibold text-slate-700 mb-1">各組必須タグ</label>
+                                <input type="text" id="gs-required-tag" class="sg-input text-sm w-36" placeholder="例: メンター">
+                            </div>
+                            <div>
+                                <label for="gs-hard-max" class="block font-semibold text-slate-700 mb-1">物理上限（任意）</label>
+                                <input type="number" id="gs-hard-max" class="sg-input text-sm w-20" min="0" placeholder="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="space-y-2 border-t border-slate-100 pt-3">
+                <p class="text-[10px] font-bold text-violet-700 uppercase tracking-wide">④ 分割</p>
+                <div class="sg-segment sg-segment--cols-2 sg-segment--mode-ec" id="gs-mode-segment" role="tablist" aria-label="分割モード">
+                    <span class="sg-segment__pill" aria-hidden="true"></span>
+                    <button type="button" role="tab" class="sg-segment__btn" data-segment-value="perSize" aria-selected="true">N 人1組</button>
+                    <button type="button" role="tab" class="sg-segment__btn" data-segment-value="groupCount" aria-selected="false">M グループ</button>
+                </div>
+                <p class="sg-segment-hint text-[11px] text-slate-600" id="gs-mode-hint" role="note"></p>
+                <div class="flex items-center gap-2">
+                    <label for="gs-param" class="text-xs font-semibold text-slate-600 shrink-0" id="gs-param-label">1組あたり</label>
+                    <input type="number" id="gs-param" class="sg-input text-sm w-24" min="2" max="50" value="4">
+                    <span class="text-xs text-slate-500" id="gs-param-suffix">名</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="gs-session" class="block text-xs font-semibold text-slate-600 mb-1">セッション名（任意 · Slack/告知に使用）</label>
+                <input type="text" id="gs-session" class="sg-input text-sm" placeholder="例: 新入社員研修 Day2 ブレイクアウト">
+            </div>
+
+            <button type="button" id="gs-run" class="sg-btn-primary w-full sm:w-auto">▶ グループ分け実行</button>
+            <p id="gs-pre-overflow" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" role="status"></p>
+            <p id="gs-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">結果 · 2次利用</h2>
+
+            <div id="gs-empty" class="text-xs text-slate-400 text-center py-8">
+                左の名簿を入力して「グループ分け実行」を押してください。
+            </div>
+
+            <div id="gs-result" class="hidden space-y-4">
+                <div id="gs-summary" class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2" aria-live="polite"></div>
+                <p id="gs-share-warn" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" role="status"></p>
+
+                <div id="gs-groups" class="space-y-2 text-sm"></div>
+
+                <div class="border-t border-slate-100 pt-3 space-y-3">
+                    <p class="text-xs font-bold text-slate-800">出力形式</p>
+                    <div class="sg-segment sg-segment--cols-3 sg-segment--mode-ec text-[10px]" id="gs-out-segment" role="tablist" aria-label="出力形式">
+                        <span class="sg-segment__pill" aria-hidden="true"></span>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="tsv" aria-selected="true">Excel TSV</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="slack" aria-selected="false">Slack</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="line" aria-selected="false">LINE</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="announce" aria-selected="false">告知</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="json" aria-selected="false">JSON</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="wide" aria-selected="false">横並び</button>
+                    </div>
+                    <pre id="gs-out-preview" class="text-[11px] font-mono bg-slate-50 border border-slate-200 rounded-lg p-3 whitespace-pre-wrap break-all max-h-40 overflow-y-auto"></pre>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" id="gs-copy" class="sg-btn-primary text-xs py-2 px-4">コピー</button>
+                        <button type="button" id="gs-dl-csv" class="text-xs font-bold bg-slate-800 text-white px-4 py-2 rounded-lg">CSV（BOM）を保存</button>
+                        <button type="button" id="gs-dl-json" class="text-xs font-bold bg-slate-700 text-white px-4 py-2 rounded-lg">JSONを保存</button>
+                        <button type="button" id="gs-reshuffle" class="text-xs font-semibold text-slate-600 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">再シャッフル</button>
+                    </div>
+                    <p id="gs-copy-toast" class="sg-copy-toast hidden text-[11px]" role="status"></p>
+                </div>
+
+                <div class="text-[10px] text-slate-500 font-mono space-y-1 border-t border-slate-100 pt-3">
+                    <p>seed: <span id="gs-seed" class="text-slate-700 break-all"></span></p>
+                    <p>名簿指紋: <span id="gs-fp" class="text-slate-700"></span>（SHA-256 先頭16桁）</p>
+                    <p class="text-emerald-700">名簿データは外部に送信されません。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">班分け · グループ分けのよくある質問</h2>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">SUGUDASU が想定する「班分け」は、研修 · ブレイクアウトの幹事が名簿を<strong>公平に分割</strong>し、<strong>Slack · Excel で共有 · 記録</strong>することです。上段は幹事向けの基本、下段は本ページのツール操作です。</p>
+
+        <h3 class="text-xs font-bold text-violet-800 mb-2 mt-2">班分けの基本（幹事 · 人事向け）</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>研修やブレイクアウトで班分けが必要なのはどんなとき？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>新入社員研修のグループワーク、異動者研修、ハッカソンのチーム編成、社内ワークショップの卓割りなど、参加者全員をいくつかの組に分け、事前または当日に共有したい場面です。SUGUDASU の班分けは「その場の演出」より、幹事の<strong>事務作業</strong>（割当 · 共有 · 説明責任）を助ける位置づけです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>ランダムに分けると公平になりますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>完全なランダムは「恣意的な偏りを避ける」手段として有効ですが、所属の固まりや特定ペアの回避など、現場のルールも必要になります。公平性は「誰が決めたか説明できること」と「ルールを守った結果を記録できること」も含みます。本ツールは<strong>シード値</strong>と<strong>名簿指紋</strong>で再現可能にします。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Excel の RAND() や手作業との違いは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><code class="text-[10px]">RAND()</code> はセル再計算で班構成が変わりうるほか、固定班 · 離すペア · 所属分散などの制約実装が手間です。手作業は小規模なら可能ですが、再現説明と共有用テキストの作成に時間がかかります。班分けツールは「1回決めた結果を TSV/Slack 用にそのまま出す」ことに特化します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>投影用ルーレットと事務向け班分けの違いは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>教室やイベント会場向けのルーレット演出は、画面に映して<strong>盛り上げる</strong>用途向けです。SUGUDASU の班分けは、名簿を<strong>非送信</strong>で処理し、Excel TSV や Slack 用テキストをコピーして共有する「幹事の2次利用」向けです。どちらも正しい使い方があり、<strong>目的が異なります</strong>。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>所属や性別など属性を考慮した班分けは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>「同じ部署が固まらない」「各組に役員を1名以上」などは、氏名だけでなく<strong>所属 · 性別 · 役職</strong>などの列を使った条件になります。年齢平均の完全一致などは専門ソルバの領域ですが、本ツールでは Excel 名簿の<strong>属性列（最大3）</strong>で分散 · 各組必須を指定できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>当日欠席が出たときはどうする？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>欠席者を名簿から除いて貼り直し、<strong>再実行</strong>または<strong>再シャッフル</strong>するのが確実です。名簿だけ更新すれば、残りの人で新しい班構成をすぐ Slack/TSV 共有できます。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">SUGUDASU グループ分けツール</h3>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>名簿は外部に送信されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>使い方の流れは？（Step ①〜④）</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>① Excel 名簿を貼り付け → ② 複数列なら<strong>属性条件</strong>（所属の分散 · 各組必須など）→ ③ 必要なら<strong>名前ルール</strong>（固定班 · 離すペア · 組番号固定）→ ④ 人数または組数を指定して実行。結果は TSV · Slack · 告知文を1クリックコピーできます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>属性条件（②）と名前ルール（③）の違いは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>② は<strong>列ベース</strong>（例: 所属=営業をばらす · 各組に役員1名）。③ は<strong>氏名ベースの例外</strong>（この2人は同組 · 別組 · 1組固定）。多くの研修班分けは ② だけで足り、③ は少数の例外用です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>同じ班構成を再現できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>同じ名簿 · 同じ条件 · 同じシード値なら同じ班構成になります。実行後の <strong>seed</strong> と<strong>名簿指紋</strong>を記録してください。「再シャッフル」は新しいシードを生成します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>人数が割り切れないときは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>制約なしの均等分割では、各グループの人数差は<strong>最大1名</strong>です（例: 10名×4人1組 → 4+3+3）。固定班や属性条件がある場合は、目標定員からずれることがあります（超過理由を表示）。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>目標定員より多いグループになりますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>固定班を分割しない · メンター配置など、制約を満たすために目標定員を超える組が出る場合があります。超過組には人数バッジと<strong>理由</strong>を表示します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Excel や Slack にそのまま貼れますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。Excel 用 TSV（グループ · 氏名 · 属性列）がデフォルトです。Slack/Teams · LINE · 告知 · JSON も別形式でコピーできます。名簿上限は<strong>250名</strong>（研修 · ブレイクアウト規模向け）。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sg-copy-feedback.js"></script>
+<script type="module">
+import {
+  OUTPUT_FORMATTERS,
+  OUTPUT_LABELS,
+  ROSTER_MAX,
+  ROSTER_SOFT_WARN,
+  DOM_GROUP_PREVIEW_MAX,
+  PHASE_C_ATTR_MAX,
+  SLACK_CHAR_SAFE,
+  assessOutputLimits,
+  collectAttrValues,
+  formatCsvUtf8Bom,
+  formatJson,
+  guessColumnMapping,
+  isMultiColumnTable,
+  parseRosterEntries,
+  parseTableText,
+  resolveGroupsPreviewLayout,
+  runGroupSplit,
+  willLikelyOverflow,
+} from '../assets/group-split.js';
+import { normalizeAttrRules } from '../assets/group-split-columns.js';
+import {
+  appendConstraintLine,
+  countNameConstraints,
+  formatBundleLine,
+  formatConstraintSummary,
+  formatFixedLine,
+  formatPairLine,
+} from '../assets/group-split-constraint-form.js';
+
+const rosterEl = document.getElementById('gs-roster');
+const sessionEl = document.getElementById('gs-session');
+const paramEl = document.getElementById('gs-param');
+const paramLabelEl = document.getElementById('gs-param-label');
+const paramSuffixEl = document.getElementById('gs-param-suffix');
+const lineCounterEl = document.getElementById('gs-line-counter');
+const softWarnEl = document.getElementById('gs-soft-warn');
+const dupWarnEl = document.getElementById('gs-dup-warn');
+const errorEl = document.getElementById('gs-error');
+const emptyEl = document.getElementById('gs-empty');
+const resultEl = document.getElementById('gs-result');
+const summaryEl = document.getElementById('gs-summary');
+const shareWarnEl = document.getElementById('gs-share-warn');
+const preOverflowEl = document.getElementById('gs-pre-overflow');
+const bundlesEl = document.getElementById('gs-bundles');
+const fixedEl = document.getElementById('gs-fixed');
+const pairsEl = document.getElementById('gs-pairs');
+const spreadTagsEl = document.getElementById('gs-spread-tags');
+const requiredTagEl = document.getElementById('gs-required-tag');
+const hardMaxEl = document.getElementById('gs-hard-max');
+const columnPanelEl = document.getElementById('gs-column-panel');
+const nameColEl = document.getElementById('gs-name-col');
+const attrRowsEl = document.getElementById('gs-attr-rows');
+const groupsEl = document.getElementById('gs-groups');
+const previewEl = document.getElementById('gs-out-preview');
+const copyBtn = document.getElementById('gs-copy');
+const copyToastEl = document.getElementById('gs-copy-toast');
+const seedEl = document.getElementById('gs-seed');
+const fpEl = document.getElementById('gs-fp');
+const constraintSummaryEl = document.getElementById('gs-constraint-summary');
+const pickBundleNameEl = document.getElementById('gs-pick-bundle-name');
+const pickFixedNameEl = document.getElementById('gs-pick-fixed-name');
+const pickFixedGroupEl = document.getElementById('gs-pick-fixed-group');
+const pickPairAEl = document.getElementById('gs-pick-pair-a');
+const pickPairBEl = document.getElementById('gs-pick-pair-b');
+const bundleDraftEl = document.getElementById('gs-bundle-draft');
+const step2SingleHintEl = document.getElementById('gs-step2-single-hint');
+
+/** @type {string[]} */
+let bundleDraftMembers = [];
+
+/** @type {Record<string, unknown> | null} */
+let lastResult = null;
+let splitMode = 'perSize';
+let outFormat = 'tsv';
+/** @type {import('../assets/group-split-columns.js').ParsedTable | null} */
+let currentTable = null;
+/** @type {number[]} */
+let attrSlotCols = [-1, -1, -1];
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+const MODE_HINTS = {
+  perSize: '<strong class="text-slate-800">N 人1組:</strong> 例 4 → グループ数は自動（10名なら3組 · 4+3+3）。',
+  groupCount: '<strong class="text-slate-800">M グループ:</strong> 例 8 → 67名なら8〜9名/組（人数差最大1）。',
+};
+
+function getRosterNames() {
+  const mapping = getColumnMapping();
+  return parseRosterEntries(rosterEl.value, { columnMapping: mapping }).entries.map((e) => e.name);
+}
+
+function nameSelectOptions(names, selected = '') {
+  if (!names.length) return '<option value="">名簿を貼り付けてください</option>';
+  return names.map((n) =>
+    `<option value="${escapeHtml(n)}"${n === selected ? ' selected' : ''}>${escapeHtml(n)}</option>`,
+  ).join('');
+}
+
+function refreshNamePickers() {
+  const names = getRosterNames();
+  const hasNames = names.length > 0;
+  document.querySelectorAll('.gs-picker-row').forEach((el) => {
+    el.classList.toggle('hidden', !hasNames);
+  });
+  if (!hasNames) return;
+
+  const opts = nameSelectOptions(names);
+  pickBundleNameEl.innerHTML = opts;
+  pickFixedNameEl.innerHTML = opts;
+  pickPairAEl.innerHTML = opts;
+  pickPairBEl.innerHTML = nameSelectOptions(names, names[1] || names[0]);
+}
+
+function updateConstraintSummary() {
+  const counts = countNameConstraints(bundlesEl.value, fixedEl.value, pairsEl.value);
+  const msg = formatConstraintSummary(counts);
+  constraintSummaryEl.textContent = msg;
+  constraintSummaryEl.classList.toggle('text-amber-900', counts.bundles > 5 || counts.pairs > 10);
+  constraintSummaryEl.classList.toggle('bg-amber-50', counts.bundles > 5 || counts.pairs > 10);
+  constraintSummaryEl.classList.toggle('border-amber-200', counts.bundles > 5 || counts.pairs > 10);
+}
+
+function renderBundleDraft() {
+  if (!bundleDraftMembers.length) {
+    bundleDraftEl.classList.add('hidden');
+    bundleDraftEl.textContent = '';
+    return;
+  }
+  bundleDraftEl.classList.remove('hidden');
+  bundleDraftEl.textContent = `編集中の班: ${bundleDraftMembers.join(' · ')}（「班を確定」で下の欄に追加）`;
+}
+
+function applyExecutivePreset() {
+  if (!currentTable) {
+    alert('複数列の名簿を貼り付けてください（所属列が必要です）。');
+    return;
+  }
+  const deptIdx = currentTable.headers.findIndex((h) => /所属|部署|department/i.test(h));
+  if (deptIdx < 0) {
+    alert('「所属」列が見つかりません。属性列で所属を選んでから、各組必須に「役員」と入力してください。');
+    return;
+  }
+  let slot = attrSlotCols.findIndex((c) => c === deptIdx);
+  if (slot < 0) slot = attrSlotCols.findIndex((c) => c < 0);
+  if (slot < 0) slot = 0;
+  attrSlotCols[slot] = deptIdx;
+  renderAttrRows();
+  const row = attrRowsEl.querySelector(`[data-attr-slot="${slot}"]`);
+  const req = row?.querySelector('.gs-attr-req');
+  if (req) req.value = '役員';
+  updateLineCounter();
+}
+
+function columnOptionsHtml(headers, selected, includeNone = true) {
+  let html = includeNone ? '<option value="-1">— なし —</option>' : '';
+  headers.forEach((h, i) => {
+    html += `<option value="${i}"${i === selected ? ' selected' : ''}>${escapeHtml(h)}</option>`;
+  });
+  return html;
+}
+
+function renderAttrRows() {
+  if (!currentTable) return;
+  const headers = currentTable.headers;
+  const nameIdx = Number(nameColEl.value);
+  const parsed = parseRosterEntries(rosterEl.value, { columnMapping: getColumnMapping() });
+  const valueMap = collectAttrValues(parsed.entries, getColumnMapping().attrRules);
+
+  attrRowsEl.innerHTML = Array.from({ length: PHASE_C_ATTR_MAX }, (_, slot) => {
+    const colIdx = attrSlotCols[slot] ?? -1;
+    const label = colIdx >= 0 ? headers[colIdx] : '';
+    const rule = getColumnMapping().attrRules.find((r) => r.columnIndex === colIdx);
+    const values = label ? (valueMap[label] || []) : [];
+    const reqText = (rule?.requiredEach || []).join('、');
+    return `
+    <div class="rounded-lg border border-violet-200/80 bg-white p-2 space-y-1.5" data-attr-slot="${slot}">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[11px] font-bold text-slate-700 shrink-0">属性${slot + 1}</span>
+        <select class="gs-attr-col sg-input text-xs py-1.5 min-w-[7rem]" data-slot="${slot}">
+          ${columnOptionsHtml(headers, colIdx, true)}
+        </select>
+      </div>
+      <label class="flex items-center gap-2 cursor-pointer gs-attr-spread-wrap ${colIdx < 0 ? 'opacity-40 pointer-events-none' : ''}">
+        <input type="checkbox" class="gs-attr-spread rounded border-slate-300" data-slot="${slot}" ${rule?.spread ? 'checked' : ''}>
+        <span class="text-[11px]">同名を同組にしにくい（分散）</span>
+      </label>
+      <div class="gs-attr-req-wrap ${colIdx < 0 ? 'hidden' : ''}">
+        <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">各組に1名以上（カンマ区切り）</label>
+        <input type="text" class="gs-attr-req sg-input text-[11px] w-full" data-slot="${slot}" value="${escapeHtml(reqText)}" placeholder="${values.length ? escapeHtml(values.slice(0, 3).join('、')) : '例: 役員'}">
+        ${values.length ? `<p class="text-[10px] text-slate-400 mt-0.5">値: ${escapeHtml(values.join(' · '))}</p>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  attrRowsEl.querySelectorAll('.gs-attr-col').forEach((sel) => {
+    sel.addEventListener('change', (e) => {
+      const slot = Number(e.target.dataset.slot);
+      attrSlotCols[slot] = Number(e.target.value);
+      const ni = Number(nameColEl.value);
+      if (attrSlotCols[slot] === ni) attrSlotCols[slot] = -1;
+      renderAttrRows();
+      updateLineCounter();
+    });
+  });
+  attrRowsEl.querySelectorAll('.gs-attr-spread, .gs-attr-req').forEach((el) => {
+    el.addEventListener('input', updateLineCounter);
+    el.addEventListener('change', updateLineCounter);
+  });
+}
+
+function syncColumnPanel() {
+  const table = parseTableText(rosterEl.value);
+  const multi = isMultiColumnTable(table);
+  document.querySelectorAll('.gs-legacy-tag').forEach((el) => {
+    el.classList.toggle('hidden', multi);
+  });
+
+  if (!multi) {
+    columnPanelEl.classList.add('hidden');
+    currentTable = null;
+    step2SingleHintEl.classList.remove('hidden');
+    refreshNamePickers();
+    return;
+  }
+
+  currentTable = table;
+  columnPanelEl.classList.remove('hidden');
+  step2SingleHintEl.classList.add('hidden');
+
+  const guessed = guessColumnMapping(table);
+  if (!nameColEl.options.length) {
+    nameColEl.innerHTML = columnOptionsHtml(table.headers, guessed.nameColumnIndex, false);
+    attrSlotCols = [-1, -1, -1];
+    guessed.attrRules.forEach((r, i) => {
+      if (i < PHASE_C_ATTR_MAX) attrSlotCols[i] = r.columnIndex;
+    });
+  } else {
+    const prevName = Number(nameColEl.value);
+    nameColEl.innerHTML = columnOptionsHtml(table.headers, Number.isFinite(prevName) ? prevName : guessed.nameColumnIndex, false);
+  }
+
+  nameColEl.onchange = () => {
+    const ni = Number(nameColEl.value);
+    attrSlotCols = attrSlotCols.map((c) => (c === ni ? -1 : c));
+    renderAttrRows();
+    updateLineCounter();
+  };
+
+  renderAttrRows();
+  refreshNamePickers();
+}
+
+function getColumnMapping() {
+  if (!currentTable) return null;
+  const nameColumnIndex = Number(nameColEl.value);
+  /** @type {import('../assets/group-split-columns.js').AttrColumnRule[]} */
+  const attrRules = [];
+  attrRowsEl.querySelectorAll('[data-attr-slot]').forEach((row) => {
+    const slot = Number(row.dataset.attrSlot);
+    const colSel = row.querySelector('.gs-attr-col');
+    const colIdx = Number(colSel?.value);
+    if (colIdx < 0 || colIdx === nameColumnIndex) return;
+    const spread = !!row.querySelector('.gs-attr-spread')?.checked;
+    const reqText = row.querySelector('.gs-attr-req')?.value || '';
+    attrRules.push({
+      columnIndex: colIdx,
+      label: currentTable.headers[colIdx],
+      spread,
+      requiredEach: reqText.split(/[,、]/).map((s) => s.trim()).filter(Boolean),
+    });
+  });
+  return { nameColumnIndex, attrRules: normalizeAttrRules(attrRules) };
+}
+
+function updateLineCounter() {
+  const mapping = getColumnMapping();
+  const p = parseRosterEntries(rosterEl.value, { columnMapping: mapping });
+  const n = p.entries.length;
+  lineCounterEl.textContent = `${n} / ${ROSTER_MAX} 名`;
+  lineCounterEl.classList.toggle('bg-rose-100', n > ROSTER_MAX);
+  lineCounterEl.classList.toggle('text-rose-800', n > ROSTER_MAX);
+  softWarnEl.hidden = !(n > ROSTER_SOFT_WARN && n <= ROSTER_MAX);
+  if (p.duplicates.length) {
+    dupWarnEl.hidden = false;
+    dupWarnEl.textContent = `重複 ${p.duplicates.length} 件（自動削除しません）`;
+  } else {
+    dupWarnEl.hidden = true;
+  }
+  refreshNamePickers();
+  updateConstraintSummary();
+}
+
+function syncParamUi(mode) {
+  if (mode === 'groupCount') {
+    paramLabelEl.textContent = 'グループ数';
+    paramSuffixEl.textContent = '組';
+    paramEl.min = '2';
+    paramEl.max = '50';
+    if (Number(paramEl.value) < 2) paramEl.value = '5';
+  } else {
+    paramLabelEl.textContent = '1組あたり';
+    paramSuffixEl.textContent = '名';
+    paramEl.min = '2';
+    paramEl.max = '50';
+    if (Number(paramEl.value) < 2) paramEl.value = '4';
+  }
+}
+
+function getOutputText(format) {
+  if (!lastResult) return '';
+  const fn = OUTPUT_FORMATTERS[format] || OUTPUT_FORMATTERS.tsv;
+  const text = fn(lastResult);
+  if (text == null) return '（この形式は人数差が大きいため利用できません · Excel TSV をご利用ください）';
+  return text;
+}
+
+function refreshPreview() {
+  if (!lastResult) return;
+  previewEl.textContent = getOutputText(outFormat);
+  const label = OUTPUT_LABELS[outFormat] || '出力';
+  copyBtn.textContent = `${label}をコピー`;
+}
+
+function getConstraintsInput() {
+  const mapping = getColumnMapping();
+  /** @type {import('../assets/group-split-constraints.js').AttrColumnRule[]} */
+  let attrRules = mapping?.attrRules || [];
+  if (!attrRules.length && spreadTagsEl.checked) {
+    attrRules = [{ columnIndex: 1, label: 'タグ', spread: true, requiredEach: [] }];
+  }
+  if (!attrRules.length && requiredTagEl.value.trim()) {
+    attrRules = [{
+      columnIndex: 1,
+      label: 'タグ',
+      spread: false,
+      requiredEach: [requiredTagEl.value.trim()],
+    }];
+  }
+  return {
+    bundlesText: bundlesEl.value,
+    fixedText: fixedEl.value,
+    pairsText: pairsEl.value,
+    spreadTags: spreadTagsEl.checked && !mapping,
+    requiredTag: mapping ? '' : requiredTagEl.value,
+    hardMax: Number(hardMaxEl.value) || 0,
+    attrRules,
+  };
+}
+
+function updatePreOverflowHint() {
+  const ci = getConstraintsInput();
+  const hasBundles = ci.bundlesText.trim().length > 0;
+  if (!hasBundles) {
+    preOverflowEl.classList.add('hidden');
+    return;
+  }
+  const target = splitMode === 'perSize' ? Number(paramEl.value) : null;
+  if (target && willLikelyOverflow({ bundles: ci.bundlesText.split('\n').map((l) => l.split(/[,、\t]/).filter(Boolean)).filter((b) => b.length >= 2) }, target)) {
+    preOverflowEl.textContent = '固定班のため、目標定員を超えるグループが出る可能性があります（超過理由を結果に表示）。';
+    preOverflowEl.classList.remove('hidden');
+  } else if (hasBundles) {
+    preOverflowEl.textContent = '固定班を使用しています。定員超過が出る場合は結果に理由を表示します。';
+    preOverflowEl.classList.remove('hidden');
+  } else {
+    preOverflowEl.classList.add('hidden');
+  }
+}
+
+function applyGroupsPreviewLayout(visibleCount) {
+  const { scroll, maxHeightRem } = resolveGroupsPreviewLayout(visibleCount);
+  groupsEl.classList.toggle('overflow-y-auto', scroll);
+  groupsEl.style.maxHeight = scroll && maxHeightRem != null ? `${maxHeightRem}rem` : '';
+}
+
+function renderGroups(result) {
+  const show = result.groups.slice(0, DOM_GROUP_PREVIEW_MAX);
+  const rest = result.groups.length - show.length;
+  applyGroupsPreviewLayout(show.length);
+  const target = result.targetSize;
+  let html = show.map((g) => {
+    const overflowBadge = g.overflow && target
+      ? `<span class="text-amber-800 bg-amber-100 border border-amber-200 text-[10px] font-bold px-1.5 py-0.5 rounded ml-1">${g.size}名（目標+${g.overflowDelta}）</span>`
+      : `<span class="font-normal text-slate-500">(${g.size}名)</span>`;
+    const reason = g.overflowReasons?.length
+      ? `<p class="text-[10px] text-amber-800 mt-0.5">${escapeHtml(g.overflowReasons[0])}</p>`
+      : '';
+    return `
+    <div class="rounded-lg border border-slate-200 bg-white px-3 py-2">
+      <p class="text-xs font-bold text-slate-800">${escapeHtml(g.label)} ${overflowBadge}</p>
+      ${reason}
+      <p class="text-sm text-slate-700 mt-1">${escapeHtml(g.members.join(' / '))}</p>
+    </div>`;
+  }).join('');
+  if (rest > 0) {
+    html += `<p class="text-[11px] text-slate-500 font-semibold px-1">他 ${rest} 組 — 全件は Excel TSV / Slack コピーで確認（画面は ${DOM_GROUP_PREVIEW_MAX} 組まで表示）</p>`;
+  }
+  groupsEl.innerHTML = html;
+}
+
+function renderShareWarn(result) {
+  const limits = assessOutputLimits(result);
+  const parts = [];
+  if (limits.slackOverLimit) {
+    parts.push(`Slack/Teams 用テキストが約 ${limits.slackChars.toLocaleString()} 字（上限目安 ${SLACK_CHAR_SAFE.toLocaleString()} 字）です。<strong>Excel TSV</strong> を推奨するか、班ごとに投稿を分けてください。`);
+  } else if (limits.tsvRecommended) {
+    parts.push('200名超 — チャットより <strong>Excel TSV</strong> での共有を推奨します。');
+  }
+  if (parts.length) {
+    shareWarnEl.innerHTML = parts.join(' ');
+    shareWarnEl.classList.remove('hidden');
+  } else {
+    shareWarnEl.classList.add('hidden');
+    shareWarnEl.textContent = '';
+  }
+}
+
+function renderResult(result) {
+  lastResult = result;
+  emptyEl.classList.add('hidden');
+  resultEl.classList.remove('hidden');
+  errorEl.classList.add('hidden');
+
+  summaryEl.innerHTML = [
+    `<strong>${result.rosterCount}名</strong> → <strong>${result.groupCount}グループ</strong>`,
+    `（${escapeHtml(result.targetLabel)} · 目標${result.targetSize} · 実際 ${result.minSize}〜${result.maxSize} 名`,
+    result.phase === 'C' ? ' · 属性条件あり' : result.phase === 'B' ? ' · 制約あり' : '',
+    ` · ${escapeHtml(result.splitAtJst)} JST）`,
+  ].join('');
+
+  renderGroups(result);
+  renderShareWarn(result);
+  seedEl.textContent = result.seedHex;
+  fpEl.textContent = result.rosterSha256 ? result.rosterSha256.slice(0, 16) + '…' : '—';
+  refreshPreview();
+}
+
+async function executeSplit() {
+  errorEl.classList.add('hidden');
+  try {
+    const mapping = getColumnMapping();
+    const result = await runGroupSplit(rosterEl.value, {
+      mode: splitMode,
+      param: Number(paramEl.value),
+      sessionLabel: sessionEl.value,
+      columnMapping: mapping,
+      constraintsInput: getConstraintsInput(),
+    });
+    renderResult(result);
+  } catch (e) {
+    errorEl.textContent = e.message || '実行できませんでした。';
+    errorEl.classList.remove('hidden');
+  }
+}
+
+document.getElementById('gs-run').addEventListener('click', () => executeSplit());
+
+document.getElementById('gs-reshuffle').addEventListener('click', () => {
+  if (!lastResult) return;
+  if (!window.confirm('新しいシードで再シャッフルします。班構成が変わります。よろしいですか？')) return;
+  executeSplit();
+});
+
+copyBtn.addEventListener('click', async () => {
+  const text = getOutputText(outFormat);
+  if (!text || text.startsWith('（')) return;
+  if (lastResult && (outFormat === 'slack' || outFormat === 'line' || outFormat === 'announce')) {
+    const limits = assessOutputLimits(lastResult);
+    if (limits.slackOverLimit && outFormat === 'slack') {
+      const ok = window.confirm(
+        `Slack用テキストが約 ${limits.slackChars.toLocaleString()} 字で、1投稿上限（約4万字）を超える可能性があります。\nExcel TSV の利用を推奨します。このままコピーしますか？`,
+      );
+      if (!ok) return;
+    }
+  }
+  try {
+    await window.SG_COPY_FEEDBACK.copyWithFeedback(text, copyBtn, {
+      toastEl: copyToastEl,
+      toastPrefix: OUTPUT_LABELS[outFormat] || '出力',
+      copiedLabel: 'Copied!',
+    });
+  } catch {
+    alert('コピーに失敗しました。');
+  }
+});
+
+document.getElementById('gs-dl-csv').addEventListener('click', () => {
+  if (!lastResult) return;
+  const blob = new Blob([formatCsvUtf8Bom(lastResult)], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'group-split.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+});
+
+document.getElementById('gs-dl-json').addEventListener('click', () => {
+  if (!lastResult) return;
+  const blob = new Blob([formatJson(lastResult)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'group-split.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+});
+
+rosterEl.addEventListener('input', () => {
+  const prevMulti = !!currentTable;
+  syncColumnPanel();
+  if (!prevMulti && currentTable) {
+    nameColEl.innerHTML = columnOptionsHtml(currentTable.headers, guessColumnMapping(currentTable).nameColumnIndex, false);
+    const guessed = guessColumnMapping(currentTable);
+    attrSlotCols = [-1, -1, -1];
+    guessed.attrRules.forEach((r, i) => {
+      if (i < PHASE_C_ATTR_MAX) attrSlotCols[i] = r.columnIndex;
+    });
+    renderAttrRows();
+  }
+  updateLineCounter();
+  updatePreOverflowHint();
+});
+
+document.getElementById('gs-preset-executive').addEventListener('click', applyExecutivePreset);
+
+document.getElementById('gs-bundle-add').addEventListener('click', () => {
+  const name = pickBundleNameEl.value;
+  if (!name) return;
+  if (!bundleDraftMembers.includes(name)) bundleDraftMembers.push(name);
+  renderBundleDraft();
+});
+
+document.getElementById('gs-bundle-commit').addEventListener('click', () => {
+  if (bundleDraftMembers.length < 2) {
+    alert('固定班は2名以上で「班を確定」してください。');
+    return;
+  }
+  bundlesEl.value = appendConstraintLine(bundlesEl.value, formatBundleLine(bundleDraftMembers));
+  bundleDraftMembers = [];
+  renderBundleDraft();
+  updateConstraintSummary();
+});
+
+document.getElementById('gs-fixed-add').addEventListener('click', () => {
+  const name = pickFixedNameEl.value;
+  const gid = Number(pickFixedGroupEl.value);
+  if (!name || !gid) return;
+  fixedEl.value = appendConstraintLine(fixedEl.value, formatFixedLine(name, gid));
+  updateConstraintSummary();
+});
+
+document.getElementById('gs-pair-add').addEventListener('click', () => {
+  const a = pickPairAEl.value;
+  const b = pickPairBEl.value;
+  if (!a || !b) return;
+  if (a === b) {
+    alert('離すペアは異なる2名を選んでください。');
+    return;
+  }
+  pairsEl.value = appendConstraintLine(pairsEl.value, formatPairLine(a, b));
+  updateConstraintSummary();
+});
+
+[bundlesEl, fixedEl, pairsEl].forEach((el) => {
+  el.addEventListener('input', updateConstraintSummary);
+});
+bundlesEl.addEventListener('input', updatePreOverflowHint);
+paramEl.addEventListener('input', updatePreOverflowHint);
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.SUGUDASU_SEGMENT.mount({
+    segmentId: 'gs-mode-segment',
+    order: ['perSize', 'groupCount'],
+    initial: 'perSize',
+    hintId: 'gs-mode-hint',
+    hints: MODE_HINTS,
+    onChange: (v) => {
+      splitMode = v;
+      syncParamUi(v);
+    },
+  });
+
+  window.SUGUDASU_SEGMENT.mount({
+    segmentId: 'gs-out-segment',
+    order: ['tsv', 'slack', 'line', 'announce', 'json', 'wide'],
+    initial: 'tsv',
+    onChange: (v) => {
+      outFormat = v;
+      refreshPreview();
+    },
+  });
+
+  syncParamUi('perSize');
+  updateLineCounter();
+  updateConstraintSummary();
+});
+</script>
+</body>
+</html>

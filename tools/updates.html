@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="更新履歴"></div>
+<div id="sg-chrome-top" data-sg-title="更新履歴" data-sg-tool-id="updates"></div>
 
 <main class="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
@@ -21,25 +21,6 @@
             数値系ツールの信頼性確認にご利用ください。
         </p>
     </header>
-
-    <!-- 運営向け X 投稿（既存アカウント） -->
-    <section class="sg-card p-5 lg:p-6 space-y-4 no-print" aria-labelledby="operator-x-heading">
-        <h3 id="operator-x-heading" class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">
-            X投稿文（既存アカウント用）
-        </h3>
-        <p class="text-xs text-slate-500 leading-relaxed">
-            新規アカウントが作れない場合は、ログイン中の<strong>既存Xアカウント</strong>に下の文面をコピーするか、「Xで下書きを開く」で投稿画面を起動してください（サイト側にXログインはありません）。
-        </p>
-        <pre id="operator-x-launch-text" class="text-[11px] leading-relaxed bg-slate-50 border border-slate-200 rounded-xl p-3 whitespace-pre-wrap text-slate-700 overflow-x-auto">読み込み中…</pre>
-        <div class="flex flex-wrap gap-2">
-            <button type="button" id="btn-copy-operator-x" class="sg-btn-secondary text-xs font-bold px-4 py-2.5 rounded-lg">
-                文面をコピー
-            </button>
-            <button type="button" id="btn-open-operator-x" class="sg-btn-x">
-                𝕏 で下書きを開く
-            </button>
-        </div>
-    </section>
 
     <!-- 報告フォーム -->
     <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="feedback-heading">
@@ -95,6 +76,7 @@
                 <p class="text-[10px] text-slate-400">
                     送信先: SUGUDASU運営（<span class="mono">banzai.millionaire@gmail.com</span>）
                 </p>
+                <p id="copy-toast-updates" class="sg-copy-toast hidden" role="status"></p>
             </div>
         </details>
     </section>
@@ -114,6 +96,7 @@
 </main>
 
 <div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>
 (function () {
@@ -172,8 +155,23 @@
         window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${mailBody}`;
     }
 
-    async function copyFeedback() {
+    async function copyFeedback(e) {
         const text = buildFeedbackText();
+        const btn = e && e.currentTarget ? e.currentTarget : document.getElementById('btn-copy-fb');
+        if (window.SG_COPY_FEEDBACK) {
+            try {
+                await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                    toastEl: document.getElementById('copy-toast-updates'),
+                    toastPrefix: 'フィードバック',
+                    lineCount: window.SG_COPY_FEEDBACK.countLines(text),
+                    previewLine: text.split('\n')[0],
+                });
+                return;
+            } catch {
+                alert('コピーに失敗しました。');
+                return;
+            }
+        }
         try {
             await navigator.clipboard.writeText(text);
             alert('文面をコピーしました。お好みの連絡手段に貼り付けてください。');
@@ -234,23 +232,6 @@
         }
     }
 
-    function initOperatorX() {
-        const g = window.SUGUDASU_GROWTH;
-        if (!g) {
-            requestAnimationFrame(initOperatorX);
-            return;
-        }
-        const pre = document.getElementById('operator-x-launch-text');
-        if (pre) pre.textContent = g.OPERATOR_X_POSTS.launch;
-        document.getElementById('btn-copy-operator-x').addEventListener('click', async () => {
-            const ok = await g.copyOperatorPost('launch');
-            alert(ok ? '投稿文をコピーしました。Xに貼り付けてください。' : 'コピーに失敗しました。');
-        });
-        document.getElementById('btn-open-operator-x').addEventListener('click', () => {
-            g.openOperatorPost('launch');
-        });
-    }
-
     document.getElementById('btn-mailto').addEventListener('click', openMailto);
     document.getElementById('btn-copy-fb').addEventListener('click', copyFeedback);
 
@@ -258,7 +239,6 @@
         el.href = FEEDBACK_FORM_URL;
     });
 
-    initOperatorX();
     loadChangelog();
 })();
 </script>

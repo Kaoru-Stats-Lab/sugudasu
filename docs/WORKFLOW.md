@@ -1,8 +1,18 @@
 # SUGUDASU Workflow
 
-最終更新: 2026-06-16
+最終更新: 2026-06-17
 
 このファイルは「何をする時に、どのコマンドを使うか」の運用正本です。
+
+## 0) 別Agent引き継ぎ（景品チェック＋公平抽選）
+
+**次の実装タスク:** `tools/lottery.html`（未着手）
+
+1. 読む: [`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md)（仕様SSOT）
+2. 読む: [`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`](notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md)（**なぜ lottery か · 他案のGO/HOLD/OUT**）
+3. タスク: [`docs/BACKLOG.md`](BACKLOG.md) §15 · §8-9
+4. UI: [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) · [`docs/notes/CHROME_HEADER_GUARDRAILS.md`](notes/CHROME_HEADER_GUARDRAILS.md)
+5. 着手順: JSON + テスト → Phase 0 HTML → Phase 1 抽選 → Hub/changelog
 
 ## 1) 日常開発
 

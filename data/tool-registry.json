@@ -1,0 +1,156 @@
+{
+  "version": "2026-06-19",
+  "ssot": "docs/BACKLOG.md §1-6 · §4 · §6 · §9 · §15",
+  "stageLegend": {
+    "alpha": "骨格確認中。欠落・不具合があり得ます。",
+    "beta": "主要機能は動作。品質担保・仕様変更が残ります。",
+    "gamma": "リリース候補。細部調整・収益導線が残る場合あり。",
+    "stable": "安定運用。大きな仕様変更は changelog で告知。"
+  },
+  "tools": {
+    "hub": {
+      "file": "hub.html",
+      "name": "ツール一覧",
+      "version": "1.1.0",
+      "stage": "gamma",
+      "statusNote": "ツール入口 · SEO・回遊導線を継続改善（Backlog §2-5）"
+    },
+    "invoice": {
+      "file": "invoice.html",
+      "name": "見積・納品・請求書",
+      "version": "1.2.0",
+      "stage": "beta",
+      "statusNote": "P0残: 税計算・複数税率・印刷崩れの品質担保（§4-1 · §6）"
+    },
+    "receipt": {
+      "file": "receipt.html",
+      "name": "手取り逆引き・領収書",
+      "version": "1.1.0",
+      "stage": "gamma",
+      "statusNote": "MVP+A4マルチ+URL共有済 · 内税等は後続（§9）"
+    },
+    "label": {
+      "file": "label.html",
+      "name": "宛名ラベル",
+      "version": "1.1.0",
+      "stage": "gamma",
+      "statusNote": "一括貼付: ヘッダー行除外 · 姓名スペース保護 · sg-segment統一済"
+    },
+    "shift": {
+      "file": "shift.html",
+      "name": "シフト表",
+      "version": "1.1.0",
+      "stage": "beta",
+      "statusNote": "P1: 公平性・改ページ・FIXロックの品質担保（§4-1 · §6）"
+    },
+    "report": {
+      "file": "report.html",
+      "name": "議事録・報告書",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "UX改善済 · チャット共有Phase2は未（§2-4）"
+    },
+    "reverse": {
+      "file": "reverse.html",
+      "name": "逆引き辞典",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "STEP5 UX改善完了 · sns相互導線はP2（§1-2 · §4-3b）"
+    },
+    "normalize": {
+      "file": "normalize.html",
+      "name": "文字列正規化",
+      "version": "1.0.0",
+      "stage": "beta",
+      "statusNote": "500行cap · 行数Before/After · 用途プリセット3 · T03 Phase A"
+    },
+    "webp-to-jpg": {
+      "file": "webp-to-jpg.html",
+      "name": "WebP→JPG/PNG",
+      "version": "1.0.0",
+      "stage": "beta",
+      "statusNote": "WebP→JPG/PNG · 非送信（アップロード型と差別化）· T09"
+    },
+    "group-split": {
+      "file": "group-split.html",
+      "name": "グループ分け",
+      "version": "1.2.1",
+      "stage": "beta",
+      "statusNote": "Phase C + UX C1 名簿ピッカー · 250名cap · T11"
+    },
+    "present": {
+      "file": "present.html",
+      "name": "ギフトサジェスター",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "Amazon主戦場 · アフィ最適化はP1（§2-1 · §2-3）"
+    },
+    "fair-draw": {
+      "file": "fair-draw.html",
+      "name": "公平抽選・景品チェック（証跡PDF）",
+      "version": "1.5.1",
+      "stage": "beta",
+      "statusNote": "キャンペーン識別名必須 · 証跡3点セット · 名簿スナップショット"
+    },
+    "warikan": {
+      "file": "warikan.html",
+      "name": "傾斜割り勘",
+      "version": "1.1.0",
+      "stage": "gamma",
+      "statusNote": "端数過不足ヒーロー表示 · sg-copy-feedback · Xシェア導線済"
+    },
+    "sns": {
+      "file": "sns.html",
+      "name": "SNSデコ文字",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "自動変換UX済 · 拡張ユースケースはP2（§4-3b）"
+    },
+    "updates": {
+      "file": "updates.html",
+      "name": "更新履歴",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "changelog.json SSOT · 開発透明性の発信（§11 · §2-5）"
+    },
+    "privacy": {
+      "file": "privacy.html",
+      "name": "プライバシーポリシー",
+      "version": "1.0.0",
+      "stage": "stable",
+      "devBadge": false,
+      "statusNote": "法務固定ページ"
+    },
+    "terms": {
+      "file": "terms.html",
+      "name": "利用規約",
+      "version": "1.0.0",
+      "stage": "stable",
+      "devBadge": false,
+      "statusNote": "法務固定ページ"
+    },
+    "disclaimer": {
+      "file": "disclaimer.html",
+      "name": "免責事項",
+      "version": "1.0.0",
+      "stage": "stable",
+      "devBadge": false,
+      "statusNote": "法務固定ページ"
+    },
+    "not-a-car": {
+      "file": "not-a-car.html",
+      "name": "車ではなく書類",
+      "version": "1.0.0",
+      "stage": "stable",
+      "devBadge": false,
+      "statusNote": "SUBARU SUGDAS との混同防止"
+    },
+    "brand-logo-preview": {
+      "file": "brand-logo-preview.html",
+      "name": "ロゴプレビュー",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "内部プレビュー · sitemap対象外"
+    }
+  }
+}

@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。雑多なメモをビジネス文面に整形し、共有しやすい形式へまとめられます。","@type":"Answer"},"name":"箇条書きメモから議事録を作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。整形後はワンクリックでコピーでき、メールやチャットにそのまま貼り付け可能です。","@type":"Answer"},"name":"整形結果はすぐコピーできますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。必要に応じてGemini連携用の下書き文面を作成し、仕上げ作業を短縮できます。","@type":"Answer"},"name":"AI下書きにも対応していますか？","@type":"Question"},{"acceptedAnswer":{"text":"整理された報告文がすぐ出せると、情報整理力の印象が一気に上がります。実際にはツール活用でも、共有品質が高い人として信頼を得やすくなります。","@type":"Answer"},"name":"会議で静かにメモしてただけなのに、評価が上がるのはなぜ？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="議事録・報告書"></div>
+<div id="sg-chrome-top" data-sg-title="議事録・報告書" data-sg-tool-id="report"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
     <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
@@ -93,12 +93,13 @@
                         <span class="text-[11px] font-semibold text-slate-600">整形結果（社外秘OK）</span>
                         <button type="button" id="btn-copy-local"
                             class="text-xs font-semibold text-blue-600 hover:text-blue-800 px-2 py-1">
-                            コピー
+                            コピー（最新の出力）
                         </button>
                     </div>
                     <textarea id="output-local-text" readonly rows="16"
                         class="w-full flex-1 border border-slate-200 rounded-lg p-3 text-xs font-mono bg-slate-50 leading-relaxed resize-none"
                         placeholder="「整形する（登録不要で即コピー）」を押すとここに表示されます。"></textarea>
+                    <p id="copy-toast-report" class="sg-copy-toast hidden" role="status"></p>
                 </div>
 
                 <div id="tab-content-gemini" class="hidden flex flex-col gap-3 flex-1">
@@ -112,6 +113,7 @@
                     <textarea id="output-gemini-prompt" readonly rows="14"
                         class="w-full flex-1 border border-slate-200 rounded-lg p-3 text-xs font-mono bg-slate-50 leading-relaxed resize-none"
                         placeholder="整形後にここへ指示文が作られます。"></textarea>
+                    <p id="copy-toast-report-gemini" class="sg-copy-toast hidden" role="status"></p>
                 </div>
             </div>
 
@@ -276,8 +278,21 @@ ${notes}
 敬体のビジネス日本語で、見出しと箇条書きで読みやすく。`;
     }
 
-    async function copyText(text, btn) {
+    async function copyText(text, btn, opts = {}) {
         if (!text) return false;
+        if (window.SG_COPY_FEEDBACK) {
+            try {
+                await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                    toastEl: opts.toastEl || document.getElementById('copy-toast-report'),
+                    toastPrefix: opts.toastPrefix || '整形後',
+                    lineCount: window.SG_COPY_FEEDBACK.countLines(text),
+                    previewLine: text.split('\n')[0],
+                });
+                return true;
+            } catch {
+                return false;
+            }
+        }
         try {
             await navigator.clipboard.writeText(text);
         } catch {
@@ -290,8 +305,8 @@ ${notes}
         }
         if (btn) {
             const prev = btn.textContent;
-            btn.textContent = 'コピーしました';
-            setTimeout(() => { btn.textContent = prev; }, 1200);
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = prev; }, 2000);
         }
         return true;
     }
@@ -325,6 +340,7 @@ ${notes}
     document.getElementById('doc-type').addEventListener('change', updatePlaceholders);
     document.getElementById('btn-generate').addEventListener('click', processBusinessReport);
     document.getElementById('btn-copy-local').addEventListener('click', (e) => {
+        processBusinessReport();
         const text = document.getElementById('output-local-text').value.trim();
         if (!text) {
             alert('先に「整形する（登録不要で即コピー）」を押してください。');
@@ -333,12 +349,16 @@ ${notes}
         copyText(text, e.currentTarget);
     });
     document.getElementById('btn-gemini').addEventListener('click', async (e) => {
+        processBusinessReport();
         const text = document.getElementById('output-gemini-prompt').value.trim();
         if (!text) {
             alert('先に「整形する（登録不要で即コピー）」を押してください。');
             return;
         }
-        await copyText(text, e.currentTarget);
+        await copyText(text, e.currentTarget, {
+            toastEl: document.getElementById('copy-toast-report-gemini'),
+            toastPrefix: 'Gemini用',
+        });
         window.open('https://gemini.google.com/', '_blank', 'noopener,noreferrer');
     });
 
@@ -360,6 +380,7 @@ ${notes}
 })();
 </script>
 <div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 </body>

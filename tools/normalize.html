@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Excel列コピーの全角半角・空白整理をブラウザだけで完結。500行まで、行数チェック付き。データ非送信でEC登録・名簿・CSV向けに貼付→変換→コピー。">
+    <title>全角半角・文字列正規化（行数チェック） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="全角半角・文字列正規化（行数チェック）">
+    <meta property="og:description" content="Excel/スプシから1列コピーしたテキストを用途別に正規化。入力と出力の行数一致を表示し、うっかり貼り戻しズレを防ぎます。">
+    <meta property="og:url" content="https://sugudasu.com/normalize">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Excel列コピーの全角半角整理（行数チェック付き）">
+    <meta name="twitter:description" content="登録不要・ブラウザ完結。500行まで。変換後に「入力N行→出力M行」を確認してからコピー。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="文字列正規化" data-sg-subtitle="500行まで · 行数チェック" data-sg-tool-id="normalize"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">Excel列コピー · 非送信</p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            スプシ/Excel から<strong>1列コピー</strong>したテキストを、用途別プリセットで整理。
+            変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示。中身を見なくても行ズレに気づけます。
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+            <textarea id="input-text" rows="14" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="Excel/スプシから1列コピーして貼り付け&#10;例: ＡＢＣ123&#10;例: 00123"></textarea>
+            <div class="flex flex-wrap items-center gap-2">
+                <span id="line-counter" class="text-xs font-bold font-mono px-2 py-1 rounded-md bg-slate-100 text-slate-700" aria-live="polite">0 / 500 行</span>
+                <span id="leading-zero-badge" class="hidden text-[11px] font-semibold text-blue-800 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">0始まりコードを維持します</span>
+            </div>
+            <div id="paste-warnings" class="space-y-2" aria-live="polite"></div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                <strong class="text-slate-600">500行まで。</strong>
+                セル内改行（Alt+Enter）があると行数が増えます。貼り戻し前に行数バッジと Excel の行数を突合してください。
+            </p>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">用途・変換</h2>
+
+            <div class="sg-segment sg-segment--cols-3 sg-segment--mode-ec" id="preset-segment" role="tablist" aria-label="用途プリセット">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="ec_form" aria-selected="true">EC登録</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="csv_roster" aria-selected="false">CSV名簿</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="fullwidth_ascii" aria-selected="false">全角英数</button>
+            </div>
+            <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
+
+            <button type="button" id="btn-transform" class="sg-btn-primary w-full sm:w-auto">▶ 変換（プレビュー更新）</button>
+
+            <div id="line-match" class="hidden sg-line-match sg-line-match--ok rounded-lg px-3 py-2 text-sm font-semibold" aria-live="polite"></div>
+            <p id="change-summary" class="hidden text-[11px] font-mono text-slate-500"></p>
+
+            <details class="border border-slate-200 rounded-lg bg-slate-50/80">
+                <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">詳細（トグル）</summary>
+                <div class="px-3 pb-3 space-y-2 text-xs">
+                    <label class="flex items-center gap-2"><input type="checkbox" id="toggle-ascii" checked> 英数字を変換</label>
+                    <label class="flex items-center gap-2"><input type="checkbox" id="toggle-space" checked> 空白を整理（行頭行末 trim · 全角スペ→半角）</label>
+                    <label class="flex items-center gap-2"><input type="checkbox" id="toggle-hyphen"> ハイフン類を統一（カタカナ長音は保護）</label>
+                </div>
+            </details>
+
+            <div class="border-t border-slate-100 pt-3 space-y-2">
+                <h3 class="text-xs font-bold text-slate-800">プレビュー（先頭5行）</h3>
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div>
+                        <p class="font-semibold text-slate-500 mb-1">Before</p>
+                        <pre id="preview-before" class="norm-preview bg-slate-50 border border-slate-200 rounded-lg p-2 font-mono whitespace-pre-wrap break-all min-h-[4.5rem]"></pre>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-500 mb-1">After</p>
+                        <pre id="preview-after" class="norm-preview bg-emerald-50/50 border border-emerald-200 rounded-lg p-2 font-mono whitespace-pre-wrap break-all min-h-[4.5rem]"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="copy-gate" class="hidden sg-copy-gate space-y-2 rounded-lg border px-3 py-2 text-xs">
+                <p class="font-bold">行数が変わっています。Excel に貼り戻すとズレる可能性があります。</p>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" id="copy-gate-check" class="mt-0.5">
+                    <span>行数の変化を理解したうえでコピーします</span>
+                </label>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+                <button type="button" id="btn-copy" class="sg-btn-primary" disabled>コピー（変換してから保存）</button>
+                <button type="button" id="btn-swap" class="text-xs font-semibold text-slate-600 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">入出力を入れ替え</button>
+            </div>
+            <p id="copy-toast" class="sg-copy-toast hidden text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2" role="status"></p>
+        </section>
+    </div>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">文字列正規化のよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Excelに貼り戻したら行が上下にズレました</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>先頭ゼロ付きコード（00123）は消えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>消えません。Excel のように数値型に変換せず、文字列のまま処理します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>カタカナの伸ばし棒（ー）がハイフンになりますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットで ON の場合）。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>変換ボタンを押し忘れて古いデータをコピーしませんか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>データは外部に送信されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Mac から Windows へコピペすると文字化けしますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  copyLatestTransform,
+  updateLineMatchDisplay,
+  syncCopyGate,
+} from '../assets/sg-copy-feedback.js';
+import {
+  normalizeText,
+  countLines,
+  isOverLineLimit,
+  previewLines,
+  PRESET_DEFAULTS,
+} from '../assets/text-normalize.js';
+import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
+
+const PRESET_HINTS = {
+  ec_form: '<strong class="text-slate-800">EC・フォーム:</strong> 英数半角 · 空白整理 · ハイフンは触りません。',
+  csv_roster: '<strong class="text-slate-800">CSV・名簿:</strong> 英数半角 · 空白整理 · ハイフン統一（長音ーは保護）。',
+  fullwidth_ascii: '<strong class="text-slate-800">全角英数:</strong> 見た目用。英数字を全角にします。',
+};
+
+const inputEl = document.getElementById('input-text');
+const lineCounterEl = document.getElementById('line-counter');
+const leadingZeroBadge = document.getElementById('leading-zero-badge');
+const pasteWarningsEl = document.getElementById('paste-warnings');
+const lineMatchEl = document.getElementById('line-match');
+const changeSummaryEl = document.getElementById('change-summary');
+const previewBeforeEl = document.getElementById('preview-before');
+const previewAfterEl = document.getElementById('preview-after');
+const copyGateEl = document.getElementById('copy-gate');
+const copyGateCheck = document.getElementById('copy-gate-check');
+const btnTransform = document.getElementById('btn-transform');
+const btnCopy = document.getElementById('btn-copy');
+const btnSwap = document.getElementById('btn-swap');
+const copyToastEl = document.getElementById('copy-toast');
+const toggleAscii = document.getElementById('toggle-ascii');
+const toggleSpace = document.getElementById('toggle-space');
+const toggleHyphen = document.getElementById('toggle-hyphen');
+
+let lastResult = null;
+let presetController = null;
+
+function getToggles() {
+  return {
+    ascii: toggleAscii.checked,
+    space: toggleSpace.checked,
+    hyphen: toggleHyphen.checked,
+  };
+}
+
+function applyPresetToggles(preset) {
+  const d = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
+  toggleAscii.checked = d.ascii;
+  toggleSpace.checked = d.space;
+  toggleHyphen.checked = d.hyphen;
+}
+
+function renderPasteWarnings(text) {
+  const scan = scanPasteWarnings(text);
+  pasteWarningsEl.innerHTML = '';
+  scan.banners.forEach((b) => {
+    const div = document.createElement('div');
+    div.className = b.level === 'warn'
+      ? 'text-[11px] font-semibold text-rose-800 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2'
+      : 'text-[11px] text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2';
+    div.textContent = b.message;
+    pasteWarningsEl.appendChild(div);
+  });
+  leadingZeroBadge.classList.toggle('hidden', !scan.hasLeadingZero);
+}
+
+function updateLineCounter() {
+  const text = inputEl.value;
+  const n = countLines(text);
+  const over = isOverLineLimit(text);
+  lineCounterEl.textContent = `${n} / 500 行`;
+  lineCounterEl.classList.toggle('bg-rose-100', over);
+  lineCounterEl.classList.toggle('text-rose-800', over);
+  lineCounterEl.classList.toggle('bg-slate-100', !over);
+  lineCounterEl.classList.toggle('text-slate-700', !over);
+  btnTransform.disabled = over || n === 0;
+  renderPasteWarnings(text);
+  if (n === 0) {
+    lastResult = null;
+    lineMatchEl.classList.add('hidden');
+    changeSummaryEl.classList.add('hidden');
+    previewBeforeEl.textContent = '';
+    previewAfterEl.textContent = '';
+    btnCopy.disabled = true;
+    copyGateEl.classList.add('hidden');
+  }
+}
+
+function runTransform() {
+  const input = inputEl.value;
+  if (!input.trim() || isOverLineLimit(input)) return null;
+  const preset = presetController ? presetController.getValue() : 'ec_form';
+  const result = normalizeText(input, { preset, toggles: getToggles() });
+  lastResult = result;
+
+  lineMatchEl.classList.remove('hidden');
+  const { match } = updateLineMatchDisplay(lineMatchEl, result.inputLines, result.outputLines);
+  if (match) {
+    copyGateEl.classList.add('hidden');
+    copyGateCheck.checked = false;
+  } else {
+    copyGateEl.classList.remove('hidden');
+  }
+  syncCopyGate({
+    gateEl: copyGateEl,
+    checkEl: copyGateCheck,
+    copyBtn: btnCopy,
+    inputLines: result.inputLines,
+    outputLines: result.outputLines,
+  });
+
+  if (result.changeCount > 0) {
+    changeSummaryEl.classList.remove('hidden');
+    changeSummaryEl.textContent = `変更箇所: 約 ${result.changeCount} 文字`;
+  } else {
+    changeSummaryEl.classList.remove('hidden');
+    changeSummaryEl.textContent = '変更なし（そのままコピーできます）';
+  }
+
+  previewBeforeEl.textContent = previewLines(input, 5).join('\n') || '（空）';
+  previewAfterEl.textContent = previewLines(result.output, 5).join('\n') || '（空）';
+  return result;
+}
+
+copyGateCheck.addEventListener('change', () => {
+  if (!lastResult) return;
+  syncCopyGate({
+    gateEl: copyGateEl,
+    checkEl: copyGateCheck,
+    copyBtn: btnCopy,
+    inputLines: lastResult.inputLines,
+    outputLines: lastResult.outputLines,
+  });
+});
+
+inputEl.addEventListener('input', () => {
+  updateLineCounter();
+});
+
+[toggleAscii, toggleSpace, toggleHyphen].forEach((el) => {
+  el.addEventListener('change', () => {
+    if (inputEl.value.trim()) runTransform();
+  });
+});
+
+btnTransform.addEventListener('click', () => runTransform());
+
+btnCopy.addEventListener('click', async () => {
+  try {
+    await copyLatestTransform({
+      computeOutput: () => {
+        const r = runTransform();
+        return r ? r.output : '';
+      },
+      buttonEl: btnCopy,
+      toastEl: copyToastEl,
+      showFilterReminder: true,
+      gate: {
+        gateEl: copyGateEl,
+        checkEl: copyGateCheck,
+        getInputLines: () => lastResult?.inputLines ?? countLines(inputEl.value),
+        getOutputLines: () => lastResult?.outputLines ?? 0,
+      },
+    });
+  } catch (e) {
+    if (e.message === 'gate') return;
+    if (e.message === 'empty') alert('コピーするテキストがありません。');
+    else alert('コピーに失敗しました。');
+  }
+});
+
+btnSwap.addEventListener('click', () => {
+  if (!lastResult) return;
+  inputEl.value = lastResult.output;
+  updateLineCounter();
+  runTransform();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  presetController = window.SUGUDASU_SEGMENT.mount({
+    segmentId: 'preset-segment',
+    order: ['ec_form', 'csv_roster', 'fullwidth_ascii'],
+    initial: 'ec_form',
+    hintId: 'preset-hint',
+    hints: PRESET_HINTS,
+    modeClassMap: {
+      ec_form: 'sg-segment--mode-ec',
+      csv_roster: 'sg-segment--mode-csv',
+      fullwidth_ascii: 'sg-segment--mode-fw',
+    },
+    onChange: (value) => {
+      applyPresetToggles(value);
+      if (inputEl.value.trim()) runTransform();
+    },
+  });
+  applyPresetToggles('ec_form');
+  document.getElementById('preset-hint').innerHTML = PRESET_HINTS.ec_form;
+  updateLineCounter();
+});
+</script>
+</body>
+</html>

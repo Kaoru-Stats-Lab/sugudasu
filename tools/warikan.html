@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。立場や参加条件に応じた傾斜比率を細かく設定して計算できます。","@type":"Answer"},"name":"遅刻者や非飲酒者の比率調整はできますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。精算結果のテキストをコピーして、チャットへそのまま共有できます。","@type":"Answer"},"name":"計算結果は共有しやすい形式で出せますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。実運用に合わせた丸め設定で、集金しやすい金額へ調整できます。","@type":"Answer"},"name":"端数処理にも対応していますか？","@type":"Question"},{"acceptedAnswer":{"text":"その可能性は高めです。端数まできれいに説明できるため、場の空気を守れる幹事として信頼されやすくなります。","@type":"Answer"},"name":"神精算をやったら、次回も幹事を任され続けますか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="傾斜割り勘"></div>
+<div id="sg-chrome-top" data-sg-title="傾斜割り勘" data-sg-tool-id="warikan"></div>
 
     <main class="flex-1 p-4 lg:p-6 max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
@@ -100,6 +100,7 @@
         <section class="space-y-4">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-4">
                 <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2">📊 1人あたりの精算金額</h2>
+                <div id="balance-hero" class="hidden rounded-2xl border-2 p-5 text-center space-y-1" aria-live="polite"></div>
                 <div id="result-cards" class="space-y-3">
                     <p class="text-xs text-slate-400 text-center py-8 border border-dashed border-slate-200 rounded-xl">
                         左のフォームを入力して計算してください
@@ -124,6 +125,7 @@
                 <textarea id="output-text" rows="12" readonly
                     class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
                     placeholder="計算後に清算用テキストが自動生成されます"></textarea>
+                <p id="copy-toast-warikan" class="sg-copy-toast hidden" role="status"></p>
             </div>
             <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
         </section>
@@ -182,6 +184,10 @@
         </div>
     </section>
 
+<div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
     <script>
         const DEFAULT_GROUPS_COEFF = [
             { name: '役員・上司', coeff: 2.0, count: 1 },
@@ -451,6 +457,7 @@
                 if (out && out.error) {
                     cardsEl.innerHTML = `<p class="text-xs text-rose-600 text-center py-6">${escHtml(out.error)}</p>`;
                     balanceEl.classList.add('hidden');
+                    document.getElementById('balance-hero').classList.add('hidden');
                     document.getElementById('output-text').value = '';
                     lastResult = null;
                     return;
@@ -486,10 +493,19 @@
             }).join('');
 
             const diffLabel = diff === 0
-                ? { text: 'ぴったり一致（幹事の得損ゼロ）', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800' }
+                ? { text: 'ぴったり一致（幹事の得損ゼロ）', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: '幹事の得損ゼロ', heroSub: '端数調整後、お会計と集金総額が一致します' }
                 : diff > 0
-                    ? { text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 負担）`, cls: 'border-amber-200 bg-amber-50 text-amber-900' }
-                    : { text: `¥${formatYen(Math.abs(diff))} 余り（幹事が ¥${formatYen(Math.abs(diff))} お釣り）`, cls: 'border-blue-200 bg-blue-50 text-blue-900' };
+                    ? { text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 負担）`, cls: 'border-amber-200 bg-amber-50 text-amber-900', hero: `¥${formatYen(diff)} 不足`, heroSub: '幹事がこの金額を自腹で補填する想定です' }
+                    : { text: `¥${formatYen(Math.abs(diff))} 余り（幹事が ¥${formatYen(Math.abs(diff))} お釣り）`, cls: 'border-blue-200 bg-blue-50 text-blue-900', hero: `¥${formatYen(Math.abs(diff))} 余り`, heroSub: '集金総額がお会計を上回ります（幹事のお釣り）' };
+
+            const heroEl = document.getElementById('balance-hero');
+            heroEl.className = `rounded-2xl border-2 p-5 text-center space-y-1 ${diffLabel.cls}`;
+            heroEl.classList.remove('hidden');
+            heroEl.innerHTML = `
+                <p class="text-[10px] font-bold uppercase tracking-wider opacity-80">端数過不足（幹事）</p>
+                <p class="text-3xl sm:text-4xl font-black mono tracking-tight">${escHtml(diffLabel.hero)}</p>
+                <p class="text-xs font-semibold">${escHtml(diffLabel.heroSub)}</p>
+            `;
 
             balanceEl.className = `rounded-xl border p-4 space-y-2 ${diffLabel.cls}`;
             balanceEl.classList.remove('hidden');
@@ -537,6 +553,13 @@
                 '【お会計清算のお願い】',
                 `お会計総額：¥${formatYen(total)}（税込）`,
                 '',
+                '■ 端数過不足（幹事向け・必ず確認）',
+                diff === 0
+                    ? '端数調整後：幹事の得損ゼロ（ぴったり一致）'
+                    : diff > 0
+                        ? `端数調整後：¥${formatYen(diff)} 不足 → 幹事が ¥${formatYen(diff)} 負担`
+                        : `端数調整後：¥${formatYen(Math.abs(diff))} 余り → 幹事のお釣り ¥${formatYen(Math.abs(diff))}`,
+                '',
                 modeLine,
                 '',
                 '■ お一人様のご負担額',
@@ -554,9 +577,25 @@
         }
 
         async function copyText() {
+            calculate();
             const text = document.getElementById('output-text').value.trim();
             if (!text) {
                 alert('先に割り勘を計算してください。');
+                return;
+            }
+            const btn = document.getElementById('btn-copy');
+            const toastEl = document.getElementById('copy-toast-warikan');
+            if (window.SG_COPY_FEEDBACK) {
+                try {
+                    await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                        previewLine: text.split('\n').find((l) => l.startsWith('■ 端数')) || text.split('\n')[0],
+                        lineCount: window.SG_COPY_FEEDBACK.countLines(text),
+                        toastEl,
+                        toastPrefix: '清算文',
+                    });
+                } catch {
+                    alert('コピーに失敗しました。');
+                }
                 return;
             }
             try {
@@ -596,8 +635,5 @@
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
-<div id="sg-chrome-bottom"></div>
-<script src="../assets/sugudasu-segment.js"></script>
-<script src="../assets/sugudasu-shell.js"></script>
 </body>
 </html>

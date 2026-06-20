@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WebPをJPG・PNGに変換。iLoveIMG等のアップロード型と違い、画像は端末内だけで処理。社外秘スクショ・Excel貼付向け。">
+    <title>WebPをJPG・PNGに変換（アップロード不要） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="WebPをJPG・PNGに — 画像をアップロードしない変換">
+    <meta property="og:description" content="WebP→JPG/PNG。運営サーバーへ画像を送らず、ブラウザ内だけで変換。DevToolsで通信を確認できます。">
+    <meta property="og:url" content="https://sugudasu.com/webp-to-jpg">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WebP→JPG/PNG — アップロードしない変換">
+    <meta name="twitter:description" content="Convertio・iLoveIMG等はサーバーへ送信。SUGUDASUは端末内だけ。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"iLoveIMGやConvertioと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"多くのアップロード型ツールは画像を運営サーバーへ送って変換します。SUGUDASUは端末のブラウザ内だけで処理し、画像ファイルのPOSTは発生しません。DevToolsのネットワークタブで確認できます。"}},{"@type":"Question","name":"WebPをPNGやJPEGに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。WebPファイルを選び、出力形式（PNGまたはJPEG）を指定して変換・ダウンロードできます。処理はブラウザ内だけで行います。"}},{"@type":"Question","name":"PNGやJPEGをWebPに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。WebP→JPG/PNG専用です。逆方向はサルワカ等のPNG→WebPツール向けの用途です。"}},{"@type":"Question","name":"画像は外部サーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ファイルは端末内だけでデコード・再エンコードされ、SUGUDASUのサーバーへアップロードされません。"}},{"@type":"Question","name":"透過WebPをJPEGにするとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"JPEGは透過に非対応のため、背景は白で塗りつぶされます。透過を残す場合はPNG出力を選んでください。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="WebP→JPG/PNG" data-sg-subtitle="アップロードしない · 端末内変換" data-sg-tool-id="webp-to-jpg"></div>
+
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200 inline-block px-3 py-1 rounded-full">WebP→JPG/PNG · 画像をアップロードしない</p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            <a href="https://www.iloveimg.com/ja/convert-to-jpg/webp-to-jpg" class="text-sky-700 underline decoration-sky-200" rel="noopener noreferrer" target="_blank">iLoveIMG</a> や
+            <a href="https://convertio.co/ja/webp-jpg/" class="text-sky-700 underline decoration-sky-200" rel="noopener noreferrer" target="_blank">Convertio</a> もブラウザで使えますが、<strong>画像は運営サーバーへアップロード</strong>されます。
+            本ツールは <strong>端末内だけ</strong>で WebP→JPG/PNG。社外秘スクショ・顧客素材向け（最大20枚）。
+        </p>
+    </header>
+
+    <section class="sg-card p-5 space-y-3" aria-labelledby="compare-heading">
+        <h2 id="compare-heading" class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">アップロード型との違い（見分け方）</h2>
+        <div class="overflow-x-auto -mx-1">
+            <table class="w-full min-w-[32rem] text-xs text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 text-slate-500">
+                        <th class="py-2 pr-3 font-semibold"></th>
+                        <th class="py-2 pr-3 font-semibold">アップロード型<br><span class="font-normal text-[10px]">iLoveIMG · Convertio · PDF24 等</span></th>
+                        <th class="py-2 font-semibold text-sky-800">SUGUDASU<br><span class="font-normal text-[10px]">このページ</span></th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-700">
+                    <tr class="border-b border-slate-100">
+                        <th scope="row" class="py-2.5 pr-3 font-semibold text-slate-800 align-top">画像の行き先</th>
+                        <td class="py-2.5 pr-3 align-top">運営サーバーへ送信<br><span class="text-slate-500">SSL後も一時保存される</span></td>
+                        <td class="py-2.5 align-top text-sky-900 font-medium">端末のブラウザ内メモリのみ</td>
+                    </tr>
+                    <tr class="border-b border-slate-100">
+                        <th scope="row" class="py-2.5 pr-3 font-semibold text-slate-800 align-top">確認方法</th>
+                        <td class="py-2.5 pr-3 align-top">DevTools → 画像ファイルの POST</td>
+                        <td class="py-2.5 align-top"><strong>画像 POST なし</strong><br><span class="text-slate-500">F12 → ネットワーク → 変換時に multipart 等が出ない</span></td>
+                    </tr>
+                    <tr class="border-b border-slate-100">
+                        <th scope="row" class="py-2.5 pr-3 font-semibold text-slate-800 align-top">向いている用途</th>
+                        <td class="py-2.5 pr-3 align-top">数百枚一括 · ZIP · URL取込（サーバー経由）</td>
+                        <td class="py-2.5 align-top">社内資料 · 未公開スクショ · 今日すぐ数枚</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="py-2.5 pr-3 font-semibold text-slate-800 align-top">変換の向き</th>
+                        <td class="py-2.5 pr-3 align-top">WebP→JPG 等</td>
+                        <td class="py-2.5 align-top">WebP→JPG/PNG のみ<br><span class="text-slate-500">PNG→WebP は<a href="https://saruwakakun.com/tools/png-jpeg-to-webp/" class="text-sky-700 underline" rel="noopener noreferrer" target="_blank">別ツール</a>向け</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed">※ サルワカWebツール等「ブラウザ内処理」と謳うサービスもあります。差は<strong>変換の向き</strong>（WebP→JPG か PNG→WebP か）と、<strong>あなたの画像が第三者サーバーを経由するか</strong>です。不安なら DevTools で通信を確認してください。</p>
+    </section>
+
+    <section class="sg-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">出力形式</h2>
+        <div class="sg-segment sg-segment--cols-2 sg-segment--mode-ec" id="format-segment" role="tablist" aria-label="出力形式">
+            <span class="sg-segment__pill" aria-hidden="true"></span>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="png" aria-selected="true">PNG</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="jpeg" aria-selected="false">JPEG</button>
+        </div>
+        <p class="sg-segment-hint text-[11px] text-slate-600" id="format-hint" role="note">
+            <strong class="text-slate-800">PNG:</strong> 透過を維持。WebP→PNG の定番。
+        </p>
+        <div id="jpeg-quality-wrap" class="hidden space-y-1">
+            <label for="jpeg-quality" class="text-xs font-semibold text-slate-700">JPEG 品質: <span id="jpeg-quality-val">92</span>%</label>
+            <input type="range" id="jpeg-quality" min="60" max="100" value="92" class="w-full max-w-xs">
+        </div>
+    </section>
+
+    <section class="sg-card p-5 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">WebP を追加</h2>
+        <div class="flex flex-col sm:flex-row gap-2">
+            <label for="url-input" class="sr-only">WebP 画像の URL</label>
+            <input type="url" id="url-input" inputmode="url" autocomplete="off" spellcheck="false"
+                placeholder="https://example.com/image.webp"
+                class="flex-1 min-w-0 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-400 focus:ring-2 focus:ring-sky-100 outline-none">
+            <button type="button" id="url-fetch-btn" class="sg-btn-primary text-sm py-2 px-4 shrink-0">URLから取得</button>
+        </div>
+        <p id="url-status" class="text-xs text-slate-500" aria-live="polite">Web 上の WebP URL（CORS 対応サイトのみ）· または下へドロップ · <kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">Ctrl</kbd>+<kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">V</kbd> で貼り付け</p>
+        <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-10 text-center cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-colors" tabindex="0" role="button" aria-label="WebPファイルを選択または貼り付け">
+            <p class="text-sm font-semibold text-slate-700">WebP をドロップ · クリック · 貼り付け</p>
+            <p class="text-[11px] text-slate-500 mt-2">.webp ファイル · ページからコピーした WebP · PNG/JPEG 入力は非対応</p>
+        </div>
+        <input type="file" id="file-input" class="sr-only" accept=".webp,image/webp" multiple>
+        <p id="queue-summary" class="text-xs text-slate-500" aria-live="polite"></p>
+        <ul id="file-list" class="space-y-3"></ul>
+    </section>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">WebP→JPG/PNG のよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>iLoveIMG・Convertio・PDF24 と何が違いますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>それらは<strong>画像を運営サーバーへアップロード</strong>してから変換します（Convertio は変換後にサーバーから削除、PDF24 は約1時間で削除、と説明しています）。SUGUDASU は<strong>端末のブラウザ内だけ</strong>で Canvas 変換し、画像ファイルの POST は発生しません。F12 → ネットワークで確認できます。数百枚の一括 ZIP が必要ならアップロード型の方が向いています。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>WebPをPNGやJPEGに変換できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。一覧から出力形式を選び、変換後に1枚ずつダウンロードできます。ExcelやWordに貼れない WebP も PNG / JPEG にすれば使えることが多いです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>画像は外部に送信されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。すべて端末のブラウザ内でデコード・再エンコードされます。未公開のスクショなど、アップロード型サイトに載せたくない場合向けです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Web 上の WebP を URL から変換できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>URL 欄または URL をコピーして <kbd>Ctrl</kbd>+<kbd>V</kbd> で試せます。ただし<strong>多くのサイトはブラウザの CORS 制限で直接取得できません</strong>。その場合は「名前を付けて保存」してドロップするか、ページ上で画像をコピーして貼り付けてください。処理は端末内だけで行い、SUGUDASU のサーバーへ送信しません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>PNGやJPEGをWebPに変換できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。<strong>WebP→JPG/PNG 専用</strong>です。逆方向（PNG/JPEG→WebP）は<a href="https://saruwakakun.com/tools/png-jpeg-to-webp/" rel="noopener noreferrer" target="_blank">サルワカWebツール</a>等向け。PDF 一括は iLoveIMG 等向けです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>透過WebPをJPEGにするとどうなりますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>JPEGは透過非対応のため、背景は白で塗りつぶされます。透過を残す場合は PNG を選んでください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>PDFや一括圧縮はできますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>できません。PDF 結合・高度な編集は専用サービス向けです。本ツールは WebP 入力のみです。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  convertImageFile,
+  validateWebpInput,
+  guessImageMime,
+  formatBytes,
+  fetchWebpFromUrl,
+  filesFromClipboard,
+  MAX_FILES,
+} from '../assets/webp-to-jpg.js';
+
+const FORMAT_HINTS = {
+  png: '<strong class="text-slate-800">PNG:</strong> 透過を維持。WebP→PNG の定番。',
+  jpeg: '<strong class="text-slate-800">JPEG:</strong> 写真向け。透過WebPは白背景になります。',
+};
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const urlInput = document.getElementById('url-input');
+const urlFetchBtn = document.getElementById('url-fetch-btn');
+const urlStatusEl = document.getElementById('url-status');
+const fileListEl = document.getElementById('file-list');
+const queueSummaryEl = document.getElementById('queue-summary');
+const jpegQualityWrap = document.getElementById('jpeg-quality-wrap');
+const jpegQuality = document.getElementById('jpeg-quality');
+const jpegQualityVal = document.getElementById('jpeg-quality-val');
+
+/** @type {{ id: string, file: File, status: string, result?: object, error?: string, thumb?: string }[]} */
+let queue = [];
+let formatController = null;
+let outputFormat = 'png';
+
+function getQuality() {
+  return Number(jpegQuality.value) / 100;
+}
+
+function updateFormatUi(fmt) {
+  outputFormat = fmt;
+  document.getElementById('format-hint').innerHTML = FORMAT_HINTS[fmt] || '';
+  jpegQualityWrap.classList.toggle('hidden', fmt !== 'jpeg');
+}
+
+function setUrlStatus(message, isError = false) {
+  urlStatusEl.textContent = message;
+  urlStatusEl.classList.toggle('text-rose-700', isError);
+  urlStatusEl.classList.toggle('font-semibold', isError);
+  urlStatusEl.classList.toggle('text-slate-500', !isError);
+}
+
+async function addFromUrl(rawUrl) {
+  const trimmed = String(rawUrl || '').trim();
+  if (!trimmed) {
+    setUrlStatus('URL を入力してください。', true);
+    return;
+  }
+  setUrlStatus('取得中…');
+  urlFetchBtn.disabled = true;
+  try {
+    const file = await fetchWebpFromUrl(trimmed);
+    await addFiles([file]);
+    setUrlStatus('取得して変換キューに追加しました。');
+    urlInput.value = '';
+  } catch (e) {
+    setUrlStatus(e.message || '取得に失敗しました。', true);
+  } finally {
+    urlFetchBtn.disabled = false;
+  }
+}
+
+async function handlePaste(dt) {
+  const { files, url } = filesFromClipboard(dt);
+  if (url) {
+    await addFromUrl(url);
+    return true;
+  }
+  if (files.length === 0) return false;
+  await addFiles(files);
+  return true;
+}
+
+function renderQueueSummary() {
+  if (queue.length === 0) {
+    queueSummaryEl.textContent = '';
+    return;
+  }
+  const done = queue.filter((q) => q.status === 'done').length;
+  queueSummaryEl.textContent = `${queue.length} 枚（変換済 ${done}）· 最大 ${MAX_FILES} 枚`;
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+async function convertOne(item) {
+  item.status = 'converting';
+  renderItem(item);
+  try {
+    item.result = await convertImageFile(item.file, {
+      format: outputFormat,
+      quality: getQuality(),
+    });
+    item.status = 'done';
+    item.error = undefined;
+  } catch (e) {
+    item.status = 'error';
+    item.error = e.message || '変換に失敗しました';
+    item.result = undefined;
+  }
+  renderItem(item);
+  renderQueueSummary();
+}
+
+function renderItem(item) {
+  let li = document.getElementById(`file-${item.id}`);
+  if (!li) {
+    li = document.createElement('li');
+    li.id = `file-${item.id}`;
+    li.className = 'flex flex-wrap gap-3 items-start border border-slate-200 rounded-lg p-3 bg-white';
+    fileListEl.appendChild(li);
+  }
+  const mime = guessImageMime(item.file);
+  const thumb = item.thumb
+    ? `<img src="${item.thumb}" alt="" class="w-16 h-16 object-cover rounded border border-slate-200 bg-slate-100">`
+    : '<div class="w-16 h-16 rounded border border-slate-200 bg-slate-100"></div>';
+
+  let action = '';
+  if (item.status === 'done' && item.result) {
+    const r = item.result;
+    action = `<button type="button" class="sg-btn-primary text-xs py-2 px-3 btn-dl" data-id="${item.id}">↓ ${r.filename}</button>
+      <span class="text-[11px] text-slate-500">${r.width}×${r.height} · ${formatBytes(r.blob.size)}</span>`;
+  } else if (item.status === 'converting') {
+    action = '<span class="text-xs text-slate-500">変換中…</span>';
+  } else if (item.status === 'error') {
+    action = `<span class="text-xs text-rose-700 font-semibold">${item.error}</span>
+      <button type="button" class="text-xs font-semibold text-blue-700 underline btn-retry" data-id="${item.id}">再試行</button>`;
+  } else {
+    action = '<span class="text-xs text-slate-400">待機</span>';
+  }
+
+  li.innerHTML = `
+    ${thumb}
+    <div class="flex-1 min-w-[10rem] space-y-1">
+      <p class="text-xs font-semibold text-slate-800 break-all">${item.file.name}</p>
+      <p class="text-[11px] text-slate-500">${formatBytes(item.file.size)} · ${mime || '画像'}</p>
+      <div class="flex flex-wrap items-center gap-2">${action}</div>
+    </div>
+  `;
+
+  li.querySelector('.btn-dl')?.addEventListener('click', () => {
+    if (item.result) downloadBlob(item.result.blob, item.result.filename);
+  });
+  li.querySelector('.btn-retry')?.addEventListener('click', () => convertOne(item));
+}
+
+async function addFiles(fileList) {
+  const incoming = Array.from(fileList);
+  if (incoming.length === 0) return;
+  const room = MAX_FILES - queue.length;
+  if (room <= 0) {
+    alert(`最大 ${MAX_FILES} 枚までです。`);
+    return;
+  }
+  const slice = incoming.slice(0, room);
+  if (incoming.length > room) {
+    alert(`最大 ${MAX_FILES} 枚のため、${room} 枚だけ追加しました。`);
+  }
+
+  for (const file of slice) {
+    const check = validateWebpInput(file);
+    if (!check.ok) {
+      alert(`${file.name}: ${check.message}`);
+      continue;
+    }
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const thumb = URL.createObjectURL(file);
+    const item = { id, file, status: 'pending', thumb };
+    queue.push(item);
+    renderItem(item);
+    await convertOne(item);
+  }
+  renderQueueSummary();
+}
+
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    fileInput.click();
+  }
+});
+fileInput.addEventListener('change', () => {
+  addFiles(fileInput.files);
+  fileInput.value = '';
+});
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('border-sky-400', 'bg-sky-50/50');
+});
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('border-sky-400', 'bg-sky-50/50');
+});
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('border-sky-400', 'bg-sky-50/50');
+  if (e.dataTransfer?.files) addFiles(e.dataTransfer.files);
+});
+
+urlFetchBtn.addEventListener('click', () => addFromUrl(urlInput.value));
+urlInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addFromUrl(urlInput.value);
+  }
+});
+
+document.addEventListener('paste', async (e) => {
+  if (document.activeElement === urlInput) return;
+  const handled = await handlePaste(e.clipboardData);
+  if (handled) e.preventDefault();
+});
+
+jpegQuality.addEventListener('input', () => {
+  jpegQualityVal.textContent = jpegQuality.value;
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  formatController = window.SUGUDASU_SEGMENT.mount({
+    segmentId: 'format-segment',
+    order: ['png', 'jpeg'],
+    initial: 'png',
+    hints: FORMAT_HINTS,
+    hintId: 'format-hint',
+    modeClassMap: {
+      png: 'sg-segment--mode-ec',
+      jpeg: 'sg-segment--mode-csv',
+    },
+    onChange: (value) => {
+      updateFormatUi(value);
+      queue.forEach((item) => {
+        if (item.status === 'done' || item.status === 'error') convertOne(item);
+      });
+    },
+  });
+  updateFormatUi('png');
+});
+</script>
+</body>
+</html>

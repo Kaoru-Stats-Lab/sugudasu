@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。プロフィールや投稿で使える装飾文字へ一括変換し、コピーして利用できます。","@type":"Answer"},"name":"InstagramやX向けの特殊フォントに変換できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。目立つ縦書きスタイルへ変換でき、SNS向けの表現を簡単に作成できます。","@type":"Answer"},"name":"縦書きテキストも作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。変換処理はブラウザ内で完結し、入力テキストを外部送信しません。","@type":"Answer"},"name":"入力した文字は外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"目を引く可能性は上がります。読みやすさを優先して1〜2行だけ装飾すると、ちょうどいい存在感を作りやすくなります。","@type":"Answer"},"name":"プロフィールをデコりすぎると、目立ちすぎませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SNSデコ文字"></div>
+<div id="sg-chrome-top" data-sg-title="SNSデコ文字" data-sg-tool-id="sns"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
@@ -96,6 +96,7 @@
         </div>
         <div id="deco-output" class="deco-grid"></div>
         <p id="empty-hint" class="text-xs text-slate-400 text-center py-8">左で文字を入力して「変換する（登録不要で一括コピペ）」を押してください</p>
+        <p id="copy-toast-sns" class="sg-copy-toast hidden" role="status"></p>
         <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
     </section>
     </div>
@@ -176,6 +177,7 @@
 </section>
 
 <div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>
 const JA_RE = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uFF66-\uFF9D]/;
@@ -316,6 +318,18 @@ function getTemplateContext() {
 }
 
 async function copyToClipboard(text, btn, okLabel) {
+    if (window.SG_COPY_FEEDBACK && btn) {
+        try {
+            await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                toastEl: document.getElementById('copy-toast-sns'),
+                toastPrefix: '変換後',
+                copiedLabel: okLabel || 'Copied!',
+                lineCount: window.SG_COPY_FEEDBACK.countLines(text),
+                previewLine: text.split('\n')[0],
+            });
+            return;
+        } catch { /* fallback below */ }
+    }
     try { await navigator.clipboard.writeText(text); }
     catch {
         const ta = document.createElement('textarea');
@@ -327,8 +341,8 @@ async function copyToClipboard(text, btn, okLabel) {
     }
     if (!btn) return;
     const prev = btn.textContent;
-    btn.textContent = okLabel || 'コピーしました';
-    setTimeout(() => { btn.textContent = prev; }, 1200);
+    btn.textContent = okLabel || 'Copied!';
+    setTimeout(() => { btn.textContent = prev; }, 2000);
 }
 
 function copyWithLimitCheck(text, btn, okLabel) {

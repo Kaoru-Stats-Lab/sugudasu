@@ -1,5 +1,5 @@
 /**
- * SUGUDASU shared chrome — header · 9ツール+一覧ナビ · footer
+ * SUGUDASU shared chrome — header · ツールナビ · footer
  * docs/DESIGN_GUIDELINE.md §3.1, §7
  */
 (function (global) {
@@ -12,7 +12,11 @@
     { id: 'shift', file: 'shift.html', label: 'シフト', icon: '📅' },
     { id: 'report', file: 'report.html', label: '議事録', icon: '📝' },
     { id: 'reverse', file: 'reverse.html', label: '逆引き', icon: '📖' },
+    { id: 'normalize', file: 'normalize.html', label: '正規化', icon: '🔤' },
+    { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
+    { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
+    { id: 'fair-draw', file: 'fair-draw.html', label: '抽選チェック', icon: '🎲' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
     { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' }
   ];
@@ -105,19 +109,22 @@
     });
   }
 
-  function headerHtml(title, showPrint) {
+  function headerHtml(title, showPrint, subtitle) {
     const printBtn = showPrint
       ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
       : '';
-    const pageTitle = title && title !== 'SUGUDASU'
-      ? `<p class="sg-site-header__pagetitle text-xs font-semibold text-slate-500 border-l border-slate-200 pl-3 truncate">${title}</p>`
+    const pageTitleBlock = title && title !== 'SUGUDASU'
+      ? `<div class="sg-site-header__pagetitle-wrap min-w-0 border-l border-slate-200 pl-3">
+            <p class="sg-site-header__pagetitle">${escapeHtml(title)}</p>
+            ${subtitle ? `<p class="sg-site-header__pagesub">${escapeHtml(subtitle)}</p>` : ''}
+          </div>`
       : '';
     return `<header class="sg-site-header">
       <div class="sg-site-header__brand bg-white border-b border-slate-200">
         <div class="sg-site-header__inner flex min-h-14 max-w-7xl mx-auto px-4 items-center justify-between gap-3">
           <div class="sg-site-header__left flex items-center gap-3 min-w-0 flex-1">
             ${logoHtml()}
-            ${pageTitle}
+            ${pageTitleBlock}
           </div>
           ${printBtn}
         </div>
@@ -125,8 +132,8 @@
     </header>`;
   }
 
-  function chromeHtml(title, showPrint, activeFile) {
-    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint)}${navHtml(activeFile)}</div>`;
+  function chromeHtml(title, showPrint, activeFile, subtitle) {
+    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint, subtitle)}${navHtml(activeFile)}</div>`;
   }
 
   function footerHtml() {
@@ -167,6 +174,7 @@
     const title = (opts && opts.title) || 'SUGUDASU';
     const showPrint = !!(opts && opts.print);
     const landscape = !!(opts && opts.landscape);
+    const subtitle = (opts && opts.subtitle) || '';
     const file = currentFile();
     const top = document.getElementById('sg-chrome-top');
     const bottom = document.getElementById('sg-chrome-bottom');
@@ -180,7 +188,7 @@
 
     if (top) {
       if (top.querySelector('.sg-chrome')) return;
-      top.innerHTML = chromeHtml(title, showPrint, file);
+      top.innerHTML = chromeHtml(title, showPrint, file, opts && opts.subtitle);
     }
     if (bottom && !bottom.innerHTML.trim()) {
       bottom.innerHTML = footerHtml();
@@ -188,6 +196,7 @@
 
     loadGrowthScript();
     applyCtaLabels(file);
+    applyDevStageBadge();
   }
 
   /** #sg-chrome-top の data-sg-* から同期マウント（inline mount 不要 · defer 事故防止） */
@@ -198,6 +207,7 @@
     if (!title) return null;
     return {
       title,
+      subtitle: top.getAttribute('data-sg-subtitle') || '',
       print: top.getAttribute('data-sg-print') === 'true',
       landscape: top.getAttribute('data-sg-landscape') === 'true',
     };
@@ -257,6 +267,92 @@
   }
 
   let ctaConfigCache = null;
+  let toolRegistryCache = null;
+
+  const DEV_STAGES = {
+    alpha: { label: 'アルファ版', cssClass: 'sg-dev-stage--alpha', hint: '骨格確認中。欠落・不具合があり得ます。' },
+    beta: { label: 'ベータ版', cssClass: 'sg-dev-stage--beta', hint: '主要機能は動作。品質担保・仕様変更が残ります。' },
+    gamma: { label: 'ガンマ版', cssClass: 'sg-dev-stage--gamma', hint: 'リリース候補。細部調整が残る場合あり。' },
+    stable: { label: '安定版', cssClass: 'sg-dev-stage--stable', hint: '安定運用。大きな変更は changelog で告知。' },
+  };
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatDevStageBadgeHtml(stage, opts) {
+    const meta = DEV_STAGES[stage] || DEV_STAGES.stable;
+    if (!meta.label) return '';
+    const ver = opts.version ? ` v${opts.version}` : '';
+    const title = opts.title ? `${opts.title} — ` : '';
+    const note = opts.statusNote ? ` · ${opts.statusNote}` : '';
+    return `<span class="sg-dev-stage ${meta.cssClass}" title="${title}${meta.hint}${note}">${meta.label}${ver}</span>`;
+  }
+
+  function formatToolVersionLabel(stage, version) {
+    const meta = DEV_STAGES[stage] || DEV_STAGES.stable;
+    return `${meta.label} v${version}`;
+  }
+
+  async function loadToolRegistry() {
+    if (toolRegistryCache) return toolRegistryCache;
+    try {
+      const res = await fetch(dataUrl('tool-registry.json'), { cache: 'no-store' });
+      if (!res.ok) return null;
+      toolRegistryCache = await res.json();
+      return toolRegistryCache;
+    } catch {
+      return null;
+    }
+  }
+
+  function getToolMeta(toolId) {
+    if (!toolId || !toolRegistryCache) return null;
+    return toolRegistryCache.tools && toolRegistryCache.tools[toolId] || null;
+  }
+
+  function toolIdFromDom() {
+    const top = document.getElementById('sg-chrome-top');
+    const explicit = top && top.getAttribute('data-sg-tool-id');
+    if (explicit) return explicit;
+    const file = currentFile();
+    if (file === 'index.html' || file === 'hub.html') return 'hub';
+    return file.replace(/\.html$/, '');
+  }
+
+  async function applyDevStageBadge() {
+    const top = document.getElementById('sg-chrome-top');
+    if (!top) return;
+    const registry = await loadToolRegistry();
+    if (!registry) return;
+    const toolId = toolIdFromDom();
+    const tool = getToolMeta(toolId);
+    if (!tool || tool.devBadge === false) return;
+
+    let bar = document.getElementById('sg-dev-badge-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'sg-dev-badge-bar';
+      bar.className = 'no-print sg-dev-badge-bar';
+      top.insertAdjacentElement('afterend', bar);
+    }
+
+    const badge = formatDevStageBadgeHtml(tool.stage, {
+      version: tool.version,
+      title: tool.name,
+      statusNote: tool.statusNote,
+    });
+    const note = tool.statusNote
+      ? `<span class="sg-dev-badge-note">${escapeHtml(tool.statusNote)}</span>`
+      : '';
+    bar.innerHTML = badge + note;
+    bar.hidden = !badge;
+  }
+
   async function loadCtaConfig() {
     if (ctaConfigCache) return ctaConfigCache;
     try {
@@ -303,6 +399,9 @@
     dataUrl,
     logoHtml,
     trackGaEvent,
+    getToolMeta,
+    formatToolVersionLabel,
+    loadToolRegistry,
   };
 
   bootstrapChromeFromDom();

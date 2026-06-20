@@ -12,6 +12,7 @@ const TOOLS_DIR = path.join(__dirname, '..', 'tools');
 const CONFIG = {
   'invoice.html': { title: '見積・納品・請求書', print: true },
   'present.html': { title: 'ギフトサジェスター', print: false },
+  'fair-draw.html': { title: '公平抽選・景品チェック', subtitle: '一次チェック · 公平抽選 · 証跡PDF', print: false },
   'shift.html': { title: 'シフト表', print: true },
   'report.html': { title: '議事録・報告書', print: false },
   'reverse.html': { title: '逆引き辞典', print: false },
@@ -91,6 +92,7 @@ function ensureSgBody(html) {
 
 function injectChrome(html, cfg) {
   const attrs = [`data-sg-title="${cfg.title}"`];
+  if (cfg.subtitle) attrs.push(`data-sg-subtitle="${cfg.subtitle}"`);
   if (cfg.print) attrs.push('data-sg-print="true"');
   if (cfg.landscape) attrs.push('data-sg-landscape="true"');
   const top = `<div id="sg-chrome-top" ${attrs.join(' ')}></div>`;

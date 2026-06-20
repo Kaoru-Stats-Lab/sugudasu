@@ -1,0 +1,208 @@
+{
+  "version": "2026-06-19",
+  "patterns": [
+    {
+      "id": "P01",
+      "audience": ["consumer"],
+      "label": "数千円の購入者抽選で10万円級の豪華賞品を出したい",
+      "defaultLevel": "red",
+      "summary": "取引額に対して景品最高額が大きいと、一般懸賞の上限目安を超えやすいパターンです。",
+      "action": "景品単価・当選人数・総額を再設計してください。",
+      "nextSteps": [
+        { "text": "景品最高額を取引額×20倍（取引5,000円以上は10万円上限）以内に収める案を試算", "kind": "checklist" },
+        { "text": "社内の法務・マーケ責任者に、上限超過の見込みと代替案を共有", "kind": "checklist" },
+        { "text": "実施前に消費者庁表示対策課へ相談（03-3507-8800）", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P02",
+      "audience": ["consumer"],
+      "label": "抽選ではなく「全員」「先着」で数百円以上配る",
+      "defaultLevel": "red",
+      "summary": "総付景品（購入・来店に付随して全員に配る景品）の上限は、一般懸賞より厳しい目安があります。",
+      "action": "総付景品の上限（1,000円未満200円／1,000円以上は取引額の10分の2）を確認してください。",
+      "nextSteps": [
+        { "text": "配布方式が「総付」か「懸賞（抽選）」かを整理し、告知文案を見直す", "kind": "checklist" },
+        { "text": "1人あたり景品額が上限内か再計算（本ツール左の数値も更新）", "kind": "checklist" },
+        { "text": "消費者庁「総付景品について」Q&A（先着・全員配布の目安）", "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/premium/not_lotteries", "kind": "link" },
+        { "text": "必要なら消費者庁へ企画相談", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P03",
+      "audience": ["consumer"],
+      "label": "「無料」に見えるが実質は有料登録・継続が条件",
+      "defaultLevel": "yellow",
+      "summary": "実質的な取引条件がある場合、無料キャンペーンとしての表示が問題になることがあります。",
+      "action": "応募条件・課金条件の表示を見直してください。",
+      "nextSteps": [
+        { "text": "応募ページ・バナー・規約に、登録・課金・継続条件を目立つ形で追記", "kind": "checklist" },
+        { "text": "「無料」の表現を、条件付きであることが分かる文言に修正", "kind": "checklist" },
+        { "text": "顧問弁護士または消費者庁へ、告知文案のレビューを依頼", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P04",
+      "audience": ["consumer"],
+      "label": "数社タイアップを「共同懸賞」と思っている",
+      "defaultLevel": "yellow",
+      "summary": "複数事業者の共同懸賞は、表示義務・上限の算定が単独キャンペーンと異なる場合があります。",
+      "action": "共同懸賞の届出・表示要件を確認してください。",
+      "nextSteps": [
+        { "text": "共同懸賞の主催者・協賛者・景品負担割合を一覧化", "kind": "checklist" },
+        { "text": "管轄の経済産業局（届出）と表示内容を確認 — 消費者庁相談窓口で事前に問い合わせ", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" },
+        { "text": "応募要項に共同懸賞である旨・各社名称を明記", "kind": "checklist" }
+      ]
+    },
+    {
+      "id": "P05",
+      "audience": ["consumer"],
+      "label": "来場無料の展示会で高額ノベルティを先着配布",
+      "defaultLevel": "red",
+      "summary": "来場特典が総付景品に該当する場合、取引額に対する上限が厳しく適用されることがあります。",
+      "action": "配布方法と景品額を見直してください。",
+      "nextSteps": [
+        { "text": "先着・全員配布を抽選や低額ノベルティに変更できないか検討", "kind": "checklist" },
+        { "text": "1人あたり景品額が総付上限（10分の2等）以内か再計算", "kind": "checklist" },
+        { "text": "消費者庁へ来場特典の扱いを相談", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P06",
+      "audience": ["consumer"],
+      "label": "SNS無料応募だが景品利用に購入が必要（割引券等）",
+      "defaultLevel": "yellow",
+      "summary": "景品の利用に購入が必要な場合、実質的な取引条件として整理が必要です。",
+      "action": "応募・当選・利用の各段階の条件表示を確認してください。",
+      "nextSteps": [
+        { "text": "応募時・当選通知・利用時の3段階それぞれに、購入条件を明記", "kind": "checklist" },
+        { "text": "割引券の最低利用条件・有効期限を告知に記載", "kind": "checklist" },
+        { "text": "消費者庁 Q&A で類似事例を確認", "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/", "kind": "link" }
+      ]
+    },
+    {
+      "id": "P07",
+      "audience": ["consumer"],
+      "label": "景品総額がキャンペーン売上見込みに対して大きい",
+      "defaultLevel": "yellow",
+      "summary": "一般懸賞では、景品総額が売上予定額の一定割合を超えるとリスクが高まります。",
+      "action": "売上見込みと景品総額のバランスを再計算してください。",
+      "nextSteps": [
+        { "text": "左フォームの「売上見込み」「景品総額」を更新し、2%以内に収まる案を試算", "kind": "checklist" },
+        { "text": "当選人数・景品単価・品目のどれを削るか社内で決定", "kind": "checklist" },
+        { "text": "消費者庁へ総額上限の考え方を相談", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P08",
+      "audience": ["consumer"],
+      "label": "Amazonギフト券・現金・金券を景品にする",
+      "defaultLevel": "yellow",
+      "summary": "金券・現金に近い景品は、表示・提供方法によって追加の論点が生じることがあります。",
+      "action": "景品の種類と表示方法を整理し、専門家確認を検討してください。",
+      "nextSteps": [
+        { "text": "景品名・金額・提供方法（電子/code/物理）を1枚にまとめ、社内法務・コンプライアンスに共有", "kind": "checklist" },
+        { "text": "応募要項・当選通知・SNS告知に、金券類である旨と利用条件を明記", "kind": "checklist" },
+        { "text": "消費者庁「景品表示法Q&A」で金券・前払式に関する解説を確認", "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/", "kind": "link" },
+        { "text": "キャンペーン実施前に消費者庁表示対策課へ相談（03-3507-8800 · 平日9:30–18:15）", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" },
+        { "text": "顧問弁護士がいれば、告知文案と景品提供フローのレビューを依頼", "kind": "checklist" }
+      ]
+    },
+    {
+      "id": "P09",
+      "audience": ["consumer"],
+      "label": "「○万円相当」の根拠が弱い",
+      "defaultLevel": "yellow",
+      "summary": "景品の価額表示は、根拠のない誇大表示にならないよう注意が必要です。",
+      "action": "価額の算定根拠（定価・実勢価格等）を整理してください。",
+      "nextSteps": [
+        { "text": "「○万円相当」の根拠（メーカー希望小売価格・直近の販売実績等）を資料化", "kind": "checklist" },
+        { "text": "告知から根拠のない「相当」表現を削除または修正", "kind": "checklist" },
+        { "text": "消費者庁 Q&A で価額表示の解説を確認", "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/", "kind": "link" }
+      ]
+    },
+    {
+      "id": "P10",
+      "audience": ["consumer"],
+      "label": "「ハズレなし」なのに実質価値の低いデジタル景品ばかり",
+      "defaultLevel": "yellow",
+      "summary": "実質価値と表示のバランスが、優良誤認表示の論点になることがあります。",
+      "action": "景品内容と表示文言の整合を確認してください。",
+      "nextSteps": [
+        { "text": "各景品の実質価値（取得コスト・利用条件）を一覧化", "kind": "checklist" },
+        { "text": "「ハズレなし」「必ず当たる」等の表現が実態と合うか法務と確認", "kind": "checklist" },
+        { "text": "消費者庁 相談窓口で表示の妥当性を問い合わせ", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P11",
+      "audience": ["internal"],
+      "label": "社内行事なのに社外チャネルに概要を誤公開した／しそう",
+      "defaultLevel": "yellow",
+      "summary": "社内イベントを一般向けキャンペーンと誤認させる公開は、景表法の適用範囲を広げるリスクがあります。",
+      "action": "公開範囲・告知チャネルを社内限定にしてください。",
+      "nextSteps": [
+        { "text": "社外に見えるチャネル（公式SNS・HP・プレス）から社内抽選の告知を削除または非公開化", "kind": "checklist" },
+        { "text": "社内メール・Slack・イントラのみに告知範囲を限定", "kind": "checklist" },
+        { "text": "一般向けキャンペーンとして公開する場合は「一般向け」モードで再チェック", "kind": "checklist" }
+      ]
+    },
+    {
+      "id": "P12",
+      "audience": ["consumer"],
+      "label": "Aコース・Bコースなど景品が複数あって、別々の当選人数で抽選したい",
+      "defaultLevel": "yellow",
+      "summary": "コースごとに景品・当選人数・応募条件が異なる場合、ルールの明示と抽選記録の分離が必要です。1つの名簿に混ぜて1回だけ回すと説明が難しくなりやすいパターンです。",
+      "action": "コース別の応募要項・当選人数・景品額を整理し、抽選はコースごとに分けて記録してください。",
+      "nextSteps": [
+        { "text": "コースごとに「景品名・当選人数・応募条件・景品最高額」を1行ずつ表にまとめる", "kind": "checklist" },
+        { "text": "Excel/スプシでコース別シートに名簿を分割し、fair-draw でコースごとに抽選（監査PDFもコース別）", "kind": "checklist" },
+        { "text": "応募要項に「コースは抽選プールが別」「複数コースへの重複当選の可否」を明記", "kind": "checklist" },
+        { "text": "景品総額・売上見込みはコース合算で左フォームの数値も更新", "kind": "checklist" }
+      ]
+    },
+    {
+      "id": "P13",
+      "audience": ["consumer"],
+      "label": "XもIGもフォロー＋リポストすると当選確率2倍（口数2倍）にしたい",
+      "defaultLevel": "yellow",
+      "summary": "応募口数の差（加重）は、告知内容と抽選名簿の作り方を一致させないと「不公平では？」と問われやすいパターンです。",
+      "action": "応募要項に口数条件を明記し、名簿上も口数分の行で表現してから抽選してください。",
+      "nextSteps": [
+        { "text": "応募要項に「1条件達成=1口」「X+IG両方=2口」など口数ルールを平易に記載", "kind": "checklist" },
+        { "text": "条件確認後、2口の人は名簿に同じ@を2行（重複行）で記載 — fair-draw は重複行をそのまま抽選に含む", "kind": "checklist" },
+        { "text": "名簿パネルの「重複」件数と Excel 行数を突合（空行と重複は別表示）", "kind": "checklist" },
+        { "text": "監査PDFに「口数は名簿の重複行で表現」と運用メモを添える（社内説明用）", "kind": "checklist" }
+      ]
+    },
+    {
+      "id": "P14",
+      "audience": ["consumer"],
+      "label": "購入金額・購入点数に応じて応募口数が増える",
+      "defaultLevel": "yellow",
+      "summary": "取引額に応じた口数設計は、景品法の上限算定（取引額の見方）と公平性の説明の両方が論点になります。",
+      "action": "口数ルールと取引額の算定根拠を1枚にまとめ、景品上限・総額の再試算をしてください。",
+      "nextSteps": [
+        { "text": "「5,000円ごとに1口」等のルールと、レシート合算・対象商品の定義を応募要項に明記", "kind": "checklist" },
+        { "text": "左フォームの「取引最高額」は口数算定の基準となる1口あたりの取引目安を入力", "kind": "checklist" },
+        { "text": "口数分だけ名簿に同一IDを重複行で記載（または口数列付きExcelから展開）", "kind": "checklist" },
+        { "text": "景品総額が売上見込み2%以内か再計算（P07も確認）", "kind": "checklist" },
+        { "text": "必要なら消費者庁へ口数設計と上限の考え方を相談", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+      ]
+    },
+    {
+      "id": "P15",
+      "audience": ["consumer"],
+      "label": "友達紹介・Wチャンスなどで追加の抽選口や二次抽選がある",
+      "defaultLevel": "yellow",
+      "summary": "段階的な応募・追加口数は、参加者が条件を理解しにくく、総額・表示の論点も増えやすいパターンです。",
+      "action": "各段階の条件・締切・口数を応募要項に分割して明記し、抽選記録も段階ごとに残してください。",
+      "nextSteps": [
+        { "text": "一次応募・紹介ボーナス・Wチャンスを表に分け、各段階の締切と口数を記載", "kind": "checklist" },
+        { "text": "段階ごとに名簿を分け、fair-draw を回数分実行（シード・PDFも段階別）", "kind": "checklist" },
+        { "text": "紹介特典が実質的な新規登録・課金条件なら P03 も確認", "kind": "checklist" },
+        { "text": "「ハズレなし」等の表現が実態と合うか P10 も確認", "kind": "checklist" }
+      ]
+    }
+  ]
+}

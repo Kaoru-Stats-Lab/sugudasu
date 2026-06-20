@@ -1,0 +1,65 @@
+{
+  "version": "2026-06-17",
+  "sources": [
+    { "label": "景品表示法", "url": "https://laws.e-gov.go.jp/law/337AC0000000134" },
+    { "label": "内閣府令", "url": "https://laws.e-gov.go.jp/law/421CO0000000218" },
+    { "label": "告示等", "url": "https://laws.e-gov.go.jp/law/428M60000002006" }
+  ],
+  "consultationResources": [
+    {
+      "label": "消費者庁 — 景品表示法 相談窓口",
+      "url": "https://www.caa.go.jp/policies/policy/representation/contact",
+      "note": "事業者の企画相談 · 表示対策課 03-3507-8800（平日9:30–18:15）"
+    },
+    {
+      "label": "景品表示法 Q&A（消費者庁）",
+      "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/",
+      "note": "事例・解説の確認用"
+    },
+    {
+      "label": "景品表示法 解説トップ（消費者庁）",
+      "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/law/",
+      "note": "制度の概要"
+    }
+  ],
+  "referenceGuides": [
+    {
+      "label": "総付景品・懸賞ではない提供（消費者庁 Q&A）",
+      "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/premium/not_lotteries",
+      "note": "先着・全員配布が総付か懸賞か、上限の公式目安（Q109–Q116 等）。ページ末に電話番号はない → 上の「相談窓口」へ"
+    }
+  ],
+  "numericNextSteps": {
+    "general-lottery-max": [
+      { "text": "景品最高額を下げる、または当選人数を減らして総額を抑える", "kind": "checklist" },
+      { "text": "取引最高額の見積もりを見直し、上限計算の前提を確認", "kind": "checklist" },
+      { "text": "実施前に消費者庁表示対策課へ相談（03-3507-8800）", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+    ],
+    "general-lottery-total": [
+      { "text": "景品総額を売上見込みの2%以内に収まるよう再計算", "kind": "checklist" },
+      { "text": "当選人数・景品単価・品目数のどれを調整するか社内で決める", "kind": "checklist" },
+      { "text": "消費者庁 相談窓口で総額上限の考え方を確認", "url": "https://www.caa.go.jp/policies/policy/representation/contact", "kind": "consult" }
+    ],
+    "lump-sum-max": [
+      { "text": "「全員・先着」配布なら総付景品の上限（1,000円未満200円／以上は取引額の10分の2）に合わせて景品額を下げる", "kind": "checklist" },
+      { "text": "抽選に切り替えられるか、配布対象を見直す", "kind": "checklist" },
+      { "text": "消費者庁「総付景品について」Q&A を確認", "url": "https://www.caa.go.jp/policies/policy/representation/fair_labeling/faq/premium/not_lotteries", "kind": "link" }
+    ],
+    "paid-no-tx": [
+      { "text": "左フォームの「取引最高額」に、応募・購入条件となる最高価格を入力", "kind": "checklist" },
+      { "text": "入力後にもう一度「一次チェックを実行」", "kind": "checklist" }
+    ]
+  },
+  "generalLottery": {
+    "transactionThresholdYen": 5000,
+    "maxPrizeUnderThreshold": { "multiplier": 20 },
+    "maxPrizeFromThreshold": { "capYen": 100000 },
+    "totalPrizeCapRatio": 0.02
+  },
+  "lumpSumPremium": {
+    "transactionThresholdYen": 1000,
+    "underThresholdCapYen": 200,
+    "fromThresholdRatio": 0.2
+  },
+  "disclaimer": "本ツールは法令の要約・一次スクリーニングです。最終判断は顧問弁護士・消費者庁の個別相談等に委ねてください。法的助言ではありません。"
+}

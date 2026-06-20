@@ -1,0 +1,85 @@
+/**
+ * group-split — 制約テキスト欄の件数集計 · 追記ヘルパ
+ */
+
+export const CONSTRAINT_SOFT_WARN = {
+  bundles: 5,
+  pairs: 10,
+  fixed: 10,
+};
+
+/**
+ * @param {string} bundlesText
+ * @param {string} fixedText
+ * @param {string} pairsText
+ */
+export function countNameConstraints(bundlesText, fixedText, pairsText) {
+  const bundles = String(bundlesText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const fixed = String(fixedText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const pairs = String(pairsText ?? '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return { bundles: bundles.length, fixed: fixed.length, pairs: pairs.length };
+}
+
+/**
+ * @param {{ bundles: number, fixed: number, pairs: number }} counts
+ */
+export function formatConstraintSummary(counts) {
+  const parts = [];
+  if (counts.bundles) parts.push(`固定班 ${counts.bundles}件`);
+  if (counts.fixed) parts.push(`固定配置 ${counts.fixed}件`);
+  if (counts.pairs) parts.push(`離すペア ${counts.pairs}件`);
+  if (!parts.length) return '名前ルール: 未設定（属性条件だけでも実行できます）';
+  let msg = `名前ルール: ${parts.join(' · ')}`;
+  const warns = [];
+  if (counts.bundles > CONSTRAINT_SOFT_WARN.bundles) {
+    warns.push(`固定班が${counts.bundles}件（目安${CONSTRAINT_SOFT_WARN.bundles}件以下）`);
+  }
+  if (counts.pairs > CONSTRAINT_SOFT_WARN.pairs) {
+    warns.push(`離すペアが${counts.pairs}件（目安${CONSTRAINT_SOFT_WARN.pairs}件以下）`);
+  }
+  if (warns.length) msg += ` — ${warns.join(' · ')}`;
+  return msg;
+}
+
+/**
+ * @param {string} text
+ * @param {string} line
+ */
+export function appendConstraintLine(text, line) {
+  const t = String(text ?? '').trim();
+  const l = String(line ?? '').trim();
+  if (!l) return t;
+  return t ? `${t}\n${l}` : l;
+}
+
+/**
+ * @param {string} a
+ * @param {string} b
+ */
+export function formatPairLine(a, b) {
+  return `${String(a).trim()}, ${String(b).trim()}`;
+}
+
+/**
+ * @param {string[]} members
+ */
+export function formatBundleLine(members) {
+  return members.map((m) => String(m).trim()).filter(Boolean).join(', ');
+}
+
+/**
+ * @param {string} name
+ * @param {number} groupNum
+ */
+export function formatFixedLine(name, groupNum) {
+  return `${String(name).trim()}=${Math.floor(Number(groupNum) || 0)}`;
+}

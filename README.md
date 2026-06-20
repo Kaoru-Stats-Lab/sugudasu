@@ -55,6 +55,8 @@ python -m http.server 8080
 | [docs/DESIGN_GUIDELINE.md](docs/DESIGN_GUIDELINE.md) | トンマナ・印刷・コンポーネント規約（実装の正本） |
 | [docs/PRODUCT_UX_AUDIT.md](docs/PRODUCT_UX_AUDIT.md) | **PdM/UX 監査（STEP1〜5・チェックリスト）** |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | 運用コマンド早見表（何をする時に何を実行するか） |
+| [docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md](docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md) | **景品チェック＋公平抽選（未実装 · 別Agent引き継ぎSSOT）** |
+| [docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md](docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) | **アイディア20+10 評価台帳・GO/HOLD/OUT ジャッジ基準** |
 | [docs/prompts/](docs/prompts/) | 各ツールの要件プロンプト履歴（HTML には埋め込まない） |
 
 ## デプロイ（Cloudflare Pages 推奨）

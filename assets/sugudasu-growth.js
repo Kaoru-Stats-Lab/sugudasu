@@ -1,5 +1,5 @@
 /**
- * SUGUDASU グロース — ブックマーク誘導 · X シェア（既存アカウントの intent 起動）
+ * SUGUDASU グロース — ブックマーク誘導 · ツール結果の X シェア（intent 起動）
  * docs/BACKLOG.md §2-5 A2 / A4
  */
 (function (global) {
@@ -8,24 +8,6 @@
   const LS_DISMISS = 'sg_bookmark_banner_v1';
   const LS_SUCCESS = 'sg_tool_success_count_v1';
   const LS_VISITS = 'sg_visit_count_v1';
-
-  const OPERATOR_X_POSTS = {
-    launch: [
-      'ログイン不要の無料ビジネスツール集「SUGUDASU」を独自ドメインで公開しました。',
-      '',
-      '・請求書 / 手取り逆引き領収書',
-      '・割り勘（合コン固定額モードあり）',
-      '・シフト表の自動生成 など',
-      '',
-      'データはブラウザ内だけ。改善要望はサイトから送れます。',
-      '',
-      'https://sugudasu.com/',
-      'https://sugudasu.com/updates.html',
-    ].join('\n'),
-    warikan: '飲み会の割り勘、幹事が得したり損したりしない透明精算ツール。合コンの固定額モードもある。\n\n',
-    invoice: 'インボイス対応の請求書をブラウザだけで。ログイン不要・データは外に出ません。\n\n',
-    receipt: '手取りジャストの金額から領収書を逆算。フリーランスの支払い確認に。\n\n',
-  };
 
   function siteUrl(path) {
     const p = path || global.location.pathname;
@@ -147,20 +129,6 @@
     openXIntent(text, toolUrl('receipt.html'));
   }
 
-  async function copyOperatorPost(key) {
-    const text = OPERATOR_X_POSTS[key];
-    if (!text) return false;
-    return copyText(text);
-  }
-
-  function openOperatorPost(key) {
-    const text = OPERATOR_X_POSTS[key];
-    if (!text) return;
-    const lines = text.split('\n').filter((l) => !/^https?:\/\//.test(l.trim()));
-    const urls = text.match(/https?:\/\/\S+/g) || [];
-    openXIntent(lines.join('\n').trim(), urls[0] || siteUrl('/'));
-  }
-
   global.SUGUDASU_GROWTH = {
     init,
     recordToolSuccess,
@@ -169,11 +137,8 @@
     shareXWarikan,
     shareXInvoice,
     shareXReceipt,
-    copyOperatorPost,
-    openOperatorPost,
     copyText,
     siteUrl,
     toolUrl,
-    OPERATOR_X_POSTS,
   };
 })(window);

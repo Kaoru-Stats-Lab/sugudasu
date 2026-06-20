@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-17（Gemini グロース MECE · PR/ゼロイチマーケ · `sugudasu.com` 本番）  
+更新: 2026-06-19（§1-11 T11 group-split 企画FIX · §8-11 · webp-to-jpg）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -89,12 +89,139 @@
 - [x] 主CTA `.sg-btn-primary` へ寄せ: `report` · `reverse` · `warikan` · `present`（他は段階適用可）
 - **ペルソナ・3層アクション・設計根拠の正本:** [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) §0–§3.3（本 Backlog には重複記載しない）
 
-### 1-7. 共通ヘッダー再発防止（2026-06-19）
+### 1-8. ツール開発段階ラベル（アルファ / ベータ / ガンマ / 安定）（2026-06-19）
 
-- [x] `data-sg-title` + `shell.js` 自動マウント（inline `mount` 廃止）
-- [x] `scripts/verify-chrome-mount.mjs` を `build:pages` に組込み
-- [x] `build-pages` で `defer` / inline `mount` をビルド時拒否
-- **インシデント正本:** [`docs/notes/CHROME_HEADER_GUARDRAILS.md`](notes/CHROME_HEADER_GUARDRAILS.md)
+- **SSOT:** `data/tool-registry.json`（段階・バージョン・Backlog 根拠の `statusNote`）
+- **表示:** `assets/sugudasu-shell.js` が `data-sg-tool-id` を読み、ヘッダー直下にバッジ＋注記を自動挿入
+- **段階の目安（Backlog 整合）**
+  - **beta** — P0/P1 品質担保が残る（`invoice` · `shift` · `fair-draw`）
+  - **gamma** — 主要機能済・細部・収益導線が残る（大半の実務ツール）
+  - **stable** — 法務固定ページ等（**バッジは出さない** · `devBadge: false`）
+  - **alpha** — 内部プレビュー（`brand-logo-preview`）
+- [x] 実務ツール（hub + 9ツール + lottery + updates）に `data-sg-tool-id` 付与
+- [x] 法務・混同防止ページ（privacy / terms / disclaimer / not-a-car）はバッジ非表示
+- [ ] 段階昇格時は registry の `version` / `stage` を更新し `changelog.json` に追記
+
+### 1-9. `fair-draw.html` — 運用UX・証跡・Phase 0 拡張（2026-06-19）
+
+**registry:** `fair-draw` **v1.5.1** · **beta** · `data/changelog.json` 同日エントリ4件  
+**SSOT:** [`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md) · 意思決定は **§8-10** · タスク正本 **§15**
+
+#### 背景（なぜこのスプリントか）
+
+- 抽選結果画面が **発表・画面共有向け**（大きいカード表示）に寄っており、幹事の本番作業（Excel貼付 · DM · 発送リスト）とズレていた。
+- 監査PDF・JSONだけでは **「どの名簿のスナップショットか」** が第三者に再現しづらい。Excel `RAND()` から卒業しても、あとから「その回の名簿全文」が残らないと説明が弱い。
+- マーケ現場では **複数キャンペーンを並行** することが多く、証跡ファイル名・PDF見出しに **どのCPか** が無いとフォルダが混線する。
+- Phase 0 は P01–P11 までだったが、実務で多い **複数コース · 口数増 · Wチャンス** は抽選UIを複雑化せず **FAQ＋名簿運用** で逃がす方針が §15 と整合。
+
+#### 実施済み（Done）
+
+- [x] **結果UI — 運用ファースト**
+  - 賞帯あり → **2列表**デフォルト + **TSVコピー**（Excel貼付向け）
+  - 人数のみ → **1行1名** textarea
+  - 「発表・画面共有用（大きい表示）」**削除**（PPT/Zoom共有は運営側。製品境界 §15-4）
+  - 証跡バー: **キャンペーン · 実施者 · 日時 · シード · 名簿SHA-256** 常時表示
+  - 上司・法務向け長文は **折りたたみ** のみ
+- [x] **名簿統計** — 空行と重複を **別カウント**（`analyzeRosterStats()`）
+- [x] **賞帯行UI修正** — flex+`width:100%` で左セルが潰れる問題 → grid + 列見出し（`sugudasu.css`）
+- [x] **Phase 0 拡張** — P12–P15 · `campaignFormats` +4（`prize-law-patterns.json` · `prize-law-campaign-meta.json`）
+- [x] **抽選コア** — `runBandDraw()` · 単体テスト **23本**（`scripts/prize-law-eval.test.mjs`）
+- [x] **証跡3点セット（Phase 1）**
+  - 必須: **キャンペーン名（識別用）** · **抽選実施者**（自己申告 · SSOなし）
+  - 実行時 **名簿 `.txt` 自動DL**（ヘッダ: CP名 · 実施者 · 指紋 · シード · 名簿全文）
+  - ファイル名: `sugudasu-roster-{cpSlug}-{date}-{sha8}.txt` · JSON も同 slug
+  - 手動DL: 監査PDF · 抽選JSON · 名簿再DL
+  - Phase 0「キャンペーン概要」1行目 → 抽選タブ **空時のみ** 自動補完（`syncDrawCampaignFromPhase0()`）
+  - **実施者**のみ `sessionStorage` 復元 · **CP名は復元しない**（並行CPで前回名が残らない）
+- [x] **運用コピー** — メインコピー · IDのみ（賞帯時）· Slack連絡文
+- [x] **案C** — 1URL `?tab=check|draw` · Hub 2カード
+
+#### 未着手 / 任意（§15-6 参照）
+
+- [ ] 3点セット **単一ZIP** 一括DL
+- [ ] 検証タブ（JSON再計算一致 · P2-2）
+- [ ] `LOTTERY_PRIZE_LAW_TOOL_SPEC.md` へ Phase1 証跡節の正式追記（campaignLabel · 3点セット）
+- [ ] FAQ JSON-LD にキャンペーン識別の1問追加
+
+### 1-10. `normalize.html` — T03 文字列正規化 Phase A FIX（2026-06-19）
+
+**registry:** `normalize` **v1.0.0** · **beta** · SSOT: `docs/notes/NORMALIZE_TEXT_TOOL_SPEC.md`
+
+#### 背景
+
+- Tier S（P-B）· Excel列コピーの半角/空白整理。**おっちょこ事故**（行数ズレで貼り戻し失敗）を **Before/After 行数** で防ぐ。
+- fair-draw 名簿前処理としても使えるが、**単体ツールとして FIX クローズ**（新規大型開発は T09 等へ）。
+
+#### 実施済み（Phase A · Done）
+
+- [x] 用途プリセット3 · 500行 cap · 行数一致チェック · コピーゲート
+- [x] `text-normalize.js` + 単体テスト · 貼付スキャン · sg-copy-feedback
+- [x] hub · ナビ · changelog · FAQ **6問 + JSON-LD 同期**（2026-06-19）
+
+#### 意図保留 / Phase B
+
+- [ ] ページ内「このあと」回遊 — **削除** · §2-4 横断CTA待ち
+- [ ] Phase B（v1.1）: 差分ハイライト · 変更内訳 · ヘッダー行警告 · 制御文字行番号
+- [ ] **Zenn #12** — Gemini事故カタログ × 他サービスあるある解消（[`ZENN_NORMALIZE_DRAFT_MEMO.md`](notes/ZENN_NORMALIZE_DRAFT_MEMO.md)）
+
+### 1-11. `group-split.html` — T11 グループ分け（**Phase A/B/C 実装済** · UX改善継続）
+
+**registry:** `group-split` · **beta** v1.2.x  
+**SSOT:** [`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`](notes/GROUP_SPLIT_TOOL_SPEC.md)  
+**Tier:** S（`PRODUCT_IDEA_JUDGMENT_LEDGER.md` T11）
+
+#### 実装済（2026-06-20）
+
+- [x] Phase A — 均等割り · TSV/Slack · シード再現
+- [x] Phase B — 固定班 · 固定配置 · 離すペア · 定員超過表示
+- [x] Phase C — Excel複数列 · 属性2〜3 · 分散/各組必須 · **cap 250名**
+- [x] **UX C1** — Step ①〜④ · 列マッピング優先の説明 · 制約件数サマリ · 名簿ピッカー（固定班/固定/離すペア）· preset「各組に役員1名」
+
+#### UX / 機能 Backlog（group-split）
+
+| 優先 | 項目 | 状態 |
+|------|------|------|
+| P0 | 制約欄プレースホルダー · 列マッピング優先の1行 | [x] C1 |
+| P1 | 名簿から選ぶピッカー（手打ち廃止） | [x] C1 |
+| P1 | preset · Step番号 · 制約件数サマリ | [x] C1 |
+| P1 | FAQ 2層化（班分け基本 + ツール）· `data/group-split-faq.json` | [x] C1 |
+| P2 | 制約 Excel インポート | [ ] |
+| **見送り** | 年齢バランス · 性別比の数値目標 · 属性上限/組 | ソルバ外 · SPEC に明記 |
+| **見送り** | ドラッグ卓割り · 100%最適保証 | スコープ外 |
+
+#### 訴求 · SEO · Resilience（2026-06-20 整理）
+
+**プロダクトの Resilience（既存機能 · UI にコピー増やさない）**
+
+| シーン | ツールの答え |
+|--------|-------------|
+| 開始直前の欠席 | 名簿から行削除 → 再実行 |
+| 班だけ組み直し | 再シャッフル（条件維持） |
+| 会場で最新版共有 | Slack/告知文を再コピー |
+| 説明責任 | シード + 名簿指紋 |
+
+**検索意図との役割分担**
+
+| 層 | 例キーワード | 役割 | 載せ方 |
+|----|-------------|------|--------|
+| **A 獲得（正面）** | 研修 グループ分け · ブレイクアウト 班分け · ハッカソン チーム分け · Excel 班分け | title · meta 主軸 | 済 |
+| **B 安心（ロングテール）** | 研修 班分け 欠席 調整 · グループ分け やり直し | 刺さるが検索入口には弱い | meta 1句 · FAQ · Zenn 後半 |
+| **C 見送り** | Zoom ブレイクアウト自動 · 出欠管理 · 座席リアルタイム | スコープ外 | 追わない |
+
+**方針:** 「班分けツール」で検索に載せ、**イベント直前の再編**は meta + FAQ + 記事で伝える（ページ内コピー乱立はしない）。  
+**参照:** `group-split-gemini-research-RESULT.md` §5 · `data/group-split-faq.json` 欠席 FAQ
+
+#### 背景（なぜやるか）
+
+- **主ペルソナ:** 人事 · 研修担当 · **イベント幹事** — ブレイクアウト · 67名級 Excel 名簿。
+- **Pain:** 属性分散は列マッピング · 固定班/離すペアは少数例外 · **当日欠席で班の組み直し**。
+- **差別化:** 非送信 · 属性条件 · TSV/Slack · シード再現 · **名簿貼り直しで即再構成**（投影ルーレット演出とは別目的）。
+
+#### Agent 着手順（新規）
+
+1. `GROUP_SPLIT_TOOL_SPEC.md` §4b · §7c
+2. `npm run test:group-split` · `build:pages`
+3. UX 変更は **列マッピング = メイン · 名前ルール = 任意** を崩さない
 
 ---
 
@@ -164,7 +291,8 @@
 
 **役割:** 「サイトを知ってもらう」施策と「知った後に稼ぐ」施策を **漏れなく・重複なく** 分解し、実装 TODO に落とす。  
 **フェーズ:** `sugudasu.com` 本番 · AdSense サイト承認待ち  
-**SUGUDASU の構造的特性:** ログイン不要 · 単機能ツール · 高インテント（今すぐ計算/書類）· ローカル完結 → **SEO + リピート + 結果シェア** が最もレバレッジが高い。
+**SUGUDASU の構造的特性:** ログイン不要 · 単機能ツール · 高インテント（今すぐ計算/書類）· ローカル完結 → **SEO + リピート + 結果シェア** が最もレバレッジが高い。  
+**外部ベンチマーク（サブスク→Web転用）:** `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` §2
 
 ---
 
@@ -202,6 +330,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | **A4 直接（Direct）** | ブックマーク・再訪 | ホーム画面追加 · リピート |
 
 ##### A1 検索（Pull）— SEO
+
+- **ポータル件数表記 · ツール追加時 SEO 手順（Agent SSOT）:** **§8-11**
 
 - [x] **P0** Search Console · `sugudasu.com` プロパティ登録（2026-06-17 完了）
 - [ ] **P1** ツール別ロングテール（title / h1 / リード / FAQ = 検索質問文）
@@ -474,7 +604,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 7. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
 8. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
 9. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
-10. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）
+10. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）  
+11. **T11 `group-split.html`** — 研修 · ハッカソン向けグループ分け Phase A（SSOT: `GROUP_SPLIT_TOOL_SPEC.md` · Backlog **§1-11**）
 
 ### P2（通常優先）
 
@@ -492,6 +623,13 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ## 7) 参照（SSOT）
 
+- **`docs/notes/SUGUDASU_OOPS_GUARDRAILS.md`** — おっちょこ事故カタログ · 横断ガードレール Phase A/B/C
+- **`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`** — グループ分け T11（**企画FIX · 未実装** · 主=人事研修 · Backlog **§1-11**）
+- **`docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md`** — **RevenueCat SOSA 2024–2026 調査ログ + SUGUDASU 転用判断（GTM · 初回UX · 収益）**
+- **`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`** — normalize Zenn ネタ（Gemini OOPS × 他サービスあるある解消 · #12）
+- **`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`** — fair-draw Zenn 記事ネタ備忘録
+- **`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`** — 景品チェック＋公平抽選（**実装中 · fair-draw v1.5.1** · Backlog **§1-9 · §15 · §8-10**）
+- **`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`** — **アイディア評価台帳・ジャッジ基準（SUGUDASU適合 vs 市場）**
 - `docs/PRODUCT_UX_AUDIT.md`
 - `docs/DESIGN_GUIDELINE.md`
 - `README.md`
@@ -501,7 +639,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - `data/changelog.json`（更新履歴 SSOT）
 - **§2-5** AdSense 逆算 · グロースマーケ MECE（正本）
 - **§13** PageSpeed Insights ベースライン（2026-06-17）
-- **§14** ゼロイチ認知マーケ（PR · 紹介 · UGC）
+- **§8-11** ポータル SEO — ツール件数表記 · 新規ツール追加時 Agent チェックリスト（2026-06-19）
 - `docs/PR_TIMES_LAUNCH_2026.md`（PR TIMES 入稿原稿 · 代表カオル）
 - `docs/prompts/grok-pr-times-review.md`（Grok推敲 5パス）
 - `docs/prompts/pr-times-gemini-meta.md`（Gemini PRメタ解析 · 書き直し禁止）
@@ -573,6 +711,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - 新規機能は「Phase」で分割し、リスクの高い案は後段へ逃がす。
 - **更新ルール**
   - 大きい方針変更時はこの章（8章）に必ず「背景」と「思想」を追記する。
+- **ポータル件数・SEO**
+  - hub / not-a-car の **「◯選」「全Nツール」禁止** · ツール追加時の SEO 手順 → **§8-11**（Agent 必読）
 
 ### 8-6. フリマ送料比較は「4パターン固定値」で逃げる
 
@@ -600,8 +740,6 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - 手数最小の報告 = 文面コピー or mailto 1タップ
 
 ### 8-8. Invoice のコアコンピタンス仮説（2026-06-17）
-
-- **コアコンピタンス仮説**
   - `invoice.html` の核は、**無料**・**登録不要**・**ローカル完結**で、実務品質の帳票を短時間で PDF 化できること。
   - 共有URL型 SaaS（freee 等）と同一機能で競うのではなく、**作成速度**と**漏えい面積の小ささ**で勝つ。
   - 価値の中心は高度連携ではなく、**「今すぐ出せる」業務実行力**にある。
@@ -638,6 +776,122 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **本番ヘッダー表示（2026-06-17 修正）**
   - `sg-chrome` で白ヘッダー+ナビを一体 sticky · Tailwind フォールバックで CSS 未読込時も白地維持。
   - `build-pages` で `/assets/` 正規化 + `?v=` キャッシュバスター。手動 `dist` コピーは正本にしない。
+
+### 8-9. 景品チェック＋公平抽選 `fair-draw.html`（2026-06-17 企画FIX · 2026-06-19 実装中）
+
+- **決定**
+  - 新規 `tools/fair-draw.html`：Phase 0 景品表示法チェック → Phase 1 公平抽選。
+  - 対外キャンペーン **メイン** / 社内イベント **サブ**。
+  - **証跡PDFに景品名・金額を載せる（一択）**。ローカル生成・非送信を明記。
+  - 判定は `data/prize-law-rules.json` + IF のみ。**LLMで合法/違法を言わない**。
+- **背景**
+  - マーケは監査同席で Excel `RAND()`。再現性・説明責任が弱い。
+  - 法務なき企業は景表法を ChatGPT に聞きがち（根拠・証跡が弱い）。
+  - 法令本文（e-Gov）を一般社員に渡しても判断不能。
+- **思想**
+  - 揉め事パターン（P01〜P11）カードで「うちの企画これだ」と気づかせる。
+  - 断定せず黄/赤フラグ + 専門家確認推奨 + e-Govリンク。
+  - `present.html`（何を贈るか）と別ツール（配れるか・誰が当たるか）。
+- **SSOT:** `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` · タスクは **§15** · 2026-06-19 実装ログ **§1-9 · §8-10**
+- **評価台帳:** `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §6（本件の位置づけ）· §2（ジャッジ基準）
+
+### 8-10. fair-draw — 運用UX・証跡設計（2026-06-19）
+
+#### 8-10-1. 結果画面は「幹事の作業台」、発表演出はスコープ外
+
+- **決定**
+  - 当選者のデフォルト表示 = **表（賞帯別）または 1行1名リスト** + **TSV/テキストコピー**
+  - 「発表・画面共有用」の大きいカードUIは **実装しない**（削除済）
+- **背景**
+  - 幹事の直後作業は Excel · スプレッドシート · DM · 発送CSV。カードUIは見た目は良いが **コピー不能・列が足りない**。
+  - §8-9 / §15-4 で宴会演出は却下済み。大画面は Zoom/PPT/社内モニター = **運営の手元ツール**。
+- **思想**
+  - fair-draw の aha! は **監査PDF + 再現可能な数値（シード・指紋）** と **すぐ貼れるリスト**。
+  - 見せ場は製品が奪わない。
+
+#### 8-10-2. 証跡3点セット — 名簿txt · 監査PDF · 抽選JSON
+
+- **決定**
+  - 1回の抽選で残す正本 = **(1) 名簿スナップショット `.txt`** **(2) 監査PDF** **(3) 抽選結果 JSON**
+  - 抽選実行時に **(1) を自動DL**。PDF/JSON は幹事がボタンで保存（ZIP一括は P2）
+  - 必須メタ: **`campaignLabel`（キャンペーン識別名）** · **`conductedBy`（実施者）** · `rosterSha256` · `seedHex` · `drawnAtJst`
+- **背景**
+  - PDF/JSONだけでは **名簿全文** が第三者検証に足りない（ハッシュだけでは中身が無い）。
+  - Excel `RAND()` 問題の本質は「**いつ · 誰が · どの名簿で**」がセットで残らないこと。
+  - 統制SaaSではないため **操作者は自己申告**。それでも「誰が回したか」欄は空よりマシ。
+- **思想**
+  - サーバー送信なし · ローカル完結のまま **説明責任の最小セット** を1クリックで揃える。
+  - 法務向け長文は UI を圧迫しないよう **折りたたみ**。
+
+#### 8-10-3. キャンペーン識別名は必須 — 並行CP対応
+
+- **決定**
+  - 抽選タブ `in-draw-campaign` を **空では実行不可**
+  - ファイル名・PDF・JSON・名簿txtヘッダ・結果画面証跡バーに **必ず記録**
+  - Phase 0 のキャンペーン概要 **1行目** は抽選タブが空のときだけ自動補完
+  - **キャンペーン名は sessionStorage に保存しない**（前回CP名の誤混入防止）
+  - **実施者名のみ** sessionStorage 復元（同一担当の連続作業向け）
+- **背景**
+  - 景表法チェック（Phase 0）のスクショ・PDFは **CP仕様の証跡** だが、**どのCPの抽選結果か** は別問題。
+  - 幹事は GWキャンペーンと常設懸賞を **同週に並行** しがち。フォルダ名 `audit-1739...json` だけでは後から区別不能。
+- **思想**
+  - 「CPページのスクショ＝企画仕様の証跡」「**識別名＋名簿txt＝抽選実行の証跡**」を分け、両方そろえて保管する運用を促す。
+  - 自動復元で楽をさせるより **毎回明示入力** を優先（並行時の取り違え > 入力手間）。
+
+#### 8-10-4. P12–P15 — 抽選UIを増やさず FAQ＋名簿運用
+
+- **決定**
+  - 複数コース · 複数SNS口数 · 購入ティア · 紹介/Wチャンス = **Phase 0 パターン＋FAQ 5問**
+  - 加重口数 = 名簿 **重複行** · コース別 = **Excel分割 → fair-draw 複数回実行**
+  - `runBandDraw()` で賞帯別抽選は実装済み。自動口数計算・SNS API は **スコープ外**
+- **背景**
+  - X/IG のフォロー確認 · 口数2倍計算は **データ取得＋統制** が必要で SUGUDASU 境界外（§15 · FAQ）。
+  - UIにコース/口数エンジンを載せると invoice P0 と争う工数 · テスト爆発。
+- **思想**
+  - 「公平シャッフル＋証跡」に尖る。前処理は normalize / Excel / 幹事の手。
+
+### 8-11. ポータル SEO — ツール件数の表記方針（2026-06-19）
+
+**別 Agent 向け SSOT。** hub（`/`）· `not-a-car.html` · その他横断ページの **件数表記** と **ツール追加時の SEO** をここだけ見れば足りる。
+
+#### 8-11-1. 決定（採用）
+
+| やる | やらない |
+|------|----------|
+| **数字なし**の集合語: 「無料ビジネスツール**集**」「**ツール一覧へ**」 | `全9ツール` · `11選` · `10+` 等の **固定件数** |
+| 各ツール固有の title / description / FAQ（ロングテール） | hub title を registry 件数で **毎回自動更新**（工数対効果小 · 必須ではない） |
+| ツール追加時: hub カード1枚 · `tool-registry.json` · `sugudasu-shell.js` ナビ · `npm run build:pages` | ポータルだけ数字を増やして SEO を済ませる |
+
+- **正規 URL 例:** `webp-to-jpg.html` → `/webp-to-jpg`（機能名スラッグ。`imgconv` 等の内部略称は廃止）
+- **2026-06-19 実施:** `hub.html` の `10選`/`11選` 削除 · `not-a-car.html` の「全9ツール一覧へ」→「ツール一覧へ」 · hub カード「クスッとFAQあり →」削除（FAQ は各ツール内）
+
+#### 8-11-2. 背景（なぜ数字を付けないか）
+
+- ツール数は **増え続ける**（`data/tool-registry.json` が正本）。HTML に書いた数字は **すぐ陳腐化** し、ページ間で **9 / 10 / 11 と不一致** になった（2026-06 時点で既に発生）。
+- 「◯選」が CTR を上げるのは **50選・100選** など **厚み自体が訴求** のとき。SUGUDASU は **1ツール1尖り** — 件数は **圧倒的ではない**（2026-06 時点 ~10台）。
+- `10+` 等の緩い数字も、12〜15件規模では弱く、**増えるたびに直す** メンテだけ残る。
+- 競合（iLoveIMG / Convertio 等）との差は **件数ではなく** 各ツールの **非送信・用途**（例: webp-to-jpg のアップロードしない）で書く（Zenn 正本: `docs/notes/ZENN_WEBP_TO_JPG_DRAFT_MEMO.md`）。
+
+#### 8-11-3. 思想
+
+- **ポータル** = 回遊と信頼。**数字より「何ができるか」の列挙**（請求書 · 領収書 · WebP→JPG …）。
+- **SEO の主戦場** = **各ツール URL**（`invoice` · `webp-to-jpg` 等）。hub はブランド＋索引。
+- **件数をどうしても出す**場合のみ: 本文の列挙で足りる。title / OG に **N選** を戻さない（提督が「50超」等の明確な訴求点ができたときだけ §8 追記で再検討）。
+
+#### 8-11-4. Agent チェックリスト — 新規ツール追加時
+
+1. [ ] `tools/{slug}.html` 作成（**slug = 機能名**。略称のみの `imgconv` 型は禁止）
+2. [ ] `assets/{slug}.js`（ロジックがある場合 · HTML と **同名**）
+3. [ ] `data/tool-registry.json` にエントリ（`stage` · `statusNote`）
+4. [ ] `tools/hub.html` カード · `assets/sugudasu-shell.js` ナビ
+5. [ ] 当該 HTML の **title / meta description / OGP / FAQ JSON-LD**（**このツールの検索意図**）
+6. [ ] `data/changelog.json` 追記
+7. [ ] `npm run build:pages`（sitemap · `_redirects` 自動）
+8. [ ] **hub の title に件数を書かない** · **「全Nツール」リンク文言を増やさない**
+
+#### 8-11-5. 任意（P2 · 未採用）
+
+- ビルド時に registry 件数を hub **本文** にだけ注入（例: 「現在 ◯ 機能」）— **title は触らない**。提督が明示依頼するまで **実装しない**。
 
 ## 9) 新規提案: `receipt.html`（手取り逆引き・領収書）
 
@@ -945,6 +1199,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | **2** | マイクロインフルエンサー・ギブ型 | P2 | 有料PR禁止 · 10人リスト |
 | **2** | 国内ツールまとめ登録 | P2 | 週1ペース |
 | **2** | 知恵袋・Q&A（価値回答） | P2 | 月5件上限 |
+| **2** | **fair-draw GTM** 懸賞天国SNS掲載アカウント手動フォロー | P2 | §15-5 · スクレイピング禁止 |
 | **3** | Product Hunt | P2 | 国内記事 or X初動 **後** |
 | **3** | PR TIMES（有料） | **pending** | 原稿完成済 · §14-2 |
 
@@ -1033,3 +1288,92 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 投稿 | Zenn **予約投稿済み**（スクショ差し替え済） |
 | ドラフト | `docs/notes/ZENN_ARTICLE_01_DRAFT.md`（Zenn エディタが公開時の正本） |
 | 残 | 公開当日〜翌日 X で URL 共有 · Zenn URL 控え |
+
+---
+
+## 15) 新規ツール: 公平抽選チェック `fair-draw.html`（企画FIX · 実装中）
+
+**状態:** **beta · v1.5.1**（2026-06-19）— Phase 0 + Phase 1 コア実装済 · 運用UX・証跡3点セット反映済  
+**SSOT:** [`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md) — **別Agentは本ファイルを最初に読むこと。**  
+**実装ログ（背景付き）:** **§1-9** · **§8-10**
+
+### 15-1. 概要
+
+| 項目 | 内容 |
+|------|------|
+| ファイル | `tools/fair-draw.html`（URL `/fair-draw`） |
+| 価値 | Phase 0 景品チェック → Phase 1 公平抽選 → **監査証跡PDF** → **チャット発表用テキスト** |
+| ターゲット | マーケ部・幹事（一般キャンペーン **メイン** / 社内イベント **サブ** · 箱なし・スマホ即抽選） |
+| 提督FIX | PDFに景品名・金額を載せる（証跡）。LLM判定禁止。e-Govリンク常設。 |
+
+### 15-2. 実装タスク（チェックリスト）
+
+- [x] **P0-1** `data/prize-law-rules.json`（告示突合・`version` 付き）
+- [x] **P0-2** `data/prize-law-patterns.json`（P01〜**P15** 揉め事カード）
+- [x] **P0-3** `assets/prize-law-eval.js` + `scripts/prize-law-eval.test.mjs`（**23本** pass）
+- [x] **P0-4** `tools/fair-draw.html` Phase 0（景品チェック + PDF/JSON）
+- [x] **P1-1** Phase 1 公平抽選（Fisher-Yates + Web Crypto + シード表示 · `runBandDraw`）
+- [x] **P1-2** 赤フラグ時の「自己責任で続行」ゲート
+- [x] **P1-3** Hub · `sugudasu-shell.js` ナビ · `changelog.json` · OGP/FAQ
+- [ ] **P2-1** ~~宴会モード（演出UI）~~ — **スコープ外**（会場上映はチャット画面共有・PPT。公平抽選+証跡までが製品境界）
+- [x] **P1-4** 公平抽選完了後の **チャット・発表用テキスト** ワンタップコピー
+- [x] **P1-4b** 運用コピー強化 — TSV · 1行1名 · 連絡文 · 賞帯表デフォルト（§1-9）
+- [x] **P1-4c** 証跡3点セット — 名簿txt自動DL · 実施者必須 · **キャンペーン識別名必須**（§8-10）
+- [x] **P1-5** FAQ「統制システムではない」・Excel差・名簿指紋・監査なしでも使う意味（JSON-LD同期）
+- [x] **P1-5b** FAQ「Xフォロー・リプライ抽選の応募者名簿はどう集める？」— 本ツール外・手動/別ツール・名簿入力ヒント
+- [x] **P1-5c** FAQ 複数コース/口数/Wチャンス — 名簿重複行・Excel分割・複数回実行（P12–P15連動）
+- [ ] **P2-2** 検証タブ（JSON再計算一致）— 実装後、発表テキストに検証導線を追記可
+- [ ] **P2-2b** 3点セット **単一ZIP** 一括DL
+- [ ] **P2-3** Zenn 記事（景表法チェック / Excel抽選卒業）— ネタ備忘録 [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md)
+- [ ] **P2-4** `LOTTERY_PRIZE_LAW_TOOL_SPEC.md` Phase1 証跡節の正式追記（campaignLabel · 3点セット · 並行CP）
+
+### 15-6. 2026-06-19 スプリント — 運用UX・証跡（背景まとめ）
+
+**きっかけ:** 抽選結果が「当選者が見えない」「カード表示は発表向きで Excel/DM に使えない」という運用フィードバック。  
+**合意:** 製品は **幹事の作業台** に寄せ、**どのCPの証跡か** を必須メタに含める。
+
+| 論点 | 問題 | 決定 | 根拠 |
+|------|------|------|------|
+| 結果表示 | 大きいカードはコピー不能 | 表/1行1名 + TSV がデフォルト | §8-10-1 |
+| 発表演出 | Zoom/PPT需要 | 製品スコープ外 | §8-9 · §15-4 |
+| 名簿の残し方 | PDFだけでは全文が無い | 実行時 `roster-*.txt` 自動DL | §8-10-2 |
+| 誰が回したか | SSOなし | `conductedBy` 必須（自己申告） | 統制SaaSではない境界 |
+| どのCPか | 並行キャンペーンで混線 | `campaignLabel` 必須 · ファイル名に slug | §8-10-3 |
+| CP名の復元 | 前回名が残ると取り違え | **sessionStorage に保存しない** | 並行CP優先 |
+| 実施者の復元 | 同一担当の連続作業 | sessionStorage で復元可 | 入力手間削減 |
+| P12–P15 | コース/口数の複雑さ | FAQ + 名簿運用 · UI増やさない | §8-10-4 |
+
+**触った主ファイル:** `tools/fair-draw.html` · `assets/prize-law-eval.js` · `assets/sugudasu.css` · `data/prize-law-patterns.json` · `data/prize-law-campaign-meta.json` · `data/tool-registry.json` · `data/changelog.json`
+
+**確認:** `npm run build:pages` · `node scripts/prize-law-eval.test.mjs`（23 pass）· `http://localhost:8080/tools/fair-draw.html?tab=draw`
+
+### 15-5. GTM — 懸賞天国 SNS 掲載アカウントの手動フォロー（スクレイピング禁止）
+
+**方針:** [懸賞天国](https://www.knshow.com/list/) の SNS 別一覧は **懸賞・プレゼント企画を回している見込み客のインデックス**。自動収集は **しない**（ToU・メンテ・ブロック）。**ちまちま手動フォロー**でリーチを積む。
+
+| 入口 | URL | fair-draw との接続 |
+|------|-----|-------------------|
+| X | https://www.knshow.com/twitter/ | Step 0「SNSフォロー・リプライ → 抽選」 |
+| Instagram | https://www.knshow.com/instagram/ | 同上（ビジュアル懸賞幹事） |
+| LINE | https://www.knshow.com/line/ | チャット応募・公式懸賞 |
+| Facebook | https://www.knshow.com/facebook/ | メディア・店舗ページ懸賞 |
+
+- [ ] **P2-GTM-1** 手動フォローリスト（スプレ1枚: アカウント名 · 媒体 · フォロー日 · メモ）— **スクレイピング代替**
+- [ ] **P2-GTM-2** フォロー先へのたまの価値リプ（売り込みではなく幹事あるある · `fair-draw` はプロフィール固定）
+- [ ] **P2-GTM-3** 訴求1行例を X 固定 or ピンに置く:「SNS懸賞の景表一次チェック＋公平抽選PDF（統制システムではない）」
+
+**やらないこと:** サイトスクレイピング · 一斉DM · 「内部監査システム」訴求
+
+---
+
+- **P1（高）** — 店長個人の次機能候補。マーケ×監査ニッチで `present.html` と補完関係。
+- **2026-06-19:** P0–P1 コア + 運用UX・証跡3点セット **実装済**（§1-9）。残: 検証タブ · ZIP · Zenn · spec追記。
+
+### 15-4. 意思決定ログ（§8 追記分）
+
+- **背景:** マーケは監査同席で Excel `RAND()`。法務なき企業は景表法を ChatGPT に聞きがち。
+- **思想:** 法令本文は読ませない。ルール表＋揉め事カード＋証跡PDF。断定しない。
+- **2026-06-19 境界FIX:** 宴会演出は却下。スマホで箱・用紙代替＝抽選オペのデジタル化＋チャットコピー（上映はチャット画面共有）。Gemini案の検証URLは検証タブ後まで載せない。
+- **2026-06-19 GTM:** 懸賞天国の X/IG/LINE/FB 一覧は見込み客インデックス。手動フォロー（§15-5）。スクレイピングはしない。
+- **2026-06-19 運用UX・証跡:** 結果UIを幹事作業台に寄せ、証跡3点セット（名簿txt · PDF · JSON）+ キャンペーン識別名・実施者必須。詳細 **§8-10 · §1-9 · §15-6**。
+- **注意:** Gemini 案の総付上限「20%」は誤り。正しくは 1,000円以上で **10%**（実装時に告示再確認）。

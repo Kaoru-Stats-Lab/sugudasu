@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。源泉徴収税と消費税を自動逆算し、領収書作成に必要な金額をすばやく算出できます。","@type":"Answer"},"name":"手取り金額から税金を逆算できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。適格請求書の要件に合わせた記載項目に対応し、PDF保存や印刷も行えます。","@type":"Answer"},"name":"インボイス対応の領収書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。計算と作成はブラウザ内で処理されるため、外部サーバーへ送信されません。","@type":"Answer"},"name":"入力した金額データは安全ですか？","@type":"Question"},{"acceptedAnswer":{"text":"電卓で悩む時間が消えるので、周囲からは「数字に強い人」に見られがちです。実際はツール活用でも、結果として意思決定が速くなるのは大きな強みです。","@type":"Answer"},"name":"手取り逆算を一瞬で出したら、できすぎて怪しまれませんか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。中古車売買の手付金・残代金、整備費などの領収書を作成できます。適格請求書としての要件充足は取引内容に応じてご確認ください。","@type":"Answer"},"name":"中古車売買の領収書は作れますか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="手取り逆引き・領収書" data-sg-print="true"></div>
+<div id="sg-chrome-top" data-sg-title="手取り逆引き・領収書" data-sg-print="true" data-sg-tool-id="receipt"></div>
 
 <main class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
@@ -144,6 +144,7 @@
                 URLで領収書を共有
             </button>
             <p class="text-[10px] text-slate-500">URL共有は宛名・金額がリンクに含まれます。共有前に確認ダイアログを表示します。</p>
+            <p id="copy-toast-receipt" class="sg-copy-toast hidden" role="status"></p>
         </div>
     </section>
 
@@ -215,6 +216,7 @@
 </section>
 
 <div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script>
@@ -497,7 +499,20 @@
         localStorage.setItem(CHAT_TARGETS_KEY, JSON.stringify({ ...DEFAULT_CHAT_TARGETS, ...targets }));
     }
 
-    async function copyText(text) {
+    async function copyText(text, btn, opts = {}) {
+        if (window.SG_COPY_FEEDBACK && btn) {
+            try {
+                await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                    toastEl: document.getElementById('copy-toast-receipt'),
+                    toastPrefix: opts.toastPrefix || '共有文面',
+                    lineCount: window.SG_COPY_FEEDBACK.countLines(text),
+                    previewLine: String(text).split('\n')[0],
+                });
+                return true;
+            } catch {
+                return false;
+            }
+        }
         try {
             await navigator.clipboard.writeText(text);
             return true;
@@ -533,19 +548,18 @@
         teams: 'Teams', lineworks: 'LINE WORKS'
     };
 
-    async function shareToChat(tool) {
+    async function shareToChat(tool, btn) {
         const dest = loadChatTargets()[tool];
         if (!dest) {
             alert(`${CHAT_LABELS[tool] || tool} の送信先URLが未設定です。「送信先URL設定」から登録してください。`);
             return;
         }
-        const copied = await copyText(buildShareMessage());
+        const copied = await copyText(buildShareMessage(), btn, { toastPrefix: 'チャット用' });
         if (!copied) {
             alert('文面のコピーに失敗しました。');
             return;
         }
         window.open(dest, '_blank', 'noopener');
-        alert(`${CHAT_LABELS[tool]} 向け文面をコピーしました。貼り付けて送信してください。`);
     }
 
     function shareToX() {
@@ -602,12 +616,13 @@
         return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
     }
 
-    async function shareUrl() {
+    async function shareUrl(e) {
         const msg = '共有URLには宛名・金額などが含まれます。チャットやメールで送る相手に注意して共有してください。続行しますか？';
         if (!confirm(msg)) return;
         const url = buildShareUrl();
-        const copied = await copyText(url);
-        alert(copied ? '共有URLをクリップボードにコピーしました。' : `コピーできませんでした。URL:\n${url}`);
+        const btn = e && e.currentTarget ? e.currentTarget : document.getElementById('btn-share-url');
+        const copied = await copyText(url, btn, { toastPrefix: '共有URL' });
+        if (!copied) alert(`コピーできませんでした。URL:\n${url}`);
     }
 
     function applyQueryParams() {
@@ -670,7 +685,7 @@
         document.getElementById('btn-x-share').addEventListener('click', shareToX);
         document.getElementById('btn-chat-config').addEventListener('click', configureChat);
         document.querySelectorAll('[data-chat]').forEach((btn) => {
-            btn.addEventListener('click', () => shareToChat(btn.getAttribute('data-chat')));
+            btn.addEventListener('click', () => shareToChat(btn.getAttribute('data-chat'), btn));
         });
 
         window.addEventListener('resize', scalePreview);

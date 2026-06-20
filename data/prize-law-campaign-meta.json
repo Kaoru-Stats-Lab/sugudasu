@@ -1,0 +1,413 @@
+{
+  "version": "2026-06-19c",
+  "campaignFormats": [
+    {
+      "id": "sticker_lottery",
+      "label": "シール・ポイント集め → 抽選",
+      "example": "シール10枚でサイン入りユニフォーム",
+      "audience": "consumer",
+      "suggestPatterns": ["P01", "P09"],
+      "defaults": { "maxTransactionYen": 5000, "isPaid": true, "expectedSalesYen": 5000000 },
+      "fieldHints": {
+        "maxTransactionYen": "1回の購入で得られるシール数と、応募に必要な枚数を確認。迷ったら「対象商品1個の最高単価」から入力",
+        "expectedSalesYen": "キャンペーン期間中の対象商品売上見込み"
+      }
+    },
+    {
+      "id": "sns_lottery",
+      "label": "SNSフォロー・リプライ → 抽選",
+      "example": "Xフォロー＆リプライでマグカップ10名",
+      "audience": "consumer",
+      "suggestPatterns": ["P06", "P09"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 },
+      "fieldHints": {
+        "maxTransactionYen": "SNSだけなら 0。購入も条件ならその商品の最高単価",
+        "expectedSalesYen": "売上と連動しないなら 0 でOK"
+      }
+    },
+    {
+      "id": "purchase_lottery",
+      "label": "購入・レシート応募 → 抽選",
+      "example": "EC購入者から家電抽選",
+      "audience": "consumer",
+      "suggestPatterns": ["P01", "P07"],
+      "defaults": { "maxTransactionYen": 5000, "isPaid": true, "expectedSalesYen": 10000000 },
+      "fieldHints": {
+        "maxTransactionYen": "応募条件の購入金額（例: 5,000円以上なら 5000）"
+      }
+    },
+    {
+      "id": "visit_novelty",
+      "label": "来場・展示会（先着・配布）",
+      "example": "来場先着100名にトート",
+      "audience": "consumer",
+      "suggestPatterns": ["P05", "P02"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 },
+      "checkLumpSum": true,
+      "fieldHints": {
+        "maxTransactionYen": "来場無料なら 0。入場料・最低購入があるならその金額"
+      }
+    },
+    {
+      "id": "everyone_gift",
+      "label": "全員・先着でもらえる",
+      "example": "購入者全員にステッカー",
+      "audience": "consumer",
+      "suggestPatterns": ["P02"],
+      "defaults": { "maxTransactionYen": 1000, "isPaid": true },
+      "checkLumpSum": true
+    },
+    {
+      "id": "internal_event",
+      "label": "社内ビンゴ・慰労会",
+      "example": "社内のみ・社外非公開",
+      "audience": "internal",
+      "suggestPatterns": ["P11"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 }
+    },
+    {
+      "id": "multi_course_lottery",
+      "label": "複数Prizeコース → コース別抽選",
+      "example": "Aコース1名・Bコース3名で別景品・別抽選",
+      "audience": "consumer",
+      "suggestPatterns": ["P12", "P09", "P07"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 },
+      "fieldHints": {
+        "maxTransactionYen": "コースごとに条件が違うなら、最も厳しい応募条件の取引目安を入力",
+        "expectedSalesYen": "売上連動なら期間売上見込み。SNSのみなら 0"
+      }
+    },
+    {
+      "id": "multi_sns_bonus",
+      "label": "複数SNS・条件達成で口数増",
+      "example": "X＋IG両方フォロー＆RPで口数2倍",
+      "audience": "consumer",
+      "suggestPatterns": ["P13", "P06", "P09"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 },
+      "fieldHints": {
+        "maxTransactionYen": "SNSのみなら 0。購入も条件ならその商品の最高単価",
+        "expectedSalesYen": "売上と連動しないなら 0"
+      }
+    },
+    {
+      "id": "purchase_tier_entries",
+      "label": "購入金額・点数で応募口数が増える",
+      "example": "5,000円ごとに応募口1つ追加",
+      "audience": "consumer",
+      "suggestPatterns": ["P14", "P01", "P07"],
+      "defaults": { "maxTransactionYen": 5000, "isPaid": true, "expectedSalesYen": 10000000 },
+      "fieldHints": {
+        "maxTransactionYen": "1口の算定基準となる購入単位（例: 5,000円ごとに1口なら 5000）",
+        "expectedSalesYen": "キャンペーン期間の対象商品売上見込み"
+      }
+    },
+    {
+      "id": "referral_wchance",
+      "label": "紹介・Wチャンスで口数追加",
+      "example": "友達紹介1人につき口数+1 / 二次抽選",
+      "audience": "consumer",
+      "suggestPatterns": ["P15", "P07", "P03"],
+      "defaults": { "maxTransactionYen": 0, "isPaid": false, "expectedSalesYen": 0 },
+      "fieldHints": {
+        "maxTransactionYen": "紹介に登録・購入が必要ならその条件の取引目安",
+        "expectedSalesYen": "売上連動なら見込み。純SNSなら 0"
+      }
+    }
+  ],
+  "prizeCategories": [
+    {
+      "id": "cash_voucher",
+      "label": "現金・金券",
+      "tagline": "券面額＝景品額",
+      "examples": ["現金・商品券", "JTB旅行券", "Amazonギフト券"],
+      "suggestPatterns": ["P08", "P09"],
+      "valuationGuide": {
+        "howTo": "券面額・付与ポイントの換算額（1pt=1円等）。現金は支給額",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 100000,
+        "defaultUnitYen": 5000,
+        "caution": "金券・現金は論点が増えやすい（P08）。告知を法務確認"
+      }
+    },
+    {
+      "id": "vehicle",
+      "label": "車・バイク",
+      "tagline": "超高額・要精査",
+      "examples": ["軽自動車", "電動バイク", "車検・整備券"],
+      "suggestPatterns": ["P01", "P09"],
+      "valuationGuide": {
+        "howTo": "車両本体価格・カタログ価格。サービス券は券面・通常料金",
+        "typicalMinYen": 500000,
+        "typicalMaxYen": 3000000,
+        "defaultUnitYen": 1000000,
+        "caution": "取引額対比の上限チェックが厳しい（P01）"
+      }
+    },
+    {
+      "id": "appliance",
+      "label": "家電",
+      "tagline": "目玉景品の定番",
+      "examples": ["冷蔵庫・炊飯器", "空気清浄機", "掃除機"],
+      "suggestPatterns": ["P01", "P09"],
+      "valuationGuide": {
+        "howTo": "メーカー希望小売価格または仕入単価。セットは合算",
+        "typicalMinYen": 5000,
+        "typicalMaxYen": 200000,
+        "defaultUnitYen": 30000,
+        "caution": "高額ほど一般懸賞の上限に注意（P01）"
+      }
+    },
+    {
+      "id": "pc",
+      "label": "パソコン・周辺機器",
+      "tagline": "PC・タブレット・周辺",
+      "examples": ["ノートPC", "タブレット", "プリンター・モニター"],
+      "suggestPatterns": ["P01", "P09"],
+      "valuationGuide": {
+        "howTo": "メーカー希望小売価格・型番の定価。中古は市場価格の保守見積",
+        "typicalMinYen": 10000,
+        "typicalMaxYen": 300000,
+        "defaultUnitYen": 80000,
+        "caution": "高額帯は取引額とのバランス（P01）"
+      }
+    },
+    {
+      "id": "mobile",
+      "label": "スマホ・携帯電話",
+      "tagline": "端末・スマホアクセサ",
+      "examples": ["スマートフォン", "イヤホン", "充電器・ケース"],
+      "suggestPatterns": ["P01", "P09"],
+      "valuationGuide": {
+        "howTo": "端末は販売価格・型番定価。周辺機器は定価または仕入単価",
+        "typicalMinYen": 3000,
+        "typicalMaxYen": 150000,
+        "defaultUnitYen": 50000,
+        "caution": "端末本体は高額判定になりやすい"
+      }
+    },
+    {
+      "id": "camera",
+      "label": "カメラ・ビデオ",
+      "tagline": "カメラ・レンズ・GoPro",
+      "examples": ["デジカメ", "アクションカメラ", "ビデオカメラ"],
+      "suggestPatterns": ["P01", "P09"],
+      "valuationGuide": {
+        "howTo": "メーカー希望小売価格。レンズ・セットは合算",
+        "typicalMinYen": 10000,
+        "typicalMaxYen": 200000,
+        "defaultUnitYen": 40000,
+        "caution": "「○万円相当」は価格表を根拠に（P09）"
+      }
+    },
+    {
+      "id": "beauty_health",
+      "label": "美容・健康",
+      "tagline": "コスメ・健康器具",
+      "examples": ["スキンケアセット", "マッサージ器", "サプリメント"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "販売価格・セット内容の合計。サンプルは定価または仕入単価",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 50000,
+        "defaultUnitYen": 8000,
+        "caution": "医薬品的表示と景表法は別論点。表示を確認"
+      }
+    },
+    {
+      "id": "food",
+      "label": "食品・飲料",
+      "tagline": "グルメ・飲料（酒以外）",
+      "examples": ["和牛・海鮮ギフト", "スイーツ詰合せ", "コーヒー・ジュース"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "カタログ価格・公式販売価格・仕入単価の保守的な額",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 30000,
+        "defaultUnitYen": 5000,
+        "caution": "「○万円相当」は根拠メモ（P09）"
+      }
+    },
+    {
+      "id": "alcohol",
+      "label": "お酒",
+      "tagline": "酒類・ワインセット",
+      "examples": ["ウイスキー", "ワインセット", "日本酒詰合せ"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "販売価格・酒販店の定価。セットは合算",
+        "typicalMinYen": 2000,
+        "typicalMaxYen": 50000,
+        "defaultUnitYen": 10000,
+        "caution": "酒類の提供・年齢確認は別規制。景品額は販売価格ベース"
+      }
+    },
+    {
+      "id": "kitchen",
+      "label": "キッチン用品",
+      "tagline": "調理器具・食器",
+      "examples": ["フライパンセット", "食器セット", "調理家電小物"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "定価・仕入単価。ブランド品は公式価格",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 30000,
+        "defaultUnitYen": 5000,
+        "caution": "家電と重なる場合は高い方の単価で"
+      }
+    },
+    {
+      "id": "daily_goods",
+      "label": "日用品・雑貨",
+      "tagline": "参加賞・粗品向け",
+      "examples": ["タオル", "洗剤セット", "文具・雑貨"],
+      "suggestPatterns": ["P02", "P05", "P10"],
+      "valuationGuide": {
+        "howTo": "1点の製作・仕入単価",
+        "typicalMinYen": 100,
+        "typicalMaxYen": 3000,
+        "defaultUnitYen": 500,
+        "caution": "全員・先着配布は総付上限（P02/P05）"
+      }
+    },
+    {
+      "id": "fashion",
+      "label": "ファッション",
+      "tagline": "服・靴・バッグ",
+      "examples": ["ブランドバッグ", "スニーカー", "アパレルセット"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "定価・公式販売価格。限定品は販売価格または保守見積",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 100000,
+        "defaultUnitYen": 10000,
+        "caution": "オリジナルTシャツも製作単価で（P09）"
+      }
+    },
+    {
+      "id": "baby",
+      "label": "ベビー・マタニティ",
+      "tagline": "育児・ママ向け",
+      "examples": ["ベビー服セット", "育児グッズ", "マタニティ用品"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "販売価格・セット合計",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 20000,
+        "defaultUnitYen": 5000,
+        "caution": "景品表示の「相当額」根拠を残す"
+      }
+    },
+    {
+      "id": "toy_hobby",
+      "label": "おもちゃ・ホビー",
+      "tagline": "玩具・模型・キャラグッズ",
+      "examples": ["プラモデル", "フィギュア", "キャラ雑貨"],
+      "suggestPatterns": ["P09", "P10"],
+      "valuationGuide": {
+        "howTo": "定価・限定品は販売価格。オリジナルは製作単価",
+        "typicalMinYen": 500,
+        "typicalMaxYen": 50000,
+        "defaultUnitYen": 3000,
+        "caution": "非売品・サイン入りは保守見積が必要"
+      }
+    },
+    {
+      "id": "book_magazine",
+      "label": "本・雑誌・コミック",
+      "tagline": "書籍・雑誌・電子書籍券",
+      "examples": ["書籍セット", "雑誌定期購読", "電子書籍ギフト"],
+      "suggestPatterns": ["P09", "P10"],
+      "valuationGuide": {
+        "howTo": "定価・セット合計。電子書籍は付与額",
+        "typicalMinYen": 500,
+        "typicalMaxYen": 10000,
+        "defaultUnitYen": 2000,
+        "caution": "デジタル配布は実質価値の表示（P10）"
+      }
+    },
+    {
+      "id": "media_disc",
+      "label": "CD・DVD・ブルーレイ",
+      "tagline": "音楽・映像ソフト",
+      "examples": ["CDアルバム", "Blu-rayセット", "サブスクギフト"],
+      "suggestPatterns": ["P09", "P10"],
+      "valuationGuide": {
+        "howTo": "定価・サブスクは付与期間の換算額",
+        "typicalMinYen": 1000,
+        "typicalMaxYen": 20000,
+        "defaultUnitYen": 3000,
+        "caution": "デジタルコードは換算額で"
+      }
+    },
+    {
+      "id": "game",
+      "label": "ゲーム",
+      "tagline": "ソフト・ハード・DL版",
+      "examples": ["ゲームソフト", "ゲーム機本体", "DLコード・ポイント"],
+      "suggestPatterns": ["P09", "P10"],
+      "valuationGuide": {
+        "howTo": "ソフト定価・本体は販売価格。DLはコード換算額",
+        "typicalMinYen": 3000,
+        "typicalMaxYen": 60000,
+        "defaultUnitYen": 8000,
+        "caution": "本体プレゼントは高額判定（P01）"
+      }
+    },
+    {
+      "id": "sports_outdoor",
+      "label": "スポーツ・アウトドア",
+      "tagline": "運動・キャンプ用品",
+      "examples": ["ゴルフ用品", "キャンプセット", "スポーツウェア"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "定価・セット合計",
+        "typicalMinYen": 3000,
+        "typicalMaxYen": 100000,
+        "defaultUnitYen": 15000,
+        "caution": "高額用具は取引額とのバランス"
+      }
+    },
+    {
+      "id": "travel_stay",
+      "label": "旅行・宿泊",
+      "tagline": "旅行券・宿泊券",
+      "examples": ["国内旅行券", "ホテル宿泊券", "温泉ペアチケット"],
+      "suggestPatterns": ["P08", "P09"],
+      "valuationGuide": {
+        "howTo": "旅行会社の販売価格・宿泊プランの通常料金",
+        "typicalMinYen": 10000,
+        "typicalMaxYen": 500000,
+        "defaultUnitYen": 50000,
+        "caution": "旅行券は金券論点（P08）も。相当額の根拠を"
+      }
+    },
+    {
+      "id": "ticket",
+      "label": "チケット・招待券",
+      "tagline": "イベント・食事券",
+      "examples": ["コンサートチケット", "映画招待券", "レストランコース券"],
+      "suggestPatterns": ["P09"],
+      "valuationGuide": {
+        "howTo": "チケット販売価格・通常メニュー料金",
+        "typicalMinYen": 2000,
+        "typicalMaxYen": 50000,
+        "defaultUnitYen": 10000,
+        "caution": "招待券も販売価格ベースで円額入力"
+      }
+    },
+    {
+      "id": "other",
+      "label": "その他",
+      "tagline": "上記に当てはまらない",
+      "examples": ["オリジナルグッズ", "非売品・サイン入り", "サービス提供"],
+      "suggestPatterns": ["P01", "P09", "P10"],
+      "valuationGuide": {
+        "howTo": "製作単価・仕入単価・提供元の通常料金。不明なら保守見積",
+        "typicalMinYen": 500,
+        "typicalMaxYen": 100000,
+        "defaultUnitYen": 3000,
+        "caution": "「プレミア」「非売品」だけでは0円不可。チェック用円額が必要"
+      }
+    }
+  ]
+}

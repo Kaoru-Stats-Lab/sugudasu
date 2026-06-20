@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。主要メーカーの型番検索に対応し、選択した規格に合わせてレイアウトを反映できます。","@type":"Answer"},"name":"主要メーカーの型番から印刷レイアウトを選べますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。住所録データを読み込み、複数宛先をまとめてラベルへ配置して印刷できます。","@type":"Answer"},"name":"ExcelやCSVを一括取り込みできますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。取り込んだ住所データはブラウザ内で処理され、外部送信しません。","@type":"Answer"},"name":"住所データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"「ラベル印刷の守護神」みたいな扱いになることがあります。調整地獄を回避できるので、余った時間を確認作業や発送準備に回せます。","@type":"Answer"},"name":"一発で位置ズレなし印刷できたら、周囲に驚かれませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
-<div id="sg-chrome-top" data-sg-title="宛名ラベル" data-sg-print="true"></div>
+<div id="sg-chrome-top" data-sg-title="宛名ラベル" data-sg-print="true" data-sg-tool-id="label"></div>
 
     <main class="print-container flex-1 max-w-[1800px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         
@@ -92,6 +92,8 @@
                     </span>
                 </h2>
                 <textarea id="form-bulk-textarea" rows="4" placeholder="【ExcelやExcelからここにコピペ可能】&#10;100-0001 東京都千代田区千代田1-1 日本 太郎&#10;200-0002 大阪府大阪市北区梅田2-2 浪速 花子" class="w-full border border-gray-300 rounded-lg p-2 text-xs font-mono leading-normal focus:ring-1 focus:ring-blue-500 outline-none"></textarea>
+                <p id="bulk-paste-notice" class="hidden text-[11px] font-semibold rounded-lg px-2 py-1.5"></p>
+                <p class="text-[10px] text-slate-500 leading-relaxed">姓名の間のスペース（例: 山田 太郎）は<strong>保持</strong>します。1行目が「氏名」「住所」などの見出し行の場合は自動で除外します。</p>
                 <div class="flex justify-end">
                     <button id="btn-process-bulk" onclick="processBulkPaste()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-colors">📋 リストへ一括反映する</button>
                 </div>
@@ -427,56 +429,99 @@
         }
 
         // Excel / CSV からの一括貼り付け解析ロジック
+        const BULK_HEADER_RE = /^(氏名|名前|お名前|name|address|住所|郵便|zip|〒|カナ|ふりがな|フリガナ)/i;
+
+        function splitBulkTokens(row) {
+            if (row.includes('\t')) return row.split('\t');
+            if (row.includes(',')) return row.split(',');
+            return row.split(/\s+/);
+        }
+
+        function parseBulkRow(row) {
+            let tokens = splitBulkTokens(row).map(t => t.trim()).filter(t => t.length > 0);
+            if (tokens.length < 2) return null;
+
+            let zip = "";
+            let address = "";
+            let name = "";
+
+            if (/^\d{3}-?\d{4}$|^\d{3,7}$/.test(tokens[0])) {
+                zip = tokens[0];
+                if (tokens.length === 2) {
+                    address = tokens[1];
+                } else if (tokens.length === 3) {
+                    address = tokens[1];
+                    name = tokens[2];
+                } else {
+                    name = tokens.slice(-2).join(' ');
+                    address = tokens.slice(1, -2).join(' ');
+                }
+            } else if (tokens.length === 2) {
+                address = tokens[0];
+                name = tokens[1];
+            } else {
+                name = tokens.slice(-2).join(' ');
+                address = tokens.slice(0, -2).join(' ') || tokens[0];
+            }
+
+            return { zip, address, name };
+        }
+
+        function showBulkPasteNotice(message, tone) {
+            const el = document.getElementById('bulk-paste-notice');
+            if (!el) return;
+            if (!message) {
+                el.classList.add('hidden');
+                el.textContent = '';
+                return;
+            }
+            el.classList.remove('hidden');
+            el.textContent = message;
+            el.className = 'text-[11px] font-semibold rounded-lg px-2 py-1.5 ' + (
+                tone === 'warn'
+                    ? 'text-amber-900 bg-amber-50 border border-amber-200'
+                    : 'text-blue-900 bg-blue-50 border border-blue-200'
+            );
+        }
+
         function processBulkPaste() {
             const textarea = document.getElementById("form-bulk-textarea");
             const rawText = textarea.value.trim();
             if (!rawText) return;
 
-            // 行ごとに分割
             const rows = rawText.split(/\r?\n/);
             const parsedList = [];
+            let skippedHeader = false;
 
-            rows.forEach(row => {
-                // タブ、カンマ、または連続する空白文字でデータを分割
-                let tokens = row.split(/\t|,| {2,}/);
-                
-                // もし1つの文字列のままなら、簡易的にスペース1つでも分割を試みる
-                if (tokens.length < 2) {
-                    tokens = row.split(/\s+/);
+            rows.forEach((row, idx) => {
+                const trimmed = row.trim();
+                if (!trimmed) return;
+                const firstCell = splitBulkTokens(trimmed)[0]?.trim() || trimmed;
+                if (idx === 0 && BULK_HEADER_RE.test(firstCell)) {
+                    skippedHeader = true;
+                    return;
                 }
-
-                // トークンが空でないものを抽出
-                tokens = tokens.map(t => t.trim()).filter(t => t.length > 0);
-
-                if (tokens.length >= 2) {
-                    let zip = "";
-                    let address = "";
-                    let name = "";
-
-                    // 1番目が郵便番号っぽいか判定 (数字やハイフン)
-                    if (/^\d{3}-?\d{4}$|^\d{3,7}$/.test(tokens[0])) {
-                        zip = tokens[0];
-                        address = tokens[1];
-                        name = tokens[2] || "";
-                    } else {
-                        // 郵便番号がないデータの場合
-                        address = tokens[0];
-                        name = tokens[1] || "";
-                    }
-
-                    parsedList.push({ zip, address, name });
-                }
+                const parsed = parseBulkRow(row);
+                if (parsed) parsedList.push(parsed);
             });
 
             if (parsedList.length > 0) {
-                if (confirm(`${parsedList.length} 件の宛名データを解析しました。現在のリストに追加しますか？`)) {
-                    recipientList = recipientList.filter(item => item.zip || item.address || item.name); // 空行を掃除
+                const headerNote = skippedHeader ? '（先頭の見出し行は除外しました）' : '';
+                if (confirm(`${parsedList.length} 件の宛名データを解析しました${headerNote}。現在のリストに追加しますか？`)) {
+                    recipientList = recipientList.filter(item => item.zip || item.address || item.name);
                     recipientList = recipientList.concat(parsedList);
                     renderRecipientTable();
                     updatePreview();
                     textarea.value = "";
+                    showBulkPasteNotice(
+                        skippedHeader
+                            ? '先頭行のヘッダー（氏名・住所など）を除外して取り込みました。'
+                            : `${parsedList.length} 件を取り込みました。姓名間のスペースは保持しています。`,
+                        skippedHeader ? 'warn' : 'info'
+                    );
                 }
             } else {
+                showBulkPasteNotice('データの解析に失敗しました。郵便番号・住所・氏名の列形式をご確認ください。', 'warn');
                 alert("データの解析に失敗しました。フォーマットをご確認ください。");
             }
         }

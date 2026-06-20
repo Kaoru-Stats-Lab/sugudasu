@@ -1,6 +1,167 @@
 {
-  "updatedAt": "2026-06-19",
+  "updatedAt": "2026-06-20",
   "entries": [
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "group-split UX C1（Step UI · 名簿ピッカー · preset）",
+      "body": "①〜④ Step表示。属性条件=メイン・名前ルール=任意。固定班/離すペア/固定配置を名簿から選択。各組に役員preset。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "feature",
+      "title": "group-split Phase C（Excel複数列 · 属性条件 · cap 250）",
+      "body": "Excel貼付の列マッピング。属性2〜3列で分散·各組必須。名簿上限1000→250。TSVに属性列出力。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "feature",
+      "title": "group-split Phase B（制約 · 定員超過表示）",
+      "body": "固定班·固定配置·離すペア·タグ分散·各組必須タグ·物理上限。名簿1000名FIX。超過理由バッジ。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "group-split 名簿上限 1000名 · Slack上限連動",
+      "body": "硬上限200→1000。Slack 1投稿4万字を基準。200名超はTSV推奨警告。結果DOMは40組まで表示。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "グループ分け（group-split · 非送信 · T11 Phase A）",
+      "body": "研修·ハッカソン向け班分け。シードシャッフル+ラウンドロビン。Excel TSV·Slack·LINE·告知·JSON出力。",
+      "tools": ["group-split.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "WebP→JPG/PNG（webp-to-jpg · 非送信）",
+      "body": "URL・貼り付け・ファイル対応。アップロード型コンバータと違い画像を運営サーバーへ送らない。",
+      "tools": ["webp-to-jpg.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "fair-draw キャンペーン識別名（必須）",
+      "body": "抽選タブにキャンペーン名（識別用）必須入力。PDF/JSON/名簿txt/ファイル名に記録。Phase0概要から自動補完。並行CP向け。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "fair-draw 証跡3点セット · 実施者 · 名簿スナップショット",
+      "body": "抽選実施者（幹事名）必須入力。実行時に roster-*.txt 自動DL（名簿全文+メタ）。PDF/JSON/画面に実施者記録。sessionStorageで実施者名を次回復元。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw 結果UI · 賞帯表・証跡整理",
+      "body": "賞帯別は表+TSVコピーがデフォルト。シード/SHA-256は常時表示。発表用大表示は削除（PPT等は運営側）。法務向け説明のみ折りたたみ。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw 抽選結果 · 運用コピー（1行1名/TSV/連絡文）",
+      "body": "抽選後に Excel/DM/発送向けの1行1名リストを上部表示。TSV（賞帯付き）· Slack連絡文コピー。大きい発表用表示は折りたたみ。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "fair-draw Phase 0: P12–P15 + キャンペーン型4種",
+      "body": "揉め事パターン P12（複数コース）· P13（複数SNS口数増）· P14（購入ティア口数）· P15（紹介/Wチャンス）。campaignFormats に multi_course_lottery / multi_sns_bonus / purchase_tier_entries / referral_wchance。加重・コース別は抽選UI変更なし・FAQ5問で名簿重複行/Excel分割運用を明記。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw 案C: 1URL・2入口（?tab=check|draw）",
+      "body": "Hubに景品リスク判定/公平抽選の2カード。URLクエリで初期タブ切替。命名を「公平抽選・景品チェック」に統一。prize-check.html 等の物理分割は見送り。",
+      "tools": ["fair-draw.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "コピー契約 §3.8 全ツール横展開",
+      "body": "DESIGN_GUIDELINE §3.8 を正本化。コピー=最新出力再計算・Copied! 2秒・行数+先頭プレビューのトースト・行数不一致ゲート（normalize）。report/reverse/warikan/fair-draw/invoice/receipt/updates/sns へ sg-copy-feedback 適用。",
+      "tools": ["report.html", "reverse.html", "warikan.html", "fair-draw.html", "invoice.html", "receipt.html", "updates.html", "sns.html", "normalize.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "おっちょこガードレール: fair-draw / warikan / label",
+      "body": "fair-draw: 名簿有効行数バッジ・テスト/本番モードバナー。warikan: 端数過不足ヒーロー・コピー成功フィードバック。label: ヘッダー行除外・姓名間スペース保持。",
+      "tools": ["fair-draw.html", "warikan.html", "label.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "文字列正規化ツール（normalize.html · T03 Phase A）",
+      "body": "Excel列コピーの全角半角/空白/ハイフン整理。500行cap、入力→出力行数チェック、コピー時再変換+緑フラッシュ、貼付スキャン、用途プリセット3種。",
+      "tools": ["normalize.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw FAQ: X応募者名簿の取得方法（製品境界）",
+      "body": "フォロー・リプライ抽選の@ユーザー名は手動コピー or 別ツールで集める旨をFAQ・JSON-LD・名簿入力ヒント・公平性説明に追加。名簿取得はスコープ外と明記。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "景品カテゴリ21種（懸賞天国レフトナビ対応）",
+      "body": "prize-law-campaign-meta.json の景品群を懸賞天国のカテゴリとMECE対応する21種に拡充。Step 0b UIは3列グリッド。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw FAQ拡充（誠実なポジション説明）",
+      "body": "統制システムではない旨・監査がいなくても使う意味・Excelとの違い・名簿の指紋の説明と限界をFAQ・JSON-LD・抽選タブ内説明に反映。",
+      "tools": ["fair-draw.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "fair-draw へURL・名称統一（lottery廃止）",
+      "body": "URLを /fair-draw に変更。正式名は公平抽選チェック（証跡PDF）。ヘッダーにサブタイトルで統制システムではない旨を表示。リダイレクトなし。",
+      "tools": ["fair-draw.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "宴会モードをスコープ外に（公平抽選+証跡に集中）",
+      "body": "会場上映・ドラムロール・全画面演出は各社のPPT等に任せる製品境界に変更。lottery.htmlは景品チェック+公平抽選の2タブに戻し、party関連コードを削除。",
+      "tools": ["lottery.html", "hub.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "全ツールに開発段階ラベル（アルファ/ベータ/ガンマ/安定）",
+      "body": "data/tool-registry.json をSSOTに、各ページヘッダー下へ段階バッジ・バージョン・Backlog根拠のstatusNoteを自動表示。shellが data-sg-tool-id から読み込み。",
+      "tools": ["hub.html", "invoice.html", "receipt.html", "label.html", "shift.html", "report.html", "reverse.html", "present.html", "lottery.html", "warikan.html", "sns.html", "updates.html", "privacy.html", "terms.html", "disclaimer.html", "not-a-car.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "宴会モード（Phase 1b）＋ベータ版ラベル",
+      "body": "lottery.html: 賞帯ごとの発表形式（1人ずつ/一括/即表示）・ドラムロール秒数・幹事向け残り秒タイマー・画面分割・全画面オプション。公平抽選と名簿共有・同一Fisher-Yatesエンジン。",
+      "tools": ["lottery.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "feature",
+      "title": "景品表示法チェック・公平抽選ツール（lottery.html）",
+      "body": "Phase 0: P01〜P11揉め事カード＋告示ベース数値判定＋監査PDF/JSON。Phase 1: Fisher-Yates + Web Crypto公平抽選・シード表示・参加者SHA-256。赤フラグ時は自己責任ゲート。LLM判定なし。",
+      "tools": ["lottery.html", "hub.html"]
+    },
     {
       "date": "2026-06-19",
       "type": "improve",

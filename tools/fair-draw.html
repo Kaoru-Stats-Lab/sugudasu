@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="景品表示法の一次チェックと公平抽選をブラウザ完結で。登録不要・データ非送信。証跡PDF付き。社内統制システムではありません。">
+    <title>登録不要の公平抽選・景品表示法チェックツール（証跡PDF）| SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="公平抽選・景品チェック（証跡PDF）">
+    <meta property="og:description" content="景品表示法の一次チェックと公平抽選。幹事・マーケ向け無料ツール。データは外部に送信しません。">
+    <meta property="og:url" content="https://sugudasu.com/fair-draw">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="公平抽選・景品表示法チェック（証跡PDF・無料）">
+    <meta name="twitter:description" content="幹事・マーケ向け。景表法一次チェック＋Web Crypto公平抽選。統制システムではなく、説明用PDFを渡すツール。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"内部監査向けの統制システムですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。社内統制・操作ログ・権限管理を備えた懸賞抽選システムではありません。幹事・マーケ向けの無料ブラウザツールで、抽選結果と説明用の監査PDF・JSONをローカル生成します。名簿は外部に送信しません。"}},{"@type":"Question","name":"内部監査がいなくても使う意味はありますか？","acceptedAnswer":{"@type":"Answer","text":"あります。監査人が横にいない懸賞でも、景品が大きい・人数が多い・前回揉めた・SNS懸賞など説明責任は残ります。Excelより「いつ・どの名簿で・どう決めたか」を1セットで残し、あとから上司・法務・問い合わせ先への説明コストを下げます。小規模の気軽な抽選なら表計算でも十分な場合もあります。"}},{"@type":"Question","name":"社内イベントだけでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Step 0で社内ビンゴ・慰労会を選ぶと、景表法射程外になりやすい旨を表示しつつ、社外公開リスクをチェックできます。公平抽選は社内外どちらでも利用可能です。"}},{"@type":"Question","name":"このツールで「合法」「違法」と判定されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ルール表と数値による一次スクリーニングのみです。要確認・リスク高・専門家確認推奨の表現に留めます。"}},{"@type":"Question","name":"ChatGPTに景表法を聞く前に使うと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"LLMは断定・ハルシネーションのリスクがあります。本ツールは告示ベースのルール表で一次スクリーニングし、証跡PDFを残せます。法的助言の代替にはなりません。"}},{"@type":"Question","name":"Xでフォロー・リプライ抽選するとき、応募者のIDはどう集めますか？","acceptedAnswer":{"@type":"Answer","text":"本ツールは応募者の取得はしません。名簿が手元にある前提で1行1名（多くはXの@ユーザー名）を貼り付けて抽選します。小規模懸賞では返信欄から@を手動コピーする幹事が多く、件数が増えると応募管理ツールやAPI連携に寄ります。X公式には返信者一覧のCSVエクスポートはほぼありません。フォロー確認まで手動だと負担が大きいです。fair-drawは名簿作成の次の段階（公平シャッフルと監査PDF）を担当します。"}},{"@type":"Question","name":"Excelなど表計算の乱数で抽選するのと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"表計算の乱数は再計算で変わり得て、いつどの乱数で決めたか説明しづらいことがあります。本ツールは抽選を1回確定し、方式・シード・名簿の指紋・当選者を監査PDFに残します。表計算が悪いのではなく、手軽な試算と証跡付き本番抽選で役割が違います。内部監査を黙らせる魔法ではなく、説明の会話を短くする材料です。"}},{"@type":"Question","name":"本当に公平に抽選できていますか？","acceptedAnswer":{"@type":"Answer","text":"名簿を1回シャッフルして当選者を選びます。方式はFisher-Yatesシャッフル、乱数はWeb Cryptoです。名簿は外部に送信しません。抽選は1回確定し、シード・名簿指紋・当選者を監査PDFに残せます。"}},{"@type":"Question","name":"シード（記録番号）とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"今回の抽選の記録番号です。同じ名簿・同じシードなら同じ結果になります。名簿の指紋とセットで、説明用の材料としてPDFに残します。"}},{"@type":"Question","name":"名簿の指紋（SHA-256）って何ですか？","acceptedAnswer":{"@type":"Answer","text":"参加者リスト全体から作った確認用の番号です。1行でも書き換えると番号が変わります。当選後に名簿だけ直した疑いを、PDFの記録と突き合わせて話す目安になります。抽選前の名簿が正しかったかまでは、このPDFだけでは分かりません。技術名はSHA-256です。"}},{"@type":"Question","name":"監査PDFには何が載りますか？","acceptedAnswer":{"@type":"Answer","text":"実施日時・景品名・金額・当選人数・判定結果・抽選方式・シード・名簿の指紋・当選者名など。方式・記録番号・指紋・当選者を1セットにした説明用パッケージです。ローカル生成で外部送信はありません。法的断定や統制ログの代替にはなりません。"}},{"@type":"Question","name":"内部監査の人が横で見ています。和らげる機能はありますか？","acceptedAnswer":{"@type":"Answer","text":"監査人の目つきを優しくする機能はありません。監査PDFに方式・シード・名簿の指紋・当選者が載るので、その場で渡せば説明の会話は短くなりやすいです。統制システムの代替ではありません。"}},{"@type":"Question","name":"抽選の方式は将来変わりますか？","acceptedAnswer":{"@type":"Answer","text":"v1ではFisher-YatesとWeb Cryptoに固定。加重・口数2倍・コース別は名簿の重複行やExcel分割で表現する運用（FAQ参照）。自動加重計算は追加予定なし。"}},{"@type":"Question","name":"複数Prizeコースは1回の抽選でまとめられますか？","acceptedAnswer":{"@type":"Answer","text":"コースごとに名簿と抽選を分ける運用を推奨。Excelでコース別シートに分け、fair-drawをコースごとに実行し監査PDFもコース別に保存。Step 0で複数Prizeコース型とP12を選択。"}},{"@type":"Question","name":"XとIG両方で当選確率2倍は自動計算されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。フォロー確認も口数計算も本ツール外。2口の人は名簿に同じ@を2行（重複行）で貼る。Step 0で複数SNS口数増型とP13を選択。"}},{"@type":"Question","name":"口数2倍の名簿の作り方は？","acceptedAnswer":{"@type":"Answer","text":"スプシで口数列を付け、口数ぶんID行を複写。fair-drawに貼付し有効行数と重複件数を確認。賞帯間既当選者除外ONで抽選。加重の自動計算機能は追加予定なし。"}},{"@type":"Question","name":"Excelでコース別にfair-drawを複数回使う流れは？","acceptedAnswer":{"@type":"Answer","text":"抽選単位でシートを分け、1シートずつ名簿貼付→賞帯設定→実行→監査PDFをコース名入りで保存。景品チェックはキャンペーン全体で1回、抽選は単位ごとに複数回が一般的。"}},{"@type":"Question","name":"名簿の重複と空行の違いは？","acceptedAnswer":{"@type":"Answer","text":"空行は抽選から除外。重複は同一IDが2行以上。意図的な口数2倍なら重複は正常。fair-drawは重複を自動統合しない。口数設計はExcel、公平シャッフルはfair-draw。"}}]}</script>
+</head>
+<body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
+<div id="sg-chrome-top" data-sg-title="公平抽選・景品チェック" data-sg-subtitle="一次チェック · 公平抽選 · 証跡PDF" data-sg-tool-id="fair-draw"></div>
+
+<div id="fd-mode-banner" class="fd-mode-banner fd-mode-banner--idle no-print" role="status" aria-live="polite">
+    <span id="fd-mode-banner-text">名簿を貼り付けて抽選タブで行数を確認してください</span>
+</div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+        ブラウザ内完結・景品情報は外部に送信しません
+    </p>
+
+    <div class="no-print sg-segment sg-segment--cols-2" id="lottery-l1-segment" role="tablist" aria-label="ツールモード">
+        <span class="sg-segment__pill" aria-hidden="true"></span>
+        <button type="button" role="tab" data-segment-value="check" class="sg-segment__btn" aria-selected="true">1. 景品リスク判定（推奨）</button>
+        <button type="button" role="tab" data-segment-value="draw" class="sg-segment__btn" aria-selected="false" id="tab-draw">2. 公平抽選（名簿投入）</button>
+    </div>
+    <p class="no-print sg-segment-hint" id="lottery-l1-hint" role="note">アマギフや自社商品を配る前に。その企画が景表法の上限を超えていないか1分でセルフチェック。</p>
+
+    <!-- Phase 0 -->
+    <div id="panel-check" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-5 no-print">
+            <div class="space-y-3">
+                <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Step 0 — キャンペーンの型（近いものを1つ）</h2>
+                <p class="text-[10px] text-slate-500">法律用語ではなく「どうやるキャンペーンか」で選ぶと、下の数値欄にヒントが出ます。</p>
+                <div id="format-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Step 0b — 景品の種類（1つ）</h2>
+                <p class="text-[10px] text-slate-500">懸賞でよく使われる景品群から1つ選ぶと、<strong>円の目安の入れ方</strong>が出ます。</p>
+                <div id="category-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"></div>
+            </div>
+
+            <div id="meta-guide" class="hidden rounded-lg border border-indigo-200 bg-indigo-50 p-3 space-y-2 text-xs text-indigo-950"></div>
+
+            <div id="valuation-calc" class="hidden rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2">
+                <p class="text-xs font-bold text-slate-800">景品の円額 — ざっくり計算（わからない人向け）</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 items-end">
+                    <div>
+                        <label for="calc-unit-yen" class="block text-[10px] text-slate-600 mb-1">1点あたり（円）</label>
+                        <input type="number" id="calc-unit-yen" class="sg-input text-sm" min="0" value="0">
+                    </div>
+                    <div>
+                        <label for="calc-qty" class="block text-[10px] text-slate-600 mb-1">当選・配布人数</label>
+                        <input type="number" id="calc-qty" class="sg-input text-sm" min="1" value="1">
+                    </div>
+                    <button type="button" id="btn-apply-calc" class="text-xs font-bold bg-slate-800 text-white px-3 py-2 rounded-lg">数値欄に反映</button>
+                </div>
+                <p id="calc-preview" class="text-[10px] text-slate-500"></p>
+            </div>
+
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Step 1 — 当てはまるもの（複数可・自動提案あり）</h2>
+                <div id="pattern-list" class="mt-3 space-y-2 text-xs"></div>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Step 2 — 数値・概要</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="in-max-tx" class="block text-xs font-semibold text-slate-600 mb-1">取引最高額（円）</label>
+                        <p id="hint-max-tx" class="text-[10px] text-slate-400 mb-1"></p>
+                        <input type="number" id="in-max-tx" class="sg-input text-sm" min="0" value="3000">
+                    </div>
+                    <div>
+                        <label for="in-max-prize" class="block text-xs font-semibold text-slate-600 mb-1">景品最高額（円）</label>
+                        <p id="hint-max-prize" class="text-[10px] text-slate-400 mb-1"></p>
+                        <input type="number" id="in-max-prize" class="sg-input text-sm" min="0" value="50000">
+                    </div>
+                    <div>
+                        <label for="in-total-prize" class="block text-xs font-semibold text-slate-600 mb-1">景品総額（円）</label>
+                        <p id="hint-total-prize" class="text-[10px] text-slate-400 mb-1"></p>
+                        <input type="number" id="in-total-prize" class="sg-input text-sm" min="0" value="200000">
+                    </div>
+                    <div>
+                        <label for="in-sales" class="block text-xs font-semibold text-slate-600 mb-1">売上見込み総額（円）</label>
+                        <p id="hint-sales" class="text-[10px] text-slate-400 mb-1"></p>
+                        <input type="number" id="in-sales" class="sg-input text-sm" min="0" value="10000000">
+                    </div>
+                    <div>
+                        <label for="in-winners" class="block text-xs font-semibold text-slate-600 mb-1">当選人数</label>
+                        <input type="number" id="in-winners" class="sg-input text-sm" min="1" value="10">
+                    </div>
+                    <div class="flex items-end">
+                        <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                            <input type="checkbox" id="in-is-paid" class="rounded border-slate-300" checked>
+                            有償キャンペーン（購入等が条件）
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label for="in-prize-name" class="block text-xs font-semibold text-slate-600 mb-1">景品名（必須・証跡PDFに記載）</label>
+                    <input type="text" id="in-prize-name" class="sg-input text-sm" placeholder="例: 家電セット、ギフト券5,000円分">
+                </div>
+                <div>
+                    <label for="in-campaign" class="block text-xs font-semibold text-slate-600 mb-1">キャンペーン概要</label>
+                    <textarea id="in-campaign" rows="2" class="sg-input text-sm" placeholder="例: 公式EC購入者向け抽選キャンペーン（2026年7月）"></textarea>
+                </div>
+            </div>
+
+            <button type="button" id="btn-evaluate" class="w-full sg-btn-primary text-sm font-semibold py-3 rounded-lg">
+                一次チェックを実行
+            </button>
+
+            <div id="reference-links" class="text-[10px] text-slate-500 space-y-1 border-t border-slate-100 pt-3">
+                <p class="font-semibold text-slate-600">公式の参考（法令・Q&A）</p>
+                <div id="reference-links-body"></div>
+                <p class="text-[10px] text-slate-400 pt-1">Q&Aページに電話がない場合 → <a href="https://www.caa.go.jp/policies/policy/representation/contact" class="text-blue-600 hover:underline" target="_blank" rel="noopener">景品表示法 相談窓口</a>（表示対策課 03-3507-8800 · 平日9:30–18:15）</p>
+            </div>
+        </section>
+
+        <section class="space-y-4 no-print">
+            <div id="result-card" class="sg-card p-5 lg:p-6 space-y-4">
+                <p class="text-xs text-slate-400 text-center py-6">左のフォームを入力して「一次チェックを実行」を押してください。</p>
+            </div>
+            <div id="result-actions" class="hidden space-y-2">
+                <button type="button" id="btn-copy-slack" class="w-full text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg">Slack用テキストをコピー（最新の出力）</button>
+                <p id="copy-toast-fair-draw" class="sg-copy-toast hidden" role="status"></p>
+                <div class="flex gap-2">
+                    <button type="button" id="btn-dl-json" class="flex-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-lg">証跡JSON</button>
+                    <button type="button" id="btn-print-audit" class="flex-1 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-lg">監査PDF（印刷）</button>
+                </div>
+            </div>
+            <aside class="ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+
+    <!-- Phase 1 -->
+    <div id="panel-draw" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4 no-print">
+            <div id="draw-gate" class="hidden rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-900">
+                <p class="font-bold mb-1">景品チェックでリスク高（赤）が残っています</p>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" id="chk-self-responsibility" class="mt-0.5 rounded border-rose-300">
+                    <span>論点を理解したうえで自己責任で抽選を続行する（証跡に記録）</span>
+                </label>
+            </div>
+
+            <div>
+                <label for="in-roster" class="block text-xs font-semibold text-slate-600 mb-1">参加者名簿（1行1名）</label>
+                <p class="text-[10px] text-slate-500 mb-2 leading-relaxed">SNS懸賞なら <code class="text-[10px]">@ユーザー名</code> を1行ずつ（表示名ではなくハンドル）。Xの返信から名簿を作る作業は<strong>本ツールの外</strong>（手動コピー or 別の応募管理ツール）。詳しくは下部FAQ。</p>
+                <textarea id="in-roster" rows="10" class="sg-input text-sm font-mono" placeholder="@user_a&#10;@user_b&#10;山田太郎&#10;…"></textarea>
+                <div id="roster-count-panel" class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center mt-2" aria-live="polite">
+                    <p class="text-[10px] font-bold text-slate-600 tracking-wide">名簿（有効行数）</p>
+                    <p id="roster-effective-count" class="text-4xl font-black text-slate-900 font-mono leading-none my-1">0</p>
+                    <p id="roster-raw-hint" class="text-[11px] font-semibold text-slate-700">貼付 0 行 · Excel の最終行と一致していますか？</p>
+                    <p id="roster-footer-hint" class="text-[10px] text-slate-500 mt-1">空行は除外 · 重複行はそのまま抽選に含みます</p>
+                </div>
+            </div>
+            <fieldset class="space-y-3">
+                <legend class="text-xs font-semibold text-slate-600">当選枠</legend>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="radio" name="draw-prize-mode" value="bands" class="rounded-full border-slate-300" checked>
+                        賞帯別（1位・2位…）
+                    </label>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="radio" name="draw-prize-mode" value="simple" class="rounded-full border-slate-300">
+                        人数のみ
+                    </label>
+                </div>
+                <div id="draw-bands-panel" class="space-y-2">
+                    <div class="band-rows-header grid grid-cols-[minmax(5.5rem,1fr)_4rem_auto_auto] gap-2 px-0.5 text-[10px] font-semibold text-slate-500">
+                        <span>賞帯名（1位・Aコース等）</span>
+                        <span class="text-center">枠数</span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </div>
+                    <div id="band-rows" class="space-y-2"></div>
+                    <button type="button" id="btn-add-band" class="text-[11px] font-semibold text-blue-600 hover:text-blue-500">+ 賞帯を追加</button>
+                    <p class="text-[10px] text-slate-500">合計当選 <strong id="band-total-count" class="text-slate-800">9</strong> 名</p>
+                </div>
+                <div id="draw-simple-panel" class="hidden">
+                    <label for="in-draw-count" class="block text-xs font-semibold text-slate-600 mb-1">当選人数</label>
+                    <input type="number" id="in-draw-count" class="sg-input text-sm w-24" min="1" value="1">
+                </div>
+                <div class="space-y-2 pt-1">
+                    <label class="flex items-center gap-2 text-xs cursor-pointer">
+                        <input type="checkbox" id="chk-duplicate" class="rounded border-slate-300">
+                        重複当選を許可
+                    </label>
+                    <label class="flex items-center gap-2 text-xs cursor-pointer">
+                        <input type="checkbox" id="chk-exclude" class="rounded border-slate-300" checked>
+                        賞帯間で既当選者を除外
+                    </label>
+                </div>
+            </fieldset>
+            <div class="space-y-3">
+                <div>
+                    <label for="in-draw-campaign" class="block text-xs font-semibold text-slate-600 mb-1">キャンペーン名（識別用）</label>
+                    <input type="text" id="in-draw-campaign" class="sg-input text-sm" placeholder="例: 2026GWフォローRT懸賞 / 社内CP-042">
+                    <p class="text-[10px] text-slate-500 mt-1">並行CPがあるとき、<strong>この証跡がどれ向けか</strong>分かる短い名前。CPページのスクショ・規約PDFは別ファイルで保管。</p>
+                </div>
+                <div>
+                    <label for="in-draw-operator" class="block text-xs font-semibold text-slate-600 mb-1">抽選実施者（幹事名）</label>
+                    <input type="text" id="in-draw-operator" class="sg-input text-sm" placeholder="例: マーケ部 山田 · 社内イベント担当" autocomplete="name">
+                    <p class="text-[10px] text-slate-500 mt-1">ログインはありません。監査PDF・名簿スナップショットに<strong>手入力で記録</strong>します。</p>
+                </div>
+            </div>
+            <button type="button" id="btn-draw" class="w-full sg-btn-primary text-sm font-semibold py-3 rounded-lg">
+                公平抽選を実行
+            </button>
+
+            <details class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700">
+                <summary class="font-bold text-slate-900 cursor-pointer select-none">公平性のしくみ（監査・幹事の方へ）</summary>
+                <div class="mt-3 space-y-3 leading-relaxed border-t border-slate-200/60 pt-3">
+                    <p><strong>結論:</strong> 1回だけ抽選し、結果と記録をPDFに残します。名簿はブラウザ内だけで処理します。<strong>社内統制システムの代替ではありません。</strong> 詳しくはページ下部のFAQをご覧ください。</p>
+                    <div>
+                        <p class="font-semibold text-slate-800">名簿はどこから来る？（SNS懸賞）</p>
+                        <p>Xフォロー・リプライ抽選の応募者リストは、本ツールでは<strong>作りません</strong>。締切後に幹事が手元で用意した名簿を貼ります。小規模なら返信欄から <code>@</code> をコピー、件数が多いと別ツールやAPIが多いです。</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">Excel・スプシとの違い（要点）</p>
+                        <p>表計算は再計算で当選が変わり得ます。本ツールは<strong>1回確定</strong>し、方式・記録番号・名簿の指紋・当選者を<strong>1セット</strong>でPDFに残します。説明の会話を短くするためのツールです。</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">抽選のやり方（Fisher-Yates）</p>
+                        <p>全員の名前を<strong>1回だけ</strong>シャッフルし、上から当選者を選びます。くじ引き式のコンピュータ抽選で広く使われる方式です。</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">記録番号（シード）</p>
+                        <p>今回の抽選の記録番号です。同じ名簿・同じ記録番号なら同じ結果になります。</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">名簿の指紋（SHA-256）</p>
+                        <p>名簿全体から作った<strong>確認用の番号</strong>です。1行でも書き換えると番号が変わります。当選後の名簿すり替えがないかの<strong>目安</strong>です（抽選前の名簿が正しかったかまでは別の話です）。</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">乱数（Web Crypto）</p>
+                        <p>ブラウザ標準の乱数APIを使います。名簿はSUGUDASUのサーバーへ送りません。</p>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="space-y-4 no-print">
+            <div id="draw-result" class="sg-card p-5 lg:p-6">
+                <p class="text-xs text-slate-400 text-center py-6">名簿を入力して抽選を実行してください。</p>
+            </div>
+            <div id="draw-actions" class="hidden space-y-2 no-print">
+                <button type="button" id="btn-copy-winners-ops" class="w-full text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg">当選者リストをコピー</button>
+                <p id="copy-toast-draw-ops" class="sg-copy-toast hidden" role="status"></p>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="btn-dl-roster-snapshot" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">名簿スナップショット</button>
+                    <button type="button" id="btn-copy-winners-plain" class="hidden flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">IDのみ（1行1名）</button>
+                    <button type="button" id="btn-copy-winners-slack" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">連絡文（Slack等）</button>
+                    <button type="button" id="btn-dl-draw-json" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-800 text-white px-3 py-2 rounded-lg">抽選JSON</button>
+                    <button type="button" id="btn-print-draw" class="flex-1 min-w-[8rem] text-xs font-bold bg-emerald-600 text-white px-3 py-2 rounded-lg">監査PDF（印刷）</button>
+                </div>
+            </div>
+            <aside class="ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+</main>
+
+<!-- 監査PDF 印刷用 -->
+<section id="audit-print" class="print-target hidden">
+    <div class="p-8 max-w-[210mm] mx-auto text-sm text-slate-900 font-sans" id="audit-print-body"></div>
+</section>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">公平抽選チェックのよくある質問</h2>
+        <p class="text-[11px] text-slate-500 mb-4 leading-relaxed">SUGUDASUは<strong>社内統制システムではありません</strong>。幹事・マーケが「配ってよいか・誰が当たったか・なぜその結果か」を、登録不要のブラウザで整理し、説明用PDFを渡すためのツールです。</p>
+        <div class="sg-faq-list">
+            <!-- 1. このツールは何か -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>内部監査向けの「統制システム」ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>いいえ。</strong> SSO・操作ログの改ざん防止・権限管理・承認フローを備えた<strong>懸賞抽選統制システム</strong>ではありません。別製品帯の話です。</p>
+                    <p>本ツールは<strong>幹事・マーケ向けの無料Webツール</strong>で、公平抽選と<strong>説明用の監査PDF／JSON</strong>をブラウザ内で作ります。名簿は外部サーバーに送りません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>内部監査がいなくても使う意味はありますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>あります。</strong> 監査人が横にいなくても、懸賞・プレゼント企画では<strong>あとからの説明</strong>が来ます（上司・法務・「なぜその人？」の問い合わせ）。</p>
+                    <p>景品が大きい・人数が多い・SNS懸賞・前回揉めた、といったときは、Excelだけより<strong>「いつ・どの名簿で・どう決めたか」</strong>を1セットで残す方が楽です。</p>
+                    <p>10人の飲み会で1名だけ、など<strong>説明責任が薄い抽選</strong>なら、表計算のままで十分な場合もあります。必然性は「監査がいるから」だけではありません。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>社内イベントだけでも使えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。Step 0 で<strong>「社内ビンゴ・慰労会」</strong>を選ぶと、景表法の射程外になりやすい旨を表示しつつ、社外公開リスク（P11）をチェックできます。公平抽選は社内外どちらでも利用可能です。</p>
+                </div>
+            </details>
+            <!-- 2. 景品チェック（Phase 0） -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>このツールで「合法」「違法」と判定されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。ルール表と数値による一次スクリーニングのみです。「要確認」「リスク高」「専門家確認推奨」の表現に留めます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>ChatGPTに景表法を聞く前に使うと何が違いますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>LLMは断定・ハルシネーションのリスクがあります。本ツールは告示ベースのルール表のみで判定し、証跡PDFを残せます。ただし法的助言の代替にはなりません。</p>
+                </div>
+            </details>
+            <!-- 3. 名簿準備 → 抽選（Phase 1） -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Xでフォロー・リプライ抽選するとき、応募者のIDはどう集めますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>本ツールは応募者の取得はしません。</strong> 名簿が手元にある前提で、上の入力欄に<strong>1行1名</strong>を貼って抽選します。fair-draw が担当するのはその<strong>次の段階</strong>（公平シャッフルと監査PDF）です。</p>
+                    <p>実務で集める「ID」は、数値のユーザーIDではなく<strong>ほぼ <code>@ユーザー名</code>（ハンドル）</strong>です。表示名は同名・改名があるので名簿には向きません。</p>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><strong>小規模（数十〜数百件）</strong> — 締切後、元ツイートの<strong>返信欄</strong>や通知から <code>@</code> を<strong>手動コピー</strong>してスプシに並べる幹事が多いです。重複削除・条件外の除去も目視。</li>
+                        <li><strong>中規模以上</strong> — 返信収集・<strong>フォロー確認</strong>付きの<strong>懸賞・キャンペーン管理ツール</strong>や、X API連携の仕組みに寄るケースが多いです。</li>
+                    </ul>
+                    <p>X公式UIには、一般の企業アカウント向けに「このツイートへの返信者をCSVで全部出す」機能は<strong>ほぼありません</strong>。だから小さい懸賞は手作業、大きいとツール側に寄る、という二極化がよくあります。</p>
+                    <p><strong>フォロー確認</strong>まで手動だと、返信者1人ずつプロフィールを見る負担が大きく、件数が増えると現実的ではありません。厳密にやるならツール側のフォロー確認機能に任せるか、応募をフォーム（LP）に寄せる運用もあります。</p>
+                    <p>名簿の正しさ（締切・フォロー済みか・重複除外）は<strong>幹事の運用と名簿作成の段階</strong>の話です。監査PDFの名簿指紋は、<strong>抽選したときのリストと同じか</strong>の目安であり、名簿作成方法までは証明しません。</p>
+                </div>
+            </details>
+            <!-- 3b. 複数コース・加重口数（運用オペ） -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Aコース・Bコースなど複数Prizeコースは、1回の抽選でまとめてできますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>コースごとに分ける運用を推奨します。</strong> 本ツールに「コース選択UI」はありません。Aコース用・Bコース用で<strong>名簿と抽選を分ける</strong>と、当選人数・景品・監査PDFの説明がきれいに残ります。</p>
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li>Excel/スプシで<strong>コース別シート</strong>（または別ファイル）に応募者を整理</li>
+                        <li>Step 0 で「複数Prizeコース → コース別抽選」を選び、景品チェック（P12）</li>
+                        <li>fair-draw で<strong>コースごとに</strong>名簿貼付 → 賞帯別抽選 → 監査PDF（ファイル名にコース名を付けると後で楽）</li>
+                    </ol>
+                    <p>1つの名簿に全コースを混ぜて1回だけ回すことも技術的には可能ですが、当選者と景品の対応が説明しづらくなりやすいです。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>XとIG両方フォロー＆RPで「当選確率2倍」— ツールが自動計算してくれますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>いいえ。</strong> X/IGのフォロー確認も、口数2倍の計算も<strong>本ツールの外</strong>です。fair-draw は「確定した名簿」を公平にシャッフルするだけです。</p>
+                    <p>Step 0 で「複数SNS・条件達成で口数増」を選ぶと P13 が提案されます。告知に口数ルールを書いたうえで、<strong>2口の人は名簿に同じ <code>@</code> を2行</strong>（重複行）で貼ってください。抽選は重複行をそのまま口数として扱います。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>口数2倍・購入点数ぶんの口数 — 名簿の作り方（重複行）の手順は？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li>締切後、条件達成をスプシで確認（Xのみ / X+IG / 購入3口 など）</li>
+                        <li><strong>口数列</strong>を付け、口数ぶんだけID行を複写（例: 2口なら <code>@user_a</code> を2行）</li>
+                        <li>fair-draw に貼付 — 名簿パネルで「有効行数」と「<strong>重複 N</strong>」を確認（空行とは別カウント）</li>
+                        <li>「賞帯間で既当選者を除外」ON のまま抽選（同一IDの2口当選は起きない）</li>
+                        <li>監査PDFを保存。社内説明用に「口数は重複行で表現」と1行メモしてもよい</li>
+                    </ol>
+                    <p>加重の<strong>自動計算機能は追加予定なし</strong>（公平性の説明が複雑になるため）。Excelで口数を確定してから持ち込む設計です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Excelでコース別・段階別に分けて、fair-draw を複数回使う流れは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>Wチャンス・コース別・一次/二次抽選は、<strong>回数＝fair-draw の実行回数</strong>と考えてください。</p>
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li>シート（またはファイル）を<strong>抽選単位</strong>で分ける — 例: <code>Aコース</code> / <code>Bコース</code> / <code>Wチャンス</code></li>
+                        <li>各シートの最終行数と「有効行数」を突合</li>
+                        <li>1シートずつ fair-draw に貼付 → 賞帯（1位1枠…）を設定 → 実行 → 監査PDF/JSONを<strong>コース名入りで保存</strong></li>
+                        <li>Phase 0 の景品チェックは<strong>キャンペーン全体</strong>で1回、抽選は<strong>単位ごと</strong>に複数回、が一般的です</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>名簿パネルの「重複」と「空行」の違いは？口数2倍とどう関係しますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><strong>空行</strong> — 中身がない行。抽選からは除外されます。</li>
+                        <li><strong>重複</strong> — 同じIDが2行以上ある状態。意図的な<strong>口数2倍</strong>なら重複は正常です（例: 有効16行・重複2＝ユニーク14名・2名が2口）。</li>
+                        <li><strong>ミス</strong> — 本来1口なのに同じ人が2行 → 重複カウントで気づきやすくなります。Excel と突合してください。</li>
+                    </ul>
+                    <p>fair-draw は重複を自動で1行にまとめません。口数設計は幹事のExcel側、公平シャッフルは fair-draw 側、という分担です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>証跡は何をセットで残せばいい？誰が抽選したかは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>3点セット</strong>を同じフォルダに入れてください（ファイル名に<strong>キャンペーン識別名</strong>が入ります）。</p>
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li><strong>名簿スナップショット</strong>（<code>sugudasu-roster-{CP名}-*.txt</code>）— 名簿全文 + キャンペーン名 · 実施者 · 指紋 · シード</li>
+                        <li><strong>監査PDF</strong> — キャンペーン · 当選者 · 実施者 · シード · 名簿指紋</li>
+                        <li><strong>抽選JSON</strong> — 機械可読（社内ツール連携用）</li>
+                    </ol>
+                    <p><strong>キャンペーンの中身</strong>（応募要項・景品画像）は CP ページのスクショ等を<strong>別途</strong>同フォルダに。証跡は「どのCPの抽選か」を識別するラベルです。</p>
+                    <p><strong>誰が抽選したか</strong> — ログインはないため「抽選実施者（幹事名）」を<strong>手入力</strong>し、PDF/名簿txt/JSONに記録します。署名やSSOほど強くはありませんが、「誰の操作か」を後から説明する最低限の行です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>Excel・スプシの乱数と何が違いますか？なにが説明を楽にしますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>表計算の乱数（例: Excelの <code class="text-[10px]">RAND()</code>）は、開き直し・再計算で<strong>数字が変わり、当選者も変わり得ます</strong>。手軽ですが、「いつ・どの乱数で決めたか」を後から説明しづらいことがあります。</p>
+                    <p>本ツールは<strong>抽選を1回実行して確定</strong>し、次を監査PDFに<strong>1セット</strong>で残します。</p>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><strong>やり方</strong>（Fisher-Yates など）</li>
+                        <li><strong>記録番号（シード）</strong> — その回の抽選の記録</li>
+                        <li><strong>名簿の指紋</strong> — 抽選したときのリストと同じかの目安</li>
+                        <li><strong>当選者</strong>と実施日時</li>
+                    </ul>
+                    <p>内部監査を「黙らせる魔法」ではありません。<strong>説明の会話を短くする材料</strong>です。表計算が悪いのではなく、<strong>手軽な試算</strong>と<strong>証跡付きの本番抽選</strong>で役割が違います。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>本当に公平に抽選できていますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>名簿を<strong>1回だけ</strong>シャッフルして当選者を選びます。方式は <strong>Fisher-Yates（フィッシャー・イェーツ）シャッフル</strong>で、配列を公平に並べ替えるときの<strong>事実上の標準</strong>です。</p>
+                    <p>乱数はブラウザ標準の <strong>Web Crypto</strong> で作ります。名簿はSUGUDASUのサーバーへ送りません。抽選は<strong>1回確定</strong>し、シード・名簿の指紋・当選者を監査PDFに残せます。</p>
+                </div>
+            </details>
+            <!-- 4. 監査PDF・記録 -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>シード（記録番号）とは何ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>今回の抽選の<strong>記録番号</strong>です。同じ名簿・同じシードなら、同じ結果になります（将来の検証機能向け）。</p>
+                    <p>名簿の指紋とセットで、「<strong>この名簿で、この回として</strong>」決めた、という説明の材料になります。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>名簿の指紋って何ですか？（SHA-256）</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>参加者リスト全体から作った<strong>確認用の番号</strong>です（技術名: SHA-256）。暗号の知識は不要で、「<strong>名簿の合言葉</strong>」と考えてください。</p>
+                    <p>リストが1行でも違うと、番号はまったく別のものになります。だから<strong>当選後に名簿だけ直した</strong>疑いを、PDFの記録と突き合わせて話す<strong>目安</strong>になります。</p>
+                    <p><strong>できないこと:</strong> 抽選前の名簿が正しかったか（締切・応募条件）は、このPDFだけでは分かりません。あくまで<strong>記録時点の名簿</strong>との一致の目安です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>監査PDFには何が載りますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>実施日時・景品名・金額・当選人数・景品チェック結果・抽選方式・シード・名簿の指紋・当選者名など。</p>
+                    <p>幹事が<strong>そのまま上司・法務・監査に渡す</strong>ことを想定した、説明用の1枚です。ローカル生成で<strong>外部送信はありません</strong>。</p>
+                    <p>法的断定や、社内統制のログ代替にはなりません。</p>
+                </div>
+            </details>
+            <!-- 5. 同席・将来 -->
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>内部監査の人が、抽選の横でずっと見ています。和らげる機能はありますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>「監査人の目つきを優しくする機能」はありません（お茶サーブも未実装です）。</p>
+                    <p>ただ、監査PDFに<strong>方式・シード・名簿の指紋・当選者</strong>が載るので、その場で渡せば説明の会話は短くなりやすいです。統制システムの代替ではなく、<strong>説明用のパッケージ</strong>として使ってください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>テストで回した結果を本番と間違えて共有しそうです</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>画面上部のバナーが<strong>黄色（テスト/未確定）</strong>の間は、デモ名簿・抽選前・名簿変更後です。その結果をそのままSlack等に共有しないでください。</p>
+                    <p>「公平抽選を実行」後、名簿を変えていなければ<strong>青色（本番確定）</strong>に切り替わります。名簿行数バッジと Excel の行数も突合してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>抽選の方式は将来変わりますか？別の方式がよいことは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p><strong>v1では Fisher-Yates + Web Crypto に固定</strong>しています。「全員平等なくじ引き」なら事実上の標準のため、説明もしやすいからです。</p>
+                    <p><strong>加重・口数2倍・コース別</strong>は専用アルゴリズムではなく、<strong>名簿の重複行やExcel分割</strong>で表現する運用です（上のFAQ「複数コース・加重口数」参照）。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  evaluatePrizeLaw,
+  runFairDraw,
+  runBandDraw,
+  finalizeDrawAudit,
+  DRAW_ALGORITHM,
+} from '../assets/prize-law-eval.js';
+import { copyWithFeedback } from '../assets/sg-copy-feedback.js';
+import { validateFields, bindFieldErrorClear } from '../assets/sg-form-validate.js';
+
+const rulesUrl = typeof SUGUDASU_SHELL !== 'undefined' && SUGUDASU_SHELL.dataUrl
+  ? SUGUDASU_SHELL.dataUrl('prize-law-rules.json')
+  : '../data/prize-law-rules.json';
+const patternsUrl = typeof SUGUDASU_SHELL !== 'undefined' && SUGUDASU_SHELL.dataUrl
+  ? SUGUDASU_SHELL.dataUrl('prize-law-patterns.json')
+  : '../data/prize-law-patterns.json';
+const metaUrl = typeof SUGUDASU_SHELL !== 'undefined' && SUGUDASU_SHELL.dataUrl
+  ? SUGUDASU_SHELL.dataUrl('prize-law-campaign-meta.json')
+  : '../data/prize-law-campaign-meta.json';
+
+let rulesData = null;
+let patternsData = null;
+let metaData = null;
+let lastEval = null;
+let lastEvalInput = null;
+let lastDraw = null;
+let lastDrawRosterKey = null;
+let selectedFormatId = null;
+let selectedCategoryId = null;
+
+function currentAudience() {
+  const f = metaData?.campaignFormats.find((x) => x.id === selectedFormatId);
+  return f?.audience === 'internal' ? 'internal' : 'consumer';
+}
+
+async function loadData() {
+  const [r, p, m] = await Promise.all([
+    fetch(rulesUrl).then((res) => res.json()),
+    fetch(patternsUrl).then((res) => res.json()),
+    fetch(metaUrl).then((res) => res.json()),
+  ]);
+  rulesData = r;
+  patternsData = p;
+  metaData = m;
+  renderMetaPickers();
+  renderPatterns('consumer');
+  renderReferenceLinks();
+  updateFieldHints(null, null);
+}
+
+function fairDrawRegistryMeta() {
+  return window.SUGUDASU_SHELL?.getToolMeta?.('fair-draw') || {
+    stage: 'beta',
+    version: '1.3.0',
+    name: '公平抽選・景品チェック（証跡PDF）',
+  };
+}
+
+function fairDrawToolVersionLabel() {
+  const meta = fairDrawRegistryMeta();
+  const shell = window.SUGUDASU_SHELL;
+  if (shell?.formatToolVersionLabel) {
+    return shell.formatToolVersionLabel(meta.stage, meta.version);
+  }
+  return `ベータ版 v${meta.version}`;
+}
+
+function getRosterLines() {
+  return analyzeRosterStats().lines;
+}
+
+function analyzeRosterStats() {
+  const v = document.getElementById('in-roster').value;
+  if (!v.trim()) {
+    return { raw: 0, empty: 0, effective: 0, duplicates: 0, lines: [] };
+  }
+  const normalized = v.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const splitLines = normalized.split('\n');
+  let empty = 0;
+  /** @type {string[]} */
+  const nonEmpty = [];
+  for (const line of splitLines) {
+    const t = line.trim();
+    if (!t) empty += 1;
+    else nonEmpty.push(t);
+  }
+  const effective = nonEmpty.length;
+  const duplicates = effective - new Set(nonEmpty).size;
+  return { raw: splitLines.length, empty, effective, duplicates, lines: nonEmpty };
+}
+
+function countRosterRawLines() {
+  return analyzeRosterStats().raw;
+}
+
+function rosterContentKey() {
+  return getRosterLines().join('\n');
+}
+
+const DEMO_ROSTER_LINE = /^(@user_[a-z0-9_]+|山田太郎|テスト|test|サンプル|sample|demo)/i;
+
+function isDemoRoster(lines) {
+  if (!lines.length) return false;
+  if (lines.length <= 2) return true;
+  return lines.every((line) => DEMO_ROSTER_LINE.test(line.trim()));
+}
+
+function resolveDrawMode() {
+  const lines = getRosterLines();
+  if (!lines.length) return 'idle';
+  if (!lastDraw) return isDemoRoster(lines) ? 'test' : 'preview';
+  if (lastDrawRosterKey !== rosterContentKey()) return 'test';
+  return 'live';
+}
+
+function updateDrawModeBanner() {
+  const bar = document.getElementById('fd-mode-banner');
+  const textEl = document.getElementById('fd-mode-banner-text');
+  if (!bar || !textEl) return;
+  const mode = resolveDrawMode();
+  const map = {
+    idle: {
+      cls: 'fd-mode-banner--idle',
+      text: '名簿を貼り付けてください。抽選実行後に【本番確定】表示になります。',
+    },
+    test: {
+      cls: 'fd-mode-banner--test',
+      text: '【テスト/未確定】デモ名簿・名簿変更後・再抽選前。この結果をそのまま本番共有しないでください。',
+    },
+    preview: {
+      cls: 'fd-mode-banner--test',
+      text: '【抽選前】名簿行数を Excel と突合してから「公平抽選を実行」。実行後【本番確定】に切り替わります。',
+    },
+    live: {
+      cls: 'fd-mode-banner--live',
+      text: '【本番確定】この抽選結果は確定しています。シード・名簿指紋は監査PDF/JSONに記録済みです。',
+    },
+  };
+  const cfg = map[mode] || map.idle;
+  bar.className = `fd-mode-banner ${cfg.cls} no-print`;
+  textEl.textContent = cfg.text;
+}
+
+function updateRosterCountUI() {
+  const { raw, empty, effective, duplicates } = analyzeRosterStats();
+  const effEl = document.getElementById('roster-effective-count');
+  const hintEl = document.getElementById('roster-raw-hint');
+  const panel = document.getElementById('roster-count-panel');
+  if (effEl) effEl.textContent = String(effective);
+  if (hintEl) {
+    if (!raw) {
+      hintEl.textContent = '貼付 0 行 · Excel の最終行と一致していますか？';
+    } else {
+      const parts = [`貼付 ${raw} 行`, `有効 ${effective} 行`];
+      if (empty) parts.push(`空行 ${empty}`);
+      if (duplicates) parts.push(`重複 ${duplicates}`);
+      parts.push('Excel と突合してください');
+      hintEl.textContent = parts.join(' · ');
+    }
+  }
+  if (panel) {
+    panel.classList.toggle('border-rose-300', effective === 0 && raw > 0);
+    panel.classList.toggle('bg-rose-50', effective === 0 && raw > 0);
+    panel.classList.toggle('border-slate-200', !(effective === 0 && raw > 0));
+    panel.classList.toggle('bg-slate-50', !(effective === 0 && raw > 0));
+  }
+  updateDrawModeBanner();
+}
+
+const DEFAULT_BANDS = [
+  { label: '1位', count: 1 },
+  { label: '2位', count: 3 },
+  { label: '3位', count: 5 },
+];
+
+function updateBandTotalCount() {
+  const total = [...document.querySelectorAll('.band-count')].reduce(
+    (s, el) => s + (Number(el.value) || 0),
+    0,
+  );
+  const el = document.getElementById('band-total-count');
+  if (el) el.textContent = String(total);
+}
+
+function createBandRow(band) {
+  const row = document.createElement('div');
+  row.className = 'band-row grid grid-cols-[minmax(5.5rem,1fr)_4rem_auto_auto] items-center gap-2';
+  row.innerHTML = `
+    <input type="text" class="band-label sg-input sg-input--band text-xs" value="${band.label.replace(/"/g, '&quot;')}" placeholder="1位" aria-label="賞帯名">
+    <input type="number" class="band-count sg-input text-xs text-center" min="0" value="${band.count}" aria-label="枠数">
+    <span class="text-[10px] text-slate-500 shrink-0">枠</span>
+    <button type="button" class="band-remove text-slate-400 hover:text-rose-600 text-xs px-1" aria-label="削除">×</button>
+  `;
+  row.querySelector('.band-count').addEventListener('input', updateBandTotalCount);
+  row.querySelector('.band-remove').addEventListener('click', () => {
+    if (document.querySelectorAll('.band-row').length <= 1) return;
+    row.remove();
+    updateBandTotalCount();
+  });
+  return row;
+}
+
+function initBandRows() {
+  const container = document.getElementById('band-rows');
+  if (!container || container.childElementCount) return;
+  DEFAULT_BANDS.forEach((b) => container.appendChild(createBandRow(b)));
+  updateBandTotalCount();
+}
+
+function getDrawBandsFromForm() {
+  return [...document.querySelectorAll('.band-row')].map((row) => ({
+    label: row.querySelector('.band-label').value.trim() || '賞',
+    count: Math.max(0, Number(row.querySelector('.band-count').value) || 0),
+  })).filter((b) => b.count > 0);
+}
+
+function syncDrawPrizeModePanels() {
+  const mode = document.querySelector('input[name="draw-prize-mode"]:checked')?.value || 'bands';
+  document.getElementById('draw-bands-panel')?.classList.toggle('hidden', mode !== 'bands');
+  document.getElementById('draw-simple-panel')?.classList.toggle('hidden', mode !== 'simple');
+}
+
+function getDrawPrizeMode() {
+  return document.querySelector('input[name="draw-prize-mode"]:checked')?.value || 'bands';
+}
+
+function canProceedDraw() {
+  if (lastEval && lastEval.hasRedFlag) {
+    if (!document.getElementById('chk-self-responsibility').checked) return false;
+  }
+  return true;
+}
+
+function getDrawOperatorName() {
+  return document.getElementById('in-draw-operator')?.value.trim() || '';
+}
+
+function getDrawCampaignLabel() {
+  return document.getElementById('in-draw-campaign')?.value.trim() || '';
+}
+
+const FD_OPERATOR_STORAGE_KEY = 'sugudasu-fd-operator';
+
+function syncDrawCampaignFromPhase0() {
+  const drawEl = document.getElementById('in-draw-campaign');
+  if (!drawEl || drawEl.value.trim()) return;
+  const phase0Summary = document.getElementById('in-campaign')?.value.trim();
+  if (phase0Summary) {
+    drawEl.value = phase0Summary.split('\n')[0].slice(0, 120);
+    return;
+  }
+  const prizeName = document.getElementById('in-prize-name')?.value.trim();
+  if (prizeName) drawEl.value = prizeName.slice(0, 120);
+}
+
+function campaignFileSlug(label) {
+  const s = String(label || 'cp')
+    .replace(/[^\w\u3040-\u30ff\u4e00-\u9faf-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 32);
+  return s || 'cp';
+}
+
+async function executeFairDrawFromForm() {
+  const lines = getRosterLines();
+  if (!lines.length) throw new Error('ROSTER_EMPTY');
+  const allowDuplicate = document.getElementById('chk-duplicate').checked;
+  const exclude = document.getElementById('chk-exclude').checked;
+  const prizeMode = getDrawPrizeMode();
+  let draw;
+  if (prizeMode === 'simple') {
+    const count = Number(document.getElementById('in-draw-count').value) || 1;
+    draw = runFairDraw(lines, count, { allowDuplicate, exclude, mode: 'draw' });
+  } else {
+    const bands = getDrawBandsFromForm();
+    if (!bands.length) throw new Error('BANDS_EMPTY');
+    draw = runBandDraw(lines, bands, { allowDuplicate, exclude, mode: 'draw' });
+  }
+  const audited = await finalizeDrawAudit(draw, lines);
+  audited.drawnAtJst = jstNow();
+  audited.conductedBy = getDrawOperatorName();
+  audited.campaignLabel = getDrawCampaignLabel();
+  audited.rosterSnapshot = lines.join('\n') + '\n';
+  return audited;
+}
+
+function auditFileStamp(draw) {
+  const sha8 = (draw?.rosterSha256 || 'unknown').slice(0, 8);
+  const d = (draw?.drawnAtJst || jstNow()).slice(0, 10).replace(/\//g, '');
+  const cp = campaignFileSlug(draw?.campaignLabel);
+  return { sha8, d, cp };
+}
+
+function buildRosterSnapshotFileContent(draw) {
+  const header = [
+    '# SUGUDASU fair-draw 名簿スナップショット',
+    `# キャンペーン: ${draw.campaignLabel || ''}`,
+    `# 実施日時(JST): ${draw.drawnAtJst || ''}`,
+    `# 実施者: ${draw.conductedBy || ''}`,
+    `# 名簿指紋 SHA-256: ${draw.rosterSha256 || ''}`,
+    `# シード: ${draw.seedHex || ''}`,
+    `# 有効行: ${draw.rosterCount ?? ''}（重複行含む）`,
+    '# ---',
+    '',
+  ].join('\n');
+  return header + (draw.rosterSnapshot || '');
+}
+
+function downloadTextFile(filename, content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function rosterSnapshotFilename(draw) {
+  const { sha8, d, cp } = auditFileStamp(draw);
+  return `sugudasu-roster-${cp}-${d}-${sha8}.txt`;
+}
+
+function downloadRosterSnapshot(draw) {
+  if (!draw?.rosterSnapshot) return;
+  downloadTextFile(rosterSnapshotFilename(draw), buildRosterSnapshotFileContent(draw));
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildDrawWinnerRows(draw) {
+  /** @type {Array<{ band: string, name: string }>} */
+  const rows = [];
+  if (draw.bands && draw.bands.length) {
+    for (const b of draw.bands) {
+      for (const w of b.winners || []) {
+        rows.push({ band: b.label || '賞', name: String(w) });
+      }
+    }
+    return rows;
+  }
+  for (const w of draw.winners || []) {
+    rows.push({ band: '', name: String(w) });
+  }
+  return rows;
+}
+
+function drawHasBands(draw) {
+  return !!(draw.bands && draw.bands.length && buildDrawWinnerRows(draw).some((r) => r.band));
+}
+
+function formatDrawOpsDefault(draw) {
+  if (drawHasBands(draw)) return formatDrawTsv(draw);
+  return formatDrawPlainLines(draw);
+}
+
+function formatDrawPlainLines(draw) {
+  return buildDrawWinnerRows(draw).map((r) => r.name).join('\n');
+}
+
+function formatDrawTsv(draw) {
+  const rows = buildDrawWinnerRows(draw);
+  if (!rows.length) return '';
+  if (rows.some((r) => r.band)) {
+    return ['賞帯\t当選者', ...rows.map((r) => `${r.band}\t${r.name}`)].join('\n');
+  }
+  return ['連番\t当選者', ...rows.map((r, i) => `${i + 1}\t${r.name}`)].join('\n');
+}
+
+function formatDrawSlackText(draw) {
+  const rows = buildDrawWinnerRows(draw);
+  if (!rows.length) return '';
+  const title = draw.campaignLabel?.trim()
+    || lastEvalInput?.campaignSummary?.trim()
+    || lastEvalInput?.prizeName?.trim()
+    || 'キャンペーン';
+  const date = draw.drawnAtJst || jstNow();
+  let body;
+  if (draw.bands && draw.bands.length) {
+    body = draw.bands
+      .filter((b) => (b.winners || []).length)
+      .map((b) => `【${b.label}】\n${(b.winners || []).map((w) => `・${w}`).join('\n')}`)
+      .join('\n\n');
+  } else {
+    body = rows.map((r) => `・${r.name}`).join('\n');
+  }
+  const fp = draw.rosterSha256 ? `${draw.rosterSha256.slice(0, 8)}…` : '—';
+  const operator = draw.conductedBy ? `実施: ${draw.conductedBy}` : '';
+  return [
+    `【${title} 当選者】`,
+    date,
+    operator,
+    '',
+    body,
+    '',
+    `公平抽選（Fisher-Yates）· 名簿指紋 ${fp}`,
+  ].filter((line, i, arr) => !(line === '' && arr[i - 1] === '')).join('\n');
+}
+
+function renderDrawOpsPanel(draw) {
+  const rows = buildDrawWinnerRows(draw);
+  const count = rows.length;
+  const hasBands = drawHasBands(draw);
+
+  if (hasBands) {
+    return `
+    <div class="fd-ops-panel rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+      <p class="text-xs font-bold text-slate-900">次の作業用 — 当選者 ${count} 名</p>
+      <div class="overflow-x-auto rounded-lg border border-slate-200">
+        <table class="fd-ops-table w-full text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200">
+              <th class="text-left p-2.5 font-semibold text-slate-600 w-28">賞帯</th>
+              <th class="text-left p-2.5 font-semibold text-slate-600">当選者</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((r) => `
+              <tr class="border-b border-slate-100 last:border-0">
+                <td class="p-2.5 font-semibold text-slate-700">${escapeHtml(r.band)}</td>
+                <td class="p-2.5 font-mono text-slate-900 break-all">${escapeHtml(r.name)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[10px] text-slate-500 leading-relaxed">上の表どおり<strong>賞帯付き</strong>。「リストをコピー」で Excel 用 TSV（2列）が付きます。ID だけ欲しいときは「IDのみ」。</p>
+    </div>`;
+  }
+
+  return `
+    <div class="fd-ops-panel rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+      <p class="text-xs font-bold text-slate-900">次の作業用 — 当選者 ${count} 名</p>
+      <textarea id="draw-ops-preview" readonly rows="${Math.min(Math.max(count + 1, 4), 14)}" class="sg-input text-xs font-mono leading-relaxed w-full resize-y fd-ops-preview" aria-label="当選者リストプレビュー"></textarea>
+      <p class="text-[10px] text-slate-500 leading-relaxed">1行1名。スプシ列貼付 · DM · 発送ラベル用。</p>
+    </div>`;
+}
+
+function renderDrawProofBar(draw) {
+  const { sha8, cp } = auditFileStamp(draw);
+  return `
+    <div class="fd-proof-bar rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 mt-4 space-y-2 text-[11px] text-slate-600">
+      <p class="font-bold text-slate-800 text-xs">証跡（この抽選の記録）</p>
+      <p><span class="text-slate-500">キャンペーン:</span> <strong class="text-slate-800">${escapeHtml(draw.campaignLabel || '—')}</strong></p>
+      <p class="text-[10px] text-slate-700 leading-relaxed rounded-md border border-slate-200 bg-white px-2 py-1.5">
+        <strong>3点セットで保管:</strong> 名簿 <code class="text-[10px]">roster-${escapeHtml(cp)}-*-${sha8}.txt</code>
+        · 監査PDF · 抽選JSON
+      </p>
+      <p><span class="text-slate-500">実施者:</span> <strong class="text-slate-800">${escapeHtml(draw.conductedBy || '—')}</strong></p>
+      <p><span class="text-slate-500">実施日時:</span> ${escapeHtml(draw.drawnAtJst || jstNow())}</p>
+      <p class="leading-snug"><span class="text-slate-500">シード:</span><br><code class="font-mono text-[10px] break-all text-slate-800">${escapeHtml(draw.seedHex || '')}</code></p>
+      <p class="leading-snug"><span class="text-slate-500">名簿指紋 (SHA-256):</span><br><code class="font-mono text-[10px] break-all text-slate-800">${escapeHtml(draw.rosterSha256 || '')}</code></p>
+      <p class="text-[10px] text-slate-500">方式: ${escapeHtml(draw.algorithmId || DRAW_ALGORITHM.id)} · 実施者は自己申告（SSOなし）</p>
+    </div>`;
+}
+
+function syncDrawCopyUi(draw) {
+  const hasBands = drawHasBands(draw);
+  const opsBtn = document.getElementById('btn-copy-winners-ops');
+  const plainBtn = document.getElementById('btn-copy-winners-plain');
+  if (opsBtn) {
+    opsBtn.textContent = hasBands
+      ? '当選者リストをコピー（賞帯付き · Excel用）'
+      : '当選者リストをコピー（1行1名 · Excel/DM用）';
+  }
+  if (plainBtn) plainBtn.classList.toggle('hidden', !hasBands);
+  const preview = document.getElementById('draw-ops-preview');
+  if (preview) preview.value = formatDrawOpsDefault(draw);
+}
+
+function bindDrawOpsCopyHandlers(draw) {
+  const toast = document.getElementById('copy-toast-draw-ops');
+
+  const bind = (id, getText, prefix) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.onclick = async () => {
+      const text = getText();
+      if (!text) return;
+      try {
+        await copyWithFeedback(text, btn, {
+          toastEl: toast,
+          toastPrefix: prefix,
+          lineCount: text.split('\n').length,
+          previewLine: text.split('\n').find((l) => l.trim()) || '',
+          copiedLabel: 'Copied!',
+        });
+      } catch {
+        alert('コピーに失敗しました。');
+      }
+    };
+  };
+
+  bind('btn-copy-winners-ops', () => formatDrawOpsDefault(draw), '当選者');
+  bind('btn-copy-winners-plain', () => formatDrawPlainLines(draw), 'IDのみ');
+  bind('btn-copy-winners-slack', () => formatDrawSlackText(draw), '連絡文');
+}
+
+function renderDrawAuditPlainInner() {
+  return `
+      <p><strong>やり方:</strong> ${DRAW_ALGORITHM.plain}</p>
+      <p><strong>確定のしかた:</strong> 抽選は1回だけ実行し、結果と記録をPDFに残します（Excelの再計算のように当選が勝手に変わることはありません）。</p>
+      <p><strong>記録番号（シード）:</strong> 今回の抽選の記録。同じ名簿・同じ記録番号なら同じ結果になります。</p>
+      <p><strong>名簿の指紋:</strong> 抽選したときの参加者リストと同じか確認するための番号です。1行でも書き換えると変わります。当選後の名簿すり替えの<strong>目安</strong>です。</p>
+      <p class="text-[10px] text-slate-500">※統制システムではありません。抽選前の名簿が正しかったかは、締切・運用ルールなど別途の説明が必要です。</p>
+      <p class="text-[10px] text-slate-500">技術名: ${DRAW_ALGORITHM.technical} · ID ${DRAW_ALGORITHM.id}</p>`;
+}
+
+function renderMetaPickers() {
+  if (!metaData) return;
+  const fmtEl = document.getElementById('format-list');
+  fmtEl.innerHTML = metaData.campaignFormats.map((f) => `
+    <button type="button" class="meta-format-btn text-left p-2.5 rounded-lg border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 transition-colors ${selectedFormatId === f.id ? 'ring-2 ring-indigo-400 bg-indigo-50' : ''}" data-format-id="${f.id}">
+      <span class="block text-xs font-bold text-slate-800">${f.label}</span>
+      <span class="block text-[10px] text-slate-500 mt-0.5">${f.example}</span>
+    </button>
+  `).join('');
+  fmtEl.querySelectorAll('.meta-format-btn').forEach((btn) => {
+    btn.addEventListener('click', () => applyCampaignFormat(btn.getAttribute('data-format-id')));
+  });
+
+  const catEl = document.getElementById('category-list');
+  catEl.innerHTML = metaData.prizeCategories.map((c) => `
+    <button type="button" class="meta-category-btn text-left p-2.5 rounded-lg border border-slate-200 hover:border-violet-300 hover:bg-violet-50/50 transition-colors ${selectedCategoryId === c.id ? 'ring-2 ring-violet-400 bg-violet-50' : ''}" data-category-id="${c.id}">
+      <span class="block text-xs font-bold text-slate-800">${c.label}</span>
+      <span class="block text-[10px] text-violet-700">${c.tagline}</span>
+      <span class="block text-[10px] text-slate-400 mt-0.5">${c.examples[0]} など</span>
+    </button>
+  `).join('');
+  catEl.querySelectorAll('.meta-category-btn').forEach((btn) => {
+    btn.addEventListener('click', () => applyPrizeCategory(btn.getAttribute('data-category-id')));
+  });
+}
+
+function mergeSuggestPatterns(ids) {
+  const set = new Set();
+  ids.forEach((id) => { if (id) set.add(id); });
+  return [...set];
+}
+
+function applySuggestedPatterns(patternIds) {
+  document.querySelectorAll('.pattern-cb').forEach((cb) => {
+    cb.checked = patternIds.includes(cb.value);
+  });
+}
+
+function setFieldHint(key, text) {
+  const el = document.getElementById(`hint-${key}`);
+  if (el) el.textContent = text || '';
+}
+
+function updateFieldHints(format, category) {
+  const hints = { ...format?.fieldHints, ...category?.fieldHints };
+  setFieldHint('max-tx', hints.maxTransactionYen || 'お客が条件を満たすときの最高購入額。無料だけなら0');
+  setFieldHint('max-prize', hints.maxPrizeYen || category?.valuationGuide?.howTo || '当たる景品のうち最も高い1点の円額');
+  setFieldHint('total-prize', hints.totalPrizeYen || '景品最高額×当選人数（同じ品が複数なら足す）');
+  setFieldHint('sales', hints.expectedSalesYen || 'キャンペーン期間の売上見込み。SNSのみなら0');
+}
+
+function renderMetaGuide(format, category) {
+  const box = document.getElementById('meta-guide');
+  const calc = document.getElementById('valuation-calc');
+  if (!category) {
+    box.classList.add('hidden');
+    calc.classList.add('hidden');
+    return;
+  }
+  const v = category.valuationGuide;
+  box.classList.remove('hidden');
+  calc.classList.remove('hidden');
+  box.innerHTML = `
+    <p class="font-bold">${category.label} — 円額の入れ方</p>
+    <p class="leading-relaxed">${v.howTo}</p>
+    <p class="text-[10px] text-indigo-800">目安レンジ: ${v.typicalMinYen.toLocaleString('ja-JP')}〜${v.typicalMaxYen.toLocaleString('ja-JP')}円 / 1点</p>
+    ${v.caution ? `<p class="text-[10px] text-amber-800 font-semibold">⚠ ${v.caution}</p>` : ''}
+    ${format ? `<p class="text-[10px] text-slate-600 pt-1 border-t border-indigo-200">キャンペーン型: ${format.label}</p>` : ''}
+    <p class="text-[10px] text-slate-500">例: ${category.examples.join(' · ')}</p>
+  `;
+  document.getElementById('calc-unit-yen').value = v.defaultUnitYen;
+  document.getElementById('calc-qty').value = document.getElementById('in-winners').value || 1;
+  updateCalcPreview();
+}
+
+function updateCalcPreview() {
+  const unit = Number(document.getElementById('calc-unit-yen').value) || 0;
+  const qty = Number(document.getElementById('calc-qty').value) || 1;
+  const total = unit * qty;
+  document.getElementById('calc-preview').textContent =
+    `反映内容: 景品最高額 ${unit.toLocaleString('ja-JP')}円 · 総額 ${total.toLocaleString('ja-JP')}円（${qty}点）— あくまでたたき台です`;
+}
+
+function applyCampaignFormat(formatId) {
+  const f = metaData.campaignFormats.find((x) => x.id === formatId);
+  if (!f) return;
+  selectedFormatId = formatId;
+  renderPatterns(currentAudience());
+  if (f.defaults) {
+    if (f.defaults.maxTransactionYen != null) document.getElementById('in-max-tx').value = f.defaults.maxTransactionYen;
+    if (f.defaults.isPaid != null) document.getElementById('in-is-paid').checked = f.defaults.isPaid;
+    if (f.defaults.expectedSalesYen != null) document.getElementById('in-sales').value = f.defaults.expectedSalesYen;
+  }
+  const cat = metaData.prizeCategories.find((x) => x.id === selectedCategoryId);
+  const patterns = mergeSuggestPatterns([...(f.suggestPatterns || []), ...(cat?.suggestPatterns || [])]);
+  applySuggestedPatterns(patterns);
+  updateFieldHints(f, cat);
+  renderMetaGuide(f, cat);
+  renderMetaPickers();
+}
+
+function applyPrizeCategory(categoryId) {
+  const c = metaData.prizeCategories.find((x) => x.id === categoryId);
+  if (!c) return;
+  selectedCategoryId = categoryId;
+  const f = metaData.campaignFormats.find((x) => x.id === selectedFormatId);
+  if (c.valuationGuide?.defaultUnitYen) {
+    document.getElementById('in-max-prize').value = c.valuationGuide.defaultUnitYen;
+    const winners = Number(document.getElementById('in-winners').value) || 1;
+    document.getElementById('in-total-prize').value = c.valuationGuide.defaultUnitYen * winners;
+  }
+  if (!document.getElementById('in-prize-name').value && c.examples[0]) {
+    document.getElementById('in-prize-name').placeholder = `例: ${c.examples[0]}`;
+  }
+  const patterns = mergeSuggestPatterns([...(f?.suggestPatterns || []), ...(c.suggestPatterns || [])]);
+  applySuggestedPatterns(patterns);
+  updateFieldHints(f, c);
+  renderMetaGuide(f, c);
+  renderMetaPickers();
+}
+
+function applyMetaSelection() {
+  const f = metaData?.campaignFormats.find((x) => x.id === selectedFormatId);
+  const c = metaData?.prizeCategories.find((x) => x.id === selectedCategoryId);
+  updateFieldHints(f, c);
+  renderMetaGuide(f, c);
+}
+
+function renderPatterns(audience) {
+  const el = document.getElementById('pattern-list');
+  if (!el || !patternsData) return;
+  const items = patternsData.patterns.filter((p) =>
+    audience === 'internal' ? p.audience.includes('internal') : p.audience.includes('consumer'),
+  );
+  el.innerHTML = items.map((p) => `
+    <label class="flex items-start gap-2 p-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+      <input type="checkbox" class="pattern-cb mt-0.5 rounded border-slate-300" value="${p.id}">
+      <span>
+        <span class="font-semibold text-slate-800">${p.label}</span>
+        <span class="ml-1 text-[10px] ${p.defaultLevel === 'red' ? 'text-rose-600' : 'text-amber-600'}">${p.defaultLevel === 'red' ? '赤目安' : '黄目安'}</span>
+      </span>
+    </label>
+  `).join('');
+}
+
+function collectInput() {
+  const patternIds = [...document.querySelectorAll('.pattern-cb:checked')].map((cb) => cb.value);
+  const format = metaData?.campaignFormats.find((x) => x.id === selectedFormatId);
+  const category = metaData?.prizeCategories.find((x) => x.id === selectedCategoryId);
+  return {
+    audience: currentAudience(),
+    campaignFormatId: selectedFormatId,
+    campaignFormatLabel: format?.label || null,
+    prizeCategoryId: selectedCategoryId,
+    prizeCategoryLabel: category?.label || null,
+    patternIds,
+    maxTransactionYen: Number(document.getElementById('in-max-tx').value),
+    maxPrizeYen: Number(document.getElementById('in-max-prize').value),
+    totalPrizeYen: Number(document.getElementById('in-total-prize').value),
+    expectedSalesYen: Number(document.getElementById('in-sales').value),
+    winnerCount: Number(document.getElementById('in-winners').value),
+    isPaid: document.getElementById('in-is-paid').checked,
+    prizeName: document.getElementById('in-prize-name').value.trim(),
+    campaignSummary: document.getElementById('in-campaign').value.trim(),
+    checkLumpSum: !!format?.checkLumpSum,
+  };
+}
+
+function renderNextSteps(steps) {
+  if (!steps || !steps.length) return '';
+  return `<ol class="mt-2 space-y-1.5 list-decimal pl-4">
+    ${steps.map((s) => {
+      const icon = s.kind === 'consult' ? '📞' : s.kind === 'link' ? '🔗' : '☑';
+      const link = s.url
+        ? ` <a href="${s.url}" class="text-blue-600 font-semibold hover:underline" target="_blank" rel="noopener">${s.kind === 'consult' ? '相談窓口を開く' : '公式ページ'}</a>`
+        : '';
+      return `<li class="text-[11px] text-slate-700 leading-relaxed"><span aria-hidden="true">${icon}</span> ${s.text}${link}</li>`;
+    }).join('')}
+  </ol>`;
+}
+
+function renderReferenceLinks() {
+  const body = document.getElementById('reference-links-body');
+  if (!body || !rulesData) return;
+  const lines = [];
+  (rulesData.sources || []).forEach((s) => {
+    lines.push(`<p><a href="${s.url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener">${s.label}（e-Gov）</a></p>`);
+  });
+  (rulesData.referenceGuides || []).forEach((g) => {
+    lines.push(`<p class="pt-1"><a href="${g.url}" class="text-blue-700 font-semibold hover:underline" target="_blank" rel="noopener">${g.label}</a>${g.note ? `<span class="block text-slate-500 mt-0.5">${g.note}</span>` : ''}</p>`);
+  });
+  body.innerHTML = lines.join('');
+}
+
+function renderConsultationResources(resources) {
+  if (!resources || !resources.length) return '';
+  return `
+    <div class="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
+      <h4 class="text-xs font-bold text-blue-900 mb-2">公的相談・参考リンク</h4>
+      <ul class="space-y-2">
+        ${resources.map((r) => `
+          <li class="text-[11px]">
+            <a href="${r.url}" class="text-blue-700 font-semibold hover:underline" target="_blank" rel="noopener">${r.label}</a>
+            ${r.note ? `<span class="block text-slate-600 mt-0.5">${r.note}</span>` : ''}
+          </li>`).join('')}
+      </ul>
+    </div>`;
+}
+
+function renderEvalResult(result) {
+  const card = document.getElementById('result-card');
+  const levelClass = result.overallLevel === 'red' ? 'border-rose-300 bg-rose-50' : result.overallLevel === 'yellow' ? 'border-amber-300 bg-amber-50' : 'border-emerald-300 bg-emerald-50';
+  const flagsHtml = result.flags.length
+    ? `<ul class="space-y-3 mt-2">${result.flags.map((f) => `
+        <li class="text-xs p-3 rounded-lg border ${f.level === 'red' ? 'border-rose-200 bg-white' : 'border-amber-200 bg-white'}">
+          <div class="flex items-start gap-2">
+            <span class="shrink-0 font-bold px-1.5 py-0.5 rounded text-[10px] ${f.level === 'red' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">${f.level === 'red' ? '赤' : '黄'}</span>
+            <div class="min-w-0 flex-1">
+              <p class="font-semibold text-slate-800">${f.message}</p>
+              ${f.patternLabel ? `<p class="text-[10px] text-slate-400 mt-0.5">選択: ${f.patternLabel}</p>` : ''}
+              <p class="text-slate-600 mt-1">${f.action}</p>
+              ${f.nextSteps && f.nextSteps.length ? `
+                <div class="mt-2 pt-2 border-t border-slate-100">
+                  <p class="text-[10px] font-bold text-slate-700 uppercase tracking-wide">次にやること</p>
+                  ${renderNextSteps(f.nextSteps)}
+                </div>` : ''}
+            </div>
+          </div>
+        </li>`).join('')}</ul>`
+    : '<p class="text-xs text-slate-500 mt-2">論点フラグはありません（最終確認は専門家へ）。</p>';
+
+  const consultHtml = result.overallLevel !== 'ok'
+    ? renderConsultationResources(result.consultationResources)
+    : '';
+  const refHtml = (result.referenceGuides || []).length
+    ? `<div class="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <h4 class="text-xs font-bold text-slate-800 mb-2">公式Q&A（目安の根拠）</h4>
+        <ul class="space-y-2">${result.referenceGuides.map((g) => `
+          <li class="text-[11px]">
+            <a href="${g.url}" class="text-blue-700 font-semibold hover:underline" target="_blank" rel="noopener">${g.label}</a>
+            ${g.note ? `<span class="block text-slate-500 mt-0.5">${g.note}</span>` : ''}
+          </li>`).join('')}</ul>
+      </div>`
+    : '';
+
+  card.innerHTML = `
+    <div class="rounded-xl border p-4 ${levelClass}">
+      <p class="text-lg font-bold text-slate-900">${result.headline}</p>
+      <p class="text-[10px] text-slate-500 mt-1">ルール版 ${result.rulesVersion} · パターン版 ${result.patternsVersion}</p>
+    </div>
+    <div>
+      <h3 class="text-xs font-bold text-slate-700">論点と次のアクション</h3>
+      ${flagsHtml}
+      ${refHtml}
+      ${consultHtml}
+    </div>
+    <p class="text-[10px] text-slate-500 border-t border-slate-100 pt-3">${result.disclaimer}</p>
+  `;
+  document.getElementById('result-actions').classList.remove('hidden');
+  updateDrawGate();
+}
+
+function updateDrawGate() {
+  updateLotteryGates();
+}
+
+function updateLotteryGates() {
+  const hasRed = lastEval && lastEval.hasRedFlag;
+  const selfOk = document.getElementById('chk-self-responsibility').checked;
+  const gate = document.getElementById('draw-gate');
+  const btnDraw = document.getElementById('btn-draw');
+  const tabDraw = document.getElementById('tab-draw');
+
+  if (hasRed && !selfOk) {
+    gate?.classList.remove('hidden');
+    btnDraw.disabled = true;
+    btnDraw.classList.add('opacity-50', 'cursor-not-allowed');
+    tabDraw.title = '景品チェックで赤フラグ — 自己責任チェックで解除';
+  } else {
+    gate?.classList.add('hidden');
+    btnDraw.disabled = false;
+    btnDraw.classList.remove('opacity-50', 'cursor-not-allowed');
+    tabDraw.title = '';
+  }
+}
+
+function renderDrawAuditPlain(draw) {
+  return `
+    <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700 space-y-2 mb-4">
+      <p class="font-bold text-slate-900">説明用メモ（幹事・上司・法務向け）</p>
+      ${renderDrawAuditPlainInner(draw)}
+    </div>`;
+}
+
+function jstNow() {
+  return new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', hour12: false });
+}
+
+function buildAuditPayload() {
+  const meta = fairDrawRegistryMeta();
+  return {
+    tool: `SUGUDASU Fair Draw ${fairDrawToolVersionLabel()}`,
+    developmentStage: meta.stage,
+    toolVersion: meta.version,
+    generatedAtJst: jstNow(),
+    phase0: lastEval ? { input: lastEvalInput, result: lastEval } : null,
+    phase1: lastDraw,
+    selfResponsibilityOverride: document.getElementById('chk-self-responsibility').checked,
+    localOnly: true,
+    disclaimer: rulesData?.disclaimer,
+  };
+}
+
+function renderAuditPrint() {
+  const body = document.getElementById('audit-print-body');
+  const p = buildAuditPayload();
+  let html = `
+    <h1 class="text-lg font-bold text-slate-900 border-b pb-2 mb-4">SUGUDASU 公平抽選チェック — 説明用証跡</h1>
+    <p class="text-xs text-slate-600 mb-2">実施日時（JST）: ${p.generatedAtJst}<br>
+    ツール: ${p.tool}<br>
+    <strong>ローカル生成・外部送信なし</strong></p>
+    <p class="text-[10px] text-slate-600 mb-4 border border-slate-200 bg-slate-50 p-2 rounded">
+      本書面は幹事・マーケ向け無料ツールの出力です。<strong>社内統制・操作ログを備えた懸賞抽選システムではありません。</strong>
+      方式・記録番号（シード）・名簿の指紋・当選者を1セットにした説明用資料です。
+      名簿の指紋は当選後の名簿すり替えの目安であり、抽選前の名簿が正しかったことの法的証明ではありません。
+    </p>
+  `;
+  if (p.phase0) {
+    const inp = p.phase0.input;
+    const res = p.phase0.result;
+    html += `
+      <h2 class="font-bold mt-4 mb-2">Phase 0 — 景品チェック</h2>
+      <table class="w-full text-xs border-collapse mb-2">
+        <tr><td class="border p-1 w-1/3">対象</td><td class="border p-1">${inp.audience === 'internal' ? '社内イベント' : '一般向けキャンペーン'}</td></tr>
+        <tr><td class="border p-1">キャンペーン型</td><td class="border p-1">${inp.campaignFormatLabel || '—'} / ${inp.prizeCategoryLabel || '—'}</td></tr>
+        <tr><td class="border p-1">景品名</td><td class="border p-1">${inp.prizeName || '（未入力）'}</td></tr>
+        <tr><td class="border p-1">景品最高額</td><td class="border p-1">${Number(inp.maxPrizeYen).toLocaleString('ja-JP')}円</td></tr>
+        <tr><td class="border p-1">景品総額</td><td class="border p-1">${Number(inp.totalPrizeYen).toLocaleString('ja-JP')}円</td></tr>
+        <tr><td class="border p-1">当選人数</td><td class="border p-1">${inp.winnerCount}名</td></tr>
+        <tr><td class="border p-1">キャンペーン概要</td><td class="border p-1">${inp.campaignSummary || '—'}</td></tr>
+        <tr><td class="border p-1">選択パターン</td><td class="border p-1">${(inp.patternIds || []).join(', ') || 'なし'}</td></tr>
+        <tr><td class="border p-1">ルール版</td><td class="border p-1">${res.rulesVersion}</td></tr>
+        <tr><td class="border p-1">判定</td><td class="border p-1">${res.headline}</td></tr>
+      </table>
+    `;
+    if (res.flags.length) {
+      html += '<ul class="text-xs list-disc pl-5 mb-2">' + res.flags.map((f) => {
+        let item = `<li>[${f.level}] ${f.message}`;
+        if (f.nextSteps && f.nextSteps.length) {
+          item += '<ol class="list-decimal pl-4 mt-1">' + f.nextSteps.map((s) => `<li>${s.text}${s.url ? ` (${s.url})` : ''}</li>`).join('') + '</ol>';
+        }
+        return item + '</li>';
+      }).join('') + '</ul>';
+    }
+  }
+  if (p.phase1) {
+    html += `
+      <h2 class="font-bold mt-4 mb-2">公平抽選（Phase 1）</h2>
+      <p class="text-xs mb-2"><strong>やり方（平易）:</strong> ${DRAW_ALGORITHM.plain}。抽選は1回確定（Excelの再計算のように当選が変わることはありません）。</p>
+      <p class="text-xs mb-2"><strong>記録番号（シード）:</strong> 今回の抽選の記録。同じ名簿・同じ記録番号なら同じ結果。</p>
+      <p class="text-xs mb-2"><strong>名簿の指紋（SHA-256）:</strong> 抽選時の名簿と同じかの目安。1行でも書き換えると変わります。</p>
+      <table class="w-full text-xs border-collapse mb-2">
+        <tr><td class="border p-1 w-1/3">キャンペーン（識別名）</td><td class="border p-1 font-semibold">${p.phase1.campaignLabel || '—'}</td></tr>
+        <tr><td class="border p-1 w-1/3">実施者（幹事）</td><td class="border p-1 font-semibold">${p.phase1.conductedBy || '—'}</td></tr>
+        <tr><td class="border p-1">実施日時（JST）</td><td class="border p-1">${p.phase1.drawnAtJst || p.generatedAtJst}</td></tr>
+        <tr><td class="border p-1 w-1/3">方式（技術名）</td><td class="border p-1">${p.phase1.algorithmId || DRAW_ALGORITHM.id}<br><span class="text-[10px]">${p.phase1.algorithm}</span></td></tr>
+        <tr><td class="border p-1">記録番号（シード hex）</td><td class="border p-1 font-mono text-[10px] break-all">${p.phase1.seedHex}</td></tr>
+        <tr><td class="border p-1">名簿の指紋（SHA-256）</td><td class="border p-1 font-mono text-[10px] break-all">${p.phase1.rosterSha256}</td></tr>
+        <tr><td class="border p-1">参加者数</td><td class="border p-1">${p.phase1.rosterCount}名</td></tr>
+        <tr><td class="border p-1">当選者（全体）</td><td class="border p-1 font-bold">${p.phase1.winners.join('、')}</td></tr>
+      </table>
+    `;
+    html += `<p class="text-[10px] text-slate-600 mb-2">名簿全文は <code>sugudasu-roster-*.txt</code> スナップショットを参照（PDF には指紋のみ）。</p>`;
+    if (p.phase1.bands && p.phase1.bands.length) {
+      html += '<h3 class="text-sm font-bold mb-2 mt-3">賞帯別当選者</h3><table class="w-full text-xs border-collapse mb-2">';
+      p.phase1.bands.forEach((b) => {
+        html += `<tr><td class="border p-2 w-1/4 font-semibold">${b.label}（${b.count}枠）</td>
+          <td class="border p-2 font-bold text-sm">${(b.winners || []).join('、') || '—'}</td></tr>`;
+      });
+      html += '</table>';
+    }
+  }
+  if (p.selfResponsibilityOverride) {
+    html += '<p class="text-xs text-rose-700 font-bold">※赤フラグ残存時に自己責任で抽選続行</p>';
+  }
+  html += `<p class="text-[10px] text-slate-500 mt-6 border-t pt-3">${p.disclaimer || ''}</p>`;
+  body.innerHTML = html;
+}
+
+function printAudit() {
+  renderAuditPrint();
+  const section = document.getElementById('audit-print');
+  section.classList.remove('hidden');
+  window.print();
+  section.classList.add('hidden');
+}
+
+document.getElementById('btn-apply-calc').addEventListener('click', () => {
+  const unit = Number(document.getElementById('calc-unit-yen').value) || 0;
+  const qty = Number(document.getElementById('calc-qty').value) || 1;
+  document.getElementById('in-max-prize').value = unit;
+  document.getElementById('in-total-prize').value = unit * qty;
+  document.getElementById('in-winners').value = qty;
+  updateCalcPreview();
+});
+
+['calc-unit-yen', 'calc-qty'].forEach((id) => {
+  document.getElementById(id).addEventListener('input', updateCalcPreview);
+});
+
+document.getElementById('in-winners').addEventListener('input', () => {
+  const qty = Number(document.getElementById('in-winners').value) || 1;
+  document.getElementById('calc-qty').value = qty;
+  updateCalcPreview();
+});
+
+document.getElementById('btn-evaluate').addEventListener('click', () => {
+  const prizeNameEl = document.getElementById('in-prize-name');
+  if (!validateFields([{
+    el: prizeNameEl,
+    message: '景品名を入力してください（証跡PDFに必須）。',
+    test: (el) => el.value.trim().length > 0,
+  }])) return;
+  lastEvalInput = collectInput();
+  lastEval = evaluatePrizeLaw(lastEvalInput, rulesData, patternsData);
+  renderEvalResult(lastEval);
+  syncDrawCampaignFromPhase0();
+});
+
+document.getElementById('btn-copy-slack').addEventListener('click', async (e) => {
+  if (!lastEval) return;
+  const btn = e.currentTarget;
+  const text = lastEval.slackParagraph;
+  try {
+    await copyWithFeedback(text, btn, {
+      toastEl: document.getElementById('copy-toast-fair-draw'),
+      toastPrefix: 'Slack用',
+      lineCount: text.split('\n').length,
+      previewLine: text.split('\n')[0],
+    });
+  } catch {
+    alert('コピーに失敗しました。');
+  }
+});
+
+document.getElementById('btn-dl-json').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(buildAuditPayload(), null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `sugudasu-fair-draw-audit-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-print-audit').addEventListener('click', printAudit);
+document.getElementById('btn-print-draw').addEventListener('click', printAudit);
+
+document.getElementById('chk-self-responsibility').addEventListener('change', updateLotteryGates);
+
+document.getElementById('btn-draw').addEventListener('click', async () => {
+  if (!canProceedDraw()) {
+    alert('赤フラグが残っています。自己責任チェックを入れるか、景品チェックを見直してください。');
+    return;
+  }
+  const opEl = document.getElementById('in-draw-operator');
+  const cpEl = document.getElementById('in-draw-campaign');
+  if (!validateFields([
+    {
+      el: cpEl,
+      message: 'キャンペーン名（識別用）を入力してください。並行CPがある場合に必須です。',
+      test: (el) => el.value.trim().length > 0,
+    },
+    {
+      el: opEl,
+      message: '抽選実施者（幹事名）を入力してください。監査PDFに記録されます。',
+      test: (el) => el.value.trim().length > 0,
+    },
+  ])) return;
+  try {
+    lastDraw = await executeFairDrawFromForm();
+  } catch (e) {
+    if (e.message === 'ROSTER_EMPTY') {
+      const rosterEl = document.getElementById('in-roster');
+      validateFields([{
+        el: rosterEl,
+        message: '参加者名簿を1行以上入力してください。',
+        test: (el) => getRosterLines().length > 0,
+      }]);
+      return;
+    }
+    if (e.message === 'BANDS_EMPTY') {
+      const firstBand = document.querySelector('.band-count');
+      validateFields([{
+        el: firstBand,
+        message: '賞帯の枠数を1以上に設定してください。',
+        test: () => getDrawBandsFromForm().length > 0,
+      }]);
+      return;
+    }
+    throw e;
+  }
+
+  lastDrawRosterKey = rosterContentKey();
+  updateRosterCountUI();
+
+  const modeLabel = resolveDrawMode() === 'live'
+    ? `<p class="text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 mb-3 w-fit">本番確定 — 名簿スナップショットを保存済み。PDF・JSONと3点セットで保管</p>`
+    : '<p class="text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 mb-3 w-fit">未確定 — 本番共有前に名簿・モードを確認</p>';
+
+  downloadRosterSnapshot(lastDraw);
+
+  document.getElementById('draw-result').innerHTML = `
+    ${modeLabel}
+    <h3 class="text-sm font-bold text-slate-900 border-b pb-2 mb-3">抽選結果</h3>
+    ${renderDrawOpsPanel(lastDraw)}
+    ${renderDrawProofBar(lastDraw)}
+    <details class="mt-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-700">
+      <summary class="cursor-pointer font-semibold text-slate-600 px-3 py-2 select-none">上司・法務向けの説明文（折りたたみ）</summary>
+      <div class="px-3 pb-3 space-y-2 border-t border-slate-200/60 pt-2 leading-relaxed">
+        ${renderDrawAuditPlainInner(lastDraw)}
+      </div>
+    </details>
+  `;
+  bindDrawOpsCopyHandlers(lastDraw);
+  syncDrawCopyUi(lastDraw);
+  document.getElementById('draw-actions').classList.remove('hidden');
+});
+
+document.getElementById('btn-dl-draw-json').addEventListener('click', () => {
+  const payload = buildAuditPayload();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const stamp = lastDraw ? auditFileStamp(lastDraw) : { sha8: String(Date.now()), d: '', cp: 'cp' };
+  a.download = `sugudasu-draw-${stamp.cp}-${stamp.d || 'audit'}-${stamp.sha8}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-dl-roster-snapshot').addEventListener('click', () => {
+  if (!lastDraw?.rosterSnapshot) {
+    alert('先に公平抽選を実行してください。');
+    return;
+  }
+  downloadRosterSnapshot(lastDraw);
+});
+
+const LOTTERY_TAB_HINTS = {
+  check: 'アマギフや自社商品を配る前に。その企画が景表法の上限を超えていないか1分でセルフチェック。',
+  draw: '箱も抽選用紙も不要。名簿を貼り付けるだけで、公平抽選と監査PDFをその場で出力（外部送信なし）。',
+};
+
+function resolveInitialLotteryTab() {
+  const tab = new URLSearchParams(window.location.search).get('tab');
+  if (tab === 'draw' || tab === 'check') return tab;
+  return 'check';
+}
+
+function syncLotteryPanels(value) {
+  document.getElementById('panel-check').classList.toggle('hidden', value !== 'check');
+  document.getElementById('panel-draw').classList.toggle('hidden', value !== 'draw');
+  if (value === 'draw') {
+    updateLotteryGates();
+    updateRosterCountUI();
+    syncDrawCampaignFromPhase0();
+  }
+}
+
+const initialLotteryTab = resolveInitialLotteryTab();
+
+const l1Ctrl = SUGUDASU_SEGMENT.mount({
+  segmentId: 'lottery-l1-segment',
+  order: ['check', 'draw'],
+  initial: initialLotteryTab,
+  hintId: 'lottery-l1-hint',
+  hints: LOTTERY_TAB_HINTS,
+  onChange(value) {
+    syncLotteryPanels(value);
+  },
+});
+
+syncLotteryPanels(initialLotteryTab);
+
+document.getElementById('in-roster').addEventListener('input', updateRosterCountUI);
+
+document.querySelectorAll('input[name="draw-prize-mode"]').forEach((el) => {
+  el.addEventListener('change', syncDrawPrizeModePanels);
+});
+document.getElementById('btn-add-band')?.addEventListener('click', () => {
+  const container = document.getElementById('band-rows');
+  const n = container.querySelectorAll('.band-row').length + 1;
+  container.appendChild(createBandRow({ label: `${n}位`, count: 1 }));
+  updateBandTotalCount();
+});
+initBandRows();
+syncDrawPrizeModePanels();
+
+bindFieldErrorClear(document.getElementById('in-prize-name'));
+bindFieldErrorClear(document.getElementById('in-roster'));
+bindFieldErrorClear(document.getElementById('in-draw-operator'));
+bindFieldErrorClear(document.getElementById('in-draw-campaign'));
+
+const fdOperatorEl = document.getElementById('in-draw-operator');
+const fdCampaignEl = document.getElementById('in-draw-campaign');
+if (fdOperatorEl) {
+  const savedOp = sessionStorage.getItem(FD_OPERATOR_STORAGE_KEY);
+  if (savedOp) fdOperatorEl.value = savedOp;
+  fdOperatorEl.addEventListener('input', () => {
+    sessionStorage.setItem(FD_OPERATOR_STORAGE_KEY, fdOperatorEl.value);
+  });
+}
+if (fdCampaignEl) {
+  /* 並行CP向け: キャンペーン名は sessionStorage に復元しない（毎回入力） */
+}
+
+loadData().then(() => {
+  updateRosterCountUI();
+  syncDrawCampaignFromPhase0();
+}).catch((err) => {
+  console.error(err);
+  document.getElementById('result-card').innerHTML = '<p class="text-rose-600 text-xs">ルールデータの読み込みに失敗しました。ページを再読み込みしてください。</p>';
+});
+</script>
+</body>
+</html>
