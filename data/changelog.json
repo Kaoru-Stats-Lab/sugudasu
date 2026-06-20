@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-06-20",
+      "type": "feature",
+      "title": "SUGUDASU の約束（statements.html）",
+      "body": "7つの設計原則・但し書き・カテゴリ別比較・FAQ。登録不要・Copy-first・統制システムではない——差別化とE-E-A-Tの正本URL。",
+      "tools": ["statements.html"]
+    },
+    {
+      "date": "2026-06-20",
       "type": "improve",
       "title": "group-split PC→スマホ（同期メモ）",
       "body": "セッションJSONパネルを結果に常時表示。Google Keep等の同期メモ経由でPC→会場スマホ復元・欠席タップの手順を明示。",

@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-20（§1-11 提督実体験 · M13 スイッチャー対応表 · v1.2.3 緩和モード）  
+更新: 2026-06-20（§1-13 Statements ページ起票 · §1-11 group-split v1.2.4）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -10,7 +10,7 @@
 - 単一ドメイン・静的配信（Cloudflare Pages / GitHub Pages）
 - 1ファイル完結 HTML ツール群（現在 10ファイル: hub + 9ツール）
 - 入力データはブラウザ内処理（外部送信なし）
-- 収益は **AdSense + Amazon アソシエイト** のハイブリッド
+- 収益は **現状 AdSense + Amazon アソシエイト** のハイブリッド（**将来 Pro** — 広告非表示 · 高度機能 — は道を閉じない · F1 コアは無料維持）
 
 ---
 
@@ -310,6 +310,20 @@
 
 - **PC:** 名簿ETL · 帳票 · 大規模Excel — invoice / group-split 準備
 - **スマホ:** 当日例外 · 司会進行 · その場集金 · 結果共有 — **3分完結**がキラー条件
+
+### 1-13. `statements.html` — SUGUDASU の約束（**実装済 2026-06-20**）
+
+**正本ドラフト:** `docs/notes/STATEMENTS_PAGE_DRAFT.md`（v2.1）  
+**URL:** `/statements` · `/statements.html`
+
+#### 実装 TODO
+
+- [x] **P1** `tools/statements.html` · shell フッター · meta/OGP · JSON-LD · sitemap
+- [ ] **P2** fair-draw / group-split FAQ から **各1リンク**（乱立禁止）
+
+#### 受け入れ条件 — 済
+
+- モバイル可読 · privacy/terms/disclaimer 相互リンク · 断定表現なし · FAQ 3問
 
 ---
 
@@ -693,7 +707,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 8. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
 9. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
 10. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）  
-11. **T11 `group-split.html`** — 研修 · ハッカソン向けグループ分け Phase A（SSOT: `GROUP_SPLIT_TOOL_SPEC.md` · Backlog **§1-11**）
+11. **T11 `group-split.html`** — 研修 · ハッカソン向けグループ分け Phase A（SSOT: `GROUP_SPLIT_TOOL_SPEC.md` · Backlog **§1-11**）  
+12. ~~**`statements.html`** — SUGUDASU の約束（§1-13）~~ — **実装済 2026-06-20**
 
 ### P2（通常優先）
 
@@ -728,6 +743,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **§2-5** AdSense 逆算 · グロースマーケ MECE（正本）
 - **§13** PageSpeed Insights ベースライン（2026-06-17）
 - **§8-11** ポータル SEO — ツール件数表記 · 新規ツール追加時 Agent チェックリスト（2026-06-19）
+- **`docs/notes/STATEMENTS_PAGE_DRAFT.md`** — Statements ページ本文 · SEO · 実装メモ（2026-06-20）
 - `docs/PR_TIMES_LAUNCH_2026.md`（PR TIMES 入稿原稿 · 代表カオル）
 - `docs/prompts/grok-pr-times-review.md`（Grok推敲 5パス）
 - `docs/prompts/pr-times-gemini-meta.md`（Gemini PRメタ解析 · 書き直し禁止）

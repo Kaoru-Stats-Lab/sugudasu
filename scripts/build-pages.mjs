@@ -53,7 +53,7 @@ function sitemapPriority(pathname) {
   if (pathname === '/') return '1.0';
   if (pathname === '/invoice' || pathname === '/receipt') return '0.9';
   if (pathname === '/updates') return '0.7';
-  if (pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer') return '0.4';
+  if (pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer' || pathname === '/statements') return '0.5';
   return '0.8';
 }
 
