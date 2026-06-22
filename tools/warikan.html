@@ -136,6 +136,10 @@
                     <input type="checkbox" id="chk-gratitude" checked class="mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-400">
                     <span>清算文に<strong class="font-bold text-slate-700">多めのご負担へのお礼</strong>を入れる（グループ全員に共有 · 推奨）</span>
                 </label>
+                <label id="surplus-note-wrap" class="hidden flex items-start gap-2 text-xs text-slate-600 cursor-pointer select-none">
+                    <input type="checkbox" id="chk-surplus-note" checked class="mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-400">
+                    <span>清算文に<strong class="font-bold text-slate-700">集金の余り</strong>メモを入れる（例: 次回の飲み会に回させてください）</span>
+                </label>
                 <textarea id="output-text" rows="14" readonly
                     class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
                     placeholder="計算後に清算用テキストが自動生成されます"></textarea>
@@ -182,7 +186,7 @@
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸め、集金総額とお会計がぴったり一致するよう端数を配分します。同じグループ内で1円だけ差が出る場合は結果に併記されます。幹事の得損ゼロを画面と清算文で確認できます。</p>
+                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸めます（過剰に集めないよう調整）。<strong>お会計総額が丸め単位で割り切れない</strong>とき（例: ¥48,500 を 1,000円単位）は幹事の補填が出ます — 飲み会は<strong>100円単位</strong>推奨。集金がお会計を上回ったときは「次回に回す」等、清算文の幹事メモで共有できます。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -296,6 +300,7 @@
             document.getElementById('input-total').addEventListener('input', calculate);
             document.getElementById('select-round').addEventListener('change', calculate);
             document.getElementById('chk-gratitude').addEventListener('change', buildLineText);
+            document.getElementById('chk-surplus-note').addEventListener('change', buildLineText);
         }
 
         function applyWarikanMode(next) {
@@ -387,7 +392,7 @@
             });
         }
 
-        /** 最大剰余法（LRM）— 各人の理論額配列から、合計が targetTotal と一致する整数配分を返す */
+        /** 最大剰余法（LRM）— 各人の理論額配列から、合計が targetTotal に近づくよう step 単位で配分（過剰集金しない） */
         function lrmAllocate(exactAmounts, targetTotal, unit) {
             if (exactAmounts.length === 0) return [];
             const step = unit <= 1 ? 1 : unit;
@@ -399,13 +404,21 @@
             });
             const sum = floors.reduce((s, f) => s + f.floor, 0);
             const deficit = targetTotal - sum;
-            const steps = Math.round(deficit / step);
+            const steps = Math.max(0, Math.floor(deficit / step));
             const ranked = [...floors].sort((a, b) => b.remainder - a.remainder || a.i - b.i);
             const amounts = floors.map(f => f.floor);
             for (let k = 0; k < steps; k++) {
                 amounts[ranked[k % ranked.length].i] += step;
             }
             return amounts;
+        }
+
+        /** 丸め単位とお会計総額の整合（全員が unit 円単位だと総額も unit の倍数が必要） */
+        function roundingAlignHint(total, unit) {
+            if (unit <= 1 || total <= 0) return null;
+            const mod = total % unit;
+            if (mod === 0) return null;
+            return `お会計 ¥${formatYen(total)} は ${unit}円単位で割り切れません（余り ¥${formatYen(mod)}）。全員を${unit}円単位で揃えると幹事の調整が最大 ¥${formatYen(mod)} 出ます。**100円単位**を推奨します。`;
         }
 
         /** グループ内の按分結果を表示用に集約 */
@@ -589,7 +602,8 @@
 
             const collected = results.reduce((s, r) => s + r.subtotal, 0);
             const diff = total - collected;
-            lastResult = { total, collected, diff, results, roundUnit, mode };
+            const alignHint = roundingAlignHint(total, roundUnit);
+            lastResult = { total, collected, diff, results, roundUnit, mode, alignHint };
 
             const displayResults = mode === 'coeff'
                 ? [...results].sort((a, b) => b.coeff - a.coeff || b.rounded - a.rounded)
@@ -621,8 +635,20 @@
             const diffLabel = diff === 0
                 ? { text: '集金総額とお会計が一致', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: 'ぴったり一致', heroSub: '端数は最大剰余法で配分済み。店外での細かい回収は不要です' }
                 : diff > 0
-                    ? { text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 負担）`, cls: 'border-amber-200 bg-amber-50 text-amber-900', hero: `¥${formatYen(diff)} 不足`, heroSub: '幹事がこの金額を自腹で補填する想定です' }
-                    : { text: `¥${formatYen(Math.abs(diff))} 余り（幹事が ¥${formatYen(Math.abs(diff))} お釣り）`, cls: 'border-blue-200 bg-blue-50 text-blue-900', hero: `¥${formatYen(Math.abs(diff))} 余り`, heroSub: '集金総額がお会計を上回ります（幹事のお釣り）' };
+                    ? {
+                        text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 補填）`,
+                        cls: 'border-amber-200 bg-amber-50 text-amber-900',
+                        hero: `¥${formatYen(diff)} 不足`,
+                        heroSub: alignHint
+                            ? '丸め単位とお会計が合わないため発生。100円単位に変えると解消することがあります'
+                            : '幹事がこの金額を自腹で補填する想定です',
+                    }
+                    : {
+                        text: `¥${formatYen(Math.abs(diff))} 余り（幹事のお釣り）`,
+                        cls: 'border-blue-200 bg-blue-50 text-blue-900',
+                        hero: `¥${formatYen(Math.abs(diff))} 余り`,
+                        heroSub: '次回の飲み会に回す・店カットにする等、清算文の幹事メモに一言添えてください',
+                    };
 
             const heroEl = document.getElementById('balance-hero');
             heroEl.className = `rounded-2xl border-2 p-5 text-center space-y-1 ${diffLabel.cls}`;
@@ -647,7 +673,13 @@
                 <div class="pt-2 border-t border-current/20 text-sm font-bold text-center">
                     ${escHtml(diffLabel.text)}
                 </div>
+                ${alignHint ? `<p class="text-[10px] leading-relaxed font-medium pt-2 opacity-90">${escHtml(alignHint)}</p>` : ''}
             `;
+
+            const surplusNoteWrap = document.getElementById('surplus-note-wrap');
+            if (surplusNoteWrap) {
+                surplusNoteWrap.classList.toggle('hidden', diff >= 0);
+            }
 
             buildLineText();
             renderQuickReplyPanel(displayResults, mode);
@@ -737,9 +769,21 @@
             ];
         }
 
+        function buildSurplusNoteLines(diff) {
+            if (diff >= 0) return [];
+            const include = document.getElementById('chk-surplus-note')?.checked !== false;
+            if (!include) return [];
+            const surplus = Math.abs(diff);
+            return [
+                '',
+                '■ 集金の余り（幹事メモ）',
+                `丸めの関係で ¥${formatYen(surplus)} 余ります。次回の飲み会に回させていただきます（幹事より）。`,
+            ];
+        }
+
         function buildLineText() {
             if (!lastResult) return;
-            const { total, collected, diff, results, mode: resultMode } = lastResult;
+            const { total, collected, diff, results, mode: resultMode, alignHint } = lastResult;
 
             const sortedResults = resultMode === 'coeff'
                 ? [...results].sort((a, b) => b.coeff - a.coeff || b.rounded - a.rounded)
@@ -752,14 +796,17 @@
             });
 
             const gratitudeLines = buildGratitudeLines(results, resultMode);
+            const surplusLines = buildSurplusNoteLines(diff);
 
             let diffLine;
             if (diff === 0) {
                 diffLine = '端数は最大剰余法で配分し、お会計と集金額は一致しています。';
             } else if (diff > 0) {
-                diffLine = `端数丸めの関係で ¥${formatYen(diff)} 不足します。幹事が ¥${formatYen(diff)} 負担いただく形で透明に精算します。`;
+                diffLine = alignHint
+                    ? `お会計総額が丸め単位で割り切れないため ¥${formatYen(diff)} 不足します。100円単位への変更を検討してください。幹事が ¥${formatYen(diff)} 補填する想定です。`
+                    : `端数丸めの関係で ¥${formatYen(diff)} 不足します。幹事が ¥${formatYen(diff)} 補填する形で透明に精算します。`;
             } else {
-                diffLine = `端数丸めの関係で ¥${formatYen(Math.abs(diff))} 余ります。幹事が ¥${formatYen(Math.abs(diff))} お釣りとして受け取る想定です。`;
+                diffLine = `端数丸めの関係で ¥${formatYen(Math.abs(diff))} 余ります。次回に回す等、下記幹事メモをご確認ください。`;
             }
 
             const modeLine = resultMode === 'fixed'
@@ -789,6 +836,7 @@
                 '■ お一人様のご負担額',
                 ...lines,
                 ...gratitudeLines,
+                ...surplusLines,
                 '',
                 '■ 精算の透明性（幹事メモ）',
                 `集まる総額：¥${formatYen(collected)}`,
