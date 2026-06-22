@@ -4,6 +4,9 @@
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
     "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "generate:tool-facts": "node scripts/generate-tool-facts.mjs",
+    "generate:lp-matrix": "node scripts/generate-lp-marketing-matrix.mjs",
+    "generate:marketing-context": "node scripts/generate-marketing-context.mjs",
     "validate:tool-naming": "node scripts/verify-tool-naming.mjs",
     "validate:ogp": "node scripts/verify-ogp.mjs",
     "generate:favicons": "node scripts/generate-favicons.mjs",

@@ -1,0 +1,256 @@
+{
+  "version": "2026-06-22",
+  "ssot": "docs/prompts/kanji-san-lp-patterns-gemini.md · docs/BACKLOG.md §14-9",
+  "reference": {
+    "competitorPattern": "幹事さん型（名指し禁止）— △の聞き直し削減 · 5段階回答 · 完了後導線",
+    "types": {
+      "A": "痛みの言語化（既存手段の△相当）",
+      "B": "機能→削減されるやり取り",
+      "C": "完了導線（出力後の次アクション）",
+      "D": "信頼・FAQ（保存・共有・削除）"
+    }
+  },
+  "priority": [
+    {
+      "tool_id": "warikan",
+      "productName": "SUGUDASU 割り勘",
+      "registryStatus": "live",
+      "primaryPain": "遅刻者や早退者が混ざる飲み会の集金計算が面倒",
+      "primaryType": "A",
+      "typeReason": "遅刻・早退の曖昧なグラデーションを傾斜に反映",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "group-split",
+      "productName": "SUGUDASU 班分け",
+      "registryStatus": "live",
+      "primaryPain": "開始直前のドタキャンでせっかく組んだ班のバランスが崩壊",
+      "primaryType": "A",
+      "typeReason": "名簿の貼り直しなしにワンタップで欠席者を除外",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "timeline",
+      "productName": "SUGUDASU イベント進行",
+      "registryStatus": "planned",
+      "primaryPain": "現場でタイムスケジュールが巻いた・押した時の手計算が破綻",
+      "primaryType": "A",
+      "typeReason": "1箇所の時間変更から後続の全予定を連動再計算",
+      "implDifficulty": "中"
+    },
+    {
+      "tool_id": "work-calc",
+      "productName": "SUGUDASU 労働時間一括集計",
+      "registryStatus": "planned",
+      "primaryPain": "15分・30分刻みの出退勤テキストの丸め処理と合計が重労働",
+      "primaryType": "A",
+      "typeReason": "各社で異なる端数丸めの曖昧さを吸収して一括集計",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "fair-draw",
+      "productName": "SUGUDASU 公平抽選",
+      "registryStatus": "live",
+      "primaryPain": "キャンペーンの抽選で「内定・サクラ」を疑われる恐怖",
+      "primaryType": "D",
+      "typeReason": "一般懸賞か社内イベントかの目的別全自動最適化",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "normalize",
+      "productName": "SUGUDASU 文字列正規化",
+      "registryStatus": "live",
+      "primaryPain": "名簿やコードの全半角混在やスペース崩れを直す手間の多さ",
+      "primaryType": "D",
+      "typeReason": "EC登録用・名簿用など目的別プリセットで最適化",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "table-conv",
+      "productName": "SUGUDASU 表データ相互コンバータ",
+      "registryStatus": "planned",
+      "primaryPain": "ExcelとMarkdownの間で表データをコピペすると構造が壊れる",
+      "primaryType": "D",
+      "typeReason": "コピペ元の形式に合わせた双方向変換の自動最適化",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "label",
+      "productName": "SUGUDASU 宛名ラベル",
+      "registryStatus": "live",
+      "primaryPain": "郵便番号や住所の分割エラーで市販ラベル印刷がズレる",
+      "primaryType": "D",
+      "typeReason": "市販ラベル用紙メーカーの型番プリセット最適化",
+      "implDifficulty": "中"
+    },
+    {
+      "tool_id": "invoice",
+      "productName": "SUGUDASU 見積・請求書",
+      "registryStatus": "live",
+      "primaryPain": "計算後の金額をもとに請求書PDFを発行する際の手数",
+      "primaryType": "B",
+      "typeReason": "PDF出力と同時にチャット送付用メッセージを成形",
+      "implDifficulty": "中"
+    },
+    {
+      "tool_id": "receipt",
+      "productName": "SUGUDASU 領収書",
+      "registryStatus": "live",
+      "primaryPain": "手取り逆算やインボイス要件を満たす手間の煩雑さ",
+      "primaryType": "B",
+      "typeReason": "発行完了後にメールやチャットへ貼る通知文を成形",
+      "implDifficulty": "中"
+    },
+    {
+      "tool_id": "sns",
+      "productName": "SUGUDASU SNS文章整形",
+      "registryStatus": "live",
+      "primaryPain": "スマホ特有の改行崩れや特殊文字による誤メンションの発生",
+      "primaryType": "B",
+      "typeReason": "整形後に対象チャットの画面幅に合わせた一括コピー",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "webp-to-jpg",
+      "productName": "SUGUDASU 画像変換",
+      "registryStatus": "live",
+      "primaryPain": "WebP画像が古いOfficeやレガシーシステムに貼れない",
+      "primaryType": "B",
+      "typeReason": "変換完了と同時に軽量化率の明示と次工程の案内",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "shift",
+      "productName": "SUGUDASU シフト表",
+      "registryStatus": "live",
+      "primaryPain": "ブラウザを閉じたり誤ってリロードした際に入力データが消失",
+      "primaryType": "C",
+      "typeReason": "LocalStorageによる入力内容の自動復元",
+      "implDifficulty": "低"
+    },
+    {
+      "tool_id": "present",
+      "productName": "SUGUDASU ギフトサジェスター",
+      "registryStatus": "live",
+      "primaryPain": "相手の属性や予算に合った適切な贈り物を選ぶ基準が曖昧",
+      "primaryType": "B",
+      "typeReason": "決定後にAmazon等のECへ即座に繋ぐ次工程動線",
+      "implDifficulty": "低"
+    }
+  ],
+  "bundles": [
+    {
+      "name": "幹事イベント束",
+      "tool_ids": ["warikan", "group-split", "timeline", "fair-draw", "present"],
+      "persona": "飲み会・社内研修・ワークショップ・SNS懸賞の運営者",
+      "promptOrder": ["warikan", "group-split", "timeline", "fair-draw", "present"]
+    },
+    {
+      "name": "事務効率化・整形束",
+      "tool_ids": ["work-calc", "normalize", "table-conv", "sns", "webp-to-jpg"],
+      "persona": "総務・Web担当・ライター・店舗店長・営業実務者",
+      "promptOrder": ["work-calc", "normalize", "table-conv", "sns", "webp-to-jpg"]
+    },
+    {
+      "name": "ビジネス帳票束",
+      "tool_ids": ["invoice", "receipt", "label", "shift"],
+      "persona": "フリーランス・小規模店舗主・人事労務担当者",
+      "promptOrder": ["invoice", "receipt", "label", "shift"]
+    }
+  ],
+  "deltaProblems": [
+    {
+      "tool_id": "warikan",
+      "delta": "遅刻や早退、1次会のみ参加といったグラデーション",
+      "typicalAsk": "「遅れて来るって言ってたけど、結局何時から合流できそう？」"
+    },
+    {
+      "tool_id": "group-split",
+      "delta": "「体調不良でいけたら行く」という直前までの出欠の流動性",
+      "typicalAsk": "「もうすぐ受付締め切るけど、Aさん今日来られそう？」"
+    },
+    {
+      "tool_id": "timeline",
+      "delta": "各プログラムの「大体5分くらい巻きそう・押しそう」な空気感",
+      "typicalAsk": "「今のセッション少し押してるけど、休憩時間何分削る？」"
+    },
+    {
+      "tool_id": "work-calc",
+      "delta": "「10:03着」などの打刻に対し、何分単位で切り捨てるかの規律",
+      "typicalAsk": "「うちの店って、一分単位の遅刻も15分単位で丸めていいんだっけ？」"
+    },
+    {
+      "tool_id": "fair-draw",
+      "delta": "キャンペーンが「一般消費者向け」か「社内身内向け」かの境界",
+      "typicalAsk": "「このアマギフ抽選、対外キャンペーン用の法律上限って何円だっけ？」"
+    },
+    {
+      "tool_id": "normalize",
+      "delta": "スペースの有無や全半角の「パッと見では揃って見える」不揃いさ",
+      "typicalAsk": "「コピペした名簿、苗字と名前の間のスペース全角半角混ざってない？」"
+    },
+    {
+      "tool_id": "table-conv",
+      "delta": "Excelのセルをテキストに貼ったときのタブ区切りの見えない構造",
+      "typicalAsk": "「Notionにこの表貼りたいんだけど、セル崩れずにコピペできる？」"
+    },
+    {
+      "tool_id": "label",
+      "delta": "住所録の「マンション名が長すぎて枠からはみ出る」文字数の揺らぎ",
+      "typicalAsk": "「この長い住所、ラベルの枠内に収まるように途中で改行していい？」"
+    },
+    {
+      "tool_id": "invoice",
+      "delta": "税率が10%か8%（軽減税率）か混在する品目のグレーゾーン",
+      "typicalAsk": "「このお弁当代の請求、中のジュースは消費税何パーセント計算？」"
+    },
+    {
+      "tool_id": "receipt",
+      "delta": "但し書きが「お品代」で本当に監査を通るかという社内規定の曖昧さ",
+      "typicalAsk": "「領収書の但し書き、お品代じゃなくてセミナー参加費って書き直す？」"
+    },
+    {
+      "tool_id": "sns",
+      "delta": "スマホの画面によって改行の位置がズレて読みづらくなる表示崩れ",
+      "typicalAsk": "「さっきSlackに投稿したアナウンス、スマホからだと文字化けしてない？」"
+    },
+    {
+      "tool_id": "webp-to-jpg",
+      "delta": "「この画像ファイル、相手のパソコンでもちゃんと表示されるか」の不安",
+      "typicalAsk": "「このWebPって画像、先方の古いパワーポイントでもそのまま開ける？」"
+    },
+    {
+      "tool_id": "shift",
+      "delta": "「仮で組んだシフト」を確定前に一度ブラウザを閉じて保存する手段",
+      "typicalAsk": "「来月のシフト、まだ未確定なんだけど一回下書き保存できる？」"
+    },
+    {
+      "tool_id": "present",
+      "delta": "相手の役職や関係性に対して、高すぎず安すぎない予算感の揺らぎ",
+      "typicalAsk": "「取引先の周年祝い、予算1万円って安すぎて失礼にならないかな？」"
+    }
+  ],
+  "top3": [
+    {
+      "rank": 1,
+      "tool_id": "warikan",
+      "primaryType": "A",
+      "expectedKpi": "ページ滞在時間およびクリップボードコピー転換率の向上",
+      "captainCheck": "途中参加・早退者の「時間傾斜」を反映したLINE精算文の需要"
+    },
+    {
+      "rank": 2,
+      "tool_id": "group-split",
+      "primaryType": "A",
+      "expectedKpi": "リピート利用率（ドタキャン時の中断・離脱の低下）",
+      "captainCheck": "現場のスマホから「名前タップ1回で除外再計算」する際のDOM負荷"
+    },
+    {
+      "rank": 3,
+      "tool_id": "timeline",
+      "primaryType": "A",
+      "expectedKpi": "新規オーガニック検索流入数（進行表計算ニーズのハント）",
+      "captainCheck": "1つの項目の所要分変更が、配列上の後続時間に及ぼす連動ロジック"
+    }
+  ]
+}

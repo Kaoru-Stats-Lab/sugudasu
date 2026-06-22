@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-21（§1-14 T09b png-to-webp · WebP圧縮 P1 起票）  
+更新: 2026-06-22（§14-9 幹事さん型LPマーケ · プロダクト追加オペ）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -801,6 +801,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - `docs/PR_TIMES_LAUNCH_2026.md`（PR TIMES 入稿原稿 · 代表カオル）
 - `docs/prompts/grok-pr-times-review.md`（Grok推敲 5パス）
 - `docs/prompts/pr-times-gemini-meta.md`（Gemini PRメタ解析 · 書き直し禁止）
+- **`docs/prompts/kanji-san-lp-patterns-gemini.md`** — 幹事さん型 LPプロンプト SSOT（型A-D · **§14-9**）
+- **`data/lp-marketing-matrix.json`** — LPマーケ行列（Pain · 束 · △問題 · Top3）
 - `docs/operator-profile.md`（運営者 L0〜L4 · 代表カオル）
 - `press/assets/`（PR TIMES アイキャッチ · 本番非配信）
 
@@ -1449,6 +1451,76 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 投稿 | Zenn **予約投稿済み**（スクショ差し替え済） |
 | ドラフト | `docs/notes/ZENN_ARTICLE_01_DRAFT.md`（Zenn エディタが公開時の正本） |
 | 残 | 公開当日〜翌日 X で URL 共有 · Zenn URL 控え |
+
+### 14-9. 幹事さん型 LPマーケ — プロダクト追加オペ（2026-06-22）
+
+**SSOT:** [`docs/prompts/kanji-san-lp-patterns-gemini.md`](prompts/kanji-san-lp-patterns-gemini.md)  
+**行列正本:** `data/lp-marketing-matrix.json`  
+**生成物:** `npm run generate:marketing-context` → `docs/prompts/GEMINI_MARKETING_CONTEXT.generated.md`
+
+#### 背景（なぜこの仕組みか）
+
+- [幹事さん](https://kanji-san.com/) は「△の聞き直しが消える」という **Pain起点コピー** で差別化している（参考: [note記事](https://note.com/emanuele/n/n1a7b5f65cdf6)）。
+- SUGUDASUはツールが増えるほど **LP・FAQ・X文案がバラつきやすい**。プロンプトをツールごとに複製すると陳腐化する。
+- そこで **型（A-D）は固定** · **ツール行列はJSONで増やす** · **事実は registry から自動生成** の3層に分離した。
+
+#### 思想（コピー設計の原則）
+
+| 原則 | 内容 |
+|------|------|
+| **1 Pain · 1 Tool** | ポータル羅列ではなく、各ツールに「△相当の曖昧さ」を1行で置く |
+| **機能ではなく手戻り** | 型B — 「できること」より「消える連絡・確認」 |
+| **完了まで閉じる** | 型C — 出力後の次アクション（幹事さんの店予約・カレンダー相当） |
+| **信頼を先に** | 型D — 保存 · 共有 · 削除（statements / privacy と突合） |
+| **競合名指し禁止** | 構造だけ借りる。誹謗・比較表での名指しはしない |
+| **planned は要確認** | 未実装ツールを Gemini が実装済みと断定しない |
+
+#### 型A-D 早見
+
+| 型 | 幹事さんでの例 | SUGUDASUでの例 |
+|----|----------------|----------------|
+| **A** | △って来るの？ | 班分けのドタキャン聞き直し |
+| **B** | 5段階で聞き直し不要 | 請求書PDF + 送付文成形 |
+| **C** | 店予約・カレンダー接続 | 割り勘後のLINE精算文 |
+| **D** | 編集可 · 90日削除 | 抽選の証跡 · 名簿非送信 |
+
+#### 新規ツール追加時オペ（Agent / 提督共通）
+
+| # | 作業 | 正本 | 完了条件 |
+|---|------|------|----------|
+| **N1** | registry 登録 | `data/tool-registry.json` | `npm run validate:tool-naming` OK |
+| **N2** | HTML · hub · shell | `TOOL_NAMING_AGENT_PLAYBOOK.md` | naming guard OK |
+| **N3** | マーケ行列に1行追加 | `data/lp-marketing-matrix.json` | primaryPain · primaryType · deltaProblems |
+| **N4** | 束への所属を決める | 同上 `bundles[]` | 新ツールを既存束 or 新束に追加 |
+| **N5** | 生成物更新 | `npm run generate:marketing-context` | 3ファイル更新 |
+| **N6** | Gemini 型A-D | `kanji-san-lp-patterns-gemini.md` | 該当束で1型ずつ · 表のみ |
+| **N7** | Grok 第2パス | 同ファイル §9 | 採用候補のみ |
+| **N8** | 事実突合 | statements · privacy · registry | planned 表記の除去（実装後） |
+| **N9** | LP反映 | `tools/{id}.html` | FV · FAQ · 3ステップ |
+| **N10** | changelog | `data/changelog.json` | ユーザー向け変更を追記 |
+| **N11** | デプロイ | `DEPLOY_CLOUDFLARE_PAGES.md` | `release:pages:free` → push |
+
+**registry のみ先行 · 実装前（planned）のとき:** N1-N3 · N5 · N6（型0のみ）まで。LP断定コピーは **要確認** のまま。
+
+**既存ツールのLP改善のみ:** N3（Pain更新）· N5 · N6-N9。
+
+#### Gemini / Grok 役割（LP専用）
+
+| AI | やる | やらない |
+|----|------|----------|
+| **Gemini** | 型0振り分け · 型A-D表 · ペルソナ別Pain · FAQ案 | 長文LP執筆 · 未実装断定 · 礼賛 |
+| **Grok** | 型A-D表の口語化 · AI味除去 | 表構造変更 · 事実追加 |
+| **Cursor/提督** | registry/matrix更新 · HTML反映 · deploy | Gemini案の無批判採用 |
+
+#### チェックリスト（プロダクト追加の Definition of Done）
+
+- [ ] `tool-registry.json` + naming guard
+- [ ] `lp-marketing-matrix.json`（priority · deltaProblems · bundle）
+- [ ] `generate:marketing-context` 実行済み
+- [ ] 型AのFV見出し1本以上をHTMLに反映（または backlog で次スプリント明示）
+- [ ] 型DのFAQ3問（保存/共有/削除）を privacy と矛盾なく記載
+- [ ] changelog 追記
+- [ ] `build:pages` OK
 
 ---
 

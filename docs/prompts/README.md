@@ -27,6 +27,11 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [zenn-article-draft-gemini.md](zenn-article-draft-gemini.md) | Zenn 記事アウトライン拡張（長文は提督執筆） |
 | [note-editorial-gemini.md](note-editorial-gemini.md) | note「引き算の記録」下書き（Gemini たたき台 · 第1パス） |
 | [note-deai-grok.md](note-deai-grok.md) | note 原稿 AI 味除去（Grok · 第2パス） |
+| [kanji-san-lp-patterns-gemini.md](kanji-san-lp-patterns-gemini.md) | **幹事さん型 LPプロンプト SSOT**（型0/A/B/C/D · Grok第2パス · 運用） |
+| [TOOL_FACTS.generated.md](TOOL_FACTS.generated.md) | `npm run generate:tool-facts` — registry 事実 |
+| [LP_MARKETING_MATRIX.generated.md](LP_MARKETING_MATRIX.generated.md) | `npm run generate:lp-matrix` — Pain · 束 · △問題 · Top3 |
+| [GEMINI_MARKETING_CONTEXT.generated.md](GEMINI_MARKETING_CONTEXT.generated.md) | `npm run generate:marketing-context` — 上記結合（Gemini一括添付） |
+| `data/lp-marketing-matrix.json` | マーケ行列の手動正本（§1-§4） |
 | [../scripts/verify-ogp.mjs](../scripts/verify-ogp.mjs) | OGP 必須タグ検証（`npm run validate:ogp`） |
 | [x-editorial-gemini.md](x-editorial-gemini.md) | X 文案生成・監査 |
 | [qiita-editorial-gemini.md](qiita-editorial-gemini.md) | Qiita 短記事構成 |

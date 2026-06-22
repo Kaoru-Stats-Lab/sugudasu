@@ -1,7 +1,7 @@
 # Gemini 協業ガイド — 聞き方・API 展開（SUGUDASU / 個人開発）
 
 **更新:** 2026-06-18  
-**正本プロンプト例:** `docs/prompts/zenn-editorial-gemini.md`  
+**正本プロンプト例:** `docs/prompts/zenn-editorial-gemini.md` · **LP型A-D:** `docs/prompts/kanji-san-lp-patterns-gemini.md`  
 **API 技術:** Colab / `GOOGLE_API_KEY` · 無料枠内（ASL §79 / sugudasu 方針）
 
 ---
