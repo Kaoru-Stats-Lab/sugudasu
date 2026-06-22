@@ -1,0 +1,35 @@
+{
+  "tool_id": "sns",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "SNS向けデコ文字・縦書きへ一括変換してコピー（非送信）",
+  "personas": ["SNS運用担当", "個人ブランディング", "店舗アカウント"],
+  "implemented": [
+    "複数フォントスタイルへの一括変換",
+    "入力時自動変換",
+    "カードごとのワンクリックコピー",
+    "2行目キャッチコピー対応"
+  ],
+  "notImplemented": [
+    "X/Instagram API 投稿",
+    "チャット別の画面幅自動プレビュー",
+    "絵文字・CJK混在の完全保証"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "セッション内のみ"
+  },
+  "trust": {
+    "faqStorage": "入力テキストはブラウザ内変換。外部送信なし。",
+    "faqEdit": "入力変更で即再変換。",
+    "faqRetention": "永続保存なし。"
+  },
+  "postCompletion": [
+    "各スタイルをコピーしてSNSプロフィール・投稿へ貼付"
+  ],
+  "relatedTools": ["reverse"],
+  "captainChecks": [],
+  "promptNotes": ""
+}

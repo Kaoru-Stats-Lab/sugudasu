@@ -1,0 +1,36 @@
+{
+  "tool_id": "normalize",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "Excel列コピーの全半角・空白を用途別プリセットで整え、500行まで非送信変換",
+  "personas": ["総務", "EC登録担当", "班分け前の名簿整備"],
+  "implemented": [
+    "500行上限・行数 Before/After 表示",
+    "用途プリセット3種（EC登録・名簿・CSV）",
+    "コピー時に最新設定で再変換してからクリップボードへ",
+    "先頭ゼロ保護・カタカナ長音保護（プリセット依存）",
+    "オフライン動作"
+  ],
+  "notImplemented": [
+    "複数列同時の高度なCSVパース",
+    "サーバー側バッチ処理"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "セッション内のみ"
+  },
+  "trust": {
+    "faqStorage": "入力テキストはブラウザ内のみ。外部送信なし。",
+    "faqEdit": "入力欄で随時編集・再変換可。",
+    "faqRetention": "永続保存なし。"
+  },
+  "postCompletion": [
+    "変換結果をExcel/スプシへコピー",
+    "group-split へ名簿を渡す"
+  ],
+  "relatedTools": ["group-split"],
+  "captainChecks": [],
+  "promptNotes": ""
+}

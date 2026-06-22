@@ -1,0 +1,36 @@
+{
+  "tool_id": "report",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "箇条書きメモをビジネス文面に整形しコピー（Gemini用プロンプト生成可）",
+  "personas": ["総務", "プロジェクトリーダー", "店舗マネージャー"],
+  "implemented": [
+    "議事録・報告書など書類種別テンプレ",
+    "ブラウザ内整形＋ワンクリックコピー",
+    "Gemini用指示文の生成・コピー（ユーザーが手動貼付）",
+    "2タブ（そのまま使う / AIで仕上げる）"
+  ],
+  "notImplemented": [
+    "SUGUDASUからGemini API直叩き",
+    "チャット共有Phase2（Backlog記載）",
+    "自動送信"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "メモはセッション内。Gemini貼付はユーザー操作"
+  },
+  "trust": {
+    "faqStorage": "整形はブラウザ内。Gemini連携はコピー後ユーザー送信。",
+    "faqEdit": "入力変更で再整形可。",
+    "faqRetention": "永続保存なし。"
+  },
+  "postCompletion": [
+    "整形文をメール・チャットへコピー",
+    "Gemini用プロンプトをコピーして仕上げ"
+  ],
+  "relatedTools": ["reverse"],
+  "captainChecks": [],
+  "promptNotes": "「AI下書き」はGeminiへの手動貼付前提。"
+}

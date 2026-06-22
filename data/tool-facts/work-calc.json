@@ -1,0 +1,27 @@
+{
+  "tool_id": "work-calc",
+  "status": "scaffold",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "",
+  "personas": ["店長", "人事労務", "総務"],
+  "implemented": [],
+  "notImplemented": [
+    "ツール未実装（planned · registry 未登録）",
+    "出退勤テキストの端数丸め一括集計"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "要確認（実装時）",
+    "retention": "要確認（実装時）"
+  },
+  "trust": {
+    "faqStorage": "要確認",
+    "faqEdit": "要確認",
+    "faqRetention": "要確認"
+  },
+  "postCompletion": [],
+  "relatedTools": ["shift"],
+  "captainChecks": ["実装着手時に registry 登録"],
+  "promptNotes": "planned — 断定コピー禁止"
+}

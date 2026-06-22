@@ -1,0 +1,27 @@
+{
+  "tool_id": "timeline",
+  "status": "scaffold",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "",
+  "personas": ["イベント幹事", "研修ファシリテーター"],
+  "implemented": [],
+  "notImplemented": [
+    "ツール未実装（planned · registry 未登録）",
+    "1箇所の時間変更から後続予定の連動再計算"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "要確認（実装時）",
+    "retention": "要確認（実装時）"
+  },
+  "trust": {
+    "faqStorage": "要確認（実装時）",
+    "faqEdit": "要確認",
+    "faqRetention": "要確認"
+  },
+  "postCompletion": [],
+  "relatedTools": ["group-split"],
+  "captainChecks": ["実装着手時に registry 登録"],
+  "promptNotes": "Geminiは実装済み機能を断定しない。matrix の Pain のみ参照可。"
+}

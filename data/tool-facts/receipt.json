@@ -1,0 +1,38 @@
+{
+  "tool_id": "receipt",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "手取り逆引きで源泉・消費税を算出し、インボイス対応領収書PDFを発行",
+  "personas": ["フリーランス", "個人事業主", "店舗・中古車販売"],
+  "implemented": [
+    "希望手取りからの源泉・消費税逆算",
+    "1枚出力・A4マルチ出力",
+    "インボイス対応項目の領収書プレビュー",
+    "PDF保存・印刷",
+    "URL共有（領収書データのエンコードリンク）",
+    "Slack等チャット送付文＋送信先URL（invoiceと同型・localStorage）"
+  ],
+  "notImplemented": [
+    "法的助言・監査保証",
+    "サーバー側での領収書ホスティング（URLはデータ埋め込み型）"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "チャット送信先URLのみ",
+    "retention": "計算データはサーバー非保存"
+  },
+  "trust": {
+    "faqStorage": "金額入力はブラウザ内計算。外部送信なし。",
+    "faqEdit": "フォームで再入力・再計算可。",
+    "faqRetention": "URL共有はリンク先データに依存。サーバー台帳なし。"
+  },
+  "postCompletion": [
+    "PDF保存・印刷",
+    "チャット送付文コピー",
+    "URL共有リンクのコピー"
+  ],
+  "relatedTools": ["invoice"],
+  "captainChecks": [],
+  "promptNotes": "適格請求書としての要件充足はユーザー確認事項として書く。"
+}

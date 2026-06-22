@@ -1,0 +1,35 @@
+{
+  "tool_id": "hub",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "SUGUDASU全ツールの入口・回遊ハブ（登録不要・静的ポータル）",
+  "personas": ["初回訪問者", "検索からの流入"],
+  "implemented": [
+    "全ツールカード一覧・ナビ連動",
+    "FAQ回遊導線",
+    "homonym注意バナー（localStorage で dismiss）",
+    "statements / updates への導線"
+  ],
+  "notImplemented": [
+    "ユーザーアカウント・お気に入り",
+    "ツール横断の統合検索"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "sg-homonym-dismiss のみ",
+    "retention": "ポータル自体はデータを保持しない"
+  },
+  "trust": {
+    "faqStorage": "ポータルは各ツールへリンクするのみ。",
+    "faqEdit": "—",
+    "faqRetention": "—"
+  },
+  "postCompletion": [
+    "各ツールページへ遷移",
+    "statements で設計原則確認"
+  ],
+  "relatedTools": [],
+  "captainChecks": ["ツール件数表記が registry と一致しているか"],
+  "promptNotes": "ポータル単体のPainコピーは作らない。各ツールへ誘導。"
+}

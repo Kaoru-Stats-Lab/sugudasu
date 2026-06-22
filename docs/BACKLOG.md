@@ -1491,6 +1491,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | **N1** | registry 登録 | `data/tool-registry.json` | `npm run validate:tool-naming` OK |
 | **N2** | HTML · hub · shell | `TOOL_NAMING_AGENT_PLAYBOOK.md` | naming guard OK |
 | **N3** | マーケ行列に1行追加 | `data/lp-marketing-matrix.json` | primaryPain · primaryType · deltaProblems |
+| **N3b** | TOOL_FACTS 骨格 | `npm run scaffold:tool-facts` | `data/tool-facts/{id}.json` 作成 |
+| **N3c** | TOOL_FACTS レビュー | `data/tool-facts/{id}.json` | status=reviewed · 実装と突合 |
 | **N4** | 束への所属を決める | 同上 `bundles[]` | 新ツールを既存束 or 新束に追加 |
 | **N5** | 生成物更新 | `npm run generate:marketing-context` | 3ファイル更新 |
 | **N6** | Gemini 型A-D | `kanji-san-lp-patterns-gemini.md` | 該当束で1型ずつ · 表のみ |

@@ -34,7 +34,8 @@
 |----|------|------|----------------|
 | **実装** | `data/tool-registry.json` | id · productName · stage · statusNote | ツール実装・昇格時 |
 | **マーケ行列** | `data/lp-marketing-matrix.json` | Pain · 型A-D · 束 · △問題 · Top3 | 企画・Gemini振り分け後 |
-| **事実添付** | `docs/prompts/TOOL_FACTS.generated.md` | registry から自動 | `npm run generate:tool-facts` |
+| **事実添付** | `data/tool-facts/{tool_id}.json` | 人間レビュー済み事実（1ツール1ファイル） |
+| **事実生成** | `docs/prompts/TOOL_FACTS.generated.md` | 上記 + registry + matrix から自動 |
 | **行列添付** | `docs/prompts/LP_MARKETING_MATRIX.generated.md` | matrix から自動 | `npm run generate:lp-matrix` |
 | **結合添付** | `docs/prompts/GEMINI_MARKETING_CONTEXT.generated.md` | 上記2つを結合 | `npm run generate:marketing-context` |
 | **プロンプト型** | **本ファイル** | 型0/A/B/C/D · Grok第2パス | 型の定義変更時のみ |
@@ -43,6 +44,8 @@
 
 ```bash
 # 新規ツール追加後 · Gemini回す前に必ず
+npm run scaffold:tool-facts   # 未作成 JSON を骨格生成
+# 1ツールレビュー後
 npm run generate:marketing-context
 ```
 

@@ -1,0 +1,35 @@
+{
+  "tool_id": "present",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "関係性・予算・NG条件からギフト候補をブラウザ内マッチングしAmazonへ",
+  "personas": ["ギフト選びに悩む幹事", "営業・人事（お祝い）"],
+  "implemented": [
+    "関係性・シーン・予算上限・趣味・NGキーワード入力",
+    "内蔵ルールによる候補提案（サーバーAI呼び出しなし）",
+    "Amazon アフィリエイトリンクから商品確認",
+    "地雷ワード除外"
+  ],
+  "notImplemented": [
+    "LLM API によるリアルタイム生成",
+    "購入・配送の代行",
+    "相手の好みの自動学習"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "条件入力はセッション内。Amazon遷移はユーザー操作"
+  },
+  "trust": {
+    "faqStorage": "条件マッチングはブラウザ内。Amazonリンクはユーザーが開く。",
+    "faqEdit": "条件変更で再提案可。",
+    "faqRetention": "サーバーに選定履歴なし。"
+  },
+  "postCompletion": [
+    "Amazonで商品確認・購入検討"
+  ],
+  "relatedTools": [],
+  "captainChecks": [],
+  "promptNotes": "「AIサジェスター」は内蔵ルールベース。ChatGPT連携ではない。"
+}

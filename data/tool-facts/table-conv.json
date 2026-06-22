@@ -1,0 +1,27 @@
+{
+  "tool_id": "table-conv",
+  "status": "scaffold",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "",
+  "personas": ["ライター", "Notion運用", "営業資料作成"],
+  "implemented": [],
+  "notImplemented": [
+    "ツール未実装（planned · registry 未登録）",
+    "Excel⇔Markdown 双方向変換"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "要確認（実装時）",
+    "retention": "要確認（実装時）"
+  },
+  "trust": {
+    "faqStorage": "要確認",
+    "faqEdit": "要確認",
+    "faqRetention": "要確認"
+  },
+  "postCompletion": [],
+  "relatedTools": ["normalize"],
+  "captainChecks": ["実装着手時に registry 登録"],
+  "promptNotes": "planned — 断定コピー禁止"
+}

@@ -1,0 +1,43 @@
+{
+  "tool_id": "group-split",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "研修・イベントの名簿を貼って公平に班分けし、TSV/Slackで共有する（非送信）",
+  "personas": ["人事・研修担当", "ハッカソン運営", "イベント幹事"],
+  "implemented": [
+    "Excel名簿の貼り付け（最大250名）",
+    "属性条件（所属分散・各組必須など）",
+    "名前ルール（固定班・離すペア・組番号固定）",
+    "シード値による再現可能な班構成",
+    "Excel TSV / Slack / 告知文 / JSON の1クリックコピー",
+    "セッションJSONのコピー・貼り付け（PC→スマホ同期メモ経由）",
+    "M02: 結果画面で名前タップ除外 → 同seedで再構成",
+    "緩和モード（制約不足時の実行）",
+    "normalize.html への導線"
+  ],
+  "notImplemented": [
+    "Zoom/Slack API 連携・BR自動割当",
+    "O8 スイッチャー対応表（BR名・Slack列テンプレ）— Backlog P1",
+    "部分移動・最適候補提示",
+    "遅刻者の自動再追加"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし（セッションJSONはクリップボード/同期メモで手動運搬）",
+    "retention": "ページを閉じると入力は失われる。復元はセッションJSON貼り付けが正攻法"
+  },
+  "trust": {
+    "faqStorage": "名簿・班結果は SUGUDASU サーバーに送信しない。ブラウザ内処理。",
+    "faqEdit": "名簿貼り直し・タップ除外・JSON読込で再実行可能。",
+    "faqRetention": "永続保存なし。記録はTSV/Slack/JSONを幹事が自行保管。"
+  },
+  "postCompletion": [
+    "Excel TSV または Slack 用テキストをコピーして共有",
+    "欠席時: 名前タップ → 再構成 → Slack文を再コピー",
+    "normalize で名簿前処理"
+  ],
+  "relatedTools": ["normalize", "fair-draw"],
+  "captainChecks": [],
+  "promptNotes": "「ワンタップでドタキャン除外」は JSON読込済み or 同一端末の結果画面が前提。名指しルーレット批判禁止。"
+}

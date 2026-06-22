@@ -1,0 +1,35 @@
+{
+  "tool_id": "reverse",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "ビジネス場面別の言い換え辞典とGemini拡張用コピー",
+  "personas": ["営業", "ライター", "SNS担当"],
+  "implemented": [
+    "場面別内蔵辞書（メール・謝罪・SNS等）",
+    "ワンクリックコピー",
+    "Gemini用プロンプト生成・コピー（手動貼付）",
+    "2タブ（すぐ使える / AIで広げる）"
+  ],
+  "notImplemented": [
+    "辞書のユーザー追加・クラウド同期",
+    "Gemini API 直結"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "セッション内のみ"
+  },
+  "trust": {
+    "faqStorage": "辞書検索はブラウザ内。",
+    "faqEdit": "入力・場面変更で再検索可。",
+    "faqRetention": "永続保存なし。"
+  },
+  "postCompletion": [
+    "言い換えをコピー",
+    "Gemini用文面をコピーして拡張"
+  ],
+  "relatedTools": ["sns", "report"],
+  "captainChecks": [],
+  "promptNotes": ""
+}

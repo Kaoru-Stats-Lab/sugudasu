@@ -1,0 +1,37 @@
+{
+  "tool_id": "label",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "市販ラベル型番に合わせて宛名シールを一括印刷（CSV取込・非送信）",
+  "personas": ["総務", "EC発送担当", "年賀・DM準備"],
+  "implemented": [
+    "主要メーカー型番検索・レイアウト反映",
+    "宛名ラベル / 差出人ラベルモード",
+    "Excel・CSV一括取込",
+    "印刷プレビュー",
+    "localStorage の address_label_history_v1（履歴・再呼出）"
+  ],
+  "notImplemented": [
+    "全メーカー全型番の網羅保証",
+    "郵便番号APIによる住所自動分割（手入力・CSV前提）",
+    "長い住所の自動折返し最適化の保証"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "address_label_history_v1（住所履歴）",
+    "retention": "履歴は端末内 localStorage。サーバー非送信"
+  },
+  "trust": {
+    "faqStorage": "住所データはブラウザ内処理。外部送信なし。",
+    "faqEdit": "履歴から再編集・印刷可。",
+    "faqRetention": "localStorage 履歴はユーザーが端末で管理。"
+  },
+  "postCompletion": [
+    "ブラウザ印刷でラベル出力",
+    "履歴に保存して再利用"
+  ],
+  "relatedTools": ["normalize"],
+  "captainChecks": [],
+  "promptNotes": "マンション名はみ出しは手動調整前提。自動改行保証は書かない。"
+}

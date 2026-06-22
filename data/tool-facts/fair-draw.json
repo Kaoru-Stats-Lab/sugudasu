@@ -1,0 +1,42 @@
+{
+  "tool_id": "fair-draw",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "景表法の一次チェックと公平抽選・証跡PDFをブラウザ内で生成",
+  "personas": ["マーケ幹事", "社内イベント運営", "SNS懸賞担当"],
+  "implemented": [
+    "景品表示法ルール表による一次スクリーニング（合法/違法断定なし）",
+    "Web Crypto ベースの公平抽選（シード再現）",
+    "キャンペーン識別名（必須）",
+    "監査PDF（印刷）・結果JSONダウンロード",
+    "名簿スナップショットダウンロード",
+    "TSVコピー（Excel貼付向け）",
+    "社内イベント / 対外キャンペーンの Step0 分岐",
+    "sessionStorage に実施者名のみ短期保持（CP名は毎回入力）"
+  ],
+  "notImplemented": [
+    "社内統制システム・操作ログ・権限管理",
+    "応募フォーム・応募者取得",
+    "コース選択UI（コースごとに名簿を分ける運用推奨）",
+    "法的助言の代替"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "sessionStorage: 実施者名のみ。名簿・結果はユーザーがPDF/JSONで自行保管"
+  },
+  "trust": {
+    "faqStorage": "名簿はブラウザ内シャッフル。サーバー非送信。",
+    "faqEdit": "抽選前なら名簿修正可。確定後は証跡を新規実行で残す運用。",
+    "faqRetention": "90日自動削除などのサーバー保持なし。PDF/JSONは幹事保管。"
+  },
+  "postCompletion": [
+    "監査PDF保存",
+    "名簿スナップショット・JSON保存",
+    "TSVをExcelへ"
+  ],
+  "relatedTools": ["group-split"],
+  "captainChecks": [],
+  "promptNotes": "「合法」「違法」断定禁止。統制システムの代替ではないと明記。"
+}

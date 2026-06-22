@@ -1,0 +1,39 @@
+{
+  "tool_id": "invoice",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "見積・納品・請求書を登録なしで作り、PDFとチャット送付文まで完結",
+  "personas": ["フリーランス", "小規模店舗", "整備工場・中古車販売"],
+  "implemented": [
+    "見積・納品・請求書の3種（タブ切替）",
+    "見積下書きから納品・請求への転用",
+    "インボイス登録番号・10%/8%税額内訳",
+    "ブラウザ印刷によるPDF保存",
+    "下書きデータのファイル保存・読み込み",
+    "Slack/Chatwork/Google Chat/Teams/LINE WORKS 送付文コピー＋URL起動（Phase1）",
+    "送信先URLの localStorage 保存"
+  ],
+  "notImplemented": [
+    "Webhook 直送信（Phase2）",
+    "会計ソフトへの直接取込",
+    "複数税率混在品目の自動判定（税率は行ごと手動選択）"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "チャット送信先URLのみ（CHAT_TARGETS_KEY）",
+    "retention": "帳票データはサーバー非保存。下書きはユーザーがJSONファイルで自行保管"
+  },
+  "trust": {
+    "faqStorage": "明細・宛先はブラウザ内。サーバーへ帳票内容は送信しない。",
+    "faqEdit": "下書き読込で編集継続可。",
+    "faqRetention": "永続保存なし。PDF/下書きファイルはユーザー管理。"
+  },
+  "postCompletion": [
+    "PDF保存後にチャット送付文をコピー",
+    "見積→請求タブ切替で転用"
+  ],
+  "relatedTools": ["receipt"],
+  "captainChecks": [],
+  "promptNotes": "「PDFと同時に自動送信」は不可。文面コピー＋ユーザーがチャットで送信。"
+}

@@ -1,0 +1,38 @@
+{
+  "tool_id": "shift",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "希望休と定休を考慮したシフトを自動生成し、FIX後にA4印刷",
+  "personas": ["店長", "人事労務", "小規模店舗運営"],
+  "implemented": [
+    "スタッフ登録・希望休入力",
+    "シフト自動生成",
+    "FIX（確定）で下書き透かし解除",
+    "A4横・印刷/PDF",
+    "複数月の作成",
+    "localStorage による sugudasu_pro_snapshot 復元"
+  ],
+  "notImplemented": [
+    "従業員への自動通知",
+    "クラウド同期・複数端末共同編集",
+    "労基法チェックの法的保証"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "sugudasu_pro_snapshot（同一ブラウザで復元）",
+    "retention": "localStorage に端末内保存。サーバー非送信"
+  },
+  "trust": {
+    "faqStorage": "シフトデータはサーバーに送信しない。localStorage は端末内。",
+    "faqEdit": "FIX前は編集・再生成可。",
+    "faqRetention": "localStorage クリア・別端末では引き継がない。"
+  },
+  "postCompletion": [
+    "FIX → 印刷/PDF",
+    "店舗掲示用出力"
+  ],
+  "relatedTools": [],
+  "captainChecks": [],
+  "promptNotes": ""
+}

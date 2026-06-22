@@ -1,0 +1,36 @@
+{
+  "tool_id": "webp-to-jpg",
+  "status": "reviewed",
+  "updatedAt": "2026-06-22",
+  "oneLiner": "WebPをJPG/PNGに端末内だけで変換（アップロード型サービスと差別化）",
+  "personas": ["営業", "Web担当", "レガシーOffice利用者"],
+  "implemented": [
+    "WebP→PNG / WebP→JPEG",
+    "最大20枚・ブラウザ内デコード",
+    "ZIP一括ダウンロード",
+    "透過WebP→JPEG時は白背景（PNGで透過維持）",
+    "競合比較表（アップロード型との違い）"
+  ],
+  "notImplemented": [
+    "PNG/JPEG→WebP への変換",
+    "サーバーへ画像を送る変換"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "画像はメモリ上のみ。ダウンロード後はユーザー管理"
+  },
+  "trust": {
+    "faqStorage": "画像ファイルは SUGUDASU サーバーへ POST しない。",
+    "faqEdit": "再選択・再変換可。",
+    "faqRetention": "サーバー側に画像を保持しない。"
+  },
+  "postCompletion": [
+    "変換ファイルをダウンロード",
+    "Office・社内システムへ貼付"
+  ],
+  "relatedTools": ["sns"],
+  "captainChecks": [],
+  "promptNotes": "競合は「アップロード型」一般化で名指し可（ページ内既存表と整合）。"
+}

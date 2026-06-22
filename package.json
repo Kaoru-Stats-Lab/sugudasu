@@ -5,6 +5,7 @@
   "scripts": {
     "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
     "generate:tool-facts": "node scripts/generate-tool-facts.mjs",
+    "scaffold:tool-facts": "node scripts/scaffold-tool-facts.mjs",
     "generate:lp-matrix": "node scripts/generate-lp-marketing-matrix.mjs",
     "generate:marketing-context": "node scripts/generate-marketing-context.mjs",
     "validate:tool-naming": "node scripts/verify-tool-naming.mjs",
