@@ -1,9 +1,11 @@
 /**
  * SUGUDASU shared chrome — header · ツールナビ · footer
- * docs/DESIGN_GUIDELINE.md §3.1, §7
+ * docs/DESIGN_GUIDELINE.md §1.3, §3.1, §7
+ * ナビラベル SSOT: data/tool-registry.json navLabel（TOOLS は初回描画フォールバック）
  */
 (function (global) {
   const GA4_MEASUREMENT_ID = 'G-WBB6PTTYF7';
+  /** @type {Array<{id:string,file:string,label:string,icon:string}>} — registry navLabel と同期 */
   const TOOLS = [
     { id: 'hub', file: 'hub.html', label: '一覧', icon: '🏠' },
     { id: 'invoice', file: 'invoice.html', label: '請求書', icon: '📄' },
@@ -16,7 +18,7 @@
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
-    { id: 'fair-draw', file: 'fair-draw.html', label: '抽選チェック', icon: '🎲' },
+    { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
     { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' }
   ];
@@ -65,16 +67,31 @@
     return seg;
   }
 
-  function navHtml(activeFile) {
+  function navItemsFromRegistry(registry) {
+    if (!registry || !registry.tools) return TOOLS;
+    const list = Object.entries(registry.tools)
+      .filter(([, t]) => t.inNav && t.navLabel)
+      .sort((a, b) => (a[1].navOrder || 99) - (b[1].navOrder || 99))
+      .map(([id, t]) => ({
+        id,
+        file: t.file,
+        label: t.navLabel,
+        icon: t.navIcon || '',
+      }));
+    return list.length ? list : TOOLS;
+  }
+
+  function navHtml(activeFile, navItems) {
+    const items = navItems || TOOLS;
     return `<nav class="no-print bg-slate-800 border-b border-slate-700" aria-label="SUGUDASU ツール">
       <div class="max-w-7xl mx-auto px-2 sm:px-4">
         <ul class="sg-nav-list py-1.5 text-[11px] font-semibold">
-          ${TOOLS.map(t => {
+          ${items.map(t => {
             const active = t.file === activeFile;
             const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
             return `<li class="sg-nav-item"><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
               active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-            }">${icon}<span class="sg-nav-label">${t.label}</span></a></li>`;
+            }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
           }).join('')}
         </ul>
       </div>
@@ -132,8 +149,8 @@
     </header>`;
   }
 
-  function chromeHtml(title, showPrint, activeFile, subtitle) {
-    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint, subtitle)}${navHtml(activeFile)}</div>`;
+  function chromeHtml(title, showPrint, activeFile, subtitle, navItems) {
+    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint, subtitle)}${navHtml(activeFile, navItems)}</div>`;
   }
 
   function footerHtml() {
@@ -143,7 +160,7 @@
         <p class="text-[11px] text-slate-500">
           <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASUの約束</a>
+          <a href="statements.html" class="text-blue-600 hover:underline" aria-label="SUGUDASUの約束">Statements</a>
           <span class="text-slate-300 mx-1">|</span>
           <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>
           <span class="text-slate-300 mx-1">|</span>
@@ -199,6 +216,7 @@
     loadGrowthScript();
     applyCtaLabels(file);
     applyDevStageBadge();
+    applyToolNamingFromRegistry();
   }
 
   /** #sg-chrome-top の data-sg-* から同期マウント（inline mount 不要 · defer 事故防止） */
@@ -326,6 +344,34 @@
     return file.replace(/\.html$/, '');
   }
 
+  async function applyToolNamingFromRegistry() {
+    const registry = await loadToolRegistry();
+    if (!registry) return;
+    const toolId = toolIdFromDom();
+    const tool = getToolMeta(toolId);
+    const file = currentFile();
+
+    const navItems = navItemsFromRegistry(registry);
+    const nav = document.querySelector('.sg-nav-list');
+    if (nav) {
+      nav.innerHTML = navItems.map(t => {
+        const active = t.file === file;
+        const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
+        return `<li class="sg-nav-item"><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+          active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
+        }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
+      }).join('');
+    }
+
+    if (tool && tool.productName) {
+      const titleEl = document.querySelector('.sg-site-header__pagetitle');
+      const top = document.getElementById('sg-chrome-top');
+      if (titleEl && top && top.getAttribute('data-sg-tool-id')) {
+        titleEl.textContent = tool.productName;
+      }
+    }
+  }
+
   async function applyDevStageBadge() {
     const top = document.getElementById('sg-chrome-top');
     if (!top) return;
@@ -397,6 +443,7 @@
     mount,
     bootstrapChromeFromDom,
     TOOLS,
+    navItemsFromRegistry,
     assetUrl,
     dataUrl,
     logoHtml,

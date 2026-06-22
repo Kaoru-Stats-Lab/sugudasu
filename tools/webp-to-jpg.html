@@ -11,15 +11,18 @@
     <meta property="og:description" content="WebP→JPG/PNG。運営サーバーへ画像を送らず、ブラウザ内だけで変換。DevToolsで通信を確認できます。">
     <meta property="og:url" content="https://sugudasu.com/webp-to-jpg">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="WebP→JPG/PNG — アップロードしない変換">
     <meta name="twitter:description" content="Convertio・iLoveIMG等はサーバーへ送信。SUGUDASUは端末内だけ。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"iLoveIMGやConvertioと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"多くのアップロード型ツールは画像を運営サーバーへ送って変換します。SUGUDASUは端末のブラウザ内だけで処理し、画像ファイルのPOSTは発生しません。DevToolsのネットワークタブで確認できます。"}},{"@type":"Question","name":"WebPをPNGやJPEGに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。WebPファイルを選び、出力形式（PNGまたはJPEG）を指定して変換・ダウンロードできます。処理はブラウザ内だけで行います。"}},{"@type":"Question","name":"PNGやJPEGをWebPに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。WebP→JPG/PNG専用です。逆方向はサルワカ等のPNG→WebPツール向けの用途です。"}},{"@type":"Question","name":"画像は外部サーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ファイルは端末内だけでデコード・再エンコードされ、SUGUDASUのサーバーへアップロードされません。"}},{"@type":"Question","name":"透過WebPをJPEGにするとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"JPEGは透過に非対応のため、背景は白で塗りつぶされます。透過を残す場合はPNG出力を選んでください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"iLoveIMGやConvertioと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"多くのアップロード型ツールは画像を運営サーバーへ送って変換します。SUGUDASUは端末のブラウザ内だけで処理し、画像ファイルのPOSTは発生しません。DevToolsのネットワークタブで確認できます。"}},{"@type":"Question","name":"WebPをPNGやJPEGに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。WebPファイルを選び、出力形式（PNGまたはJPEG）を指定して変換・ダウンロードできます。処理はブラウザ内だけで行います。"}},{"@type":"Question","name":"PNGやJPEGをWebPに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールは WebP を PNG/JPEG に戻す用途向けです（Excel貼付・旧システム登録など）。"}},{"@type":"Question","name":"画像は外部サーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ファイルは端末内だけでデコード・再エンコードされ、SUGUDASUのサーバーへアップロードされません。"}},{"@type":"Question","name":"透過WebPをJPEGにするとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"JPEGは透過に非対応のため、背景は白で塗りつぶされます。透過を残す場合はPNG出力を選んでください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="WebP→JPG/PNG" data-sg-subtitle="アップロードしない · 端末内変換" data-sg-tool-id="webp-to-jpg"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU WebP変換" data-sg-subtitle="JPG/PNG · 非送信" data-sg-tool-id="webp-to-jpg"></div>
 
 <main class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
@@ -61,13 +64,12 @@
                     </tr>
                     <tr>
                         <th scope="row" class="py-2.5 pr-3 font-semibold text-slate-800 align-top">変換の向き</th>
-                        <td class="py-2.5 pr-3 align-top">WebP→JPG 等</td>
-                        <td class="py-2.5 align-top">WebP→JPG/PNG のみ<br><span class="text-slate-500">PNG→WebP は<a href="https://saruwakakun.com/tools/png-jpeg-to-webp/" class="text-sky-700 underline" rel="noopener noreferrer" target="_blank">別ツール</a>向け</span></td>
+                        <td class="py-2.5 pr-3 align-top">WebP→JPG 等 · 双方向あり</td>
+                        <td class="py-2.5 align-top">WebP→JPG/PNG のみ</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p class="text-[11px] text-slate-500 leading-relaxed">※ サルワカWebツール等「ブラウザ内処理」と謳うサービスもあります。差は<strong>変換の向き</strong>（WebP→JPG か PNG→WebP か）と、<strong>あなたの画像が第三者サーバーを経由するか</strong>です。不安なら DevTools で通信を確認してください。</p>
     </section>
 
     <section class="sg-card p-5 space-y-4">
@@ -154,7 +156,7 @@
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。<strong>WebP→JPG/PNG 専用</strong>です。逆方向（PNG/JPEG→WebP）は<a href="https://saruwakakun.com/tools/png-jpeg-to-webp/" rel="noopener noreferrer" target="_blank">サルワカWebツール</a>等向け。PDF 一括は iLoveIMG 等向けです。</p>
+                    <p>いいえ。本ツールは <strong>WebP を PNG/JPEG に戻す</strong>用途向けです（Excel 貼付 · 旧システムへの画像登録など）。PNG/JPEG を WebP に圧縮する用途は別の Pain です。</p>
                 </div>
             </details>
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">

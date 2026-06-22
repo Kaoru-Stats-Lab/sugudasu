@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-20（§1-13 Statements ページ起票 · §1-11 group-split v1.2.4）  
+更新: 2026-06-21（§1-14 T09b png-to-webp · WebP圧縮 P1 起票）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -324,6 +324,60 @@
 #### 受け入れ条件 — 済
 
 - モバイル可読 · privacy/terms/disclaimer 相互リンク · 断定表現なし · FAQ 3問
+
+### 1-14. `png-to-webp.html` — T09b **SUGUDASU WebP圧縮**（**P1 · 未着手**）
+
+**優先度:** **P1**（T09 `webp-to-jpg` の逆方向 Pain · LP/EC 軽量化）  
+**状態:** 未着手（2026-06-21 起票 · **実装はしない** · Gemini 調査済）  
+**正規 URL:** `/png-to-webp` · `tools/png-to-webp.html`
+
+#### 命名（`TOOL_NAMING_AGENT_PLAYBOOK.md` · 実装時に registry 先）
+
+| 層 | 値 |
+|----|-----|
+| id | `png-to-webp` |
+| productName | **SUGUDASU WebP圧縮** |
+| navLabel | **WebP圧縮** |
+| conceptName | WebP圧縮 |
+| subtitle | `PNG · JPEG · 非送信` |
+
+**兄弟ツール:** `webp-to-jpg`（productName: SUGUDASU WebP変換 · nav: WebP→JPG）— **双方向化はしない**（Gemini §5 推奨 A · `DESIGN_GUIDELINE` 1 URL · 1 Pain）
+
+#### SSOT
+
+- 調査結果: [`docs/notes/png-to-webp-gemini-research-RESULT.md`](notes/png-to-webp-gemini-research-RESULT.md)
+- 依頼プロンプト: [`docs/prompts/png-to-webp-gemini-research.md`](prompts/png-to-webp-gemini-research.md)
+- 逆方向既調査: [`docs/notes/webp-to-jpg-gemini-research-RESULT.md`](notes/webp-to-jpg-gemini-research-RESULT.md)
+
+#### 背景（1行）
+
+PNG/JPEG を WebP に **非送信**で圧縮 — WordPress/LP 公開前 · 未公開 EC 素材 · 透過 PNG ロゴ等。アップロード型（Convertio 等）の代替として **機密画像をサーバーに送らない**訴求。
+
+#### MVP スコープ（着手時）
+
+- [ ] 入力: PNG / JPEG のみ（WebP 入力は `webp-to-jpg` へ誘導）
+- [ ] 出力: WebP · **品質スライダー**（既定 0.85）· Before/After **ファイルサイズ**表示
+- [ ] 透過 PNG → 透過 WebP（チェッカー背景プレビュー · **PoC 必須**）
+- [ ] 上限: `webp-to-jpg` 踏襲 — 最大20枚 · 25MB/枚 · 8192px · **逐次キュー**
+- [ ] 相互導線: webp-to-jpg ↔ png-to-webp（競合サービス名なし）
+- [ ] `assets/png-to-jpg.js` との共通化検討（Canvas 変換コア）
+
+#### やらない（非約束 · Gemini §5 整合）
+
+- 一括 ZIP · フォルダ階層維持 · HEIC/AVIF · PDF 抽出 · AI upscale · **リサイズ必須機能** · 100MB 超 RAW
+
+#### 実装 TODO（Playbook 順 · すべて未着手）
+
+- [ ] `data/tool-registry.json` エントリ
+- [ ] `tools/png-to-webp.html` · `assets/png-to-webp.js`
+- [ ] hub カード · shell ナビ · changelog
+- [ ] title / OGP / FAQ JSON-LD（検索: `png webp 変換` · `画像 軽量化 webp` 等）
+- [ ] `npm run validate:tool-naming` → `build:pages`
+- [ ] **PoC:** Safari/iOS `toBlob('image/webp')` · 透過 PNG 黒背景化の有無
+
+#### 受け入れ条件（着手時）
+
+- DevTools で画像 POST なし · 透過 WebP が目視確認できる · 品質変更で容量が変わる · webp-to-jpg から1クリックで相互遷移
 
 ---
 
@@ -984,14 +1038,17 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 #### 8-11-4. Agent チェックリスト — 新規ツール追加時
 
-1. [ ] `tools/{slug}.html` 作成（**slug = 機能名**。略称のみの `imgconv` 型は禁止）
-2. [ ] `assets/{slug}.js`（ロジックがある場合 · HTML と **同名**）
-3. [ ] `data/tool-registry.json` にエントリ（`stage` · `statusNote`）
-4. [ ] `tools/hub.html` カード · `assets/sugudasu-shell.js` ナビ
-5. [ ] 当該 HTML の **title / meta description / OGP / FAQ JSON-LD**（**このツールの検索意図**）
-6. [ ] `data/changelog.json` 追記
-7. [ ] `npm run build:pages`（sitemap · `_redirects` 自動）
-8. [ ] **hub の title に件数を書かない** · **「全Nツール」リンク文言を増やさない**
+**命名 3 層の詳細手順:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` §1（**この節より先に registry**）
+
+1. [ ] `data/tool-registry.json` — `conceptName` · `productName` · `navLabel` · `inNav` · `navOrder` · `stage` · `statusNote`
+2. [ ] `tools/{slug}.html` 作成（**slug = id = registry キー**。略称のみの `imgconv` 型は禁止）
+3. [ ] `data-sg-title` = **productName** · `data-sg-tool-id` = id（`CHROME_HEADER_GUARDRAILS.md`）
+4. [ ] `assets/{slug}.js`（ロジックがある場合 · HTML と **同名**）
+5. [ ] `tools/hub.html` カード `<h3>` = productName · `assets/sugudasu-shell.js` `TOOLS[].label` = navLabel
+6. [ ] 当該 HTML の **title / meta description / OGP / FAQ JSON-LD**（**このツールの検索意図**）
+7. [ ] `data/changelog.json` 追記
+8. [ ] **`npm run validate:tool-naming`** → **`npm run build:pages`**（sitemap · `_redirects` 自動）
+9. [ ] **hub の title に件数を書かない** · **「全Nツール」リンク文言を増やさない**
 
 #### 8-11-5. 任意（P2 · 未採用）
 

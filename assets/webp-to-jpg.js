@@ -56,7 +56,7 @@ export function validateWebpInput(file) {
     return {
       ok: false,
       code: 'not_webp',
-      message: 'WebP ファイルのみ対応です。PNG/JPEG の変換は別ツールをご利用ください。',
+      message: 'WebP ファイルのみ対応です。PNG/JPEG の入力は対象外です。',
     };
   }
   return validateImageFile(file);

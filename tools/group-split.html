@@ -11,7 +11,10 @@
     <meta property="og:description" content="Excel名簿で公平に班分け。属性条件対応。欠席時は貼り直して再構成。TSV・Slack即コピー。名簿非送信。">
     <meta property="og:url" content="https://sugudasu.com/group-split">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="研修の班分け — Excel/Slackに貼れる非送信ツール">
     <meta name="twitter:description" content="班分けを非送信で。欠席が出ても名簿貼り直し→再実行。TSV/Slackに即出力。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -19,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やブレイクアウトで班分けが必要なのはどんなとき？","acceptedAnswer":{"@type":"Answer","text":"新入社員研修のグループワーク、異動者研修、ハッカソンのチーム編成、社内ワークショップの卓割りなど、参加者全員をいくつかの組に分け、事前または当日に共有したい場面です。SUGUDASU の班分けはその場の演出より、幹事の事務作業（割当 · 共有 · 説明責任）を助ける位置づけです。"}},{"@type":"Question","name":"ランダムに分けると公平になりますか？","acceptedAnswer":{"@type":"Answer","text":"完全なランダムは恣意的な偏りを避ける手段として有効ですが、所属の固まりや特定ペアの回避など、現場のルールも必要になります。公平性は誰が決めたか説明できることと、ルールを守った結果を記録できることも含みます。本ツールはシード値と名簿指紋で再現可能にします。"}},{"@type":"Question","name":"Excel の RAND() や手作業との違いは？","acceptedAnswer":{"@type":"Answer","text":"RAND() はセル再計算で班構成が変わりうるほか、制約の実装が手間です。手作業は小規模なら可能ですが、再現説明と共有用テキストの作成に時間がかかります。班分けツールは1回決めた結果を TSV/Slack 用にそのまま出すことに特化します。"}},{"@type":"Question","name":"投影用ルーレットと事務向け班分けの違いは？","acceptedAnswer":{"@type":"Answer","text":"教室やイベント会場向けのルーレット演出は、画面に映して盛り上げる用途向けです。SUGUDASU の班分けは、名簿を非送信で処理し、Excel TSV や Slack 用テキストをコピーして共有する幹事の2次利用向けです。目的が異なります。"}},{"@type":"Question","name":"所属や性別など属性を考慮した班分けは？","acceptedAnswer":{"@type":"Answer","text":"同じ部署が固まらない、各組に役員を1名以上などは、氏名だけでなく所属 · 性別 · 役職などの列を使った条件になります。SUGUDASU では Excel 名簿の属性列（最大3）で分散 · 各組必須を指定できます。"}},{"@type":"Question","name":"当日欠席が出たときはどうする？","acceptedAnswer":{"@type":"Answer","text":"欠席者を名簿から除いて貼り直し、再実行または再シャッフルするのが確実です。シードを変えずに名簿だけ更新すれば、残りの人で新しい班構成をすぐ共有できます。"}},{"@type":"Question","name":"名簿は外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。設計思想と但し書きは SUGUDASU の約束（statements）ページを参照。"}},{"@type":"Question","name":"使い方の流れは？（Step ①〜④）","acceptedAnswer":{"@type":"Answer","text":"① Excel 名簿を貼り付け → ② 複数列なら属性条件 → ③ 必要なら名前ルール → ④ 人数または組数を指定して実行。結果は TSV · Slack · 告知文などを1クリックコピーできます。"}},{"@type":"Question","name":"属性条件（②）と名前ルール（③）の違いは？","acceptedAnswer":{"@type":"Answer","text":"② は列ベース（所属の分散 · 各組に役員1名など）。③ は氏名ベースの例外（同組 · 別組 · 組番号固定）。多くの研修班分けは ② だけで足り、③ は少数の例外用です。"}},{"@type":"Question","name":"同じ班構成を再現できますか？","acceptedAnswer":{"@type":"Answer","text":"同じ名簿 · 同じ条件 · 同じシード値なら同じ班構成になります。seed と名簿指紋を記録してください。"}},{"@type":"Question","name":"人数が割り切れないときは？","acceptedAnswer":{"@type":"Answer","text":"制約なしの均等分割では、各グループの人数差は最大1名です。固定班や属性条件がある場合は、目標定員からずれることがあります。"}},{"@type":"Question","name":"目標定員より多いグループになりますか？","acceptedAnswer":{"@type":"Answer","text":"固定班を分割しない · メンター配置など、制約を満たすために目標定員を超える組が出る場合があります。超過組には理由を表示します。"}},{"@type":"Question","name":"Excel や Slack にそのまま貼れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Excel 用 TSV がデフォルトです。Slack/Teams · LINE · 告知 · JSON もコピーできます。名簿上限は250名です。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="グループ分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 班分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
@@ -200,7 +203,7 @@
 
                 <div id="gs-groups" class="space-y-2 text-sm"></div>
 
-                <div class="border-t border-slate-100 pt-3 space-y-3">
+                <div id="gs-output-actions" class="border-t border-slate-100 pt-3 space-y-3">
                     <p class="text-xs font-bold text-slate-800">出力形式</p>
                     <div class="sg-segment sg-segment--cols-3 sg-segment--mode-ec text-[10px]" id="gs-out-segment" role="tablist" aria-label="出力形式">
                         <span class="sg-segment__pill" aria-hidden="true"></span>
@@ -413,6 +416,9 @@ import {
   formatPairLine,
   pruneConstraintsAfterNameRemoval,
 } from '../assets/group-split-constraint-form.js';
+import { mountCopyDisclosure } from '../assets/sg-copy-disclosure.js';
+
+mountCopyDisclosure(document.getElementById('gs-output-actions'), 'group-split');
 
 const rosterEl = document.getElementById('gs-roster');
 const sessionEl = document.getElementById('gs-session');

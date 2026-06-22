@@ -1,0 +1,40 @@
+---
+description: SUGUDASU ツール命名 3層 — ヘッダー/ナビ/hub/registry 変更時は必読
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# SUGUDASU ツール命名（Agent 必須）
+
+**リポジトリ:** sugudasu（asl-dashboard ではない）
+
+## 着手前
+
+`docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` を読む。思想は `docs/DESIGN_GUIDELINE.md` §1.3。
+
+## SSOT
+
+`data/tool-registry.json` — `conceptName` · `productName` · `navLabel` · `inNav` · `navOrder`
+
+## 触るときの順序（固定）
+
+1. registry 更新
+2. `tools/{id}.html` — `data-sg-title` = **productName** · `data-sg-tool-id` = id
+3. `tools/hub.html` — カード `<h3>` = productName
+4. `assets/sugudasu-shell.js` — `TOOLS[].label` = navLabel
+5. `npm run validate:tool-naming` → `npm run build:pages`
+
+## 3層
+
+| 層 | 例 | 場所 |
+|----|-----|------|
+| id | `invoice` | ファイル · data-sg-tool-id |
+| 概念 | 請求書 | ナビ · 帳票タブ · 本文 |
+| プロダクト | SUGUDASU 請求書 | 白ヘッダー · hub h3 |
+
+ナビに `SUGUDASU` を付けない。ユーザー向けに slug（`invoice`）を見せない。
+
+## 完了条件
+
+`npm run validate:tool-naming` が exit 0。

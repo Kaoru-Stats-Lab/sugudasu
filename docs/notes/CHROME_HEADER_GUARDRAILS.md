@@ -32,7 +32,7 @@
 ### HTML
 
 ```html
-<div id="sg-chrome-top" data-sg-title="傾斜割り勘"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 請求書" data-sg-subtitle="見積 · 納品 · 請求" data-sg-tool-id="invoice"></div>
 <!-- main … -->
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-segment.js"></script> <!-- モード切替ツールのみ -->
@@ -41,7 +41,8 @@
 
 | 属性 | 意味 |
 |------|------|
-| `data-sg-title` | ヘッダー見出し（**必須**） |
+| `data-sg-title` | ヘッダー見出し = **productName**（`tool-registry.json` · `TOOL_NAMING_AGENT_PLAYBOOK.md`） |
+| `data-sg-tool-id` | registry キー（開発バッジ · 命名検証用） |
 | `data-sg-print="true"` | 印刷/PDF ボタン表示 |
 | `data-sg-landscape="true"` | A4 横（シフトのみ） |
 
@@ -61,6 +62,7 @@
 
 - [ ] `tools/*.html` の `sg-chrome-top` に `data-sg-title` がある
 - [ ] 末尾は `sugudasu-shell.js` のみ（同期）
+- [ ] `npm run validate:tool-naming` が通る
 - [ ] `npm run build:pages` が通る（chrome-mount-guard 含む）
 - [ ] 本番確認: `/warikan` 等でロゴ+ナビが見える
 
@@ -68,5 +70,6 @@
 
 ## 5. 参照
 
-- デザイン規約: `docs/DESIGN_GUIDELINE.md` §7
+- 命名 Playbook: `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`
+- デザイン規約: `docs/DESIGN_GUIDELINE.md` §1.3 · §7
 - UX 監査: `docs/PRODUCT_UX_AUDIT.md`（shell 読込失敗）

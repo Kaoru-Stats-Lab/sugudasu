@@ -1,6 +1,48 @@
 {
-  "updatedAt": "2026-06-20",
+  "updatedAt": "2026-06-22",
   "entries": [
+    {
+      "date": "2026-06-22",
+      "type": "improve",
+      "title": "note 公式アカウント開設 · 引き算の記録 #1",
+      "body": "https://note.com/sugudasu を開設。シリーズ「引き算の記録」初稿「ハッカソン直前、班分けが崩れた瞬間の胃の痛み」（SUGUDASU 班分け）を公開。",
+      "tools": ["updates.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "ツール命名 Agent Playbook と自動検証",
+      "body": "TOOL_NAMING_AGENT_PLAYBOOK.md · validate:tool-naming · .cursorrules。build:pages 前に registry/HTML/shell/hub 整合を機械チェック。",
+      "tools": []
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "ツール命名の3層統一（id · 概念 · プロダクト）",
+      "body": "DESIGN_GUIDELINE §1.3 と tool-registry.json を SSOT に。ヘッダーは SUGUDASU 請求書 等、ナビは請求書 等の短ラベル。hub カード見出しも統一。",
+      "tools": ["hub.html", "statements.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "Statements にサマリー・目次・図解を追加",
+      "body": "30秒サマリーと11項目目次。Copy-first 3ステップフロー、通信レイヤの CSS 積み上げ図（表は折りたたみ）。",
+      "tools": ["statements.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "通信レイヤ表と DevTools 確認手順を公開",
+      "body": "statements.html に5レイヤの通信表・例外 footnote・Network/Application/機内モードの3ステップを追加。Copy-first 技術選定からアンカーリンク。",
+      "tools": ["statements.html"]
+    },
+    {
+      "date": "2026-06-20",
+      "type": "improve",
+      "title": "Copy-first の技術選定を公開",
+      "body": "statements.html に TSV/JSON/コピペ方針の正本を追加。fair-draw・group-split のコピー欄に非連携免責と折りたたみ説明。updates から statements へリンク。",
+      "tools": ["statements.html", "fair-draw.html", "group-split.html", "updates.html"]
+    },
     {
       "date": "2026-06-20",
       "type": "feature",
@@ -56,6 +98,13 @@
       "title": "group-split 名簿上限 1000名 · Slack上限連動",
       "body": "硬上限200→1000。Slack 1投稿4万字を基準。200名超はTSV推奨警告。結果DOMは40組まで表示。",
       "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-19",
+      "type": "improve",
+      "title": "Zenn 公式アカウント開設",
+      "body": "https://zenn.dev/sugudasu を開設。Tech/個人開発向け記事の正本チャネル（#1 見積→請求転用 予約投稿済）。",
+      "tools": ["updates.html"]
     },
     {
       "date": "2026-06-19",
@@ -144,8 +193,8 @@
     {
       "date": "2026-06-19",
       "type": "improve",
-      "title": "景品カテゴリ21種（懸賞天国レフトナビ対応）",
-      "body": "prize-law-campaign-meta.json の景品群を懸賞天国のカテゴリとMECE対応する21種に拡充。Step 0b UIは3列グリッド。",
+      "title": "景品カテゴリ21種に拡充",
+      "body": "prize-law-campaign-meta.json の景品群を21種に拡充（カテゴリの網羅性を改善）。Step 0b UIは3列グリッド。",
       "tools": ["fair-draw.html"]
     },
     {

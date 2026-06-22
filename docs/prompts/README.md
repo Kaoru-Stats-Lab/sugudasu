@@ -22,7 +22,15 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [../x_guideline.md](../x_guideline.md) | 公式X運用ガイドライン（投稿ネタ · UTM · NG） |
 | [grok-pr-times-review.md](grok-pr-times-review.md) | PR TIMES推敲（Grok 5パス） |
 | [pr-times-gemini-meta.md](pr-times-gemini-meta.md) | PR TIMESメタ解析（Gemini · 書き直し禁止） |
-| [zenn-editorial-gemini.md](zenn-editorial-gemini.md) | Zenn編集カレンダー・テーマ設計（Gemini · 本文執筆禁止） |
+| `zenn-editorial-gemini.md` | Zenn編集カレンダー・テーマ設計（Gemini · 本文執筆禁止） |
+| [editorial-roles-gemini.md](editorial-roles-gemini.md) | **チャネル ROLE 索引**（note / Zenn / X / Qiita） |
+| [zenn-article-draft-gemini.md](zenn-article-draft-gemini.md) | Zenn 記事アウトライン拡張（長文は提督執筆） |
+| [note-editorial-gemini.md](note-editorial-gemini.md) | note「引き算の記録」下書き（Gemini たたき台 · 第1パス） |
+| [note-deai-grok.md](note-deai-grok.md) | note 原稿 AI 味除去（Grok · 第2パス） |
+| [../scripts/verify-ogp.mjs](../scripts/verify-ogp.mjs) | OGP 必須タグ検証（`npm run validate:ogp`） |
+| [x-editorial-gemini.md](x-editorial-gemini.md) | X 文案生成・監査 |
+| [qiita-editorial-gemini.md](qiita-editorial-gemini.md) | Qiita 短記事構成 |
+| [../drafts/note-01-group-split-draft.md](../drafts/note-01-group-split-draft.md) | note NOTE-01 推敲済ドラフト |
 | [../PR_TIMES_LAUNCH_2026.md](../PR_TIMES_LAUNCH_2026.md) | PR TIMES 入稿原稿（代表カオル） |
 
 **Form 回答のトリアージ:** [FEEDBACK_TRIAGE.md](../FEEDBACK_TRIAGE.md)（スプシ + Status + Backlog 連携）

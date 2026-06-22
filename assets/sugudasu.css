@@ -1571,6 +1571,211 @@ body.sg-copy-flash {
   border-color: #059669 !important;
 }
 
+/* —— Copy-first 免責 · TSV/JSON（statements #copy-first-tech と同期）—— */
+.sg-copy-disclosure {
+  border: 1px solid var(--sg-border, #e2e8f0);
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  padding: 0.65rem 0.85rem;
+}
+.sg-copy-disclosure summary:hover {
+  color: #0f172a;
+}
+
+/* —— statements · 通信レイヤ · DevTools 手順 —— */
+.sg-layer-table tbody th[scope='row'] {
+  white-space: nowrap;
+}
+.sg-steps li::marker {
+  font-weight: 700;
+  color: #334155;
+}
+.sg-kbd {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.65rem;
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+  color: #334155;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+}
+.sg-note {
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+/* —— statements · サマリー · 目次 · 図解キット —— */
+.sg-statements-summary {
+  border: 1px solid var(--sg-border);
+  border-radius: 0.75rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+  padding: 1rem 1.1rem;
+}
+.sg-statements-summary__lead {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--sg-text);
+}
+.sg-statements-summary__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+}
+.sg-statements-pill {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+}
+.sg-statements-pill--local {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+.sg-statements-pill--neutral {
+  color: #334155;
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
+.sg-statements-toc {
+  border: 1px solid var(--sg-border);
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 0.85rem 1rem;
+}
+.sg-statements-toc__title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--sg-muted);
+  margin-bottom: 0.5rem;
+}
+.sg-statements-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.35rem;
+}
+@media (min-width: 480px) {
+  .sg-statements-toc ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.sg-statements-toc a {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sg-primary);
+  text-decoration: none;
+  padding: 0.15rem 0;
+}
+.sg-statements-toc a:hover {
+  text-decoration: underline;
+  color: var(--sg-primary-hover);
+}
+.sg-diagram-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+.sg-diagram-stack__layer {
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--sg-muted);
+}
+.sg-diagram-stack__layer strong {
+  color: #334155;
+  font-weight: 700;
+}
+.sg-diagram-stack__layer--remote {
+  background: #fff;
+}
+.sg-diagram-stack__device {
+  border: 2px solid var(--sg-primary);
+  border-radius: 0.65rem;
+  background: #eff6ff;
+  padding: 0.55rem 0.65rem 0.65rem;
+}
+.sg-diagram-stack__device-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  margin-bottom: 0.35rem;
+}
+.sg-diagram-stack__layer--local {
+  border-color: #93c5fd;
+  background: #fff;
+  color: #1e3a8a;
+}
+.sg-diagram-stack__layer--local strong {
+  color: #1e40af;
+}
+.sg-diagram-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+@media (min-width: 640px) {
+  .sg-diagram-flow {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+.sg-diagram-flow__step {
+  flex: 1 1 0;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.55rem 0.65rem;
+  text-align: center;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--sg-text);
+}
+.sg-diagram-flow__step strong {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.15rem;
+}
+.sg-diagram-flow__step--core {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+.sg-diagram-flow__arrow {
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #94a3b8;
+  line-height: 1;
+}
+@media (min-width: 640px) {
+  .sg-diagram-flow__arrow {
+    padding: 0 0.15rem;
+  }
+}
+
 /* —— fair-draw · テスト/本番モード —— */
 .fd-mode-banner {
   text-align: center;

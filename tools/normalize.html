@@ -11,7 +11,10 @@
     <meta property="og:description" content="Excel/スプシから1列コピーしたテキストを用途別に正規化。入力と出力の行数一致を表示し、うっかり貼り戻しズレを防ぎます。">
     <meta property="og:url" content="https://sugudasu.com/normalize">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="Excel列コピーの全角半角整理（行数チェック付き）">
     <meta name="twitter:description" content="登録不要・ブラウザ完結。500行まで。変換後に「入力N行→出力M行」を確認してからコピー。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -19,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="文字列正規化" data-sg-subtitle="500行まで · 行数チェック" data-sg-tool-id="normalize"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 正規化" data-sg-subtitle="500行まで · 行数チェック" data-sg-tool-id="normalize"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 

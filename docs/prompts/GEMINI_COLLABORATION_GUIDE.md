@@ -63,7 +63,15 @@
 
 | 用途 | ファイル |
 |------|----------|
+| **チャネル ROLE 索引（入口）** | `docs/prompts/editorial-roles-gemini.md` |
 | Zenn 編集カレンダー | `docs/prompts/zenn-editorial-gemini.md` |
+| Zenn 記事アウトライン拡張 | `docs/prompts/zenn-article-draft-gemini.md` |
+| WebP→JPG/PNG リサーチ | `docs/prompts/webp-to-jpg-gemini-research.md` |
+| PNG/JPEG→WebP 逆方向リサーチ | `docs/prompts/png-to-webp-gemini-research.md` |
+| **note「引き算の記録」原稿** | `docs/prompts/note-editorial-gemini.md`（第1パス） |
+| **note AI 味除去（Grok）** | `docs/prompts/note-deai-grok.md`（第2パス） |
+| **X 文案生成・監査** | `docs/prompts/x-editorial-gemini.md` |
+| **Qiita 短記事構成** | `docs/prompts/qiita-editorial-gemini.md` |
 | **スマホキラープロダクト・ブレスト** | `docs/prompts/mobile-killer-product-gemini.md` + `docs/GEMINI_SESSION_SNAPSHOT.md` |
 | X 文案のトーンチェック | 依頼文 + `docs/x_guideline.md` 抜粋 |
 | PR TIMES メタ（表のみ） | `docs/PR_TIMES_LAUNCH_2026.md` §6 手順 |
@@ -181,7 +189,12 @@ console.log(response.text);
 |----------|------|
 | `docs/GEMINI_SESSION_SNAPSHOT.md` | チャット開始用スナップショット（陳腐化防止） |
 | `docs/prompts/mobile-killer-product-gemini.md` | スマホキラー企画ブレスト |
+| `docs/prompts/editorial-roles-gemini.md` | **チャネル ROLE 索引**（note / Zenn / X / Qiita） |
 | `docs/prompts/zenn-editorial-gemini.md` | Zenn 企画（チャット正本） |
+| `docs/prompts/zenn-article-draft-gemini.md` | Zenn 記事アウトライン拡張 |
+| `docs/prompts/note-editorial-gemini.md` | note 下書き |
+| `docs/prompts/x-editorial-gemini.md` | X 文案 |
+| `docs/prompts/qiita-editorial-gemini.md` | Qiita 構成 |
 | `docs/notes/ZENN_EDITORIAL_PLAN.md` | 採用済み企画 SSOT |
 | `docs/operator-profile.md` | 公開境界 |
 | `docs/x_guideline.md` | X トーン |

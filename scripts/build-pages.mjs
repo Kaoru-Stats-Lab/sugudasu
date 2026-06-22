@@ -159,7 +159,7 @@ function copyDir(src, dest) {
   }
 }
 
-const ASSET_V = process.env.SG_ASSET_V || '20260619b';
+const ASSET_V = process.env.SG_ASSET_V || '20260620d';
 
 const FONT_HEAD = `    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
