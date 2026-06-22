@@ -140,6 +140,10 @@
                     <input type="checkbox" id="chk-surplus-note" checked class="mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-400">
                     <span>清算文に<strong class="font-bold text-slate-700">集金の余り</strong>メモを入れる（例: 次回の飲み会に回させてください）</span>
                 </label>
+                <label id="shortage-note-wrap" class="hidden flex items-start gap-2 text-xs text-slate-600 cursor-pointer select-none">
+                    <input type="checkbox" id="chk-shortage-note" checked class="mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-400">
+                    <span>清算文に<strong class="font-bold text-slate-700">不足分</strong>メモを入れる（例: 追ってご相談・調整します）</span>
+                </label>
                 <textarea id="output-text" rows="14" readonly
                     class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
                     placeholder="計算後に清算用テキストが自動生成されます"></textarea>
@@ -186,7 +190,7 @@
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸めます（過剰に集めないよう調整）。<strong>お会計総額が丸め単位で割り切れない</strong>とき（例: ¥48,500 を 1,000円単位）は幹事の補填が出ます — 飲み会は<strong>100円単位</strong>推奨。集金がお会計を上回ったときは「次回に回す」等、清算文の幹事メモで共有できます。</p>
+                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸めます。お会計が丸め単位で割り切れないときは<strong>調整が必要</strong>と表示されます（幹事の自腹とは限りません）。飲み会は<strong>100円単位</strong>推奨。余り・不足は清算文の幹事メモで方針を共有できます。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -301,6 +305,7 @@
             document.getElementById('select-round').addEventListener('change', calculate);
             document.getElementById('chk-gratitude').addEventListener('change', buildLineText);
             document.getElementById('chk-surplus-note').addEventListener('change', buildLineText);
+            document.getElementById('chk-shortage-note').addEventListener('change', buildLineText);
         }
 
         function applyWarikanMode(next) {
@@ -552,6 +557,33 @@
             return results;
         }
 
+        /** 不足・余りの表示文案（幹事の自腹を決めつけない） */
+        function adjustmentCopy(diff, alignHint) {
+            const amt = formatYen(Math.abs(diff));
+            if (diff > 0) {
+                return {
+                    sectionLabel: '調整のすき間',
+                    hero: `¥${amt} の調整`,
+                    heroSub: alignHint
+                        ? '丸め単位とお会計が合わないため。100円単位への変更を検討してください'
+                        : '不足分はどうしましょうか？先輩・上司のご負担や次回への回しなど、現場で決めてください',
+                    panel: `集金が ¥${amt} 足りません — 不足分は現場でご相談ください`,
+                    lineBlock: `端数調整後：¥${amt} 不足 — 不足分は追ってご相談・調整します`,
+                    diffLine: alignHint
+                        ? `お会計が丸め単位で割り切れないため ¥${amt} 不足しています。100円単位への変更を検討してください。`
+                        : `端数の関係で ¥${amt} 不足しています。調整方針は幹事メモをご確認ください。`,
+                };
+            }
+            return {
+                sectionLabel: '調整のすき間',
+                hero: `¥${amt} の余り`,
+                heroSub: '次回の飲み会に回す・店カットにする等、清算文の幹事メモに一言添えてください',
+                panel: `集金が ¥${amt} 多い — 余りの扱いは現場でご相談ください`,
+                lineBlock: `端数調整後：¥${amt} 余り — 次回に回す等、幹事メモをご確認ください`,
+                diffLine: `端数の関係で ¥${amt} 余っています。次回に回す等、下記幹事メモをご確認ください。`,
+            };
+        }
+
         function hideQuickReplyPanel() {
             const panel = document.getElementById('quick-reply-panel');
             const list = document.getElementById('quick-reply-list');
@@ -633,28 +665,23 @@
             }).join('');
 
             const diffLabel = diff === 0
-                ? { text: '集金総額とお会計が一致', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: 'ぴったり一致', heroSub: '端数は最大剰余法で配分済み。店外での細かい回収は不要です' }
-                : diff > 0
-                    ? {
-                        text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 補填）`,
-                        cls: 'border-amber-200 bg-amber-50 text-amber-900',
-                        hero: `¥${formatYen(diff)} 不足`,
-                        heroSub: alignHint
-                            ? '丸め単位とお会計が合わないため発生。100円単位に変えると解消することがあります'
-                            : '幹事がこの金額を自腹で補填する想定です',
-                    }
-                    : {
-                        text: `¥${formatYen(Math.abs(diff))} 余り（幹事のお釣り）`,
-                        cls: 'border-blue-200 bg-blue-50 text-blue-900',
-                        hero: `¥${formatYen(Math.abs(diff))} 余り`,
-                        heroSub: '次回の飲み会に回す・店カットにする等、清算文の幹事メモに一言添えてください',
+                ? { text: '集金総額とお会計が一致', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: 'ぴったり一致', heroSub: '端数は最大剰余法で配分済み。店外での細かい回収は不要です', sectionLabel: '集金チェック' }
+                : (() => {
+                    const adj = adjustmentCopy(diff, alignHint);
+                    return {
+                        text: adj.panel,
+                        cls: diff > 0 ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-blue-200 bg-blue-50 text-blue-900',
+                        hero: adj.hero,
+                        heroSub: adj.heroSub,
+                        sectionLabel: adj.sectionLabel,
                     };
+                })();
 
             const heroEl = document.getElementById('balance-hero');
             heroEl.className = `rounded-2xl border-2 p-5 text-center space-y-1 ${diffLabel.cls}`;
             heroEl.classList.remove('hidden');
             heroEl.innerHTML = `
-                <p class="text-[10px] font-bold uppercase tracking-wider opacity-80">${diff === 0 ? '集金チェック' : '端数過不足（幹事）'}</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider opacity-80">${escHtml(diffLabel.sectionLabel)}</p>
                 <p class="text-3xl sm:text-4xl font-black mono tracking-tight">${escHtml(diffLabel.hero)}</p>
                 <p class="text-xs font-semibold">${escHtml(diffLabel.heroSub)}</p>
             `;
@@ -677,9 +704,9 @@
             `;
 
             const surplusNoteWrap = document.getElementById('surplus-note-wrap');
-            if (surplusNoteWrap) {
-                surplusNoteWrap.classList.toggle('hidden', diff >= 0);
-            }
+            if (surplusNoteWrap) surplusNoteWrap.classList.toggle('hidden', diff >= 0);
+            const shortageNoteWrap = document.getElementById('shortage-note-wrap');
+            if (shortageNoteWrap) shortageNoteWrap.classList.toggle('hidden', diff <= 0);
 
             buildLineText();
             renderQuickReplyPanel(displayResults, mode);
@@ -769,6 +796,17 @@
             ];
         }
 
+        function buildShortageNoteLines(diff) {
+            if (diff <= 0) return [];
+            const include = document.getElementById('chk-shortage-note')?.checked !== false;
+            if (!include) return [];
+            return [
+                '',
+                '■ 不足分（幹事メモ）',
+                `端数の関係で ¥${formatYen(diff)} 不足しています。不足分は追ってご相談のうえ調整させていただきます（幹事より）。`,
+            ];
+        }
+
         function buildSurplusNoteLines(diff) {
             if (diff >= 0) return [];
             const include = document.getElementById('chk-surplus-note')?.checked !== false;
@@ -797,17 +835,12 @@
 
             const gratitudeLines = buildGratitudeLines(results, resultMode);
             const surplusLines = buildSurplusNoteLines(diff);
+            const shortageLines = buildShortageNoteLines(diff);
 
-            let diffLine;
-            if (diff === 0) {
-                diffLine = '端数は最大剰余法で配分し、お会計と集金額は一致しています。';
-            } else if (diff > 0) {
-                diffLine = alignHint
-                    ? `お会計総額が丸め単位で割り切れないため ¥${formatYen(diff)} 不足します。100円単位への変更を検討してください。幹事が ¥${formatYen(diff)} 補填する想定です。`
-                    : `端数丸めの関係で ¥${formatYen(diff)} 不足します。幹事が ¥${formatYen(diff)} 補填する形で透明に精算します。`;
-            } else {
-                diffLine = `端数丸めの関係で ¥${formatYen(Math.abs(diff))} 余ります。次回に回す等、下記幹事メモをご確認ください。`;
-            }
+            const adj = diff !== 0 ? adjustmentCopy(diff, alignHint) : null;
+            const diffLine = diff === 0
+                ? '端数は最大剰余法で配分し、お会計と集金額は一致しています。'
+                : adj.diffLine;
 
             const modeLine = resultMode === 'fixed'
                 ? '■ 計算方式：固定額モード（一部グループ固定 → 残り按分）'
@@ -819,10 +852,8 @@
                     '端数調整後：お会計と集金額は一致（最大剰余法）',
                 ]
                 : [
-                    '■ 端数過不足（幹事向け・要確認）',
-                    diff > 0
-                        ? `端数調整後：¥${formatYen(diff)} 不足 → 幹事が ¥${formatYen(diff)} 負担`
-                        : `端数調整後：¥${formatYen(Math.abs(diff))} 余り → 幹事のお釣り ¥${formatYen(Math.abs(diff))}`,
+                    '■ 調整のすき間（要確認）',
+                    adj.lineBlock,
                 ];
 
             const text = [
@@ -836,6 +867,7 @@
                 '■ お一人様のご負担額',
                 ...lines,
                 ...gratitudeLines,
+                ...shortageLines,
                 ...surplusLines,
                 '',
                 '■ 精算の透明性（幹事メモ）',
