@@ -6,16 +6,19 @@
 
 | タスク | SSOT |
 |--------|------|
+| **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
 
-## 命名変更・新規ツール後（必須）
+## 命名変更 · 新規ツール · デプロイ前（必須）
 
 ```bash
 npm run validate:tool-naming
+npm run validate:ogp
 npm run build:pages
+# 本番 push 前: npm run release:pages:free  （詳細は DEPLOY_CLOUDFLARE_PAGES.md）
 ```
 
-両方 exit 0 まで完了とみなさない。
+すべて exit 0 まで完了とみなさない。

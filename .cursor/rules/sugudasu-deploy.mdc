@@ -1,0 +1,47 @@
+---
+description: SUGUDASU 本番デプロイ — Cloudflare Pages · push 前ゲート必須
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# SUGUDASU デプロイ（Agent 必須）
+
+**リポジトリ:** `C:\asl_dev\sugudasu`（**asl-dashboard / Vercel ではない**）
+
+## 着手前（必読）
+
+`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` — 手順 · CF Free 上限 · トラブル表の **SSOT**
+
+## 本番反映の正本経路
+
+```text
+git push origin main  →  Cloudflare Pages が npm run build:pages  →  dist/ 配信
+```
+
+`wrangler pages deploy` は **CLOUDFLARE_API_TOKEN 前提** · Agent は **git push のみ**（提督依頼時）。
+
+## push 前ゲート（すべて exit 0）
+
+```powershell
+cd C:\asl_dev\sugudasu
+npm run release:pages:free
+```
+
+含意: `validate:tool-naming` · `validate:ogp` · `build:pages` · 月次ビルド予算。
+
+## 新規 HTML / OGP 変更時
+
+- `npm run validate:ogp` — `og:image` · `twitter:image` · `meta description` 必須
+- 正本画像: `assets/og-card.png`
+
+## デプロイ後（提督または Agent 報告）
+
+1. [Cloudflare Deployments](https://dash.cloudflare.com/) → Production **Success**
+2. [https://sugudasu.com/](https://sugudasu.com/) + 変更 URL を目視
+
+## 禁止
+
+- `dist/` を Git コミット
+- build 失敗直後の **push 連打**（Free 500 builds/月）
+- ASL の `deploy:vercel` 手順の流用

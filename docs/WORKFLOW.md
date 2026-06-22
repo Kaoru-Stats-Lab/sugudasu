@@ -1,6 +1,6 @@
 # SUGUDASU Workflow
 
-最終更新: 2026-06-17
+最終更新: 2026-06-22
 
 このファイルは「何をする時に、どのコマンドを使うか」の運用正本です。
 
@@ -46,18 +46,21 @@
 
 ## 3) Cloudflare Pages デプロイ
 
+**Agent / 提督 正本:** [`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`](notes/DEPLOY_CLOUDFLARE_PAGES.md)（手順 · CF 公式 URL · トラブル表 · チェックリスト D1–D8）
+
 - **Cloudflare Pages ダッシュボード設定**
   - Build command: `npm run build:pages`
   - Output directory: `dist`
   - Framework preset: `None`
   - `NODE_VERSION=20`
+  - 公式: [Build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/) · [Limits](https://developers.cloudflare.com/pages/platform/limits/)
 
-- **カスタムドメイン `sugudasu.com`（お名前.com 取得）**
-  - 手順正本: [`docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md`](notes/CUSTOM_DOMAIN_SUGUDASU_COM.md)
-  - 推奨: お名前の NS → Cloudflare · Pages に apex + www 追加
+- **カスタムドメイン `sugudasu.com`**
+  - 手順: [`docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md`](notes/CUSTOM_DOMAIN_SUGUDASU_COM.md)
 
 - **重要**
-  - リリース前は必ず `npm run release:pages:free` を通す
+  - push 前: `npm run release:pages:free`
+  - 反映: `git push origin main` → CF 自動ビルド
   - 台帳: `.ops/cloudflare-pages-build-budget.json`（Git 管理外）
 
 ## 4) GitHub 運用（推奨ベスト）
@@ -91,6 +94,10 @@ git push -u origin main
 5. Cloudflare Pages に反映
 
 ## 6) トラブル時
+
+- **デプロイ / 本番不具合**
+  - まず [`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`](notes/DEPLOY_CLOUDFLARE_PAGES.md) §6 トラブル表
+  - Cloudflare [Deployments](https://dash.cloudflare.com/) の build log **末尾のみ**
 
 - **build が失敗**
   - まず `npm run build:pages` の出力を確認
