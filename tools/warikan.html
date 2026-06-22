@@ -19,7 +19,7 @@
     <meta name="twitter:description" content="飲み会やイベント精算で揉めないための割り勘計算ツール。立場や飲食量に応じた傾斜計算をログインなしで完了できます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。立場や参加条件に応じた傾斜比率を細かく設定して計算できます。","@type":"Answer"},"name":"遅刻者や非飲酒者の比率調整はできますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。精算結果のテキストをコピーして、チャットへそのまま共有できます。","@type":"Answer"},"name":"計算結果は共有しやすい形式で出せますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。実運用に合わせた丸め設定で、集金しやすい金額へ調整できます。","@type":"Answer"},"name":"端数処理にも対応していますか？","@type":"Question"},{"acceptedAnswer":{"text":"その可能性は高めです。端数まできれいに説明できるため、場の空気を守れる幹事として信頼されやすくなります。","@type":"Answer"},"name":"神精算をやったら、次回も幹事を任され続けますか？","@type":"Question"}],"@type":"FAQPage"}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"2次会・3次会は任意参加が多いため、その回の参加者だけで総額とグループを入れ直し、もう一度計算する運用を想定しています。1画面に全回をまとめる機能はありません。","@type":"Answer"},"name":"2次会・3次会の参加者だけで割り勘できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。役職・立場ごとにグループを作り、傾斜係数と人数で按分します。個人名簿を1行ずつ入力する方式より、人数の多い飲み会で素早く設定できます。","@type":"Answer"},"name":"上司と新人など、立場差のある飲み会に使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。最大剰余法で丸めたあとも集金総額とお会計総額が一致します。幹事の得損ゼロを画面と清算文で確認できます。","@type":"Answer"},"name":"端数処理後も合計は一致しますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。精算結果のテキストをコピーして、LINEやSlackへそのまま共有できます。","@type":"Answer"},"name":"計算結果は共有しやすい形式で出せますか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 割り勘" data-sg-tool-id="warikan"></div>
@@ -31,6 +31,7 @@
             <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
                 <span>💰</span> 会計・割り勘設定
             </h2>
+            <p class="text-xs text-slate-600 leading-relaxed">飲み会の幹事は誰にとっても面倒 — 本ツールは<strong class="font-bold text-slate-700">計算の手間</strong>と<strong class="font-bold text-slate-700">精算の心理的ハードル</strong>を少しでも減らすことに主眼を置いています。役職・立場ごとの<strong class="font-bold text-slate-700">グループ傾斜</strong>で精算。2次会・3次会は<strong class="font-bold text-slate-700">その回の参加者だけ</strong>でもう一度計算すればOK。</p>
 
             <div class="sg-segment sg-segment--cols-2 sg-segment--mode-coeff" id="warikan-mode-segment" role="tablist" aria-label="割り勘モード">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
@@ -56,11 +57,12 @@
                     <label for="select-round" class="block text-xs font-bold text-slate-600 mb-1.5">端数丸め単位</label>
                     <select id="select-round"
                         class="w-full border border-slate-200 rounded-xl p-2.5 text-sm font-medium bg-white focus:ring-2 focus:ring-slate-400 outline-none">
-                        <option value="100" selected>100円単位（四捨五入）</option>
-                        <option value="500">500円単位（四捨五入）</option>
-                        <option value="1000">1000円単位（四捨五入）</option>
+                        <option value="100" selected>100円単位（最大剰余法）</option>
+                        <option value="500">500円単位（最大剰余法）</option>
+                        <option value="1000">1000円単位（最大剰余法）</option>
                         <option value="1">1円単位（丸めなし）</option>
                     </select>
+                    <p class="text-[10px] text-slate-400 mt-1">飲み会は100円単位が無難（店外での細かい回収を減らす）</p>
                 </div>
             </div>
 
@@ -109,6 +111,14 @@
                 <div id="balance-panel" class="hidden rounded-xl border p-4 space-y-2"></div>
             </div>
 
+            <div id="quick-reply-panel" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-3">
+                <div class="border-b border-slate-100 pb-2">
+                    <h2 class="text-sm font-bold text-slate-800">💬 個別に聞かれたとき</h2>
+                    <p class="text-[10px] text-slate-500 mt-1">「端数はいいから、いくら出せばいい？」— グループ名のまま、その場で答えられる一言（DM用）</p>
+                </div>
+                <div id="quick-reply-list" class="space-y-2"></div>
+            </div>
+
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-3">
                 <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-2">
                     <h2 class="text-sm font-bold text-slate-800">📱 LINE / Slack 清算テキスト</h2>
@@ -122,7 +132,11 @@
                         </button>
                     </div>
                 </div>
-                <textarea id="output-text" rows="12" readonly
+                <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer select-none">
+                    <input type="checkbox" id="chk-gratitude" checked class="mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-400">
+                    <span>清算文に<strong class="font-bold text-slate-700">多めのご負担へのお礼</strong>を入れる（グループ全員に共有 · 推奨）</span>
+                </label>
+                <textarea id="output-text" rows="14" readonly
                     class="w-full border border-slate-200 bg-slate-50 rounded-xl p-3 text-xs font-mono leading-relaxed text-slate-700 resize-none outline-none"
                     placeholder="計算後に清算用テキストが自動生成されます"></textarea>
                 <p id="copy-toast-warikan" class="sg-copy-toast hidden" role="status"></p>
@@ -135,6 +149,24 @@
         <div class="sg-faq-inner">
             <h2 class="sg-faq-title">傾斜割り勘・飲み会精算のよくある質問</h2>
             <div class="sg-faq-list">
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4" open>
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>2次会・3次会は、参加者だけでもう一度割り勘すればいい？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>はい。任意参加の2次会・3次会は<strong>その回のお会計総額と参加者</strong>だけ入れ直して、もう一度計算する運用を想定しています。1次会から全部まとめる機能はありません（社風によって幹事の肩代わりなどは傾斜係数で調整してください）。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>上司と新人で飲み会の割り勘を公平にするには？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>「傾斜係数モード」で<strong>グループ</strong>ごとに係数と人数を設定します。役員・上司は2.0、一般は1.0のように、立場の塊で按分するため人数の多い飲み会でも入力が速いです。遅刻・非飲酒は係数を手動で下げて調整できます。</p>
+                    </div>
+                </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>合コンで女性だけ固定額（例3,000円）、男性は残りを割り勘したい</span>
@@ -146,20 +178,11 @@
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                        <span>上司と新人で飲み会の割り勘を公平にするには？</span>
+                        <span>端数はどう丸めますか？合計と一致しますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>「傾斜係数モード」でグループごとに係数と人数を設定します。役員・上司は2.0、一般は1.0のようにすると、幹事が得をしたり損をしたりせず、係数に応じた金額を自動計算できます。</p>
-                    </div>
-                </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
-                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                        <span>端数はどう丸めますか？合計と一致しません</span>
-                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </summary>
-                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>100円・500円・1000円単位で四捨五入できます。丸めによる差額は画面下部のバランス表示で確認でき、幹事への調整額も案内されます。</p>
+                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸め、集金総額とお会計がぴったり一致するよう端数を配分します。同じグループ内で1円だけ差が出る場合は結果に併記されます。幹事の得損ゼロを画面と清算文で確認できます。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -168,7 +191,25 @@
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>計算後に清算テキストが自動生成されます。「ワンクリックコピー」でグループチャットにそのまま貼り付けできます。</p>
+                        <p>計算後に清算テキストが自動生成されます。「ワンクリックコピー」でグループチャットにそのまま貼り付けできます。入力データはサーバーに送信されません。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>多めに払う上司・先輩へのお礼も清算文に入れられる？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>はい（推奨ON）。傾斜で多くご負担いただくグループへ、幹事から<strong>感謝の一文</strong>をグループ全員に見える形で添えられます。「端数を払って」ではなく「多めのご負担へのお礼」として共有する運用です。若手幹事が個別に頼むプレッシャーを減らし、先輩・上司の方も公の場で気前よく見えやすくなります。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>上司に「いくら出せばいい？」と聞かれたら？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>計算後の<strong>「個別に聞かれたとき」</strong>欄に、グループごとの答えが出ます（例:「役員・上司の方は、お一人 ¥17,500 でちょうどよいです。」）。1名のグループならそのまま上司への返答に使えます。コピーしてDMに貼るだけでOKです。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -177,7 +218,7 @@
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>その可能性は高めです。端数まできれいに説明できるため、場の空気を守れる幹事として信頼されやすくなります。</p>
+                        <p>その可能性は高めです。合計が一致する計算根拠をそのまま共有できるため、場の空気を守れる幹事として信頼されやすくなります。</p>
                     </div>
                 </details>
             </div>
@@ -254,6 +295,7 @@
             document.getElementById('btn-x-share').addEventListener('click', shareToX);
             document.getElementById('input-total').addEventListener('input', calculate);
             document.getElementById('select-round').addEventListener('change', calculate);
+            document.getElementById('chk-gratitude').addEventListener('change', buildLineText);
         }
 
         function applyWarikanMode(next) {
@@ -345,9 +387,52 @@
             });
         }
 
-        function roundToUnit(amount, unit) {
-            if (unit <= 1) return Math.round(amount);
-            return Math.round(amount / unit) * unit;
+        /** 最大剰余法（LRM）— 各人の理論額配列から、合計が targetTotal と一致する整数配分を返す */
+        function lrmAllocate(exactAmounts, targetTotal, unit) {
+            if (exactAmounts.length === 0) return [];
+            const step = unit <= 1 ? 1 : unit;
+            const floors = exactAmounts.map((exact, i) => {
+                const floor = step <= 1
+                    ? Math.floor(exact + 1e-9)
+                    : Math.floor(exact / step) * step;
+                return { i, floor, remainder: exact - floor };
+            });
+            const sum = floors.reduce((s, f) => s + f.floor, 0);
+            const deficit = targetTotal - sum;
+            const steps = Math.round(deficit / step);
+            const ranked = [...floors].sort((a, b) => b.remainder - a.remainder || a.i - b.i);
+            const amounts = floors.map(f => f.floor);
+            for (let k = 0; k < steps; k++) {
+                amounts[ranked[k % ranked.length].i] += step;
+            }
+            return amounts;
+        }
+
+        /** グループ内の按分結果を表示用に集約 */
+        function summarizeTierAmounts(amounts) {
+            const tiers = new Map();
+            amounts.forEach(a => tiers.set(a, (tiers.get(a) || 0) + 1));
+            const sorted = [...tiers.entries()].sort((a, b) => b[0] - a[0]);
+            return {
+                primary: sorted[0][0],
+                tiers: sorted.map(([amount, count]) => ({ amount, count })),
+                uniform: sorted.length === 1,
+            };
+        }
+
+        function formatPerPersonTiers(tierInfo) {
+            if (tierInfo.uniform) {
+                return `¥${formatYen(tierInfo.primary)}<span class="text-sm font-bold text-slate-500">/人</span>`;
+            }
+            const parts = tierInfo.tiers
+                .map(t => `¥${formatYen(t.amount)}（${t.count}名）`)
+                .join('・');
+            return `<span class="text-lg sm:text-2xl font-black mono tracking-tight">${parts}</span>`;
+        }
+
+        function formatPerPersonTiersPlain(tierInfo) {
+            if (tierInfo.uniform) return `お一人 ¥${formatYen(tierInfo.primary)}`;
+            return tierInfo.tiers.map(t => `¥${formatYen(t.amount)}（${t.count}名）`).join('・');
         }
 
         function formatYen(n) {
@@ -359,10 +444,32 @@
             const totalWeight = active.reduce((s, g) => s + g.coeff * g.count, 0);
             if (totalWeight === 0 || active.length === 0) return null;
 
+            const slots = [];
+            active.forEach(g => {
+                const exact = (total * g.coeff) / totalWeight;
+                for (let i = 0; i < g.count; i++) {
+                    slots.push({ groupId: g.id, exact });
+                }
+            });
+            const allocated = lrmAllocate(slots.map(s => s.exact), total, roundUnit);
+
+            const amountsByGroup = new Map();
+            active.forEach(g => amountsByGroup.set(g.id, []));
+            slots.forEach((s, i) => amountsByGroup.get(s.groupId).push(allocated[i]));
+
             const results = active.map(g => {
                 const theoretical = (total * g.coeff) / totalWeight;
-                const rounded = roundToUnit(theoretical, roundUnit);
-                return { ...g, theoretical, rounded, subtotal: rounded * g.count, isRemainder: false };
+                const amounts = amountsByGroup.get(g.id);
+                const tierInfo = summarizeTierAmounts(amounts);
+                const subtotal = amounts.reduce((a, b) => a + b, 0);
+                return {
+                    ...g,
+                    theoretical,
+                    rounded: tierInfo.primary,
+                    tierInfo,
+                    subtotal,
+                    isRemainder: false,
+                };
             });
 
             active.forEach(g => {
@@ -397,7 +504,10 @@
             }
 
             const theoretical = remainderPool / remainderGroup.count;
-            const rounded = roundToUnit(theoretical, roundUnit);
+            const slotExacts = Array.from({ length: remainderGroup.count }, () => theoretical);
+            const allocated = lrmAllocate(slotExacts, remainderPool, roundUnit);
+            const tierInfo = summarizeTierAmounts(allocated);
+            const remainderSubtotal = allocated.reduce((a, b) => a + b, 0);
             const results = [];
 
             fixedGroups.forEach(g => {
@@ -405,8 +515,9 @@
                     ...g,
                     theoretical: g.fixedAmount,
                     rounded: g.fixedAmount,
+                    tierInfo: { primary: g.fixedAmount, tiers: [{ amount: g.fixedAmount, count: g.count }], uniform: true },
                     subtotal: g.fixedAmount * g.count,
-                    isRemainder: false
+                    isRemainder: false,
                 });
                 const subEl = document.querySelector(`.subtotal-${g.id}`);
                 if (subEl) subEl.textContent = `¥${formatYen(g.fixedAmount * g.count)}`;
@@ -415,16 +526,24 @@
             results.push({
                 ...remainderGroup,
                 theoretical,
-                rounded,
-                subtotal: rounded * remainderGroup.count,
+                rounded: tierInfo.primary,
+                tierInfo,
+                subtotal: remainderSubtotal,
                 isRemainder: true,
-                remainderPool
+                remainderPool,
             });
 
             const subEl = document.querySelector(`.subtotal-${remainderGroup.id}`);
-            if (subEl) subEl.textContent = `¥${formatYen(rounded * remainderGroup.count)}`;
+            if (subEl) subEl.textContent = `¥${formatYen(remainderSubtotal)}`;
 
             return results;
+        }
+
+        function hideQuickReplyPanel() {
+            const panel = document.getElementById('quick-reply-panel');
+            const list = document.getElementById('quick-reply-list');
+            if (panel) panel.classList.add('hidden');
+            if (list) list.innerHTML = '';
         }
 
         function calculate() {
@@ -439,6 +558,7 @@
                 balanceEl.classList.add('hidden');
                 document.getElementById('output-text').value = '';
                 lastResult = null;
+                hideQuickReplyPanel();
                 return;
             }
 
@@ -450,6 +570,7 @@
                     balanceEl.classList.add('hidden');
                     document.getElementById('output-text').value = '';
                     lastResult = null;
+                    hideQuickReplyPanel();
                     return;
                 }
             } else {
@@ -460,6 +581,7 @@
                     document.getElementById('balance-hero').classList.add('hidden');
                     document.getElementById('output-text').value = '';
                     lastResult = null;
+                    hideQuickReplyPanel();
                     return;
                 }
                 results = out;
@@ -469,7 +591,11 @@
             const diff = total - collected;
             lastResult = { total, collected, diff, results, roundUnit, mode };
 
-            cardsEl.innerHTML = results.map(r => {
+            const displayResults = mode === 'coeff'
+                ? [...results].sort((a, b) => b.coeff - a.coeff || b.rounded - a.rounded)
+                : results;
+
+            cardsEl.innerHTML = displayResults.map(r => {
                 const badge = r.isRemainder
                     ? '<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded ml-1">残り按分</span>'
                     : (mode === 'fixed' ? '<span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded ml-1">固定</span>' : '');
@@ -486,14 +612,14 @@
                         <p class="text-xs font-bold text-slate-500">${escHtml(r.name)} ${meta}</p>
                         ${theoryLine}
                     </div>
-                    <p class="mono text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        ¥${formatYen(r.rounded)}<span class="text-sm font-bold text-slate-500">/人</span>
-                    </p>
+                    <div class="mono text-2xl sm:text-3xl font-black text-slate-900 tracking-tight text-right sm:text-left">
+                        ${r.tierInfo && !r.tierInfo.uniform ? formatPerPersonTiers(r.tierInfo) : `¥${formatYen(r.rounded)}<span class="text-sm font-bold text-slate-500">/人</span>`}
+                    </div>
                 </div>`;
             }).join('');
 
             const diffLabel = diff === 0
-                ? { text: 'ぴったり一致（幹事の得損ゼロ）', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: '幹事の得損ゼロ', heroSub: '端数調整後、お会計と集金総額が一致します' }
+                ? { text: '集金総額とお会計が一致', cls: 'border-emerald-200 bg-emerald-50 text-emerald-800', hero: 'ぴったり一致', heroSub: '端数は最大剰余法で配分済み。店外での細かい回収は不要です' }
                 : diff > 0
                     ? { text: `あと ¥${formatYen(diff)} 不足（幹事が ¥${formatYen(diff)} 負担）`, cls: 'border-amber-200 bg-amber-50 text-amber-900', hero: `¥${formatYen(diff)} 不足`, heroSub: '幹事がこの金額を自腹で補填する想定です' }
                     : { text: `¥${formatYen(Math.abs(diff))} 余り（幹事が ¥${formatYen(Math.abs(diff))} お釣り）`, cls: 'border-blue-200 bg-blue-50 text-blue-900', hero: `¥${formatYen(Math.abs(diff))} 余り`, heroSub: '集金総額がお会計を上回ります（幹事のお釣り）' };
@@ -502,7 +628,7 @@
             heroEl.className = `rounded-2xl border-2 p-5 text-center space-y-1 ${diffLabel.cls}`;
             heroEl.classList.remove('hidden');
             heroEl.innerHTML = `
-                <p class="text-[10px] font-bold uppercase tracking-wider opacity-80">端数過不足（幹事）</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider opacity-80">${diff === 0 ? '集金チェック' : '端数過不足（幹事）'}</p>
                 <p class="text-3xl sm:text-4xl font-black mono tracking-tight">${escHtml(diffLabel.hero)}</p>
                 <p class="text-xs font-semibold">${escHtml(diffLabel.heroSub)}</p>
             `;
@@ -524,21 +650,112 @@
             `;
 
             buildLineText();
+            renderQuickReplyPanel(displayResults, mode);
             if (window.SUGUDASU_GROWTH) window.SUGUDASU_GROWTH.recordToolSuccess();
+        }
+
+        function renderQuickReplyPanel(results, resultMode) {
+            const panel = document.getElementById('quick-reply-panel');
+            const list = document.getElementById('quick-reply-list');
+            if (!panel || !list) return;
+            if (!results || results.length === 0) {
+                panel.classList.add('hidden');
+                list.innerHTML = '';
+                return;
+            }
+            panel.classList.remove('hidden');
+            list.innerHTML = results.map((r, idx) => {
+                const perPerson = r.tierInfo ? formatPerPersonTiersPlain(r.tierInfo) : `お一人 ¥${formatYen(r.rounded)}`;
+                const line = `${r.name}の方は、${perPerson} でちょうどよいです。`;
+                const isTop = idx === 0 && resultMode === 'coeff';
+                const boxCls = isTop
+                    ? 'border-amber-200 bg-amber-50/60'
+                    : 'border-slate-100 bg-slate-50';
+                const badge = isTop
+                    ? '<span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded mr-1">多めのご負担</span>'
+                    : '';
+                return `
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 p-3 rounded-xl border ${boxCls}">
+                        <p class="text-xs font-medium text-slate-700 flex-1 leading-relaxed">${badge}${escHtml(line)}</p>
+                        <button type="button" class="quick-reply-copy text-[10px] font-bold shrink-0 bg-white border border-slate-200 hover:border-slate-400 text-slate-700 px-3 py-1.5 rounded-lg transition-colors" data-text="${escAttr(line)}">コピー</button>
+                    </div>`;
+            }).join('');
+
+            list.querySelectorAll('.quick-reply-copy').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const text = btn.dataset.text || '';
+                    if (!text) return;
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        const prev = btn.textContent;
+                        btn.textContent = 'コピー済';
+                        setTimeout(() => { btn.textContent = prev; }, 1500);
+                    } catch {
+                        alert('コピーに失敗しました。');
+                    }
+                });
+            });
+        }
+
+        function buildGratitudeLines(results, resultMode) {
+            const include = document.getElementById('chk-gratitude')?.checked !== false;
+            if (!include) return [];
+
+            if (resultMode === 'coeff') {
+                const tiers = results.filter(r => r.coeff > 0);
+                if (tiers.length < 2) return [];
+                const minCoeff = Math.min(...tiers.map(r => r.coeff));
+                const generous = tiers.filter(r => r.coeff > minCoeff);
+                if (generous.length === 0) return [];
+                const baselineRounded = Math.min(...tiers.filter(r => r.coeff === minCoeff).map(r => r.rounded));
+                const names = generous.map(r => r.name).join('・');
+                const detail = generous
+                    .map(r => {
+                        const extra = r.rounded - baselineRounded;
+                        return extra > 0 ? `${r.name}（一般よりお一人 ¥${formatYen(extra)} 多め）` : null;
+                    })
+                    .filter(Boolean);
+                const block = [
+                    '',
+                    '■ お礼（幹事より・グループ全員へ）',
+                    `${names}の皆さんには、立場に応じて一般より多くご負担いただく形となりました。`,
+                ];
+                if (detail.length) block.push(detail.join(' / '));
+                block.push('幹事・参加者一同、お気持ちに感謝いたします🙇');
+                return block;
+            }
+
+            const remainder = results.find(r => r.isRemainder);
+            const fixed = results.filter(r => !r.isRemainder);
+            if (!remainder || fixed.length === 0) return [];
+            const fixedNames = fixed.map(r => r.name).join('・');
+            return [
+                '',
+                '■ お礼（幹事より・グループ全員へ）',
+                `${remainder.name}の皆さんには、${fixedNames}の方の固定額分を除く残額を多くご負担いただく形となりました。`,
+                '幹事・参加者一同、お気持ちに感謝いたします🙇',
+            ];
         }
 
         function buildLineText() {
             if (!lastResult) return;
             const { total, collected, diff, results, mode: resultMode } = lastResult;
 
-            const lines = results.map(r => {
+            const sortedResults = resultMode === 'coeff'
+                ? [...results].sort((a, b) => b.coeff - a.coeff || b.rounded - a.rounded)
+                : results;
+
+            const lines = sortedResults.map(r => {
                 const tag = r.isRemainder ? '（残り按分）' : (resultMode === 'fixed' ? '（固定）' : '');
-                return `・${r.name}${tag}（${r.count}名）→ お一人 ¥${formatYen(r.rounded)}`;
+                const perPerson = r.tierInfo ? formatPerPersonTiersPlain(r.tierInfo) : `お一人 ¥${formatYen(r.rounded)}`;
+                return `・${r.name}${tag}（${r.count}名）→ ${perPerson}`;
             });
+
+            const gratitudeLines = buildGratitudeLines(results, resultMode);
 
             let diffLine;
             if (diff === 0) {
-                diffLine = '端数調整後、お会計と集金額はぴったり一致します（幹事の得損なし）。';
+                diffLine = '端数は最大剰余法で配分し、お会計と集金額は一致しています。';
             } else if (diff > 0) {
                 diffLine = `端数丸めの関係で ¥${formatYen(diff)} 不足します。幹事が ¥${formatYen(diff)} 負担いただく形で透明に精算します。`;
             } else {
@@ -547,23 +764,31 @@
 
             const modeLine = resultMode === 'fixed'
                 ? '■ 計算方式：固定額モード（一部グループ固定 → 残り按分）'
-                : '■ 計算方式：傾斜係数モード';
+                : '■ 計算方式：傾斜係数モード（グループ単位）';
+
+            const balanceBlock = diff === 0
+                ? [
+                    '■ 集金メモ',
+                    '端数調整後：お会計と集金額は一致（最大剰余法）',
+                ]
+                : [
+                    '■ 端数過不足（幹事向け・要確認）',
+                    diff > 0
+                        ? `端数調整後：¥${formatYen(diff)} 不足 → 幹事が ¥${formatYen(diff)} 負担`
+                        : `端数調整後：¥${formatYen(Math.abs(diff))} 余り → 幹事のお釣り ¥${formatYen(Math.abs(diff))}`,
+                ];
 
             const text = [
                 '【お会計清算のお願い】',
                 `お会計総額：¥${formatYen(total)}（税込）`,
                 '',
-                '■ 端数過不足（幹事向け・必ず確認）',
-                diff === 0
-                    ? '端数調整後：幹事の得損ゼロ（ぴったり一致）'
-                    : diff > 0
-                        ? `端数調整後：¥${formatYen(diff)} 不足 → 幹事が ¥${formatYen(diff)} 負担`
-                        : `端数調整後：¥${formatYen(Math.abs(diff))} 余り → 幹事のお釣り ¥${formatYen(Math.abs(diff))}`,
+                ...balanceBlock,
                 '',
                 modeLine,
                 '',
                 '■ お一人様のご負担額',
                 ...lines,
+                ...gratitudeLines,
                 '',
                 '■ 精算の透明性（幹事メモ）',
                 `集まる総額：¥${formatYen(collected)}`,

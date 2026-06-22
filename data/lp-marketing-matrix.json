@@ -15,9 +15,9 @@
       "tool_id": "warikan",
       "productName": "SUGUDASU 割り勘",
       "registryStatus": "live",
-      "primaryPain": "遅刻者や早退者が混ざる飲み会の集金計算が面倒",
+      "primaryPain": "傾斜はわかっているのに丸めたら合計がズレ、幹事が悪者になる",
       "primaryType": "A",
-      "typeReason": "遅刻・早退の曖昧なグラデーションを傾斜に反映",
+      "typeReason": "グループ傾斜＋最大剰余法で集金額とお会計を一致させる",
       "implDifficulty": "低"
     },
     {
@@ -161,8 +161,8 @@
   "deltaProblems": [
     {
       "tool_id": "warikan",
-      "delta": "遅刻や早退、1次会のみ参加といったグラデーション",
-      "typicalAsk": "「遅れて来るって言ってたけど、結局何時から合流できそう？」"
+      "delta": "2次会・3次会は任意参加なのに、1本の表にまとめて計算しようとする手間",
+      "typicalAsk": "「2次会に来る人だけ、もう一回割り勘すればいいのに…」"
     },
     {
       "tool_id": "group-split",
@@ -236,7 +236,7 @@
       "tool_id": "warikan",
       "primaryType": "A",
       "expectedKpi": "ページ滞在時間およびクリップボードコピー転換率の向上",
-      "captainCheck": "途中参加・早退者の「時間傾斜」を反映したLINE精算文の需要"
+      "captainCheck": "回ごと別計算＋グループ傾斜のコピーが検索意図に刺さるか"
     },
     {
       "rank": 2,
