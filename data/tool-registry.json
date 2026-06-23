@@ -52,7 +52,7 @@
       "name": "電子印鑑（請求書用）",
       "version": "1.0.0",
       "stage": "beta",
-      "statusNote": "画像型 · 認印/角印 · 請求書 handoff · 非送信"
+      "statusNote": "認印のみ · 明朝/行書風 · 請求書 handoff · 角印はアップロード"
     },
     "receipt": {
       "file": "receipt.html",

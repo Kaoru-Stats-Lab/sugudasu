@@ -1,5 +1,5 @@
 /**
- * /stamp — 電子印鑑 UI
+ * /stamp — 電子印鑑 UI（認印のみ）
  */
 import {
   SIZE_PRESETS,
@@ -7,19 +7,15 @@ import {
   canvasToBlob,
   defaultFilename,
   downloadPngDataUrl,
+  ensureStampFonts,
   renderStamp,
   sanitizeStampText,
-  typeToDefaultSlot,
 } from './stamp-engine.js';
-import {
-  stampSlotLabel,
-  writeStampHandoff,
-} from './stamp-handoff.js';
+import { writeStampHandoff } from './stamp-handoff.js';
 
 const $ = (id) => document.getElementById(id);
 
 const state = {
-  type: 'round',
   fontStyle: 'mincho',
   color: STAMP_DEFAULT_COLOR,
   tiltDeg: 0,
@@ -29,20 +25,7 @@ const state = {
 let previewCanvas = null;
 let lastDataUrl = '';
 let toastTimer = 0;
-
-function parseInitialSlot() {
-  const params = new URLSearchParams(window.location.search);
-  const slot = params.get('slot');
-  if (slot === 'comp') {
-    state.type = 'square';
-    state.sizePresetId = 'invoice-comp';
-    return;
-  }
-  if (slot === 'user') {
-    state.type = 'round';
-    state.sizePresetId = 'invoice-user';
-  }
-}
+let redrawQueued = false;
 
 function currentPreset() {
   return SIZE_PRESETS.find((p) => p.id === state.sizePresetId) || SIZE_PRESETS[0];
@@ -52,54 +35,11 @@ function currentSizePx() {
   return currentPreset().px;
 }
 
-function currentSlot() {
-  const preset = currentPreset();
-  if (preset.slot) return preset.slot;
-  return typeToDefaultSlot(state.type);
-}
-
-function placeholderForType() {
-  return state.type === 'square'
-    ? '例: 株式会社スグダス\n（改行で2行に分割可）'
-    : '例: 山田';
-}
-
-function updateTypeUi() {
-  const isRound = state.type === 'round';
-  $('stamp-type-round')?.classList.toggle('sns-pv-tab--active', isRound);
-  $('stamp-type-square')?.classList.toggle('sns-pv-tab--active', !isRound);
-  $('stamp-type-round')?.setAttribute('aria-selected', isRound ? 'true' : 'false');
-  $('stamp-type-square')?.setAttribute('aria-selected', !isRound ? 'true' : 'false');
-
-  const input = $('stamp-text');
-  if (input) {
-    input.placeholder = placeholderForType();
-    if (state.type === 'round') {
-      input.rows = 2;
-    } else {
-      input.rows = 3;
-    }
-  }
-
-  const useBtn = $('stamp-btn-use-invoice');
-  if (useBtn) {
-    const slot = currentSlot();
-    useBtn.textContent = slot === 'comp' ? 'この印影を社印として請求書に使う' : 'この印影を担当者印として請求書に使う';
-  }
-
-  const hint = $('stamp-type-hint');
-  if (hint) {
-    hint.textContent = isRound
-      ? '認印（丸）— 個人名・苗字向け。請求書の担当者印スロットに合わせたサイズです。'
-      : '角印 — 会社名・屋号向け。請求書の社印スロットに合わせたサイズです。';
-  }
-}
-
-function redraw() {
+async function redraw() {
   if (!previewCanvas) return;
+  await ensureStampFonts(state.fontStyle);
   const text = $('stamp-text')?.value ?? '';
   const dataUrl = renderStamp(previewCanvas, {
-    type: state.type,
     text,
     color: state.color,
     fontStyle: state.fontStyle,
@@ -107,10 +47,19 @@ function redraw() {
     sizePx: currentSizePx(),
   });
   lastDataUrl = dataUrl || '';
-  const empty = !sanitizeStampText(text, state.type);
+  const empty = !sanitizeStampText(text);
   $('stamp-preview-empty')?.classList.toggle('hidden', !empty);
   $('stamp-actions')?.classList.toggle('opacity-50', !lastDataUrl || empty);
   $('stamp-actions')?.classList.toggle('pointer-events-none', !lastDataUrl || empty);
+}
+
+function scheduleRedraw() {
+  if (redrawQueued) return;
+  redrawQueued = true;
+  queueMicrotask(async () => {
+    redrawQueued = false;
+    await redraw();
+  });
 }
 
 function showToast(message, tone = 'ok') {
@@ -155,9 +104,8 @@ async function copyPngToClipboard(buttonEl) {
 
 function useOnInvoice() {
   if (!lastDataUrl) return;
-  const slot = currentSlot();
-  const label = sanitizeStampText($('stamp-text')?.value ?? '', state.type);
-  const ok = writeStampHandoff({ slot, dataUrl: lastDataUrl, label });
+  const label = sanitizeStampText($('stamp-text')?.value ?? '');
+  const ok = writeStampHandoff({ slot: 'user', dataUrl: lastDataUrl, label });
   if (!ok) {
     showToast('印影データが大きすぎるか、ブラウザの保存領域が使えません。PNGを保存して請求書から画像選択してください。', 'warn');
     return;
@@ -166,50 +114,33 @@ function useOnInvoice() {
 }
 
 function bindEvents() {
-  $('stamp-type-round')?.addEventListener('click', () => {
-    state.type = 'round';
-    if (state.sizePresetId === 'invoice-comp') state.sizePresetId = 'invoice-user';
-    updateTypeUi();
-    redraw();
-  });
-  $('stamp-type-square')?.addEventListener('click', () => {
-    state.type = 'square';
-    if (state.sizePresetId === 'invoice-user') state.sizePresetId = 'invoice-comp';
-    updateTypeUi();
-    redraw();
-  });
-
-  $('stamp-text')?.addEventListener('input', redraw);
+  $('stamp-text')?.addEventListener('input', scheduleRedraw);
 
   $('stamp-color')?.addEventListener('input', (e) => {
     state.color = e.target.value;
-    redraw();
+    scheduleRedraw();
   });
 
   $('stamp-font')?.addEventListener('change', (e) => {
-    state.fontStyle = e.target.value === 'kointai' ? 'kointai' : 'mincho';
-    redraw();
+    state.fontStyle = e.target.value === 'gyosho' ? 'gyosho' : 'mincho';
+    scheduleRedraw();
   });
 
   $('stamp-tilt')?.addEventListener('input', (e) => {
     state.tiltDeg = Number(e.target.value);
     const label = $('stamp-tilt-val');
     if (label) label.textContent = `${state.tiltDeg}°`;
-    redraw();
+    scheduleRedraw();
   });
 
   $('stamp-size')?.addEventListener('change', (e) => {
     state.sizePresetId = e.target.value;
-    const preset = currentPreset();
-    if (preset.slot === 'user') state.type = 'round';
-    if (preset.slot === 'comp') state.type = 'square';
-    updateTypeUi();
-    redraw();
+    scheduleRedraw();
   });
 
   $('stamp-btn-download')?.addEventListener('click', () => {
     if (!lastDataUrl) return;
-    downloadPngDataUrl(lastDataUrl, defaultFilename(state.type, currentSlot()));
+    downloadPngDataUrl(lastDataUrl, defaultFilename());
     showToast('PNGを保存しました。');
   });
 
@@ -231,7 +162,7 @@ function bindEvents() {
     if (tiltVal) tiltVal.textContent = '0°';
     const fontEl = $('stamp-font');
     if (fontEl) fontEl.value = 'mincho';
-    redraw();
+    scheduleRedraw();
   });
 }
 
@@ -244,22 +175,15 @@ function fillSizeSelect() {
   sel.value = state.sizePresetId;
 }
 
-function init() {
-  parseInitialSlot();
+async function init() {
   previewCanvas = $('stamp-canvas');
   fillSizeSelect();
-  updateTypeUi();
   bindEvents();
-  redraw();
-
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('slot') === 'comp' || params.get('slot') === 'user') {
-    showToast(`${stampSlotLabel(currentSlot())}向けに設定しました。`);
-  }
+  await redraw();
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => { init(); });
 } else {
   init();
 }

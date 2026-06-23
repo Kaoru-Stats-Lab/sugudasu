@@ -5,50 +5,45 @@
 
 ## 位置づけ
 
-- **画像型**の電子印鑑（印影 PNG）をブラウザ内だけで作成する。
-- **請求書**の担当者印（`images.stampUser` · 42px）・社印（`images.stampComp` · 62px）への handoff が主導線。
-- 電子署名・識別情報付き型・押印ログは **スコープ外**（freee KB 区分に準拠）。
+- **画像型**の**認印（丸）**のみ。印影 PNG をブラウザ内で作成。
+- **請求書**の担当者印（`images.stampUser` · 42px）への handoff が主導線。
+- **角印（社印）**はスコープ外 → 請求書の画像アップロード（Illustrator / スキャン等）。
+- 電子署名・識別情報付き型は **スコープ外**。
 
-参照: [freee — 電子印鑑とは](https://www.freee.co.jp/kb/kb-sign/electronic_seals/)
+## 書体
 
-## registry
+| 選択 | 実体 |
+|------|------|
+| 明朝体 | OS 明朝（Hiragino Mincho / Yu Mincho / Noto Serif JP） |
+| 行書風 | Google Fonts **Yuji Boku**（OFL · 初回のみ CDN 取得） |
 
-| 項目 | 値 |
-|------|-----|
-| `id` | `stamp` |
-| URL | `/stamp` |
-| `productName` | `SUGUDASU 電子印鑑` |
-| `navOrder` | 3（請求書の次） |
+古印体フォント（g_コミック古印体等）は漢字欠け・再配布制約のため **採用しない**。
 
 ## handoff
 
 - **キー**: `sessionStorage` · `sg-stamp-handoff-v1`
-- **遷移**: `/stamp` → 「請求書に使う」→ `/invoice?from=stamp`
-- **受信**: `invoice.html` が `from=stamp` 時に読み込み → `setImageFromDataUrl` → キー削除
-
-```json
-{ "v": 1, "slot": "user"|"comp", "dataUrl": "data:image/png;base64,...", "label": "山田" }
-```
+- **slot**: 常に `user`（担当者印）
 
 ## MVP 機能
 
-| 種別 | 請求書スロット | 出力直径 |
-|------|----------------|----------|
-| 認印（丸） | `stampUser` | 42px 既定 |
-| 角印 | `stampComp` | 62px 既定 |
+- 認印（丸）· 最大4文字 · 枠内 auto-fit
+- 傾き ±5° · 色 · 透過 PNG · クリップボード
+- サイズ: 42px（請求書）/ 400px（高解像度）
 
-加工: 傾き ±5° · 色 · 明朝/古印体風 · 透過 PNG · クリップボード
+## 角印を作らない理由（製品）
+
+角印は字数可変・二重枠・縦横組版が必要。Canvas 簡易実装では品質を保証できない。Benri Lab 等の専門 UI との差は **認印に集中して埋めない** 方針。
 
 ## 実装ファイル
 
 | パス | 役割 |
 |------|------|
 | `assets/stamp-engine.js` | Canvas 描画 |
-| `assets/stamp-handoff.js` | handoff 定数・読み書き |
+| `assets/stamp-handoff.js` | handoff |
 | `assets/stamp-app.js` | UI |
 | `tools/stamp.html` | ページ |
 
 ## 憲法
 
-- API なし · サーバー非送信
-- F7: 黄旗 + FAQ で画像型であることを明示
+- API なし · 印影データは非送信（フォント CDN のみ例外）
+- F7: 黄旗 + FAQ

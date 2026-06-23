@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="登録不要で認印・角印の透過PNGを作成。ブラウザ内完結。作った印影をSUGUDASU請求書の担当者印・社印にそのまま載せられます。">
-    <title>電子印鑑メーカー（透過PNG・請求書用）| SUGUDASU</title>
+    <meta name="description" content="登録不要で認印（丸）の透過PNGを作成。明朝体または行書風。ブラウザ内完結。SUGUDASU請求書の担当者印へ1クリックで渡せます。">
+    <title>電子印鑑メーカー（認印・透過PNG）| SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="電子印鑑メーカー（請求書用・透過PNG）">
-    <meta property="og:description" content="認印・角印をブラウザだけで作成。画像型の印影を請求書に1クリックで渡せます。登録不要・非送信。">
+    <meta property="og:title" content="電子印鑑メーカー（認印・請求書用）">
+    <meta property="og:description" content="認印（丸）の透過PNGをブラウザだけで作成。担当者印サイズに合わせて請求書へ渡せます。角印は画像アップロード。">
     <meta property="og:url" content="https://sugudasu.com/stamp">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="【透過PNG】電子印鑑メーカー（請求書用）">
-    <meta name="twitter:description" content="認印・角印を無料作成。SUGUDASU請求書の印鑑欄にそのまま載せられます。端末内完結。">
+    <meta name="twitter:title" content="【透過PNG】電子印鑑（認印）">
+    <meta name="twitter:description" content="苗字・氏名の認印を無料作成。請求書の担当者印にそのまま載せられます。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Boku&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"電子印鑑とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"電子文書に貼り付ける印影画像データのことです。本ツールで作るのは画像型で、スキャンやExcel図形と同種の見た目データです。"}},{"@type":"Question","name":"電子署名や電子契約と同じですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。法的な本人性・改ざん防止の中心は電子署名です。本ツールの透過PNGは印影の見た目であり、電子署名そのものではありません。"}},{"@type":"Question","name":"請求書・見積書に使えますか？","acceptedAnswer":{"@type":"Answer","text":"商習慣の範囲では画像型の印影を請求書・見積書・納品書に載せる運用はよくあります。請求書ツールの担当者印・社印サイズに合わせて作れます。取引先の社内ルールは事前にご確認ください。"}},{"@type":"Question","name":"偽造やコピーのリスクはありますか？","acceptedAnswer":{"@type":"Answer","text":"あります。画像型は誰でもコピーして別の書類に貼り付けられるため、押印者や押印日時を技術的に証明する力は限定的です。重要な契約書では電子署名付きの運用を検討してください。"}},{"@type":"Question","name":"入力した名前や印影はサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。印影の生成はブラウザ内だけで行い、当サイトのサーバーへアップロードする機能はありません。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"角印（社印）は作れますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールは認印（丸）のみです。角印はIllustrator等で作成したPNGを請求書の社印欄からアップロードしてください。"}},{"@type":"Question","name":"電子署名や電子契約と同じですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールの透過PNGは印影の見た目であり、電子署名そのものではありません。"}},{"@type":"Question","name":"入力した名前や印影はサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。印影の生成はブラウザ内だけで行います。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 電子印鑑" data-sg-subtitle="請求書用 · 透過PNG" data-sg-tool-id="stamp"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 電子印鑑" data-sg-subtitle="認印 · 請求書用" data-sg-tool-id="stamp"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
@@ -33,22 +36,19 @@
     </nav>
 
     <header class="max-w-3xl space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">登録不要 · 端末内完結 · 請求書にそのまま</p>
-        <h1 class="text-lg font-bold text-slate-900 leading-snug">電子印鑑メーカー（見積・請求書用）</h1>
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">登録不要 · 端末内完結 · 担当者印向け</p>
+        <h1 class="text-lg font-bold text-slate-900 leading-snug">電子印鑑メーカー（認印）</h1>
         <p class="text-sm text-slate-600 leading-relaxed">
-            認印（丸）と角印の<strong>透過PNG</strong>をブラウザだけで作成します。
-            作った印影は<strong><a href="/invoice" class="text-blue-600 font-semibold hover:underline">SUGUDASU 請求書</a></strong>の担当者印・社印欄へ1クリックで渡せます。
+            苗字・氏名の<strong>認印（丸）</strong>を透過PNGで作成します。
+            <strong><a href="/invoice" class="text-blue-600 font-semibold hover:underline">SUGUDASU 請求書</a></strong>の担当者印へ1クリックで渡せます。
+            <strong>角印（社印）</strong>は枠内レイアウトの精度が必要なため、Illustrator等で作ったPNGを請求書からアップロードしてください。
         </p>
     </header>
 
     <div class="stamp-layout grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <aside class="sg-card p-5 space-y-4 no-print">
-            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">印の種類</h2>
-            <div class="doc-tool-nav flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full" role="tablist" aria-label="印の形状">
-                <button type="button" id="stamp-type-round" class="sns-pv-tab sns-pv-tab--active" role="tab" aria-selected="true">認印（丸）</button>
-                <button type="button" id="stamp-type-square" class="sns-pv-tab" role="tab" aria-selected="false">角印</button>
-            </div>
-            <p id="stamp-type-hint" class="text-[11px] text-slate-500 leading-relaxed"></p>
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">認印（丸）</h2>
+            <p class="text-[11px] text-slate-500 leading-relaxed">個人名・苗字向け（最大4文字）。請求書プレビューの担当者印サイズ（42px）に合わせて出力します。</p>
 
             <div>
                 <label for="stamp-text" class="block text-xs font-semibold text-slate-600 mb-1.5">表示テキスト</label>
@@ -59,8 +59,8 @@
                 <div>
                     <label for="stamp-font" class="block text-xs font-semibold text-slate-600 mb-1.5">書体</label>
                     <select id="stamp-font" class="sg-input text-sm">
-                        <option value="mincho">明朝体</option>
-                        <option value="kointai">古印体風</option>
+                        <option value="mincho">明朝体（端末標準）</option>
+                        <option value="gyosho">行書風（Yuji Boku）</option>
                     </select>
                 </div>
                 <div>
@@ -68,6 +68,7 @@
                     <input type="color" id="stamp-color" value="#c41e3a" class="w-full h-10 rounded-lg border border-slate-200 cursor-pointer bg-white">
                 </div>
             </div>
+            <p class="text-[10px] text-slate-500 leading-relaxed">行書風は Google Fonts「Yuji Boku」（OFL・商用可）を読み込みます。初回のみネットワーク通信が発生します。</p>
 
             <div>
                 <label for="stamp-size" class="block text-xs font-semibold text-slate-600 mb-1.5">出力サイズ</label>
@@ -99,7 +100,7 @@
             <p class="text-[11px] text-slate-500">格子模様は透過を表しています（保存画像には含まれません）。</p>
             <div class="stamp-preview-wrap flex items-center justify-center min-h-[220px] rounded-xl border border-slate-200">
                 <div class="stamp-preview-inner relative flex items-center justify-center p-8">
-                    <p id="stamp-preview-empty" class="absolute text-xs text-slate-400 text-center px-4">名前や会社名を入力するとプレビューが表示されます</p>
+                    <p id="stamp-preview-empty" class="absolute text-xs text-slate-400 text-center px-4">苗字や氏名を入力するとプレビューが表示されます</p>
                     <canvas id="stamp-canvas" class="stamp-canvas relative z-10" aria-label="印影プレビュー"></canvas>
                 </div>
             </div>
@@ -108,23 +109,34 @@
     </div>
 
     <div class="no-print rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-950 leading-relaxed max-w-3xl">
-        <strong>本ツールは「画像型」の電子印鑑を作成します。</strong>
-        法律上の電子署名・押印履歴の記録ではありません。書類の重要度と取引先のルールに合わせてご利用ください。
+        <strong>本ツールは「画像型」の電子印鑑（認印のみ）を作成します。</strong>
+        法律上の電子署名・押印履歴の記録ではありません。角印は請求書の画像アップロードをご利用ください。
     </div>
 
     <section class="no-print sg-faq-section border-t border-slate-200 pt-6">
         <div class="sg-faq-inner px-0 sm:px-2">
             <h2 class="sg-faq-title">電子印鑑のよくある質問</h2>
-            <p class="text-xs text-slate-500 text-center mb-6 -mt-2">画像型と電子署名の違い · 請求書での使い方</p>
             <div class="sg-faq-list space-y-3 max-w-3xl mx-auto">
 
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                 <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>電子印鑑とは何ですか？</span>
+                    <span>角印（社印）は作れますか？</span>
                     <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
                 </summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>電子文書に貼り付けるための<strong>印影画像データ</strong>のことです。本ツールで作るのは、印鑑をスキャンしたり Excel で図形を組んだりするのと同種の<strong>画像型</strong>です。見た目の印影を手軽に用意する用途向けです。</p>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
+                    <p><strong>いいえ。</strong>角印は社名の字数・縦横比・二重枠など、枠内への精密な組版が必要です。Web上の簡易Canvasでは Benri Lab 等の専門ツールと同等の品質を保証できません。</p>
+                    <p>Illustrator・Canva・スキャンした実印などで作成した透過PNGを、<a href="/invoice" class="text-blue-600 hover:underline">請求書</a>の社印欄からアップロードしてください。</p>
+                </div>
+            </details>
+
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>書体は何を使っていますか？</span>
+                    <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
+                    <p><strong>明朝体</strong>は端末の明朝（Hiragino Mincho / Yu Mincho 等）です。</p>
+                    <p><strong>行書風</strong>は Google Fonts の「Yuji Boku」（OFL・商用可）です。厳密な古印体ではなく、毛筆・行書に近い雰囲気向けです。教育漢字限定の古印体フォント（例: g_コミック古印体）のように常用漢字が欠ける問題はありません。</p>
                 </div>
             </details>
 
@@ -133,40 +145,8 @@
                     <span>電子署名や電子契約と同じですか？</span>
                     <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
                 </summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
-                    <p><strong>いいえ、別物です。</strong>法的な本人性・改ざん防止の中心は<strong>電子署名</strong>（電子署名法に基づく仕組み）にあります。本ツールが作る透過 PNG は<strong>印影の見た目</strong>であり、電子署名そのものではありません。</p>
-                    <p>不動産登記や厳格な本人確認が必要な契約には、専用の電子契約・電子署名サービスの利用を検討してください。</p>
-                </div>
-            </details>
-
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
-                <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>請求書・見積書に使えますか？</span>
-                    <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
-                </summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
-                    <p><strong>商習慣の範囲では、画像型の印影を請求書・見積書・納品書に載せる運用はよくあります。</strong>本ツールは <a href="/invoice" class="text-blue-600 hover:underline">SUGUDASU 請求書</a> の担当者印・社印欄のサイズに合わせて作れるよう設計しています。</p>
-                    <p>取引先ごとの社内ルール（印鑑不要・電子のみ等）は事前にご確認ください。</p>
-                </div>
-            </details>
-
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
-                <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>領収書の「受領」印には使えますか？</span>
-                    <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
-                </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>本ツールの角印・認印は<strong>発行者側</strong>（あなたの会社名・氏名）向けです。領収書の受領印は <a href="/receipt" class="text-blue-600 hover:underline">SUGUDASU 領収書</a> に内蔵の表示をご利用ください。</p>
-                </div>
-            </details>
-
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
-                <summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>偽造やコピーのリスクはありますか？</span>
-                    <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
-                </summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 space-y-2 pt-2 border-t border-slate-200/60">
-                    <p><strong>あります。</strong>画像型は誰でもコピーして別の書類に貼り付けられるため、「誰がいつ押したか」を技術的に証明する力は限定的です。社内回覧や日常的な請求・見積などリスクの小さい用途向けとし、重要な契約書では電子署名付きの運用を検討してください。</p>
+                    <p><strong>いいえ、別物です。</strong>本ツールの透過 PNG は印影の見た目であり、電子署名そのものではありません。</p>
                 </div>
             </details>
 
@@ -176,23 +156,10 @@
                     <span class="ml-1.5 shrink-0"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p><strong>送られません。</strong>印影の生成はお使いのブラウザ内だけで行い、当サイトのサーバーへ名前や画像をアップロードする機能はありません。請求書へ渡す場合も端末内の一時データ経由です（<a href="/privacy" class="text-blue-600 hover:underline">プライバシーポリシー</a>）。</p>
+                    <p><strong>送られません。</strong>印影の生成はブラウザ内で行います。行書風選択時のみ Google Fonts からフォントファイルを取得します（名前そのものは送信しません）。</p>
                 </div>
             </details>
 
-            </div>
-
-            <div class="mt-8 max-w-3xl mx-auto rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-600">
-                <p class="font-bold text-slate-800 mb-2">書類別の目安（画像型）</p>
-                <table class="w-full text-left border-collapse">
-                    <thead><tr class="border-b border-slate-200"><th class="py-1.5 pr-2 font-semibold">書類</th><th class="py-1.5 font-semibold">本ツール</th></tr></thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr><td class="py-1.5 pr-2">社内回覧</td><td class="py-1.5">向く</td></tr>
-                        <tr><td class="py-1.5 pr-2">見積・納品</td><td class="py-1.5">よく使われる</td></tr>
-                        <tr><td class="py-1.5 pr-2">請求書</td><td class="py-1.5">使える（請求書と連携）</td></tr>
-                        <tr><td class="py-1.5 pr-2">重要な契約書</td><td class="py-1.5">電子署名の検討を推奨</td></tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </section>
