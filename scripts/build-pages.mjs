@@ -5,6 +5,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
 
@@ -159,7 +160,26 @@ function copyDir(src, dest) {
   }
 }
 
-const ASSET_V = process.env.SG_ASSET_V || '20260620d';
+/** ?v= バスター対象（_headers で /assets/* は immutable 1年） */
+const BUST_ASSET_NAMES = [
+  'sugudasu-shell.js',
+  'sugudasu.css',
+  'sugudasu-segment.js',
+  'tw-build.css',
+];
+
+function computeAssetVersion() {
+  if (process.env.SG_ASSET_V) return process.env.SG_ASSET_V;
+  const hash = crypto.createHash('sha256');
+  for (const name of BUST_ASSET_NAMES) {
+    const p = path.join(ASSETS, name);
+    if (fs.existsSync(p)) hash.update(fs.readFileSync(p));
+  }
+  return hash.digest('hex').slice(0, 8);
+}
+
+/** compileTailwind 後に computeAssetVersion() で上書き */
+let ASSET_V = 'pending';
 
 const FONT_HEAD = `    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -241,6 +261,8 @@ function prepareDist() {
 
 prepareDist();
 compileTailwind();
+ASSET_V = computeAssetVersion();
+console.log(`  asset cache-bust: ?v=${ASSET_V}`);
 copyDir(ASSETS, path.join(DIST, 'assets'));
 
 const faviconSrc = path.join(ASSETS, 'favicon.png');
