@@ -115,6 +115,18 @@ function writeRedirects(htmlFiles) {
   fs.writeFileSync(path.join(DIST, '_redirects'), `${lines.join('\n')}\n`, 'utf8');
 }
 
+/** /{slug} を python http.server 等でも配信できるよう {slug}/index.html を複製 */
+function writeCleanUrlDirs(htmlFiles) {
+  for (const file of htmlFiles) {
+    if (file === 'hub.html') continue;
+    const slug = file.replace(/\.html$/, '');
+    const src = path.join(DIST, file);
+    const dir = path.join(DIST, slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.copyFileSync(src, path.join(dir, 'index.html'));
+  }
+}
+
 function writeHeaders() {
   const headers = [
     '/assets/*',
@@ -300,6 +312,7 @@ if (fs.existsSync(DATA_DIR)) {
 }
 
 const lastmod = readChangelogLastmod();
+writeCleanUrlDirs(htmlFiles);
 writeSitemapAndRobots(htmlFiles, lastmod);
 writeRedirects(htmlFiles);
 writeHeaders();
@@ -307,7 +320,7 @@ writeHeaders();
 const count = htmlFiles.length;
 console.log(`build:pages OK — ${count} tools + index → ${DIST}`);
 console.log(`  SEO: sitemap.xml (${lastmod}) · robots.txt · _redirects`);
-console.log('  Preview: cd dist && python -m http.server 8080');
+console.log('  Preview: npm run preview:pages  (or cd dist && python -m http.server 8080)');
 
 const verifyChrome = spawnSync(process.execPath, [path.join(__dirname, 'verify-chrome-mount.mjs')], {
   stdio: 'inherit',

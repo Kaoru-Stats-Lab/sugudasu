@@ -1,53 +1,22 @@
-import {
-  STYLE_BADGES,
-  DEFAULT_PREVIEW,
-  convertWithStyle,
-  filterStyles,
-  loadFontStyles,
-  loadSymbolCatalog,
-  escHtml,
-} from './sns-font-engine.js';
+import { sgCopy, DEFAULT_PREVIEW, SAMPLE_TEXTS, convertWithStyle, filterStyles, loadFontStyles, loadSymbolCatalog, loadHiraganaDecor, escHtml, STYLE_BADGES } from './sns-app.js';
 
 const inputEl = document.getElementById('fc-input');
 const listEl = document.getElementById('fc-font-list');
 const countEl = document.getElementById('fc-result-count');
 const miniRoot = document.getElementById('fc-mini-symbols');
+const sampleRoot = document.getElementById('fc-sample-texts');
 const symbolRoot = document.getElementById('fc-symbol-catalog');
+const hiraRoot = document.getElementById('fc-hiragana-grid');
 const filterRoot = document.getElementById('fc-filters');
 const toastEl = document.getElementById('copy-toast-fc');
 
 let fontStyles = [];
 let symbolCatalog = { miniSymbols: [], groups: [] };
+let hiraganaDecor = null;
 let activeFilter = 'all';
 
-async function copyText(text, btn) {
-  if (window.SG_COPY_FEEDBACK && btn) {
-    try {
-      await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
-        toastEl,
-        toastPrefix: 'コピー',
-        copiedLabel: '済',
-        lineCount: window.SG_COPY_FEEDBACK.countLines(text),
-        previewLine: text.split('\n')[0],
-      });
-      return;
-    } catch { /* fallback */ }
-  }
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-  }
-  if (btn) {
-    const prev = btn.textContent;
-    btn.textContent = '済';
-    setTimeout(() => { btn.textContent = prev; }, 1600);
-  }
+async function copyText(text, btn, options = {}) {
+  await sgCopy(text, btn, { toastEl, toastPrefix: 'コピー', ...options });
 }
 
 function insertSymbol(symbol) {
@@ -57,6 +26,22 @@ function insertSymbol(symbol) {
   const end = inputEl.value.length;
   inputEl.setSelectionRange(end, end);
   renderFonts();
+}
+
+function renderSampleTexts() {
+  if (!sampleRoot) return;
+  sampleRoot.innerHTML = SAMPLE_TEXTS.map((s, i) =>
+    `<button type="button" class="fc-sample-chip" data-sample-idx="${i}">${escHtml(s.label)}</button>`
+  ).join('');
+  sampleRoot.querySelectorAll('.fc-sample-chip').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const sample = SAMPLE_TEXTS[Number(btn.getAttribute('data-sample-idx'))];
+      if (!sample) return;
+      inputEl.value = sample.text;
+      inputEl.focus();
+      renderFonts();
+    });
+  });
 }
 
 function renderMiniSymbols() {
@@ -86,10 +71,34 @@ function renderSymbolCatalog() {
   `).join('');
 
   symbolRoot.querySelectorAll('.fc-symbol-chip').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      copyText(btn.getAttribute('data-sym'), btn);
+    btn.addEventListener('click', async () => {
+      await copyText(btn.getAttribute('data-sym'), btn, { buttonFeedback: false });
       btn.classList.add('fc-symbol-chip--copied');
-      setTimeout(() => btn.classList.remove('fc-symbol-chip--copied'), 800);
+      setTimeout(() => btn.classList.remove('fc-symbol-chip--copied'), 900);
+    });
+  });
+}
+
+function renderHiraganaGrid() {
+  if (!hiraRoot || !hiraganaDecor?.rows?.length) return;
+  const map = hiraganaDecor.map || {};
+  hiraRoot.innerHTML = hiraganaDecor.rows.map((row) => {
+    const cells = row.map((kana) => {
+      const decor = map[kana] || kana;
+      return `
+        <button type="button" class="fc-hiragana-cell" data-char="${escHtml(decor)}" title="${escHtml(kana)} → コピー">
+          <span class="fc-hiragana-cell__kana">${escHtml(kana)}</span>
+          <span class="fc-hiragana-cell__decor">${escHtml(decor)}</span>
+        </button>`;
+    }).join('');
+    return `<div class="fc-hiragana-row">${cells}</div>`;
+  }).join('');
+
+  hiraRoot.querySelectorAll('.fc-hiragana-cell').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      await copyText(btn.getAttribute('data-char'), btn, { buttonFeedback: false });
+      btn.classList.add('fc-hiragana-cell--copied');
+      setTimeout(() => btn.classList.remove('fc-hiragana-cell--copied'), 900);
     });
   });
 }
@@ -131,17 +140,17 @@ function renderFonts() {
             <span class="fc-font-card__label">${escHtml(style.name)}</span>
             <span class="fc-font-card__pill">${escHtml(pill)}</span>
           </div>
-          <div class="fc-font-card__preview">${escHtml(converted)}</div>
+          <div class="fc-font-card__preview sg-deco-text">${escHtml(converted)}</div>
         </div>
         <button type="button" class="fc-font-card__copy">コピー</button>
       </article>`;
   }).join('');
 
   listEl.querySelectorAll('.fc-font-card__copy').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const card = btn.closest('.fc-font-card');
       const preview = card?.querySelector('.fc-font-card__preview')?.textContent || '';
-      copyText(preview, btn);
+      await copyText(preview, btn);
     });
   });
 
@@ -150,9 +159,10 @@ function renderFonts() {
 
 async function init() {
   try {
-    [fontStyles, symbolCatalog] = await Promise.all([
+    [fontStyles, symbolCatalog, hiraganaDecor] = await Promise.all([
       loadFontStyles(),
       loadSymbolCatalog(),
+      loadHiraganaDecor(),
     ]);
   } catch (err) {
     if (listEl) listEl.innerHTML = `<p class="text-xs text-red-600">フォント定義の読み込みに失敗しました。</p>`;
@@ -161,8 +171,10 @@ async function init() {
   }
 
   renderFilters();
+  renderSampleTexts();
   renderMiniSymbols();
   renderSymbolCatalog();
+  renderHiraganaGrid();
   renderFonts();
 
   inputEl.addEventListener('input', renderFonts);

@@ -26,10 +26,10 @@
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <nav class="sns-tool-nav no-print" aria-label="SNSツール切替">
-        <a href="/font-converter" class="sns-tool-nav__link sns-tool-nav__link--active">フォント変換</a>
-        <a href="/sns" class="sns-tool-nav__link">プロフィール作成（プレビュー付き）</a>
-    </nav>
+    <div class="flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-lg no-print" role="navigation" aria-label="SNSツール切替">
+        <a href="/font-converter" class="sns-pv-tab sns-pv-tab--link sns-pv-tab--active">フォント変換</a>
+        <a href="/sns" class="sns-pv-tab sns-pv-tab--link">プロフィール作成</a>
+    </div>
 
     <header class="max-w-3xl space-y-2">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">インスタ · X · LINE 向け</p>
@@ -46,7 +46,11 @@
             <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
             <div>
                 <label for="fc-input" class="block text-xs font-semibold text-slate-600 mb-1.5">変換したい文字</label>
-                <textarea id="fc-input" rows="4" class="sg-input resize-y" placeholder="例: cafe time&#10;例: ୨୧ my page ୨୧"></textarea>
+                <textarea id="fc-input" rows="4" class="sg-input resize-y" placeholder="例: minimal / archive&#10;例: SLOW COFFEE, SLOW LIFE."></textarea>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-slate-500 mb-1.5">サンプル文（タップで入力）</p>
+                <div id="fc-sample-texts" class="fc-sample-chips"></div>
             </div>
             <p class="text-[11px] text-slate-500 leading-relaxed">英字・数字が最もきれいに変換されます。記号ボタンで入力欄に追加できます。</p>
 
@@ -69,8 +73,16 @@
                 </div>
                 <div id="fc-filters" class="fc-filter-bar" role="tablist" aria-label="フォント絞り込み"></div>
                 <div id="fc-font-list" class="fc-font-list"></div>
-                <p id="copy-toast-fc" class="sg-copy-toast hidden" role="status"></p>
+                <p id="copy-toast-fc" class="sg-copy-toast hidden text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2" role="status"></p>
             </div>
+
+            <section class="sg-card p-5 space-y-3" aria-labelledby="fc-hira-heading">
+                <div class="border-b border-slate-100 pb-2">
+                    <h2 id="fc-hira-heading" class="text-sm font-bold text-slate-900">ひらがな55音 · 日本語スタイル</h2>
+                    <p class="text-[11px] text-slate-500 mt-1">1文字タップでコピー。入力欄の文章は上の「日本語スタイル（55音）」カードで一括変換できます。</p>
+                </div>
+                <div id="fc-hiragana-grid" class="fc-hiragana-grid"></div>
+            </section>
 
             <section class="sg-card p-5 space-y-3" aria-labelledby="fc-symbols-heading">
                 <div class="border-b border-slate-100 pb-2">
@@ -131,7 +143,6 @@
 </section>
 
 <div id="sg-chrome-bottom"></div>
-<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
 <script type="module" src="../assets/font-converter-app.js"></script>
 </body>

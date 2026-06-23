@@ -26,10 +26,10 @@
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <nav class="sns-tool-nav no-print" aria-label="SNSツール切替">
-        <a href="/font-converter" class="sns-tool-nav__link">フォント変換（23種＋記号）</a>
-        <a href="/sns" class="sns-tool-nav__link sns-tool-nav__link--active">プロフィール作成</a>
-    </nav>
+    <div class="flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-lg no-print" role="navigation" aria-label="SNSツール切替">
+        <a href="/font-converter" class="sns-pv-tab sns-pv-tab--link">フォント変換</a>
+        <a href="/sns" class="sns-pv-tab sns-pv-tab--link sns-pv-tab--active">プロフィール作成</a>
+    </div>
 
     <header class="max-w-3xl space-y-2">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">インスタ・X プロフィール向け</p>
@@ -45,8 +45,13 @@
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
         <div>
             <label for="input-text" class="block text-xs font-semibold text-slate-600 mb-1.5">変換したい文字列</label>
-            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: sugudasu（2行目にキャッチコピー可）">sugudasu</textarea>
+            <textarea id="input-text" rows="4" class="sg-input resize-y" placeholder="例: MY ROOM（2行目にキャッチコピー可）">MY ROOM
+SLOW COFFEE, SLOW LIFE.</textarea>
             <div id="input-char-count" class="sns-char-bar mt-2" aria-live="polite"></div>
+        </div>
+        <div>
+            <p class="text-[10px] font-bold text-slate-500 mb-1.5">サンプル文（タップで入力）</p>
+            <div id="sns-sample-texts" class="fc-sample-chips"></div>
         </div>
         <p class="text-[11px] text-slate-500 leading-relaxed">
             <strong class="text-slate-600">1行目＝名前・ブランド</strong>（テンプレの見出しに反映）。
@@ -74,22 +79,20 @@
                 <div class="sns-preview__insta-head">
                     <div class="sns-preview__avatar" aria-hidden="true"></div>
                     <div class="sns-preview__insta-meta">
-                        <p id="pv-insta-handle" class="sns-preview__handle">@sugudasu</p>
-                        <p id="pv-insta-name" class="sns-preview__display-name">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎</p>
+                        <p id="pv-insta-handle" class="sns-preview__handle">@myroom</p>
+                        <p id="pv-insta-name" class="sns-preview__display-name"></p>
                     </div>
                 </div>
-                <pre id="pv-insta-bio" class="sns-preview__bio">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎 ✨
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-リンクはここ 👇</pre>
+                <pre id="pv-insta-bio" class="sns-preview__bio"></pre>
             </div>
 
             <div id="pv-x" class="sns-preview sns-preview--x hidden" role="tabpanel" hidden>
                 <div class="sns-preview__x-banner" aria-hidden="true"></div>
                 <div class="sns-preview__x-body">
                     <div class="sns-preview__avatar sns-preview__avatar--x" aria-hidden="true"></div>
-                    <p id="pv-x-name" class="sns-preview__x-name">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎</p>
-                    <p id="pv-x-handle" class="sns-preview__handle">@sugudasu</p>
-                    <pre id="pv-x-bio" class="sns-preview__bio sns-preview__bio--x">𝖲𝗎𝗀𝗎𝖽𝖺𝗌𝗎 ✨</pre>
+                    <p id="pv-x-name" class="sns-preview__x-name"></p>
+                    <p id="pv-x-handle" class="sns-preview__handle">@myroom</p>
+                    <pre id="pv-x-bio" class="sns-preview__bio sns-preview__bio--x"></pre>
                 </div>
             </div>
         </div>
@@ -102,7 +105,7 @@
         </div>
         <div id="deco-output" class="deco-grid"></div>
         <p id="empty-hint" class="text-xs text-slate-400 text-center py-8">左で文字を入力して「変換する（登録不要で一括コピペ）」を押してください</p>
-        <p id="copy-toast-sns" class="sg-copy-toast hidden" role="status"></p>
+        <p id="copy-toast-sns" class="sg-copy-toast hidden text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2" role="status"></p>
         <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
     </section>
     </div>
@@ -148,7 +151,7 @@
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>左の欄に<strong>英字・数字</strong>（例: <code>sugudasu</code>）を入れると、丸囲み・太字サンセリフ・スクリプト体などが一括変換されます。気に入ったカードの「コピー」でそのままインスタやXのプロフィールに貼り付けできます。</p>
+                    <p>左の欄に<strong>英字・数字</strong>（例: <code>MY ROOM</code>）を入れると、丸囲み・太字サンセリフ・スクリプト体などが一括変換されます。気に入ったカードの「コピー」でそのままインスタやXのプロフィールに貼り付けできます。</p>
                 </div>
             </details>
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -183,9 +186,10 @@
 </section>
 
 <div id="sg-chrome-bottom"></div>
-<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
-<script>
+<script type="module">
+import { sgCopy, SAMPLE_TEXTS, SNS_DEFAULT_TEXT, SNS_DEFAULT_LINES } from '../assets/sns-app.js';
+
 const JA_RE = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uFF66-\uFF9D]/;
 
 function hasJapanese(s) {
@@ -314,44 +318,28 @@ function charCountOneLine(len) {
     return `${insta} · ${x}`;
 }
 
+function resolvePreviewSource(raw) {
+    const trimmed = String(raw || '').trim();
+    return trimmed || SNS_DEFAULT_TEXT;
+}
+
+function resolveTemplateLines(raw) {
+    const trimmed = String(raw || '').trim();
+    if (trimmed) {
+        return trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
+    }
+    return [...SNS_DEFAULT_LINES];
+}
+
 function getTemplateContext() {
-    const raw = document.getElementById('input-text').value.trim();
-    const lines = raw.split('\n').map((l) => l.trim()).filter(Boolean);
-    const name = (lines[0] || 'sugudasu').slice(0, 40);
+    const lines = resolveTemplateLines(document.getElementById('input-text').value);
+    const name = (lines[0] || SNS_DEFAULT_LINES[0]).slice(0, 40);
     const tagline = (lines[1] || name).slice(0, 40);
-    const handle = name.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'sugudasu';
-    return { name, tagline, handle, raw };
+    const handle = name.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'profile';
+    return { name, tagline, handle, raw: lines.join('\n') };
 }
 
-async function copyToClipboard(text, btn, okLabel) {
-    if (window.SG_COPY_FEEDBACK && btn) {
-        try {
-            await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
-                toastEl: document.getElementById('copy-toast-sns'),
-                toastPrefix: '変換後',
-                copiedLabel: okLabel || 'Copied!',
-                lineCount: window.SG_COPY_FEEDBACK.countLines(text),
-                previewLine: text.split('\n')[0],
-            });
-            return;
-        } catch { /* fallback below */ }
-    }
-    try { await navigator.clipboard.writeText(text); }
-    catch {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-    }
-    if (!btn) return;
-    const prev = btn.textContent;
-    btn.textContent = okLabel || 'Copied!';
-    setTimeout(() => { btn.textContent = prev; }, 2000);
-}
-
-function copyWithLimitCheck(text, btn, okLabel) {
+async function copyWithLimitCheck(text, btn) {
     const len = countChars(text);
     const m = charCountMeta(len);
     if (m.anyOver) {
@@ -360,7 +348,7 @@ function copyWithLimitCheck(text, btn, okLabel) {
         if (m.xOver) parts.push(`X（${PROFILE_LIMITS.x}字）が${Math.abs(m.xRem)}字オーバー`);
         if (!confirm(parts.join('／') + '。\nこのままコピーしますか？')) return;
     }
-    copyToClipboard(text, btn, okLabel);
+    await sgCopy(text, btn, { toastPrefix: '変換後' });
 }
 
 function buildProfileTemplateDefs() {
@@ -534,13 +522,13 @@ function renderProfileTemplates() {
     root.querySelectorAll('.sns-tpl-copy-me').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
-            if (tpl) copyWithLimitCheck(tpl.build(getTemplateContext()), btn, 'コピー済');
+            if (tpl) copyWithLimitCheck(tpl.build(getTemplateContext()), btn);
         });
     });
     root.querySelectorAll('.sns-tpl-copy-demo').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tpl = defs.find((t) => t.id === btn.getAttribute('data-tpl-id'));
-            if (tpl) copyWithLimitCheck(tpl.buildDemo(), btn, 'コピー済');
+            if (tpl) copyWithLimitCheck(tpl.buildDemo(), btn);
         });
     });
 }
@@ -578,7 +566,7 @@ function renderDecoParts() {
             const idx = Number(btn.getAttribute('data-part-idx'));
             const part = DECO_PARTS[idx];
             if (!part) return;
-            copyWithLimitCheck(part.text, btn, 'コピー済');
+            copyWithLimitCheck(part.text, btn);
             btn.classList.add('sns-part-chip--copied');
             setTimeout(() => btn.classList.remove('sns-part-chip--copied'), 900);
         });
@@ -605,10 +593,11 @@ function setPreviewMode(mode) {
 }
 
 function updatePreview(raw) {
-    const base = raw || 'sugudasu';
-    const handle = '@' + base.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'sugudasu';
-    const display = boldSans(base.split(/\s+/)[0].slice(0, 24) || 'sugudasu');
-    const bioMain = thinSans(base.slice(0, 40));
+    const base = resolvePreviewSource(raw);
+    const firstLine = base.split('\n')[0].trim() || SNS_DEFAULT_LINES[0];
+    const handle = '@' + (firstLine.replace(/\s+/g, '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 20) || 'profile');
+    const display = boldSans(firstLine.slice(0, 24));
+    const bioMain = thinSans(base.replace(/\n/g, ' ').slice(0, 40));
     const bioInsta = bioMain + ' ✨\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\nリンクはここ 👇';
     const bioX = bioMain + ' ✨\n' + mono('sugudasu.com');
 
@@ -663,7 +652,7 @@ function render() {
             body = `<p class="deco-unsupported text-[11px] leading-relaxed text-slate-500">${esc(e.message)}</p>`;
         } else {
             const note = e.message ? `<p class="deco-hint text-[10px] text-amber-700 mt-1">${esc(e.message)}</p>` : '';
-            body = `<div class="${sampleClass} text-slate-900 deco-result">${esc(e.text)}</div>${note}`;
+            body = `<div class="${sampleClass} text-slate-900 deco-result sg-deco-text">${esc(e.text)}</div>${note}`;
         }
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         const copyDisabled = !canCopy;
@@ -688,7 +677,23 @@ function render() {
         const canCopy = e.kind === 'ok' || (e.kind === 'hint' && e.text !== raw);
         if (!canCopy) return;
         card.querySelector('.deco-copy-btn').addEventListener('click', () => {
-            copyWithLimitCheck(e.text, card.querySelector('.deco-copy-btn'), '済');
+            copyWithLimitCheck(e.text, card.querySelector('.deco-copy-btn'));
+        });
+    });
+}
+
+function renderSampleTexts() {
+    const root = document.getElementById('sns-sample-texts');
+    if (!root) return;
+    root.innerHTML = SAMPLE_TEXTS.map((s, i) =>
+        `<button type="button" class="fc-sample-chip" data-sample-idx="${i}">${esc(s.label)}</button>`
+    ).join('');
+    root.querySelectorAll('.fc-sample-chip').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const sample = SAMPLE_TEXTS[Number(btn.getAttribute('data-sample-idx'))];
+            if (!sample) return;
+            document.getElementById('input-text').value = sample.text;
+            render();
         });
     });
 }
@@ -703,6 +708,7 @@ document.getElementById('pv-tab-insta').addEventListener('click', () => setPrevi
 document.getElementById('pv-tab-x').addEventListener('click', () => setPreviewMode('x'));
 
 renderDecoParts();
+renderSampleTexts();
 render();
 </script>
 </body>

@@ -26,11 +26,34 @@ export const STYLE_BADGES = {
   gal: '平成レトロ',
   small: 'ゆるかわ',
   hankaku: 'ミニマル',
+  hiraganaDecor: 'ひらがな',
 };
 
-export const JAPANESE_STYLE_KEYS = new Set(['gal', 'small', 'hankaku']);
+export const JAPANESE_STYLE_KEYS = new Set(['gal', 'small', 'hankaku', 'hiraganaDecor']);
 export const FEATURED_COUNT = 3;
-export const DEFAULT_PREVIEW = 'mio ୨୧ cafe time';
+
+/** 空欄プレビュー・font-converter デフォルト */
+export const DEFAULT_PREVIEW = 'minimal / archive';
+
+/** /sns 初期値（1行目＝名前、2行目＝キャッチ） */
+export const SNS_DEFAULT_LINES = ['MY ROOM', 'SLOW COFFEE, SLOW LIFE.'];
+export const SNS_DEFAULT_TEXT = SNS_DEFAULT_LINES.join('\n');
+
+/** ワンタップサンプル（バイオ・見出し・ワンワード） */
+export const SAMPLE_TEXTS = [
+  { label: 'Bio', text: 'MY ROOM / MY LIFE' },
+  { label: 'Café', text: 'SLOW COFFEE, SLOW LIFE.' },
+  { label: 'minimal', text: 'minimal / neutral / edit' },
+  { label: 'archive', text: 'tokyo / 2026 / archive' },
+  { label: 'Insight', text: "TODAY'S INSIGHT" },
+  { label: 'Memo', text: 'CREATIVE MEMO' },
+  { label: 'Weekend', text: 'Weekend Log' },
+  { label: 'Collection', text: 'New Collection' },
+  { label: 'ANCHOR', text: 'A N C H O R' },
+  { label: 'find', text: 'f i n d .' },
+  { label: 'blank', text: 'b l a n k' },
+  { label: 'SEED', text: 'S E E D' },
+];
 
 /** @param {string} str @param {Record<string,string>|{src:string,dest:string}} mapObj @param {{forceLowercase?:boolean}} [options] */
 export function convertString(str, mapObj, options = {}) {
@@ -72,11 +95,25 @@ export function filterStyles(styles, filter) {
 
 let stylesCache = null;
 
+export async function loadHiraganaDecor() {
+  const res = await fetch('/data/hiragana-decor.json');
+  if (!res.ok) throw new Error('hiragana-decor.json load failed');
+  return res.json();
+}
+
 export async function loadFontStyles() {
   if (stylesCache) return stylesCache;
-  const res = await fetch('/data/font-styles.json');
-  if (!res.ok) throw new Error('font-styles.json load failed');
-  stylesCache = await res.json();
+  const [styles, hira] = await Promise.all([
+    fetch('/data/font-styles.json').then((r) => {
+      if (!r.ok) throw new Error('font-styles.json load failed');
+      return r.json();
+    }),
+    loadHiraganaDecor(),
+  ]);
+  stylesCache = [
+    ...styles,
+    { name: hira.name, key: hira.key, map: hira.map },
+  ];
   return stylesCache;
 }
 
