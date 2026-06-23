@@ -166,15 +166,27 @@ textarea.sg-input.sg-field--error {
   transition: color 120ms ease;
 }
 
+a.sg-segment__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .sg-segment__btn:hover { color: #1e293b; }
 
 .sg-segment__btn[aria-selected='true'] {
   font-weight: 700;
 }
 
+.sg-segment__btn[aria-current='page'] {
+  font-weight: 700;
+}
+
 .sg-segment--mode-estimate .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
 .sg-segment--mode-delivery .sg-segment__btn[aria-selected='true'] { color: #334155; }
-.sg-segment--mode-invoice .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-invoice .sg-segment__btn[aria-selected='true'],
+.sg-segment--mode-invoice .sg-segment__btn[aria-current='page'] { color: #1e40af; }
 .sg-segment--mode-single .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
 .sg-segment--mode-multi .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
 .sg-segment--mode-coeff .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
@@ -187,7 +199,8 @@ textarea.sg-input.sg-field--error {
 .sg-segment--mode-label .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
 .sg-segment--mode-card .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
 
-.sg-segment__btn[aria-selected='true']::after {
+.sg-segment__btn[aria-selected='true']::after,
+.sg-segment__btn[aria-current='page']::after {
   content: '';
   position: absolute;
   left: 18%;
@@ -208,6 +221,7 @@ textarea.sg-input.sg-field--error {
   margin-top: 0.5rem;
   font-size: 10px;
   line-height: 1.55;
+  text-wrap: pretty;
   padding: 0.5rem 0.625rem;
   border-radius: 0.5rem;
   border: 1px solid #e0e7ff;
@@ -217,6 +231,13 @@ textarea.sg-input.sg-field--error {
 }
 
 .sg-segment-hint.is-fading { opacity: 0; }
+
+/* 書類クラスタ（印鑑 · 請求 · 領収）— ページ遷移用 sg-segment · DESIGN_GUIDELINE §3.3 */
+.sg-doc-cluster {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .sg-preview-fade {
   transition: opacity 200ms ease;
@@ -1081,39 +1102,6 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
 }
 .sns-tool-nav .sns-pv-tab--link:hover { color: #0f172a; }
 .sns-tool-nav .sns-pv-tab--link.sns-pv-tab--active {
-  background: #fff;
-  color: #0f172a;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-}
-
-/* 書類クラスタ: 印鑑 · 請求書 · 領収書 */
-.doc-tool-nav {
-  display: flex;
-  width: 100%;
-  max-width: 28rem;
-}
-.doc-tool-nav .sns-pv-tab--link,
-.doc-tool-nav .sns-pv-tab {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0.35rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: #64748b;
-  border-radius: 0.375rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
-}
-.doc-tool-nav .sns-pv-tab--link:hover,
-.doc-tool-nav .sns-pv-tab:hover { color: #0f172a; }
-.doc-tool-nav .sns-pv-tab--link.sns-pv-tab--active,
-.doc-tool-nav .sns-pv-tab.sns-pv-tab--active {
   background: #fff;
   color: #0f172a;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);

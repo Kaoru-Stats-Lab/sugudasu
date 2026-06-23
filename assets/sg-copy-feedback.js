@@ -76,22 +76,14 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
   }
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.body.classList.add('sg-copy-flash');
-    window.setTimeout(() => document.body.classList.remove('sg-copy-flash'), 320);
+    triggerCopyFlash();
   }
 
   const lockMs = options.lockMs ?? 2000;
   const copiedLabel = options.copiedLabel ?? 'Copied!';
   const prevLabel = buttonEl ? buttonEl.textContent : '';
   if (buttonEl) {
-    buttonEl.disabled = true;
-    buttonEl.classList.add('sg-copy-btn--done');
-    buttonEl.textContent = copiedLabel;
-    window.setTimeout(() => {
-      buttonEl.disabled = false;
-      buttonEl.classList.remove('sg-copy-btn--done');
-      buttonEl.textContent = prevLabel || 'コピー';
-    }, lockMs);
+    markCopyButtonDone(buttonEl, { lockMs, copiedLabel, fallbackLabel: prevLabel || 'コピー' });
   }
 
   const toastEl = options.toastEl;
@@ -152,6 +144,44 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;');
 }
 
+/** §3.8 — 画面全体のグリーンフラッシュ（コピー・保存成功） */
+export function triggerCopyFlash() {
+  if (typeof document === 'undefined') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.body.classList.add('sg-copy-flash');
+  window.setTimeout(() => document.body.classList.remove('sg-copy-flash'), 320);
+}
+
+/**
+ * @param {HTMLElement | null} buttonEl
+ * @param {{ lockMs?: number, copiedLabel?: string, fallbackLabel?: string }} [options]
+ */
+export function markCopyButtonDone(buttonEl, options = {}) {
+  if (!buttonEl) return;
+  const lockMs = options.lockMs ?? 2000;
+  const copiedLabel = options.copiedLabel ?? 'Copied!';
+  const prevLabel = buttonEl.textContent;
+  buttonEl.disabled = true;
+  buttonEl.classList.add('sg-copy-btn--done');
+  buttonEl.textContent = copiedLabel;
+  window.setTimeout(() => {
+    buttonEl.disabled = false;
+    buttonEl.classList.remove('sg-copy-btn--done');
+    buttonEl.textContent = options.fallbackLabel ?? prevLabel || 'コピー';
+  }, lockMs);
+}
+
+/**
+ * @param {HTMLElement | null} toastEl
+ * @param {string} html
+ */
+export function showCopyToastHtml(toastEl, html) {
+  if (!toastEl) return;
+  toastEl.hidden = false;
+  toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+  toastEl.innerHTML = html;
+}
+
 if (typeof globalThis !== 'undefined') {
   globalThis.SG_COPY_FEEDBACK = {
     copyWithFeedback,
@@ -159,6 +189,9 @@ if (typeof globalThis !== 'undefined') {
     countLines,
     updateLineMatchDisplay,
     syncCopyGate,
+    triggerCopyFlash,
+    markCopyButtonDone,
+    showCopyToastHtml,
     FILTER_REMINDER,
   };
 }

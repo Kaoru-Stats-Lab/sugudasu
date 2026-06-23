@@ -105,6 +105,20 @@ function fitRoundFontSize(ctx, fontFamily, fontWeight, chars, maxFont, maxWidth,
 }
 
 /**
+ * 描画直前に物理・論理座標の両方で clearRect（Safari 透過 PNG 黒塗り対策）
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {HTMLCanvasElement} canvas
+ * @param {number} logicalSize
+ * @param {number} dpr
+ */
+function clearTransparentSurface(ctx, canvas, logicalSize, dpr) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, logicalSize, logicalSize);
+}
+
+/**
  * @param {HTMLCanvasElement} canvas
  * @param {{
  *   text: string,
@@ -122,15 +136,17 @@ export function renderStamp(canvas, opts) {
   const sizePx = Math.max(32, Math.min(800, Number(opts.sizePx) || 400));
 
   const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
-  canvas.width = Math.round(sizePx * dpr);
-  canvas.height = Math.round(sizePx * dpr);
+  const bitmapW = Math.round(sizePx * dpr);
+  const bitmapH = Math.round(sizePx * dpr);
+  canvas.width = bitmapW;
+  canvas.height = bitmapH;
   canvas.style.width = `${sizePx}px`;
   canvas.style.height = `${sizePx}px`;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return null;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, sizePx, sizePx);
+
+  clearTransparentSurface(ctx, canvas, sizePx, dpr);
 
   ctx.save();
   ctx.translate(sizePx / 2, sizePx / 2);

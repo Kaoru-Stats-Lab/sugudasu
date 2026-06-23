@@ -11,6 +11,11 @@ import {
   renderStamp,
   sanitizeStampText,
 } from './stamp-engine.js';
+import {
+  markCopyButtonDone,
+  showCopyToastHtml,
+  triggerCopyFlash,
+} from './sg-copy-feedback.js';
 import { writeStampHandoff } from './stamp-handoff.js';
 
 const $ = (id) => document.getElementById(id);
@@ -76,9 +81,42 @@ function showToast(message, tone = 'ok') {
   }, 3200);
 }
 
+function showCopySuccessToast(kind) {
+  const el = $('stamp-toast');
+  if (!el) return;
+  const preset = currentPreset();
+  const label = sanitizeStampText($('stamp-text')?.value ?? '') || '（未入力）';
+  const detail = kind === 'save'
+    ? `透過PNG · ${preset.label}`
+    : `透過PNG · ${preset.label} · 表示: ${label}`;
+  showCopyToastHtml(
+    el,
+    `<strong class="text-emerald-800">クリップボードを更新しました。</strong> ${detail}`,
+  );
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    el.hidden = true;
+  }, 3200);
+}
+
+function showSaveSuccessToast() {
+  const el = $('stamp-toast');
+  if (!el) return;
+  const preset = currentPreset();
+  showCopyToastHtml(
+    el,
+    `<strong class="text-emerald-800">PNGを保存しました。</strong> 透過PNG · ${preset.label}`,
+  );
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    el.hidden = true;
+  }, 3200);
+}
+
 async function copyPngToClipboard(buttonEl) {
-  if (!lastDataUrl || !previewCanvas) return;
-  const prev = buttonEl?.textContent;
+  if (!previewCanvas) return;
+  await redraw();
+  if (!lastDataUrl) return;
   try {
     const blob = await canvasToBlob(previewCanvas);
     if (navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') {
@@ -86,17 +124,12 @@ async function copyPngToClipboard(buttonEl) {
     } else {
       throw new Error('clipboard-image');
     }
-    if (buttonEl) {
-      buttonEl.disabled = true;
-      buttonEl.classList.add('sg-copy-btn--done');
-      buttonEl.textContent = 'Copied!';
-      window.setTimeout(() => {
-        buttonEl.disabled = false;
-        buttonEl.classList.remove('sg-copy-btn--done');
-        buttonEl.textContent = prev || 'クリップボードにコピー';
-      }, 2000);
-    }
-    showToast('透過PNGをクリップボードにコピーしました。');
+    triggerCopyFlash();
+    markCopyButtonDone(buttonEl, {
+      copiedLabel: 'Copied!',
+      fallbackLabel: 'クリップボードにコピー',
+    });
+    showCopySuccessToast('copy');
   } catch {
     showToast('お使いのブラウザでは画像コピーに未対応です。PNG保存をお試しください。', 'warn');
   }
@@ -138,10 +171,17 @@ function bindEvents() {
     scheduleRedraw();
   });
 
-  $('stamp-btn-download')?.addEventListener('click', () => {
+  $('stamp-btn-download')?.addEventListener('click', async () => {
+    if (!previewCanvas) return;
+    await redraw();
     if (!lastDataUrl) return;
     downloadPngDataUrl(lastDataUrl, defaultFilename());
-    showToast('PNGを保存しました。');
+    triggerCopyFlash();
+    markCopyButtonDone($('stamp-btn-download'), {
+      copiedLabel: 'Saved!',
+      fallbackLabel: 'PNGを保存',
+    });
+    showSaveSuccessToast();
   });
 
   $('stamp-btn-copy')?.addEventListener('click', (e) => {
