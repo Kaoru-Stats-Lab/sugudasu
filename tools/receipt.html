@@ -24,6 +24,12 @@
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 領収書" data-sg-subtitle="手取り逆引き · インボイス" data-sg-print="true" data-sg-tool-id="receipt"></div>
 
+<nav class="doc-tool-nav flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 mt-4 no-print" role="navigation" aria-label="書類ツール切替">
+    <a href="/stamp" class="sns-pv-tab sns-pv-tab--link">電子印鑑</a>
+    <a href="/invoice" class="sns-pv-tab sns-pv-tab--link">請求書</a>
+    <a href="/receipt" class="sns-pv-tab sns-pv-tab--link sns-pv-tab--active" aria-current="page">領収書</a>
+</nav>
+
 <main class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
     <!-- 入力パネル -->

@@ -25,12 +25,19 @@
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 請求書" data-sg-subtitle="見積 · 納品 · 請求" data-sg-print="true" data-sg-tool-id="invoice"></div>
 
+    <nav class="doc-tool-nav flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 mt-4 no-print" role="navigation" aria-label="書類ツール切替">
+        <a href="/stamp" class="sns-pv-tab sns-pv-tab--link">電子印鑑</a>
+        <a href="/invoice" class="sns-pv-tab sns-pv-tab--link sns-pv-tab--active" aria-current="page">請求書</a>
+        <a href="/receipt" class="sns-pv-tab sns-pv-tab--link">領収書</a>
+    </nav>
+
     <!-- メインコンテンツ -->
     <main class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
         <div class="no-print col-span-1 lg:col-span-12 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note" aria-label="利用環境の推奨">
             <strong class="font-bold">PC推奨</strong> — 帳票の最終確認・PDF保存・印刷はパソコン向けに最適化しています。スマホは入力や下書きの確認程度を想定しています。
         </div>
+        <p id="stamp-handoff-toast" class="no-print col-span-1 lg:col-span-12 stamp-toast stamp-toast--ok" hidden role="status"></p>
         
         <!-- 左側：入力フォームパネル -->
         <section class="no-print lg:col-span-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-6">
@@ -78,11 +85,13 @@
                     <label class="block text-[10px] font-bold text-slate-600">👤 担当者印</label>
                     <input type="file" id="in-stamp-user" accept="image/*" onchange="handleImageAsset(this, 'view-stamp-user-container', 42)" class="hidden">
                     <button type="button" onclick="document.getElementById('in-stamp-user').click()" class="w-full bg-white hover:bg-slate-100 border border-slate-300 rounded-lg py-2 text-[10px] font-medium text-slate-700 cursor-pointer text-center truncate">画像を選択</button>
+                    <p class="text-center"><a href="/stamp?slot=user" class="text-[9px] text-blue-600 hover:underline">電子印鑑を作る</a></p>
                 </div>
                 <div class="space-y-1">
                     <label class="block text-[10px] font-bold text-slate-600">🏢 会社社印</label>
                     <input type="file" id="in-stamp-comp" accept="image/*" onchange="handleImageAsset(this, 'view-stamp-comp-container', 62)" class="hidden">
                     <button type="button" onclick="document.getElementById('in-stamp-comp').click()" class="w-full bg-white hover:bg-slate-100 border border-slate-300 rounded-lg py-2 text-[10px] font-medium text-slate-700 cursor-pointer text-center truncate">画像を選択</button>
+                    <p class="text-center"><a href="/stamp?slot=comp" class="text-[9px] text-blue-600 hover:underline">電子印鑑を作る</a></p>
                 </div>
             </div>
 
@@ -423,6 +432,35 @@
             }
         };
 
+        const STAMP_HANDOFF_KEY = 'sg-stamp-handoff-v1';
+
+        function applyStampHandoffFromSession() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('from') !== 'stamp') return;
+            let payload = null;
+            try {
+                const raw = sessionStorage.getItem(STAMP_HANDOFF_KEY);
+                if (raw) payload = JSON.parse(raw);
+            } catch (_) { /* ignore */ }
+            if (!payload || payload.v !== 1 || !payload.dataUrl) return;
+            const slot = payload.slot === 'comp' ? 'comp' : 'user';
+            const containerId = slot === 'comp' ? 'view-stamp-comp-container' : 'view-stamp-user-container';
+            const width = slot === 'comp' ? 62 : 42;
+            setImageFromDataUrl(containerId, payload.dataUrl, width);
+            try { sessionStorage.removeItem(STAMP_HANDOFF_KEY); } catch (_) { /* ignore */ }
+            const toast = document.getElementById('stamp-handoff-toast');
+            if (toast) {
+                toast.hidden = false;
+                toast.textContent = slot === 'comp' ? '社印をセットしました。プレビューを確認してください。' : '担当者印をセットしました。プレビューを確認してください。';
+                window.setTimeout(() => { toast.hidden = true; }, 4000);
+            }
+            if (window.history && window.history.replaceState) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('from');
+                window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('in-date').value = today;
@@ -455,6 +493,7 @@
                 previewSelector: '#preview-container',
                 onChange: applyDocTypeChange,
             });
+            applyStampHandoffFromSession();
         });
 
         let docTypeSegmentCtrl = null;

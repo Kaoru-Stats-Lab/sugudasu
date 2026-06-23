@@ -9,6 +9,7 @@
   const TOOLS = [
     { id: 'hub', file: 'hub.html', label: '一覧', icon: '🏠' },
     { id: 'invoice', file: 'invoice.html', label: '請求書', icon: '📄' },
+    { id: 'stamp', file: 'stamp.html', label: '印鑑', icon: '🔴' },
     { id: 'receipt', file: 'receipt.html', label: '領収書', icon: '🧾' },
     { id: 'label', file: 'label.html', label: 'ラベル', icon: '🏷️' },
     { id: 'shift', file: 'shift.html', label: 'シフト', icon: '📅' },

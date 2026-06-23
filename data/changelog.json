@@ -4,6 +4,13 @@
     {
       "date": "2026-06-23",
       "type": "feat",
+      "title": "電子印鑑メーカー（/stamp）新設 · 請求書連携",
+      "body": "認印・角印の透過PNGをブラウザ内で作成。画像型である旨をFAQ・黄旗で明示。担当者印/社印サイズ（42px・62px）に合わせた出力と、sessionStorage 経由で請求書へ1クリック handoff。書類クラスタナビ（印鑑·請求·領収）を追加。",
+      "tools": ["stamp.html", "invoice.html", "receipt.html"]
+    },
+    {
+      "date": "2026-06-23",
+      "type": "feat",
       "title": "フォント変換ページ（/font-converter）新設",
       "body": "Unicode フォント23種（白抜き・筆記体・ギャル文字・半角カタ等）と特殊記号444件を追加。/sns はプレビュー・お手本・装飾変換を維持し、2ページ相互リンクでUIを分割。",
       "tools": ["font-converter.html", "sns.html"]

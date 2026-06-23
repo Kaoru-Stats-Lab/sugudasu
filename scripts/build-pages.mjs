@@ -52,7 +52,7 @@ function canonicalPathFromHtml(file) {
 
 function sitemapPriority(pathname) {
   if (pathname === '/') return '1.0';
-  if (pathname === '/invoice' || pathname === '/receipt') return '0.9';
+  if (pathname === '/invoice' || pathname === '/receipt' || pathname === '/stamp') return '0.9';
   if (pathname === '/updates') return '0.7';
   if (pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer' || pathname === '/statements') return '0.5';
   return '0.8';
@@ -181,6 +181,9 @@ const BUST_ASSET_NAMES = [
   'sns-app.js',
   'sns-font-engine.js',
   'font-converter-app.js',
+  'stamp-app.js',
+  'stamp-engine.js',
+  'stamp-handoff.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
 ];
@@ -275,7 +278,7 @@ function rewriteHtml(html) {
 
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
-  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'sns-font-engine.js', 'unicode-math-alpha.js'];
+  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'stamp-app.js', 'sns-font-engine.js', 'unicode-math-alpha.js'];
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);
     if (!fs.existsSync(p)) continue;
