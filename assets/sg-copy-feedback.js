@@ -167,7 +167,7 @@ export function markCopyButtonDone(buttonEl, options = {}) {
   window.setTimeout(() => {
     buttonEl.disabled = false;
     buttonEl.classList.remove('sg-copy-btn--done');
-    buttonEl.textContent = options.fallbackLabel ?? prevLabel || 'コピー';
+    buttonEl.textContent = options.fallbackLabel ?? (prevLabel || 'コピー');
   }, lockMs);
 }
 
