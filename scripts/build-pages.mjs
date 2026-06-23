@@ -275,7 +275,7 @@ function rewriteHtml(html) {
 
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
-  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'sns-font-engine.js'];
+  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'sns-font-engine.js', 'unicode-math-alpha.js'];
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);
     if (!fs.existsSync(p)) continue;

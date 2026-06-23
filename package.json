@@ -15,6 +15,7 @@
     "guard:pages-budget": "node scripts/guard-pages-build-budget.mjs check",
     "guard:pages-budget:show": "node scripts/guard-pages-build-budget.mjs show",
     "release:pages:free": "npm run build:pages && npm run guard:pages-budget && node scripts/guard-pages-build-budget.mjs consume",
+    "generate:font-styles-math": "node scripts/generate-font-styles-math.mjs",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
     "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs",
     "test:prize-law": "node scripts/prize-law-eval.test.mjs",

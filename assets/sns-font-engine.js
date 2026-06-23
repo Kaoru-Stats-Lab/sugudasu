@@ -1,6 +1,7 @@
 /**
  * SNS / フォント変換エンジン（ブラウザ完結）
  */
+import { MATH_BANDS, buildMathDest, isCorruptMathDest } from './unicode-math-alpha.js';
 
 export const STYLE_BADGES = {
   double: '定番',
@@ -95,6 +96,19 @@ export function filterStyles(styles, filter) {
 
 let stylesCache = null;
 
+function normalizeFontStyles(styles) {
+  return styles.map((style) => {
+    const bands = MATH_BANDS[style.key];
+    if (!bands || !style.map?.src) return style;
+    if (!isCorruptMathDest(style.map)) return style;
+    const [upper, lower, digit] = bands;
+    return {
+      ...style,
+      map: { src: style.map.src, dest: buildMathDest(upper, lower, digit) },
+    };
+  });
+}
+
 export async function loadHiraganaDecor() {
   const res = await fetch('/data/hiragana-decor.json');
   if (!res.ok) throw new Error('hiragana-decor.json load failed');
@@ -110,10 +124,10 @@ export async function loadFontStyles() {
     }),
     loadHiraganaDecor(),
   ]);
-  stylesCache = [
+  stylesCache = normalizeFontStyles([
     ...styles,
     { name: hira.name, key: hira.key, map: hira.map },
-  ];
+  ]);
   return stylesCache;
 }
 
