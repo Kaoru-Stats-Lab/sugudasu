@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-06-23",
+      "type": "feat",
+      "title": "フォント変換ページ（/font-converter）新設",
+      "body": "Unicode フォント23種（白抜き・筆記体・ギャル文字・半角カタ等）と特殊記号444件を追加。/sns はプレビュー・お手本・装飾変換を維持し、2ページ相互リンクでUIを分割。",
+      "tools": ["font-converter.html", "sns.html"]
+    },
+    {
+      "date": "2026-06-23",
       "type": "fix",
       "title": "フッター「SUGUDASUの約束」が古いキャッシュで残る不具合",
       "body": "sugudasu-shell.js の文言は既に更新済みだったが、build-pages の固定 ?v= と /assets/* の immutable キャッシュの組み合わせで旧 JS が配信され続けていた。アセット内容ハッシュで ?v= を自動更新するよう修正。",

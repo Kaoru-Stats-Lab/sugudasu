@@ -29,7 +29,7 @@
   "postCompletion": [
     "各スタイルをコピーしてSNSプロフィール・投稿へ貼付"
   ],
-  "relatedTools": ["reverse"],
+  "relatedTools": ["font-converter", "reverse"],
   "captainChecks": [],
   "promptNotes": ""
 }

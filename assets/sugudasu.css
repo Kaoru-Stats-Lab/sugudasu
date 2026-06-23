@@ -1348,6 +1348,212 @@ details.sg-faq[open] summary svg { transform: rotate(180deg); }
 }
 .sns-char-remainder--over { color: #b91c1c; }
 
+/* SNS hub nav (sns ↔ font-converter) */
+.sns-tool-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+.sns-tool-nav__link {
+  flex: 1 1 auto;
+  min-width: 8rem;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #64748b;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.sns-tool-nav__link:hover {
+  color: #0f172a;
+  background: #fff;
+  border-color: #e2e8f0;
+}
+.sns-tool-nav__link--active {
+  color: #1d4ed8;
+  background: #fff;
+  border-color: #bfdbfe;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.08);
+}
+
+/* font-converter (font-converter.html) */
+.fc-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .fc-layout {
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    align-items: start;
+  }
+  .fc-sticky-panel {
+    position: sticky;
+    top: 1rem;
+  }
+}
+.fc-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.fc-filter-btn {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+}
+.fc-filter-btn--active {
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+.fc-mini-symbols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.fc-mini-symbol {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.fc-mini-symbol:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+.fc-font-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.65rem;
+}
+.fc-font-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  background: #fff;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.fc-font-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+.fc-font-card--featured {
+  border-color: #bfdbfe;
+  background: linear-gradient(180deg, #f8fbff 0%, #fff 55%);
+}
+.fc-font-card__info {
+  min-width: 0;
+  flex: 1;
+}
+.fc-font-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+.fc-font-card__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.35;
+}
+.fc-font-card__pill {
+  font-size: 9px;
+  font-weight: 700;
+  color: #0369a1;
+  background: #e0f2fe;
+  border-radius: 9999px;
+  padding: 0.1rem 0.45rem;
+}
+.fc-font-card__preview {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #0f172a;
+  word-break: break-all;
+}
+.fc-font-card__copy {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9999px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+.fc-font-card__copy:hover { background: #dbeafe; }
+.fc-symbol-section {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.75rem;
+}
+.fc-symbol-section summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+}
+.fc-symbol-section summary::-webkit-details-marker { display: none; }
+.fc-symbol-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+}
+.fc-symbol-chip {
+  min-width: 2rem;
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.45rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+}
+.fc-symbol-chip:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+.fc-symbol-chip--copied {
+  border-color: #86efac;
+  background: #ecfdf5;
+}
+
 /* —— Print (shared) —— */
 @media print {
   @page {

@@ -1,0 +1,35 @@
+{
+  "tool_id": "font-converter",
+  "status": "reviewed",
+  "updatedAt": "2026-06-23",
+  "oneLiner": "SNS向けUnicodeフォント23種＋特殊記号をブラウザ内変換・コピー",
+  "personas": ["SNS運用担当", "個人ブランディング", "量産型・平成レトロ好き"],
+  "implemented": [
+    "23フォントスタイル一括変換（白抜き・筆記体・ギャル文字等）",
+    "定番/英数字/日本語フィルタ",
+    "ミニ特殊文字・444記号のワンタップコピー",
+    "/sns との役割分担ナビ"
+  ],
+  "notImplemented": [
+    "API投稿",
+    "ユーザー辞書の保存",
+    "ハッシュタグの検索互換保証"
+  ],
+  "dataHandling": {
+    "upload": false,
+    "serverSave": false,
+    "localStorage": "なし",
+    "retention": "セッション内のみ"
+  },
+  "trust": {
+    "faqStorage": "入力はブラウザ内変換のみ。外部送信なし。",
+    "faqEdit": "入力変更で即再変換。",
+    "faqRetention": "永続保存なし。"
+  },
+  "postCompletion": [
+    "各スタイルまたは記号をコピーしてSNSプロフィールへ貼付"
+  ],
+  "relatedTools": ["sns", "reverse"],
+  "captainChecks": [],
+  "promptNotes": ""
+}

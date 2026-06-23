@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="インスタ・X・LINE向けのかわいいフォント変換。白抜き・筆記体・ギャル文字・半角カタカナなど23種類を一括変換。特殊記号もコピペ。ブラウザ完結・登録不要。">
+    <title>かわいいフォント変換・特殊文字 | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="かわいいフォント変換・特殊文字メーカー">
+    <meta property="og:description" content="SNSプロフィール向けにUnicode装飾フォントへ一括変換。記号チップもその場でコピー。入力は端末内のみで完結。">
+    <meta property="og:url" content="https://sugudasu.com/font-converter">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="【コピペOK】かわいいフォント変換">
+    <meta name="twitter:description" content="白抜き・筆記体・ギャル文字など23スタイル＋特殊記号。インスタ・Xの名前やBioにそのまま貼れます。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。表示名・自己紹介・投稿文にコピーして使えます。ハッシュタグは通常文字を併用してください。","@type":"Answer"},"name":"XやInstagramでフォント変換した文字は使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ギャル文字・小文字・半角カタカナなど日本語向けスタイルがあります。英数字は最もきれいに変換されます。","@type":"Answer"},"name":"日本語もフォント変換できますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。変換はブラウザ内で完結し、入力テキストを外部送信しません。","@type":"Answer"},"name":"入力した文字はサーバーに送られますか？","@type":"Question"}],"@type":"FAQPage"}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU フォント変換" data-sg-subtitle="特殊文字 · Unicode" data-sg-tool-id="font-converter"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <nav class="sns-tool-nav no-print" aria-label="SNSツール切替">
+        <a href="/font-converter" class="sns-tool-nav__link sns-tool-nav__link--active">フォント変換</a>
+        <a href="/sns" class="sns-tool-nav__link">プロフィール作成（プレビュー付き）</a>
+    </nav>
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">インスタ · X · LINE 向け</p>
+        <h1 class="text-lg font-bold text-slate-900 leading-snug">かわいいフォント変換 · 特殊文字</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            入力した文字を<strong>Unicode装飾フォント</strong>に一括変換。白抜き・筆記体・ギャル文字など
+            <strong>23スタイル</strong>と、コピペ用の<strong>特殊記号</strong>を同じ画面で使えます。
+            <a href="/sns" class="text-blue-600 font-semibold hover:underline">プロフィールお手本・Insta/Xプレビュー</a>は SNS ページへ。
+        </p>
+    </header>
+
+    <div class="fc-layout">
+        <aside class="fc-sticky-panel sg-card p-5 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">テキスト入力</h2>
+            <div>
+                <label for="fc-input" class="block text-xs font-semibold text-slate-600 mb-1.5">変換したい文字</label>
+                <textarea id="fc-input" rows="4" class="sg-input resize-y" placeholder="例: cafe time&#10;例: ୨୧ my page ୨୧"></textarea>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">英字・数字が最もきれいに変換されます。記号ボタンで入力欄に追加できます。</p>
+
+            <div>
+                <p class="text-[10px] font-bold text-slate-500 mb-1.5">コピペで使えるミニ特殊文字</p>
+                <div id="fc-mini-symbols" class="fc-mini-symbols"></div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="button" id="fc-clear" class="text-xs font-semibold text-slate-600 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
+            </div>
+            <p class="text-[11px] text-slate-500">入力すると自動で変換します。空欄時はサンプル文でプレビューします。</p>
+        </aside>
+
+        <section class="space-y-4 min-w-0">
+            <div class="sg-card p-5 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                    <h2 class="text-sm font-bold text-slate-900">フォント変換一覧</h2>
+                    <span id="fc-result-count" class="text-[10px] text-slate-400 font-mono">0 種類</span>
+                </div>
+                <div id="fc-filters" class="fc-filter-bar" role="tablist" aria-label="フォント絞り込み"></div>
+                <div id="fc-font-list" class="fc-font-list"></div>
+                <p id="copy-toast-fc" class="sg-copy-toast hidden" role="status"></p>
+            </div>
+
+            <section class="sg-card p-5 space-y-3" aria-labelledby="fc-symbols-heading">
+                <div class="border-b border-slate-100 pb-2">
+                    <h2 id="fc-symbols-heading" class="text-sm font-bold text-slate-900">特殊記号一覧</h2>
+                    <p class="text-[11px] text-slate-500 mt-1">タップでコピー。プロフィールの区切りや装飾に使えます。</p>
+                </div>
+                <div id="fc-symbol-catalog" class="space-y-1 max-h-[28rem] overflow-y-auto pr-1"></div>
+            </section>
+
+            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">フォント変換のよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>XやInstagramでフォント変換した文字は使えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>表示名・自己紹介・投稿文にコピーして使えます。端末によって見え方が異なる場合があります。<strong>ハッシュタグ（#）</strong>は装飾文字では検索に効かないため、タグだけ通常文字にしてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>日本語もフォント変換できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>ギャル文字・小文字（赤ちゃん言葉風）・半角カタカナなど<strong>日本語向けスタイル</strong>があります。フィルタの「日本語」から絞り込めます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>/sns との違いは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>このページ</strong>は Unicode フォント23種＋記号カタログに特化しています。<a href="/sns" class="text-blue-600 font-semibold">SNSページ</a>は Insta/Xプレビュー・プロフィールお手本・区切り線パーツ・装飾変換（縦書き等）向けです。用途に合わせ使い分けてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>入力した文字はサーバーに送られますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。変換はすべてブラウザ内で完結し、入力テキストを外部に送信しません。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/font-converter-app.js"></script>
+</body>
+</html>
