@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="傾斜割り勘・イベント精算がブラウザで簡単計算。上司/後輩、遅刻者、飲まない人などの比率を細かく調整し、幹事の透明精算を支援します。">
-    <title>傾斜割り勘・イベント精算計算 | SUGUDASU</title>
+    <meta name="description" content="飲み会幹事の手間と心理的ハードルを減らす傾斜割り勘。登録不要・ブラウザ内計算。2次会・3次会は回ごとに別計算。LINE清算文をそのまま共有。">
+    <title>飲み会幹事の手間を減らす割り勘 | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="傾斜割り勘・イベント精算計算">
-    <meta property="og:description" content="上司と後輩、遅刻者、飲まない人の比率を細かく調整可能。イベント精算の不満を減らし、幹事の信頼を守る透明な精算を算出。">
+    <meta property="og:title" content="飲み会幹事の手間を減らす割り勘">
+    <meta property="og:description" content="幹事は誰もやりたくない前提で、按分・丸め・清算文を短縮。サーバーに金額を保存しないブラウザ完結。">
     <meta property="og:url" content="https://sugudasu.com/warikan.html">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="遅刻・飲まない人の比率も調整！幹事の傾斜割り勘計算">
-    <meta name="twitter:description" content="飲み会やイベント精算で揉めないための割り勘計算ツール。立場や飲食量に応じた傾斜計算をログインなしで完了できます。">
+    <meta name="twitter:title" content="飲み会幹事の手間を減らす割り勘">
+    <meta name="twitter:description" content="幹事が嫌でも按分と清算文はここで終わり。2次会は参加者だけでもう一度計算。登録不要・ブラウザ内。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"2次会・3次会は任意参加が多いため、その回の参加者だけで総額とグループを入れ直し、もう一度計算する運用を想定しています。1画面に全回をまとめる機能はありません。","@type":"Answer"},"name":"2次会・3次会の参加者だけで割り勘できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。役職・立場ごとにグループを作り、傾斜係数と人数で按分します。個人名簿を1行ずつ入力する方式より、人数の多い飲み会で素早く設定できます。","@type":"Answer"},"name":"上司と新人など、立場差のある飲み会に使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。最大剰余法で丸めたあとも集金総額とお会計総額が一致します。幹事の得損ゼロを画面と清算文で確認できます。","@type":"Answer"},"name":"端数処理後も合計は一致しますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。精算結果のテキストをコピーして、LINEやSlackへそのまま共有できます。","@type":"Answer"},"name":"計算結果は共有しやすい形式で出せますか？","@type":"Question"}],"@type":"FAQPage"}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"幹事は誰もやりたくない前提で、按分計算・丸め・LINE清算文の作成を短縮します。幹事役そのものは楽にはなりませんが、レジ後の計算と説明の負担を減らします。","@type":"Answer"},"name":"幹事が嫌でも手間は減りますか？","@type":"Question"},{"acceptedAnswer":{"text":"将来URLで入力を共有する機能を入れた場合も同様です。金額・人数・傾斜はサーバーに送りません。ブラウザ内で計算します。URL共有は現時点未実装です。","@type":"Answer"},"name":"データはサーバーに送られますか？","@type":"Question"},{"acceptedAnswer":{"text":"消えます。localStorageなし。清算文コピーで保管。URLやJSONでの入力復元は未実装（ロードマップ候補）。","@type":"Answer"},"name":"ページを閉じると入力は消えますか？","@type":"Question"},{"acceptedAnswer":{"text":"2次会・3次会はその回の参加者だけで総額とグループを入れ直し、もう一度計算する運用を想定しています。","@type":"Answer"},"name":"2次会・3次会は別に計算しますか？","@type":"Question"},{"acceptedAnswer":{"text":"丸め単位で端数が幹事の過不足表示にまとまることがあります。100円単位では最大剰余法でグループ間に分散し一致を目指します。調整のすき間は幹事自腹と決めつけず現場で相談。","@type":"Answer"},"name":"端数や調整のすき間は誰の負担ですか？","@type":"Question"},{"acceptedAnswer":{"text":"清算文で按分根拠を共有し、集金総額とお会計の一致を画面で確認できます。幹事個人の得が目的ではありません。","@type":"Answer"},"name":"幹事が得をしていると思われませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 割り勘" data-sg-tool-id="warikan"></div>
@@ -31,7 +31,7 @@
             <h2 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
                 <span>💰</span> 会計・割り勘設定
             </h2>
-            <p class="text-xs text-slate-600 leading-relaxed">飲み会の幹事は誰にとっても面倒 — 本ツールは<strong class="font-bold text-slate-700">計算の手間</strong>と<strong class="font-bold text-slate-700">精算の心理的ハードル</strong>を少しでも減らすことに主眼を置いています。役職・立場ごとの<strong class="font-bold text-slate-700">グループ傾斜</strong>で精算。2次会・3次会は<strong class="font-bold text-slate-700">その回の参加者だけ</strong>でもう一度計算すればOK。</p>
+            <p class="text-xs text-slate-600 leading-relaxed"><strong class="font-bold text-slate-800">幹事は誰もやりたくない</strong> — それでも任されたとき、按分・丸め・清算文の手間と心理的ハードルを<strong class="font-bold text-slate-700">少しでも減らす</strong>ツールです。グループ傾斜で精算。<strong class="font-bold text-slate-700">2次会・3次会は別途</strong>、その回の参加者だけでもう一度使ってください。</p>
 
             <div class="sg-segment sg-segment--cols-2 sg-segment--mode-coeff" id="warikan-mode-segment" role="tablist" aria-label="割り勘モード">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
@@ -156,14 +156,24 @@
     <section class="no-print sg-faq-section">
         <div class="sg-faq-inner">
             <h2 class="sg-faq-title">傾斜割り勘・飲み会精算のよくある質問</h2>
+            <p class="text-xs text-slate-500 mb-4">使い方のあとに、データの扱いと信頼に関する質問を載せています。</p>
             <div class="sg-faq-list">
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4" open>
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>幹事が嫌でも、手間は減りますか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>幹事役そのものは楽になりませんが、<strong>レジ後の按分・丸め・LINE清算文</strong>をここで終わらせられます。「幹事の計算が怪しい」という疑念も、清算文を共有すれば減らしやすくなります。幹事を増やすツールではなく、<strong>幹事の負担を少し軽くする</strong>ツールです。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>2次会・3次会は、参加者だけでもう一度割り勘すればいい？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>はい。任意参加の2次会・3次会は<strong>その回のお会計総額と参加者</strong>だけ入れ直して、もう一度計算する運用を想定しています。1次会から全部まとめる機能はありません（社風によって幹事の肩代わりなどは傾斜係数で調整してください）。</p>
+                        <p>はい。<strong>別途このツールをもう一度</strong>使ってください。任意参加の2次会・3次会は、その回の<strong>お会計総額と参加者</strong>だけ入れ直して計算する運用です。1次会から全部まとめる機能はありません。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -186,11 +196,38 @@
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                        <span>端数はどう丸めますか？合計と一致しますか？</span>
+                        <span>金額や人数はサーバーに送られますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                        <p>100円・500円・1000円単位では<strong>最大剰余法（LRM）</strong>で丸めます。お会計が丸め単位で割り切れないときは<strong>調整が必要</strong>と表示されます（幹事の自腹とは限りません）。飲み会は<strong>100円単位</strong>推奨。余り・不足は清算文の幹事メモで方針を共有できます。</p>
+                        <p><strong>将来 URL で入力状態を共有する機能を入れた場合も同様です。</strong> 金額・人数・傾斜は<strong>サーバーに送りません</strong>。ブラウザ内で計算し、SUGUDASU に保存する設計にはしていません（幹事王の「URL内のみ」と同じ考え方）。清算文はコピーして LINE / Slack へ貼り付けて共有してください。URL共有は<strong>現時点未実装</strong>（将来もサーバー非送信を前提に検討）。詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a> · <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>ページを閉じると入力は消えますか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p><strong>消えます。</strong>localStorage による自動復元もありません。再訪問時は空のフォームからです。記録が必要なら<strong>清算文をコピー</strong>して幹事が自行保管してください。<strong>URL や JSON ファイルでの入力復元は未実装</strong>です（ロードマップ候補 — 実装してもサーバー非送信の方針は変えません）。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>端数や「調整のすき間」は誰の負担ですか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p><strong>なぜ幹事に余り・不足が出ることがある？</strong> 丸め単位（500円・1,000円など）で1人あたりを切り下げると、理論上の端数が集金総額とお会計の差として<strong>幹事の過不足表示</strong>にまとまります。100円単位では<strong>最大剰余法（LRM）</strong>でグループ間に端数を分散し、集金総額とお会計を一致させます。それでも<strong>調整のすき間</strong>が出る場合（例: 1,000円単位でお会計が割り切れない）は、<strong>幹事の自腹とは決めつけません</strong>。「不足分はどうしましょうか？」と表示し、先輩・上司のご負担や次回への回しなど<strong>現場で決める</strong>前提です。飲み会は100円単位推奨。</p>
+                    </div>
+                </details>
+                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                    <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                        <span>幹事が得をしていると思われませんか？</span>
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                        <p>按分結果を<strong>清算文として全員に見える形</strong>で共有できます。計算後は<strong>集金総額とお会計が一致するか</strong>を画面で確認でき（LRM適用時）、根拠をそのまま LINE に貼れます。多めのご負担への<strong>お礼文</strong>も添えられます。目的は幹事個人の得ではなく、<strong>「幹事の独断」ではなく計算根拠の透明化</strong>です。幹事が悪者に見えにくいよう、不足・余りも決めつけない文案にしています。</p>
                     </div>
                 </details>
                 <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
