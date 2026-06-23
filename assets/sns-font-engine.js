@@ -42,7 +42,7 @@ export const SNS_DEFAULT_TEXT = SNS_DEFAULT_LINES.join('\n');
 /** ワンタップサンプル（バイオ・見出し・ワンワード） */
 export const SAMPLE_TEXTS = [
   { label: 'Bio', text: 'MY ROOM / MY LIFE' },
-  { label: 'Café', text: 'SLOW COFFEE, SLOW LIFE.' },
+  { label: 'Cafe', text: 'SLOW COFFEE, SLOW LIFE.' },
   { label: 'minimal', text: 'minimal / neutral / edit' },
   { label: 'archive', text: 'tokyo / 2026 / archive' },
   { label: 'Insight', text: "TODAY'S INSIGHT" },

@@ -178,6 +178,11 @@ const BUST_ASSET_NAMES = [
   'sugudasu.css',
   'sugudasu-segment.js',
   'tw-build.css',
+  'sns-app.js',
+  'sns-font-engine.js',
+  'font-converter-app.js',
+  'unicode-math-alpha.js',
+  'sg-copy-feedback.js',
 ];
 
 function computeAssetVersion() {
@@ -244,6 +249,16 @@ function rewriteHtml(html) {
     `src="/assets/sugudasu-segment.js?v=${ASSET_V}"`
   );
 
+  out = out.replace(
+    /src="\/assets\/(font-converter-app|sns-page)\.js"/g,
+    `src="/assets/$1.js?v=${ASSET_V}"`
+  );
+
+  out = out.replace(
+    /from '\/assets\/sns-app\.js'/g,
+    `from '/assets/sns-app.js?v=${ASSET_V}'`
+  );
+
   // 回帰禁止: defer 付与・inline mount 復活（docs/notes/CHROME_HEADER_GUARDRAILS.md）
   if (/sugudasu-shell\.js[^"]*"\s+defer/.test(out)) {
     throw new Error('rewriteHtml: sugudasu-shell.js に defer を付けてはいけません');
@@ -256,6 +271,21 @@ function rewriteHtml(html) {
   out = out.replace(/\n<script>\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*<\/script>\s*/g, '\n');
 
   return out;
+}
+
+function bustJsImports() {
+  const distAssets = path.join(DIST, 'assets');
+  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'sns-font-engine.js'];
+  for (const name of moduleFiles) {
+    const p = path.join(distAssets, name);
+    if (!fs.existsSync(p)) continue;
+    let src = fs.readFileSync(p, 'utf8');
+    src = src.replace(/from '\.\/([^']+\.js)'/g, (match, dep) => {
+      if (BUST_ASSET_NAMES.includes(dep)) return `from './${dep}?v=${ASSET_V}'`;
+      return match;
+    });
+    fs.writeFileSync(p, src, 'utf8');
+  }
 }
 
 function prepareDist() {
@@ -276,6 +306,7 @@ compileTailwind();
 ASSET_V = computeAssetVersion();
 console.log(`  asset cache-bust: ?v=${ASSET_V}`);
 copyDir(ASSETS, path.join(DIST, 'assets'));
+bustJsImports();
 
 const faviconSrc = path.join(ASSETS, 'favicon.png');
 if (fs.existsSync(faviconSrc)) {

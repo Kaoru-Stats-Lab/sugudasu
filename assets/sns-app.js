@@ -21,7 +21,7 @@ const toastSns = document.getElementById('copy-toast-sns');
 export async function sgCopy(text, buttonEl, options = {}) {
   const payload = String(text ?? '');
   if (!payload) return;
-  const toastEl = options.toastEl ?? toastSns;
+  const toastEl = options.toastEl ?? toastSns ?? document.getElementById('copy-toast-sns');
   const labelBtn = buttonEl && (
     buttonEl.classList.contains('deco-card__copy')
     || buttonEl.classList.contains('fc-font-card__copy')

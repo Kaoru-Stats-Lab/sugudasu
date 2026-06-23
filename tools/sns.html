@@ -26,7 +26,7 @@
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <div class="flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-lg no-print" role="navigation" aria-label="SNSツール切替">
+    <div class="sns-tool-nav flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 w-full max-w-lg no-print" role="navigation" aria-label="SNSツール切替">
         <a href="/font-converter" class="sns-pv-tab sns-pv-tab--link">フォント変換</a>
         <a href="/sns" class="sns-pv-tab sns-pv-tab--link sns-pv-tab--active">プロフィール作成</a>
     </div>
@@ -198,22 +198,22 @@ function hasJapanese(s) {
 
 function mapMathAlpha(s, upperBase, lowerBase, digitBase) {
     return [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(upperBase + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(lowerBase + (n - 0x61));
-        if (digitBase != null && n >= 0x30 && n <= 0x39) return String.fromCharCode(digitBase + (n - 0x30));
+        const n = c.codePointAt(0);
+        if (n >= 0x41 && n <= 0x5A) return String.fromCodePoint(upperBase + (n - 0x41));
+        if (n >= 0x61 && n <= 0x7A) return String.fromCodePoint(lowerBase + (n - 0x61));
+        if (digitBase != null && n >= 0x30 && n <= 0x39) return String.fromCodePoint(digitBase + (n - 0x30));
         return c;
     }).join('');
 }
 
 function mapCircled(s) {
     return [...s].map(c => {
-        const n = c.charCodeAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCharCode(0x24B6 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCharCode(0x24D0 + (n - 0x61));
+        const n = c.codePointAt(0);
+        if (n >= 0x41 && n <= 0x5A) return String.fromCodePoint(0x24B6 + (n - 0x41));
+        if (n >= 0x61 && n <= 0x7A) return String.fromCodePoint(0x24D0 + (n - 0x61));
         if (n >= 0x30 && n <= 0x39) {
             if (n === 0x30) return '\u24EA';
-            return String.fromCharCode(0x2460 + (n - 0x31));
+            return String.fromCodePoint(0x2460 + (n - 0x31));
         }
         return c;
     }).join('');
