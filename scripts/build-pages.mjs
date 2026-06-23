@@ -230,7 +230,7 @@ function rewriteHtml(html) {
     ''
   );
 
-  if (!out.includes('fonts.googleapis.com')) {
+  if (!out.includes('Montserrat:wght@800')) {
     out = out.replace(/(<meta charset="UTF-8">)/, `$1\n${FONT_HEAD}`);
   }
 
@@ -253,7 +253,7 @@ function rewriteHtml(html) {
   );
 
   out = out.replace(
-    /src="\/assets\/(font-converter-app|sns-page)\.js"/g,
+    /src="\/assets\/(font-converter-app|sns-page|stamp-app)\.js"/g,
     `src="/assets/$1.js?v=${ASSET_V}"`
   );
 

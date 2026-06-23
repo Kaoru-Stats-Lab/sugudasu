@@ -4,6 +4,13 @@
     {
       "date": "2026-06-23",
       "type": "fix",
+      "title": "電子印鑑：共通ヘッダー（Montserrat）と行書フォント読込の修正",
+      "body": "stamp.html 直書きの Google Fonts が build の FONT_HEAD（ロゴ用 Montserrat）注入をスキップしていたため、共通ヘッダーのロゴ表示が他ページとずれていた。Yuji Boku は行書選択時のみ動的読込に変更。Canvas は weight 400（Yuji Boku 実ウェイト）で描画。",
+      "tools": ["stamp.html", "stamp-engine.js", "build-pages.mjs"]
+    },
+    {
+      "date": "2026-06-23",
+      "type": "fix",
       "title": "電子印鑑：認印のみに絞り角印・偽古印体を削除",
       "body": "角印は枠内組版の品質を保証できないため削除（社印は請求書の画像アップロード）。古印体風（実体は明朝+字間）を廃止し、明朝体と Google Fonts Yuji Boku（行書風・OFL）に整理。文字サイズは丸枠内 auto-fit。",
       "tools": ["stamp.html", "stamp-engine.js", "stamp-app.js", "invoice.html", "hub.html"]

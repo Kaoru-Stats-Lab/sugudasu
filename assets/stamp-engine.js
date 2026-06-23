@@ -12,6 +12,9 @@ export const SIZE_PRESETS = [
 
 export const STAMP_GYOSHO_FAMILY = '"Yuji Boku", "HGP行書体", "HG行書体", "YuKyokasho Yoko", cursive';
 
+const YUJI_BOKU_CSS = 'https://fonts.googleapis.com/css2?family=Yuji+Boku&display=swap';
+let gyoshoFontPromise = null;
+
 const DEFAULT_COLOR = '#c41e3a';
 const FONT_MINCHO = '"Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif';
 
@@ -32,13 +35,37 @@ export function stampFontFamily(style) {
 /**
  * @param {StampFontStyle} style
  */
+export function stampFontWeight(style) {
+  return style === 'gyosho' ? '400' : '700';
+}
+
+/**
+ * @param {StampFontStyle} style
+ */
 export async function ensureStampFonts(style) {
-  if (style !== 'gyosho' || !document.fonts?.load) return;
-  try {
-    await document.fonts.load(`700 32px ${STAMP_GYOSHO_FAMILY}`);
-  } catch {
-    /* fallback to mincho stack inside gyosho family */
+  if (style !== 'gyosho') return;
+  if (!gyoshoFontPromise) {
+    gyoshoFontPromise = (async () => {
+      const linkId = 'sg-stamp-yuji-boku';
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement('link');
+        link.id = linkId;
+        link.rel = 'stylesheet';
+        link.href = YUJI_BOKU_CSS;
+        document.head.appendChild(link);
+        await new Promise((resolve) => {
+          link.addEventListener('load', resolve, { once: true });
+          link.addEventListener('error', resolve, { once: true });
+          window.setTimeout(resolve, 4000);
+        });
+      }
+      if (document.fonts?.load) {
+        await document.fonts.load(`400 48px ${STAMP_GYOSHO_FAMILY}`);
+        await document.fonts.ready;
+      }
+    })();
   }
+  await gyoshoFontPromise;
 }
 
 /**
@@ -57,13 +84,13 @@ function splitRoundChars(text) {
  * @param {number} maxWidth
  * @param {number} maxHeight
  */
-function fitRoundFontSize(ctx, fontFamily, chars, maxFont, maxWidth, maxHeight) {
+function fitRoundFontSize(ctx, fontFamily, fontWeight, chars, maxFont, maxWidth, maxHeight) {
   let lo = 8;
   let hi = maxFont;
   let best = lo;
   while (lo <= hi) {
     const mid = Math.floor((lo + hi) / 2);
-    ctx.font = `700 ${mid}px ${fontFamily}`;
+    ctx.font = `${fontWeight} ${mid}px ${fontFamily}`;
     const widths = chars.map((ch) => ctx.measureText(ch).width);
     const maxW = Math.max(...widths, 0);
     const totalH = mid * chars.length * 1.08;
@@ -139,15 +166,16 @@ function drawRoundStamp(ctx, size, text, color, fontStyle) {
   if (!chars.length) return;
 
   const family = stampFontFamily(fontStyle);
+  const fontWeight = stampFontWeight(fontStyle);
   const innerW = radius * 1.35;
   const innerH = radius * 1.55;
   const maxFont = Math.round(radius * (chars.length <= 2 ? 0.78 : chars.length === 3 ? 0.62 : 0.52));
-  const fontPx = fitRoundFontSize(ctx, family, chars, maxFont, innerW, innerH);
+  const fontPx = fitRoundFontSize(ctx, family, fontWeight, chars, maxFont, innerW, innerH);
 
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.font = `700 ${fontPx}px ${family}`;
+  ctx.font = `${fontWeight} ${fontPx}px ${family}`;
 
   if (chars.length === 1) {
     ctx.fillText(chars[0], cx, cy);
