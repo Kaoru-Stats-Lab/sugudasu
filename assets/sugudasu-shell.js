@@ -18,6 +18,7 @@
     { id: 'normalize', file: 'normalize.html', label: '正規化', icon: '🔤' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
+    { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
     { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
@@ -150,6 +151,43 @@
     </header>`;
   }
 
+  function focusHeaderHtml(title, subtitle, showPrint) {
+    // 当日進行はナビ16本より「今の表」が主役 — 提督判断 · timeline focus モード（§ TIMELINE_TOOL_SPEC §7-1）
+    const printBtn = showPrint
+      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-semibold px-3 py-1.5 rounded-md transition-colors">印刷</button>`
+      : '';
+    const shortTitle = subtitle || title.replace(/^SUGUDASU\s+/, '') || '進行';
+    return `<header class="sg-site-header sg-site-header--focus">
+      <div class="sg-site-header__inner flex min-h-11 max-w-7xl mx-auto px-3 sm:px-4 items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+          <a href="${homeHref()}" class="shrink-0 text-[11px] font-bold text-slate-500 hover:text-slate-800 no-underline" aria-label="ツール一覧へ">一覧</a>
+          <span class="text-slate-300" aria-hidden="true">/</span>
+          <p class="text-sm font-bold text-slate-900 truncate">${escapeHtml(shortTitle)}</p>
+          <span data-sg-focus-badge class="shrink-0"></span>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          ${printBtn}
+        </div>
+      </div>
+    </header>`;
+  }
+
+  function focusChromeHtml(title, showPrint, subtitle) {
+    return `<div class="sg-chrome sg-chrome--focus no-print sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-slate-200">${focusHeaderHtml(title, subtitle, showPrint)}</div>`;
+  }
+
+  function focusFooterHtml() {
+    return `<footer class="no-print border-t border-slate-100 bg-white py-3 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center text-[10px] text-slate-400 space-x-2">
+        <a href="${homeHref()}" class="text-slate-500 hover:underline">ツール一覧</a>
+        <span aria-hidden="true">·</span>
+        <a href="privacy.html" class="hover:underline">プライバシー</a>
+        <span aria-hidden="true">·</span>
+        <span>ブラウザ内完結</span>
+      </div>
+    </footer>`;
+  }
+
   function chromeHtml(title, showPrint, activeFile, subtitle, navItems) {
     return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint, subtitle)}${navHtml(activeFile, navItems)}</div>`;
   }
@@ -195,6 +233,7 @@
     const showPrint = !!(opts && opts.print);
     const landscape = !!(opts && opts.landscape);
     const subtitle = (opts && opts.subtitle) || '';
+    const chromeMode = (opts && opts.chromeMode) || 'default';
     const file = currentFile();
     const top = document.getElementById('sg-chrome-top');
     const bottom = document.getElementById('sg-chrome-bottom');
@@ -202,16 +241,23 @@
     if (landscape) {
       document.body.classList.add('sg-print-landscape');
     }
+    if (chromeMode === 'focus') {
+      document.body.classList.add('sg-chrome-focus');
+    }
 
     ensureFavicon();
     loadGa4();
 
     if (top) {
       if (top.querySelector('.sg-chrome')) return;
-      top.innerHTML = chromeHtml(title, showPrint, file, opts && opts.subtitle);
+      if (chromeMode === 'focus') {
+        top.innerHTML = focusChromeHtml(title, showPrint, subtitle);
+      } else {
+        top.innerHTML = chromeHtml(title, showPrint, file, subtitle);
+      }
     }
     if (bottom && !bottom.innerHTML.trim()) {
-      bottom.innerHTML = footerHtml();
+      bottom.innerHTML = chromeMode === 'focus' ? focusFooterHtml() : footerHtml();
     }
 
     loadGrowthScript();
@@ -231,6 +277,7 @@
       subtitle: top.getAttribute('data-sg-subtitle') || '',
       print: top.getAttribute('data-sg-print') === 'true',
       landscape: top.getAttribute('data-sg-landscape') === 'true',
+      chromeMode: top.getAttribute('data-sg-chrome-mode') === 'focus' ? 'focus' : 'default',
     };
   }
 
@@ -406,6 +453,21 @@
     const tool = getToolMeta(toolId);
     if (!tool || tool.devBadge === false) return;
 
+    const badge = formatDevStageBadgeHtml(tool.stage, {
+      version: tool.version,
+      title: tool.name,
+      statusNote: tool.statusNote,
+    });
+
+    // focus モードは帯バナーを出さず、コンパクトヘッダ内にバッジのみ（当日の縦スペース確保）
+    if (top.getAttribute('data-sg-chrome-mode') === 'focus') {
+      const slot = document.querySelector('[data-sg-focus-badge]');
+      if (slot) slot.innerHTML = badge;
+      const bar = document.getElementById('sg-dev-badge-bar');
+      if (bar) bar.hidden = true;
+      return;
+    }
+
     let bar = document.getElementById('sg-dev-badge-bar');
     if (!bar) {
       bar = document.createElement('div');
@@ -414,11 +476,6 @@
       top.insertAdjacentElement('afterend', bar);
     }
 
-    const badge = formatDevStageBadgeHtml(tool.stage, {
-      version: tool.version,
-      title: tool.name,
-      statusNote: tool.statusNote,
-    });
     const note = tool.statusNote
       ? `<span class="sg-dev-badge-note">${escapeHtml(tool.statusNote)}</span>`
       : '';

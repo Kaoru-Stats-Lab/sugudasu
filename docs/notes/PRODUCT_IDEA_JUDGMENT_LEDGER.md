@@ -114,7 +114,8 @@
 | T10 | 全員の空き日程調整 | × | ◎ | **OUT** | — | **回答のサーバー同期・永続化**が必須（F3）。調整さん等に任せる。縮小: 候補日3つ＋回答テンプレ文生成のみ（X02） |
 | T11 | グループ分け（研修 · ハッカソン） | ◎ | ◎ | **GO** | **S** | **主=人事·研修**（P-A）。宴会は副。Online Stopwatch と差別化=**非送信·均等·TSV·シード**。制約は Phase B。**SSOT:** `GROUP_SPLIT_TOOL_SPEC.md` |
 | T12 | 食べログ等URLから候補店リスト整形 | △ | ○ | **HOLD** | B | **スクレイピングは壊れやすい・ToSリスク**。「URL+店名を1行ずつ貼る→きれいな投票リスト」に縮小すれば○ |
-| T13 | イベント進行タイムライン（時間連動再計算） | ◎ | ○ | **GO** | **S** | P-A。「5分ずらすと全部手計算」Pain。`shift.html`と時間軸で世界観共有 |
+| T13 | イベント進行タイムライン（時間連動再計算） | ◎ | ○ | **GO** | **S** | P-A。「5分ずらすと全部手計算」Pain。**コア=非送信。** SSOT: `TIMELINE_TOOL_SPEC.md` |
+| T13-S | 進行 **Sync**（ライブ共有 · 有料） | △※ | ◎ | **GO** | **S** | ※F3緩和。**真のSolution=配信。** 登録·共有·NO広告·Stripe。**SSOT:** `SUGUDASU_SYNC_LINE.md` |
 | T14 | PayPay等・送金リンク＋請求文生成 | △ | ○ | **HOLD** | B | **金額プリフィルURLは仕様・端末差で不安定**。幹事向け「請求文テンプレ＋QR表示」までが堅い。`warikan` 連携はM5◎ |
 
 ### 4-4. SNS・コミュニケーション・その他
@@ -172,7 +173,7 @@
 
 | Tier | 意味 | 該当ID |
 |------|------|--------|
-| **S** | 適合◎・市場○以上 · 次の本命 | T03, T09, T11, T13, **lottery** |
+| **S** | 適合◎・市場○以上 · 次の本命 | T03, T09, T11, T13, **T13-S**, **lottery** |
 | **A** | 適合◎ · 流入 or 連携強い | T06, T08, X01, X03 |
 | **B** | 縮小・統合・v2 | T01, T02, T05, T12, T14, T17, T20, X02, X04, X06-X10 |
 | **C** | コモディティ · ハブ1機能化 | T07, T15, T18, T19 |
@@ -180,12 +181,10 @@
 
 **T03 SSOT:** `docs/notes/NORMALIZE_TEXT_TOOL_SPEC.md`（500行cap · 行数Before/After · 用途プリセット）  
 **T11 SSOT:** `docs/notes/GROUP_SPLIT_TOOL_SPEC.md`（Phase A–C 実装済 · `/group-split`）  
-**T13 SSOT:** 未作成 — Backlog **§1-12 M01** · `MOBILE_KILLER_GEMINI_RESULT.md`
-
-**モバイルブレスト（2026-06-20）:** M01–M10 → `docs/notes/MOBILE_KILLER_GEMINI_RESULT.md` §Cursor突合
+**T13 SSOT:** **`docs/notes/TIMELINE_TOOL_SPEC.md`**（コア）· **`docs/notes/SUGUDASU_SYNC_LINE.md`**（Sync · T13-S）— Backlog **§1-12 M01**
 
 **推奨リリース順（ディレクター案・lottery除く）:**  
-1) T03 normalize ✓ → 2) T09 webp ✓ → 3) T11 group-split ✓ → **4) T13 timeline（M01 · P0）** → 5) group-split モバイル Resilience（M02 · P0）
+1) T03 normalize ✓ → 2) T09 webp ✓ → 3) T11 group-split ✓ → **4) T13 timeline コア（M01 · P0）** → **5) T13-S Sync S1–S2** → 6) group-split モバイル Resilience（M02 · P0）
 
 ---
 
@@ -194,7 +193,7 @@
 | ID | 一言 | 詳細背景 |
 |----|------|----------|
 | **T04** | 社内認証データが要る | Notion/Drive横断検索は**ログイン・API・インデックス**が前提。SUGUDASUの「送らない」と両立しない |
-| **T10** | サーバー同期が要る | 日程調整は**回答の集約・更新・リマインド**がコア。静的サイトでは「調整さん」に劣る |
+| **T10** | サーバー同期が要る | 日程調整は**回答の集約・更新・リマインド**がコア。静的サイトでは「調整さん」に劣る。**T13-S（進行の一方向配信）とは別** |
 | **T16** | ホスティング・外部依存 | 音源の自前配信は帯域・ライセンス・F3コスト。ツールというよりメディア事業 |
 
 ---

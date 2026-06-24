@@ -158,6 +158,19 @@
       "stage": "beta",
       "statusNote": "PC→スマホ同期メモ · 緩和モード · M02 タップ再編 · セッションJSON · Phase C · 250名cap · T11"
     },
+    "timeline": {
+      "file": "timeline.html",
+      "conceptName": "進行タイムライン",
+      "productName": "SUGUDASU イベント進行",
+      "navLabel": "進行",
+      "navIcon": "⏱️",
+      "inNav": true,
+      "navOrder": 11.5,
+      "name": "イベント進行タイムライン",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "T13 M01 · 連動再計算 · ±5 · 差し込み · TSVコピー · 非送信 · alpha"
+    },
     "present": {
       "file": "present.html",
       "conceptName": "ギフト提案",

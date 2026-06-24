@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="イベント・研修の当日進行表。1コマずらすと後続の開始時刻が連動。ブラウザ内完結・非送信。TSV/プレーンコピーで司会へ共有。">
+    <title>SUGUDASU イベント進行 ｜ タイムスケジュール自動計算ツール</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="イベント進行 — 時刻連動 · 非送信">
+    <meta property="og:description" content="進行表の1コマ変更で後続が全部追従。スマホで±5分・差し込み・コピー。登録不要。">
+    <meta property="og:url" content="https://sugudasu.com/timeline">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="【非送信】イベント進行タイムライン">
+    <meta name="twitter:description" content="司会・研修のRUN OF SHOW。5分押すと後ろが全部ずれる。Excelの手計算から解放。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+        /* 進行中行・選択行 — Rundown 型。色は sg トークンに寄せず赤系で「今」を一目に */
+        .tl-row--current { background: rgb(254 242 242); border-color: rgb(252 165 165); }
+        .tl-row--selected { ring: 2px; ring-color: rgb(16 185 129); }
+        .tl-row--conflict { background: rgb(255 241 242); border-color: rgb(244 63 94); }
+        .tl-now-marker { border-left: 3px solid rgb(239 68 68); }
+        .tl-footer-bar { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+        /* focus chrome 下でも sticky プレビューが隠れないよう top オフセット */
+        body.sg-chrome-focus .lg\:sticky.lg\:top-4 { top: 3rem; }
+        @media print {
+            body.sg-chrome-focus .no-print { display: none !important; }
+            #tl-panel-edit { display: none !important; }
+            #tl-panel-preview {
+                display: block !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                position: static !important;
+            }
+            .tl-print-sheet {
+                padding: 12mm 15mm;
+                width: 100%;
+                box-sizing: border-box;
+                color: #0f172a;
+            }
+            .tl-print-bar {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 8mm;
+                background: #059669;
+                color: #fff;
+                margin: -12mm -15mm 5mm;
+                padding: 3.5mm 15mm;
+            }
+            .tl-print-bar__brand { font-size: 11pt; font-weight: 700; }
+            .tl-print-bar__sub { font-size: 8pt; font-weight: 600; opacity: 0.9; letter-spacing: 0.06em; }
+            .tl-print-title {
+                font-size: 16pt;
+                font-weight: 700;
+                margin: 0 0 2mm;
+                line-height: 1.3;
+            }
+            .tl-print-meta {
+                font-size: 9pt;
+                color: #475569;
+                margin: 0 0 4mm;
+            }
+            .tl-print-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 9pt;
+            }
+            .tl-print-table th {
+                background: #f1f5f9;
+                border: 1px solid #cbd5e1;
+                padding: 1.5mm 2mm;
+                text-align: left;
+                font-size: 8pt;
+                font-weight: 700;
+            }
+            .tl-print-table th:nth-child(2) { width: 10mm; text-align: center; }
+            .tl-print-table td {
+                border: 1px solid #e2e8f0;
+                padding: 1.8mm 2mm;
+                vertical-align: top;
+                line-height: 1.35;
+            }
+            .tl-print-table td:nth-child(2) { text-align: center; }
+            .tl-print-table tr { break-inside: avoid; page-break-inside: avoid; }
+            .tl-print-row--conflict td { background: #fff1f2; }
+            .tl-print-note { font-size: 8pt; color: #334155; }
+            .tl-print-conflict { color: #be123c; font-weight: 700; font-size: 7pt; }
+            .tl-print-foot {
+                margin-top: 4mm;
+                font-size: 9pt;
+                font-weight: 700;
+                color: #334155;
+            }
+        }
+    </style>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"進行表データはサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。編集・再計算はブラウザ内だけで完結します。"}},{"@type":"Question","name":"シフト表ツールとの違いは？","acceptedAnswer":{"@type":"Answer","text":"シフトは週次の勤務格子が主役です。本ツールは当日1イベントの時系列リスト（RUN OF SHOW）で、1コマの所要分を変えると後続の開始・終了が連動します。"}},{"@type":"Question","name":"当日にコマを差し込めますか？","acceptedAnswer":{"@type":"Answer","text":"はい。行追加で挨拶・表彰など想定外のコマを挿入でき、以降の時刻が自動でずれます。"}},{"@type":"Question","name":"固定時刻（アンカー）と衝突したら？","acceptedAnswer":{"@type":"Answer","text":"自動では前のコマを短縮しません。衝突行を赤表示し、幹事が手で調整します。"}}]}</script>
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+
+<div id="sg-chrome-top"
+     data-sg-title="SUGUDASU イベント進行"
+     data-sg-subtitle="当日進行"
+     data-sg-tool-id="timeline"
+     data-sg-chrome-mode="focus"
+     data-sg-print="true"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4 pb-28 lg:pb-6">
+
+    <header class="max-w-3xl no-print">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">登録不要 · ブラウザ内完結 · 進行表は外部に送信しません</p>
+    </header>
+
+    <div id="tl-conflict-banner" class="hidden no-print rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-900" role="alert">
+        アンカー時刻と前のコマが重なっています。自動では短縮しません — 手前の所要分を調整してください。
+    </div>
+
+    <!-- スマホのみタブ — PC は常時2カラム（§7-2） -->
+    <div class="lg:hidden no-print flex rounded-lg border border-slate-200 p-1 bg-slate-50" role="tablist" aria-label="編集とプレビュー">
+        <button type="button" id="tl-tab-edit" class="flex-1 text-sm font-bold py-2 rounded-md bg-white shadow-sm text-emerald-800" role="tab" aria-selected="true">編集</button>
+        <button type="button" id="tl-tab-preview" class="flex-1 text-sm font-bold py-2 rounded-md text-slate-600" role="tab" aria-selected="false">プレビュー</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+        <section id="tl-panel-edit" class="space-y-4 no-print">
+            <div class="sg-card p-5 space-y-4">
+                <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">イベント設定</h2>
+                <div>
+                    <label for="tl-event-title" class="block text-xs font-semibold text-slate-600 mb-1">タイトル</label>
+                    <input type="text" id="tl-event-title" class="sg-input text-sm" placeholder="例: 第3回 社内勉強会" maxlength="120">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="tl-event-date" class="block text-xs font-semibold text-slate-600 mb-1">開始日</label>
+                        <input type="date" id="tl-event-date" class="sg-input text-sm">
+                    </div>
+                    <div>
+                        <label for="tl-event-start" class="block text-xs font-semibold text-slate-600 mb-1">開始時刻</label>
+                        <input type="time" id="tl-event-start" class="sg-input text-sm" step="60">
+                    </div>
+                    <div>
+                        <label for="tl-event-target-end" class="block text-xs font-semibold text-slate-600 mb-1">目標終了（任意）</label>
+                        <input type="time" id="tl-event-target-end" class="sg-input text-sm" step="60" title="撤収・閉会のデッドライン。終了予定との差を表示します。">
+                    </div>
+                </div>
+                <button type="button" id="tl-load-template" class="text-[11px] font-bold text-emerald-800 border border-emerald-300 rounded-md px-3 py-1.5 hover:bg-emerald-50">
+                    サンプル（研修3h）を読み込む
+                </button>
+            </div>
+
+            <div class="sg-card p-5 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h2 class="text-sm font-bold text-slate-900">コマ一覧</h2>
+                    <span id="tl-row-count" class="text-[11px] font-mono text-slate-500">0 行</span>
+                </div>
+                <ul id="tl-row-list" class="space-y-2 text-sm" aria-label="進行コマ"></ul>
+                <p id="tl-row-empty" class="text-xs text-slate-500">コマがありません。下の「行追加」で足してください。</p>
+            </div>
+
+            <div id="tl-row-editor" class="hidden sg-card p-5 space-y-3 border-2 border-emerald-200">
+                <h2 class="text-sm font-bold text-slate-900">選択中のコマ</h2>
+                <div>
+                    <label for="tl-row-title" class="block text-xs font-semibold text-slate-600 mb-1">コマ名</label>
+                    <input type="text" id="tl-row-title" class="sg-input text-sm" maxlength="80">
+                </div>
+                <div>
+                    <label for="tl-row-duration" class="block text-xs font-semibold text-slate-600 mb-1">所要（分）</label>
+                    <input type="number" id="tl-row-duration" class="sg-input text-sm w-28" inputmode="numeric" min="1" max="480">
+                </div>
+                <div>
+                    <label for="tl-row-note" class="block text-xs font-semibold text-slate-600 mb-1">運営メモ（誰・移動先など · 最大100字）</label>
+                    <textarea id="tl-row-note" rows="2" class="sg-input text-sm resize-y" maxlength="100" placeholder="例: 〇〇氏挨拶 · 音響キュー"></textarea>
+                </div>
+                <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="tl-row-anchored" class="rounded border-slate-300">
+                    開始時刻を固定（アンカー）
+                </label>
+                <div id="tl-anchor-wrap" class="hidden">
+                    <label for="tl-row-anchor-at" class="block text-xs font-semibold text-slate-600 mb-1">固定開始時刻</label>
+                    <input type="time" id="tl-row-anchor-at" class="sg-input text-sm w-36" step="60">
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" id="tl-row-up" class="text-[11px] font-bold border border-slate-300 rounded px-2 py-1">↑</button>
+                    <button type="button" id="tl-row-down" class="text-[11px] font-bold border border-slate-300 rounded px-2 py-1">↓</button>
+                    <button type="button" id="tl-row-delete" class="text-[11px] font-bold text-rose-800 border border-rose-300 rounded px-2 py-1 ml-auto">削除</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tl-panel-preview" class="print-target preview-section sg-card p-5 space-y-4 lg:sticky lg:top-4">
+            <!-- 印刷専用 A4 進行表 — 画面では非表示（T1-17 · §5-1 O3） -->
+            <article id="tl-print-sheet" class="hidden print:block tl-print-sheet" aria-hidden="true">
+                <div class="tl-print-bar">
+                    <span class="tl-print-bar__brand">SUGUDASU イベント進行</span>
+                    <span class="tl-print-bar__sub">RUN OF SHOW</span>
+                </div>
+                <h1 id="tl-print-title" class="tl-print-title"></h1>
+                <p id="tl-print-meta" class="tl-print-meta"></p>
+                <table class="tl-print-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">時刻</th>
+                            <th scope="col">分</th>
+                            <th scope="col">コマ</th>
+                            <th scope="col">備考</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tl-print-tbody"></tbody>
+                </table>
+                <p id="tl-print-foot" class="tl-print-foot" hidden></p>
+            </article>
+
+            <div class="tl-preview-live no-print space-y-4">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-100 pb-3">
+                <h2 class="text-sm font-bold text-slate-900">プレビュー · 印刷</h2>
+                <p id="tl-preview-clock" class="text-xs font-mono text-slate-500" aria-live="polite"></p>
+            </div>
+            <div class="rounded-xl bg-slate-900 text-white p-4 space-y-1">
+                <p id="tl-preview-remaining" class="text-2xl font-bold tabular-nums tracking-tight">—</p>
+                <p id="tl-preview-next" class="text-sm text-slate-300">次: —</p>
+            </div>
+            <p id="tl-preview-end" class="text-xs font-semibold text-slate-600"></p>
+            <p id="tl-deadline-summary" class="hidden text-sm font-bold rounded-lg px-3 py-2" role="status"></p>
+            <ul id="tl-preview-list" class="space-y-1 text-sm border-t border-slate-100 pt-3"></ul>
+            </div>
+        </section>
+    </div>
+
+    <div id="tl-copy-toast" class="no-print hidden" role="status"></div>
+
+    <section class="no-print max-w-3xl space-y-2 pt-4 text-xs text-slate-600">
+        <h2 class="font-bold text-slate-800">よくある質問</h2>
+        <p><strong>シフト表との違い:</strong> 週次の勤務表は <a href="shift.html" class="text-emerald-700 underline">シフト</a>。本ツールは<strong>当日1本の時系列</strong>です。</p>
+        <p><strong>複数日:</strong> 翌日見出しは自動では入りません。「宿泊・睡眠」など長いダミー行で夜を飛ばし、Day バッジで区別します。</p>
+    </section>
+</main>
+
+<!-- sticky フッター: 当日は片手操作 — §2-4 3タップ（選択→±5→コピー） -->
+<footer class="no-print lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur tl-footer-bar px-3 pt-2">
+    <div class="flex flex-wrap gap-2 max-w-lg mx-auto">
+        <button type="button" id="tl-btn-minus5" class="flex-1 min-w-[4rem] text-sm font-bold py-3 rounded-lg bg-slate-100 text-slate-800 disabled:opacity-40">−5分</button>
+        <button type="button" id="tl-btn-plus5" class="flex-1 min-w-[4rem] text-sm font-bold py-3 rounded-lg bg-emerald-600 text-white disabled:opacity-40">+5分</button>
+        <button type="button" id="tl-btn-add" class="flex-1 min-w-[4rem] text-sm font-bold py-3 rounded-lg border border-emerald-600 text-emerald-800">行追加</button>
+        <button type="button" id="tl-btn-copy-plain" class="flex-1 min-w-[4rem] text-sm font-bold py-3 rounded-lg bg-slate-800 text-white">コピー</button>
+    </div>
+</footer>
+
+<div class="hidden lg:flex no-print fixed bottom-6 right-6 z-40 flex-col gap-2 items-end">
+    <button type="button" id="tl-btn-copy-tsv" class="text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 bg-white shadow-sm">TSVコピー</button>
+    <button type="button" id="tl-btn-copy-plain-desk" class="text-xs font-bold px-3 py-2 rounded-lg bg-slate-800 text-white shadow-sm">プレーンコピー</button>
+</div>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/timeline-app.js"></script>
+</body>
+</html>

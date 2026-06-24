@@ -1,27 +1,52 @@
 {
   "tool_id": "timeline",
-  "status": "scaffold",
-  "updatedAt": "2026-06-22",
-  "oneLiner": "",
-  "personas": ["イベント幹事", "研修ファシリテーター"],
-  "implemented": [],
+  "status": "reviewed",
+  "updatedAt": "2026-06-24",
+  "oneLiner": "司会・研修の当日進行表 — 1コマずらすと後続が連動再計算（非送信）",
+  "personas": ["イベント幹事", "司会進行", "研修ファシリテーター"],
+  "implemented": [
+    "イベント開始日時・タイトル入力",
+    "コマ行（所要分・タイトル・運営メモ・最大80行）",
+    "累積分数モデルによる連動再計算（timeline-engine.js）",
+    "選択行 ±5分クイック調整",
+    "行追加・削除・上下移動（差し込みイベント対応）",
+    "アンカー行（固定開始時刻）と衝突警告",
+    "目標終了時刻と early/over サマリー",
+    "現在時刻・残り時間（進行中コマ / 任意行フォーカス）",
+    "プレーンテキスト・TSV の1クリックコピー",
+    "編集 / プレビュー2カラム（スマホはタブ切替）",
+    "focus chrome（当日集中 · 16本ナビ非表示）",
+    "A4 印刷（緑ヘッダー · 時刻/分/コマ/備考4列 · 目標終了フッター）",
+    "group-split / warikan からの相互導線"
+  ],
   "notImplemented": [
-    "ツール未実装（planned · registry 未登録）",
-    "1箇所の時間変更から後続予定の連動再計算"
+    "localStorage / JSON 下書き保存・読込（v1.1）",
+    "セクション見出し行・設営/バラシテンプレ（v1.1）",
+    "複数マイルストーン・表示時間窓 displayFrom/until（v1.2）",
+    "行 DnD（v1.1）",
+    "SUGUDASU Sync イベント進行（timeline-sync · ドメイン準備までサイト非掲載）"
   ],
   "dataHandling": {
     "upload": false,
     "serverSave": false,
-    "localStorage": "要確認（実装時）",
-    "retention": "要確認（実装時）"
+    "localStorage": "なし（v1.1 で下書き予定）",
+    "retention": "ページを閉じると入力は失われる。記録はコピー/印刷で幹事が自行保管"
   },
   "trust": {
-    "faqStorage": "要確認（実装時）",
-    "faqEdit": "要確認",
-    "faqRetention": "要確認"
+    "faqStorage": "進行表は SUGUDASU サーバーに送信しない。ブラウザ内処理。",
+    "faqEdit": "行の所要分・±5・差し込みで即再計算。アンカー衝突は画面で警告。",
+    "faqRetention": "永続保存なし。司会台本はプレーン/TSVコピーが正攻法。"
   },
-  "postCompletion": [],
-  "relatedTools": ["group-split"],
-  "captainChecks": ["実装着手時に registry 登録"],
-  "promptNotes": "Geminiは実装済み機能を断定しない。matrix の Pain のみ参照可。"
+  "postCompletion": [
+    "司会台本（プレーン）または TSV をコピーして Slack/共有",
+    "5分押し: 該当行選択 → +5 → 再コピー",
+    "差し込み: 行選択 → 行追加 → 所要・メモ入力",
+    "事前班分けは group-split へ"
+  ],
+  "relatedTools": ["group-split", "warikan", "fair-draw"],
+  "captainChecks": [
+    "alpha→beta 前に実機印刷スモーク（Chrome · Safari）",
+    "Sync CTA・hub・registry への timeline-sync 登録はドメイン準備まで禁止"
+  ],
+  "promptNotes": "Sync（多端末共有）は未掲載。断定しない。AI による所要分提案は禁止（F7）。"
 }

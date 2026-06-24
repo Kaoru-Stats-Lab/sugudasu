@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-06-23",
+  "updatedAt": "2026-06-24",
   "entries": [
+    {
+      "date": "2026-06-24",
+      "type": "feat",
+      "title": "イベント進行タイムライン（/timeline）新設 · alpha",
+      "body": "コマ所要分の連動再計算エンジン（timeline-engine.js）と当日UI。±5分・行追加/削除・アンカー衝突警告・プレーン/TSVコピー。スマホ sticky フッターと編集|プレビュータブ。非送信・登録不要。",
+      "tools": ["timeline.html", "timeline-engine.js", "timeline-app.js"]
+    },
     {
       "date": "2026-06-23",
       "type": "fix",

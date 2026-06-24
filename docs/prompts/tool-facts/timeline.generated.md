@@ -1,7 +1,7 @@
 # TOOL_FACTS: timeline
 
-status: **scaffold** · updated: 2026-06-22
-productName: SUGUDASU イベント進行 · stage: unknown · URL: https://sugudasu.com/timeline
+status: **reviewed** · updated: 2026-06-24
+productName: SUGUDASU イベント進行 · stage: alpha · URL: https://sugudasu.com/timeline
 
 ## マーケ（matrix 参照 · 捏造禁止）
 
@@ -10,40 +10,82 @@ productName: SUGUDASU イベント進行 · stage: unknown · URL: https://sugud
 - △相当: 各プログラムの「大体5分くらい巻きそう・押しそう」な空気感
 - 聞き直し例: 「今のセッション少し押してるけど、休憩時間何分削る？」
 
+## 一行
+
+司会・研修の当日進行表 — 1コマずらすと後続が連動再計算（非送信）
+
 ## 実装済み（reviewed のみ Gemini が断定可）
 
-- 要確認（status が reviewed でない、または未記入）
+- イベント開始日時・タイトル入力
+- コマ行（所要分・タイトル・運営メモ・最大80行）
+- 累積分数モデルによる連動再計算（timeline-engine.js）
+- 選択行 ±5分クイック調整
+- 行追加・削除・上下移動（差し込みイベント対応）
+- アンカー行（固定開始時刻）と衝突警告
+- 目標終了時刻と early/over サマリー
+- 現在時刻・残り時間（進行中コマ / 任意行フォーカス）
+- プレーンテキスト・TSV の1クリックコピー
+- 編集 / プレビュー2カラム（スマホはタブ切替）
+- focus chrome（当日集中 · 16本ナビ非表示）
+- A4 印刷（緑ヘッダー · 時刻/分/コマ/備考4列 · 目標終了フッター）
+- group-split / warikan からの相互導線
 
 ## 未実装 / 言い過ぎ注意
 
-- ツール未実装（planned · registry 未登録）
-- 1箇所の時間変更から後続予定の連動再計算
+- localStorage / JSON 下書き保存・読込（v1.1）
+- セクション見出し行・設営/バラシテンプレ（v1.1）
+- 複数マイルストーン・表示時間窓 displayFrom/until（v1.2）
+- 行 DnD（v1.1）
+- SUGUDASU Sync イベント進行（timeline-sync · ドメイン準備までサイト非掲載）
 
 ## データ取り扱い
 
 - upload: false
 - serverSave: false
-- localStorage: 要確認（実装時）
-- retention: 要確認（実装時）
+- localStorage: なし（v1.1 で下書き予定）
+- retention: ページを閉じると入力は失われる。記録はコピー/印刷で幹事が自行保管
 
 ## 信頼 FAQ 素材
 
-- 保存: 要確認（実装時）
-- 編集: 要確認
-- 保持: 要確認
+- 保存: 進行表は SUGUDASU サーバーに送信しない。ブラウザ内処理。
+- 編集: 行の所要分・±5・差し込みで即再計算。アンカー衝突は画面で警告。
+- 保持: 永続保存なし。司会台本はプレーン/TSVコピーが正攻法。
+
+## 完了後導線
+
+- 司会台本（プレーン）または TSV をコピーして Slack/共有
+- 5分押し: 該当行選択 → +5 → 再コピー
+- 差し込み: 行選択 → 行追加 → 所要・メモ入力
+- 事前班分けは group-split へ
 
 ## Gemini メモ
 
-Geminiは実装済み機能を断定しない。matrix の Pain のみ参照可。
+Sync（多端末共有）は未掲載。断定しない。AI による所要分提案は禁止（F7）。
 
 ## Gemini 添付ブロック（1ツール）
 
 ```text
-【timeline 事実 · status=scaffold】
+【timeline 事実 · status=reviewed】
 SUGUDASU イベント進行 / https://sugudasu.com/timeline
 Pain: 現場でタイムスケジュールが巻いた・押した時の手計算が破綻
-未実装: ツール未実装（planned · registry 未登録）
-未実装: 1箇所の時間変更から後続予定の連動再計算
-データ: upload=false serverSave=false retention=要確認（実装時）
+実装: イベント開始日時・タイトル入力
+実装: コマ行（所要分・タイトル・運営メモ・最大80行）
+実装: 累積分数モデルによる連動再計算（timeline-engine.js）
+実装: 選択行 ±5分クイック調整
+実装: 行追加・削除・上下移動（差し込みイベント対応）
+実装: アンカー行（固定開始時刻）と衝突警告
+実装: 目標終了時刻と early/over サマリー
+実装: 現在時刻・残り時間（進行中コマ / 任意行フォーカス）
+実装: プレーンテキスト・TSV の1クリックコピー
+実装: 編集 / プレビュー2カラム（スマホはタブ切替）
+実装: focus chrome（当日集中 · 16本ナビ非表示）
+実装: A4 印刷（緑ヘッダー · 時刻/分/コマ/備考4列 · 目標終了フッター）
+実装: group-split / warikan からの相互導線
+未実装: localStorage / JSON 下書き保存・読込（v1.1）
+未実装: セクション見出し行・設営/バラシテンプレ（v1.1）
+未実装: 複数マイルストーン・表示時間窓 displayFrom/until（v1.2）
+未実装: 行 DnD（v1.1）
+未実装: SUGUDASU Sync イベント進行（timeline-sync · ドメイン準備までサイト非掲載）
+データ: upload=false serverSave=false retention=ページを閉じると入力は失われる。記録はコピー/印刷で幹事が自行保管
 ```
 
