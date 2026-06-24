@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="イベント・研修の当日進行表。1コマずらすと後続の開始時刻が連動。ブラウザ内完結・非送信。TSV/プレーンコピーで司会へ共有。">
+    <meta name="description" content="研修・キックオフ・ウェビナー・ハッカソンの当日進行表（RUN OF SHOW）。1コマ±5分で後続が連動再計算。社内予定を外部に送らないブラウザ完結。司会・幹事向け。登録不要。">
     <title>SUGUDASU イベント進行 ｜ タイムスケジュール自動計算ツール</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="イベント進行 — 時刻連動 · 非送信">
-    <meta property="og:description" content="進行表の1コマ変更で後続が全部追従。スマホで±5分・差し込み・コピー。登録不要。">
+    <meta property="og:title" content="イベント進行タイムライン — 研修・司会・幹事向け">
+    <meta property="og:description" content="挨拶が5分押しても後ろが全部ずれる。固定時刻（昼食・撤収）との帳尻をスマホで。非送信・登録不要。">
     <meta property="og:url" content="https://sugudasu.com/timeline">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="【非送信】イベント進行タイムライン">
-    <meta name="twitter:description" content="司会・研修のRUN OF SHOW。5分押すと後ろが全部ずれる。Excelの手計算から解放。">
+    <meta name="twitter:title" content="【非送信】イベント進行表 — 時刻連動タイムライン">
+    <meta name="twitter:description" content="研修・キックオフ・ウェビナーの進行遅れを1タップで再計算。Excelの手計算から解放。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <style>
@@ -101,7 +101,7 @@
             }
         }
     </style>
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"進行表データはサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。編集・再計算はブラウザ内だけで完結します。"}},{"@type":"Question","name":"シフト表ツールとの違いは？","acceptedAnswer":{"@type":"Answer","text":"シフトは週次の勤務格子が主役です。本ツールは当日1イベントの時系列リスト（RUN OF SHOW）で、1コマの所要分を変えると後続の開始・終了が連動します。"}},{"@type":"Question","name":"当日にコマを差し込めますか？","acceptedAnswer":{"@type":"Answer","text":"はい。行追加で挨拶・表彰など想定外のコマを挿入でき、以降の時刻が自動でずれます。"}},{"@type":"Question","name":"固定時刻（アンカー）と衝突したら？","acceptedAnswer":{"@type":"Answer","text":"自動では前のコマを短縮しません。衝突行を赤表示し、幹事が手で調整します。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やキックオフの進行が押したとき使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。ワークや質疑で5分押したら該当コマを+5分するだけで、後続の開始・終了が連動再計算されます。社内の予定表を外部SaaSに送らず、ブラウザ内で完結します。"}},{"@type":"Question","name":"昼食やバス出発など動かせない固定時刻に間に合わせられますか？","acceptedAnswer":{"@type":"Answer","text":"アンカー行で固定開始時刻を設定できます。前のコマと重なると衝突を赤表示し、自動では短縮しません。幹事が手前の所要分を調整して帳尻を合わせます。"}},{"@type":"Question","name":"スプレッドシートだけでは足りない理由は？","acceptedAnswer":{"@type":"Answer","text":"Excelは式の手入れ・モバイル操作・当日の差し込みに弱く、1行追加で数式が崩れることがあります。本ツールは分単位の連動再計算と±5分・コピー共有に特化します。秒単位・リアルタイム共同編集・テレプロは対象外です。"}},{"@type":"Question","name":"進行表データはサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。編集・再計算はブラウザ内だけで完結します。共有はプレーンテキストやTSVのコピーで、幹事がSlack等へ貼り付ける運用を想定しています。"}},{"@type":"Question","name":"司会・MC向けの残り時間は見られますか？","acceptedAnswer":{"@type":"Answer","text":"プレビューに現在時刻・進行中コマの残り時間・次のコマ名を表示します。行をタップすると、そのコマ開始までの残り時間に切り替えられます。"}},{"@type":"Question","name":"リアルタイム共同編集や複数端末同期はありますか？","acceptedAnswer":{"@type":"Answer","text":"コア版は1端末での編集が主です。修正後はコピーでスタッフへ共有します。複数端末の同期は別製品ライン（SUGUDASU Sync）で将来検討中で、現時点ではサイト未掲載です。"}},{"@type":"Question","name":"シフト表ツールとの違いは？","acceptedAnswer":{"@type":"Answer","text":"シフトは週次の勤務格子が主役です。本ツールは当日1イベントの時系列リスト（RUN OF SHOW）で、1コマの所要分を変えると後続の開始・終了が連動します。"}},{"@type":"Question","name":"当日にコマを差し込めますか？","acceptedAnswer":{"@type":"Answer","text":"はい。行追加で挨拶・表彰・飛び入りLTなどを挿入でき、以降の時刻が自動でずれます。"}},{"@type":"Question","name":"撤収・閉会時刻から逆算できますか？","acceptedAnswer":{"@type":"Answer","text":"目標終了時刻を任意で設定すると、終了予定との差をearly/overで表示します。二次会幹事が「あと何分削れるか」を判断しやすくなります。"}},{"@type":"Question","name":"アカウント登録や導入研修は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"不要です。URLにアクセスして開始時刻とコマを入れるだけです。よくある操作は行選択→+5分→コピーの3タップ想定です。"}}]}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
 
@@ -236,12 +236,142 @@
 
     <div id="tl-copy-toast" class="no-print hidden" role="status"></div>
 
-    <section class="no-print max-w-3xl space-y-2 pt-4 text-xs text-slate-600">
-        <h2 class="font-bold text-slate-800">よくある質問</h2>
-        <p><strong>シフト表との違い:</strong> 週次の勤務表は <a href="shift.html" class="text-emerald-700 underline">シフト</a>。本ツールは<strong>当日1本の時系列</strong>です。</p>
-        <p><strong>複数日:</strong> 翌日見出しは自動では入りません。「宿泊・睡眠」など長いダミー行で夜を飛ばし、Day バッジで区別します。</p>
+    <section class="no-print max-w-3xl space-y-3 pt-2 pb-2 text-xs text-slate-600">
+        <h2 class="font-bold text-slate-800 text-sm">想定シーン</h2>
+        <p class="leading-relaxed">社内研修・キックオフ、ウェビナー・ハッカソン、学校行事、結婚式二次会など——当日「5分押した」を<strong>司会・幹事がスマホで直し</strong>、Slack へコピーする進行表ツールです。</p>
+        <ul class="grid sm:grid-cols-2 gap-x-4 gap-y-1 list-disc pl-4 leading-relaxed">
+            <li>研修・ワークショップ（質疑延長）</li>
+            <li>全社キックオフ（昼食・バスのアンカー）</li>
+            <li>ウェビナー・セミナー（終了予定の即アナウンス）</li>
+            <li>ハッカソン・勉強会（会場歩きながら更新）</li>
+            <li>学会・地域イベント（厳格な時間管理）</li>
+            <li>二次会・同人即売（Excel 数式崩壊の回避）</li>
+        </ul>
     </section>
 </main>
+
+<section class="no-print sg-faq-section border-t border-slate-200">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">イベント進行表 · タイムラインのよくある質問</h2>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">SUGUDASU イベント進行は、<strong>当日1本の RUN OF SHOW</strong>を幹事・司会がブラウザだけで直し、テキストで共有するツールです。上段は場面別の使いどころ、下段は操作と他手段との違いです。</p>
+
+        <h3 class="text-xs font-bold text-emerald-800 mb-2 mt-2">場面・役割（幹事 · 司会 · 人事向け）</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>研修やキックオフの進行が押したとき使えますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>ワークや質疑で5分押したら、該当コマを<strong>+5分</strong>するだけで後続15コマの開始・終了が一斉に再計算され、撤収時刻に収まるかがすぐ分かります。社内研修の予定は機密性が高いため、<strong>外部 SaaS に送信しない</strong>ブラウザ完結が刺さる場面です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>昼食やバス出発など、動かせない固定時刻に間に合わせられますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>アンカー行</strong>で固定開始時刻を設定できます。役員挨拶が延びても、昼食12:00やバス出発など「動かせない枠」への食い込みを赤表示で可視化します。自動では前のコマを短縮しないため、幹事が手前の所要分を調整して帳尻を合わせます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>ウェビナーやハッカソンをスマホだけで回せますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>配信トラブルやアイデアソン延長で1コマ遅れたとき、PCを開かず会場を歩きながら<strong>±5分・行追加</strong>で更新できます。修正後はプレーンまたは TSV をコピーし、運営チャットへ貼り付けて「巻きでお願いします」の根拠時刻を共有します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>司会・MC向けの残り時間は見られますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>プレビューに<strong>現在時刻</strong>・進行中コマの<strong>残り時間</strong>・<strong>次のコマ名</strong>を表示します。台本とストップウォッチを交互に見る負荷を減らすため、行タップで「そのコマ開始まで」のカウントダウンにも切り替えられます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>撤収・閉会時刻から逆算できますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>目標終了時刻</strong>を設定すると、終了予定との差を early / over で表示します。二次会幹事が「歓談をあと何分削れば店の撤収に間に合うか」を判断しやすくなります。休憩コマを60分→50分に減らすと、午後全体が定時終了に戻る——といった帳尻合わせも所要分編集で行えます。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">ツールの使い方 · 他手段との違い</h3>
+        <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>スプレッドシートだけでは足りない理由は？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>Excel は式の手入れ・モバイル操作・当日の差し込みに弱く、1行追加で <code class="text-[10px]">#REF!</code> になることがあります。本ツールは<strong>分単位の連動再計算</strong>と<strong>コピー共有</strong>に特化します。秒単位・リアルタイム共同編集・テレプロ・外部モニター専用タイマーは<strong>対象外</strong>です（有料の進行表 SaaS との意図的な差）。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>進行表データはサーバーに送られますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>送られません。編集・再計算はブラウザ内だけで完結します。共有はプレーンテキストや TSV の<strong>コピー</strong>で、幹事が Slack 等へ貼り付ける運用を想定しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>リアルタイム共同編集や複数端末同期はありますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>コア版（本ページ）</strong>は1端末での編集が主です。音響・司会へは修正後のタイムラインをコピーして渡します。複数端末の Push/Pull 同期は別製品ライン（SUGUDASU Sync）で将来検討中で、<strong>現時点ではサイト未掲載</strong>です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>シフト表ツールとの違いは？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>週次の勤務表は <a href="shift.html" class="text-emerald-700 underline">シフト</a> が担当です。本ツールは<strong>当日1イベントの時系列リスト</strong>で、1コマの所要分を変えると後続の開始・終了が連動します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>当日にコマを差し込めますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。<strong>行追加</strong>で挨拶・表彰・飛び入り LT などを挿入でき、以降の時刻が自動でずれます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>複数日イベントはどう扱いますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>翌日見出しは自動では入りません。「宿泊・睡眠」など長いダミー行で夜を飛ばし、<strong>Day バッジ</strong>で区別します。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-white p-4">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>アカウント登録や導入研修は必要ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>不要</strong>です。URL にアクセスして開始時刻とコマを入れるだけです。料金もかかりません。よくある操作は<strong>行選択 → +5分 → コピー</strong>の3タップ想定です。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
 
 <!-- sticky フッター: 当日は片手操作 — §2-4 3タップ（選択→±5→コピー） -->
 <footer class="no-print lg:hidden fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur tl-footer-bar px-3 pt-2">

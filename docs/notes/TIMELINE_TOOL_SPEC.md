@@ -519,3 +519,4 @@ Rundown の例示画面・LP からの対応表は `timeline-competitors-gemini-
 | `docs/notes/timeline-gemini-research-RESULT.md` | キーワード · 現場シナリオ12件 |
 | `docs/notes/timeline-competitors-gemini-RESULT.md` | 競合調査 · MVP メモ/残り時間確定 |
 | `docs/notes/TIMELINE_IMPLEMENTATION_SLICES.md` | **細切れ実装 SSOT · コードコメント方針 §0** |
+| `docs/notes/TIMELINE_SEO_MECE.md` | **SEO 場面・ペルソナ MECE · FAQ 根拠** |
