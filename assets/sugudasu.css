@@ -232,6 +232,120 @@ a.sg-segment__btn {
 
 .sg-segment-hint.is-fading { opacity: 0; }
 
+/* Notion Like PoC — DESIGN_NOTION_SUGUDASU_ADAPT.md §7 */
+.sg-notion-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.sg-segment--notion-soft {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  box-shadow: none;
+}
+
+.sg-segment--notion-soft .sg-segment__pill {
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
+  transition-duration: 120ms;
+}
+
+.sg-segment--notion-soft .sg-segment__btn[aria-selected='true']::after {
+  opacity: 0.55;
+}
+
+.sg-segment-hint.sg-notion-callout {
+  display: block;
+  padding: 0.625rem 0.75rem 0.625rem 2rem;
+  font-size: 11px;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.sg-segment-hint.sg-notion-callout::before {
+  content: 'ℹ';
+  position: absolute;
+  left: 0.625rem;
+  top: 0.625rem;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.sg-segment-hint.sg-notion-callout strong {
+  color: #334155;
+  font-weight: 600;
+}
+
+.sg-notion-faq-section .sg-notion-faq-title {
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sg-notion-faq-lead {
+  text-align: left;
+}
+
+.sg-notion-faq-list {
+  gap: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.sg-notion-toggle {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sg-notion-toggle__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+details.sg-notion-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.sg-notion-toggle__summary::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent #94a3b8;
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+
+details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
+  transform: rotate(90deg);
+}
+
+.sg-notion-toggle__body {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  padding-bottom: 0.25rem;
+}
+
+.sg-notion-btn-press:active:not(:disabled) {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
+}
+
 /* 書類クラスタ（印鑑 · 請求 · 領収）— ページ遷移用 sg-segment · DESIGN_GUIDELINE §3.3 */
 .sg-doc-cluster {
   max-width: 28rem;
@@ -248,7 +362,10 @@ a.sg-segment__btn {
 @media (prefers-reduced-motion: reduce) {
   .sg-segment__pill,
   .sg-segment-hint,
-  .sg-preview-fade {
+  .sg-preview-fade,
+  .sg-segment--notion-soft .sg-segment__pill,
+  .sg-notion-toggle__summary::before,
+  .sg-notion-btn-press:active {
     transition: none;
   }
 }

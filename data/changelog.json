@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-06-24",
+  "updatedAt": "2026-06-25",
   "entries": [
+    {
+      "date": "2026-06-25",
+      "type": "feat",
+      "title": "請求書（/invoice）Notion Like PoC — FAQ Callout · L1 ハイブリッド",
+      "body": "書類種別は sg-segment ピルを維持しつつ notion-soft で影・枠を弱く。転用ヒントを sg-notion-callout に、FAQ を左三角 toggle リスト（hairline）に差し替え。DESIGN_NOTION_SUGUDASU_ADAPT §7-3 ハイブリッド方針に準拠。",
+      "tools": ["invoice.html", "sugudasu.css"]
+    },
     {
       "date": "2026-06-24",
       "type": "feat",
