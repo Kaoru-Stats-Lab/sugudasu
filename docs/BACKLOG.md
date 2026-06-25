@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-22（§14-9 幹事さん型LPマーケ · プロダクト追加オペ）  
+更新: 2026-06-23（§5-4 Sync インフラ完了 · sync.sugudasu.com）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -11,7 +11,7 @@
 - 1ファイル完結 HTML ツール群（現在 10ファイル: hub + 9ツール）
 - 入力データはブラウザ内処理（外部送信なし）
 - 収益は **現状 AdSense + Amazon アソシエイト** のハイブリッド（**将来 Pro** — 広告非表示 · 高度機能 — は道を閉じない · F1 コアは無料維持）
-- **SUGUDASU Sync**（別ライン · 有料 · 登録 · 共有 · NO広告）— `docs/notes/SUGUDASU_SYNC_LINE.md` · 初回 **`timeline-sync`（T13-S）** · **ドメイン準備までサイト非掲載**
+- **SUGUDASU Sync**（別ライン · 有料 · 登録 · 共有 · NO広告）— `docs/notes/SUGUDASU_SYNC_LINE.md` · 初回 **`timeline-sync`（T13-S）** · **インフラ完了** `sync.sugudasu.com` · Backlog **§5-4**
 
 ---
 
@@ -729,6 +729,29 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] AdSense **サイト承認**待ち（メール通知）
 - [ ] 収益導線のABテスト設計（広告位置・回遊CTA）
 
+### 5-4. Sync ライン — `sugudasu-sync` · `sync.sugudasu.com`（2026-06-23 完了）
+
+**SSOT:** [`docs/notes/SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md)（ダッシュボード確定値 · 運用マニュアル · watch paths 案）
+
+#### インフラ Done
+
+- [x] Cloudflare Pages プロジェクト `sugudasu-sync` 作成（Git: `Kaoru-Stats-Lab/sugudasu` · `main`）
+- [x] カスタムドメイン `sync.sugudasu.com` — SSL Enabled / Active
+- [x] **Automatic git deploys: Disabled**（500 回/月の二重ビルド防止）
+- [x] コード: `npm run build:pages:sync` → `dist-sync/` · `tools/sync-*.html` プレースホルダー
+
+#### デプロイ運用（S1 プレースホルダー期）
+
+- [ ] ダッシュボード Build を **`build:pages:sync` + `dist-sync`** に更新（§2-1 · 現状は `build:pages` + `dist` 記録）
+- [ ] 初回 Sync 本番反映 — **Wrangler 手動** `npx wrangler pages deploy dist-sync --project-name=sugudasu-sync` または一時自動 ON（`SYNC_INFRA` §4）
+- [ ] §6 チェックリスト（sync / timeline / コア無影響）目視
+
+#### S1 以降（製品 · 未着手）
+
+- [ ] Auth · ルーム · クラウド保存（`SUGUDASU_SYNC_LINE.md` Phase S1）
+- [ ] `timeline-sync-app.js` · Push/Pull · 新版バナー（S2）
+- [ ] Build watch paths 導入 → Sync 自動デプロイ再開検討（`SYNC_INFRA` §5）
+
 ---
 
 ## 6) 優先順位キュー（P0 / P1 / P2）
@@ -782,7 +805,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ## 7) 参照（SSOT）
 
-- **`docs/notes/SUGUDASU_OOPS_GUARDRAILS.md`** — おっちょこ事故カタログ · 横断ガードレール Phase A/B/C
+- **`docs/notes/SUGUDASU_SYNC_LINE.md`** — Sync ブランド · T13-S · Phase S1–S4
+- **`docs/notes/SYNC_INFRA_CLOUDFLARE.md`** — Sync インフラ · デプロイ運用 · watch paths（Backlog **§5-4**）
+- **`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`** — コア本番デプロイ Agent SSOT
 - **`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`** — グループ分け T11（**企画FIX · 未実装** · 主=人事研修 · Backlog **§1-11**）
 - **`docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md`** — **RevenueCat SOSA 2024–2026 調査ログ + SUGUDASU 転用判断（GTM · 初回UX · 収益）**
 - **`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`** — normalize Zenn ネタ（Gemini OOPS × 他サービスあるある解消 · #12）

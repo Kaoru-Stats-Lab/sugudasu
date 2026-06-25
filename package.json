@@ -4,6 +4,9 @@
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
     "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "build:pages:sync": "node scripts/build-pages.mjs --target=sync && node scripts/verify-pages-free-plan.mjs",
+    "deploy:pages:sync": "npm run build:pages:sync && npx wrangler pages deploy dist-sync --project-name=sugudasu-sync --branch=main",
+    "preview:pages:sync": "npm run build:pages:sync && npx --yes serve dist-sync -l 8081",
     "generate:tool-facts": "node scripts/generate-tool-facts.mjs",
     "scaffold:tool-facts": "node scripts/scaffold-tool-facts.mjs",
     "generate:lp-matrix": "node scripts/generate-lp-marketing-matrix.mjs",
@@ -23,7 +26,8 @@
     "test:normalize": "node scripts/text-normalize.test.mjs",
     "test:webp-to-jpg": "node scripts/webp-to-jpg.test.mjs",
     "test:group-split": "node scripts/group-split.test.mjs",
-    "test:timeline": "node scripts/timeline-engine.test.mjs"
+    "test:timeline": "node scripts/timeline-engine.test.mjs",
+    "test:linkify": "node scripts/sg-linkify.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.1",

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SUGUDASU Sync イベント進行 — 複数端末で進行表を共有（開発中）。">
+    <title>SUGUDASU Sync イベント進行 ｜ 準備中</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU Sync">
+    <meta property="og:title" content="Sync イベント進行 — 準備中">
+    <meta property="og:description" content="Push/Pull 同期 · 新版バナー · 手動反映。Phase S2 で公開予定。">
+    <meta property="og:url" content="https://sync.sugudasu.com/timeline">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU Sync イベント進行">
+    <meta name="twitter:description" content="進行表の共有 — 開発中">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+
+<div id="sg-chrome-top"
+     data-sg-title="SUGUDASU Sync イベント進行"
+     data-sg-subtitle="共有 · 手動反映"
+     data-sg-tool-id="timeline-sync"
+     data-sg-chrome-mode="focus"></div>
+
+<main class="flex-1 max-w-lg mx-auto w-full px-4 py-10 space-y-5">
+    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S1/S2 開発中</p>
+    <h1 class="text-lg font-bold text-slate-900">進行 Sync は準備中です</h1>
+    <p class="text-sm text-slate-600 leading-relaxed">
+        連動再計算エンジン（<code class="text-xs">timeline-engine.js</code>）はコアと共有します。
+        登録 · ルーム保存（S1）→ 閲覧 URL · 新版バナー（S2）の順で実装します。
+    </p>
+    <ul class="text-xs text-slate-600 text-left list-disc pl-5 space-y-1">
+        <li>focus chrome — 当日集中 UI（16本ナビなし）</li>
+        <li>広告なし · Cookie は <code class="text-[10px]">sync.sugudasu.com</code> 限定</li>
+        <li>コアの ±5 · 差し込み · コピーは無料のまま維持</li>
+    </ul>
+    <p class="text-sm pt-2">
+        <a href="/" class="text-emerald-700 font-semibold hover:underline">← Sync トップ</a>
+        <span class="text-slate-300 mx-2">·</span>
+        <a href="https://sugudasu.com/timeline" class="text-slate-600 hover:underline">無料コア進行</a>
+    </p>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+</body>
+</html>

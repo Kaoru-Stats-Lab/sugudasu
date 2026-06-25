@@ -26,10 +26,12 @@
         .tl-row--conflict { background: rgb(255 241 242); border-color: rgb(244 63 94); }
         .tl-now-marker { border-left: 3px solid rgb(239 68 68); }
         .tl-footer-bar { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
-        /* focus chrome 下でも sticky プレビューが隠れないよう top オフセット */
-        body.sg-chrome-focus .lg\:sticky.lg\:top-4 { top: 3rem; }
+        /* 共通ヘッダー+ナビ高さ — プレビュー sticky（invoice-preview-section と同型） */
+        @media (min-width: 1024px) {
+            #tl-panel-preview.lg\:sticky { top: 7.5rem; }
+        }
         @media print {
-            body.sg-chrome-focus .no-print { display: none !important; }
+            .no-print { display: none !important; }
             #tl-panel-edit { display: none !important; }
             #tl-panel-preview {
                 display: block !important;
@@ -109,7 +111,6 @@
      data-sg-title="SUGUDASU イベント進行"
      data-sg-subtitle="当日進行"
      data-sg-tool-id="timeline"
-     data-sg-chrome-mode="focus"
      data-sg-print="true"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-4 pb-28 lg:pb-6">
@@ -177,7 +178,8 @@
                 </div>
                 <div>
                     <label for="tl-row-note" class="block text-xs font-semibold text-slate-600 mb-1">運営メモ（誰・移動先など · 最大100字）</label>
-                    <textarea id="tl-row-note" rows="2" class="sg-input text-sm resize-y" maxlength="100" placeholder="例: 〇〇氏挨拶 · 音響キュー"></textarea>
+                    <textarea id="tl-row-note" rows="2" class="sg-input text-sm resize-y" maxlength="100" placeholder="例: 〇〇氏挨拶 · Zoom https://…"></textarea>
+                    <p id="tl-row-note-links" class="hidden text-[11px] text-slate-600 leading-relaxed break-all mt-1" aria-label="メモ内リンク"></p>
                 </div>
                 <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
                     <input type="checkbox" id="tl-row-anchored" class="rounded border-slate-300">

@@ -16,7 +16,7 @@
 | **ホスティング** | [Cloudflare Pages](https://developers.cloudflare.com/pages/)（**Free プラン**） |
 | **トリガー** | `main` への **git push** → Cloudflare がリモートで `npm run build:pages` を実行 → `dist/` を配信 |
 | **正本ソース** | `tools/*.html` · `assets/` · `data/*.json`（**`dist/` は Git に含めない**） |
-| **ビルド出力** | `dist/`（ローカル生成物 · `.gitignore` 対象） |
+| **ビルド出力** | コア `dist/` · Sync `dist-sync/`（ローカル生成物 · `.gitignore` 対象） |
 | **DNS** | `sugudasu.com` → Cloudflare（手順: [`CUSTOM_DOMAIN_SUGUDASU_COM.md`](CUSTOM_DOMAIN_SUGUDASU_COM.md)） |
 
 ### Cloudflare Pages プロジェクト設定（ダッシュボード正本）
@@ -30,6 +30,17 @@
 | **Build output directory** | `dist` | 同上 |
 | **Framework preset** | **None** | 静的サイト |
 | **Environment variable** | `NODE_VERSION` = `20` | [Build image](https://developers.cloudflare.com/pages/configuration/build-image/) |
+
+### Sync ライン（`sugudasu-sync` · 別プロジェクト）
+
+| 設定項目 | ダッシュボード確定値（2026-06-23） | コード正本（推奨） |
+|----------|-----------------------------------|-------------------|
+| **本番 URL** | `https://sync.sugudasu.com/` | 同上 |
+| **Build command** | `npm run build:pages` | **`npm run build:pages:sync`** |
+| **Build output directory** | `dist` | **`dist-sync`** |
+| **自動 git デプロイ** | **OFF** | OFF（S1 期） |
+
+運用マニュアル（Wrangler 手動 · watch paths）: [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
 
 ### Free プラン上限（公式 · 超えたら build 失敗 or 課金）
 
@@ -184,6 +195,7 @@ build:pages OK
 | 用途 | パス / URL |
 |------|------------|
 | **本ファイル（Agent デプロイ正本）** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
+| **Sync インフラ** | `docs/notes/SYNC_INFRA_CLOUDFLARE.md` |
 | 運用コマンド早見 | `docs/WORKFLOW.md` |
 | カスタムドメイン | `docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md` |
 | ヘッダー再発防止 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
@@ -203,4 +215,5 @@ build:pages OK
 
 | 日付 | 内容 |
 |------|------|
+| 2026-06-23 | Sync プロジェクト `sugudasu-sync` · `build:pages:sync` · `dist-sync` 節を追加 |
 | 2026-06-22 | 初版（Agent 必須チェックリスト · CF 公式 URL · トラブル表） |

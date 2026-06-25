@@ -227,7 +227,8 @@ Excel だと `=前の終了時刻` を各行に張り、押した行だけ直す
 | 入力 | 行下に展開 textarea · 最大100字 |
 | 一覧 | 超過は `...` · タップで全文 |
 | コピー O1 | `【10:15–10:30】アジェンダ名 （備考：〇〇さん移動）` — `note` あり時のみ括弧 |
-| 印刷 | 備考列 · 常時出力 |
+| 印刷 | 備考列 · 常時出力（プレーン · リンク化なし） |
+| **リンク（v1.1）** | プレビュー · 行編集パネルで `http(s)` のみ `sg-linkify` · 別タブ · コピー/TSV/印刷はプレーンのまま |
 | **やらない（MVP）** | 音響/照明など **役割別マルチ列**（Shoflo 型） |
 
 ##### 現在時刻「今」
@@ -267,7 +268,7 @@ Excel だと `=前の終了時刻` を各行に張り、押した行だけ直す
 
 | 領域 | 内容 |
 |------|------|
-| ヘッダー | **`data-sg-chrome-mode="focus"`**（§7-1）· `data-sg-print="true"` |
+| ヘッダー | **通常 chrome**（§7-1）· `data-sg-print="true"` |
 | 左 | 設定 + コマ一覧（編集） |
 | 右 | プレビュー（時刻付きリスト · 印刷対象） |
 | フッター FAQ | 非送信 · shift との違い · アンカー衝突 · 複数日（睡眠ダミー行） |
@@ -379,22 +380,34 @@ type TimelineState = {
 | **Rundown Studio**（主） | [rundownstudio.app](https://rundownstudio.app/) · [サンプル](https://app.rundownstudio.app/rundown/JpyhODPhqUyiRPTUiAaO) | **進行表 UX の正** — 開始·所要分·連動·早終了サマリ |
 | live-board | [github.com/tsubasagit/live-board](https://github.com/tsubasagit/live-board) | **本体の参考にしない** — 「次へ」型・学校向け表示。内容が違う |
 
-### 7-1. フォーカス chrome（提督採用 · 2026-06-24）
+### 7-1. Chrome 差別化（提督採用 · 2026-06-24 → 更新）
 
-**判断（システムアーキテクト × Web プロデューサー）:** `/timeline` は **通常 SUGUDASU ヘッダー（白帯 + 16本ナビ）を出さない**。
+**判断:** コアと Sync で **ヘッダー体験を分ける** — 製品ラインの視覚的・認知的な境界。
+
+| ライン | URL | Chrome | 理由 |
+|--------|-----|--------|------|
+| **コア** | `sugudasu.com/timeline` | **通常**（白帯 + 16本ナビ + 印刷） | hub 回遊 · 幹事束（班分け・割り勘）· SEO 内部リンク · 初回探索 |
+| **Sync** | `sync.sugudasu.com/timeline` | **`focus` モード**（§下） | 当日ブース · 縦スペース · ナビ誘導なし · 有料ラインの集中 UI |
+
+#### コア — 通常 chrome
+
+- `data-sg-chrome-mode` **なし**（`sugudasu-shell.js` デフォルト）
+- 他ツールと同型 — [sugudasu.com/timeline](https://sugudasu.com/timeline) で班分け・シフトへ横断可能
+- 当日スマホでも sticky フッター（±5・コピー）で操作導線は維持
+
+#### Sync — focus chrome（将来 · `SUGUDASU_SYNC_LINE.md`）
 
 | 観点 | 通常 chrome | **focus モード** |
 |------|-------------|------------------|
-| 利用文脈 | ツール横断・初回探索 | **当日セッション** — 司会/進行係が縦持ちで何度も操作 |
-| 縦スペース | ヘッダー+ナビ ≈ 100px 超 | **≈44px** — sticky フッターと競合しない |
-| 認知負荷 | 16本ナビは「他ツールへ」誘導 | 差し込み・±5・コピーに **注意を固定** |
-| ブランド | 強い | 「一覧」リンク + ミニフッターで **脱出経路は確保** |
-| リスク | — | 回遊率低下 → **幹事束リンク**（班分け・割り勘）で補う |
+| 利用文脈 | ツール横断・初回探索 | **当日セッション** — 司会/音響/進行が縦持ちで反復操作 |
+| 縦スペース | ヘッダー+ナビ ≈ 100px 超 | **≈44px** |
+| 認知負荷 | 16本ナビ | 差し込み・±5・新版反映に **注意固定** |
+| ブランド | コア SUGUDASU | **放送ブース型** · 広告なし |
 
-**実装:** `data-sg-chrome-mode="focus"` on `#sg-chrome-top` · `sugudasu-shell.js` の `focusChromeHtml`。他ツールは従来どおり。
+**実装（Sync）:** `data-sg-chrome-mode="focus"` · `focusChromeHtml`（`sugudasu-shell.js`）
 
-**出ないもの:** ダークナビ · 大ロゴ帯 · 開発バッジ長文帯（バッジはヘッダ内コンパクトのみ）  
-**残すもの:** 印刷（L3 緑）· GA4 · F1 emerald pill（本文上）· 法務ミニフッター
+**出ないもの（focus）:** ダークナビ · 大ロゴ帯 · 16本ナビ  
+**残すもの（focus）:** 印刷 · 「一覧」脱出 · ミニ法務フッター
 
 Rundown の例示画面・LP からの対応表は `timeline-competitors-gemini-RESULT.md` 提督追記を正とする。
 

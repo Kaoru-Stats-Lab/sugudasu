@@ -8,7 +8,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DIST = path.resolve(__dirname, '..', 'dist');
+const DIST = process.env.SUGUDASU_DIST
+  ? path.resolve(process.env.SUGUDASU_DIST)
+  : path.resolve(__dirname, '..', 'dist');
 
 const SKIP = new Set(['brand-logo-preview.html']);
 

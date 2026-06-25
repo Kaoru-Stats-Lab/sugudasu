@@ -2,7 +2,7 @@
 
 **更新**: 2026-06-24（v2 · 同期プロトコル · 機能間非依存 · **§4-1 Rundown 採用 · §4-2 差し込み**）  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
-**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync はドメイン準備までサイト非掲載**（2026-06-24 提督）
+**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync インフラ完了**（`sync.sugudasu.com` Active · プレースホルダー配信待ち）
 
 > **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回ツール **T13-S 進行 Sync** · エンジン共有は `TIMELINE_TOOL_SPEC.md`。
 
@@ -35,7 +35,7 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 
 | 項目 | コア **SUGUDASU** | **SUGUDASU Sync** |
 |------|---------------------|-------------------|
-| 入口 | `sugudasu.com` | `sync.sugudasu.com`（案）または `sugudasu.com/sync/` |
+| 入口 | `sugudasu.com` | **`sync.sugudasu.com`**（インフラ: [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)） |
 | 登録 | 不要 | **アカウント必須** |
 | データ | ブラウザ内 · 非送信 | **クラウド保存**（イベントスコープ） |
 | 共有 | コピー · 印刷 · JSON 手渡し | **Push/Pull 同期 · 「新しい版があります」**（§3-3） |
@@ -60,6 +60,7 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 | **URL** | `sugudasu.com/timeline` | **`sync.sugudasu.com/timeline`** |
 | **エンジン** | `timeline-engine.js` | **同一 import** |
 | **UI（案）** | `timeline-app.js` | `timeline-sync-app.js`（S1 以降） |
+| **Chrome** | **通常**（16本ナビ） | **`focus`**（ナビなし · §7-1） |
 
 **サイト掲載（提督 · 2026-06-24）:**
 

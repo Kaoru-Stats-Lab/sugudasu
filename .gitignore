@@ -1,4 +1,5 @@
 dist/
+dist-sync/
 assets/tw-build.css
 node_modules/
 .ops/

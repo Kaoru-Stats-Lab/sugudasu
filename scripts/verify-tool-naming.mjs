@@ -14,7 +14,7 @@ const TOOLS_DIR = path.join(ROOT, 'tools');
 const SHELL_PATH = path.join(ROOT, 'assets', 'sugudasu-shell.js');
 const HUB_PATH = path.join(ROOT, 'tools', 'hub.html');
 
-const SKIP_HTML = new Set(['brand-logo-preview.html']);
+const SKIP_HTML = new Set(['brand-logo-preview.html', 'sync-index.html', 'sync-timeline.html']);
 
 function fail(msg) {
   console.error(`[tool-naming-guard] FAIL: ${msg}`);

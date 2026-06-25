@@ -13,8 +13,8 @@ const TOOLS_DIR = path.join(ROOT, 'tools');
 const OG_IMAGE = 'https://sugudasu.com/assets/og-card.png';
 const SITE_ORIGIN = 'https://sugudasu.com';
 
-/** 内部プレビュー · sitemap 除外（build-pages SITEMAP_SKIP と同期） */
-const SKIP_HTML = new Set(['brand-logo-preview.html']);
+/** 内部プレビュー · Sync ライン · sitemap 除外（build-pages SITEMAP_SKIP と同期） */
+const SKIP_HTML = new Set(['brand-logo-preview.html', 'sync-index.html', 'sync-timeline.html']);
 
 const REQUIRED_META = [
   { re: /<meta\s+name="description"\s+content="[^"]+"/, label: 'meta description' },

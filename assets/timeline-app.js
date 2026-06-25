@@ -25,6 +25,7 @@ import {
   recalcTimeline,
 } from './timeline-engine.js';
 import { copyWithFeedback } from './sg-copy-feedback.js';
+import { linkifyHttpHtml, linkifyHttpHtmlIfPresent } from './sg-linkify.js';
 
 /** @param {string} id */
 const $ = (id) => document.getElementById(id);
@@ -253,6 +254,27 @@ function renderRowEditor() {
   const idx = state.rows.findIndex((r) => r.id === row.id);
   $('tl-row-up').disabled = idx <= 0;
   $('tl-row-down').disabled = idx < 0 || idx >= state.rows.length - 1;
+  renderRowNoteLinks();
+}
+
+/** 運営メモ内 https — 表示のみ linkify（§5-1b · v1.1 · sg-linkify） */
+function renderRowNoteLinks() {
+  const el = $('tl-row-note-links');
+  if (!el) return;
+  const note = String($('tl-row-note')?.value ?? '').trim();
+  if (!note) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+  const html = linkifyHttpHtmlIfPresent(note);
+  if (!html.includes('<a ')) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+  el.hidden = false;
+  el.innerHTML = html;
 }
 
 function applyRowEditorToState() {
@@ -343,7 +365,7 @@ function renderPreview() {
       return `<li class="py-1.5 border-b border-slate-100 ${current ? 'tl-row--current tl-now-marker pl-2 font-semibold' : ''}">
         <span class="font-mono text-xs text-slate-500">${dayBadge(row)}${row.startAt}–${row.endAt}</span>
         <span class="ml-2">${escapeHtml(row.title)}</span>
-        ${note ? `<span class="block text-[11px] text-slate-500 mt-0.5">${escapeHtml(note)}</span>` : ''}
+        ${note ? `<span class="block text-[11px] text-slate-500 mt-0.5">${linkifyHttpHtml(note)}</span>` : ''}
       </li>`;
     })
     .join('');
@@ -458,6 +480,7 @@ function bind() {
   });
   $('tl-row-note')?.addEventListener('input', () => {
     applyRowEditorToState();
+    renderRowNoteLinks();
     renderRowList();
     renderPreview();
   });

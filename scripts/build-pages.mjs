@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Cloudflare Pages 向け静的ビルド
- * tools/*.html + assets/ → dist/（パスを /assets/ に正規化）
+ * tools/*.html + assets/ → dist/ または dist-sync/（--target=sync）
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,12 +13,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const TOOLS = path.join(ROOT, 'tools');
 const ASSETS = path.join(ROOT, 'assets');
-const DIST = path.join(ROOT, 'dist');
 const ADS_TXT = path.join(ROOT, 'ads.txt');
-const SITE_ORIGIN = 'https://sugudasu.com';
 
-/** sitemap 対象外（内部プレビュー・index と重複する hub） */
-const SITEMAP_SKIP = new Set(['brand-logo-preview.html', 'hub.html']);
+function parseBuildTarget() {
+  const arg = process.argv.find((a) => a.startsWith('--target='));
+  const raw = arg ? arg.slice('--target='.length) : process.env.SUGUDASU_PAGES_TARGET || 'core';
+  if (raw !== 'core' && raw !== 'sync') {
+    throw new Error(`build-pages: unknown target "${raw}" (core | sync)`);
+  }
+  return raw;
+}
+
+const BUILD_TARGET = parseBuildTarget();
+const IS_SYNC = BUILD_TARGET === 'sync';
+const DIST = path.join(ROOT, IS_SYNC ? 'dist-sync' : 'dist');
+const SITE_ORIGIN = IS_SYNC ? 'https://sync.sugudasu.com' : 'https://sugudasu.com';
+
+process.env.SUGUDASU_DIST = DIST;
+
+/** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
+const SITEMAP_SKIP = new Set(
+  IS_SYNC ? ['sync-index.html'] : ['brand-logo-preview.html', 'hub.html']
+);
 
 function escapeXml(text) {
   return String(text)
@@ -46,6 +62,10 @@ function readChangelogLastmod() {
 }
 
 function canonicalPathFromHtml(file) {
+  if (IS_SYNC) {
+    const slug = file.replace(/^sync-/, '').replace(/\.html$/, '');
+    return slug === 'index' ? '/' : `/${slug}`;
+  }
   const slug = file.replace(/\.html$/, '');
   return slug === 'hub' ? '/' : `/${slug}`;
 }
@@ -97,20 +117,33 @@ function writeSitemapAndRobots(htmlFiles, lastmod) {
 }
 
 function writeRedirects(htmlFiles) {
-  const lines = [
-    '# Canonical: apex / · clean paths without .html',
-    '/hub.html / 301',
-    '/hub / 301',
-  ];
+  const lines = IS_SYNC
+    ? [
+        '# SUGUDASU Sync — clean paths',
+        '/sync-index.html / 301',
+        '/sync-timeline.html /timeline 301',
+      ]
+    : [
+        '# Canonical: apex / · clean paths without .html',
+        '/hub.html / 301',
+        '/hub / 301',
+      ];
 
-  for (const file of htmlFiles) {
-    if (file === 'hub.html') continue;
-    const slug = file.replace(/\.html$/, '');
-    lines.push(`/${file} /${slug} 301`);
+  if (!IS_SYNC) {
+    for (const file of htmlFiles) {
+      if (file === 'hub.html') continue;
+      const slug = file.replace(/\.html$/, '');
+      lines.push(`/${file} /${slug} 301`);
+    }
+    lines.push('/imgconv /webp-to-jpg 301');
+    lines.push('/webp-to-png /webp-to-jpg 301');
+  } else {
+    for (const file of htmlFiles) {
+      if (file === 'sync-index.html' || file === 'sync-timeline.html') continue;
+      const slug = file.replace(/^sync-/, '').replace(/\.html$/, '');
+      lines.push(`/${file} /${slug} 301`);
+    }
   }
-
-  lines.push('/imgconv /webp-to-jpg 301');
-  lines.push('/webp-to-png /webp-to-jpg 301');
 
   fs.writeFileSync(path.join(DIST, '_redirects'), `${lines.join('\n')}\n`, 'utf8');
 }
@@ -118,8 +151,10 @@ function writeRedirects(htmlFiles) {
 /** /{slug} を python http.server 等でも配信できるよう {slug}/index.html を複製 */
 function writeCleanUrlDirs(htmlFiles) {
   for (const file of htmlFiles) {
-    if (file === 'hub.html') continue;
-    const slug = file.replace(/\.html$/, '');
+    if (file === 'hub.html' || file === 'sync-index.html') continue;
+    const slug = IS_SYNC
+      ? file.replace(/^sync-/, '').replace(/\.html$/, '')
+      : file.replace(/\.html$/, '');
     const src = path.join(DIST, file);
     const dir = path.join(DIST, slug);
     fs.mkdirSync(dir, { recursive: true });
@@ -316,18 +351,27 @@ if (fs.existsSync(faviconSrc)) {
   fs.copyFileSync(faviconSrc, path.join(DIST, 'favicon.png'));
 }
 
-const htmlFiles = fs.readdirSync(TOOLS).filter((f) => f.endsWith('.html'));
+const htmlFiles = fs
+  .readdirSync(TOOLS)
+  .filter((f) => f.endsWith('.html'))
+  .filter((f) => (IS_SYNC ? f.startsWith('sync-') : !f.startsWith('sync-')));
 for (const file of htmlFiles) {
   const raw = fs.readFileSync(path.join(TOOLS, file), 'utf8');
   fs.writeFileSync(path.join(DIST, file), rewriteHtml(raw), 'utf8');
 }
 
-// ポータルは dist/index.html（/）。請求書は invoice.html（上書きしない）。
-const hub = fs.readFileSync(path.join(DIST, 'hub.html'), 'utf8');
-fs.writeFileSync(path.join(DIST, 'index.html'), hub, 'utf8');
+if (IS_SYNC) {
+  const syncIndex = fs.readFileSync(path.join(DIST, 'sync-index.html'), 'utf8');
+  fs.writeFileSync(path.join(DIST, 'index.html'), syncIndex, 'utf8');
+  if (fs.existsSync(path.join(DIST, 'sync-timeline.html'))) {
+    fs.copyFileSync(path.join(DIST, 'sync-timeline.html'), path.join(DIST, 'timeline.html'));
+  }
+} else {
+  const hub = fs.readFileSync(path.join(DIST, 'hub.html'), 'utf8');
+  fs.writeFileSync(path.join(DIST, 'index.html'), hub, 'utf8');
+}
 
-// AdSense 審査向け ads.txt を公開ルートへ配置
-if (fs.existsSync(ADS_TXT)) {
+if (!IS_SYNC && fs.existsSync(ADS_TXT)) {
   fs.copyFileSync(ADS_TXT, path.join(DIST, 'ads.txt'));
 }
 
@@ -352,9 +396,14 @@ writeRedirects(htmlFiles);
 writeHeaders();
 
 const count = htmlFiles.length;
-console.log(`build:pages OK — ${count} tools + index → ${DIST}`);
+const label = IS_SYNC ? 'Sync' : `${count} tools + index`;
+console.log(`build:pages OK (${BUILD_TARGET}) — ${label} → ${DIST}`);
 console.log(`  SEO: sitemap.xml (${lastmod}) · robots.txt · _redirects`);
-console.log('  Preview: npm run preview:pages  (or cd dist && python -m http.server 8080)');
+if (IS_SYNC) {
+  console.log('  Preview: npm run preview:pages:sync');
+} else {
+  console.log('  Preview: npm run preview:pages  (or cd dist && python -m http.server 8080)');
+}
 
 const verifyChrome = spawnSync(process.execPath, [path.join(__dirname, 'verify-chrome-mount.mjs')], {
   stdio: 'inherit',

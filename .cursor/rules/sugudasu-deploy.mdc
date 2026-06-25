@@ -16,10 +16,13 @@ alwaysApply: true
 ## 本番反映の正本経路
 
 ```text
-git push origin main  →  Cloudflare Pages が npm run build:pages  →  dist/ 配信
+コア:  git push origin main  →  Cloudflare Pages (sugudasu)  →  npm run build:pages  →  dist/
+Sync:  自動デプロイ OFF  →  npm run build:pages:sync  →  wrangler pages deploy dist-sync（提督手動）
 ```
 
-`wrangler pages deploy` は **CLOUDFLARE_API_TOKEN 前提** · Agent は **git push のみ**（提督依頼時）。
+Sync インフラ・手動デプロイ手順: `docs/notes/SYNC_INFRA_CLOUDFLARE.md` §4
+
+`wrangler pages deploy` は **CLOUDFLARE_API_TOKEN 前提** · Agent は **git push（コアのみ）**（提督依頼時）。
 
 ## push 前ゲート（すべて exit 0）
 

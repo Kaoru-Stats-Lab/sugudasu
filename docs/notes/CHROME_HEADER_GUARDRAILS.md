@@ -45,7 +45,7 @@
 | `data-sg-tool-id` | registry キー（開発バッジ · 命名検証用） |
 | `data-sg-print="true"` | 印刷/PDF ボタン表示 |
 | `data-sg-landscape="true"` | A4 横（シフトのみ） |
-| `data-sg-chrome-mode="focus"` | **コンパクトヘッダ** — ロゴ帯+16本ナビを出さない（`timeline` のみ · §7-1） |
+| `data-sg-chrome-mode="focus"` | **コンパクトヘッダ** — ロゴ帯+16本ナビを出さない（**Sync `timeline-sync` 専用** · `TIMELINE_TOOL_SPEC.md` §7-1） |
 
 **インライン `SUGUDASU_SHELL.mount()` は使わない。** `shell.js` 読込時に `bootstrapChromeFromDom()` が自動実行。
 
