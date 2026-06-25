@@ -6,6 +6,8 @@
 
 | タスク | SSOT |
 |--------|------|
+| **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` |
+| **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |

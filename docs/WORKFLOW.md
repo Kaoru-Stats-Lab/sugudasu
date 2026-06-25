@@ -1,6 +1,8 @@
 # SUGUDASU Workflow
 
-最終更新: 2026-06-22
+最終更新: 2026-06-25
+
+**提督の残タスク（呼び出し用）:** [`docs/notes/TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md) — Cloudflare プラグイン · Supabase Auth 等
 
 このファイルは「何をする時に、どのコマンドを使うか」の運用正本です。
 

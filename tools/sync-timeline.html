@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SUGUDASU Sync イベント進行 — 複数端末で進行表を共有（開発中）。">
-    <title>SUGUDASU Sync イベント進行 ｜ 準備中</title>
+    <meta name="description" content="SUGUDASU Sync イベント進行 — 登録・ルーム保存（Phase S1）。">
+    <title>SUGUDASU Sync イベント進行</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU Sync">
-    <meta property="og:title" content="Sync イベント進行 — 準備中">
-    <meta property="og:description" content="Push/Pull 同期 · 新版バナー · 手動反映。Phase S2 で公開予定。">
+    <meta property="og:title" content="Sync イベント進行">
+    <meta property="og:description" content="登録 · ルーム · クラウド保存（S1）。">
     <meta property="og:url" content="https://sync.sugudasu.com/timeline">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="SUGUDASU Sync イベント進行">
-    <meta name="twitter:description" content="進行表の共有 — 開発中">
+    <meta name="twitter:description" content="登録 · ルーム · クラウド保存">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
@@ -24,22 +24,61 @@
 
 <div id="sg-chrome-top"
      data-sg-title="SUGUDASU Sync イベント進行"
-     data-sg-subtitle="共有 · 手動反映"
+     data-sg-subtitle="S1 · 登録 · ルーム保存"
      data-sg-tool-id="timeline-sync"
      data-sg-chrome-mode="focus"></div>
 
-<main class="flex-1 max-w-lg mx-auto w-full px-4 py-10 space-y-5">
-    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S1/S2 開発中</p>
-    <h1 class="text-lg font-bold text-slate-900">進行 Sync は準備中です</h1>
-    <p class="text-sm text-slate-600 leading-relaxed">
-        連動再計算エンジン（<code class="text-xs">timeline-engine.js</code>）はコアと共有します。
-        登録 · ルーム保存（S1）→ 閲覧 URL · 新版バナー（S2）の順で実装します。
-    </p>
-    <ul class="text-xs text-slate-600 text-left list-disc pl-5 space-y-1">
-        <li>focus chrome — 当日集中 UI（16本ナビなし）</li>
-        <li>広告なし · Cookie は <code class="text-[10px]">sync.sugudasu.com</code> 限定</li>
-        <li>コアの ±5 · 差し込み · コピーは無料のまま維持</li>
-    </ul>
+<main class="flex-1 max-w-lg mx-auto w-full px-4 py-8 space-y-5">
+
+    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S1 · Auth · ルーム · クラウド保存</p>
+
+    <div id="sync-s1-status" class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2" role="status"></div>
+
+    <section id="sync-s1-setup" class="hidden space-y-3">
+        <h1 class="text-lg font-bold text-slate-900">バックエンド設定が必要です</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            提督が Supabase プロジェクトを作成し、環境変数と SQL マイグレーションを適用すると、ログインとルーム保存が有効になります。
+        </p>
+        <p class="text-xs text-slate-500">正本: <code>docs/notes/SYNC_ENV_KEYS.md</code></p>
+    </section>
+
+    <section id="sync-s1-auth" class="hidden space-y-4">
+        <h1 class="text-lg font-bold text-slate-900">幹事アカウントでログイン</h1>
+        <p class="text-sm text-slate-600">メールのマジックリンクのみ（パスワード不要）。Cookie は <code class="text-xs">sync.sugudasu.com</code> 限定。</p>
+        <form id="sync-s1-signin" class="space-y-3">
+            <label class="block text-xs font-semibold text-slate-700" for="sync-s1-email">メールアドレス</label>
+            <input id="sync-s1-email" type="email" required autocomplete="email"
+                   class="sg-input w-full text-sm" placeholder="kanri@example.com">
+            <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">マジックリンクを送る</button>
+        </form>
+    </section>
+
+    <section id="sync-s1-app" class="hidden space-y-4">
+        <div class="flex items-center justify-between gap-2">
+            <p class="text-sm text-slate-700">ログイン: <span id="sync-s1-user-email" class="font-semibold"></span></p>
+            <button type="button" id="sync-s1-signout" class="text-xs text-slate-500 underline">ログアウト</button>
+        </div>
+
+        <div class="space-y-2">
+            <h2 class="text-sm font-bold text-slate-900">ルーム</h2>
+            <ul id="sync-s1-room-list" class="space-y-2"></ul>
+            <div class="flex gap-2">
+                <input id="sync-s1-new-room-title" type="text" class="sg-input flex-1 text-sm" placeholder="例: 6/30 社内研修">
+                <button type="button" id="sync-s1-create-room" class="text-sm font-bold text-emerald-800 border border-emerald-300 rounded-lg px-3 py-2 hover:bg-emerald-50 shrink-0">新規</button>
+            </div>
+        </div>
+
+        <div class="border border-slate-200 rounded-lg p-3 space-y-3 bg-white">
+            <p class="text-xs text-slate-500">選択中: <span id="sync-s1-active-room" class="font-semibold text-slate-800">（未選択）</span></p>
+            <pre id="sync-s1-payload-preview" class="text-xs text-slate-600 whitespace-pre-wrap font-mono bg-slate-50 rounded p-2"></pre>
+            <div class="flex flex-col gap-2">
+                <button type="button" id="sync-s1-save" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">クラウドに保存</button>
+                <button type="button" id="sync-s1-import-core" class="text-xs text-slate-600 underline text-left">コア進行の下書きを取り込む（同一ブラウザ）</button>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">S1 は保存・再開まで。フルエディタ · 閲覧者同期（新版バナー）は S2 以降。</p>
+        </div>
+    </section>
+
     <p class="text-sm pt-2">
         <a href="/" class="text-emerald-700 font-semibold hover:underline">← Sync トップ</a>
         <span class="text-slate-300 mx-2">·</span>
@@ -49,5 +88,6 @@
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/sync-timeline-s1-app.js"></script>
 </body>
 </html>

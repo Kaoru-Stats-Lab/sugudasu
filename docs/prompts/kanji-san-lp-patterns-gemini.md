@@ -39,6 +39,7 @@
 | **行列添付** | `docs/prompts/LP_MARKETING_MATRIX.generated.md` | matrix から自動 | `npm run generate:lp-matrix` |
 | **結合添付** | `docs/prompts/GEMINI_MARKETING_CONTEXT.generated.md` | 上記2つを結合 | `npm run generate:marketing-context` |
 | **プロンプト型** | **本ファイル** | 型0/A/B/C/D · Grok第2パス | 型の定義変更時のみ |
+| **ツール別コピペ** | **`docs/prompts/lp-runs/`** | 1ツール×1型の Gemini/Grok 依頼文 | ツール追加時に warikan を複製 |
 
 **原則:** ツールが増えても **本ファイルのプロンプト型は書き換えない**。増えるのは JSON と生成物だけ。
 
@@ -288,8 +289,8 @@ Grok-A と同型。添付表構造を維持 · 事実変更禁止。
 
 ```text
 1. npm run generate:marketing-context
-2. Gemini 型0 → 束ごとに型A-D（並列可）
-3. Grok 第2パス（採用候補のみ）
+2. Gemini 型0 → 束ごとに型A-D（並列可）— または lp-runs/{tool}.gemini-type{X}.md で単体
+3. Grok 第2パス（採用候補のみ）— lp-runs/{tool}.grok-type{X}.md
 4. 提督: statements / privacy / registry と突合
 5. 反映先（優先順）:
    - tools/{id}.html ファーストビュー · FAQ
@@ -309,4 +310,5 @@ Grok-A と同型。添付表構造を維持 · 事実変更禁止。
 | `TOOL_FACTS.generated.md` | registry 事実 |
 | `LP_MARKETING_MATRIX.generated.md` | 行列 |
 | `GEMINI_MARKETING_CONTEXT.generated.md` | Gemini 一括添付 |
+| **`lp-runs/`** | **ツール別 Gemini/Grok コピペ用**（[`lp-runs/README.md`](lp-runs/README.md)） |
 | `note-deai-grok.md` | 記事用 Grok（LPとは別パイプライン） |

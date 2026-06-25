@@ -184,8 +184,50 @@ function writeHeaders() {
     '  Content-Type: text/plain; charset=utf-8',
     '  Cache-Control: public, max-age=86400',
     '',
+    '/*/app/*',
+    '  X-Robots-Tag: noindex, nofollow',
+    '',
+    '/e/*',
+    '  X-Robots-Tag: noindex, nofollow',
+    '',
   ].join('\n');
   fs.writeFileSync(path.join(DIST, '_headers'), headers, 'utf8');
+}
+
+function loadEnvSyncLocal() {
+  const envPath = path.join(ROOT, '.env.sync.local');
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq < 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let val = trimmed.slice(eq + 1).trim();
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = val;
+  }
+}
+
+function writeSyncPublicConfig(distDataDir) {
+  const url = process.env.SYNC_SUPABASE_URL || '';
+  const anon = process.env.SYNC_SUPABASE_ANON_KEY || '';
+  const body = {
+    supabaseUrl: url,
+    supabaseAnonKey: anon,
+    configured: Boolean(url && anon),
+  };
+  fs.mkdirSync(distDataDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(distDataDir, 'sync-public-config.json'),
+    `${JSON.stringify(body, null, 2)}\n`,
+    'utf8'
+  );
+  if (!body.configured) {
+    console.warn('build:pages (sync) — SYNC_SUPABASE_* 未設定 · ログイン UI はセットアップ表示');
+  }
 }
 
 function rmrf(dir) {
@@ -387,6 +429,11 @@ if (fs.existsSync(DATA_DIR)) {
       fs.copyFileSync(src, path.join(DIST_DATA, name));
     }
   }
+}
+
+if (IS_SYNC) {
+  loadEnvSyncLocal();
+  writeSyncPublicConfig(DIST_DATA);
 }
 
 const lastmod = readChangelogLastmod();

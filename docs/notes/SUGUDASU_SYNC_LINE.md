@@ -1,8 +1,8 @@
 # SUGUDASU Sync — ブランドライン SSOT
 
-**更新**: 2026-06-24（v2 · 同期プロトコル · 機能間非依存 · **§4-1 Rundown 採用 · §4-2 差し込み**）  
+**更新**: 2026-06-25（v2.1 · 同期プロトコル · 機能間非依存 · **同時端末上限価格**）  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
-**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync インフラ完了**（`sync.sugudasu.com` Active · プレースホルダー配信待ち）
+**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync プレースホルダー本番配信中**（`sync.sugudasu.com` · S1 開発フェーズ）
 
 > **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回ツール **T13-S 進行 Sync** · エンジン共有は `TIMELINE_TOOL_SPEC.md`。
 
@@ -46,7 +46,32 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 **傘ブランド:** `SUGUDASU Sync`  
 **課金ティア名（案）:** `Sync Pro` — 広告非表示 + 共有上限 + 履歴 等
 
+### 1-1b. URL 統治（LP とアプリ分離）
+
+| 種別 | 正規URL |
+|------|--------|
+| コア無料アプリ | `https://sugudasu.com/timeline` |
+| Sync LP（販売ページ） | `https://sync.sugudasu.com/` |
+| Sync 実作業アプリ | `https://sync.sugudasu.com/timeline` |
+| Sync 共有URL（現場） | `https://sync.sugudasu.com/e/{event_public_id}` |
+
+**運用:** 課金流入は LP に着地させ、LP からログイン/開始へ遷移。`/timeline` を直接広告着地に使わない。共有リンクは `/e/{event_public_id}` を固定し、IA変更で壊さない。
+
+**URL/SEO 正本:** [`SYNC_URL_INFORMATION_ARCHITECTURE.md`](SYNC_URL_INFORMATION_ARCHITECTURE.md)
+
 **STATEMENTS との関係:** `docs/notes/STATEMENTS_PAGE_DRAFT.md` の「将来 Pro」は **Sync ラインに具体化**。コアの約束（班分け等の非送信）は **変更しない**。
+
+### 1-2. LP 必須方針（提督確定）
+
+**Sync 系プロダクトは LP を必須**とする。  
+理由: 有料導線では「なぜ今お金を払うか」を短時間で納得させる必要があり、機能説明だけでは CVR が不足するため。
+
+| 項目 | 方針 |
+|------|------|
+| 対象 | `sync.sugudasu.com` 配下の有料導線（T13-S 以降すべて） |
+| 必須要素 | 課題→解決、料金、同時端末上限、導入手順、FAQ、返金/保存ポリシー |
+| NG | 価格のみ先出し・機能列挙のみ・上限非開示 |
+| 受け入れ | LP 未整備のまま課金導線を本番公開しない |
 
 ### 1-1. 開発コード — 初回ツール `timeline-sync`（提督確定 · 2026-06-24）
 
@@ -132,9 +157,9 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 | **C** | 閲覧 QR · 短 URL | 会場オンボーディング | S2+ |
 | **D** | 変更履歴一覧（Pro） | 事後監査 · 翌年テンプレ | S3+ |
 | **E** | オフライン閲覧キャッシュ | 会場 Wi‑Fi | S3+ |
-| **F** | データ削除・エクスポート | 信頼 FAQ | S1+ |
+| **F** | データ削除・エクスポート | 信頼 FAQ · **ルーム手動削除** | S1+ |
 | **G** | コア→Sync 持ち込み | 無料からの昇格 | S2+ |
-| **H** | イベントアーカイブ | 翌年再利用 | S3+ |
+| **H** | イベント終了後のテンプレ再利用 | **エクスポート → 取込**（クラウド永久保存ではない） | S3+ |
 | **I** | 稼働ステータス | 当日安心 | S3+ |
 | **J** | Webhook / Slack | チャンネルへ表だけ投稿 | S4+ |
 | **K** | 組織ワークスペース | リピート幹事 | S4+ |
@@ -208,17 +233,48 @@ localRevision < serverRevision のとき:
 
 **意図的に後回し:** フル共同編集 · カレンダー双方向 · ネイティブアプリ · OS プッシュ通知
 
+### 3-4. ビューレーン（提督採用 · 2026-06-25）
+
+**正本:** `docs/notes/timeline-sync-lanes-gemini-RESULT.md` · `TIMELINE_TOOL_SPEC.md` §7-5
+
+| 論点 | 決定 |
+|------|------|
+| データ | **1本** `TimelineState` · 行ID・時刻は全役割で同一 |
+| 表示 | **crew / stage / public** のビュープロファイル（2レーン以上は **UI** の話） |
+| スキーマ | **案B** — `publicTitle`（司会・来場者）と `note`（= crewNote · クルーのみ） |
+| 却下 | **案C** 2レーン別データ · 同期崩壊リスク |
+
+| フェーズ | 出荷 |
+|----------|------|
+| S2 | 閲覧 URL = **stage**（司会 · 手動反映） |
+| S2+ | **public** 閲覧（Signage · 最小表示） |
+| S4+ | 役割別マルチ列は見送り — `crewNote` + crew ビューで代替 |
+
 ---
 
 ## 4. 課金モデル（案 · 提督判断待ち）
 
 | モデル | 向くペルソナ | メモ |
 |--------|--------------|------|
-| **イベント単位**（例: ¥980/イベント · 7日間） | 年数回の幹事 | サブスク離脱と相性良 · RevenueCat SSOT「都度実務」 |
-| **月額 Pro**（例: ¥1,480/月 · ルーム無制限） | 研修会社 · イベント会社 | 習慣課金は弱いので副次 |
+| **イベント単位**（例: ¥980/イベント · 7日間） | 年数回の幹事 | サブスク離脱と相性良 · **同時クラウド枠 3 まで** |
+| **月額 Pro**（例: ¥1,480/月） | 研修会社 · イベント会社 | 習慣課金は弱い · **同時枠 5 cap**（無制限はしない） |
 | **無料トライアル** | 初回幹事 | **1イベント無料** or 閲覧3人まで無料 — Hard ではなく価値体験 |
 
 **Sync の aha! moment:** 進行係が +5分 → 司会に **「新しい版があります」** → 司会が **[今すぐ反映]** を押す → 全員同じ終了時刻。
+
+### 4-0. 同時スタッフ端末の価格設計（採用）
+
+正本: [`SYNC_CAPACITY_AND_PRICING_POLICY.md`](SYNC_CAPACITY_AND_PRICING_POLICY.md)
+
+| 項目 | 初期値（案） |
+|------|--------------|
+| Event Base | ¥980 / event（同時スタッフ 5端末） |
+| Device Pack +5 | +¥480（+5端末） |
+| Device Pack +10 | +¥880（+10端末） |
+| 1イベント上限（Free運用） | 35端末 |
+| 1イベント上限（Pro運用） | 70端末 |
+
+**方針:** 1イベント課金でも「同時スタッフ端末」を無制限にしない。上限は価格で段階提供。
 
 ### 4-1. Rundown 有料機能との対応（**提督採用確定** · 2026-06-24）
 
@@ -227,7 +283,7 @@ localRevision < serverRevision のとき:
 | Rundown 機能 | 意味 | **コア（無料）** | **Sync（有料）** | フェーズ | 判定 |
 |--------------|------|------------------|------------------|----------|------|
 | **2 team members** | 共同編集者2人 | ×（1人端末） | **編集者2人まで**（閲覧者は別枠） | S4+ | Sync Pro |
-| **Unlimited rundowns** | 進行表の作り直し無制限 | **◎ 無制限**（localStorage/都度新規） | **◎ ルーム無制限**（課金枠内） | コア/Sync | コアで既に満たす |
+| **Unlimited rundowns** | 進行表の作り直し無制限 | **◎ 無制限**（localStorage/都度新規） | **◎ クラウド同時枠あり**（trial 1 · 課金 3） | コア/Sync | コアで既に満たす |
 | **Full access guests** | ゲストも編集可 | × | **× 既定** — 閲覧のみ。編集は **編集者枠**（上と同じ） | S2/S4 | 手動反映閲覧が既定 |
 | **Prompter** | テレプロンプター | **OUT** | **OUT** | — | 別製品（放送） |
 | **API control** | Stream Deck 等 | **OUT** | **Webhook のみ**（Slack 時刻表投稿）· 公開 REST は OUT | S4 | 最小連携のみ |
@@ -278,12 +334,17 @@ localRevision < serverRevision のとき:
 | 層 | 案 | 制約 |
 |----|-----|------|
 | フロント | コアと同じ静的 + Sync 専用 JS | `timeline-engine.js` 共有 |
-| 認証 | Supabase Auth or Clerk | 秘密は env · Git 禁止 |
-| 同期 | Supabase Realtime（**Push**）+ 軽量 **Pull** ポーリング | 両方必須 · §3-3 |
-| 課金 | Stripe Checkout + Customer Portal | |
+| 認証 | Supabase Auth（クライアント + RLS） | 秘密は env · Git 禁止 |
+| API | Cloudflare Pages Functions `/api/*` | S1: health · Stripe スタブ · S3: 課金 |
+| 同期 | Supabase Realtime（**Push**）+ 軽量 **Pull** ポーリング | **S2** · §3-3 |
+| 課金 | Stripe Checkout + Customer Portal | **S3** · `SYNC_S1_ARCHITECTURE.md` §2 |
 | ホスティング | Cloudflare Pages（Sync サブドメイン） | コアと deploy 分離可 |
 
-**コスト防衛:** Pull は `revision` のみ（数バイト）· Push 不通時フォールバック · 接続数上限 · 休眠ルーム自動アーカイブ。
+**S1 技術正本:** [`SYNC_S1_ARCHITECTURE.md`](SYNC_S1_ARCHITECTURE.md)
+
+**コスト防衛:** Pull は `revision` のみ · Push 不通時フォールバック · 接続数上限 · **`retain_until` 自動パージ** · **ルーム数・payload 上限**（`SYNC_RETENTION_POLICY.md` · `SYNC_STORAGE_QUOTAS.md`）。
+
+**フロント防衛:** Cloudflare Pages は通常ボトルネックではない。クレームを防ぐ主戦場はフロント実装（初回JSサイズ・描画量・再描画回数）で、性能予算は `SYNC_CAPACITY_AND_PRICING_POLICY.md` を正本にする。
 
 ---
 
@@ -293,7 +354,7 @@ localRevision < serverRevision のとき:
 Phase 0  [今]     コア timeline MVP — 1人進行もここで完結
 Phase S1          登録 · NO広告 · ルーム · クラウド保存（同期なしでも可）
 Phase S2          共有の必須コア — Push/Pull · 「新しい版があります」· 閲覧 URL
-Phase S2+         任意 — RBAC · QR · コア持ち込み（順不同）
+Phase S2+         任意 — RBAC · QR · コア持ち込み · βダッシュボード（順不同）
 Phase S3+         任意 — Stripe · 履歴一覧 · アーカイブ
 Phase S4+         任意 — Webhook · 組織 WS
 ```
@@ -303,8 +364,8 @@ Phase S4+         任意 — Webhook · 組織 WS
 | **0** | `/timeline` コア | 必須 | 1人進行が完結 |
 | **S1** | Sync α | 必須（Sync 立ち上げ） | 登録→保存→再開 |
 | **S2** | **同期プロトコル** §3-3 | **必須（共有の芯）** | 新版バナー · 手動反映で時刻一致 |
-| **S2+** | RBAC · QR 等 | 任意 | — |
-| **S3+** | 課金 · 履歴 | 任意 | 有料1件 |
+| **S2+** | RBAC · QR · βダッシュボード | 任意 | 利用状況を可視化して改善判断 |
+| **S3+** | 課金 · 履歴 · **LP** | 任意（ただし課金公開時は LP 必須） | 有料1件 |
 
 ---
 
@@ -339,6 +400,15 @@ Phase S4+         任意 — Webhook · 組織 WS
 |------|------|
 | `docs/notes/TIMELINE_TOOL_SPEC.md` | コア / Sync 境界 · エンジン |
 | `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` | T13 · T13-S |
-| `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | 課金・初回価値 |
+| `docs/notes/SYNC_DB_ARCHITECTURE.md` | DB メタ原則 · テーブル · 採用数値 |
+| `docs/notes/SYNC_URL_INFORMATION_ARCHITECTURE.md` | URL構造 · IA · SEO正本 |
+| `docs/notes/SYNC_CAPACITY_AND_PRICING_POLICY.md` | 同時端末上限 · 価格 · フロント性能予算 |
+| `docs/notes/SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md` | Event ID 衝突防止 · 2種ダッシュボード |
+| `docs/notes/SYNC_META_PLATFORM_GUARDRAILS.md` | Sync系共通のメタ基盤・死角・優先検証軸 |
+| `docs/notes/SYNC_IMPLEMENTATION_TASKS.md` | S1.5→S2 実装タスク（着手順） |
+| `docs/notes/SYNC_RETENTION_POLICY.md` | 保持期限 · 削除 |
+| `docs/notes/sync-db-architecture-gemini-RESULT.md` | Gemini 調査原文 |
+| `docs/notes/SYNC_STORAGE_QUOTAS.md` | 同時ルーム上限 · JSON エクスポート |
+| `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | 課金・初回価値（Stripe 方針は Sync アーキ参照） |
 | `docs/notes/STATEMENTS_PAGE_DRAFT.md` | 公開約束 · Pro 文言 |
 | `docs/BACKLOG.md` §0 | コア前提（Sync は §追記参照） |

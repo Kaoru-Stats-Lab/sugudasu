@@ -5,6 +5,9 @@
     },
     "cloudflare-docs": {
       "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-builds": {
+      "url": "https://builds.mcp.cloudflare.com/mcp"
     }
   }
 }

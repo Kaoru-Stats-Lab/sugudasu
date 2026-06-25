@@ -28,6 +28,7 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [note-editorial-gemini.md](note-editorial-gemini.md) | note「引き算の記録」下書き（Gemini たたき台 · 第1パス） |
 | [note-deai-grok.md](note-deai-grok.md) | note 原稿 AI 味除去（Grok · 第2パス） |
 | [kanji-san-lp-patterns-gemini.md](kanji-san-lp-patterns-gemini.md) | **幹事さん型 LPプロンプト SSOT**（型0/A/B/C/D · Grok第2パス · 運用） |
+| [lp-runs/README.md](lp-runs/README.md) | **ツール別 LP Gemini/Grok コピペ用**（warikan · group-split 済） |
 | [TOOL_FACTS.generated.md](TOOL_FACTS.generated.md) | `npm run generate:tool-facts` — 結合出力 |
 | [tool-facts/](tool-facts/) | ツール別 `*.generated.md`（Gemini 1ツール添付） |
 | `data/tool-facts/` | 手動正本 · `npm run scaffold:tool-facts` |

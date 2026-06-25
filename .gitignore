@@ -1,5 +1,6 @@
 dist/
 dist-sync/
+.env.sync.local
 assets/tw-build.css
 node_modules/
 .ops/

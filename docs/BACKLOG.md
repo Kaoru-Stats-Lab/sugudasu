@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-23（§5-4 Sync インフラ完了 · sync.sugudasu.com）  
+更新: 2026-06-25（§5-4 Sync 初回デプロイ完了）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -731,7 +731,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ### 5-4. Sync ライン — `sugudasu-sync` · `sync.sugudasu.com`（2026-06-23 完了）
 
-**SSOT:** [`docs/notes/SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md)（ダッシュボード確定値 · 運用マニュアル · watch paths 案）
+**SSOT:** [`docs/notes/SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md) · **提督残タスク:** [`TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md)
 
 #### インフラ Done
 
@@ -742,14 +742,21 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 #### デプロイ運用（S1 プレースホルダー期）
 
-- [ ] ダッシュボード Build を **`build:pages:sync` + `dist-sync`** に更新（§2-1 · 現状は `build:pages` + `dist` 記録）
-- [ ] 初回 Sync 本番反映 — **Wrangler 手動** `npx wrangler pages deploy dist-sync --project-name=sugudasu-sync` または一時自動 ON（`SYNC_INFRA` §4）
-- [ ] §6 チェックリスト（sync / timeline / コア無影響）目視
+- [x] ダッシュボード Build = **`build:pages:sync` + `dist-sync`**（2026-06-25）
+- [x] Wrangler 認証 · 初回本番反映 `npm run deploy:pages:sync`（2026-06-25）
+- [x] §6 チェックリスト — `sync.sugudasu.com/` · `/timeline` プレースホルダー · コア無影響
 
-#### S1 以降（製品 · 未着手）
+#### S1 以降（製品）
 
-- [ ] Auth · ルーム · クラウド保存（`SUGUDASU_SYNC_LINE.md` Phase S1）
-- [ ] `timeline-sync-app.js` · Push/Pull · 新版バナー（S2）
+- [x] S1 骨格 — Supabase スキーマ · Auth/ルーム JS · `/api/health` · Stripe webhook スタブ（`SYNC_S1_ARCHITECTURE.md`）
+- [x] β運用窓口を開設（[不具合・改善フォーム](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor) / [回答管理シート](https://docs.google.com/spreadsheets/d/1LNjUDMiQW5klQlmrtRjDx_AHtf-EQRKYVnOZAJedl64/edit?usp=sharing)）
+- [x] 回答管理シート `status` 運用定義を確定（`new` / `triaged` / `in_progress` / `resolved`）
+- [ ] Supabase プロジェクト作成 · マイグレーション · CF 環境変数（`SYNC_ENV_KEYS.md`）
+- [x] リーガル文書を調整し、Supabase / Cloudflare 提供条件との衝突リスクを低減（[`docs/legal/terms-of-use.md`](legal/terms-of-use.md) · [`docs/legal/privacy-policy.md`](legal/privacy-policy.md) · [`docs/legal/data-lifecycle-policy.md`](legal/data-lifecycle-policy.md) · [`docs/legal/dpa-lite.md`](legal/dpa-lite.md) · 復旧保証断定の緩和 / β可用性条項の追加）
+- [ ] S1.5/S2 実装タスク着手（`docs/notes/SYNC_IMPLEMENTATION_TASKS.md`）
+- [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番）
+- [ ] Auth · ルーム · クラウド保存（受け入れ完了で Done）
+- [ ] `timeline-sync-app.js` フルエディタ · Push/Pull · 新版バナー（S2）
 - [ ] Build watch paths 導入 → Sync 自動デプロイ再開検討（`SYNC_INFRA` §5）
 
 ---

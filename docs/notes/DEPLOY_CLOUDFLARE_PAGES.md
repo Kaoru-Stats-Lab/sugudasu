@@ -33,12 +33,12 @@
 
 ### Sync ライン（`sugudasu-sync` · 別プロジェクト）
 
-| 設定項目 | ダッシュボード確定値（2026-06-23） | コード正本（推奨） |
-|----------|-----------------------------------|-------------------|
-| **本番 URL** | `https://sync.sugudasu.com/` | 同上 |
-| **Build command** | `npm run build:pages` | **`npm run build:pages:sync`** |
-| **Build output directory** | `dist` | **`dist-sync`** |
-| **自動 git デプロイ** | **OFF** | OFF（S1 期） |
+| 設定項目 | 確定値（2026-06-25） |
+|----------|---------------------|
+| **本番 URL** | `https://sync.sugudasu.com/` |
+| **Build command** | `npm run build:pages:sync` |
+| **Build output directory** | `dist-sync` |
+| **自動 git デプロイ** | **OFF** · 反映は `npm run deploy:pages:sync` |
 
 運用マニュアル（Wrangler 手動 · watch paths）: [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
 
@@ -196,6 +196,7 @@ build:pages OK
 |------|------------|
 | **本ファイル（Agent デプロイ正本）** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **Sync インフラ** | `docs/notes/SYNC_INFRA_CLOUDFLARE.md` |
+| **Cursor + Cloudflare** | `docs/notes/CURSOR_CLOUDFLARE_AGENT_SETUP.md` |
 | 運用コマンド早見 | `docs/WORKFLOW.md` |
 | カスタムドメイン | `docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md` |
 | ヘッダー再発防止 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
