@@ -47,7 +47,7 @@ body.sg-body {
   background: var(--sg-surface);
   border: 1px solid var(--sg-border);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  box-shadow: none;
 }
 
 .sg-input {
@@ -94,6 +94,10 @@ textarea.sg-input.sg-field--error {
   cursor: pointer;
 }
 .sg-btn-primary:hover { background: var(--sg-primary-hover); }
+.sg-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
+}
 
 .sg-btn-print {
   background: #059669;
@@ -118,6 +122,10 @@ textarea.sg-input.sg-field--error {
   cursor: pointer;
 }
 .sg-btn-secondary:hover { background: #f8fafc; }
+.sg-btn-secondary:active:not(:disabled) {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
+}
 
 /* —— Mode segment (sg-segment) — DESIGN_GUIDELINE §3.3 —— */
 .sg-segment {
@@ -127,7 +135,8 @@ textarea.sg-input.sg-field--error {
   padding: 0.25rem;
   border-radius: 0.75rem;
   border: 1px solid var(--sg-border);
-  background: #f1f5f9;
+  background: #f8fafc;
+  box-shadow: none;
 }
 
 .sg-segment--cols-2 { grid-template-columns: repeat(2, 1fr); }
@@ -142,10 +151,10 @@ textarea.sg-input.sg-field--error {
   border-radius: 0.5rem;
   background: #fff;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
-  border: 1px solid rgb(37 99 235 / 0.12);
+  border: 1px solid rgb(15 23 42 / 0.06);
   transition:
-    transform 180ms cubic-bezier(0.2, 0, 0, 1),
-    width 180ms cubic-bezier(0.2, 0, 0, 1);
+    transform 120ms cubic-bezier(0.2, 0, 0, 1),
+    width 120ms cubic-bezier(0.2, 0, 0, 1);
   pointer-events: none;
   z-index: 0;
   will-change: transform, width;
@@ -218,16 +227,33 @@ a.sg-segment__btn {
 }
 
 .sg-segment-hint {
+  display: block;
   margin-top: 0.5rem;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.55;
   text-wrap: pretty;
-  padding: 0.5rem 0.625rem;
+  padding: 0.625rem 0.75rem 0.625rem 2rem;
   border-radius: 0.5rem;
-  border: 1px solid #e0e7ff;
-  background: rgb(238 242 255 / 0.85);
-  color: #312e81;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  position: relative;
   transition: opacity 150ms ease;
+}
+
+.sg-segment-hint::before {
+  content: 'ℹ';
+  position: absolute;
+  left: 0.625rem;
+  top: 0.625rem;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.sg-segment-hint strong {
+  color: #334155;
+  font-weight: 600;
 }
 
 .sg-segment-hint.is-fading { opacity: 0; }
@@ -255,33 +281,10 @@ a.sg-segment__btn {
   opacity: 0.55;
 }
 
-.sg-segment-hint.sg-notion-callout {
-  display: block;
-  padding: 0.625rem 0.75rem 0.625rem 2rem;
-  font-size: 11px;
-  color: #475569;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  position: relative;
-}
+/* sg-notion-callout — alias; 正本は .sg-segment-hint */
 
-.sg-segment-hint.sg-notion-callout::before {
-  content: 'ℹ';
-  position: absolute;
-  left: 0.625rem;
-  top: 0.625rem;
-  font-size: 12px;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.sg-segment-hint.sg-notion-callout strong {
-  color: #334155;
-  font-weight: 600;
-}
-
-.sg-notion-faq-section .sg-notion-faq-title {
+.sg-notion-faq-section .sg-notion-faq-title,
+.sg-notion-faq-section .sg-faq-title {
   text-align: left;
   font-size: 1rem;
   font-weight: 600;
@@ -346,6 +349,49 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   transition: transform 100ms ease;
 }
 
+/* Hub（/）— Notion Like ツール目次 · DESIGN_NOTION_SUGUDASU_ADAPT §7-1 */
+.sg-hub-hero {
+  text-align: left;
+}
+.sg-hub-trust {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  background: #f8fafc;
+}
+.sg-hub-callout--warn {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+.sg-hub-card {
+  display: block;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+.sg-hub-card:hover {
+  border-color: #93c5fd;
+}
+.sg-hub-card__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+.sg-hub-card__title {
+  font-weight: 700;
+  color: #0f172a;
+}
+.sg-hub-card__meta {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 0.5rem;
+}
+
 /* 書類クラスタ（印鑑 · 請求 · 領収）— ページ遷移用 sg-segment · DESIGN_GUIDELINE §3.3 */
 .sg-doc-cluster {
   max-width: 28rem;
@@ -365,7 +411,10 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   .sg-preview-fade,
   .sg-segment--notion-soft .sg-segment__pill,
   .sg-notion-toggle__summary::before,
-  .sg-notion-btn-press:active {
+  details.sg-faq > summary::before,
+  .sg-notion-btn-press:active,
+  .sg-btn-primary:active,
+  .sg-btn-secondary:active {
     transition: none;
   }
 }
@@ -561,7 +610,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   .sg-nav-label { font-size: 11px; }
 }
 
-/* FAQ（ツール共通・index 含む） */
+/* FAQ（ツール共通 · Notion toggle — DESIGN_NOTION_SUGUDASU_ADAPT §7） */
 .sg-faq-section {
   margin-top: 2rem;
   padding: 2.5rem 1rem;
@@ -573,19 +622,56 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   margin: 0 auto;
 }
 .sg-faq-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
   color: #0f172a;
   margin-bottom: 1.5rem;
 }
 .sg-faq-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0;
+  border-top: 1px solid #e2e8f0;
+}
+details.sg-faq {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid #e2e8f0;
 }
 details.sg-faq summary::-webkit-details-marker { display: none; }
-details.sg-faq[open] summary svg { transform: rotate(180deg); }
+details.sg-faq > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+details.sg-faq > summary::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent #94a3b8;
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+details.sg-faq[open] > summary::before {
+  transform: rotate(90deg);
+}
+details.sg-faq[open] summary svg { transform: none; }
+details.sg-faq > summary svg { display: none; }
+.sg-faq-lead,
+.sg-notion-faq-lead {
+  text-align: left;
+}
 
 /* Growth: bookmark banner (§2-5 A4) */
 .sg-bookmark-banner {

@@ -57,7 +57,7 @@
         </section>
 
         <section class="flex flex-col gap-4">
-            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local" id="output-tab-segment" role="tablist" aria-label="出力タブ">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local sg-segment--notion-soft" id="output-tab-segment" role="tablist" aria-label="出力タブ">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
                 <button type="button" role="tab" id="tab-btn-local" data-segment-value="local" class="sg-segment__btn" aria-selected="true">
                     すぐ使える言い換え
@@ -66,7 +66,7 @@
                     AIで広げる（Gemini）
                 </button>
             </div>
-            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong class="text-slate-800">すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。</p>
+            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong>すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。</p>
 
             <div id="output-panel-card" class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
                 <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
@@ -105,7 +105,7 @@
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">大人の語彙・言い換えのよくある質問</h2>
         <div class="sg-faq-list">
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>ビジネスメールで「気を使う」をもっと格式ある言葉に言い換えたい</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -114,7 +114,7 @@
                     <p>「忖度」「配慮」「慮る」などの候補が表示されます。場面を「ビジネスメール」に選ぶと、敬語文脈に合った例文つきで提案されます。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>もっと候補を増やしたいときは？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -123,7 +123,7 @@
                     <p>「AIで広げる」タブで Gemini 用の指示文をコピーできます。入力内容は外部に自動送信されず、ご自身で Gemini に貼り付けて使います。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>モヤモヤした日本語は外部に送られますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -132,7 +132,7 @@
                     <p>いいえ。辞書検索はブラウザ内で完結します。Gemini 連携はコピー操作をした場合のみ、ご利用の AI サービス側に送信されます。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>語彙力を底上げしたら、対面のハードルまで上がりませんか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -177,8 +177,8 @@
     ];
 
     const OUTPUT_TAB_HINTS = {
-        local: '<strong class="text-slate-800">すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。',
-        gemini: '<strong class="text-slate-800">AIで広げる：</strong>ニュアンスをGemini用プロンプトに変換。貼り付けはご自身の判断で行ってください。',
+        local: '<strong>すぐ使える言い換え：</strong>内蔵辞書から候補を表示。ワンクリックでコピーできます。',
+        gemini: '<strong>AIで広げる：</strong>ニュアンスをGemini用プロンプトに変換。貼り付けはご自身の判断で行ってください。',
     };
 
     let outputTabSegmentCtrl = null;

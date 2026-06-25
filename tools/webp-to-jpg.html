@@ -74,13 +74,13 @@
 
     <section class="sg-card p-5 space-y-4">
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">出力形式</h2>
-        <div class="sg-segment sg-segment--cols-2 sg-segment--mode-ec" id="format-segment" role="tablist" aria-label="出力形式">
+        <div class="sg-segment sg-segment--cols-2 sg-segment--mode-ec sg-segment--notion-soft" id="format-segment" role="tablist" aria-label="出力形式">
             <span class="sg-segment__pill" aria-hidden="true"></span>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="png" aria-selected="true">PNG</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="jpeg" aria-selected="false">JPEG</button>
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="format-hint" role="note">
-            <strong class="text-slate-800">PNG:</strong> 透過を維持。WebP→PNG の定番。
+            <strong>PNG:</strong> 透過を維持。WebP→PNG の定番。
         </p>
         <div id="jpeg-quality-wrap" class="hidden space-y-1">
             <label for="jpeg-quality" class="text-xs font-semibold text-slate-700">JPEG 品質: <span id="jpeg-quality-val">92</span>%</label>
@@ -114,7 +114,7 @@
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">WebP→JPG/PNG のよくある質問</h2>
         <div class="sg-faq-list">
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>iLoveIMG・Convertio・PDF24 と何が違いますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -123,7 +123,7 @@
                     <p>それらは<strong>画像を運営サーバーへアップロード</strong>してから変換します（Convertio は変換後にサーバーから削除、PDF24 は約1時間で削除、と説明しています）。SUGUDASU は<strong>端末のブラウザ内だけ</strong>で Canvas 変換し、画像ファイルの POST は発生しません。F12 → ネットワークで確認できます。数百枚の一括 ZIP が必要ならアップロード型の方が向いています。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>WebPをPNGやJPEGに変換できますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -132,7 +132,7 @@
                     <p>はい。一覧から出力形式を選び、変換後に1枚ずつダウンロードできます。ExcelやWordに貼れない WebP も PNG / JPEG にすれば使えることが多いです。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>画像は外部に送信されますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -141,7 +141,7 @@
                     <p>いいえ。すべて端末のブラウザ内でデコード・再エンコードされます。未公開のスクショなど、アップロード型サイトに載せたくない場合向けです。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>Web 上の WebP を URL から変換できますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -150,7 +150,7 @@
                     <p>URL 欄または URL をコピーして <kbd>Ctrl</kbd>+<kbd>V</kbd> で試せます。ただし<strong>多くのサイトはブラウザの CORS 制限で直接取得できません</strong>。その場合は「名前を付けて保存」してドロップするか、ページ上で画像をコピーして貼り付けてください。処理は端末内だけで行い、SUGUDASU のサーバーへ送信しません。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>PNGやJPEGをWebPに変換できますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -159,7 +159,7 @@
                     <p>いいえ。本ツールは <strong>WebP を PNG/JPEG に戻す</strong>用途向けです（Excel 貼付 · 旧システムへの画像登録など）。PNG/JPEG を WebP に圧縮する用途は別の Pain です。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>透過WebPをJPEGにするとどうなりますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -168,7 +168,7 @@
                     <p>JPEGは透過非対応のため、背景は白で塗りつぶされます。透過を残す場合は PNG を選んでください。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>PDFや一括圧縮はできますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -196,8 +196,8 @@ import {
 } from '../assets/webp-to-jpg.js';
 
 const FORMAT_HINTS = {
-  png: '<strong class="text-slate-800">PNG:</strong> 透過を維持。WebP→PNG の定番。',
-  jpeg: '<strong class="text-slate-800">JPEG:</strong> 写真向け。透過WebPは白背景になります。',
+  png: '<strong>PNG:</strong> 透過を維持。WebP→PNG の定番。',
+  jpeg: '<strong>JPEG:</strong> 写真向け。透過WebPは白背景になります。',
 };
 
 const dropZone = document.getElementById('drop-zone');

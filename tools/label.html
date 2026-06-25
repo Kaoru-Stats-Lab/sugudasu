@@ -30,13 +30,13 @@
 
             <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-3">
                 <h2 class="text-sm font-bold text-slate-900">モード切替</h2>
-                <div class="sg-segment sg-segment--cols-2 sg-segment--mode-label" id="label-mode-segment" role="tablist" aria-label="出力モード">
+                <div class="sg-segment sg-segment--cols-2 sg-segment--mode-label sg-segment--notion-soft" id="label-mode-segment" role="tablist" aria-label="出力モード">
                     <span class="sg-segment__pill" aria-hidden="true"></span>
                     <button type="button" role="tab" id="btn-mode-label" data-segment-value="label" class="sg-segment__btn" aria-selected="true">宛名ラベル</button>
                     <button type="button" role="tab" id="btn-mode-card" data-segment-value="card" class="sg-segment__btn" aria-selected="false">サンキューカード</button>
                 </div>
             </div>
-            <p class="sg-segment-hint" id="label-mode-hint" role="note"><strong class="text-slate-800">宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。</p>
+            <p class="sg-segment-hint" id="label-mode-hint" role="note"><strong>宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。</p>
 
             <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 border-b border-blue-100 pb-1.5 flex items-center gap-1">
@@ -156,7 +156,7 @@
         <div class="sg-faq-inner">
             <h2 class="sg-faq-title">宛名ラベル・シール印刷のよくある質問</h2>
             <div class="sg-faq-list">
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>エーワンやニチバンの型番からラベル規格を選びたい</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -165,7 +165,7 @@
                         <p>規格プルダウンまたは検索で型番（例: 24面・36面）を選ぶと、A4シート上の配置がプレビューに反映されます。主要メーカーの互換規格を内蔵しています。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>CSVで宛名を一括インポートできますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -174,7 +174,7 @@
                         <p>CSVモードでファイルを読み込むと、複数宛先をラベル面に割り当てできます。大量件数でもブラウザ内で処理し、印刷プレビューで位置を確認してから出力してください。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>住所録データは外部に送られますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -183,7 +183,7 @@
                         <p>いいえ。CSVの読み込みとレイアウト計算はすべてブラウザ内で完結します。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>一発で位置ズレなし印刷できたら、周囲に驚かれませんか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -344,8 +344,8 @@
         }
 
         const LABEL_MODE_HINTS = {
-            label: '<strong class="text-slate-800">宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。',
-            card: '<strong class="text-slate-800">サンキューカード：</strong>メッセージ中心のカード面。差出人フォームは非表示になります。',
+            label: '<strong>宛名ラベル：</strong>差出人・宛先を入力して用紙規格に合わせて印刷します。',
+            card: '<strong>サンキューカード：</strong>メッセージ中心のカード面。差出人フォームは非表示になります。',
         };
 
         let labelModeSegmentCtrl = null;

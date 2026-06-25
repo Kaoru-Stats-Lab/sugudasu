@@ -26,7 +26,7 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 請求書" data-sg-subtitle="見積 · 納品 · 請求" data-sg-print="true" data-sg-tool-id="invoice"></div>
 
     <div class="no-print px-4 sm:px-6 lg:px-8 mt-4">
-    <nav class="sg-segment sg-segment--cols-3 sg-segment--mode-invoice sg-doc-cluster w-full" aria-label="書類ツール">
+    <nav class="sg-segment sg-segment--cols-3 sg-segment--mode-invoice sg-doc-cluster w-full sg-segment--notion-soft" aria-label="書類ツール">
         <span class="sg-segment__pill" aria-hidden="true"></span>
         <a href="/stamp" class="sg-segment__btn">電子印鑑</a>
         <a href="/invoice" class="sg-segment__btn" aria-current="page">請求書</a>
@@ -54,7 +54,7 @@
                     <button type="button" role="tab" id="btn-type-delivery" data-segment-value="delivery" class="sg-segment__btn" aria-selected="false">納品書</button>
                     <button type="button" role="tab" id="btn-type-invoice" data-segment-value="invoice" class="sg-segment__btn" aria-selected="false">請求書</button>
                 </div>
-                <p class="sg-segment-hint sg-notion-callout" id="doc-type-hint" role="note"><strong>見積 → 納品・請求への転用：</strong>下書きデータを読み込んだあと、このタブで書類種別を切り替えると<strong>明細・宛先・金額はそのまま</strong>、見出しや備考の体裁だけ変わります。番号・期限・備考は書類に合わせて直してからPDF保存してください。</p>
+                <p class="sg-segment-hint" id="doc-type-hint" role="note"><strong>見積 → 納品・請求への転用：</strong>下書きデータを読み込んだあと、このタブで書類種別を切り替えると<strong>明細・宛先・金額はそのまま</strong>、見出しや備考の体裁だけ変わります。番号・期限・備考は書類に合わせて直してからPDF保存してください。</p>
             </div>
 
             <!-- 基本メタ情報 -->
@@ -282,7 +282,7 @@
             <p class="sg-notion-faq-lead text-xs text-slate-500 mb-6 -mt-2">インボイス・電帳法の実務でよく検索されるポイント</p>
             <div class="sg-faq-list sg-notion-faq-list">
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>見積書・納品書・請求書の違いと使い分けは？</span>
                 </summary>
@@ -292,7 +292,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>インボイス制度（適格請求書）の登録番号は入力できますか？</span>
                 </summary>
@@ -301,7 +301,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>出精値引き（マイナス金額）を入れたときの消費税計算は？</span>
                 </summary>
@@ -310,7 +310,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>PDFと下書きデータの保存の違いは？</span>
                 </summary>
@@ -319,7 +319,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>下書きデータの保存・読み込みはどう使いますか？</span>
                 </summary>
@@ -330,7 +330,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>見積の下書きを納品書・請求書に転用できますか？</span>
                 </summary>
@@ -341,7 +341,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>入力した顧客情報や社印画像は外部に送信されますか？</span>
                 </summary>
@@ -350,7 +350,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>中古車の個人売買や整備工場向けに請求書は使えますか？</span>
                 </summary>
@@ -359,7 +359,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>SUBARUの中古車サービス「スグダス」と同じですか？</span>
                 </summary>
@@ -368,7 +368,7 @@
                 </div>
             </details>
 
-            <details class="sg-faq sg-notion-toggle">
+            <details class="sg-faq">
                 <summary class="sg-notion-toggle__summary">
                     <span>会員登録すらせず一瞬で請求書を出したら、手抜きだと思われませんか？</span>
                 </summary>

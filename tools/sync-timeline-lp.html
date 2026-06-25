@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="進行表やタイムラインを複数スタッフでリアルタイム共有。当日の差し込みや版更新をURL1本で周知。登録不要の無料コアは sugudasu.com/timeline へ。">
+    <title>進行表のリアルタイム共有｜イベント当日の変更を全スタッフに同期 — SUGUDASU Sync</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU Sync">
+    <meta property="og:title" content="進行表のリアルタイム共有｜イベント当日の変更を全スタッフに同期 — SUGUDASU Sync">
+    <meta property="og:description" content="進行表やタイムラインを複数スタッフでリアルタイム共有。当日の差し込みや版更新をURL1本で周知。">
+    <meta property="og:url" content="https://sync.sugudasu.com/timeline">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"コア無料版（sugudasu.com）との違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"1人で進行表を組むコア無料版はデータ非送信です。Sync有料版は共有URLを発行し、チーム間で進行表共有とリアルタイム共有を可能にします。"}},{"@type":"Question","name":"送信した進行表データはいつまでサーバーに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"永続保存はされません。イベントごとに設定された期限（retain_until）経過後、バックアップ含め物理削除され、復旧不能になります。"}},{"@type":"Question","name":"イベント本番中にクレジットカードで支払う必要がありますか？","acceptedAnswer":{"@type":"Answer","text":"不要です。本番中の決済トラブルを防ぐため、事前チケット購入制を採用しています。当日はチケットを1タップ消費するだけで同期を開始できます。"}},{"@type":"Question","name":"現在のリアルタイム同期機能（S2）の状況を教えてください。","acceptedAnswer":{"@type":"Answer","text":"最新の版バナーを検知して複数端末を一斉更新するリアルタイム同期機能（S2）は、現在設計中です。現在は利用登録と閲覧URL発行を行うS1機能の稼働準備を進めています。"}},{"@type":"Question","name":"URLを知っていれば誰でも見られる仕様で、版管理は安全ですか？","acceptedAnswer":{"@type":"Answer","text":"共有URLは複雑なIDで保護されますが、URLの漏洩管理はユーザーの自己責任です。なお、実名データの暗号化通信の詳細は現在法務確認中です。"}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SUGUDASU Sync","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"500","priceCurrency":"JPY","description":"イベント単位の料金は確定前の目安です（要確認）"}}</script>
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+
+<div id="sg-chrome-top"
+     data-sg-title="SUGUDASU Sync イベント進行"
+     data-sg-subtitle="進行表の共有 · 同期"
+     data-sg-tool-id="timeline-sync"
+     data-sg-chrome-mode="focus"></div>
+
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8 space-y-14 pb-16">
+
+    <!-- Hero + デモ -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center" aria-labelledby="stlp-hero-h1">
+        <div class="space-y-4">
+            <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S2 · 同期機能は設計中</p>
+            <h1 id="stlp-hero-h1" class="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">本番前の変更を、全員の進行表に。</h1>
+            <p class="text-sm text-slate-600 leading-relaxed">エクセル進行表の「どれが最新？」を URL1本の<strong>進行表共有</strong>で解決。分刻みの<strong>進行表の当日変更</strong>に追従する多端末同期システム。</p>
+            <p class="text-[11px] text-slate-500">イベント進行管理 · 多端末リアルタイム共有（SUGUDASU Sync）</p>
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <a href="/timeline/app" class="sg-btn-primary inline-flex justify-center items-center text-sm font-bold py-2.5 px-5 rounded-lg">アカウント作成 / ログイン</a>
+                <a href="#stlp-compare" class="inline-flex justify-center items-center text-sm font-semibold text-slate-600 border border-slate-300 rounded-lg py-2.5 px-5 hover:bg-white">無料コアとの違い</a>
+            </div>
+        </div>
+
+        <div class="sg-card p-4 space-y-3" data-stlp-demo-group aria-label="進行表連動デモ">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                <span class="text-xs font-bold text-slate-700">ミニ進行表（デモ）</span>
+                <span class="text-[10px] font-mono text-slate-500" data-stlp-version>v11</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-2" data-stlp-demo-group aria-label="幹事画面">
+                    <p class="text-[10px] font-bold text-slate-500 mb-1">幹事</p>
+                    <table class="w-full font-mono">
+                        <tbody>
+                            <tr><td class="text-slate-400 w-12">10:00</td><td class="text-slate-700" data-stlp-time="10:00">開会</td></tr>
+                            <tr><td class="text-slate-400">10:30</td><td class="text-slate-700" data-stlp-time="10:30">講演1</td></tr>
+                            <tr><td class="text-slate-400">11:00</td><td class="text-slate-700" data-stlp-time="11:00">休憩</td></tr>
+                            <tr><td class="text-slate-400">11:15</td><td class="text-slate-700" data-stlp-time="11:15">講演2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 p-2" data-stlp-demo-group aria-label="スタッフ画面">
+                    <p class="text-[10px] font-bold text-slate-500 mb-1">スタッフ</p>
+                    <table class="w-full font-mono">
+                        <tbody>
+                            <tr><td class="text-slate-400 w-12">10:00</td><td class="text-slate-700" data-stlp-time="10:00">開会</td></tr>
+                            <tr><td class="text-slate-400">10:30</td><td class="text-slate-700" data-stlp-time="10:30">講演1</td></tr>
+                            <tr><td class="text-slate-400">11:00</td><td class="text-slate-700" data-stlp-time="11:00">休憩</td></tr>
+                            <tr><td class="text-slate-400">11:15</td><td class="text-slate-700" data-stlp-time="11:15">講演2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button type="button" id="stlp-demo-plus5" class="text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-md px-3 py-1.5 w-full">開会を +5分（デモ）</button>
+            <p class="text-[10px] text-slate-500 leading-relaxed">1箇所の修正で後続時刻が連動。全端末への反映は S2 同期（設計中）。</p>
+        </div>
+    </section>
+
+    <!-- 価値2カラム -->
+    <section class="space-y-4" aria-labelledby="stlp-value-h2">
+        <h2 id="stlp-value-h2" class="text-lg font-bold text-slate-900">進行表のリアルタイム共有と自動計算</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="sg-card p-5 space-y-2">
+                <h3 class="text-sm font-bold text-slate-900">リアルタイム共有と版ずれ防止</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">1箇所の時間修正で後続が自動連動。共有 URL で<strong>進行表の版管理</strong>の混乱を減らし、スタッフが同じ版を見られる状態を目指します（S2 同期は設計中）。</p>
+            </div>
+            <div class="sg-card p-5 space-y-2">
+                <h3 class="text-sm font-bold text-slate-900">当日±5分の時間修正と自動再計算</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">本番中の巻き・押しに対応。幹事が時刻を直すと後続スケジュールが連動再計算され、手計算ミスを減らします。</p>
+                <p class="text-[10px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-2 py-0.5 rounded-full">全端末への一斉反映 · S2 設計中</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 交互1ブロック -->
+    <section class="sg-card p-6 sm:p-8 space-y-3" aria-labelledby="stlp-flash-h2">
+        <h2 id="stlp-flash-h2" class="text-lg font-bold text-slate-900">進行表の当日変更をスタッフ全員へ周知</h2>
+        <p class="text-sm text-slate-600 leading-relaxed max-w-3xl">幹事が進行表を更新し、新版をスタッフへ届ける運用を想定しています（多端末の<strong>リアルタイム共有</strong>は S2 で設計中）。もうメッセージアプリで PDF を何度も再送したり、紙を印刷し直したりする必要はありません。</p>
+    </section>
+
+    <!-- 比較表 -->
+    <section id="stlp-compare" class="space-y-4" aria-labelledby="stlp-compare-h2">
+        <h2 id="stlp-compare-h2" class="text-lg font-bold text-slate-900">コア無料版と有料 Sync 版の機能比較</h2>
+        <p class="text-sm text-slate-600">1人で組むか、チームで動かすか — 登録不要の無料コアと、当日共有の有料 Sync の境界です。</p>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <table class="w-full text-sm text-left border-collapse min-w-[32rem]">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50">
+                        <th class="p-3 font-bold text-slate-800">比較軸</th>
+                        <th class="p-3 font-bold text-slate-700">コア無料</th>
+                        <th class="p-3 font-bold text-slate-900 border-l-2 border-blue-500/40">Sync 有料</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-600">
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">利用登録</td><td class="p-3">不要（ブラウザで開始）</td><td class="p-3">必要（メール認証）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">データ送信</td><td class="p-3">なし（ブラウザ内完結）</td><td class="p-3">あり（同期バッファへ一時送信）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">共有方法</td><td class="p-3">プレーン / TSV のコピー</td><td class="p-3">共有 URL（パスワードレス閲覧）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">版管理</td><td class="p-3">手動（コピー版を自己管理）</td><td class="p-3">サーバー側で最新版を提示</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">当日±5分</td><td class="p-3">連動再計算（自端末のみ）</td><td class="p-3">連動再計算（全端末へ反映 · S2）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">同時編集</td><td class="p-3">不可（1端末）</td><td class="p-3">複数スタッフ編集（S2 設計中）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">接続端末数</td><td class="p-3">—（ローカルのみ）</td><td class="p-3">プラン別上限（要確認）</td></tr>
+                    <tr><td class="p-3 font-semibold text-slate-800">データ保持</td><td class="p-3">ページを閉じると消える</td><td class="p-3">短期パージ（retain_until 後に削除）</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-sm text-center pt-2">
+            <a href="https://sugudasu.com/timeline" class="text-slate-600 underline hover:text-slate-900">登録不要・非送信の無料コア版はこちら</a>
+        </p>
+    </section>
+
+    <!-- セキュリティ3カラム -->
+    <section class="space-y-4" aria-labelledby="stlp-security-h2">
+        <h2 id="stlp-security-h2" class="text-lg font-bold text-slate-900">進行表の版管理トラブルを防ぐ安全設計</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="sg-card p-5 space-y-2">
+                <h3 class="text-sm font-bold text-slate-900">短期バッファによる自動消去</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">進行表データは永続保存せず短期バッファとして処理。期限（retain_until）経過後はサーバーから物理削除。</p>
+                <p class="text-[10px] text-slate-500">※消去後の復旧は不可</p>
+            </div>
+            <div class="sg-card p-5 space-y-2">
+                <h3 class="text-sm font-bold text-slate-900">行レベルセキュリティ（RLS）</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Supabase の RLS を採用。他アカウントからの不正アクセスを構造的に隔離。</p>
+                <p class="text-[10px] text-slate-500">※安全性を保証するものではありません</p>
+            </div>
+            <div class="sg-card p-5 space-y-2">
+                <h3 class="text-sm font-bold text-slate-900">実名データの送信回避設計</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">サーバー側は ID と属性（時間等）の処理に特化。実名の他端末表示・暗号化連携は設計中。</p>
+                <p class="text-[10px] text-slate-500">※E2EE 等の詳細は要確認</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 料金 -->
+    <section class="space-y-4" aria-labelledby="stlp-price-h2">
+        <h2 id="stlp-price-h2" class="text-lg font-bold text-slate-900">事前チケット料金と稟議精算サポート</h2>
+        <div class="sg-card p-6 space-y-4 max-w-2xl mx-auto">
+            <p class="text-sm text-slate-600 leading-relaxed">本番中のクレジットカード入力は想定していません。事前チケット購入制を採用します（一部機能は準備中）。</p>
+            <ul class="text-xs text-slate-600 space-y-2 list-disc pl-5">
+                <li>見積書 PDF（稟議用）— <strong class="text-violet-700">準備中</strong></li>
+                <li>経費科目例：研修費 · 会議費 · イベント運営費 · ソフトウェア利用料 等（各社規程は要確認）</li>
+                <li>領収書 PDF（Stripe 決済後）— <strong class="text-violet-700">準備中</strong></li>
+                <li>デジタル役務の性質上、決済完了後のお客様都合による返金はお受けできません</li>
+            </ul>
+            <button type="button" disabled class="w-full text-sm font-bold text-slate-400 bg-slate-200 rounded-lg py-3 cursor-not-allowed" aria-disabled="true">チーム同期チケットを購入（準備中）</button>
+            <button type="button" disabled class="w-full text-sm font-semibold text-slate-400 border border-slate-200 rounded-lg py-2.5 cursor-not-allowed" aria-disabled="true">稟議用見積書 PDF を発行（準備中）</button>
+        </div>
+    </section>
+
+    <!-- 開発ステータス -->
+    <section class="space-y-4" aria-labelledby="stlp-status-h2">
+        <h2 id="stlp-status-h2" class="text-lg font-bold text-slate-900">開発ステータス</h2>
+        <div class="border-l-2 border-violet-200 ml-2 pl-6 space-y-8 text-sm">
+            <div>
+                <p class="text-[11px] font-bold text-violet-700 mb-1">【稼働準備中】 S1 · ルーム管理</p>
+                <p class="text-slate-600 text-xs leading-relaxed">利用登録（Auth）· 共有 URL 発行 · 進行表のクラウドへの手動フラッシュ保存。</p>
+                <p class="text-slate-500 text-[11px] mt-1">未対応：複数端末の同時書き込み · 自動マージ</p>
+            </div>
+            <div>
+                <p class="text-[11px] font-bold text-violet-700 mb-1">【設計中・クローズドβ】 S2 · リアルタイム同期</p>
+                <p class="text-slate-600 text-xs leading-relaxed">新版バナー検知 · 多端末 Push-Pull 同期（進行表のリアルタイム共有）。</p>
+                <p class="text-slate-500 text-[11px] mt-1">未対応：オフライン同時編集 · 競合の全自動解決</p>
+            </div>
+            <div>
+                <p class="text-[11px] font-bold text-slate-500 mb-1">【ロードマップ / 要確認】 将来</p>
+                <p class="text-slate-600 text-xs leading-relaxed">E2EE 等による実名データの秘匿レプリケーションを検討中。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="space-y-4" aria-labelledby="stlp-faq-h2">
+        <h2 id="stlp-faq-h2" class="text-lg font-bold text-slate-900">よくある質問</h2>
+        <div class="space-y-3">
+            <details class="sg-faq">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>コア無料版（sugudasu.com）との違いは何ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>1人で進行表を組むコア無料版はデータ非送信です。Sync 有料版は共有 URL を発行し、チーム間で<strong>進行表共有</strong>と<strong>リアルタイム共有</strong>を可能にします。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>送信した進行表データはいつまでサーバーに保存されますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>永続保存はされません。イベントごとの期限（retain_until）経過後、バックアップ含め物理削除され、復旧不能になります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>イベント本番中にクレジットカードで支払う必要がありますか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>不要です。事前チケット購入制を採用しています（<strong class="text-violet-700">一部準備中</strong>）。当日はチケット消費で同期を開始する想定です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>現在のリアルタイム同期機能（S2）の状況を教えてください。</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>リアルタイム同期（S2）は<strong class="text-violet-700">設計中</strong>です。利用登録と閲覧 URL 発行を行う S1 の稼働準備を進めています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
+                    <span>URLを知っていれば誰でも見られる仕様で、版管理は安全ですか？</span>
+                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>共有 URL は複雑な ID で保護されますが、URL の漏洩管理はお客様の責任です。実名データの暗号化通信の詳細は<strong class="text-violet-700">要確認</strong>です。</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- 降格 -->
+    <section class="text-center py-10 border-t border-slate-200 space-y-3">
+        <h2 class="text-sm font-bold text-slate-800">チーム共有が不要な方はこちら</h2>
+        <p class="text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">当日のスタッフ同期は必要ない、まずは1人で進行表の下書きを組みたい方は、登録不要・サーバー非送信の無料コア版をご利用ください。</p>
+        <a href="https://sugudasu.com/timeline" class="text-sm text-slate-600 underline hover:text-slate-900">登録不要・非送信の無料コア版はこちら</a>
+    </section>
+
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/sync-timeline-lp-demo.js"></script>
+</body>
+</html>

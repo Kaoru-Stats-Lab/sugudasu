@@ -4,9 +4,9 @@
     {
       "date": "2026-06-25",
       "type": "feat",
-      "title": "請求書（/invoice）Notion Like PoC — FAQ Callout · L1 ハイブリッド",
-      "body": "書類種別は sg-segment ピルを維持しつつ notion-soft で影・枠を弱く。転用ヒントを sg-notion-callout に、FAQ を左三角 toggle リスト（hairline）に差し替え。DESIGN_NOTION_SUGUDASU_ADAPT §7-3 ハイブリッド方針に準拠。",
-      "tools": ["invoice.html", "sugudasu.css"]
+      "title": "Notion Like 全站横展開（Phase A–D）— CSS 正本化 · FAQ · hub",
+      "body": "sg-faq / sg-segment-hint / sg-card を Notion 系デフォルトに統合。18 ツール FAQ toggle 化 · segment notion-soft · hub カード hairline + eyebrow。DESIGN_GUIDELINE §3.3 · ADAPT §7-3 更新。",
+      "tools": ["sugudasu.css", "hub.html", "scripts/notion-migrate-html.mjs"]
     },
     {
       "date": "2026-06-24",

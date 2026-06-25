@@ -33,7 +33,7 @@
             </h2>
             <p class="text-xs text-slate-600 leading-relaxed"><strong class="font-bold text-slate-800">幹事は誰もやりたくない</strong> — それでも任されたとき、按分・丸め・清算文の手間と心理的ハードルを<strong class="font-bold text-slate-700">少しでも減らす</strong>ツールです。グループ傾斜で精算。<strong class="font-bold text-slate-700">2次会・3次会は別途</strong>、その回の参加者だけでもう一度使ってください。イベント当日の進行表は <a href="timeline.html" class="text-emerald-700 font-semibold hover:underline">イベント進行</a> で時刻連動更新できます。</p>
 
-            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-coeff" id="warikan-mode-segment" role="tablist" aria-label="割り勘モード">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-coeff sg-segment--notion-soft" id="warikan-mode-segment" role="tablist" aria-label="割り勘モード">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
                 <button type="button" role="tab" id="btn-mode-coeff" data-segment-value="coeff" class="sg-segment__btn" aria-selected="true">
                     傾斜係数モード
@@ -167,7 +167,7 @@
                         <p>幹事役そのものは楽になりませんが、<strong>レジ後の按分・丸め・LINE清算文</strong>をここで終わらせられます。「幹事の計算が怪しい」という疑念も、清算文を共有すれば減らしやすくなります。幹事を増やすツールではなく、<strong>幹事の負担を少し軽くする</strong>ツールです。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>2次会・3次会は、参加者だけでもう一度割り勘すればいい？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -176,7 +176,7 @@
                         <p>はい。<strong>別途このツールをもう一度</strong>使ってください。任意参加の2次会・3次会は、その回の<strong>お会計総額と参加者</strong>だけ入れ直して計算する運用です。1次会から全部まとめる機能はありません。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>上司と新人で飲み会の割り勘を公平にするには？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -185,7 +185,7 @@
                         <p>「傾斜係数モード」で<strong>グループ</strong>ごとに係数と人数を設定します。役員・上司は2.0、一般は1.0のように、立場の塊で按分するため人数の多い飲み会でも入力が速いです。遅刻・非飲酒は係数を手動で下げて調整できます。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>合コンで女性だけ固定額（例3,000円）、男性は残りを割り勘したい</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -194,7 +194,7 @@
                         <p>「固定額モード（合コン等）」を選び、女性側に1人あたりの固定金額と人数を入力。男性側の1人あたり欄は空欄（残り按分）のまま人数だけ入れると、総額から自動計算されます。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>金額や人数はサーバーに送られますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -203,7 +203,7 @@
                         <p><strong>将来 URL で入力状態を共有する機能を入れた場合も同様です。</strong> 金額・人数・傾斜は<strong>サーバーに送りません</strong>。ブラウザ内で計算し、SUGUDASU に保存する設計にはしていません（幹事王の「URL内のみ」と同じ考え方）。清算文はコピーして LINE / Slack へ貼り付けて共有してください。URL共有は<strong>現時点未実装</strong>（将来もサーバー非送信を前提に検討）。詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a> · <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>ページを閉じると入力は消えますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -212,7 +212,7 @@
                         <p><strong>消えます。</strong>localStorage による自動復元もありません。再訪問時は空のフォームからです。記録が必要なら<strong>清算文をコピー</strong>して幹事が自行保管してください。<strong>URL や JSON ファイルでの入力復元は未実装</strong>です（ロードマップ候補 — 実装してもサーバー非送信の方針は変えません）。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>端数や「調整のすき間」は誰の負担ですか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -221,7 +221,7 @@
                         <p><strong>なぜ幹事に余り・不足が出ることがある？</strong> 丸め単位（500円・1,000円など）で1人あたりを切り下げると、理論上の端数が集金総額とお会計の差として<strong>幹事の過不足表示</strong>にまとまります。100円単位では<strong>最大剰余法（LRM）</strong>でグループ間に端数を分散し、集金総額とお会計を一致させます。それでも<strong>調整のすき間</strong>が出る場合（例: 1,000円単位でお会計が割り切れない）は、<strong>幹事の自腹とは決めつけません</strong>。「不足分はどうしましょうか？」と表示し、先輩・上司のご負担や次回への回しなど<strong>現場で決める</strong>前提です。飲み会は100円単位推奨。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>幹事が得をしていると思われませんか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -230,7 +230,7 @@
                         <p>按分結果を<strong>清算文として全員に見える形</strong>で共有できます。計算後は<strong>集金総額とお会計が一致するか</strong>を画面で確認でき（LRM適用時）、根拠をそのまま LINE に貼れます。多めのご負担への<strong>お礼文</strong>も添えられます。目的は幹事個人の得ではなく、<strong>「幹事の独断」ではなく計算根拠の透明化</strong>です。幹事が悪者に見えにくいよう、不足・余りも決めつけない文案にしています。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>LINEやSlackに貼れる清算文は作れますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -239,7 +239,7 @@
                         <p>計算後に清算テキストが自動生成されます。「ワンクリックコピー」でグループチャットにそのまま貼り付けできます。入力データはサーバーに送信されません。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>多めに払う上司・先輩へのお礼も清算文に入れられる？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -248,7 +248,7 @@
                         <p>はい（推奨ON）。傾斜で多くご負担いただくグループへ、幹事から<strong>感謝の一文</strong>をグループ全員に見える形で添えられます。「端数を払って」ではなく「多めのご負担へのお礼」として共有する運用です。若手幹事が個別に頼むプレッシャーを減らし、先輩・上司の方も公の場で気前よく見えやすくなります。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>上司に「いくら出せばいい？」と聞かれたら？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -257,7 +257,7 @@
                         <p>計算後の<strong>「個別に聞かれたとき」</strong>欄に、グループごとの答えが出ます（例:「役員・上司の方は、お一人 ¥17,500 でちょうどよいです。」）。1名のグループならそのまま上司への返答に使えます。コピーしてDMに貼るだけでOKです。</p>
                     </div>
                 </details>
-                <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <details class="sg-faq">
                     <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                         <span>神精算をやったら、次回も幹事を任され続けますか？</span>
                         <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>

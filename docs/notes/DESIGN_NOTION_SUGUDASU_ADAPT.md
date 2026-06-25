@@ -132,15 +132,24 @@ Notion は青 pill = 主 CTA 1種。SUGUDASU コア/Sync では:
 | FAQ 三角 rotate · max 200ms | カード全体 `transition-all` |
 | `prefers-reduced-motion: reduce` で **motion ゼロ** | パララックス · バウンス · グラデ shimmer |
 
-### 7-3. 実装順（invoice PoC）
+### 7-3. 実装順（invoice PoC → 全站）
 
 **PoC 順:** 先に **FAQ + Callout** の Notion 化 · **書類種別 L1 はハイブリッド**（`sg-segment` ピルは残す · 影/青枠/アニメを弱く · L1 視認性維持）
 
-1. `sugudasu.css` — `.sg-notion-tabs` · `.sg-notion-callout` · `.sg-notion-toggle` · `.sg-notion-btn-press`
-2. `invoice.html` — 書類種別ブロック · FAQ セクションのみ差し替え
+| Phase | 内容 | 状態 |
+|-------|------|------|
+| A | `sugudasu.css` 正本化 — `.sg-faq*` · `.sg-segment-hint` · `.sg-card` · L2 press | 2026-06-25 |
+| B | FAQ HTML 一括（`scripts/notion-migrate-html.mjs`） | 同上 |
+| C | 全 `sg-segment` に `--notion-soft` · eyebrow | 同上 |
+| D | `hub.html`（`/`）カード · hero | 同上 |
+| E | `DESIGN_GUIDELINE.md` §3.3 · changelog · deploy | 同上 |
+| — | receipt / hub 以外の個別 polish · Sync ライン | 別 milestone |
+
+1. ~~`sugudasu.css` — `.sg-notion-tabs` · `.sg-notion-callout` · `.sg-notion-toggle` · `.sg-notion-btn-press`~~ → **基底クラスに統合済**
+2. ~~`invoice.html` PoC~~ → **全コアツールへ横展開**
 3. `npm run validate:ogp` · 視覚 smoke · **L3 印刷・segment a11y 退行なし**
-4. `DESIGN_GUIDELINE.md` §3.3 に「Notion タブ variant」1段落追記
-5. hub / receipt へ横展開
+4. ~~`DESIGN_GUIDELINE.md` §3.3~~ Notion variant 段落追記済
+5. ~~hub~~ 横展開済 · Sync は `DESIGN_GUIDELINE_SYNC.md` 別途
 
 ### 7-4. Schedule との境界
 

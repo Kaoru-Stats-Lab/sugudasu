@@ -76,7 +76,7 @@
         </section>
 
         <section class="flex flex-col gap-4">
-            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local" id="output-tab-segment" role="tablist" aria-label="出力タブ">
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-local sg-segment--notion-soft" id="output-tab-segment" role="tablist" aria-label="出力タブ">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
                 <button type="button" role="tab" id="tab-btn-local" data-segment-value="local" class="sg-segment__btn" aria-selected="true">
                     そのまま使える文面
@@ -85,7 +85,7 @@
                     AIで仕上げる（Gemini）
                 </button>
             </div>
-            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong class="text-slate-800">そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。</p>
+            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。</p>
 
             <div id="output-panel-card" class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
                 <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
@@ -126,7 +126,7 @@
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">議事録・週報・報告書のよくある質問</h2>
         <div class="sg-faq-list">
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>会議のメモをそのまま議事録フォーマットに整えたい</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -135,7 +135,7 @@
                     <p>書類種別で「会議議事録」を選び、日時・参加者・決定事項を入力して「整形する（登録不要で即コピー）」を押すと、社内共有しやすい体裁にまとまります。コピーしてメールやチャットに貼れます。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>週報やトラブル報告書にも使えますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -144,7 +144,7 @@
                     <p>はい。週報・日報、トラブル報告、イベント報告のテンプレートを切り替えられます。ラベルやプレースホルダも種別に合わせて変わります。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>入力した会議内容はサーバーに保存されますか？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -153,7 +153,7 @@
                     <p>いいえ。整形処理はブラウザ内で完結し、議事内容を外部サーバーへ送信する機能はありません。</p>
                 </div>
             </details>
-            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+            <details class="sg-faq">
                 <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
                     <span>会議で静かにメモしてただけなのに、評価が上がるのはなぜ？</span>
                     <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -171,8 +171,8 @@
     'use strict';
 
     const OUTPUT_TAB_HINTS = {
-        local: '<strong class="text-slate-800">そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。',
-        gemini: '<strong class="text-slate-800">AIで仕上げる：</strong>Gemini用の指示文をコピーして貼り付け。本文はご自身の判断で送信してください。',
+        local: '<strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。',
+        gemini: '<strong>AIで仕上げる：</strong>Gemini用の指示文をコピーして貼り付け。本文はご自身の判断で送信してください。',
     };
 
     let outputTabSegmentCtrl = null;
