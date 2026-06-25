@@ -13,7 +13,7 @@
 1. 読む: [`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md)（仕様SSOT）
 2. 読む: [`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`](notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md)（**なぜ lottery か · 他案のGO/HOLD/OUT**）
 3. タスク: [`docs/BACKLOG.md`](BACKLOG.md) §15 · §8-9
-4. UI: [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) · [`docs/notes/CHROME_HEADER_GUARDRAILS.md`](notes/CHROME_HEADER_GUARDRAILS.md)
+4. UI: [`docs/DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) · Sync は [`docs/DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md) · [`docs/notes/CHROME_HEADER_GUARDRAILS.md`](notes/CHROME_HEADER_GUARDRAILS.md)
 5. 着手順: JSON + テスト → Phase 0 HTML → Phase 1 抽選 → Hub/changelog
 
 ## 1) 日常開発

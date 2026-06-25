@@ -183,6 +183,8 @@
 **T11 SSOT:** `docs/notes/GROUP_SPLIT_TOOL_SPEC.md`（Phase A–C 実装済 · `/group-split`）  
 **T13 SSOT:** **`docs/notes/TIMELINE_TOOL_SPEC.md`**（コア）· **`docs/notes/SUGUDASU_SYNC_LINE.md`**（Sync · T13-S）— Backlog **§1-12 M01**
 
+**イベント束アイデアログ（未評価・ブレストのみ）:** `docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`（2026-06-25）
+
 **推奨リリース順（ディレクター案・lottery除く）:**  
 1) T03 normalize ✓ → 2) T09 webp ✓ → 3) T11 group-split ✓ → **4) T13 timeline コア（M01 · P0）** → **5) T13-S Sync S1–S2** → 6) group-split モバイル Resilience（M02 · P0）
 

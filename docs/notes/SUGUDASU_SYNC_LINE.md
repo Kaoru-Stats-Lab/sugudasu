@@ -43,6 +43,8 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 | 課金 | 無料 | **有料**（下記 §4） |
 | 憲法 | F1–F7 厳守 | F1 コアは人質にしない · F3 緩和 |
 
+**UI 正本:** [`../DESIGN_GUIDELINE_SYNC.md`](../DESIGN_GUIDELINE_SYNC.md) · Schedule Notion 層 [`DESIGN_GUIDELINE_NOTION_LIKE.md`](../DESIGN_GUIDELINE_NOTION_LIKE.md) · 色マップ [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md)
+
 **傘ブランド:** `SUGUDASU Sync`  
 **課金ティア名（案）:** `Sync Pro` — 広告非表示 + 共有上限 + 履歴 等
 
@@ -59,7 +61,7 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 
 **URL/SEO 正本:** [`SYNC_URL_INFORMATION_ARCHITECTURE.md`](SYNC_URL_INFORMATION_ARCHITECTURE.md)
 
-**STATEMENTS との関係:** `docs/notes/STATEMENTS_PAGE_DRAFT.md` の「将来 Pro」は **Sync ラインに具体化**。コアの約束（班分け等の非送信）は **変更しない**。
+**STATEMENTS との関係:** `docs/notes/STATEMENTS_PAGE_DRAFT.md` の「将来 Pro」は **Sync ラインに具体化**。コアの約束（班分け等の非送信）は **変更しない**。Sync 専用の公開約束ページは **`docs/notes/STATEMENTS_SYNC_PAGE_DRAFT.md`**（想定 `sync.sugudasu.com/statements` · **未実装**）。
 
 ### 1-2. LP 必須方針（提督確定）
 
@@ -252,13 +254,14 @@ localRevision < serverRevision のとき:
 
 ---
 
-## 4. 課金モデル（案 · 提督判断待ち）
+## 4. 課金モデル（案 · 製品ライン別）
 
-| モデル | 向くペルソナ | メモ |
-|--------|--------------|------|
-| **イベント単位**（例: ¥980/イベント · 7日間） | 年数回の幹事 | サブスク離脱と相性良 · **同時クラウド枠 3 まで** |
-| **月額 Pro**（例: ¥1,480/月） | 研修会社 · イベント会社 | 習慣課金は弱い · **同時枠 5 cap**（無制限はしない） |
-| **無料トライアル** | 初回幹事 | **1イベント無料** or 閲覧3人まで無料 — Hard ではなく価値体験 |
+| ライン | モデル | 向くペルソナ | メモ |
+|--------|--------|--------------|------|
+| **T13-S イベント進行** | **イベント単位**（例: ¥980/イベント · 7日間） | 年数回の幹事 | サブスク離脱と相性良 · **同時クラウド枠 3 まで** |
+| **Schedule 工程表**（**提督確定 2026-06-26**） | **低額月額**（**¥200/月・アカウント** 案 · 年契可） | 提督 · 制作PM · Excel 工程係 | 正本 [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) · 日/時間 · 可変列 · A3 · xlsx Export のみ |
+| **月額 Pro**（横断・案） | 例: ¥1,480/月 | 研修会社 · イベント会社 | 習慣課金は弱い · **同時枠 5 cap**（無制限はしない） |
+| **無料トライアル** | 初回幹事 / Schedule 14日 | 初回体験 | **1イベント無料** or 閲覧3人まで — Hard ではなく価値体験 |
 
 **Sync の aha! moment:** 進行係が +5分 → 司会に **「新しい版があります」** → 司会が **[今すぐ反映]** を押す → 全員同じ終了時刻。
 
@@ -380,7 +383,7 @@ Phase S4+         任意 — Webhook · 組織 WS
 
 | ID | 案 | 備考 |
 |----|-----|------|
-| T11-S | 班分け Sync | 名簿クラウド — プライバシー慎重 |
+| T11-S | 班分け Sync | 名簿クラウド — プライバシー慎重 · 課金文案: [`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`](GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md) |
 | X02-S | 日程テンプレ Sync | T10 縮小版とは別 |
 
 ---
@@ -410,5 +413,8 @@ Phase S4+         任意 — Webhook · 組織 WS
 | `docs/notes/sync-db-architecture-gemini-RESULT.md` | Gemini 調査原文 |
 | `docs/notes/SYNC_STORAGE_QUOTAS.md` | 同時ルーム上限 · JSON エクスポート |
 | `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | 課金・初回価値（Stripe 方針は Sync アーキ参照） |
-| `docs/notes/STATEMENTS_PAGE_DRAFT.md` | 公開約束 · Pro 文言 |
+| `docs/notes/STATEMENTS_PAGE_DRAFT.md` | コア公開約束 · Pro 文言 |
+| `docs/notes/STATEMENTS_SYNC_PAGE_DRAFT.md` | **Sync 専用約束**（未実装 · `sync.sugudasu.com/statements`） |
+| `docs/notes/SYNC_SCHEDULE_PRODUCT_DECISION.md` | **工程表 Schedule ライン** — 提督確定 · ¥200/月 |
+| `docs/notes/SCHEDULE_TOOL_SPEC.md` | **Schedule 仕様 SSOT**（親ID · 日/時間 · A3 · xlsx Export） |
 | `docs/BACKLOG.md` §0 | コア前提（Sync は §追記参照） |

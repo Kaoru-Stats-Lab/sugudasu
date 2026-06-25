@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-25（§5-4 Sync 初回デプロイ完了）  
+更新: 2026-06-25（§5-4 Sync SEO キーワードクラスター確定 · Planner Pending）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -311,6 +311,10 @@
 
 - **PC:** 名簿ETL · 帳票 · 大規模Excel — invoice / group-split 準備
 - **スマホ:** 当日例外 · 司会進行 · その場集金 · 結果共有 — **3分完結**がキラー条件
+
+#### イベントプロダクト束 — アイデアログ（2026-06-25）
+
+**正本:** [`docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`](notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md) — ID 01–15 · ライフサイクルマップ · **ブレストのみ**（Go/No-Go · 要件 · 優先度は未確定）
 
 ### 1-13. `statements.html` — SUGUDASU の約束（**実装済 2026-06-20**）
 
@@ -753,11 +757,32 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [x] 回答管理シート `status` 運用定義を確定（`new` / `triaged` / `in_progress` / `resolved`）
 - [ ] Supabase プロジェクト作成 · マイグレーション · CF 環境変数（`SYNC_ENV_KEYS.md`）
 - [x] リーガル文書を調整し、Supabase / Cloudflare 提供条件との衝突リスクを低減（[`docs/legal/terms-of-use.md`](legal/terms-of-use.md) · [`docs/legal/privacy-policy.md`](legal/privacy-policy.md) · [`docs/legal/data-lifecycle-policy.md`](legal/data-lifecycle-policy.md) · [`docs/legal/dpa-lite.md`](legal/dpa-lite.md) · 復旧保証断定の緩和 / β可用性条項の追加）
-- [ ] S1.5/S2 実装タスク着手（`docs/notes/SYNC_IMPLEMENTATION_TASKS.md`）
+- [ ] **`sync.sugudasu.com/statements`** — Sync 専用約束ページ（[`STATEMENTS_SYNC_PAGE_DRAFT.md`](notes/STATEMENTS_SYNC_PAGE_DRAFT.md) · コア `statements.html` とは別）
 - [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番）
 - [ ] Auth · ルーム · クラウド保存（受け入れ完了で Done）
 - [ ] `timeline-sync-app.js` フルエディタ · Push/Pull · 新版バナー（S2）
+- [ ] **S2 フィードバック収集 + Dev Ops 表示**（`SYNC_POST_EVENT_REVIEW.md` · **出荷ゲート**）
 - [ ] Build watch paths 導入 → Sync 自動デプロイ再開検討（`SYNC_INFRA` §5）
+
+#### SEO / キーワード調査（2026-06-25）
+
+**クラスター SSOT:** [`docs/notes/SYNC_TIMELINE_SEO_KEYWORDS.md`](notes/SYNC_TIMELINE_SEO_KEYWORDS.md)  
+**3社リサーチ要約:** [`docs/notes/sync-timeline-keyword-RESEARCH-RESULT.md`](notes/sync-timeline-keyword-RESEARCH-RESULT.md)  
+**Planner 貼り付けシード:** [`docs/notes/SYNC_TIMELINE_KEYWORD_PLANNER_SEEDS.md`](notes/SYNC_TIMELINE_KEYWORD_PLANNER_SEEDS.md)
+
+| 状態 | 項目 |
+|------|------|
+| **Done** | Gemini + Grok + GPT 突合 · LP/Core Top · 除外 · ページ割当 · 暫定 title/meta |
+| **Pending** | Google Keyword Planner Run 1–5 · **検索ボリューム数値**の確定 |
+
+- [x] AI キーワードクラスター調査（Gemini / Grok / GPT）→ `SYNC_TIMELINE_SEO_KEYWORDS.md`
+- [ ] **Pending** Keyword Planner Run 1–5 · スプレッドシート化（`run` · `sync`/`core`/`both`）· 数値で Primary 順位を1回見直し
+- [ ] Sync LP · Core `title` / `meta` / FAQ へ §1 反映（**暫定コピーで着手可** · ボリューム後に微調整）
+- [ ] Zenn/note 1本目（比較 or 研修当日 — `sync-timeline-keyword-RESEARCH-RESULT.md` §E）
+
+**除外（3社合意）:** 婚礼主軸 · 放送 · プロンプター · ガントチャート · 動画編集タイムライン — 詳細は `SYNC_TIMELINE_SEO_KEYWORDS.md` §2。
+
+**垂直拡張（ブレスト · イベントと分離）:** Excel 工程表ニッチ — Gemini RESULT [`excel-gantt-verticals-gemini-RESULT.md`](notes/excel-gantt-verticals-gemini-RESULT.md) · **提督確定** [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](notes/SYNC_SCHEDULE_PRODUCT_DECISION.md)（作る · 年額定額 · 自分用仕様正本）
 
 ---
 
@@ -813,6 +838,10 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 ## 7) 参照（SSOT）
 
 - **`docs/notes/SUGUDASU_SYNC_LINE.md`** — Sync ブランド · T13-S · Phase S1–S4
+- **`docs/notes/SYNC_TIMELINE_SEO_KEYWORDS.md`** — Sync 進行 **SEO キーワード SSOT**（LP/Core title · 除外 · KPI）
+- **`docs/notes/sync-timeline-keyword-RESEARCH-RESULT.md`** — Gemini/Grok/GPT 要約
+- **`docs/notes/SYNC_TIMELINE_KEYWORD_PLANNER_SEEDS.md`** — Keyword Planner 貼り付け Run 1–6（**ボリューム Pending**）
+- **`docs/notes/SYNC_URL_INFORMATION_ARCHITECTURE.md`** — Sync LP/App URL · SEO 方針
 - **`docs/notes/SYNC_INFRA_CLOUDFLARE.md`** — Sync インフラ · デプロイ運用 · watch paths（Backlog **§5-4**）
 - **`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`** — コア本番デプロイ Agent SSOT
 - **`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`** — グループ分け T11（**企画FIX · 未実装** · 主=人事研修 · Backlog **§1-11**）
@@ -821,6 +850,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`** — fair-draw Zenn 記事ネタ備忘録
 - **`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`** — 景品チェック＋公平抽選（**実装中 · fair-draw v1.5.1** · Backlog **§1-9 · §15 · §8-10**）
 - **`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`** — **アイディア評価台帳・ジャッジ基準（SUGUDASU適合 vs 市場）**
+- **`docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`** — **イベント束アイデアログ（未評価 · ブレストのみ · Backlog §1-12）**
 - `docs/PRODUCT_UX_AUDIT.md`
 - `docs/DESIGN_GUIDELINE.md`
 - `README.md`

@@ -23,25 +23,25 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="更新履歴" data-sg-tool-id="updates"></div>
 
-<main class="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+<main class="sg-info-page space-y-8">
 
     <header class="space-y-2 text-center sm:text-left">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">生きた開発ログ</p>
-        <h2 class="text-xl font-bold text-slate-900">更新履歴・改善レポート</h2>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <h1 class="sg-info-page__title">更新履歴・改善レポート</h1>
+        <p class="sg-info-page__lead">
             新機能・計算ロジック修正・料金反映などを時系列で公開しています。
             数値系ツールの信頼性確認にご利用ください。
-            Copy-first · TSV/JSON の設計方針は <a href="statements.html#copy-first-tech" class="text-blue-600 hover:underline font-semibold">SUGUDASUの約束</a> にまとめています。
+            Copy-first · TSV/JSON の設計方針は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> にまとめています。
         </p>
     </header>
 
     <!-- 報告フォーム -->
-    <section class="sg-card p-5 lg:p-6 space-y-4" aria-labelledby="feedback-heading">
-        <h3 id="feedback-heading" class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">
+    <section class="sg-card p-5 lg:p-6 space-y-4 sg-info-prose" aria-labelledby="feedback-heading">
+        <h2 id="feedback-heading" class="sg-info-card-title">
             不具合・改善リクエスト
-        </h3>
-        <p class="text-xs text-slate-500 leading-relaxed">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform" class="text-blue-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">Googleフォーム</a>で送るのがおすすめです（ログイン不要で回答可能）。
+        </h2>
+        <p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform" target="_blank" rel="noopener noreferrer">Googleフォーム</a>で送るのがおすすめです（ログイン不要で回答可能）。
             回答は Google フォーム経由で運営に届き、当サイトサーバーには保存しません。
             個人を特定できる情報は書かないでください。返信は原則行いません。
         </p>
@@ -54,7 +54,7 @@
             </a>
         </div>
 
-        <details class="text-xs text-slate-600 border border-slate-200 rounded-xl bg-slate-50 p-3">
+        <details class="border border-slate-200 rounded-xl bg-slate-50 p-3 sg-info-prose">
             <summary class="font-semibold cursor-pointer select-none">メールで送る（代替）</summary>
             <div class="mt-3 space-y-3 pt-3 border-t border-slate-200">
                 <div>
@@ -86,7 +86,7 @@
                         文面をコピー
                     </button>
                 </div>
-                <p class="text-[10px] text-slate-400">
+                <p class="sg-info-caption">
                     送信先: SUGUDASU運営（<span class="mono">banzai.millionaire@gmail.com</span>）
                 </p>
                 <p id="copy-toast-updates" class="sg-copy-toast hidden" role="status"></p>
@@ -95,13 +95,13 @@
     </section>
 
     <!-- タイムライン -->
-    <section class="space-y-4" aria-labelledby="changelog-heading">
+    <section class="space-y-4 sg-info-prose" aria-labelledby="changelog-heading">
         <div class="flex flex-wrap items-end justify-between gap-2">
-            <h3 id="changelog-heading" class="text-sm font-bold text-slate-900">改善タイムライン</h3>
-            <p id="changelog-updated" class="text-[10px] text-slate-400"></p>
+            <h2 id="changelog-heading" class="sg-info-section-title">改善タイムライン</h2>
+            <p id="changelog-updated" class="sg-info-caption"></p>
         </div>
         <div id="changelog-list" class="sg-changelog">
-            <p class="text-xs text-slate-400 text-center py-8">読み込み中…</p>
+            <p class="sg-info-caption text-center py-8">読み込み中…</p>
         </div>
     </section>
 

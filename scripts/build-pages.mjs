@@ -33,7 +33,7 @@ process.env.SUGUDASU_DIST = DIST;
 
 /** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
 const SITEMAP_SKIP = new Set(
-  IS_SYNC ? ['sync-index.html'] : ['brand-logo-preview.html', 'hub.html']
+  IS_SYNC ? ['sync-index.html', 'sync-timeline.html'] : ['brand-logo-preview.html', 'hub.html']
 );
 
 function escapeXml(text) {
@@ -63,6 +63,9 @@ function readChangelogLastmod() {
 
 function canonicalPathFromHtml(file) {
   if (IS_SYNC) {
+    if (file === 'sync-index.html') return '/';
+    if (file === 'sync-timeline-lp.html') return '/timeline';
+    if (file === 'sync-timeline.html') return null;
     const slug = file.replace(/^sync-/, '').replace(/\.html$/, '');
     return slug === 'index' ? '/' : `/${slug}`;
   }
@@ -82,7 +85,7 @@ function writeSitemapAndRobots(htmlFiles, lastmod) {
   const paths = ['/', ...htmlFiles
     .filter((f) => !SITEMAP_SKIP.has(f))
     .map((f) => canonicalPathFromHtml(f))
-    .filter((p) => p !== '/')];
+    .filter((p) => p && p !== '/')];
 
   const urls = paths.map((pathname) => {
     const loc = pathname === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${pathname}`;
@@ -121,7 +124,8 @@ function writeRedirects(htmlFiles) {
     ? [
         '# SUGUDASU Sync — clean paths',
         '/sync-index.html / 301',
-        '/sync-timeline.html /timeline 301',
+        '/sync-timeline-lp.html /timeline 301',
+        '/sync-timeline.html /timeline/app 301',
       ]
     : [
         '# Canonical: apex / · clean paths without .html',
@@ -139,7 +143,9 @@ function writeRedirects(htmlFiles) {
     lines.push('/webp-to-png /webp-to-jpg 301');
   } else {
     for (const file of htmlFiles) {
-      if (file === 'sync-index.html' || file === 'sync-timeline.html') continue;
+      if (file === 'sync-index.html' || file === 'sync-timeline-lp.html' || file === 'sync-timeline.html') {
+        continue;
+      }
       const slug = file.replace(/^sync-/, '').replace(/\.html$/, '');
       lines.push(`/${file} /${slug} 301`);
     }
@@ -152,6 +158,7 @@ function writeRedirects(htmlFiles) {
 function writeCleanUrlDirs(htmlFiles) {
   for (const file of htmlFiles) {
     if (file === 'hub.html' || file === 'sync-index.html') continue;
+    if (IS_SYNC && (file === 'sync-timeline-lp.html' || file === 'sync-timeline.html')) continue;
     const slug = IS_SYNC
       ? file.replace(/^sync-/, '').replace(/\.html$/, '')
       : file.replace(/\.html$/, '');
@@ -183,6 +190,10 @@ function writeHeaders() {
     '/robots.txt',
     '  Content-Type: text/plain; charset=utf-8',
     '  Cache-Control: public, max-age=86400',
+    '',
+    '/ads.txt',
+    '  Content-Type: text/plain; charset=utf-8',
+    '  Cache-Control: public, max-age=3600',
     '',
     '/*/app/*',
     '  X-Robots-Tag: noindex, nofollow',
@@ -405,8 +416,18 @@ for (const file of htmlFiles) {
 if (IS_SYNC) {
   const syncIndex = fs.readFileSync(path.join(DIST, 'sync-index.html'), 'utf8');
   fs.writeFileSync(path.join(DIST, 'index.html'), syncIndex, 'utf8');
-  if (fs.existsSync(path.join(DIST, 'sync-timeline.html'))) {
-    fs.copyFileSync(path.join(DIST, 'sync-timeline.html'), path.join(DIST, 'timeline.html'));
+  const lpSrc = path.join(DIST, 'sync-timeline-lp.html');
+  const appSrc = path.join(DIST, 'sync-timeline.html');
+  if (fs.existsSync(lpSrc)) {
+    const timelineDir = path.join(DIST, 'timeline');
+    fs.mkdirSync(timelineDir, { recursive: true });
+    fs.copyFileSync(lpSrc, path.join(DIST, 'timeline.html'));
+    fs.copyFileSync(lpSrc, path.join(timelineDir, 'index.html'));
+  }
+  if (fs.existsSync(appSrc)) {
+    const appDir = path.join(DIST, 'timeline', 'app');
+    fs.mkdirSync(appDir, { recursive: true });
+    fs.copyFileSync(appSrc, path.join(appDir, 'index.html'));
   }
 } else {
   const hub = fs.readFileSync(path.join(DIST, 'hub.html'), 'utf8');

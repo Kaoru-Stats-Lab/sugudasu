@@ -24,16 +24,16 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU の約束" data-sg-tool-id="statements"></div>
 
-<main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <article class="sg-card p-6 lg:p-8 space-y-8 leading-relaxed text-sm text-slate-700">
+<main class="sg-info-page">
+    <article class="sg-card p-6 lg:p-8 space-y-8 sg-info-prose">
         <header class="border-b border-slate-200 pb-4 space-y-2">
             <p class="text-[11px] font-bold text-violet-700 tracking-wide">Statements · 非契約 · 読み物</p>
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-900">SUGUDASU の約束</h1>
-            <p class="text-xs text-slate-500">SUGUDASU（すぐだす）</p>
+            <h1 class="sg-info-page__title">SUGUDASU の約束</h1>
+            <p class="sg-info-page__subtitle">SUGUDASU（すぐだす）</p>
         </header>
 
         <section id="statements-summary" class="sg-statements-summary space-y-2 scroll-mt-24" aria-labelledby="statements-summary-heading">
-            <h2 id="statements-summary-heading" class="text-sm font-bold text-slate-900">30秒で読む要点</h2>
+            <h2 id="statements-summary-heading" class="sg-info-section-title">30秒で読む要点</h2>
             <p class="sg-statements-summary__lead">
                 <strong>登録不要</strong>で URL を開き、<strong>名簿 · 金額 · 抽選リストはブラウザ内</strong>で処理します。
                 結果は TSV · Slack 用テキスト · PDF へ<strong>コピー</strong>する Copy-first。
@@ -44,7 +44,7 @@
                 <span class="sg-statements-pill sg-statements-pill--local">Copy-first</span>
                 <span class="sg-statements-pill sg-statements-pill--neutral">非契約 · 読み物</span>
             </div>
-            <p class="text-[10px] text-slate-500 leading-relaxed">法的な取り扱いは <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>。本ページは製品設計の約束です。</p>
+            <p class="sg-info-caption leading-relaxed">法的な取り扱いは <a href="privacy.html">プライバシーポリシー</a>。本ページは製品設計の約束です。</p>
         </section>
 
         <nav id="statements-toc" class="sg-statements-toc scroll-mt-24" aria-labelledby="statements-toc-heading">
@@ -66,47 +66,47 @@
 
         <section class="space-y-3">
             <p>SUGUDASU（すぐだす）は、<strong>アカウント登録なしで URL を開き、ブラウザだけで使える</strong>無料の実務ツール集です。</p>
-            <p class="text-xs text-slate-600">請求書、班分け、公平抽選、文字列の正規化——用途はバラバラですが、上記サマリーのとおり <strong>名簿を預けず、結果をすぐコピーする</strong> 設計を共通の軸にしています。</p>
+            <p>請求書、班分け、公平抽選、文字列の正規化——用途はバラバラですが、上記サマリーのとおり <strong>名簿を預けず、結果をすぐコピーする</strong> 設計を共通の軸にしています。</p>
         </section>
 
         <section id="principles" class="space-y-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">7つの設計原則</h2>
+            <h2 class="sg-info-section-title">7つの設計原則</h2>
 
             <div class="space-y-4">
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">1. 登録不要 — 開いたら、すぐ使えます</h3>
-                    <p class="mt-1 text-xs text-slate-600">メール認証、OAuth、クレジットカードの登録はありません。幹事・店長・フリーランスが <strong>「今この数分」</strong> だけ困っているときに、障壁を置きません。</p>
+                    <h3>1. 登録不要 — 開いたら、すぐ使えます</h3>
+                    <p class="mt-1">メール認証、OAuth、クレジットカードの登録はありません。幹事・店長・フリーランスが <strong>「今この数分」</strong> だけ困っているときに、障壁を置きません。</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">2. 入力データは、原則ブラウザ内で処理します</h3>
-                    <p class="mt-1 text-xs text-slate-600">請求書の宛名、研修の名簿、抽選リスト——<strong>処理の中心はクライアント（あなたのブラウザ）</strong> です。「名簿をアップロードしてから班分け」「クラウドに上げてから変換」を <strong>デフォルトにしません</strong>。</p>
+                    <h3>2. 入力データは、原則ブラウザ内で処理します</h3>
+                    <p class="mt-1">請求書の宛名、研修の名簿、抽選リスト——<strong>処理の中心はクライアント（あなたのブラウザ）</strong> です。「名簿をアップロードしてから班分け」「クラウドに上げてから変換」を <strong>デフォルトにしません</strong>。</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">3. 静的配信 — 重いサーバーに頼りません</h3>
-                    <p class="mt-1 text-xs text-slate-600">Cloudflare Pages 上の <strong>静的 HTML + JavaScript</strong> で配信します。ユーザーごとの DB、常時接続の同期サーバー、WebSocket ダッシュボードは <strong>スコープ外</strong> です。</p>
+                    <h3>3. 静的配信 — 重いサーバーに頼りません</h3>
+                    <p class="mt-1">Cloudflare Pages 上の <strong>静的 HTML + JavaScript</strong> で配信します。ユーザーごとの DB、常時接続の同期サーバー、WebSocket ダッシュボードは <strong>スコープ外</strong> です。</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">4. 実務3分 — 1 URL · 1 用途</h3>
-                    <p class="mt-1 text-xs text-slate-600">1つのツールは <strong>1つの幹事の Pain</strong> に閉じ込めます。重い設定画面、事前シナリオエディタ、組織アカウント前提のワークフローは <strong>原則しません</strong>。</p>
+                    <h3>4. 実務3分 — 1 URL · 1 用途</h3>
+                    <p class="mt-1">1つのツールは <strong>1つの幹事の Pain</strong> に閉じ込めます。重い設定画面、事前シナリオエディタ、組織アカウント前提のワークフローは <strong>原則しません</strong>。</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">5. Copy-first — 結果は Slack · Excel · PDF へ</h3>
-                    <p class="mt-1 text-xs text-slate-600">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします。TSV、Slack 用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。<a href="#copy-first-flow" class="text-blue-600 hover:underline">Copy-first の流れ</a> · <a href="#copy-first-tech" class="text-blue-600 hover:underline">技術選定</a></p>
+                    <h3>5. Copy-first — 結果は Slack · Excel · PDF へ</h3>
+                    <p class="mt-1">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします。TSV、Slack 用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。<a href="#copy-first-flow">Copy-first の流れ</a> · <a href="#copy-first-tech">技術選定</a></p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">6. 帳票と証跡 — 印刷 · PDF に価値を置きます</h3>
-                    <p class="mt-1 text-xs text-slate-600">請求書 PDF、抽選の証跡、シフト表の印刷——<strong>紙とファイルに残る成果物</strong> を想定して設計します。</p>
+                    <h3>6. 帳票と証跡 — 印刷 · PDF に価値を置きます</h3>
+                    <p class="mt-1">請求書 PDF、抽選の証跡、シフト表の印刷——<strong>紙とファイルに残る成果物</strong> を想定して設計します。</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">7. 過剰な断定はしません</h3>
-                    <p class="mt-1 text-xs text-slate-600">景表法の整理、税務計算、懸賞ルール——<strong>「合法です」「問題ありません」とは言い切りません</strong>。判断材料を出し、最終判断は現場の幹事・法務・専門家に委ねます（<a href="disclaimer.html" class="text-blue-600 hover:underline">免責事項</a> と整合）。</p>
+                    <h3>7. 過剰な断定はしません</h3>
+                    <p class="mt-1">景表法の整理、税務計算、懸賞ルール——<strong>「合法です」「問題ありません」とは言い切りません</strong>。判断材料を出し、最終判断は現場の幹事・法務・専門家に委ねます（<a href="disclaimer.html">免責事項</a> と整合）。</p>
                 </div>
             </div>
         </section>
 
         <section id="caveats" class="space-y-3 bg-slate-50 border border-slate-200 rounded-xl p-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900">正直な但し書き — ブラウザから「出る」もの</h2>
-            <p class="text-xs text-slate-600">信頼のため、<strong>入力データ以外</strong> に通信が発生しうるものを隠しません。</p>
+            <h2 class="sg-info-section-title">正直な但し書き — ブラウザから「出る」もの</h2>
+            <p>信頼のため、<strong>入力データ以外</strong> に通信が発生しうるものを隠しません。</p>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[280px]">
                     <thead>
@@ -123,17 +123,17 @@
                     </tbody>
                 </table>
             </div>
-            <p class="text-xs"><strong>入力した名簿 · 金額 · 抽選リストを、SUGUDASU がサーバーに保存する設計にはしていません。</strong> 例外（拡張機能 · ネットワーク機器 · 第三者タグ等）の可能性は <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a> に記載しています。</p>
+            <p><strong>入力した名簿 · 金額 · 抽選リストを、SUGUDASU がサーバーに保存する設計にはしていません。</strong> 例外（拡張機能 · ネットワーク機器 · 第三者タグ等）の可能性は <a href="privacy.html">プライバシーポリシー</a> に記載しています。</p>
         </section>
 
         <section class="space-y-3">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">確認のしかた（技術に詳しい方へ）</h2>
-            <p class="text-xs text-slate-600">Network · Application · 機内モードの <strong>3ステップ</strong> は、<a href="#verify-devtools" class="text-blue-600 hover:underline">DevTools での確認</a>（Copy-first 技術選定の直後）に詳述しています。通信の種類は <a href="#verify-layers" class="text-blue-600 hover:underline">通信レイヤ</a> もご覧ください。</p>
+            <h2 class="sg-info-section-title">確認のしかた（技術に詳しい方へ）</h2>
+            <p>Network · Application · 機内モードの <strong>3ステップ</strong> は、<a href="#verify-devtools">DevTools での確認</a>（Copy-first 技術選定の直後）に詳述しています。通信の種類は <a href="#verify-layers">通信レイヤ</a> もご覧ください。</p>
         </section>
 
         <section id="copy-first-flow" class="space-y-3 scroll-mt-24" aria-labelledby="copy-first-flow-heading">
-            <h2 id="copy-first-flow-heading" class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">Copy-first の流れ</h2>
-            <p class="text-xs text-slate-600">画面で見せて終わりにせず、<strong>次のツールへ渡す</strong>までを1本の流れとして設計しています。</p>
+            <h2 id="copy-first-flow-heading" class="sg-info-section-title">Copy-first の流れ</h2>
+            <p>画面で見せて終わりにせず、<strong>次のツールへ渡す</strong>までを1本の流れとして設計しています。</p>
             <div class="sg-diagram-flow" role="img" aria-label="貼り付け、ブラウザ内で処理、コピーして TSV や PDF へ">
                 <div class="sg-diagram-flow__step">
                     <strong>1. 貼り付け</strong>
@@ -150,46 +150,46 @@
                     TSV · Slack · JSON · PDF へ
                 </div>
             </div>
-            <p class="text-xs text-slate-600">API 自動投稿はしません。幹事が<strong>自分で貼る</strong>ことで、何がどこへ行くかを透明に保ちます。<a href="#copy-first-tech" class="text-blue-600 hover:underline">技術選定の詳細</a></p>
+            <p>API 自動投稿はしません。幹事が<strong>自分で貼る</strong>ことで、何がどこへ行くかを透明に保ちます。<a href="#copy-first-tech">技術選定の詳細</a></p>
         </section>
 
         <section id="copy-first-tech" class="space-y-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">Copy-first の技術選定</h2>
-            <p class="text-xs text-slate-600">非契約 · 読み物。出力形式（TSV / JSON）と、チャット名の列挙の意味をまとめています。</p>
+            <h2 class="sg-info-section-title">Copy-first の技術選定</h2>
+            <p>非契約 · 読み物。出力形式（TSV / JSON）と、チャット名の列挙の意味をまとめています。</p>
 
             <div class="space-y-3">
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">1. なぜ API 連携ではなくコピペか</h3>
-                    <ul class="mt-1 text-xs text-slate-600 list-disc list-inside space-y-1">
+                    <h3>1. なぜ API 連携ではなくコピペか</h3>
+                    <ul class="mt-1 list-disc list-inside space-y-1">
                         <li>Slack / Teams 等への<strong>自動投稿 · OAuth はしない</strong>（権限審査 · 名簿送信を避ける）</li>
                         <li>幹事が<strong>コピー → 貼り付け</strong>する流れが、最も透明</li>
                         <li>画面に出るチャット名は<strong>貼り付け例</strong>であり、提携 · 推奨 · 公式連携ではない</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">2. なぜ TSV（タブ区切り）か</h3>
-                    <ul class="mt-1 text-xs text-slate-600 list-disc list-inside space-y-1">
+                    <h3>2. なぜ TSV（タブ区切り）か</h3>
+                    <ul class="mt-1 list-disc list-inside space-y-1">
                         <li>住所 · 備考など<strong>カンマを含むデータ</strong>で、CSV 形式がセル分裂しやすい</li>
                         <li>Excel / スプレッドシートへ<strong>そのまま列として貼れる</strong></li>
                         <li>CSV で運用している現場向け — ツールによっては CSV 保存も用意（用途に応じて選択）</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">3. なぜ JSON か</h3>
-                    <ul class="mt-1 text-xs text-slate-600 list-disc list-inside space-y-1">
+                    <h3>3. なぜ JSON か</h3>
+                    <ul class="mt-1 list-disc list-inside space-y-1">
                         <li>サーバーに保存しない代わり、<strong>手元に残す再現用ファイル</strong></li>
                         <li>シード · 名簿指紋など、<strong>あとから同じ結果を説明</strong>するため</li>
                         <li>班分け（group-split）では <strong>PC→スマホ</strong> のセッション移行にも使う（同期メモ経由）</li>
                     </ul>
                 </div>
             </div>
-            <p class="text-[10px] text-slate-500 leading-relaxed">列挙するサービス名（Slack · Microsoft Teams · Google Chat · Chatwork · LINE WORKS 等）は<strong>貼り付け先の例</strong>です。各名称は各社の商標であり、SUGUDASU との提携 · 推奨を意味しません。詳細は <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a> もご覧ください。</p>
-            <p class="text-xs text-slate-600"><a href="#verify-layers" class="text-blue-600 hover:underline">通信レイヤの説明</a> · <a href="#verify-devtools" class="text-blue-600 hover:underline">DevTools での確認手順</a></p>
+            <p class="sg-info-caption">列挙するサービス名（Slack · Microsoft Teams · Google Chat · Chatwork · LINE WORKS 等）は<strong>貼り付け先の例</strong>です。各名称は各社の商標であり、SUGUDASU との提携 · 推奨を意味しません。詳細は <a href="privacy.html">プライバシーポリシー</a> もご覧ください。</p>
+            <p><a href="#verify-layers">通信レイヤの説明</a> · <a href="#verify-devtools">DevTools での確認手順</a></p>
         </section>
 
         <section id="verify-layers" class="space-y-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">通信レイヤ — 何がどこまで端末内か</h2>
-            <p class="text-xs text-slate-600">
+            <h2 class="sg-info-section-title">通信レイヤ — 何がどこまで端末内か</h2>
+            <p>
                 SUGUDASU のツールは、<strong>あなたが貼り付けた名簿 · 表 · テキスト</strong>を
                 処理のために当社サーバーへ送りません。一方で、Web ページを開くこと自体は
                 インターネット経由です。下の図でレイヤの位置関係を示します。
@@ -204,10 +204,10 @@
                     <div class="sg-diagram-stack__layer sg-diagram-stack__layer--local"><strong>① 入力処理</strong> — 貼付 · 抽選 · 分割 · 変換（<strong>端末内のみ</strong>）</div>
                 </div>
             </div>
-            <details class="sg-copy-disclosure text-xs text-slate-600">
+            <details class="sg-copy-disclosure">
                 <summary class="font-semibold text-slate-800 cursor-pointer select-none">レイヤ一覧（表）</summary>
                 <div class="overflow-x-auto mt-3 pt-2 border-t border-slate-200/60">
-                <table class="sg-layer-table w-full text-[11px] border-collapse min-w-[480px]">
+                <table class="sg-layer-table w-full border-collapse min-w-[480px]">
                     <caption class="sr-only">SUGUDASU におけるデータの流れ</caption>
                     <thead>
                         <tr class="border-b border-slate-200 text-left">
@@ -252,25 +252,25 @@
                 </table>
                 </div>
             </details>
-            <p class="text-xs text-slate-600 sg-note">
+            <p class="sg-note">
                 「プライバシーファースト」と名乗るサービスでも、入力をサーバーに送るものがあります。
-                幹事の方は、重要データを扱う前に <a href="#verify-devtools" class="text-blue-600 hover:underline">DevTools 手順</a> で<strong>自分のブラウザから確認</strong>できます。
+                幹事の方は、重要データを扱う前に <a href="#verify-devtools">DevTools 手順</a> で<strong>自分のブラウザから確認</strong>できます。
             </p>
-            <details class="sg-copy-disclosure text-xs text-slate-600">
+            <details class="sg-copy-disclosure">
                 <summary class="font-semibold text-slate-800 cursor-pointer select-none">参考：「ブラウザ完結」と外部通信が両立しうる理由</summary>
                 <p class="mt-2 pt-2 border-t border-slate-200/60 leading-relaxed">
                     「端末内で処理」と言っても、<strong>ページの取得</strong>や、ツールが明示する
                     地図表示 · 名前解決 · ユーザー指定 URL への取得など、<strong>意図した外部通信</strong>を
                     別途行う設計もあります（当社製品の有無は問いません）。
                     SUGUDASU のツール本体は、名簿データを処理目的で外部 API に POST しません。
-                    他サービスとの違いは <a href="#verify-devtools" class="text-blue-600 hover:underline">Network 手順</a> で確認できます。
+                    他サービスとの違いは <a href="#verify-devtools">Network 手順</a> で確認できます。
                 </p>
             </details>
         </section>
 
         <section id="verify-devtools" class="space-y-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">3分で確かめる — 開発者ツールでの確認</h2>
-            <ol class="sg-steps list-decimal list-inside space-y-4 text-xs text-slate-600">
+            <h2 class="sg-info-section-title">3分で確かめる — 開発者ツールでの確認</h2>
+            <ol class="sg-steps list-decimal list-inside space-y-4">
                 <li class="pl-1">
                     <strong>Network（ネットワーク）</strong>
                     <p class="mt-1 ml-0 sm:ml-4 leading-relaxed">
@@ -295,15 +295,15 @@
                     </p>
                 </li>
             </ol>
-            <p class="text-xs text-slate-600 sg-note">
+            <p class="sg-note">
                 より詳しく Cookie を調べる場合は、Chrome の「プライバシーとセキュリティ」パネルや
-                <a href="https://privacysandbox.google.com/cookies/prepare/audit-cookies?hl=ja" class="text-blue-600 hover:underline" rel="noopener noreferrer">Privacy Sandbox の監査手順</a>
+                <a href="https://privacysandbox.google.com/cookies/prepare/audit-cookies?hl=ja" rel="noopener noreferrer">Privacy Sandbox の監査手順</a>
                 も参考にできます（計測 Cookie と入力データは別問題です）。
             </p>
         </section>
 
         <section id="operations" class="space-y-3 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">運営の選び方</h2>
+            <h2 class="sg-info-section-title">運営の選び方</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[280px]">
                     <tbody class="text-slate-600">
@@ -311,14 +311,14 @@
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top font-semibold text-slate-700">収益（将来）</td><td class="py-2"><strong>Pro 等の有料プラン</strong> — 例: 広告非表示 · 証跡 PDF の拡張 · より高度な機能。時期 · 価格は未定</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top font-semibold text-slate-700">有料化の線引き</td><td class="py-2">登録なしで完結する <strong>コア実務</strong> を人質にしない。アカウント必須ペイウォールや名簿のクラウド保存は使わない</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top font-semibold text-slate-700">運営者表記</td><td class="py-2">製品と約束を前面に。個人の実名 · 勤務先は公開しない</td></tr>
-                        <tr><td class="py-2 pr-3 align-top font-semibold text-slate-700">開発</td><td class="py-2">非エンジニア + AI 支援。<a href="updates.html" class="text-blue-600 hover:underline">changelog</a> で変更を公開</td></tr>
+                        <tr><td class="py-2 pr-3 align-top font-semibold text-slate-700">開発</td><td class="py-2">非エンジニア + AI 支援。<a href="updates.html">changelog</a> で変更を公開</td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
         <section id="wont-do" class="space-y-3 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">あえてやらないこと</h2>
+            <h2 class="sg-info-section-title">あえてやらないこと</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[320px]">
                     <thead>
@@ -340,13 +340,13 @@
         </section>
 
         <section id="compare" class="space-y-4 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">他サービスとの違い — カテゴリ別</h2>
-            <p class="text-xs text-slate-600">SUGUDASU は <strong>すべての用途で最適</strong> ではありません。<strong>向く場面</strong> で選んでください。</p>
+            <h2 class="sg-info-section-title">他サービスとの違い — カテゴリ別</h2>
+            <p>SUGUDASU は <strong>すべての用途で最適</strong> ではありません。<strong>向く場面</strong> で選んでください。</p>
 
             <div class="space-y-2">
-                <h3 class="text-xs font-bold text-violet-900">班分け · グループ分け</h3>
+                <h3 class="sg-info-subsection-title">班分け · グループ分け</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-[10px] border border-slate-200 rounded-lg overflow-hidden min-w-[480px]">
+                    <table class="w-full border border-slate-200 rounded-lg overflow-hidden min-w-[480px]">
                         <thead class="bg-slate-50">
                             <tr class="text-left">
                                 <th class="p-2 border-b border-slate-200 w-24"></th>
@@ -366,9 +366,9 @@
             </div>
 
             <div class="space-y-2">
-                <h3 class="text-xs font-bold text-violet-900">画像 · ファイル変換</h3>
+                <h3 class="sg-info-subsection-title">画像 · ファイル変換</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-[10px] border border-slate-200 rounded-lg min-w-[360px]">
+                    <table class="w-full border border-slate-200 rounded-lg min-w-[360px]">
                         <thead class="bg-slate-50"><tr class="text-left"><th class="p-2 border-b w-32"></th><th class="p-2 border-b">アップロード型</th><th class="p-2 border-b text-violet-900">SUGUDASU webp-to-jpg</th></tr></thead>
                         <tbody class="text-slate-600">
                             <tr><td class="p-2 border-b font-semibold">データ</td><td class="p-2 border-b"><strong>サーバーに送信</strong></td><td class="p-2 border-b"><strong>ブラウザ内</strong> Canvas 変換</td></tr>
@@ -379,9 +379,9 @@
             </div>
 
             <div class="space-y-2">
-                <h3 class="text-xs font-bold text-violet-900">抽選 · 懸賞</h3>
+                <h3 class="sg-info-subsection-title">抽選 · 懸賞</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-[10px] border border-slate-200 rounded-lg min-w-[360px]">
+                    <table class="w-full border border-slate-200 rounded-lg min-w-[360px]">
                         <thead class="bg-slate-50"><tr class="text-left"><th class="p-2 border-b w-32"></th><th class="p-2 border-b">統制付き懸賞管理</th><th class="p-2 border-b text-violet-900">SUGUDASU 抽選</th></tr></thead>
                         <tbody class="text-slate-600">
                             <tr><td class="p-2 border-b font-semibold">位置づけ</td><td class="p-2 border-b">統制 · ログ · 権限</td><td class="p-2 border-b"><strong>公平抽選 + 証跡 PDF</strong>（統制システムではない）</td></tr>
@@ -392,9 +392,9 @@
             </div>
 
             <div class="space-y-2">
-                <h3 class="text-xs font-bold text-violet-900">請求 · 帳票</h3>
+                <h3 class="sg-info-subsection-title">請求 · 帳票</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-[10px] border border-slate-200 rounded-lg min-w-[360px]">
+                    <table class="w-full border border-slate-200 rounded-lg min-w-[360px]">
                         <thead class="bg-slate-50"><tr class="text-left"><th class="p-2 border-b w-32"></th><th class="p-2 border-b">クラウド請求 SaaS</th><th class="p-2 border-b text-violet-900">SUGUDASU 請求書</th></tr></thead>
                         <tbody class="text-slate-600">
                             <tr><td class="p-2 border-b font-semibold">データ</td><td class="p-2 border-b">クラウド · チーム</td><td class="p-2 border-b"><strong>下書き JSON · ブラウザ内</strong></td></tr>
@@ -406,48 +406,48 @@
         </section>
 
         <section id="tools-map" class="space-y-3 scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">ツールと約束の対応</h2>
+            <h2 class="sg-info-section-title">ツールと約束の対応</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[320px]">
                     <thead><tr class="border-b border-slate-200 text-left"><th class="py-2 pr-3 font-bold">ツール</th><th class="py-2 font-bold">この約束のどこに効くか</th></tr></thead>
                     <tbody class="text-slate-600">
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="group-split.html" class="text-blue-600 hover:underline font-semibold">SUGUDASU 班分け</a></td><td class="py-2">名簿を預けない設計 · Copy-first · 欠席タップ再編 · Zoom API なし</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="fair-draw.html" class="text-blue-600 hover:underline font-semibold">SUGUDASU 抽選</a></td><td class="py-2">証跡 PDF · シード · 統制システムではない</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="invoice.html" class="text-blue-600 hover:underline font-semibold">SUGUDASU 請求書</a></td><td class="py-2">Desktop-first · 下書き · 見積→請求転用</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="normalize.html" class="text-blue-600 hover:underline font-semibold">SUGUDASU 正規化</a></td><td class="py-2">500行 cap · コピーゲート · 名簿前処理</td></tr>
-                        <tr><td class="py-2 pr-3"><a href="webp-to-jpg.html" class="text-blue-600 hover:underline font-semibold">SUGUDASU WebP変換</a></td><td class="py-2">アップロードしない変換</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="group-split.html">SUGUDASU 班分け</a></td><td class="py-2">名簿を預けない設計 · Copy-first · 欠席タップ再編 · Zoom API なし</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="fair-draw.html">SUGUDASU 抽選</a></td><td class="py-2">証跡 PDF · シード · 統制システムではない</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="invoice.html">SUGUDASU 請求書</a></td><td class="py-2">Desktop-first · 下書き · 見積→請求転用</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="normalize.html">SUGUDASU 正規化</a></td><td class="py-2">500行 cap · コピーゲート · 名簿前処理</td></tr>
+                        <tr><td class="py-2 pr-3"><a href="webp-to-jpg.html">SUGUDASU WebP変換</a></td><td class="py-2">アップロードしない変換</td></tr>
                     </tbody>
                 </table>
             </div>
-            <p class="text-xs">一覧の正本: <a href="hub.html" class="text-blue-600 hover:underline">ツール一覧</a> · <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a></p>
+            <p>一覧の正本: <a href="hub.html">ツール一覧</a> · <a href="updates.html">更新履歴</a></p>
         </section>
 
         <section id="faq" class="space-y-3 sg-faq-list scroll-mt-24">
-            <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-2">よくある質問</h2>
+            <h2 class="sg-info-section-title">よくある質問</h2>
             <details class="sg-faq">
-                <summary class="font-bold text-xs text-slate-800 cursor-pointer select-none">SUGUDASU は本当にデータを送信しませんか？</summary>
-                <p class="mt-3 text-xs text-slate-600 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>入力データを SUGUDASU のサーバーに保存する設計にはしていません。</strong> 処理はブラウザ内が中心です。一方で、ページ配信 · 広告 · アクセス解析 · インフラログでは通信が発生します。詳細は <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a> をご確認ください。</p>
+                <summary class="font-bold cursor-pointer select-none">SUGUDASU は本当にデータを送信しませんか？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>入力データを SUGUDASU のサーバーに保存する設計にはしていません。</strong> 処理はブラウザ内が中心です。一方で、ページ配信 · 広告 · アクセス解析 · インフラログでは通信が発生します。詳細は <a href="privacy.html">プライバシーポリシー</a> をご確認ください。</p>
             </details>
             <details class="sg-faq">
-                <summary class="font-bold text-xs text-slate-800 cursor-pointer select-none">登録不要の班分けツールと、他の無料ツールの違いは？</summary>
-                <p class="mt-3 text-xs text-slate-600 pt-2 border-t border-slate-200/60 leading-relaxed">演出向けルーレットは会場映え、SaaS 型はアカウントと連携が強みです。SUGUDASU は <strong>名簿を貼って TSV/Slack にコピーし、シードで説明できる</strong> 幹事向けの事務ツールです。用途が違えば、他サービスの方が適切な場合もあります。</p>
+                <summary class="font-bold cursor-pointer select-none">登録不要の班分けツールと、他の無料ツールの違いは？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">演出向けルーレットは会場映え、SaaS 型はアカウントと連携が強みです。SUGUDASU は <strong>名簿を貼って TSV/Slack にコピーし、シードで説明できる</strong> 幹事向けの事務ツールです。用途が違えば、他サービスの方が適切な場合もあります。</p>
             </details>
             <details class="sg-faq">
-                <summary class="font-bold text-xs text-slate-800 cursor-pointer select-none">Pro プランや有料版はありますか？</summary>
-                <p class="mt-3 text-xs text-slate-600 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>現時点では無料</strong> です（広告 · アフィリエイトで運営）。将来、<strong>広告非表示</strong> や <strong>より高度な機能</strong> などを含む有料プランを検討する余地はあります。ただし <strong>登録なしで使えるコア</strong> を有料の人質にはしない方針です。</p>
+                <summary class="font-bold cursor-pointer select-none">Pro プランや有料版はありますか？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>現時点では無料</strong> です（広告 · アフィリエイトで運営）。将来、<strong>広告非表示</strong> や <strong>より高度な機能</strong> などを含む有料プランを検討する余地はあります。ただし <strong>登録なしで使えるコア</strong> を有料の人質にはしない方針です。</p>
             </details>
         </section>
 
-        <footer class="pt-4 border-t border-slate-200 space-y-2 text-xs">
-            <p class="font-semibold text-slate-800">関連ページ</p>
-            <p class="text-slate-600">
-                <a href="hub.html" class="text-blue-600 hover:underline">ツール一覧</a>
-                · <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
-                · <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>
-                · <a href="terms.html" class="text-blue-600 hover:underline">利用規約</a>
-                · <a href="disclaimer.html" class="text-blue-600 hover:underline">免責事項</a>
+        <footer class="space-y-2">
+            <p><strong>関連ページ</strong></p>
+            <p>
+                <a href="hub.html">ツール一覧</a>
+                · <a href="updates.html">更新履歴</a>
+                · <a href="privacy.html">プライバシーポリシー</a>
+                · <a href="terms.html">利用規約</a>
+                · <a href="disclaimer.html">免責事項</a>
             </p>
-            <p class="text-[10px] text-slate-500 pt-2">※本ページは製品哲学の説明であり、契約 · 保証を構成しません。改定: 2026年6月20日</p>
+            <p class="sg-info-caption pt-2">※本ページは製品哲学の説明であり、契約 · 保証を構成しません。改定: 2026年6月20日</p>
         </footer>
     </article>
 </main>

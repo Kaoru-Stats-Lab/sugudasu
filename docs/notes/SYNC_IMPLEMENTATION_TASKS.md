@@ -59,6 +59,43 @@
 - [ ] 接続数/上限表示（Presence state件数ベース）
 - [ ] 保存期限（retain_until）表示
 - [ ] 共有URLコピー導線
+- [ ] JSONエクスポート（`SYNC_RETENTION_POLICY`）— 成功直後に **フィードバックオーバーレイ**（§2-4）
+
+### 2-4. フィードバック収集（**S2 Must · 出荷ゲート**）
+
+**正本:** [`SYNC_POST_EVENT_REVIEW.md`](SYNC_POST_EVENT_REVIEW.md)
+
+#### フロント（アプリ内マイクロ UI）
+
+- [ ] `assets/sync-feedback-client.js` — POST · localStorage 抑制
+- [ ] `assets/sync-feedback-export-overlay.js` — エクスポート直後 😭/😮/◎ + 😭時ドリルダウン
+- [ ] `assets/sync-feedback-sticky.js` — 共有URL最下部 👍/👎（1日1回/端末）
+- [ ] 初回「確定反映」成功直後 — はい/いいえ（`flush_success` · 1イベント1回）
+- [ ] エクスポートオーバーレイ内 **invoice 領収書** 導線
+- [ ] 「詳しく報告」→ 既存 β 不具合フォーム（別タブ）
+
+#### API（Cloudflare Pages Functions）
+
+- [ ] `functions/api/sync/feedback.js` — POST · Sheet 追記 · レート制限
+- [ ] `functions/api/sync/feedback-summary.js` — GET · Dev Ops 集計 JSON
+
+#### Dev Ops ダッシュボード（**必須**）
+
+- [ ] `tools/sync-dev-ops.html`（または `/dev-ops` ルート）
+- [ ] F1 直近50件一覧
+- [ ] F2 シグナル集計7日
+- [ ] F3 😭+👎 24h アラート
+- [ ] F4 Editor→Owner 見込み
+- [ ] F5 LP 引用候補
+- [ ] F6 ドリルダウン内訳
+- [ ] F7 LP用 分子/分母/率 + コピーテンプレ（§8-3）
+- [ ] 送信後60秒以内に F1 反映（受け入れ）
+
+#### GAS · Sheet
+
+- [ ] スプレッドシート `post_event_review` タブ
+- [ ] `gas/sync-feedback-ingest.gs` — 追記 · doGet 集計
+- [ ] 😭 / 👎 で Telegram 通知（任意だが推奨）
 
 ---
 
@@ -68,6 +105,7 @@
 
 - 不具合・改善フォーム: [SUGUDASU Sync β 不具合・改善フォーム](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor)
 - 回答管理シート: [Sync β フィードバック管理](https://docs.google.com/spreadsheets/d/1LNjUDMiQW5klQlmrtRjDx_AHtf-EQRKYVnOZAJedl64/edit?usp=sharing)
+- **イベント終了レビュー仕様:** [`SYNC_POST_EVENT_REVIEW.md`](SYNC_POST_EVENT_REVIEW.md)（Form 新規 · 割引インセンティブなし）
 
 回答管理シート `status` 運用定義:
 
@@ -89,6 +127,7 @@
 - [ ] 同時接続ピーク
 - [ ] 上限到達回数
 - [ ] 失敗率
+- [ ] **フィードバック F1–F7**（§2-4 · `SYNC_POST_EVENT_REVIEW.md`）— **S2 未完了扱い if 欠落**
 
 ### 3-3. ガード
 
@@ -113,5 +152,7 @@
 - [ ] event_public_id衝突ガード（regex+unique+retry）完了
 - [ ] 同時端末capが実効（claim/release/heartbeat）
 - [ ] Tool Admin と Dev Ops の最小ダッシュボード表示
+- [ ] **フィードバック3箇所（エクスポート直後 · 確定反映 · 👍/👎）が動作**
+- [ ] **Dev Ops で直近フィードバック50件が60秒以内に表示**
 - [ ] βテレメトリがPostgres非依存で運用開始
 

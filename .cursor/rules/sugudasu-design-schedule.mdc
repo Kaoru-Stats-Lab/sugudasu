@@ -1,0 +1,36 @@
+---
+description: Schedule / Sync UI — Notion Like デザイン参照必須（色は ADAPT マップ · Notion HEX 直書き禁止）
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# SUGUDASU Schedule / Sync UI デザイン（Agent 必須）
+
+**リポジトリ:** sugudasu（asl-dashboard ではない）
+
+## いつ読む
+
+次のいずれかに触る **着手前**:
+
+- `schedule` · `SCHEDULE_` · `sync.sugudasu.com/schedule`
+- Notion 風表 · 行 DnD · スラッシュコマンド · A3 印刷 · xlsx Export UI
+- `docs/DESIGN_GUIDELINE_NOTION_LIKE.md` · Sync/Schedule の新規 CSS/HTML
+
+## 読む順（固定）
+
+1. **`docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`** — **SUGUDASU 色・CTA マップ（実装正本）**
+2. **`docs/DESIGN_GUIDELINE.md`** — コア 3層アクション · `--sg-*`
+3. **`docs/DESIGN_GUIDELINE_SYNC.md`** — Sync パステル行 · violet · 稟議トーン
+4. **`docs/DESIGN_GUIDELINE_NOTION_LIKE.md`** — Notion 分析（**HEX をそのまま実装しない**）
+5. 機能仕様 **`docs/notes/SCHEDULE_TOOL_SPEC.md`**（Schedule 実装時）
+
+## 禁止
+
+- Notion 分析の `#0075de` · `#f6f5f4` · `#213183` hero を **そのまま CSS に書く**
+- ステッカー多色を **主 CTA / 構造色** に使う
+- `DESIGN_GUIDELINE_NOTION_LIKE.md` だけ読んで色を決める（**ADAPT 未読は NG**）
+
+## 実装
+
+色は **`assets/sugudasu.css` の `--sg-*` / `--sync-row-*` のみ** 増やす場合も Sync 節に従う。

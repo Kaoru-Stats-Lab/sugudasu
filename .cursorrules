@@ -12,6 +12,7 @@
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
+| **Schedule · Sync UI（Notion Like 表）** | **`docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色マップ正本）→ `docs/DESIGN_GUIDELINE_NOTION_LIKE.md`（分析参照）· 仕様 `docs/notes/SCHEDULE_TOOL_SPEC.md` · ルール `.cursor/rules/sugudasu-design-schedule.mdc` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
 
 ## 命名変更 · 新規ツール · デプロイ前（必須）

@@ -3,6 +3,20 @@
   "entries": [
     {
       "date": "2026-06-25",
+      "type": "fix",
+      "title": "情報ページの横幅・タイポ統一（updates / statements / legal）",
+      "body": "sg-info-page · sg-info-prose を追加。5 ページを max-width 48rem に揃え、本文 14px · 見出し階層 · リンク色を DESIGN_GUIDELINE_INFO_PAGES.md に集約。",
+      "tools": ["sugudasu.css", "updates.html", "statements.html", "privacy.html", "terms.html", "disclaimer.html"]
+    },
+    {
+      "date": "2026-06-25",
+      "type": "fix",
+      "title": "FAQ 左寄せ · リード改行 · SNS sg-segment · ads.txt ヘッダ",
+      "body": "FAQ summary の justify-between 退行を CSS/HTML で修正。hub 等のリード文を whitespace-nowrap で不自然改行を防止。font-converter/sns ナビを sg-doc-cluster 化。ads.txt に text/plain ヘッダと末尾改行。",
+      "tools": ["sugudasu.css", "hub.html", "font-converter.html", "sns.html", "build-pages.mjs", "ads.txt"]
+    },
+    {
+      "date": "2026-06-25",
       "type": "feat",
       "title": "Notion Like 全站横展開（Phase A–D）— CSS 正本化 · FAQ · hub",
       "body": "sg-faq / sg-segment-hint / sg-card を Notion 系デフォルトに統合。18 ツール FAQ toggle 化 · segment notion-soft · hub カード hairline + eyebrow。DESIGN_GUIDELINE §3.3 · ADAPT §7-3 更新。",

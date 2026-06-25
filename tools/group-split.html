@@ -28,10 +28,10 @@
 
     <header class="max-w-3xl space-y-2">
         <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">研修 · ブレイクアウト · 名簿非送信</p>
-        <p class="text-sm text-slate-600 leading-relaxed">
-            Excel 名簿（氏名＋所属・性別など）を貼って<strong>公平に班分け</strong>。属性条件にも対応し、結果は Excel 用 TSV や Slack 用テキストを<strong>1クリックコピー</strong>。
+        <p class="text-sm text-slate-600 sg-tool-lead">
+            Excel 名簿（氏名＋所属・性別など）を貼って<strong>公平に班分け</strong>。属性条件にも対応し、<span class="whitespace-nowrap">結果は Excel 用 TSV や Slack 用テキストを<strong>1クリックコピー</strong>。</span>
             当日の進行時刻は <a href="timeline.html" class="text-violet-800 font-semibold hover:underline">イベント進行</a> で連動更新できます。
-            教室投影の<strong>ルーレット演出</strong>向けではなく、研修・人事の<strong>事務作業 · 2次利用</strong>（共有 · 記録 · 再現）向けです。
+            <span class="whitespace-nowrap">教室投影の<strong>ルーレット演出</strong>向けではなく、</span><span class="whitespace-nowrap">研修・人事の<strong>事務作業 · 2次利用</strong>（共有 · 記録 · 再現）向けです。</span>
         </p>
     </header>
 
@@ -239,55 +239,37 @@
         <h3 class="text-xs font-bold text-violet-800 mb-2 mt-2">班分けの基本（幹事 · 人事向け）</h3>
         <div class="sg-faq-list mb-6">
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>研修やブレイクアウトで班分けが必要なのはどんなとき？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>研修やブレイクアウトで班分けが必要なのはどんなとき？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>新入社員研修のグループワーク、異動者研修、ハッカソンのチーム編成、社内ワークショップの卓割りなど、参加者全員をいくつかの組に分け、事前または当日に共有したい場面です。SUGUDASU の班分けは「その場の演出」より、幹事の<strong>事務作業</strong>（割当 · 共有 · 説明責任）を助ける位置づけです。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>ランダムに分けると公平になりますか？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>ランダムに分けると公平になりますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>完全なランダムは「恣意的な偏りを避ける」手段として有効ですが、所属の固まりや特定ペアの回避など、現場のルールも必要になります。公平性は「誰が決めたか説明できること」と「ルールを守った結果を記録できること」も含みます。本ツールは<strong>シード値</strong>と<strong>名簿指紋</strong>で再現可能にします。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>Excel の RAND() や手作業との違いは？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>Excel の RAND() や手作業との違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p><code class="text-[10px]">RAND()</code> はセル再計算で班構成が変わりうるほか、固定班 · 離すペア · 所属分散などの制約実装が手間です。手作業は小規模なら可能ですが、再現説明と共有用テキストの作成に時間がかかります。班分けツールは「1回決めた結果を TSV/Slack 用にそのまま出す」ことに特化します。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>投影用ルーレットと事務向け班分けの違いは？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>投影用ルーレットと事務向け班分けの違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>教室やイベント会場向けのルーレット演出は、画面に映して<strong>盛り上げる</strong>用途向けです。SUGUDASU の班分けは、名簿を<strong>非送信</strong>で処理し、Excel TSV や Slack 用テキストをコピーして共有する「幹事の2次利用」向けです。どちらも正しい使い方があり、<strong>目的が異なります</strong>。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>所属や性別など属性を考慮した班分けは？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>所属や性別など属性を考慮した班分けは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>「同じ部署が固まらない」「各組に役員を1名以上」などは、氏名だけでなく<strong>所属 · 性別 · 役職</strong>などの列を使った条件になります。年齢平均の完全一致などは専門ソルバの領域ですが、本ツールでは Excel 名簿の<strong>属性列（最大3）</strong>で分散 · 各組必須を指定できます。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>当日欠席が出たときはどうする？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>当日欠席が出たときはどうする？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p><strong>ハッカソン想定（M02 · スマホタップ再編）:</strong></p>
                     <ol class="list-decimal list-inside mt-2 space-y-1">
@@ -304,38 +286,26 @@
         <h3 class="text-xs font-bold text-slate-800 mb-2">SUGUDASU グループ分けツール</h3>
         <div class="sg-faq-list">
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>名簿は外部に送信されますか？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>名簿は外部に送信されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。</p>
                     <p class="mt-2">設計思想と但し書き（広告 · 解析等）の詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASUの約束</a> をご覧ください。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>使い方の流れは？（Step ①〜④）</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>使い方の流れは？（Step ①〜④）</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>① Excel 名簿を貼り付け → ② 複数列なら<strong>属性条件</strong>（所属の分散 · 各組必須など）→ ③ 必要なら<strong>名前ルール</strong>（固定班 · 離すペア · 組番号固定）→ ④ 人数または組数を指定して実行。結果は TSV · Slack · 告知文を1クリックコピーできます。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>属性条件（②）と名前ルール（③）の違いは？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>属性条件（②）と名前ルール（③）の違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>② は<strong>列ベース</strong>（例: 所属=営業をばらす · 各組に役員1名）。③ は<strong>氏名ベースの例外</strong>（この2人は同組 · 別組 · 1組固定）。多くの研修班分けは ② だけで足り、③ は少数の例外用です。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>同じ班構成を再現できますか？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>同じ班構成を再現できますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>同じ名簿 · 同じ条件 · 同じシード値なら同じ班構成になります。</p>
                     <ol class="list-decimal list-inside mt-2 space-y-1">
@@ -347,28 +317,19 @@
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>人数が割り切れないときは？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>人数が割り切れないときは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>制約なしの均等分割では、各グループの人数差は<strong>最大1名</strong>です（例: 10名×4人1組 → 4+3+3）。固定班や属性条件がある場合は、目標定員からずれることがあります（超過理由を表示）。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>目標定員より多いグループになりますか？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>目標定員より多いグループになりますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>固定班を分割しない · メンター配置など、制約を満たすために目標定員を超える組が出る場合があります。超過組には人数バッジと<strong>理由</strong>を表示します。</p>
                 </div>
             </details>
             <details class="sg-faq">
-                <summary class="flex justify-between items-center gap-2 font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">
-                    <span>Excel や Slack にそのまま貼れますか？</span>
-                    <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
+                <summary>Excel や Slack にそのまま貼れますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>はい。Excel 用 TSV（グループ · 氏名 · 属性列）がデフォルトです。Slack/Teams · LINE · 告知 · JSON も別形式でコピーできます。名簿上限は<strong>250名</strong>（研修 · ブレイクアウト規模向け）。</p>
                 </div>

@@ -4,7 +4,7 @@
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **ステータス**: **Phase C 実装済**（2026-06-20 · 名簿上限 **250名 FIX** · 属性列2〜3）
 
-> **別Agentへ:** 本ファイルを最初に読む。続けて `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §4-3 **T11** · `docs/BACKLOG.md` **§1-11** · `docs/prompts/group-split-gemini-research.md` · **`docs/notes/group-split-gemini-research-RESULT.md`**（Gemini §1–§5 · 突合済） · `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`（シャッフル・証跡の先例） · `assets/prize-law-eval.js`（`createSeededRandomFn` · Fisher-Yates） · `docs/BACKLOG.md` **§8-11**（ポータル件数表記）。
+> **別Agentへ:** 本ファイルを最初に読む。続けて `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §4-3 **T11** · `docs/BACKLOG.md` **§1-11** · `docs/prompts/group-split-gemini-research.md` · **`docs/notes/group-split-gemini-research-RESULT.md`**（Gemini §1–§5 · 突合済） · `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`（シャッフル・証跡の先例） · `assets/prize-law-eval.js`（`createSeededRandomFn` · Fisher-Yates） · `docs/BACKLOG.md` **§8-11**（ポータル件数表記）。**T11-S 課金文案:** [`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`](GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md)。
 
 ---
 

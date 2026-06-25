@@ -61,9 +61,13 @@
 - 最終更新時刻
 - 保存期限（retain_until）
 
-### 2-3. Sync Dev Ops Dashboard（β必須）
+### 2-3. Sync Dev Ops Dashboard（β必須 · **S2 出荷ゲート**）
 
-β運用で見るべき最小KPI（**Postgresへ保存しない**）:
+β運用で見るべき KPI。**フィードバックはデフォルトタブ**（品質改善が主目的）。
+
+**正本（マイクロ UI · API · 必須ウィジェット）:** [`SYNC_POST_EVENT_REVIEW.md`](SYNC_POST_EVENT_REVIEW.md)
+
+#### 運用メトリクス（Postgres非保存 · Cloudflare 側）
 
 - 日別アクティブイベント数
 - 同時接続ピーク（5分刻み）
@@ -72,10 +76,28 @@
 - 失敗率（save失敗 / claim失敗）
 - 無料コア → Sync 遷移数（流入把握）
 
+#### フィードバック（**実装必須 · Sheet 経由**）
+
+| ID | ウィジェット | 必須 |
+|----|-------------|------|
+| F1 | 直近フィードバック一覧（50件） | ○ |
+| F2 | シグナル集計 7日（great/ok/bad/up/down） | ○ |
+| F3 | 😭+👎 24h アラート（≥3件で赤バナー） | ○ |
+| F4 | Editor → Owner 見込み（`editor_next_host`） | ○ |
+| F5 | LP 引用候補（`lp_quote`） | ○ |
+| F6 | ドリルダウン内訳 | ○ |
+| F7 | LP用 分子/分母/率（R1–R5）+ コピーテンプレ | ○ |
+
+**データ経路:** アプリ → `POST /api/sync/feedback` → Google Sheet `post_event_review` → `GET /api/sync/feedback/summary` → Dev Ops UI。**Postgres に本文を保存しない。**
+
+**LP 公開ルール:** `SYNC_POST_EVENT_REVIEW.md` §8 — **分子・分母・期間・対象** なしの率は LP に載せない。F7 が唯一の正本。
+
+**受け入れ:** マイクロ送信後 **60秒以内** に F1 に行が出ること。出ない場合 **S2 未完了**。
+
 **テレメトリ方針:**
 
-- Dev Ops メトリクスは Cloudflare 側（Analytics/Logs）へ送る
-- Postgres に専用メトリクステーブルを作らない（500MB枠温存）
+- Dev Ops メトリクスは Cloudflare 側（Analytics/Logs）＋ **Sheet 集計（フィードバック）**
+- Postgres に専用メトリクス／フィードバックテーブルを作らない（500MB枠温存）
 
 ---
 
@@ -84,8 +106,8 @@
 | フェーズ | 出荷物 |
 |---------|--------|
 | S1.5 | `event_public_id` 導入（`se_`） |
-| S2 | `/e/{event_public_id}` 解決 + Tool Admin 最小表示 |
-| S2+ | Sync Dev Ops βダッシュボード（集計） |
+| S2 | `/e/{event_public_id}` 解決 + Tool Admin 最小表示 + **フィードバック収集・Dev Ops 表示** |
+| S2+ | Sync Dev Ops βダッシュボード（集計 · F1–F6 完了） |
 
 ---
 
@@ -96,5 +118,8 @@
 - [ ] `23505` 時に最大3回のサイレント再試行が実装されている
 - [ ] Tool Admin 画面の接続数が Presence 由来（DBポーリングなし）で表示される
 - [ ] Dev Ops 画面で日別イベント数・接続ピーク・失敗率が見える
+- [ ] **Dev Ops で直近フィードバック50件（F1）とシグナル集計（F2）が見える**（`SYNC_POST_EVENT_REVIEW.md`）
+- [ ] マイクロ送信後60秒以内に F1 に行が出る
 - [ ] Postgres 内に Dev Ops 専用ログテーブルが存在しない
+- [ ] Postgres 内にフィードバック本文テーブルが存在しない
 

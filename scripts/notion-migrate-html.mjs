@@ -13,7 +13,10 @@ const CHEVRON =
   /<span class="ml-1\.5 shrink-0 transition-transform duration-200"><svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"\/><\/svg><\/span>\s*/g;
 
 const SUMMARY_FLEX =
-  /<summary class="flex justify-between items-center font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">\s*\n?\s*<span>([\s\S]*?)<\/span>\s*\n?\s*(?:<span class="ml-1\.5[\s\S]*?<\/span>\s*)?<\/summary>/g;
+  /<summary class="flex justify-between items-center(?: gap-2)? font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">\s*\n?\s*<span>([\s\S]*?)<\/span>\s*\n?\s*(?:<span class="ml-1\.5[\s\S]*?<\/span>\s*)?<\/summary>/g;
+
+const SUMMARY_FLEX_SVG =
+  /<summary class="flex justify-between items-center(?: gap-2)? font-bold text-xs sm:text-sm text-slate-800 cursor-pointer select-none">\s*\n?\s*<span>([\s\S]*?)<\/span>\s*\n?\s*<svg class="w-5 h-5[\s\S]*?<\/svg>\s*<\/summary>/g;
 
 function migrateFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf8');
@@ -21,6 +24,7 @@ function migrateFile(filePath) {
 
   html = html.replace(/<details class="sg-faq[^"]*">/g, '<details class="sg-faq">');
   html = html.replace(SUMMARY_FLEX, '<summary>$1</summary>');
+  html = html.replace(SUMMARY_FLEX_SVG, '<summary>$1</summary>');
   html = html.replace(CHEVRON, '');
 
   html = html.replace(
