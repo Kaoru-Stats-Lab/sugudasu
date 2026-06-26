@@ -1,8 +1,8 @@
 # SUGUDASU Workflow
 
-最終更新: 2026-06-25
+最終更新: 2026-06-26
 
-**提督の残タスク（呼び出し用）:** [`docs/notes/TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md) — Cloudflare プラグイン · Supabase Auth 等
+**提督の残タスク（呼び出し用）:** [`docs/notes/TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md) — Cloudflare プラグイン · **Sync S1 E2E 受け入れ** 等
 
 このファイルは「何をする時に、どのコマンドを使うか」の運用正本です。
 
@@ -61,9 +61,23 @@
   - 手順: [`docs/notes/CUSTOM_DOMAIN_SUGUDASU_COM.md`](notes/CUSTOM_DOMAIN_SUGUDASU_COM.md)
 
 - **重要**
-  - push 前: `npm run release:pages:free`
-  - 反映: `git push origin main` → CF 自動ビルド
-  - 台帳: `.ops/cloudflare-pages-build-budget.json`（Git 管理外）
+  - **台帳:** [`docs/notes/DEPLOY_LOG.md`](notes/DEPLOY_LOG.md)（`target=core` · `approved` 必須）
+  - push 前: `npm run release:pages:free`（= deploy:gate + build + 月次予算）
+  - 反映: `git push origin main` → CF 自動ビルド（**+1 回カウント**）
+  - 予算台帳: `.ops/cloudflare-pages-build-budget.json`（Git 管理外）
+
+### 3-1) Sync ライン（`sugudasu-sync` · **コアと別デプロイ**）
+
+**正本:** [`SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md) · **env:** [`SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md) · **台帳:** [`DEPLOY_LOG.md`](notes/DEPLOY_LOG.md)（`target=sync`）
+
+```powershell
+cd C:\asl_dev\sugudasu
+# DEPLOY_LOG に target=sync · approved を追記後
+npm run deploy:pages:sync   # gate + build + budget + wrangler · git push では動かない
+```
+
+- 本番アプリ: `https://sync.sugudasu.com/timeline/app/`
+- コア `git push` では Sync は **自動ビルドされない**（意図どおり）
 
 ## 4) GitHub 運用（推奨ベスト）
 

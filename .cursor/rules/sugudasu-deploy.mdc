@@ -1,5 +1,5 @@
 ---
-description: SUGUDASU 本番デプロイ — Cloudflare Pages · push 前ゲート必須
+description: SUGUDASU 本番デプロイ — Cloudflare Pages Free · DEPLOY_LOG 必須 · core/sync 分離
 globs:
   - "**/*"
 alwaysApply: true
@@ -11,40 +11,45 @@ alwaysApply: true
 
 ## 着手前（必読）
 
-`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` — 手順 · CF Free 上限 · トラブル表の **SSOT**
+1. **`docs/notes/DEPLOY_LOG.md`** — 台帳 · ゲート P1–P8 · **未更新の deploy 禁止**
+2. **`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`** — コア手順 · CF Free 上限
+3. Sync 手動デプロイ: **`docs/notes/SYNC_INFRA_CLOUDFLARE.md`** §4
 
-## 本番反映の正本経路
+## デプロイ経路（別物 · MECE）
 
-```text
-コア:  git push origin main  →  Cloudflare Pages (sugudasu)  →  npm run build:pages  →  dist/
-Sync:  自動デプロイ OFF  →  npm run build:pages:sync  →  wrangler pages deploy dist-sync（提督手動）
-```
+| target | プロジェクト | 反映方法 |
+|--------|--------------|----------|
+| **core** | `sugudasu` · `sugudasu.com` | `npm run release:pages:free` → **`git push origin main`**（CF 自動ビルド **ON**） |
+| **sync** | `sugudasu-sync` · `sync.sugudasu.com` | **`npm run deploy:pages:sync`**（Automatic git deploys **OFF**） |
 
-Sync インフラ・手動デプロイ手順: `docs/notes/SYNC_INFRA_CLOUDFLARE.md` §4
+**共有:** 両方とも Cloudflare **500 builds/月**（ローカルソフト上限 **450**）。
 
-`wrangler pages deploy` は **CLOUDFLARE_API_TOKEN 前提** · Agent は **git push（コアのみ）**（提督依頼時）。
-
-## push 前ゲート（すべて exit 0）
+## deploy 前（機械ゲート）
 
 ```powershell
 cd C:\asl_dev\sugudasu
-npm run release:pages:free
+# 1. DEPLOY_LOG に target=core|sync で status: approved を追記
+# 2. ゲート + ビルド + 予算
+npm run release:pages:free    # core（push 前）
+npm run release:pages:sync    # sync（wrangler 前 · deploy:pages:sync に含む）
 ```
 
-含意: `validate:tool-naming` · `validate:ogp` · `build:pages` · 月次ビルド予算。
+`deploy:gate` 単体: `npm run deploy:gate:core` / `deploy:gate:sync`
 
-## 新規 HTML / OGP 変更時
+## push / wrangler 後
 
-- `npm run validate:ogp` — `og:image` · `twitter:image` · `meta description` 必須
-- 正本画像: `assets/og-card.png`
+DEPLOY_LOG 同一エントリを **`executed`** に更新 · smoke · `cf_deployment_id`
 
-## デプロイ後（提督または Agent 報告）
+## Supabase Sync（Free 一時停止）
 
-1. [Cloudflare Deployments](https://dash.cloudflare.com/) → Production **Success**
-2. [https://sugudasu.com/](https://sugudasu.com/) + 変更 URL を目視
+- **`docs/notes/SUPABASE_SYNC_KEEPALIVE.md`** — 7 日非活動で **Paused**（削除ではない）
+- GHA: `.github/workflows/supabase-sync-keepalive.yml`（Secrets 要）
+- 手動: `npm run keepalive:supabase-sync`
 
 ## 禁止
 
-- `dist/` を Git コミット
-- build 失敗直後の **push 連打**（Free 500 builds/月）
+- `DEPLOY_LOG` 未更新の push / `deploy:pages:sync`
+- `dist/` / `dist-sync/` を Git コミット
+- build 失敗直後の **push / wrangler 連打**
+- Sync を **git push だけ**で本番反映（自動デプロイ OFF）
 - ASL の `deploy:vercel` 手順の流用

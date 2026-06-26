@@ -38,6 +38,16 @@ function writeLedger(data) {
   fs.writeFileSync(LEDGER_PATH, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
+function parseProjectArg() {
+  const arg = process.argv.find((a) => a.startsWith('--project='));
+  const project = arg?.split('=')[1]?.trim();
+  if (project && project !== 'core' && project !== 'sync') {
+    console.error(`[pages-build-budget] Unknown --project=${project} (use core|sync)`);
+    process.exit(1);
+  }
+  return project || 'core';
+}
+
 function checkOnly(data) {
   if (data.used >= data.softLimit) {
     console.error(`[pages-build-budget] FAIL: used ${data.used}/${data.softLimit} (soft cap) for ${data.month}`);
@@ -50,8 +60,13 @@ function checkOnly(data) {
   console.log(`[pages-build-budget] OK: used ${data.used}/${data.softLimit} (hard ${data.hardLimit}) for ${data.month}`);
 }
 
-function consume(data) {
-  const next = { ...data, used: data.used + 1 };
+function consume(data, project) {
+  const next = {
+    ...data,
+    used: data.used + 1,
+    lastProject: project,
+    lastAt: new Date().toISOString()
+  };
   if (next.used > next.softLimit) {
     console.error(`[pages-build-budget] BLOCK: next would be ${next.used}/${next.softLimit} (soft cap)`);
     process.exit(1);
@@ -61,16 +76,19 @@ function consume(data) {
     process.exit(1);
   }
   writeLedger(next);
-  console.log(`[pages-build-budget] CONSUMED: ${next.used}/${next.softLimit} (hard ${next.hardLimit}) for ${next.month}`);
+  console.log(
+    `[pages-build-budget] CONSUMED (${project}): ${next.used}/${next.softLimit} (hard ${next.hardLimit}) for ${next.month}`
+  );
 }
 
 const mode = process.argv[2] || 'check';
+const project = parseProjectArg();
 const ledger = readLedger();
 
 if (mode === 'check') {
   checkOnly(ledger);
 } else if (mode === 'consume') {
-  consume(ledger);
+  consume(ledger, project);
 } else if (mode === 'show') {
   console.log(JSON.stringify(ledger, null, 2));
 } else {

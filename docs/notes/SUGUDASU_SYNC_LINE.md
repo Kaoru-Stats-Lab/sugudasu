@@ -1,8 +1,8 @@
 # SUGUDASU Sync — ブランドライン SSOT
 
-**更新**: 2026-06-25（v2.1 · 同期プロトコル · 機能間非依存 · **同時端末上限価格**）  
+**更新**: 2026-06-26（v2.2 · **S1 インフラ結合完了**）  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
-**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync プレースホルダー本番配信中**（`sync.sugudasu.com` · S1 開発フェーズ）
+**ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync 本番稼働**（`sync.sugudasu.com` · S1 **インフラ Done** · **製品 E2E 未完了**）
 
 > **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回ツール **T13-S 進行 Sync** · エンジン共有は `TIMELINE_TOOL_SPEC.md`。
 
@@ -54,7 +54,8 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 |------|--------|
 | コア無料アプリ | `https://sugudasu.com/timeline` |
 | Sync LP（販売ページ） | `https://sync.sugudasu.com/` |
-| Sync 実作業アプリ | `https://sync.sugudasu.com/timeline` |
+| Sync 実作業アプリ | `https://sync.sugudasu.com/timeline/app/`（**本番 S1 UI · 2026-06-26**） |
+| Sync 実作業（レガシー/リダイレクト） | `https://sync.sugudasu.com/timeline` |
 | Sync 共有URL（現場） | `https://sync.sugudasu.com/e/{event_public_id}` |
 
 **運用:** 課金流入は LP に着地させ、LP からログイン/開始へ遷移。`/timeline` を直接広告着地に使わない。共有リンクは `/e/{event_public_id}` を固定し、IA変更で壊さない。
@@ -355,7 +356,7 @@ localRevision < serverRevision のとき:
 
 ```
 Phase 0  [今]     コア timeline MVP — 1人進行もここで完結
-Phase S1          登録 · NO広告 · ルーム · クラウド保存（同期なしでも可）
+Phase S1          登録 · NO広告 · ルーム · クラウド保存 — **インフラ結合 2026-06-26 Done** · E2E 受け入れ残
 Phase S2          共有の必須コア — Push/Pull · 「新しい版があります」· 閲覧 URL
 Phase S2+         任意 — RBAC · QR · コア持ち込み · βダッシュボード（順不同）
 Phase S3+         任意 — Stripe · 履歴一覧 · アーカイブ
@@ -365,7 +366,7 @@ Phase S4+         任意 — Webhook · 組織 WS
 | Phase | 出荷物 | 必須/任意 | 成功指標（案） |
 |-------|--------|-----------|----------------|
 | **0** | `/timeline` コア | 必須 | 1人進行が完結 |
-| **S1** | Sync α | 必須（Sync 立ち上げ） | 登録→保存→再開 |
+| **S1** | Sync α | 必須（Sync 立ち上げ） | 登録→保存→再開（**インフラ結合済 · E2E 未**） |
 | **S2** | **同期プロトコル** §3-3 | **必須（共有の芯）** | 新版バナー · 手動反映で時刻一致 |
 | **S2+** | RBAC · QR · βダッシュボード | 任意 | 利用状況を可視化して改善判断 |
 | **S3+** | 課金 · 履歴 · **LP** | 任意（ただし課金公開時は LP 必須） | 有料1件 |
@@ -408,6 +409,9 @@ Phase S4+         任意 — Webhook · 組織 WS
 | `docs/notes/SYNC_CAPACITY_AND_PRICING_POLICY.md` | 同時端末上限 · 価格 · フロント性能予算 |
 | `docs/notes/SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md` | Event ID 衝突防止 · 2種ダッシュボード |
 | `docs/notes/SYNC_META_PLATFORM_GUARDRAILS.md` | Sync系共通のメタ基盤・死角・優先検証軸 |
+| `docs/notes/SYNC_ENV_KEYS.md` | **環境変数 · Supabase セットアップ完了表** |
+| `docs/notes/SYNC_INFRA_CLOUDFLARE.md` | CF Pages · 手動デプロイ |
+| `docs/notes/SYNC_S1_ARCHITECTURE.md` | S1 技術 · 受け入れ（インフラ vs E2E） |
 | `docs/notes/SYNC_IMPLEMENTATION_TASKS.md` | S1.5→S2 実装タスク（着手順） |
 | `docs/notes/SYNC_RETENTION_POLICY.md` | 保持期限 · 削除 |
 | `docs/notes/sync-db-architecture-gemini-RESULT.md` | Gemini 調査原文 |

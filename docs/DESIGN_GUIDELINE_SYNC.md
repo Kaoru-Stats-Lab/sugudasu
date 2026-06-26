@@ -3,7 +3,7 @@
 **対象**: `sync.sugudasu.com` · `tools/sync-*.html` · Sync タイムラインアプリ  
 **親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)（コア無料ツール）  
 **ブランド SSOT**: [`notes/SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md)  
-**更新**: 2026-06-25（§0.1–§0.3 ユーザー印象 · 認知UX · Gemini 監査統合）  
+**更新**: 2026-06-26（S1 インフラ結合完了 · UI は本ファイル · env/DB は [`notes/SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md)）  
 **由来**: rakumo カレンダー等の UI を **参考** にした翻訳案（Gemini 監査 + 人間レビュー）。rakumo のコピー・色の丸パクリは禁止。
 
 ---

@@ -1,8 +1,10 @@
 # SUGUDASU Sync — Phase S1 技術アーキテクチャ
 
-**更新:** 2026-06-25  
+**更新:** 2026-06-26  
 **フェーズ:** S1（Auth · ルーム · クラウド保存）· 同期プロトコルは **S2**  
-**製品 SSOT:** [`SUGUDASU_SYNC_LINE.md`](SUGUDASU_SYNC_LINE.md) · **DB SSOT:** [`SYNC_DB_ARCHITECTURE.md`](SYNC_DB_ARCHITECTURE.md) · インフラ: [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
+**インフラ結合:** **2026-06-26 完了**（Supabase · CF env · 本番ログイン UI）  
+**製品受け入れ:** **未完了**（§5 — マジックリンク E2E · ルーム保存）  
+**製品 SSOT:** [`SUGUDASU_SYNC_LINE.md`](SUGUDASU_SYNC_LINE.md) · **DB SSOT:** [`SYNC_DB_ARCHITECTURE.md`](SYNC_DB_ARCHITECTURE.md) · **env:** [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) · **CF:** [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
 
 ---
 
@@ -126,12 +128,21 @@
 
 ## 5. 受け入れ基準（S1）
 
+### 5-1. インフラ・結合（2026-06-26 完了）
+
+- [x] Sync 専用 Supabase · ASL とのプロジェクト分離
+- [x] RLS 有効 · マイグレーション 4 本適用
+- [x] `sync-public-config.json` に anon のみ（service_role 非露出）
+- [x] 本番 `sync.sugudasu.com/timeline/app/` — 環境変数エラーなし · マジックリンク送信フォーム表示
+- [x] `/api/health` 疎通可能
+
+### 5-2. 製品 E2E（未完了）
+
 - [ ] 未ログイン → メール入力 → マジックリンク → `sync.sugudasu.com` に戻ってセッション成立
 - [ ] ルーム新規作成 → タイトル表示
 - [ ] 進行表 JSON をクラウド保存 → 別タブ/再読込で同じ内容を復元
 - [ ] **ルーム削除** → クラウドから消え閲覧不可 · `retain_until` 表示
 - [ ] `sugudasu.com` に Auth Cookie が漏れない（Supabase storage は sync ドメインのみ）
-- [ ] `/api/health` が 200
 
 ---
 

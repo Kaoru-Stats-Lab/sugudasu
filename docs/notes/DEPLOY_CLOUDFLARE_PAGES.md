@@ -1,11 +1,12 @@
 # SUGUDASU 本番デプロイ手順（Cloudflare Pages · Agent SSOT）
 
-**更新:** 2026-06-22  
+**更新:** 2026-06-26  
 **リポジトリ:** `C:\asl_dev\sugudasu` · GitHub [`Kaoru-Stats-Lab/sugudasu`](https://github.com/Kaoru-Stats-Lab/sugudasu)  
 **本番 URL:** [https://sugudasu.com/](https://sugudasu.com/)  
 **暫定 URL:** [https://sugudasu.pages.dev/](https://sugudasu.pages.dev/)
 
-> **asl-dashboard（Vercel）とは別物。** SUGUDASU を Vercel に載せない · ASL の `deploy:vercel` 手順を流用しない。
+> **asl-dashboard（Vercel）とは別物。** SUGUDASU を Vercel に載せない · ASL の `deploy:vercel` 手順を流用しない。  
+> **デプロイ台帳:** [`DEPLOY_LOG.md`](DEPLOY_LOG.md)（asl-dashboard の同名ファイルとは **別 SSOT**）
 
 ---
 
@@ -59,15 +60,16 @@
 
 ## 2. Agent 必須チェックリスト（デプロイ前）
 
-**すべて YES でなければ push しない。**
+**すべて YES でなければ push / wrangler しない。**
 
 | # | 確認 | コマンド / 根拠 |
 |---|------|-----------------|
+| P0 | **`DEPLOY_LOG.md`** に `target` 一致の **`approved`** エントリ | [`DEPLOY_LOG.md`](DEPLOY_LOG.md) |
 | D1 | 作業ディレクトリが **`sugudasu`**（`asl-dashboard` ではない） | `cd C:\asl_dev\sugudasu` |
 | D2 | 新規 HTML に **OGP 必須タグ**がある | `npm run validate:ogp` |
 | D3 | 命名 3 層が registry と一致 | `npm run validate:tool-naming` |
 | D4 | **本番相当ビルド成功** | `npm run build:pages` → exit 0 |
-| D5 | **月次ビルド予算 OK**（提督端末） | `npm run release:pages:free` |
+| D5 | **月次ビルド予算 OK** + **deploy:gate**（提督端末） | `npm run release:pages:free`（= gate + build + budget consume） |
 | D6 | `data/changelog.json` にユーザー向け変更を追記（該当時） | 手動 |
 | D7 | **コミット → push**（Agent は提督依頼時のみ commit） | `git push origin main` |
 | D8 | Cloudflare ダッシュボードで **Production deploy Success** | 下記 §5 |
@@ -195,6 +197,8 @@ build:pages OK
 | 用途 | パス / URL |
 |------|------------|
 | **本ファイル（Agent デプロイ正本）** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
+| **デプロイ台帳（必須）** | `docs/notes/DEPLOY_LOG.md` |
+| **Supabase 一時停止回避** | `docs/notes/SUPABASE_SYNC_KEEPALIVE.md` |
 | **Sync インフラ** | `docs/notes/SYNC_INFRA_CLOUDFLARE.md` |
 | **Cursor + Cloudflare** | `docs/notes/CURSOR_CLOUDFLARE_AGENT_SETUP.md` |
 | 運用コマンド早見 | `docs/WORKFLOW.md` |
@@ -216,5 +220,6 @@ build:pages OK
 
 | 日付 | 内容 |
 |------|------|
+| 2026-06-26 | DEPLOY_LOG · deploy:gate · Supabase keepalive GHA · core/sync ゲート明文化 |
 | 2026-06-23 | Sync プロジェクト `sugudasu-sync` · `build:pages:sync` · `dist-sync` 節を追加 |
 | 2026-06-22 | 初版（Agent 必須チェックリスト · CF 公式 URL · トラブル表） |

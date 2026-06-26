@@ -1,12 +1,34 @@
 # SUGUDASU Sync — 実装タスク（S1.5→S2）
 
-**更新:** 2026-06-25  
+**更新:** 2026-06-26  
 **目的:** 既存SSOTを実装順に分解し、着手迷いをなくす  
 **関連:** `SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md` · `SYNC_URL_INFORMATION_ARCHITECTURE.md` · `SYNC_CAPACITY_AND_PRICING_POLICY.md` · `SYNC_META_PLATFORM_GUARDRAILS.md`
 
+### ドキュメント分担（MECE）
+
+| ドキュメント | スコープ |
+|--------------|----------|
+| [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) | 環境変数 · Supabase Auth URL · セットアップ完了表 |
+| [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md) | CF Pages · 手動デプロイ · DNS |
+| [`SYNC_S1_ARCHITECTURE.md`](SYNC_S1_ARCHITECTURE.md) | S1 技術境界 · 受け入れ（インフラ vs E2E） |
+| **本ファイル** | **これから着手する実装タスク**（S1.5 以降） |
+| [`BACKLOG.md`](../BACKLOG.md) §5-4 | マイルストーン台帳 |
+
 ---
 
-## 0. 実装優先順（結論）
+## 0. S1 インフラ・結合（完了 2026-06-26）
+
+詳細は上記 SSOT 参照。ここでは **Done のみ** 記録する。
+
+- [x] Sync 専用 Supabase プロジェクト（ASL 非混線）
+- [x] マイグレーション 4 本 · RLS
+- [x] Auth URL · マジックリンク
+- [x] CF `sugudasu-sync` 環境変数（anon / service_role 分離）
+- [x] 本番 `/timeline/app/` UI 結合（env エラー解消 · ログインフォーム）
+
+---
+
+## 0.5. 実装優先順（結論 · S1.5 以降）
 
 1. **A: セキュリティ境界**（公開ID・共有URL・RLS）
 2. **C: インフラ/コスト境界**（接続cap・Presence・DB非テレメトリ）

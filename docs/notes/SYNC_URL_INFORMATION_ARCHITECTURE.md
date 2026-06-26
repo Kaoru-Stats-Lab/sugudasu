@@ -1,6 +1,6 @@
 # SUGUDASU Sync — URL / IA / SEO SSOT
 
-**更新:** 2026-06-25（Gemini review 反映）  
+**更新:** 2026-06-26（`/timeline/app` 本番 S1 UI）  
 **対象:** `sync.sugudasu.com` の全 Sync 系プロダクト  
 **関連:** `SUGUDASU_SYNC_LINE.md` · `SYNC_CAPACITY_AND_PRICING_POLICY.md` · `SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md`
 
@@ -41,7 +41,8 @@ Sync 系は「有料で導入する理由」を説明しないと購入に至ら
 
 - コア無料アプリ: `https://sugudasu.com/timeline`
 - Sync LP（ハブ）: `https://sync.sugudasu.com/`
-- Sync 実作業アプリ（現行）: `https://sync.sugudasu.com/timeline`
+- Sync 実作業アプリ（**本番 S1 · 2026-06-26**）: `https://sync.sugudasu.com/timeline/app`
+- Sync 実作業（入口/リダイレクト）: `https://sync.sugudasu.com/timeline`
 
 ---
 
@@ -61,7 +62,8 @@ Sync 系は「有料で導入する理由」を説明しないと購入に至ら
 
 | 役割 | URL |
 |------|-----|
-| 現行 App | `https://sync.sugudasu.com/timeline` |
+| 現行 App（本番） | `https://sync.sugudasu.com/timeline/app` |
+| 現行 App（入口） | `https://sync.sugudasu.com/timeline` |
 | 目標 LP | `https://sync.sugudasu.com/timeline` |
 | 目標 App | `https://sync.sugudasu.com/timeline/app` |
 | 共有URL（新設） | `https://sync.sugudasu.com/e/{event_public_id}` |
@@ -127,7 +129,8 @@ Sync 系は「有料で導入する理由」を説明しないと購入に至ら
 ## 7. 受け入れ基準
 
 - [ ] `sync.sugudasu.com/` が Sync ハブLPとして機能する
-- [ ] 各 Sync 製品に LP と App の2層URLがある
+- [x] Timeline App URL が本番で到達可能（`/timeline/app` · S1 ログイン UI · 2026-06-26）
+- [ ] 各 Sync 製品に LP と App の2層URLがある（timeline 以外）
 - [ ] App URL は noindex,nofollow（X-Robots-Tag）
 - [ ] `/e/{event_public_id}` が共有専用URLとして動作し、Appへ 302 される
 - [ ] sitemap が LP中心で構成される

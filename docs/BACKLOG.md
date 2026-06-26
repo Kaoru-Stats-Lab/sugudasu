@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-25（§5-4 Sync SEO キーワードクラスター確定 · Planner Pending）  
+更新: 2026-06-26（§5-4 Sync Supabase 結合完了）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -733,16 +733,17 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] AdSense **サイト承認**待ち（メール通知）
 - [ ] 収益導線のABテスト設計（広告位置・回遊CTA）
 
-### 5-4. Sync ライン — `sugudasu-sync` · `sync.sugudasu.com`（2026-06-23 完了）
+### 5-4. Sync ライン — `sugudasu-sync` · `sync.sugudasu.com`（インフラ 2026-06-23 · Supabase 2026-06-26）
 
-**SSOT:** [`docs/notes/SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md) · **提督残タスク:** [`TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md)
+**SSOT:** [`docs/notes/SYNC_INFRA_CLOUDFLARE.md`](notes/SYNC_INFRA_CLOUDFLARE.md) · **env:** [`SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md) · **提督残タスク:** [`TAISHO_PENDING_TASKS.md`](notes/TAISHO_PENDING_TASKS.md)
 
 #### インフラ Done
 
 - [x] Cloudflare Pages プロジェクト `sugudasu-sync` 作成（Git: `Kaoru-Stats-Lab/sugudasu` · `main`）
 - [x] カスタムドメイン `sync.sugudasu.com` — SSL Enabled / Active
 - [x] **Automatic git deploys: Disabled**（500 回/月の二重ビルド防止）
-- [x] コード: `npm run build:pages:sync` → `dist-sync/` · `tools/sync-*.html` プレースホルダー
+- [x] コード: `npm run build:pages:sync` → `dist-sync/` · `tools/sync-*.html`
+- [x] **Supabase 専用プロジェクト** · マイグレーション · CF 環境変数 · 本番 UI 結合（2026-06-26 · [`SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md)）
 
 #### デプロイ運用（S1 プレースホルダー期）
 
@@ -755,11 +756,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [x] S1 骨格 — Supabase スキーマ · Auth/ルーム JS · `/api/health` · Stripe webhook スタブ（`SYNC_S1_ARCHITECTURE.md`）
 - [x] β運用窓口を開設（[不具合・改善フォーム](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor) / [回答管理シート](https://docs.google.com/spreadsheets/d/1LNjUDMiQW5klQlmrtRjDx_AHtf-EQRKYVnOZAJedl64/edit?usp=sharing)）
 - [x] 回答管理シート `status` 運用定義を確定（`new` / `triaged` / `in_progress` / `resolved`）
-- [ ] Supabase プロジェクト作成 · マイグレーション · CF 環境変数（`SYNC_ENV_KEYS.md`）
+- [x] Supabase プロジェクト作成 · マイグレーション · CF 環境変数 · 本番ログイン UI（2026-06-26）
 - [x] リーガル文書を調整し、Supabase / Cloudflare 提供条件との衝突リスクを低減（[`docs/legal/terms-of-use.md`](legal/terms-of-use.md) · [`docs/legal/privacy-policy.md`](legal/privacy-policy.md) · [`docs/legal/data-lifecycle-policy.md`](legal/data-lifecycle-policy.md) · [`docs/legal/dpa-lite.md`](legal/dpa-lite.md) · 復旧保証断定の緩和 / β可用性条項の追加）
 - [ ] **`sync.sugudasu.com/statements`** — Sync 専用約束ページ（[`STATEMENTS_SYNC_PAGE_DRAFT.md`](notes/STATEMENTS_SYNC_PAGE_DRAFT.md) · コア `statements.html` とは別）
-- [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番）
-- [ ] Auth · ルーム · クラウド保存（受け入れ完了で Done）
+- [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番 E2E）
+- [ ] Auth · ルーム · クラウド保存（**E2E 受け入れ完了**で Done）
 - [ ] `timeline-sync-app.js` フルエディタ · Push/Pull · 新版バナー（S2）
 - [ ] **S2 フィードバック収集 + Dev Ops 表示**（`SYNC_POST_EVENT_REVIEW.md` · **出荷ゲート**）
 - [ ] Build watch paths 導入 → Sync 自動デプロイ再開検討（`SYNC_INFRA` §5）

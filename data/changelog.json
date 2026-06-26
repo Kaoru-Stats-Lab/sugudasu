@@ -1,6 +1,20 @@
 {
-  "updatedAt": "2026-06-25",
+  "updatedAt": "2026-06-26",
   "entries": [
+    {
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Pages Free ガードレール · DEPLOY_LOG · Supabase keepalive",
+      "body": "core/sync 別デプロイを DEPLOY_LOG + deploy:gate で機械化。release:pages:free / deploy:pages:sync にゲート統合。GHA 週次 keepalive で Free Supabase 一時停止を回避。",
+      "tools": ["DEPLOY_LOG.md", "check-deploy-gate.mjs", "SUPABASE_SYNC_KEEPALIVE.md"]
+    },
+    {
+      "date": "2026-06-26",
+      "type": "feat",
+      "title": "Sync S1 — Supabase 専用インフラ結合完了",
+      "body": "Sync 専用 Supabase（ASL 分離）· マイグレーション 4 本 · CF 環境変数 · anon のみ sync-public-config.json。本番 sync.sugudasu.com/timeline/app/ でログインフォーム表示。製品 E2E（ルーム保存）は未完了。",
+      "tools": ["sync-timeline-s1-app.js", "sync-auth.js", "SYNC_ENV_KEYS.md"]
+    },
     {
       "date": "2026-06-25",
       "type": "fix",

@@ -1,6 +1,6 @@
 # 提督残タスク — 呼び出し用 SSOT
 
-**更新:** 2026-06-25  
+**更新:** 2026-06-26  
 **用途:** 提督が「次何する？」と聞いたとき · Agent が **最初に開く** チェックリスト。  
 **対象リポ:** `C:\asl_dev\sugudasu`（**asl-dashboard には Cloudflare MCP 入れない**）
 
@@ -22,43 +22,50 @@
 
 ---
 
-### B. Sync S1 — Auth を動かす（Supabase）
+### B. Sync S1 — Supabase インフラ（**完了 2026-06-26**）
 
-| # | 手順 |
-|---|------|
-| B1 | **Supabase** プロジェクト作成 |
-| B2 | SQL マイグレーション実行 → `supabase/migrations/20260625_sync_s1.sql` |
-| B3 | **Auth** → URL Configuration · Site URL `https://sync.sugudasu.com` · Redirect `https://sync.sugudasu.com/**` · `http://localhost:8081/**`（プレビュー） |
-| B4 | **Cloudflare** `sugudasu-sync` → 環境変数 `SYNC_SUPABASE_URL` · `SYNC_SUPABASE_ANON_KEY` |
-| B5 | ローカル `.env.sync.example` → `.env.sync.local` に同値 → `npm run deploy:pages:sync` |
+| # | 手順 | 状態 |
+|---|------|------|
+| B1 | **Supabase** プロジェクト作成（Sync 専用 · ASL 分離） | [x] |
+| B2 | SQL マイグレーション 4 本 | [x] |
+| B3 | **Auth** URL Configuration · マジックリンク | [x] |
+| B4 | **Cloudflare** `sugudasu-sync` 環境変数 | [x] |
+| B5 | 本番 `/timeline/app/` UI 結合 | [x] |
 
-手順正本: [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) · 設計: [`SYNC_S1_ARCHITECTURE.md`](SYNC_S1_ARCHITECTURE.md)
+正本: [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) · [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
 
-**受け入れ:** `sync.sugudasu.com/timeline` でマジックリンクログイン → ルーム作成 → クラウド保存 → 再読込で復元。
+**次の受け入れ（未完了）:** マジックリンク受信 → ログイン → ルーム作成 → クラウド保存 → 再読込復元  
+→ [`SYNC_S1_ARCHITECTURE.md`](SYNC_S1_ARCHITECTURE.md) §5-2
 
 ---
 
-### C. 進行メモ（2026-06-25）
+### C. 進行メモ
 
-- [ ] 提督 Terminal で deploy 進行中（`asl-dashboard` / `sugudasu` — セッション要確認）
-- [x] Sync プレースホルダー + S1 骨格 · Wrangler 初回デプロイ済み
-- [ ] Supabase 未設定のため本番 `/timeline` は「バックエンド設定が必要」表示
+- [x] Sync CF インフラ · Wrangler 初回デプロイ（2026-06-25）
+- [x] Supabase 結合 · 本番ログインフォーム（2026-06-26）
+- [ ] **GitHub Secrets** — `SYNC_SUPABASE_URL` · `SYNC_SUPABASE_ANON_KEY`（keepalive GHA · [`SUPABASE_SYNC_KEEPALIVE.md`](SUPABASE_SYNC_KEEPALIVE.md)）
+- [ ] S1 製品 E2E 受け入れ（上記）
+- [ ] S1.5 `event_public_id`（[`SYNC_IMPLEMENTATION_TASKS.md`](SYNC_IMPLEMENTATION_TASKS.md) §1）
 
 ---
 
 ## Agent が提督に聞かれたとき
 
 1. **本ファイルを開く**（`docs/notes/TAISHO_PENDING_TASKS.md`）
-2. 未チェックの **A*** または **B*** をそのまま提示
-3. 提督完了報告後、該当行を `[x]` に更新（または日付追記）
+2. 未チェックの **A*** または **C**（E2E / S1.5）を提示
+3. 提督完了報告後、該当 SSOT を更新（本ファイル · `BACKLOG` §5-4）
 
 ---
 
-## 関連 SSOT
+## 関連 SSOT（MECE）
 
 | ファイル | 内容 |
 |----------|------|
+| [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) | 環境変数 · Supabase セットアップ完了 |
 | [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md) | Pages · 手動デプロイ |
-| [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) | 環境変数一覧 |
-| [`BACKLOG.md`](../BACKLOG.md) §5-4 | Sync インフラ · S1 バックログ |
-| [`DEPLOY_CLOUDFLARE_PAGES.md`](DEPLOY_CLOUDFLARE_PAGES.md) | コア deploy |
+| [`SYNC_S1_ARCHITECTURE.md`](SYNC_S1_ARCHITECTURE.md) | S1 受け入れ（インフラ vs E2E） |
+| [`SYNC_IMPLEMENTATION_TASKS.md`](SYNC_IMPLEMENTATION_TASKS.md) | S1.5 以降の実装タスク |
+| [`BACKLOG.md`](../BACKLOG.md) §5-4 | マイルストーン台帳 |
+| [`DEPLOY_LOG.md`](DEPLOY_LOG.md) | デプロイ台帳（core / sync） |
+| [`DEPLOY_CLOUDFLARE_PAGES.md`](DEPLOY_CLOUDFLARE_PAGES.md) | コア deploy 手順 |
+| [`SUPABASE_SYNC_KEEPALIVE.md`](SUPABASE_SYNC_KEEPALIVE.md) | Free 一時停止回避 |
