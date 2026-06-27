@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="研修・イベントの班分けをブラウザ内で。Excel名簿・属性条件・TSV/Slackコピー。PC→スマホはセッションJSONをGoogle Keep等の同期メモで。非送信。">
-    <title>研修・グループ分け（非送信 · TSV/Slack出力） | SUGUDASU</title>
+    <meta name="description" content="直前のドタキャンで班バランスが崩れない。名前タップ除外で同一シード再構成。Excel名簿・属性条件・Slack/TSV即コピー。名簿非送信。">
+    <title>直前欠席に強い班分け（非送信 · Slack/TSV） | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="研修・グループ分け — 名簿非送信 · Copy-first">
-    <meta property="og:description" content="Excel名簿で公平に班分け。属性条件対応。欠席時は貼り直して再構成。TSV・Slack即コピー。名簿非送信。">
+    <meta property="og:title" content="直前欠席に強い班分け — 名簿非送信">
+    <meta property="og:description" content="直前ドタキャンで班バランス崩壊を、名前タップ除外と同一シード再構成でここで終わらせる。Slack/TSV即コピー。">
     <meta property="og:url" content="https://sugudasu.com/group-split">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="研修の班分け — Excel/Slackに貼れる非送信ツール">
-    <meta name="twitter:description" content="班分けを非送信で。欠席が出ても名簿貼り直し→再実行。TSV/Slackに即出力。">
+    <meta name="twitter:title" content="直前欠席に強い班分け — Excel/Slack即コピー">
+    <meta name="twitter:description" content="名前タップで欠席除外→同一シード再構成。名簿非送信 · TSV/Slack即出力。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やブレイクアウトで班分けが必要なのはどんなとき？","acceptedAnswer":{"@type":"Answer","text":"新入社員研修のグループワーク、異動者研修、ハッカソンのチーム編成、社内ワークショップの卓割りなど、参加者全員をいくつかの組に分け、事前または当日に共有したい場面です。SUGUDASU の班分けはその場の演出より、幹事の事務作業（割当 · 共有 · 説明責任）を助ける位置づけです。"}},{"@type":"Question","name":"ランダムに分けると公平になりますか？","acceptedAnswer":{"@type":"Answer","text":"完全なランダムは恣意的な偏りを避ける手段として有効ですが、所属の固まりや特定ペアの回避など、現場のルールも必要になります。公平性は誰が決めたか説明できることと、ルールを守った結果を記録できることも含みます。本ツールはシード値と名簿指紋で再現可能にします。"}},{"@type":"Question","name":"Excel の RAND() や手作業との違いは？","acceptedAnswer":{"@type":"Answer","text":"RAND() はセル再計算で班構成が変わりうるほか、制約の実装が手間です。手作業は小規模なら可能ですが、再現説明と共有用テキストの作成に時間がかかります。班分けツールは1回決めた結果を TSV/Slack 用にそのまま出すことに特化します。"}},{"@type":"Question","name":"投影用ルーレットと事務向け班分けの違いは？","acceptedAnswer":{"@type":"Answer","text":"教室やイベント会場向けのルーレット演出は、画面に映して盛り上げる用途向けです。SUGUDASU の班分けは、名簿を非送信で処理し、Excel TSV や Slack 用テキストをコピーして共有する幹事の2次利用向けです。目的が異なります。"}},{"@type":"Question","name":"所属や性別など属性を考慮した班分けは？","acceptedAnswer":{"@type":"Answer","text":"同じ部署が固まらない、各組に役員を1名以上などは、氏名だけでなく所属 · 性別 · 役職などの列を使った条件になります。SUGUDASU では Excel 名簿の属性列（最大3）で分散 · 各組必須を指定できます。"}},{"@type":"Question","name":"当日欠席が出たときはどうする？","acceptedAnswer":{"@type":"Answer","text":"欠席者を名簿から除いて貼り直し、再実行または再シャッフルするのが確実です。シードを変えずに名簿だけ更新すれば、残りの人で新しい班構成をすぐ共有できます。"}},{"@type":"Question","name":"名簿は外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。設計思想と但し書きは SUGUDASU の約束（statements）ページを参照。"}},{"@type":"Question","name":"使い方の流れは？（Step ①〜④）","acceptedAnswer":{"@type":"Answer","text":"① Excel 名簿を貼り付け → ② 複数列なら属性条件 → ③ 必要なら名前ルール → ④ 人数または組数を指定して実行。結果は TSV · Slack · 告知文などを1クリックコピーできます。"}},{"@type":"Question","name":"属性条件（②）と名前ルール（③）の違いは？","acceptedAnswer":{"@type":"Answer","text":"② は列ベース（所属の分散 · 各組に役員1名など）。③ は氏名ベースの例外（同組 · 別組 · 組番号固定）。多くの研修班分けは ② だけで足り、③ は少数の例外用です。"}},{"@type":"Question","name":"同じ班構成を再現できますか？","acceptedAnswer":{"@type":"Answer","text":"同じ名簿 · 同じ条件 · 同じシード値なら同じ班構成になります。seed と名簿指紋を記録してください。"}},{"@type":"Question","name":"人数が割り切れないときは？","acceptedAnswer":{"@type":"Answer","text":"制約なしの均等分割では、各グループの人数差は最大1名です。固定班や属性条件がある場合は、目標定員からずれることがあります。"}},{"@type":"Question","name":"目標定員より多いグループになりますか？","acceptedAnswer":{"@type":"Answer","text":"固定班を分割しない · メンター配置など、制約を満たすために目標定員を超える組が出る場合があります。超過組には理由を表示します。"}},{"@type":"Question","name":"Excel や Slack にそのまま貼れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Excel 用 TSV がデフォルトです。Slack/Teams · LINE · 告知 · JSON もコピーできます。名簿上限は250名です。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やブレイクアウトで班分けが必要なのはどんなとき？","acceptedAnswer":{"@type":"Answer","text":"新入社員研修のグループワーク、ハッカソンのチーム編成など、参加者を組に分け共有したい場面。幹事の事務作業（割当·共有·説明責任）向け。"}},{"@type":"Question","name":"当日欠席が出たときはどうする？","acceptedAnswer":{"@type":"Answer","text":"名前タップで除外。同一シードで属性条件に基づき自動再構成。JSONコピーでPC→スマホ復元可。"}},{"@type":"Question","name":"入力した参加者名簿はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。名簿はサーバーに送信されず、ブラウザ内だけで処理されます。"}},{"@type":"Question","name":"ブラウザを閉じたらデータはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"全部消える。復元は事前のJSONコピーを同期メモ経由で貼り付け。"}},{"@type":"Question","name":"班分け結果の公平性・再現性は？","acceptedAnswer":{"@type":"Answer","text":"同じ名簿·条件·シードなら同一班構成を再現。偶然に左右されない。"}},{"@type":"Question","name":"欠席除外時に幹事が都合よく操作できる？","acceptedAnswer":{"@type":"Answer","text":"タップ除外後は同一シードで自動再構成。手作業パズル不要。"}},{"@type":"Question","name":"使い方の流れは？","acceptedAnswer":{"@type":"Answer","text":"名簿貼付→属性条件→名前ルール（任意）→実行→TSV/Slack/JSONコピー。"}},{"@type":"Question","name":"Excel や Slack にそのまま貼れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。TSV/Slack/告知/JSONを1クリックコピー。名簿上限250名。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 班分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split"></div>
@@ -29,8 +29,9 @@
     <header class="max-w-3xl space-y-2">
         <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">研修 · ブレイクアウト · 名簿非送信</p>
         <p class="text-sm text-slate-600 sg-tool-lead">
-            Excel 名簿（氏名＋所属・性別など）を貼って<strong>公平に班分け</strong>。属性条件にも対応し、<span class="whitespace-nowrap">結果は Excel 用 TSV や Slack 用テキストを<strong>1クリックコピー</strong>。</span>
-            当日の進行時刻は <a href="timeline.html" class="text-violet-800 font-semibold hover:underline">イベント進行</a> で連動更新できます。
+            <strong class="font-bold text-slate-800">直前のドタキャンで班のバランスが崩れる</strong> — 属性バランスが崩れた…またExcelで最初から組み直しか、を<strong class="font-bold text-slate-700">名前タップ除外 · 同一シード再構成 · Slack/TSVコピー</strong>でここで終わらせます。
+            Excel 名簿（氏名＋所属・性別など · 最大250名）を貼って<strong>公平に班分け</strong>。属性条件対応 · <span class="whitespace-nowrap">結果は TSV や Slack 用テキストを<strong>1クリックコピー</strong>。</span>
+            名簿前処理は <a href="normalize.html" class="text-violet-800 font-semibold hover:underline">正規化</a> · 当日の進行は <a href="timeline.html" class="text-violet-800 font-semibold hover:underline">イベント進行</a>。
             <span class="whitespace-nowrap">教室投影の<strong>ルーレット演出</strong>向けではなく、</span><span class="whitespace-nowrap">研修・人事の<strong>事務作業 · 2次利用</strong>（共有 · 記録 · 再現）向けです。</span>
         </p>
     </header>
@@ -231,10 +232,28 @@
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
 
+<section class="no-print max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-2">
+    <div class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900">3ステップで班分け完了</h2>
+        <ol class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-700">
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">1.</span> 名簿貼り付け＆条件設定</li>
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">2.</span> 班分けを一瞬実行</li>
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">3.</span> 結果をすぐコピー</li>
+        </ol>
+        <p class="text-[10px] text-slate-500 flex flex-wrap gap-x-3 gap-y-1">
+            <span>サーバー非送信（ブラウザ内処理）</span>
+            <span aria-hidden="true">·</span>
+            <span>履歴保持なし（閉じると即消滅）</span>
+            <span aria-hidden="true">·</span>
+            <span>シード完全再現（同一条件で同一結果）</span>
+        </p>
+    </div>
+</section>
+
 <section class="no-print sg-faq-section">
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">班分け · グループ分けのよくある質問</h2>
-        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">SUGUDASU が想定する「班分け」は、研修 · ブレイクアウトの幹事が名簿を<strong>公平に分割</strong>し、<strong>Slack · Excel で共有 · 記録</strong>することです。上段は幹事向けの基本、下段は本ページのツール操作です。</p>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">使い方のあとに、データの扱いと信頼に関する質問を載せています。上段は幹事向けの基本、下段は本ページのツール操作です。</p>
 
         <h3 class="text-xs font-bold text-violet-800 mb-2 mt-2">班分けの基本（幹事 · 人事向け）</h3>
         <div class="sg-faq-list mb-6">
@@ -271,7 +290,8 @@
             <details class="sg-faq">
                 <summary>当日欠席が出たときはどうする？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p><strong>ハッカソン想定（M02 · スマホタップ再編）:</strong></p>
+                    <p><strong>直前の欠席者は名前タップで除外して再構成。</strong> 同一シードのまま属性条件に基づいて自動で組み直されるので、手作業のパズル調整は不要です。</p>
+                    <p class="mt-2"><strong>ハッカソン想定（M02 · スマホタップ再編）:</strong></p>
                     <ol class="list-decimal list-inside mt-2 space-y-1">
                         <li><strong>事前（PC）</strong> — 実行後 <strong>JSONをコピー</strong> → <strong>Google Keep</strong> 等の同期メモに貼る。</li>
                         <li><strong>当日（スマホ）</strong> — 同期メモから JSON をコピーし、結果欄の<strong>貼り付け欄</strong>へ → <strong>読み込んで再実行</strong>。</li>
@@ -285,11 +305,28 @@
 
         <h3 class="text-xs font-bold text-slate-800 mb-2">SUGUDASU グループ分けツール</h3>
         <div class="sg-faq-list">
-            <details class="sg-faq">
-                <summary>名簿は外部に送信されますか？</summary>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4" open>
+                <summary>入力した参加者名簿は、インターネット上のサーバーに送信されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。処理はすべてブラウザ内で完結し、参加者名簿の POST は発生しません。</p>
-                    <p class="mt-2">設計思想と但し書き（広告 · 解析等）の詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASUの約束</a> をご覧ください。</p>
+                    <p><strong>いいえ。</strong>名簿はサーバーに一切送信されず、ブラウザ内だけで処理されます。詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a> · <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>班分けの途中でブラウザのページを閉じたら、データはどうなりますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>閉じるとその瞬間に<strong>全部消えます</strong>。localStorage もありません。復元したい場合は事前に<strong>JSONをコピー</strong>し、Google Keep 等の同期メモに貼り付けておいてください。別端末では貼り付け「読み込んで再実行」で復元できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>割り振られた班分けの結果に、公平性や再現性はありますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>同じ名簿 · 条件 · シード値なら、いつでも全く同じ班構成を再現できます。偶然に左右されない公平な仕組みです。監査用PDFは <a href="fair-draw.html" class="text-blue-600 hover:underline">抽選</a> 側の機能であり、本ツールとは別です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>直前の欠席者を結果から除外する際、幹事が都合よく操作できませんか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>名前をタップして除外できますが、<strong>同一シードのまま</strong>属性条件に基づいて自動で再構成されるので、手作業のパズル調整は不要です。幹事がメンバーを入れ替えて都合よく組む操作ではありません。</p>
                 </div>
             </details>
             <details class="sg-faq">

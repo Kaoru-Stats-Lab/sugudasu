@@ -3,6 +3,20 @@
   "entries": [
     {
       "date": "2026-06-26",
+      "type": "improve",
+      "title": "班分け：LP型A-D RUNBOOK文案をHTMLに反映",
+      "body": "Gemini/Grok 8ステップ（型A-D）の採用文案を反映。FV・3ステップ導線・信頼バッジ（非送信/非永続/シード再現）・FAQ4問（タップ除外・JSON復元）。meta/JSON-LD同期。",
+      "tools": ["group-split.html"]
+    },
+    {
+      "date": "2026-06-26",
+      "type": "improve",
+      "title": "割り勘：LP型A-D RUNBOOK文案をHTMLに反映",
+      "body": "Gemini/Grok 8ステップ（型A-D）の採用文案を反映。FV・3ステップ導線・信頼バッジ（非送信/非永続/LRM）・FAQ4問（グループ傾斜・裁量・2次会）。meta/JSON-LD同期。",
+      "tools": ["warikan.html"]
+    },
+    {
+      "date": "2026-06-26",
       "type": "chore",
       "title": "Pages Free ガードレール · DEPLOY_LOG · Supabase keepalive",
       "body": "core/sync 別デプロイを DEPLOY_LOG + deploy:gate で機械化。release:pages:free / deploy:pages:sync にゲート統合。GHA 週次 keepalive で Free Supabase 一時停止を回避。",

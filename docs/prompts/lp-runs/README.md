@@ -28,7 +28,7 @@
 | tool_id | 最優先の型 | Gemini | Grok |
 |---------|-----------|--------|------|
 | **warikan** | A | `warikan.gemini-type{A,B,C,D}.md` | `warikan.grok-type{A,B,C,D}.md` |
-| **group-split** | A | `group-split.gemini-type{A,B,C,D}.md` | `group-split.grok-type{A,B,C,D}.md` |
+| **group-split** | A | `group-split.gemini-type{A,B,C,D}.md` | `group-split.grok-type{A,B,C,D}.md` · **RUNBOOK:** [`group-split-RUNBOOK.md`](group-split-RUNBOOK.md) |
 
 他ツールは warikan を複製し `{tool_id}` と添付パスを差し替える。
 
