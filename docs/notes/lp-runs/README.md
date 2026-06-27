@@ -13,3 +13,7 @@
 - `group-split-typeD-grok-RESULT.md`
 
 反映後は `tools/{id}.html` と `data/changelog.json` を更新。
+
+## セッションログ
+
+- [LP_RUNBOOK_SESSION_20260626.md](LP_RUNBOOK_SESSION_20260626.md) — warikan · group-split 完了（2026-06-26）

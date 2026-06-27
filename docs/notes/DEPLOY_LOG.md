@@ -100,19 +100,61 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Sync Supabase インフラ完了のドキュメント MECE 反映 · Pages Free ガードレール · DEPLOY_LOG 初版 |
 | **change_summary** | `docs/notes/DEPLOY_LOG.md` · `scripts/check-deploy-gate.mjs` · `docs/notes/SUPABASE_SYNC_KEEPALIVE.md` · `.github/workflows/supabase-sync-keepalive.yml` · 関連 SSOT 更新 |
-| **local_build** | `skip`（ドキュメント・スクリプトのみ · push 前に `release:pages:free` 要） |
-| **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後に記入） |
-| **gates** | P1–P7 予定 · **push は提督判断**（本エントリ approved のまま待機可） |
+| **local_build** | `skip`（ドキュメント・スクリプト中心） |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | （CF Dashboard · git push 自動ビルド） |
+| **gates** | P1–P7 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （未実行 · push 待ち） |
-| **smoke** | （未実行） |
+| **cf_deployment_id** | `7858bf8`（git push · CF 自動ビルド） |
+| **smoke** | （LP deploy と連続 · 004 で代表 smoke） |
+
+---
+
+## DEPLOY-20260626-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `core` |
+| **reason** | LP型A-D RUNBOOK 文案反映 — **warikan** · **group-split** |
+| **change_summary** | `tools/warikan.html` · `tools/group-split.html` · `data/changelog.json` · `docs/prompts/lp-runs/*-RUNBOOK.md` · `docs/notes/lp-runs/*-RESULT.md`（各8本） |
+| **local_build** | `skip`（静的 HTML · push トリガー） |
+| **deploy_count_today** | 3（core · 同一日） |
+| **pages_build_budget_after** | （CF Dashboard 確認推奨） |
+| **gates** | P1–P7 · 提督依頼で push 実行 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `b0bb674`（`33156bd..b0bb674` · git push origin main） |
+| **smoke** | `sugudasu.com/warikan.html` · `sugudasu.com/group-split` — FV · 3ステップ · 信頼FAQ4問（提督確認待ち） |
+
+**RUNBOOK 詳細:** [`docs/notes/lp-runs/LP_RUNBOOK_SESSION_20260626.md`](lp-runs/LP_RUNBOOK_SESSION_20260626.md)
+
+---
+
+## DEPLOY-20260626-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `sync` |
+| **reason** | S1 E2E — マジックリンク修正 · ルーム削除 · anon プレースホルダー除去 |
+| **change_summary** | `sync-supabase-sanitize.js` · `sync-timeline-s1-app.js` · build 時 JWT 検証 · `SYNC_S1_E2E_CHECKLIST.md` |
+| **local_build** | `pass`（`.env.sync.local` に **実 anon** 必須） |
+| **deploy_count_today** | 4（削除 UI · `364318ba`） |
+| **pages_build_budget_after** | 18/450（2026-06 · wrangler のみ · ビルドは直前にローカル実行） |
+| **gates** | P1–P8 · CF `SYNC_SUPABASE_ANON_KEY` = 実 JWT（プレースホルダー禁止） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu-sync` |
+| **cf_deployment_id** | `364318ba`（削除 UI — `disabled` 廃止 · 行削除 · 確認ダイアログ · 先頭自動選択）← `be661ae5` ← `770637be` ← `1c71ab93` |
+| **smoke** | `/timeline/app/` 200 · **E2E-3: 一覧各行「削除」から試行**（ハードリロード推奨） |
 
 ---
 
@@ -121,3 +163,4 @@
 | 日付 | 内容 |
 |------|------|
 | 2026-06-26 | 初版（asl-dashboard DEPLOY_LOG を雛形 · CF Pages Free · core/sync 分離） |
+| 2026-06-26 | 002 executed（7858bf8）· 004 追加（LP RUNBOOK · b0bb674） |
