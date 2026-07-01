@@ -202,19 +202,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | normalize 確認パネル — 行数 + 変換前/後 統合 UI |
 | **change_summary** | `tools/normalize.html` · `sugudasu.css` · 形状変換バッジ · changelog |
 | **local_build** | `pass`（`build:pages` · text-normalize.test） |
 | **deploy_count_today** | 3 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 3/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/normalize` 確認パネル） |
+| **cf_deployment_id** | `53fb792`（`08490dc..53fb792` · git push origin main） |
+| **smoke** | `/normalize` — 確認パネル · 変換前/後 · 形状変換バッジ |
 
 ---
 
@@ -222,6 +222,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-01 | 003 executed（53fb792 · normalize 確認パネル） |
 | 2026-07-01 | 003 approved（normalize 確認パネル · 提督 push 依頼） |
 | 2026-07-01 | 002 executed（60a55ea · normalize Tier S LP · Zenn #12） |
 | 2026-07-01 | 002 approved（normalize Tier S LP · Zenn #12 · 提督 push 依頼） |
