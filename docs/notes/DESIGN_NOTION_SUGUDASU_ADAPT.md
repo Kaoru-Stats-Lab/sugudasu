@@ -1,8 +1,9 @@
 # Notion Like → SUGUDASU 適用方針
 
-**更新:** 2026-06-26  
+**更新:** 2026-06-30  
 **参照元（分析そのまま）:** [`../DESIGN_GUIDELINE_NOTION_LIKE.md`](../DESIGN_GUIDELINE_NOTION_LIKE.md)  
 **上書き正本:** コア [`DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) · Sync [`DESIGN_GUIDELINE_SYNC.md`](../DESIGN_GUIDELINE_SYNC.md) · 実装 CSS `assets/sugudasu.css` の `--sg-*`  
+**兄弟（fleet · site）Cozy 層:** [`machine-dashboard/docs/specs/notion-ui/INDEX.md`](../../machine-dashboard/docs/specs/notion-ui/INDEX.md) — **色は本ファイル §2 でマップ · Cozy beige に統合しない**  
 **主用途:** **Schedule**（`SCHEDULE_TOOL_SPEC.md` · Notion風 DnD / スラッシュ）の UI 層
 
 > **Agent 必須:** 実装前に本ファイルを読む。Cursor 常時ルール `.cursor/rules/sugudasu-design-schedule.mdc` · 入口 `.cursorrules`

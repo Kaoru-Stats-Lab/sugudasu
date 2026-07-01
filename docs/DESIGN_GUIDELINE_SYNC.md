@@ -2,7 +2,7 @@
 
 **対象**: `sync.sugudasu.com` · `tools/sync-*.html` · Sync タイムラインアプリ  
 **親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)（コア無料ツール）  
-**操作モデル SSOT（fleet · site · Sync 共通）**: [`machine-dashboard/docs/specs/cozy-notion-ui-guidelines.md`](../../machine-dashboard/docs/specs/cozy-notion-ui-guidelines.md) — 右ドロワー · オートセーブ · 「保存済み」· 閉じる＝完了（色トークンは本ファイル §1 優先）  
+**操作モデル SSOT（fleet · site · Sync 共通）**: [`machine-dashboard/docs/specs/notion-ui/INDEX.md`](../../machine-dashboard/docs/specs/notion-ui/INDEX.md) — 右ドロワー · オートセーブ · 「保存済み」· 閉じる＝完了（色トークンは本ファイル §1 優先）  
 **ブランド SSOT**: [`notes/SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md)  
 **更新**: 2026-06-26（S1 インフラ結合完了 · UI は本ファイル · env/DB は [`notes/SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md)）  
 **由来**: rakumo カレンダー等の UI を **参考** にした翻訳案（Gemini 監査 + 人間レビュー）。rakumo のコピー・色の丸パクリは禁止。
