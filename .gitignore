@@ -1,5 +1,7 @@
 dist/
 dist-sync/
+tmp/
+Timelist*.txt
 .env.sync.local
 .codegraph/
 assets/tw-build.css
