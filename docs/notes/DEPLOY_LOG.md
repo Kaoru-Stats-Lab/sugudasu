@@ -182,19 +182,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | normalize Tier S LP · Zenn #12 初稿拡張 · FAQ Excel 使い分け |
 | **change_summary** | `7e7129d` · `tools/normalize.html` · `hub.html` · Zenn docs · LP matrix |
 | **local_build** | `pass`（`build:pages` · 2026-07-01 セッション） |
 | **deploy_count_today** | 2 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 2/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/normalize` LP · FAQ Excel） |
+| **cf_deployment_id** | `60a55ea`（`09e3751..60a55ea` · git push origin main） |
+| **smoke** | `/normalize` — Tier S LP · FAQ Excel · 社内規程 FV |
 
 ---
 
@@ -202,6 +202,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-01 | 002 executed（60a55ea · normalize Tier S LP · Zenn #12） |
 | 2026-07-01 | 002 approved（normalize Tier S LP · Zenn #12 · 提督 push 依頼） |
 | 2026-07-01 | 001 executed（affeee6 · normalize 命名 · Zenn docs） |
 | 2026-06-26 | 初版（asl-dashboard DEPLOY_LOG を雛形 · CF Pages Free · core/sync 分離） |
