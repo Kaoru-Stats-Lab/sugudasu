@@ -8,6 +8,18 @@
     },
     "cloudflare-builds": {
       "url": "https://builds.mcp.cloudflare.com/mcp"
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@colbymchenry/codegraph",
+        "serve",
+        "--mcp",
+        "--path",
+        "${workspaceFolder}"
+      ]
     }
   }
 }

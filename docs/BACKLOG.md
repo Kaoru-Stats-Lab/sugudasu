@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-26（§5-4 Sync Supabase 結合完了）  
+更新: 2026-06-26（§5-4 クォータ案C確定 · ENT-SCOPE）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -164,6 +164,7 @@
 - [ ] ページ内「このあと」回遊 — **削除** · §2-4 横断CTA待ち
 - [ ] Phase B（v1.1）: 差分ハイライト · 変更内訳 · ヘッダー行警告 · 制御文字行番号
 - [ ] **Zenn #12** — Gemini事故カタログ × 他サービスあるある解消（[`ZENN_NORMALIZE_DRAFT_MEMO.md`](notes/ZENN_NORMALIZE_DRAFT_MEMO.md)）
+- [ ] **Zenn #15** — CRDT × 現場同期 · 行が混ざらない進行表（[`ZENN_CRDT_SYNC_DRAFT_MEMO.md`](notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md) · **S4 ゲート**）
 
 ### 1-11. `group-split.html` — T11 グループ分け（**Phase A/B/C 実装済** · UX改善継続）
 
@@ -753,17 +754,106 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 #### S1 以降（製品）
 
+**残タスクの背景 · 思想 · 完了条件:** [`SYNC_S1_REMAINING_TASKS.md`](notes/SYNC_S1_REMAINING_TASKS.md)（**Agent は着手前に読む**）
+
 - [x] S1 骨格 — Supabase スキーマ · Auth/ルーム JS · `/api/health` · Stripe webhook スタブ（`SYNC_S1_ARCHITECTURE.md`）
 - [x] β運用窓口を開設（[不具合・改善フォーム](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor) / [回答管理シート](https://docs.google.com/spreadsheets/d/1LNjUDMiQW5klQlmrtRjDx_AHtf-EQRKYVnOZAJedl64/edit?usp=sharing)）
 - [x] 回答管理シート `status` 運用定義を確定（`new` / `triaged` / `in_progress` / `resolved`）
 - [x] Supabase プロジェクト作成 · マイグレーション · CF 環境変数 · 本番ログイン UI（2026-06-26）
 - [x] リーガル文書を調整し、Supabase / Cloudflare 提供条件との衝突リスクを低減（[`docs/legal/terms-of-use.md`](legal/terms-of-use.md) · [`docs/legal/privacy-policy.md`](legal/privacy-policy.md) · [`docs/legal/data-lifecycle-policy.md`](legal/data-lifecycle-policy.md) · [`docs/legal/dpa-lite.md`](legal/dpa-lite.md) · 復旧保証断定の緩和 / β可用性条項の追加）
 - [ ] **`sync.sugudasu.com/statements`** — Sync 専用約束ページ（[`STATEMENTS_SYNC_PAGE_DRAFT.md`](notes/STATEMENTS_SYNC_PAGE_DRAFT.md) · コア `statements.html` とは別）
-- [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番 E2E）
+- [ ] S1 受け入れ — 登録 → ルーム → 保存 → 再開（本番 E2E）— **Auth ブロック中** → [`SYNC_S1_REMAINING_TASKS.md`](notes/SYNC_S1_REMAINING_TASKS.md) §4
+  - [x] マジックリンクログイン（本番 · 一度成功）
+  - [x] ルーム作成 · クラウド保存（`rev.1`+）
+  - [ ] E2E-3 ルーム削除（UI `364318ba` · 確認待ち）
+  - [ ] E2E-2 別タブ · リロード復元
+  - [x] `retain_until` DB（#2–4 適用）· UI 確認はログイン後
+  - [ ] Cookie 分離（`sugudasu.com` に `sg-sync-auth` 無し）
+  - [ ] `SYNC_S1_ARCHITECTURE.md` §5-2 `[x]`
+  - [ ] 未コミット差分（提督判断）— §6
+- [ ] **Sync Auth（P0）** — ログイン UI 実装済 · **アカウント削除 · メール変更** — [`SYNC_AUTH_POLICY.md`](notes/SYNC_AUTH_POLICY.md) §5
+- [ ] **GitHub Secrets keepalive** — §5
 - [ ] Auth · ルーム · クラウド保存（**E2E 受け入れ完了**で Done）
 - [ ] `timeline-sync-app.js` フルエディタ · Push/Pull · 新版バナー（S2）
 - [ ] **S2 フィードバック収集 + Dev Ops 表示**（`SYNC_POST_EVENT_REVIEW.md` · **出荷ゲート**）
 - [ ] Build watch paths 導入 → Sync 自動デプロイ再開検討（`SYNC_INFRA` §5）
+
+#### β期間 — アカウント MECE · 課金API境界（提督 2026-06-26）
+
+**方針**
+
+| 項目 | 内容 |
+|------|------|
+| **βと決済API** | **Stripe 本番（Checkout · Webhook · Portal）は β では導入しない** — 審査・接続に時間がかかるため、課金まわりの設計判断・実装・E2E は **今やらない** |
+| **βでやること** | Auth · ルーム · `retain_until` · 退会 · コア境界 — **MECE の Non課金列のみ** |
+| **冗長性・拡張性** | 課金接続を前提に **`auth.users.id` 正本 · `sync_profiles` · `user_entitlements` スキーマ · entitlement 列 · Functions フック空分岐 · webhook 501 スタブ** は **β で入れておく** |
+| **MECE 正本** | [`sync-account-mece-gemini-RESULT.md`](notes/sync-account-mece-gemini-RESULT.md) **§11**（Non課金 / 課金 分割表） |
+| **クォータスコープ** | **案 C 確定** — β **S-A'**（プール）· S3 で S-D 再評価 · [`SYNC_STORAGE_QUOTAS.md`](notes/SYNC_STORAGE_QUOTAS.md) §3-1a |
+| **製品クラスター** | Timeline+Schedule 横断シナジー **薄** · 各クラスターに相方を足す · S3 で SKU — [`SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md) §3-0b |
+
+**β — Non課金（実装キュー）**
+
+- [ ] ACC-ID-01 — `sync_profiles` bootstrap（signup 1:1）
+- [ ] ACC-ID-03 — コア↔Sync 非自動同期の UI 明示
+- [ ] ACC-ID-05（β分）— 退会 API · JWT `user_id` · PW再確認 · `deleteUser` CASCADE · **Stripe 分岐は空**
+- [ ] ACC-AUTH-01〜05 — セッション維持 · 列挙同一応答 · リセット slim 化
+- [ ] ACC-AUTHZ-04 — JSON import 時の課金メタ strip（S2）
+- [ ] ACC-AUTHZ-05 — owner RLS 確認済 · entitlement 書込 RLS **骨格のみ**
+- [ ] ACC-LIFE-01 — trial 1枠 UI マップ（DB トリガー済）· **ENT-SCOPE-03** 単一 `残り X/Y` 極小
+- [ ] ACC-LIFE-03 — `retain_until` 表示 · **ROOM-LIST-02** countdown · 直前通知（S2）
+- [ ] ACC-LIFE-04 — 法務（TOS · データライフサイクル）· UI は日付のみ
+- [ ] ACC-LIFE-05 — `revision` 楽観ロック（S2）
+- [ ] ACC-BOUND-01〜05 — コア取込 · export strip · `/e/`（S2）· ドメイン分離
+- [ ] ACC-ABUSE-01〜04 — 列挙 · payload 上限 E2E
+
+**当日オペ表示（Grok §11 · アカウント外）**
+
+- [ ] EDIT-IND-01 — 編集画面上部：同期状態 + payload 残量（極小）
+- [ ] BANNER-01 — 全局通知：優先度キュー · 同時1件
+- [ ] BANNER-02 — Supabase Paused：ログイン直後モーダル（P1）
+
+**拡張性フック（βで必須 · 課金ロジックは入れない）**
+
+- [x] `user_entitlements` · `sync_profiles.stripe_customer_id` 列（マイグレーション済）
+- [ ] **ENT-SCOPE-01** — `20260628_sync_entitlements_product.sql` · `product_type` / `stripe_price_id` / `status`（**参照のみ · クォータ非結合**）
+- [x] **ENT-SCOPE-02** — クォータスコープ **案 C 確定**（[`sync-entitlement-scope-grok-RESULT.md`](notes/sync-entitlement-scope-grok-RESULT.md) §13）
+- [ ] **ENT-SCOPE-03** — UI 枠 **単一 X/Y** · 超過時整理提案（Grok §5 · ROOM-LIST と統合）
+- [ ] **ENT-SCOPE-S3** — S3 ゲート: **クラスター別** SKU（timeline+group / schedule+相方）· 製品別必須なら S-D 再評価（着手しない）
+
+**CRDT · 同期（S4 ゲート · 提督 2026-06-29）**
+
+- [ ] **S4-CRDT-01** — 行 insert/reorder · NonInterleaving LSeq 系 · 編集者2人マージ（[`SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md) §3-0 · ACC-LIFE-05 拡張）
+- [ ] **S4-CRDT-LP-01** — Sync LP / statements 脚注「衝突フリー設計」— **S4-CRDT-01 後**
+- [ ] **S4-CRDT-ZENN-01** — Zenn #15 公開 — [`ZENN_CRDT_SYNC_DRAFT_MEMO.md`](notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md) · S4-CRDT-01 または設計メモ明示
+- [x] `/api/webhooks/stripe` 501 スタブ
+- [ ] signup `ensureSyncProfile(userId)` · 退会 API の Stripe **空分岐コメント**
+- [ ] 全アカウント API が **メールではなく JWT `sub`** のみをキーにする
+
+#### Auth UI — Notion 適用（β · 課金なし）
+
+**正本:** [`sync-account-ux-notion-gemini-RESULT.md`](notes/sync-account-ux-notion-gemini-RESULT.md) · [`sync-account-page-content-gemini-RESULT.md`](notes/sync-account-page-content-gemini-RESULT.md) · [`SYNC_AUTH_POLICY.md`](notes/SYNC_AUTH_POLICY.md) §5-5
+
+- [ ] ログイン/登録 — 中央カード · タブ · PW 表示切替 · blue-600 CTA
+- [ ] アカウントオーバーレイ — **4要素+安全弁**（メール · PW · ログアウト灰 · 危険ゾーン · 規約/PP/[フィードバック](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor) · ビルド極小）
+- [ ] 退会 — 現PW + **登録メール全文タイプ** 確認（Notion 型）
+- [ ] 列挙対策 — 登録/リセットの同一成功文言
+- [ ] **借りない:** マジックリンク · ログインコード · 黒Primary · UUID表示 · アクセス統計 · アカウント内容量メーター
+
+**インフラ・制限の見せ方（提督 2026-06-26 · Gemini §3 + Grok §11）**
+
+| 種別 | 載せ場所 | アカウント |
+|------|----------|------------|
+| 同期 + payload 残量 | **編集画面上部インジケータ**（極小 · EDIT-IND-01） | **載せない** |
+| `retain_until` · trial 枠 | ルーム一覧（countdown · 枠極小 · ROOM-LIST-01/02） | **載せない** |
+| 同期失敗 · 障害 · Supabase Paused | 優先度トースト1件 · Paused ログイン直後モーダル（BANNER-01/02） | **載せない** |
+
+**Grok 突合:** [`sync-account-page-content-grok-RESULT.md`](notes/sync-account-page-content-grok-RESULT.md)
+
+**課金API接続後まで保留（Backlog に載せるのみ · 着手しない）**
+
+- ACC-ID-02 · ACC-AUTHZ-01〜03 · ACC-COMM-01〜05 · ACC-OPS-01（サブスク解約 UI）
+- 未決 SCH-B02 · B04 · B05 · B09（チケット紐付け · grace 日数 · 救済 abuse · Stripe Customer delete）
+- 正本フェーズ: **Phase S3** · [`SYNC_S1_ARCHITECTURE.md`](notes/SYNC_S1_ARCHITECTURE.md) §2
 
 #### SEO / キーワード調査（2026-06-25）
 
@@ -779,11 +869,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [x] AI キーワードクラスター調査（Gemini / Grok / GPT）→ `SYNC_TIMELINE_SEO_KEYWORDS.md`
 - [ ] **Pending** Keyword Planner Run 1–5 · スプレッドシート化（`run` · `sync`/`core`/`both`）· 数値で Primary 順位を1回見直し
 - [ ] Sync LP · Core `title` / `meta` / FAQ へ §1 反映（**暫定コピーで着手可** · ボリューム後に微調整）
-- [ ] Zenn/note 1本目（比較 or 研修当日 — `sync-timeline-keyword-RESEARCH-RESULT.md` §E）
+- [ ] Zenn **#15** CRDT 現場同期（[`ZENN_CRDT_SYNC_DRAFT_MEMO.md`](notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md) · S4 ゲート）— 旧: note 1本目 Sync 比較案は SEO 記事と役割分担
 
 **除外（3社合意）:** 婚礼主軸 · 放送 · プロンプター · ガントチャート · 動画編集タイムライン — 詳細は `SYNC_TIMELINE_SEO_KEYWORDS.md` §2。
 
-**垂直拡張（ブレスト · イベントと分離）:** Excel 工程表ニッチ — Gemini RESULT [`excel-gantt-verticals-gemini-RESULT.md`](notes/excel-gantt-verticals-gemini-RESULT.md) · **提督確定** [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](notes/SYNC_SCHEDULE_PRODUCT_DECISION.md)（作る · 年額定額 · 自分用仕様正本）
+**垂直拡張（ブレスト · クラスター別）:** イベント当日 = timeline+group · 工程 = schedule（Timeline と横断シナジー薄）— [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](notes/SYNC_SCHEDULE_PRODUCT_DECISION.md) · [`SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md) §3-0b
 
 ---
 
@@ -847,6 +937,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`** — コア本番デプロイ Agent SSOT
 - **`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`** — グループ分け T11（**企画FIX · 未実装** · 主=人事研修 · Backlog **§1-11**）
 - **`docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md`** — **RevenueCat SOSA 2024–2026 調査ログ + SUGUDASU 転用判断（GTM · 初回UX · 収益）**
+- **`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`** — Sync CRDT / 現場同期 Zenn #15 アウトライン
 - **`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`** — normalize Zenn ネタ（Gemini OOPS × 他サービスあるある解消 · #12）
 - **`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`** — fair-draw Zenn 記事ネタ備忘録
 - **`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`** — 景品チェック＋公平抽選（**実装中 · fair-draw v1.5.1** · Backlog **§1-9 · §15 · §8-10**）

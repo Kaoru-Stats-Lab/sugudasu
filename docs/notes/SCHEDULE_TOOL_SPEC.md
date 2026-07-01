@@ -5,7 +5,9 @@
 **起源:** [`schedule-spec-gemini-questions.md`](../prompts/schedule-spec-gemini-questions.md) 質問票 · 提督回答  
 **関連:** [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) · [`SUGUDASU_SYNC_LINE.md`](SUGUDASU_SYNC_LINE.md)
 
-> **位置づけ:** ガント SaaS ではない。**直列連動 + 親ID追随 + 限定クリティカルパス** の工程表。Excel Import なし · xlsx Export あり · A3 印刷 · **¥200/月**。
+> **位置づけ（v3 改訂中）:** 2026-06-29 提督方向 — **Notion タイムライン（表+棒）クローン** · **現場単位** · 最終 **全現場ポートフォリオ**。正本は [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) v3。以下 §1–§11 の一部は **v2（Excel 連動表）** の記述が残る。
+
+> **旧 v2 一行要約:** ガント SaaS ではない · 直列連動表 · A3 · xlsx · ¥200/月。
 
 ---
 
@@ -284,10 +286,66 @@ CSS 目安: `@page { size: A3 landscape; margin: … }` · `thead { display: tab
 
 ---
 
-## 13. 変更履歴
+## 14. OSS 参照 · タイムライン補助ビュー · 親子チャート色（2026-06-29）
+
+**PoC:** `tmp/schedule-gantt-poc/` — **凍結**（親ブロック別 frappe は Notion UX と不一致）。次 PoC: **分割ペイン自前**（`SYNC_SCHEDULE_PRODUCT_DECISION.md` §5）
+
+### 14-1. OSS 利用方針（v1 不変 + v2 補助）
+
+| # | 決定 |
+|---|------|
+| 1 | **v1 主ビューは Notion 風表のみ** — ガント横棒ビューは v2 · 既定 OFF |
+| 2 | **データ正本は `columns[]` + `rows[]`** — ガント OSS の task モデルに合わせない |
+| 3 | **OSS は描画・スタイル参考まで** — 連動ロジックは `schedule-engine.js` のみ |
+| 4 | **Notion UX（DnD · `/` · Frozen · フィルタ）はカスタム** — DHTMLX grid 等を v1 主 UI にしない |
+| 5 | **名乗り・SEO** — 「工程表」「連動スケジュール」。ガント SaaS と名乗らない |
+
+**v2 候補ライブラリ:** [frappe-gantt](https://github.com/frappe/gantt)（MIT · 読み取り専用ミラー）· DHTMLX CE は v1 には重い · ganttrify は R/静的のみ（A3 見た目参考）
+
+### 14-2. 親チャート · 子チャート（タイムライン層 · v2 想定）
+
+表データとは **別の表示階層**（正本は引き続き §3 の行モデル）。タイムライン補助ビューで次を満たす。
+
+| 項目 | 仕様 |
+|------|------|
+| **親チャート** | **無制限**（実装はソフト警告 · Sync cap は §9 既存） |
+| **子チャート** | 各親に **無制限**紐づけ · `parentChartId` で所属 |
+| **描画** | 親ごとに 1 ブロック — 先頭行=親サマリ棒 · 続く行=子タスク（frappe-gantt 1 インスタンス/親） |
+| **編集** | v2 PoC 段階は **表示のみ**（v1 OUT: ガント横棒 DnD を維持） |
+| **日付** | 親の start/end は **子の min/max から自動算出**（手動上書きは v2.1 検討） |
+
+```json
+{
+  "parentCharts": [
+    { "id": "pc_1", "name": "設計フェーズ", "color": "#2563EB" }
+  ],
+  "childCharts": [
+    { "id": "cc_1", "parentChartId": "pc_1", "name": "ワイヤー", "start": "2026-07-01", "end": "2026-07-05" }
+  ]
+}
+```
+
+表の **親ID**（行連動）と **親チャート**（表示グループ）は **別概念** — 同名でも ID 空間を分ける（`row_*` vs `pc_*` / `cc_*`）。
+
+### 14-3. 色 — 親系統 · 子シェード · ユーザー指定
+
+| 項目 | 仕様 |
+|------|------|
+| **既定パレット** | SUGUDASU 寄り 6 色（`DESIGN_NOTION_SUGUDASU_ADAPT` 準拠）— 青 `#2563EB` · 緑 `#059669` · 橙 `#EA580C` · 紫 `#7C3AED` · 赤 `#E11D48` · 灰 `#64748B` |
+| **子の色** | 親色の **同一色相（H）** · 明度 L を子の並び順で段階的に上げる（青親 → 青系トーン） |
+| **ユーザー指定** | 親ごとに **HEX / `rgb()` / `rgba()`** を保存可 · 子は個別上書き可（未指定時は親系統シェード） |
+| **白 · 透過** | `#FFFFFF` · `#RRGGBB00` · `transparent` · `rgba(…,0)` — **fill 透過** · 判別用に **stroke（hairline）のみ** 表示 |
+| **xlsx** | §8 既存 — Fill RGB のみ再現 · 透過は **無 Fill** 相当 |
+
+**実装ユーティリティ（PoC）:** `tmp/schedule-gantt-poc/lib/colors.mjs` — 本番は `schedule-gantt-colors.js` へ昇格検討。
+
+---
+
+## 15. 変更履歴
 
 | 日付 | 内容 |
 |------|------|
 | 2026-06-26 | 提督回答より v1 SSOT 初版 · SCH-C02 方針を §5 に確定 |
 | 2026-06-26 | §9-1 排他 B案 — 編集開始/保存/編集終了（同義にしない） |
 | 2026-06-26 | 提督合意 — v1 正本として着手可 · 実装・dogfood 後の改訂は本ファイル changelog に追記 |
+| 2026-06-29 | **§14** — OSS 方針 · 親子チャート階層 · 色体系 · PoC `tmp/schedule-gantt-poc/` |

@@ -44,14 +44,69 @@
     </section>
 
     <section id="sync-s1-auth" class="hidden space-y-4">
-        <h1 class="text-lg font-bold text-slate-900">幹事アカウントでログイン</h1>
-        <p class="text-sm text-slate-600">メールのマジックリンクのみ（パスワード不要）。Cookie は <code class="text-xs">sync.sugudasu.com</code> 限定。</p>
-        <form id="sync-s1-signin" class="space-y-3">
-            <label class="block text-xs font-semibold text-slate-700" for="sync-s1-email">メールアドレス</label>
-            <input id="sync-s1-email" type="email" required autocomplete="email"
-                   class="sg-input w-full text-sm" placeholder="kanri@example.com">
-            <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">マジックリンクを送る</button>
-        </form>
+        <h1 id="sync-s1-auth-heading" class="text-lg font-bold text-slate-900">幹事アカウントでログイン</h1>
+        <p class="text-sm text-slate-600">メールアドレスとパスワードでログインします。公式 URL は <code class="text-xs">sync.sugudasu.com</code> のみ。Cookie は同ドメイン限定。</p>
+
+        <div id="sync-s1-auth-login" class="space-y-3">
+            <form id="sync-s1-signin" class="space-y-3">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-login-email">メールアドレス</label>
+                <input id="sync-s1-login-email" type="email" required autocomplete="email"
+                       class="sg-input w-full text-sm" placeholder="kanri@example.com">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-login-password">パスワード</label>
+                <input id="sync-s1-login-password" type="password" required autocomplete="current-password"
+                       class="sg-input w-full text-sm" minlength="6">
+                <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">ログイン</button>
+            </form>
+            <p class="text-xs text-slate-600">
+                <button type="button" id="sync-s1-goto-forgot" class="underline text-slate-700">パスワードを忘れた</button>
+                <span class="text-slate-300 mx-1">·</span>
+                <button type="button" id="sync-s1-goto-signup" class="underline text-slate-700">新規登録</button>
+            </p>
+        </div>
+
+        <div id="sync-s1-auth-signup" class="hidden space-y-3">
+            <form id="sync-s1-signup" class="space-y-3">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-signup-email">メールアドレス</label>
+                <input id="sync-s1-signup-email" type="email" required autocomplete="email"
+                       class="sg-input w-full text-sm" placeholder="kanri@example.com">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-signup-password">パスワード（6文字以上）</label>
+                <input id="sync-s1-signup-password" type="password" required autocomplete="new-password"
+                       class="sg-input w-full text-sm" minlength="6">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-signup-password2">パスワード（確認）</label>
+                <input id="sync-s1-signup-password2" type="password" required autocomplete="new-password"
+                       class="sg-input w-full text-sm" minlength="6">
+                <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">アカウントを作成</button>
+            </form>
+            <p class="text-xs text-slate-600">
+                <button type="button" id="sync-s1-goto-login-from-signup" class="underline text-slate-700">ログインに戻る</button>
+            </p>
+        </div>
+
+        <div id="sync-s1-auth-forgot" class="hidden space-y-3">
+            <p class="text-sm text-slate-600">登録メールアドレスにパスワード再設定用のリンクを送ります。</p>
+            <form id="sync-s1-forgot" class="space-y-3">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-forgot-email">メールアドレス</label>
+                <input id="sync-s1-forgot-email" type="email" required autocomplete="email"
+                       class="sg-input w-full text-sm" placeholder="kanri@example.com">
+                <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">再設定メールを送る</button>
+            </form>
+            <p class="text-xs text-slate-600">
+                <button type="button" id="sync-s1-goto-login-from-forgot" class="underline text-slate-700">ログインに戻る</button>
+            </p>
+        </div>
+
+        <div id="sync-s1-auth-recovery" class="hidden space-y-3">
+            <p class="text-sm text-slate-600">新しいパスワードを設定してください。</p>
+            <form id="sync-s1-recovery" class="space-y-3">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-recovery-password">新しいパスワード（6文字以上）</label>
+                <input id="sync-s1-recovery-password" type="password" required autocomplete="new-password"
+                       class="sg-input w-full text-sm" minlength="6">
+                <label class="block text-xs font-semibold text-slate-700" for="sync-s1-recovery-password2">新しいパスワード（確認）</label>
+                <input id="sync-s1-recovery-password2" type="password" required autocomplete="new-password"
+                       class="sg-input w-full text-sm" minlength="6">
+                <button type="submit" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">パスワードを更新</button>
+            </form>
+        </div>
     </section>
 
     <section id="sync-s1-app" class="hidden space-y-4">
@@ -71,14 +126,29 @@
 
         <div class="border border-slate-200 rounded-lg p-3 space-y-3 bg-white">
             <p class="text-xs text-slate-500">選択中: <span id="sync-s1-active-room" class="font-semibold text-slate-800">（未選択）</span></p>
+            <p class="text-[11px] text-slate-500">保持期限（retain_until）: <span id="sync-s1-retain-until" class="font-mono text-slate-700">—</span></p>
+            <label class="block text-xs font-semibold text-slate-700" for="sync-s1-event-title">イベント名（保存テスト用 · S1）</label>
+            <input id="sync-s1-event-title" type="text" class="sg-input w-full text-sm" placeholder="例: 6/30 社内研修" autocomplete="off">
             <pre id="sync-s1-payload-preview" class="text-xs text-slate-600 whitespace-pre-wrap font-mono bg-slate-50 rounded p-2"></pre>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 relative z-10">
                 <button type="button" id="sync-s1-save" class="sg-btn-primary w-full text-sm font-bold py-2.5 rounded-lg">クラウドに保存</button>
+                <button type="button" id="sync-s1-delete-room" class="cursor-pointer text-sm text-red-700 border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50 sync-s1-delete-muted">ルームを削除</button>
                 <button type="button" id="sync-s1-import-core" class="text-xs text-slate-600 underline text-left">コア進行の下書きを取り込む（同一ブラウザ）</button>
             </div>
             <p class="text-[11px] text-slate-500 leading-relaxed">S1 は保存・再開まで。フルエディタ · 閲覧者同期（新版バナー）は S2 以降。</p>
         </div>
     </section>
+
+    <div id="sync-s1-confirm" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40" role="dialog" aria-modal="true" aria-labelledby="sync-s1-confirm-title">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xl max-w-sm w-full p-4 space-y-4">
+            <h2 id="sync-s1-confirm-title" class="text-sm font-bold text-slate-900">ルームを削除</h2>
+            <p id="sync-s1-confirm-msg" class="text-sm text-slate-600 leading-relaxed"></p>
+            <div class="flex gap-2 justify-end">
+                <button type="button" id="sync-s1-confirm-no" class="text-sm px-3 py-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50">キャンセル</button>
+                <button type="button" id="sync-s1-confirm-yes" class="text-sm px-3 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700">削除する</button>
+            </div>
+        </div>
+    </div>
 
     <p class="text-sm pt-2">
         <a href="/timeline" class="text-emerald-700 font-semibold hover:underline">← 進行 Sync LP</a>

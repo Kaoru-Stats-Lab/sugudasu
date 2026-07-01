@@ -32,10 +32,13 @@
     "test:webp-to-jpg": "node scripts/webp-to-jpg.test.mjs",
     "test:group-split": "node scripts/group-split.test.mjs",
     "test:timeline": "node scripts/timeline-engine.test.mjs",
-    "test:linkify": "node scripts/sg-linkify.test.mjs"
+    "test:linkify": "node scripts/sg-linkify.test.mjs",
+    "poc:schedule-gantt": "npx --yes serve . -l 8090",
+    "poc:schedule-split-pane": "npx --yes serve . -l 8092"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.1",
+    "frappe-gantt": "^1.2.2",
     "sharp": "^0.35.1",
     "tailwindcss": "^4.3.1"
   }

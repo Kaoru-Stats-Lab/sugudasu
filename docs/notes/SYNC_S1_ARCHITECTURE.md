@@ -3,7 +3,7 @@
 **更新:** 2026-06-26  
 **フェーズ:** S1（Auth · ルーム · クラウド保存）· 同期プロトコルは **S2**  
 **インフラ結合:** **2026-06-26 完了**（Supabase · CF env · 本番ログイン UI）  
-**製品受け入れ:** **未完了**（§5 — マジックリンク E2E · ルーム保存）  
+**製品受け入れ:** **未完了**（§5 — **メール+パスワード** E2E · ルーム保存）  
 **製品 SSOT:** [`SUGUDASU_SYNC_LINE.md`](SUGUDASU_SYNC_LINE.md) · **DB SSOT:** [`SYNC_DB_ARCHITECTURE.md`](SYNC_DB_ARCHITECTURE.md) · **env:** [`SYNC_ENV_KEYS.md`](SYNC_ENV_KEYS.md) · **CF:** [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)
 
 ---
@@ -13,7 +13,7 @@
 ```text
 [ ブラウザ @ sync.sugudasu.com ]
   ├─ 静的 HTML/JS（dist-sync/ · focus chrome）
-  ├─ Supabase Auth（クライアント · anon key）— マジックリンク / Google
+  ├─ Supabase Auth（クライアント · anon key）— **メール + パスワード**（[`SYNC_AUTH_POLICY.md`](SYNC_AUTH_POLICY.md)）· Google OAuth は後追い
   ├─ PostgREST + RLS（クライアント）— ルーム CRUD · payload 保存
   └─ timeline-engine.js 共有（payload = TimelineState JSON）
 
@@ -38,7 +38,10 @@
 ### 結論
 
 **はい。`sync.sugudasu.com/api/*` にサーバーレス API 層を置く前提で設計してよい。**  
-ただし **S1 では Stripe を実装しない**。次だけ S1 で入れておく:
+**β期間は決済API（Stripe 本番）を導入しない** — 審査・接続に時間がかかるため課金の設計・実装は **S3 まで保留**。β では **スキーマ · ID 境界 · フック空分岐 · webhook スタブ** のみ（冗長性・拡張性）。  
+MECE 分割: [`sync-account-mece-gemini-RESULT.md`](sync-account-mece-gemini-RESULT.md) §11 · [`BACKLOG.md`](../BACKLOG.md) §5-4。
+
+ただし **S1 / β では Stripe を実装しない**。次だけ入れておく:
 
 | 項目 | S1 | S3（課金） |
 |------|-----|------------|
@@ -54,6 +57,18 @@
 - 課金は **K3 · Phase S3** — Sync の aha! は **S2 の手動反映同期**
 - Stripe Webhook は **秘密鍵・署名検証** が必須 → Pages Functions が正しい置き場
 
+### アカウント ID と課金の接続（提督指示 · 実装拘束）
+
+**Auth のユーザー ID（`auth.users.id`）が将来の課金 API の外部キー。** アカウント削除 · メール変更 · 登録はこの ID 基準で実装する（メール文字列でユーザーを特定しない）。
+
+| 操作 | S1 | S3（課金接続後） |
+|------|-----|------------------|
+| 新規登録 | `sync_profiles` 行を `id = user_id` で作成 | Checkout 時 `stripe_customer_id` を profile に保存 |
+| 退会 | `admin.deleteUser(user_id)` · CASCADE | **先に** Stripe サブスク解約 / Customer 無効化 |
+| メール変更 | Supabase `updateUser` | Stripe Customer の email を同期 |
+
+正本: [`SYNC_AUTH_POLICY.md`](SYNC_AUTH_POLICY.md) §5-6
+
 ### S3 までに揃えるデータモデル（S1 でテーブルだけ用意）
 
 - `entitlement`: `trial` | `active` | `expired`（部屋の実行時状態）
@@ -61,7 +76,29 @@
 - `sync_profiles.stripe_customer_id`: Customer Portal 用
 - `sync_rooms.staff_device_cap`: イベント単位の同時スタッフ端末上限（価格パックで加算）
 
+**クォータスコープ（提督 2026-06-26 · 案 C）:** β〜2製品目は **active アカウントプール3** · トリガー現状維持 · `user_entitlements.product_type` は参照のみ先行。S3 で製品別 SKU 必須なら S-D 再評価 — [`SYNC_STORAGE_QUOTAS.md`](SYNC_STORAGE_QUOTAS.md) §3-1a
+
 **RevenueCat は採用しない**（Web 幹事 SaaS · イベント単位課金 → Stripe Checkout が SSOT 方針）。
+
+### 売掛（未収金）を誰が追うか（提督 Q&A · 2026-06-26）
+
+**結論: 売掛の正本・回収・督促は Stripe（決済 API）側。Sync は「使えるか否か」の権利ミラーのみ。**
+
+| 領域 | 担当 | Sync が持つもの |
+|------|------|----------------|
+| カード · 決済 · 請求書発行 | **Stripe** | なし（PCI 外） |
+| サブスクの失敗再試行 · ダンニング | **Stripe Billing** | Webhook で `expired` 等を受け取るだけ |
+| 売掛台帳 · 入金消込 · 督促メール | **Stripe**（または会計ソフト連携） | **実装しない** |
+| 利用可否（ゲート） | Sync | `user_entitlements` · `sync_rooms.entitlement` |
+| 領収書 PDF（経費精算用） | コア `invoice` ツール or Stripe 領収書 | 金額の正本ではない |
+
+**ビジネスモデル上の前提（売掛を発生させない設計）:**
+
+- **主導線:** 事前チケット（Stripe Checkout **前払い**）— 利用開始前に決済完了
+- **法人:** 見積 PDF → 稟議 → **前払い**（`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`）
+- **例外:** 初回のみの「救済」後払い（1アカウント1回）— 未払い追跡は Stripe の Payment Link / Customer Portal 等で回収し、Sync は `deferred_payment` フラグでゲートする程度
+
+Sync の Dev Ops ダッシュボードも **売上管理ではなく利用状況**（`SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md` §2）。売掛年齢表・督促ワークフローはスコープ外。
 
 ---
 
@@ -69,7 +106,7 @@
 
 ### IN
 
-- [x] Supabase Auth（メールマジックリンク）
+- [x] Supabase Auth（**メール + パスワード** UI — [`SYNC_AUTH_POLICY.md`](SYNC_AUTH_POLICY.md)）
 - [x] `sync_rooms` 作成 · 一覧（オーナーのみ）
 - [x] `sync_room_states` への payload 保存 · 読み込み（`revision` 単調増加）
 - [x] `sync-timeline.html` 上の S1 UI（ログイン · ルーム選択 · 保存/再開）
@@ -159,4 +196,5 @@
 | `assets/sync-auth.js` | Auth UI |
 | `assets/sync-room-store.js` | ルーム · state CRUD |
 | `assets/sync-timeline-s1-app.js` | S1 画面 |
+| `docs/notes/SYNC_S1_E2E_CHECKLIST.md` | 製品 E2E 受け入れ手順 |
 | `functions/api/*` | Pages Functions |

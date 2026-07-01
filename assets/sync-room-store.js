@@ -9,6 +9,7 @@ import { getSyncClient } from './sync-auth.js';
  * @property {string} title
  * @property {string} entitlement
  * @property {string} created_at
+ * @property {string | null} [retain_until]
  */
 
 /**
@@ -17,7 +18,7 @@ import { getSyncClient } from './sync-auth.js';
 export async function listMyRooms() {
   const { data, error } = await getSyncClient()
     .from('sync_rooms')
-    .select('id, title, entitlement, created_at')
+    .select('id, title, entitlement, created_at, retain_until')
     .order('updated_at', { ascending: false });
   if (error) throw error;
   return data ?? [];
@@ -39,10 +40,31 @@ export async function createRoom(title) {
       title: title.trim() || '無題のイベント',
       entitlement: 'trial',
     })
-    .select('id, title, entitlement, created_at')
+    .select('id, title, entitlement, created_at, retain_until')
     .single();
   if (error) throw error;
   return data;
+}
+
+/**
+ * @param {string} roomId
+ */
+export async function deleteRoom(roomId) {
+  const { data: userData, error: userErr } = await getSyncClient().auth.getUser();
+  if (userErr) throw userErr;
+  const uid = userData.user?.id;
+  if (!uid) throw new Error('not_authenticated');
+
+  const { data, error } = await getSyncClient()
+    .from('sync_rooms')
+    .delete()
+    .eq('id', roomId)
+    .eq('owner_id', uid)
+    .select('id');
+  if (error) throw error;
+  if (!data?.length) {
+    throw new Error('room_delete_failed');
+  }
 }
 
 /**

@@ -1,6 +1,8 @@
 /**
  * Sync 公開設定 — dist-sync/data/sync-public-config.json から読む
  */
+import { sanitizeSupabaseAscii } from './sync-supabase-sanitize.js';
+
 let cached = null;
 
 /**
@@ -14,8 +16,8 @@ export async function loadSyncPublicConfig() {
     const data = await res.json();
     if (!data?.supabaseUrl || !data?.supabaseAnonKey) return null;
     cached = {
-      supabaseUrl: String(data.supabaseUrl),
-      supabaseAnonKey: String(data.supabaseAnonKey),
+      supabaseUrl: sanitizeSupabaseAscii(data.supabaseUrl, 'SYNC_SUPABASE_URL'),
+      supabaseAnonKey: sanitizeSupabaseAscii(data.supabaseAnonKey, 'SYNC_SUPABASE_ANON_KEY'),
     };
     return cached;
   } catch {
@@ -24,5 +26,8 @@ export async function loadSyncPublicConfig() {
 }
 
 export function isSyncConfigured(config) {
-  return Boolean(config?.supabaseUrl && config?.supabaseAnonKey);
+  if (!config?.supabaseUrl || !config?.supabaseAnonKey) return false;
+  return (
+    config.supabaseUrl.includes('.supabase.co') && config.supabaseAnonKey.startsWith('eyJ')
+  );
 }

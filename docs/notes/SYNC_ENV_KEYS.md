@@ -16,7 +16,7 @@
 | 項目 | 状態 | 確認 |
 |------|------|------|
 | Supabase プロジェクト（Sync 専用） | **Done** | ASL 本番と別 Project |
-| SQL マイグレーション 4 本 | **Done** | 下記「マイグレーション順」 |
+| SQL マイグレーション 4 本 | **Done** | 2026-06-26 本番適用確認（#2–4 は Agent 適用 · 下記） |
 | Auth URL Configuration | **Done** | Site URL · Redirect URLs |
 | Email マジックリンク | **Done** | 本番フォーム表示済み |
 | CF `sugudasu-sync` 環境変数 | **Done** | `SYNC_SUPABASE_*` · `SUPABASE_*`（Encrypt） |
@@ -29,14 +29,18 @@
 
 ## ローカルビルド（`npm run build:pages:sync`）
 
-`.env.sync.local`（Git 無視 · 提督端末のみ）:
+**初回:** リポジトリルートに `.env.sync.local` を **新規作成**（`.gitignore` 済み · Git 禁止）。テンプレートファイルは置かない — 下記 2 行を Supabase Dashboard → **Project Settings → API** の実値で埋める。
 
 ```env
 SYNC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-SYNC_SUPABASE_ANON_KEY=eyJ...
+SYNC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-ビルド時に `dist-sync/data/sync-public-config.json` へ書き出す（**anon key のみ · 公開可**）。
+**禁止:** `PhaseBで…` などの **説明文・プレースホルダーをそのまま貼る** — `sync-public-config.json` に焼き込まれマジックリンクが `ISO-8859-1` エラーになる。anon は **Supabase Dashboard → Project Settings → API → anon public** の `eyJ` で始まる JWT のみ。
+
+**ローカルで `.env.sync.local` を直したのにビルドが失敗する場合:** PowerShell セッションに古い `SYNC_SUPABASE_*` が残っていると、以前はファイルより優先されていた。`Remove-Item Env:SYNC_SUPABASE_ANON_KEY -ErrorAction SilentlyContinue` 後に再実行。現行ビルドは **`.env.sync.local` を常に正本**とする。
+
+ビルド時に `dist-sync/data/sync-public-config.json` へ書き出す（**anon key のみ · 公開可**）。`npm run build:pages:sync` は **eyJ 形式でなければ fail**。
 
 ---
 
@@ -72,7 +76,7 @@ S3 以降:
    - Site URL: `https://sync.sugudasu.com`  
    - Redirect URLs: `https://sync.sugudasu.com/**` · `http://localhost:8081/**`（プレビュー）
 2. **SQL** → 下記マイグレーションを **順番に** 実行
-3. **Auth** → Email マジックリンク有効（Google OAuth は任意 · 後追い可）
+3. **Auth** → **Email + Password** 有効 · マジックリンクのみログインは **OFF**（[`SYNC_AUTH_POLICY.md`](SYNC_AUTH_POLICY.md)）
 
 ### マイグレーション順
 
@@ -80,6 +84,8 @@ S3 以降:
 2. `supabase/migrations/20260625_sync_retention.sql`
 3. `supabase/migrations/20260625_sync_quotas.sql`
 4. `supabase/migrations/20260626_sync_billing_layer.sql`
+
+**本番状態（2026-06-26）:** 当初 **#1 のみ** 適用済みだったため `retain_until` が UI で `—` 表示。Agent が **#2–4 を Supabase MCP で適用** · 既存ルームは `created_at + 30日` でバックフィル済み。
 
 ---
 

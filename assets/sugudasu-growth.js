@@ -50,7 +50,13 @@
     if (el) el.remove();
   }
 
+  function isSyncAuthSurface() {
+    const path = global.location.pathname || '';
+    return /\/timeline\/app\/?$/i.test(path) || document.body.classList.contains('sg-chrome-focus');
+  }
+
   function showBookmarkBanner() {
+    if (isSyncAuthSurface()) return;
     if (document.getElementById('sg-bookmark-banner')) return;
     try {
       if (localStorage.getItem(LS_DISMISS)) return;
@@ -96,6 +102,7 @@
   }
 
   function init() {
+    if (isSyncAuthSurface()) return;
     try {
       const visits = parseInt(localStorage.getItem(LS_VISITS) || '0', 10) + 1;
       localStorage.setItem(LS_VISITS, String(visits));

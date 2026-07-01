@@ -1,8 +1,8 @@
 # SUGUDASU Sync — URL / IA / SEO SSOT
 
-**更新:** 2026-06-26（`/timeline/app` 本番 S1 UI）  
+**更新:** 2026-06-29（§2-1 Schedule 旗艦ハブ）  
 **対象:** `sync.sugudasu.com` の全 Sync 系プロダクト  
-**関連:** `SUGUDASU_SYNC_LINE.md` · `SYNC_CAPACITY_AND_PRICING_POLICY.md` · `SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md`
+**関連:** `SUGUDASU_SYNC_LINE.md` §3-0c · `SYNC_CAPACITY_AND_PRICING_POLICY.md` · `SYNC_EVENT_ID_AND_DASHBOARD_POLICY.md`
 
 ---
 
@@ -35,7 +35,21 @@ Sync 系は「有料で導入する理由」を説明しないと購入に至ら
 | ドメイン | 責務 |
 |---------|------|
 | `sugudasu.com` | 無料コア製品の獲得（登録不要・非送信の価値） |
-| `sync.sugudasu.com` | Sync有料製品の説明・比較・導入・課金 |
+| `sync.sugudasu.com` | Sync有料製品の説明・比較・導入・課金 — **旗艦は Schedule**（§2-1） |
+
+### 2-1. ハブ LP — Schedule 中心（提督 2026-06-29）
+
+[`SUGUDASU_SYNC_LINE.md`](SUGUDASU_SYNC_LINE.md) §3-0c と同型。**Google カレンダーが製品群の時間軸ハブになるように、`/` は工程表（Schedule）を主役にする。**
+
+| 要素 | 方針 |
+|------|------|
+| **URL** | `https://sync.sugudasu.com/` = Sync **ハブ LP**（index） |
+| **主 CTA** | `/schedule` → `/schedule/app` |
+| **副導線** | `/timeline` · `/group-split` 等 — 「イベント当日向け」カード |
+| **ログイン後既定** | Schedule entitlement あり → `/schedule/app` · 進行のみ → `/timeline/app` |
+| **sitemap 優先** | `/` · `/schedule` を最優先 · `/timeline` は衛星 LP |
+
+**暫定（S1）:** ハブ未整備の間は `/timeline/app` が実質入口 — **Schedule 出荷時にハブを Schedule 主に組み替える**（破壊的変更はハブのみ · 既存 timeline URL は維持）。
 
 **正規URL（現行）**
 
@@ -111,9 +125,9 @@ Sync 系は「有料で導入する理由」を説明しないと購入に至ら
 - 課題→解決（誰のどんな痛みを減らすか）
 - 料金（Base + 追加端末パック）
 - 同時端末上限と技術上限
-- 保存期限・エクスポート責務
+- 保存期限（**日付の事実** · 運用内訳の説教はしない）
 - 導入手順（開始まで3ステップ）
-- FAQ（無料版との差分、同期範囲、返金・解約）
+- FAQ（無料版との差 · 同期範囲 · 返金・解約 — **grace 日数 · quota 内訳は載せない** · [`SYNC_RETENTION_POLICY.md`](SYNC_RETENTION_POLICY.md) §3-2）
 - 構造化データ（`SoftwareApplication` + `Offer`）
 
 ---

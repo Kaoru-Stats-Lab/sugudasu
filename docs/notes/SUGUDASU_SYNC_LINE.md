@@ -1,10 +1,10 @@
 # SUGUDASU Sync — ブランドライン SSOT
 
-**更新**: 2026-06-26（v2.2 · **S1 インフラ結合完了**）  
+**更新**: 2026-06-29（v2.4 · §3-0c Schedule 旗艦 IA）  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync 本番稼働**（`sync.sugudasu.com` · S1 **インフラ Done** · **製品 E2E 未完了**）
 
-> **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回ツール **T13-S 進行 Sync** · エンジン共有は `TIMELINE_TOOL_SPEC.md`。
+> **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回 **インフラ実装** は T13-S 進行 Sync · **ブランド旗艦（IA）** は **Schedule**（§3-0c）· エンジン共有は `TIMELINE_TOOL_SPEC.md`。
 
 ---
 
@@ -35,6 +35,7 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 
 | 項目 | コア **SUGUDASU** | **SUGUDASU Sync** |
 |------|---------------------|-------------------|
+| **ペルソナ** | IT リテラシー **高め** · 登録不要で完結（`DESIGN_GUIDELINE` §1.1） | **Schedule:** IT **低め** · 現場監督 — **IT 高層は Schedule スコープ外**（[`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) §0-7） |
 | 入口 | `sugudasu.com` | **`sync.sugudasu.com`**（インフラ: [`SYNC_INFRA_CLOUDFLARE.md`](SYNC_INFRA_CLOUDFLARE.md)） |
 | 登録 | 不要 | **アカウント必須** |
 | データ | ブラウザ内 · 非送信 | **クラウド保存**（イベントスコープ） |
@@ -135,6 +136,55 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 
 **ロードマップ上の要素は、原則お互いに依存しない。** 単体で出荷・単体で価値がある。
 
+### 3-0b. Sync 製品クラスター（提督 2026-06-26）
+
+**Timeline（T13-S）と Schedule はシナジーが薄い。** 同一幹事が両方を同じ文脈で使う想定は **しない**。
+
+| クラスター | 核 | シナジー高い相方（案） | 課金の見え方 |
+|------------|-----|------------------------|--------------|
+| **イベント当日** | **T13-S 進行**（timeline） | **T11-S 班分け**（group）— 同一イベント内 | S3 で **クラスター単位**に SKU 設計 |
+| **工程・納期** | **Schedule**（X02-S） | **未定** — クラスター内で後から足す | S3 導入時に状況が見える |
+
+**方針:**
+
+- **横断バンドル（timeline + schedule）を前提にしない** — LP · 統合パック SKU · UI の併用導線は作らない。
+- **各クラスターは単体で価値がある**（§3-0 維持）。相方は **同じペイン・同じ現場** から選ぶ。
+- **課金 API（S3）** はクラスターごとに Price / entitlement を決める。全製品一括の設計判断は **今しない**。
+- **技術:** `auth.users.id` · `product_type` · 案 C プール枠は **クラスター横断のインフラ** のみ。ビジネス上の「セット売り」ではない。
+
+**DB:** `product_type` の `timeline` | `group` | `schedule` は **ルーティング用 enum** — Schedule を消すのではなく **別クラスター**として扱う。
+
+### 3-0c. 旗艦プロダクト — Schedule 中心のラインナップ（提督 2026-06-29）
+
+**Google カレンダーが Workspace の時間軸ハブになるのと同様、Sync ラインの顔・ハブ・ログイン後の既定は Schedule（工程表）にする。**
+
+| 比喩 | Google | **SUGUDASU Sync** |
+|------|--------|-------------------|
+| **旗艦（毎日開く）** | カレンダー | **Schedule** — 現場監督の工程表 |
+| **衛星（同じアカウントで併存）** | Gmail · Meet · Tasks … | **Timeline 進行** · **Group 班分け** · 将来の工程周辺 |
+| **建設社内スタック（Sync 外 · 兄弟）** | Drive · Sheets（別プロダクト） | **fleet 重機台帳** · **site 現場予実** — [`SCHEDULE_CONSTRUCTION_ECOSYSTEM.md`](SCHEDULE_CONSTRUCTION_ECOSYSTEM.md) |
+| **ハブ LP** | workspace 入口でカレンダー優先の導線も多い | **`sync.sugudasu.com/`** — Schedule を主 CTA · 他製品は副カード |
+| **ログイン後** | 製品ごとだがカレンダーが中心になりうる | **`/schedule/app`** を既定（Schedule 権限あり）· イベントのみは `/timeline/app` |
+
+**§3-0b との関係（混同禁止）:**
+
+| 層 | 内容 |
+|----|------|
+| **技術クラスター** | §3-0b 維持 — timeline+group と schedule は **データ・SKU 横断バンドルしない** |
+| **ブランド IA** | §3-0c — **見せ方・ハブ・SEO・導線** は Schedule 中心。衛星製品は「同じ Sync アカウントの別アプリ」 |
+| **実装順** | S1 は **Sync 基盤 + Timeline** でインフラ検証済 — **市場向け旗艦の出荷順** は Schedule 優先（`SCHEDULE_V3_MASTER_PLAN.md`） |
+
+**ハブ LP（`/`）の最低構成（案）:**
+
+1. **ヒーロー** — 現場監督 · 工程表 · 転記削減（§0 動機）
+2. **主 CTA** → `/schedule` LP → `/schedule/app`
+3. **その他の Sync** — イベント進行（timeline）· 班分け（group）を **副製品カード**（「イベント当日向け」）
+4. **料金** — Schedule ¥200/月（組織）を前面 · Timeline はイベント単位を別枠
+
+**やらない:** timeline + schedule の **統合パック SKU** · 1画面に進行表と月間工程を混ぜる UI · コア `sugudasu.com` hub に Sync 全製品を並べる（Sync はドメイン分離維持）
+
+**正本:** IA 詳細 [`SYNC_URL_INFORMATION_ARCHITECTURE.md`](SYNC_URL_INFORMATION_ARCHITECTURE.md) §2-1 · Schedule [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) §0
+
 | 例外（Sync ルーム内の必須コア） | 内容 |
 |--------------------------------|------|
 | **同期プロトコル** | Push **または** Pull で **常に** 最新 `revision` を追従（§3-3） |
@@ -146,7 +196,7 @@ Sync は **全イベントの必須ではない**。コアと Sync は **併存*
 
 | # | 柱 | 意味 | 最初のマイルストーン |
 |---|-----|------|----------------------|
-| **K1** | **アカウント登録** | メールマジックリンク or OAuth（Google）· 幹事1人から | Phase S1 |
+| **K1** | **アカウント登録** | **メール + パスワード**（幹事1人）· マジックリンク単独は **不採用**（フィッシング耐性）— [`SYNC_AUTH_POLICY.md`](SYNC_AUTH_POLICY.md) · OAuth（Google）は後追い可 | Phase S1 |
 | **K2** | **共有** | 1編集 · 多閲覧 · **Push/Pull 同期**（§3-3） | Phase S2 · **旗艦価値** |
 | **K3** | **有料** | Stripe · イベント単位 or 月額（§4） | Phase S3 |
 | **K4** | **NO 広告** | Sync 全域で AdSense ロードしない | Phase S1 から |
@@ -375,26 +425,28 @@ Phase S4+         任意 — Webhook · 組織 WS
 
 ## 7. 製品マップ（Ledger 連携）
 
-| ID | 製品 | ライン | Tier |
+| ID | 製品 | ライン | 役割 |
 |----|------|--------|------|
-| **T13** | イベント進行（コア） | SUGUDASU | S |
-| **T13-S** | 進行 Sync | SUGUDASU Sync | S |
+| **X02-S** | **Schedule 工程表** | SUGUDASU Sync | **旗艦** · 月額 · §3-0c |
+| **T13-S** | 進行 Sync | SUGUDASU Sync | 衛星 · イベント当日クラスター |
+| **T13** | イベント進行（コア） | SUGUDASU | 無料 · F1 |
 
 将来候補（未 GO）:
 
 | ID | 案 | 備考 |
 |----|-----|------|
-| T11-S | 班分け Sync | 名簿クラウド — プライバシー慎重 · 課金文案: [`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`](GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md) |
-| X02-S | 日程テンプレ Sync | T10 縮小版とは別 |
+| T11-S | 班分け Sync | 衛星 · timeline と同クラスター · [`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`](GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md) |
+| — | 工程周辺 Export | Schedule クラスター内で後追い（打設届等） |
 
 ---
 
 ## 8. マーケ・ナラティブ
 
-**コア:** 「登録なし。1人進行なら、これだけで足りる。」  
-**Sync:** 「関係者が増えたら。新しい版が来たら、誰も古い時刻で進行しない。」
+**旗艦（Schedule · §3-0c）:** 「工程表を1回入れる。提出も週間も、そこから出す。」— 現場監督 · 転記削減 · Excel+CAD 日常  
+**衛星（Timeline）:** 「関係者が増えたイベント当日。新しい版が来たら、誰も古い時刻で進行しない。」  
+**コア（無料）:** 「登録なし。1人進行なら、これだけで足りる。」
 
-**競合:** **[Rundown Studio](https://rundownstudio.app/)** が UI/機能の主参考。差別化は日本幹事 · 非送信コア · **スマホ縦** · Sync **手動反映** · イベント単位課金。live-board は別カテゴリ（参考にしない）。
+**競合:** Schedule — Excel 工程表 · 施工管理アプリ（一般論）· Notion 有料。**Timeline** — [Rundown Studio](https://rundownstudio.app/) が UI/機能の主参考。差別化は日本幹事 · 非送信コア · **スマホ縦** · Sync **手動反映** · イベント単位課金。
 
 ---
 

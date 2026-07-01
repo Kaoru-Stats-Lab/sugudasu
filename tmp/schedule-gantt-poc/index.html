@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schedule Gantt PoC — 親子チャート · frappe-gantt</title>
+  <link rel="stylesheet" href="/node_modules/frappe-gantt/dist/frappe-gantt.css" />
+  <link rel="stylesheet" href="poc.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <header class="panel-head">
+        <h1>Schedule Gantt PoC</h1>
+        <p class="lede">親チャート ∞ · 子チャート ∞ · 親色から子シェード · HEX/RGB/透過</p>
+      </header>
+
+      <section class="panel-section">
+        <h2>親チャートを追加</h2>
+        <label class="field">
+          <span>名前</span>
+          <input id="parent-name" type="text" placeholder="例: 設計フェーズ" />
+        </label>
+        <label class="field">
+          <span>色（既定パレット）</span>
+          <select id="parent-palette"></select>
+        </label>
+        <label class="field">
+          <span>カスタム色（HEX / rgb / rgba）</span>
+          <input id="parent-color-custom" type="text" placeholder="#2563EB または rgba(37,99,235,0.5)" />
+        </label>
+        <label class="field row-check">
+          <input id="parent-transparent" type="checkbox" />
+          <span>透過（fill なし · stroke のみ）</span>
+        </label>
+        <button type="button" id="btn-add-parent" class="btn primary">親チャートを追加</button>
+      </section>
+
+      <section class="panel-section">
+        <h2>子チャートを追加</h2>
+        <label class="field">
+          <span>親</span>
+          <select id="child-parent"></select>
+        </label>
+        <label class="field">
+          <span>名前</span>
+          <input id="child-name" type="text" placeholder="例: ワイヤー" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>開始</span>
+            <input id="child-start" type="date" />
+          </label>
+          <label class="field">
+            <span>終了</span>
+            <input id="child-end" type="date" />
+          </label>
+        </div>
+        <label class="field">
+          <span>子の色上書き（任意）</span>
+          <input id="child-color-override" type="text" placeholder="空=親系統シェード" />
+        </label>
+        <label class="field row-check">
+          <input id="child-transparent" type="checkbox" />
+          <span>透過</span>
+        </label>
+        <button type="button" id="btn-add-child" class="btn">子チャートを追加</button>
+      </section>
+
+      <section class="panel-section">
+        <h2>一覧</h2>
+        <ul id="parent-list" class="parent-list"></ul>
+        <button type="button" id="btn-reset" class="btn ghost">サンプルに戻す</button>
+      </section>
+    </aside>
+
+    <main class="canvas">
+      <div id="gantt-forest" class="gantt-forest" aria-live="polite"></div>
+    </main>
+  </div>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

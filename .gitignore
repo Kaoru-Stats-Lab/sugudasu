@@ -1,6 +1,7 @@
 dist/
 dist-sync/
 .env.sync.local
+.codegraph/
 assets/tw-build.css
 node_modules/
 .ops/

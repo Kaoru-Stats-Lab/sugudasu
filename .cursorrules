@@ -6,14 +6,17 @@
 
 | タスク | SSOT |
 |--------|------|
-| **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` |
+| **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` · Auth `SYNC_AUTH_POLICY.md` · 思想 `SYNC_S1_REMAINING_TASKS.md` |
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
-| **Schedule · Sync UI（Notion Like 表）** | **`docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色マップ正本）→ `docs/DESIGN_GUIDELINE_NOTION_LIKE.md`（分析参照）· 仕様 `docs/notes/SCHEDULE_TOOL_SPEC.md` · ルール `.cursor/rules/sugudasu-design-schedule.mdc` |
+| **Schedule · Sync UI（Notion Like 表）** | **計画** `SCHEDULE_V3_MASTER_PLAN.md` · **汎用/特化** `SCHEDULE_GENERIC_VS_VERTICAL.md` · **UI文案** `SCHEDULE_UI_COPY.md` · **議論ログ** `SCHEDULE_SPLIT_PANE_DECISION_LOG.md` · **Pain/横展開** `SCHEDULE_SUPERVISOR_PAIN_HORIZON.md` · **週間リスト** `SCHEDULE_WEEKLY_LIST_DESIGN.md` · **エコシステム** `SCHEDULE_CONSTRUCTION_ECOSYSTEM.md` · Gemini週間 `docs/prompts/schedule-weekly-list-gemini-prompt.md` · PoC仕様 `SCHEDULE_SPLIT_PANE_POC_SPEC.md` · **`DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色）· 仕様 `SCHEDULE_TOOL_SPEC.md` · 決定 `SYNC_SCHEDULE_PRODUCT_DECISION.md` · `.cursor/rules/sugudasu-design-schedule.mdc` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
+| **Agent トークン削減（RTK）** | `docs/notes/RTK_CURSOR.md` |
+| **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
+| **Sync S1 E2E 試行錯誤ログ** | `docs/notes/SYNC_S1_E2E_SESSION_LOG_20260626.md` |
 
 ## 命名変更 · 新規ツール · デプロイ前（必須）
 
