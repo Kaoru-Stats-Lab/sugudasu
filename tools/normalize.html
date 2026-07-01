@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Excel列コピーの全角半角・空白整理をブラウザだけで完結。500行まで、行数チェック付き。データ非送信でEC登録・名簿・CSV向けに貼付→変換→コピー。">
-    <title>全角半角・文字列正規化（行数チェック） | SUGUDASU</title>
+    <meta name="description" content="ExcelやECのテキストエラーを1秒解決。顧客名簿や商品データの全角半角・空白・改行を、外部送信なしのブラウザ内だけで安全に整えます。500行まで、行数チェック付き。">
+    <title>全角半角整え（行数チェック） | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="全角半角・文字列正規化（行数チェック）">
-    <meta property="og:description" content="Excel/スプシから1列コピーしたテキストを用途別に正規化。入力と出力の行数一致を表示し、うっかり貼り戻しズレを防ぎます。">
+    <meta property="og:title" content="SUGUDASU 全角半角整え（行数チェック）">
+    <meta property="og:description" content="Excel/スプシから1列コピーしたテキストを用途別に整えます。顧客リストも外部送信ゼロ。入力と出力の行数一致を表示し、うっかり貼り戻しズレを防ぎます。">
     <meta property="og:url" content="https://sugudasu.com/normalize">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="Excel列コピーの全角半角整理（行数チェック付き）">
-    <meta name="twitter:description" content="登録不要・ブラウザ完結。500行まで。変換後に「入力N行→出力M行」を確認してからコピー。">
+    <meta name="twitter:title" content="Excel列コピーの全角半角整え（行数チェック付き）">
+    <meta name="twitter:description" content="登録不要・外部送信ゼロ。500行まで。変換後に「入力N行→出力M行」を確認してからコピー。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 正規化" data-sg-subtitle="500行まで · 行数チェック" data-sg-tool-id="normalize"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 全角半角整え" data-sg-subtitle="500行まで · 外部送信ゼロ" data-sg-tool-id="normalize"></div>
 
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <header class="max-w-3xl space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">Excel列コピー · 非送信</p>
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">外部送信ゼロ · ローカル完結</p>
         <p class="text-sm text-slate-600 sg-tool-lead">
-            スプシ/Excel から<strong>1列コピー</strong>したテキストを、用途別プリセットで整理。
-            変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示。<span class="whitespace-nowrap">中身を見なくても行ズレに気づけます。</span>
+            ExcelやECのテキストエラーを<strong>1秒解決</strong>。顧客名簿や商品データの全角半角・空白・改行を、
+            <strong>ブラウザ内だけ</strong>で安全に整えます。変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示。
         </p>
     </header>
 
@@ -52,11 +52,13 @@
         <section class="sg-card p-5 lg:p-6 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">用途・変換</h2>
 
-            <div class="sg-segment sg-segment--cols-3 sg-segment--mode-ec sg-segment--notion-soft" id="preset-segment" role="tablist" aria-label="用途プリセット">
+            <div class="sg-segment sg-segment--cols-5 sg-segment--mode-ec sg-segment--notion-soft" id="preset-segment" role="tablist" aria-label="用途プリセット">
                 <span class="sg-segment__pill" aria-hidden="true"></span>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="ec_form" aria-selected="true">EC登録</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="csv_roster" aria-selected="false">CSV名簿</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="fullwidth_ascii" aria-selected="false">全角英数</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="comma_join" aria-selected="false">改行→カンマ</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="name_trim" aria-selected="false">姓名スペース</button>
             </div>
             <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
 
@@ -109,7 +111,7 @@
 
 <section class="no-print sg-faq-section">
     <div class="sg-faq-inner">
-        <h2 class="sg-faq-title">文字列正規化のよくある質問</h2>
+        <h2 class="sg-faq-title">全角半角整えのよくある質問</h2>
         <div class="sg-faq-list">
             <details class="sg-faq">
                 <summary>Excelに貼り戻したら行が上下にズレました</summary>
@@ -133,6 +135,12 @@
                 <summary>変換ボタンを押し忘れて古いデータをコピーしませんか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>改行をカンマ区切りの1行にできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。このとき行数は変わるため、コピー前に行数バッジを確認してください。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -173,6 +181,8 @@ const PRESET_HINTS = {
   ec_form: '<strong>EC・フォーム:</strong> 英数半角 · 空白整理 · ハイフンは触りません。',
   csv_roster: '<strong>CSV・名簿:</strong> 英数半角 · 空白整理 · ハイフン統一（長音ーは保護）。',
   fullwidth_ascii: '<strong>全角英数:</strong> 見た目用。英数字を全角にします。',
+  comma_join: '<strong>改行→カンマ:</strong> 縦一列のリストをカンマ区切りの1行に。<strong>行数が変わります。</strong>',
+  name_trim: '<strong>姓名スペース:</strong> 各行の全角・半角スペースをすべて削除して密着します。',
 };
 
 const inputEl = document.getElementById('input-text');
@@ -209,6 +219,17 @@ function applyPresetToggles(preset) {
   toggleAscii.checked = d.ascii;
   toggleSpace.checked = d.space;
   toggleHyphen.checked = d.hyphen;
+  syncToggleAvailability(preset);
+}
+
+function syncToggleAvailability(preset) {
+  const d = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
+  const mode = d.mode || 'line';
+  toggleHyphen.disabled = mode !== 'line';
+  toggleHyphen.closest('label').classList.toggle('opacity-50', mode !== 'line');
+  const spaceLocked = mode === 'name_trim';
+  toggleSpace.disabled = spaceLocked;
+  toggleSpace.closest('label').classList.toggle('opacity-50', spaceLocked);
 }
 
 function renderPasteWarnings(text) {
@@ -340,7 +361,7 @@ btnSwap.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   presetController = window.SUGUDASU_SEGMENT.mount({
     segmentId: 'preset-segment',
-    order: ['ec_form', 'csv_roster', 'fullwidth_ascii'],
+    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'name_trim'],
     initial: 'ec_form',
     hintId: 'preset-hint',
     hints: PRESET_HINTS,
@@ -348,6 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ec_form: 'sg-segment--mode-ec',
       csv_roster: 'sg-segment--mode-csv',
       fullwidth_ascii: 'sg-segment--mode-fw',
+      comma_join: 'sg-segment--mode-local',
+      name_trim: 'sg-segment--mode-label',
     },
     onChange: (value) => {
       applyPresetToggles(value);

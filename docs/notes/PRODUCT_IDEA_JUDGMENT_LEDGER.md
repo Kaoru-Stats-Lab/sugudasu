@@ -185,6 +185,8 @@
 
 **イベント束アイデアログ（未評価・ブレストのみ）:** `docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`（2026-06-25）
 
+**事務OL軸（採否FIX）:** Backlog **§1-15** · 思想 **§8-12** — Seikei→normalize · Mask P1 · Taimu P2 · Keep OUT
+
 **推奨リリース順（ディレクター案・lottery除く）:**  
 1) T03 normalize ✓ → 2) T09 webp ✓ → 3) T11 group-split ✓ → **4) T13 timeline コア（M01 · P0）** → **5) T13-S Sync S1–S2** → 6) group-split モバイル Resilience（M02 · P0）
 

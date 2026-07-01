@@ -121,16 +121,16 @@
     },
     "normalize": {
       "file": "normalize.html",
-      "conceptName": "文字列正規化",
-      "productName": "SUGUDASU 正規化",
-      "navLabel": "正規化",
+      "conceptName": "テキスト整え",
+      "productName": "SUGUDASU 全角半角整え",
+      "navLabel": "全角半角",
       "navIcon": "🔤",
       "inNav": true,
       "navOrder": 9,
-      "name": "文字列正規化",
-      "version": "1.0.0",
+      "name": "全角半角・テキスト整え",
+      "version": "1.1.0",
       "stage": "beta",
-      "statusNote": "500行cap · 行数Before/After · 用途プリセット3 · T03 Phase A"
+      "statusNote": "500行cap · 行数Before/After · 用途プリセット5 · 事務OL訴求 · T03"
     },
     "webp-to-jpg": {
       "file": "webp-to-jpg.html",

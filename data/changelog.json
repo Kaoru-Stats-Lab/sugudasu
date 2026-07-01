@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-06-29",
+  "updatedAt": "2026-07-01",
   "entries": [
+    {
+      "date": "2026-07-01",
+      "type": "feat",
+      "title": "全角半角整え（normalize）— 命名刷新・事務OLプリセット2種",
+      "body": "productName を SUGUDASU 全角半角整え / navLabel 全角半角 に変更（id=normalize 不変）。プリセット追加: 改行→カンマ · 姓名スペース削除。hub・外部送信ゼロバッジ・両方ターゲットコピー。v1.1.0。",
+      "tools": ["normalize.html", "hub.html", "text-normalize.js", "group-split.html", "statements.html"]
+    },
     {
       "date": "2026-06-29",
       "type": "feat",

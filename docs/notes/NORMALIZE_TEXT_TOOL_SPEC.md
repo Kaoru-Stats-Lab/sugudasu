@@ -14,7 +14,8 @@
 |------|------|
 | 仮ファイル | `tools/normalize.html`（URL `/normalize` · 実装時に確定） |
 | registry `id` | `normalize`（`data/tool-registry.json` · beta v1.0.0） |
-| 一言 | **Excel 列コピーの半角/空白整理を、貼付→変換→コピーで3秒**（非送信） |
+| **命名（提督FIX 2026-07-01）** | productName **SUGUDASU 全角半角整え** · navLabel **全角半角** · conceptName **テキスト整え** — id/URL 不変 · 実装反映は Backlog §1-15-1 |
+| 一言 | **Excel 列コピーの全角半角・空白を、貼付→変換→コピーで3秒**（非送信） |
 | ペルソナ | **P-B** 実務マイクロ修正職人（`PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-3） |
 | ポジション | Excel `ASC`/`WIDE`/`TRIM` · GAS `replaceAll` の**前段ワンタップ**。完全代替ではない |
 | SUGUDASU適合 | F1–F7 ◎ · 軽量優先 · **無限行禁止** |
@@ -83,6 +84,8 @@
 | `ec_form` | EC・フォーム登録用 | モール/自社ECの半角英数字段 | 英数半角 → 空白整理 → ハイフンは触らない |
 | `csv_roster` | CSV・名簿用 | スプシ再貼付 · 名簿 · fair-draw 前 | 英数半角 → 全角スペ→半角 → 行trim → ハイフン統一 **ON** |
 | `fullwidth_ascii` | 見た目を全角英数に | 帳票・見栄え | 英数全角 → 空白は最小限 |
+| `comma_join` | 改行→カンマ | メールツール · SQL IN句 | 縦一列をカンマ区切り1行に（**行数が変わる**） |
+| `name_trim` | 姓名スペース削除 | 顧客管理 · 名簿 | 各行の全角・半角スペースをすべて削除 |
 
 初期選択: `ec_form`
 

@@ -15,7 +15,7 @@
     { id: 'shift', file: 'shift.html', label: 'シフト', icon: '📅' },
     { id: 'report', file: 'report.html', label: '議事録', icon: '📝' },
     { id: 'reverse', file: 'reverse.html', label: '逆引き', icon: '📖' },
-    { id: 'normalize', file: 'normalize.html', label: '正規化', icon: '🔤' },
+    { id: 'normalize', file: 'normalize.html', label: '全角半角', icon: '🔤' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },

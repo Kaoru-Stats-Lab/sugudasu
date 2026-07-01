@@ -1,19 +1,21 @@
 {
   "tool_id": "normalize",
   "status": "reviewed",
-  "updatedAt": "2026-06-22",
-  "oneLiner": "Excel列コピーの全半角・空白を用途別プリセットで整え、500行まで非送信変換",
+  "updatedAt": "2026-07-01",
+  "oneLiner": "Excel列コピーの全半角・空白・改行を用途別プリセットで整え、500行まで外部送信ゼロで変換",
   "personas": ["総務", "EC登録担当", "班分け前の名簿整備"],
   "implemented": [
     "500行上限・行数 Before/After 表示",
-    "用途プリセット3種（EC登録・名簿・CSV）",
+    "用途プリセット5種（EC登録・名簿・全角英数・改行→カンマ・姓名スペース）",
+    "productName: SUGUDASU 全角半角整え（id=normalize 不変）",
     "コピー時に最新設定で再変換してからクリップボードへ",
     "先頭ゼロ保護・カタカナ長音保護（プリセット依存）",
     "オフライン動作"
   ],
   "notImplemented": [
     "複数列同時の高度なCSVパース",
-    "サーバー側バッチ処理"
+    "サーバー側バッチ処理",
+    "roster_office / crm_import 専用プリセット"
   ],
   "dataHandling": {
     "upload": false,

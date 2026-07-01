@@ -73,9 +73,27 @@ assert.equal(countLines('a\nb'), 2);
   assert.ok(r.output.includes('Ａ') || r.output.includes('Ｂ'));
 }
 
+// comma_join
+{
+  const r = normalizeText('a@x.com\nb@y.com\n', { preset: 'comma_join' });
+  assert.equal(r.output, 'a@x.com,b@y.com');
+  assert.equal(r.inputLines, 3);
+  assert.equal(r.outputLines, 1);
+  assert.equal(r.lineCountMatch, false);
+}
+
+// name_trim
+{
+  const r = normalizeText('山田　太郎\n山田 太郎', { preset: 'name_trim' });
+  assert.equal(r.output, '山田太郎\n山田太郎');
+  assert.equal(r.inputLines, r.outputLines);
+}
+
 // プリセット default toggles
 assert.equal(PRESET_DEFAULTS.ec_form.hyphen, false);
 assert.equal(PRESET_DEFAULTS.csv_roster.hyphen, true);
+assert.equal(PRESET_DEFAULTS.comma_join.mode, 'comma_join');
+assert.equal(PRESET_DEFAULTS.name_trim.mode, 'name_trim');
 
 // トグル上書き
 {
