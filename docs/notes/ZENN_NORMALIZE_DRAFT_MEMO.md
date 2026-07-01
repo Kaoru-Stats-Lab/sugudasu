@@ -1,7 +1,7 @@
 # Zenn 向け normalize（T03）記事ネタ — 備忘録
 
-**更新:** 2026-06-19  
-**状態:** ドラフト未着手 · アイデア置き場  
+**更新:** 2026-07-01  
+**状態:** 初稿あり · [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md)  
 **実装背景:** `docs/BACKLOG.md` §1-10 · `docs/notes/NORMALIZE_TEXT_TOOL_SPEC.md`  
 **Gemini リサーチ正本:** `docs/notes/SUGUDASU_OOPS_GUARDRAILS.md`（事例 A01–E02 · 三大事故タイプ）
 
@@ -64,11 +64,13 @@
    - EC登録 / CSV名簿 / 全角英数 — 裏のパイプラインは固定（NORMALIZE spec §3）
    - 「正規表現いらない」が記事の実務パート
 
-5. **横展開 — normalize から全ツールへ**
+5. **Excelでもできるのに、なぜプロダクトか**（前段ワンタップ · 行数UI · 非送信）
+6. **なぜ500行 cap / なぜ用途3択**（Outcome-first 表）
+7. **横展開 — normalize から全ツールへ**
    - `sg-copy-feedback.js` · `DESIGN_GUIDELINE.md` §3.8
    - warikan / invoice / fair-draw へ同型コピー契約（1段落 · #2 開発記事への内部リンク）
 
-6. **やらないこと · Phase B**
+8. **やらないこと · Phase B**
    - 全文 diff · AI判定 · CSV列操作（T06 は別）
    - v1.1: 差分ハイライト · ヘッダー行警告（書くなら「これから」1行）
 
@@ -157,6 +159,6 @@
 ## 次アクション（執筆時）
 
 - [ ] Gemini プロンプトで **他サービスあるある表** を取得 · SSOT化
-- [ ] 案A で `ZENN_ARTICLE_12_DRAFT.md` 作成
+- [x] 案A で `ZENN_ARTICLE_12_DRAFT.md` 作成
 - [ ] スクショ6枚
 - [ ] `changelog.json` · 任意 X 連動

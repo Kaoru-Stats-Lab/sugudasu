@@ -1,6 +1,6 @@
 # Zenn 向け group-split 記事ネタ — 備忘録
 
-**更新:** 2026-06-20（提督実体験 · アイディアソン · スイッチャー · 職能名簿ネタ追加）  
+**更新:** 2026-07-01（初稿 · 予約投稿準備）  
 **製品:** T11 · URL `/group-split`（予定）· `tools/group-split.html` · `assets/group-split.js`  
 **製品境界:** 名簿 **非送信** · **Copy-first**（TSV/Slack 等）· 演出ルーレットなし · Zoom API なし  
 **Gemini 正本:** [`group-split-gemini-research-RESULT.md`](group-split-gemini-research-RESULT.md)  

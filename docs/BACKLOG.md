@@ -163,7 +163,12 @@
 
 - [ ] ページ内「このあと」回遊 — **削除** · §2-4 横断CTA待ち
 - [ ] Phase B（v1.1）: 差分ハイライト · 変更内訳 · ヘッダー行警告 · 制御文字行番号
-- [ ] **Zenn #12** — Gemini事故カタログ × 他サービスあるある解消（[`ZENN_NORMALIZE_DRAFT_MEMO.md`](notes/ZENN_NORMALIZE_DRAFT_MEMO.md)）
+- [ ] **Zenn #2** — 開発裏側 · AI分担（[`ZENN_ARTICLE_02_DRAFT.md`](notes/ZENN_ARTICLE_02_DRAFT.md) · **9月上旬**）
+- [ ] **Zenn #3** — warikan · 固定額 · LRM · LINE清算文（[`ZENN_ARTICLE_03_DRAFT.md`](notes/ZENN_ARTICLE_03_DRAFT.md) · [`ZENN_WARIKAN_DRAFT_MEMO.md`](notes/ZENN_WARIKAN_DRAFT_MEMO.md) · **9月中旬〜**）
+- [ ] **Zenn #6** — 非送信設計 · 静的配信 · DevTools（[`ZENN_ARTICLE_06_DRAFT.md`](notes/ZENN_ARTICLE_06_DRAFT.md) · [`ZENN_PRIVACY_DESIGN_DRAFT_MEMO.md`](notes/ZENN_PRIVACY_DESIGN_DRAFT_MEMO.md)）
+- [ ] **Zenn #11** — fair-draw · 証跡3点 · 景表法一次整理（[`ZENN_ARTICLE_11_DRAFT.md`](notes/ZENN_ARTICLE_11_DRAFT.md) · **#14 後**）
+- [ ] **Zenn #14** — 班分け · RAND()卒業 · **予約投稿準備**（[`ZENN_ARTICLE_14_DRAFT.md`](notes/ZENN_ARTICLE_14_DRAFT.md) · [`X_POST_ZENN14_LAUNCH.md`](notes/X_POST_ZENN14_LAUNCH.md)）
+- [ ] **Zenn #12** — Gemini事故カタログ × 他サービスあるある解消（[`ZENN_NORMALIZE_DRAFT_MEMO.md`](notes/ZENN_NORMALIZE_DRAFT_MEMO.md) · [`ZENN_ARTICLE_12_DRAFT.md`](notes/ZENN_ARTICLE_12_DRAFT.md)）
 - [ ] **Zenn #15** — CRDT × 現場同期 · 行が混ざらない進行表（[`ZENN_CRDT_SYNC_DRAFT_MEMO.md`](notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md) · **S4 ゲート**）
 
 ### 1-11. `group-split.html` — T11 グループ分け（**Phase A/B/C 実装済** · UX改善継続）
@@ -1725,7 +1730,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [x] **P1-5c** FAQ 複数コース/口数/Wチャンス — 名簿重複行・Excel分割・複数回実行（P12–P15連動）
 - [ ] **P2-2** 検証タブ（JSON再計算一致）— 実装後、発表テキストに検証導線を追記可
 - [ ] **P2-2b** 3点セット **単一ZIP** 一括DL
-- [ ] **P2-3** Zenn 記事（景表法チェック / Excel抽選卒業）— ネタ備忘録 [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md)
+- [ ] **P2-3** Zenn 記事（景表法チェック / Excel抽選卒業）— 初稿 [`ZENN_ARTICLE_11_DRAFT.md`](notes/ZENN_ARTICLE_11_DRAFT.md) · #14 後公開推奨
 - [ ] **P2-4** `LOTTERY_PRIZE_LAW_TOOL_SPEC.md` Phase1 証跡節の正式追記（campaignLabel · 3点セット · 並行CP）
 
 ### 15-6. 2026-06-19 スプリント — 運用UX・証跡（背景まとめ）

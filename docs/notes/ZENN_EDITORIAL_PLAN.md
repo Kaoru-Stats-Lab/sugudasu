@@ -1,6 +1,6 @@
 # Zenn 編集カレンダー（Gemini 企画 · SSOT）
 
-**更新:** 2026-06-29（§2 テーマ15 CRDT · #15 アウトライン）  
+**更新:** 2026-07-01（§4 7〜9月確定表 · #2 9月上旬 · **#3 warikan ストック**）  
 **生成:** `docs/prompts/zenn-editorial-gemini.md`  
 **採否:** Claude/Cursor 突合済 · 提督執筆前提（Gemini 本文禁止）
 
@@ -43,7 +43,7 @@
 |---|-----------|-----|----------|------|------------|------|------|----------------|
 | 1 | 登録不要・下書きから転用する見積書と請求書 | A | /invoice | 個人事業主 | 下書き保存・タブ切替転用 | **P0** | 1,800 | article_01_invoice_convert |
 | 2 | 非エンジニアがAIと作った実務ツールの裏側 | B | / | 開発者 | AI使い分け・静的配信・changelog速度 | P1 | 2,200 | article_02_hub_devstory |
-| 3 | 合コンで揉めない固定額割り勘計算 | A | /warikan | 幹事 | 固定額控除・端数・LINE文 | P1 | 1,500 | article_03_warikan_fixedmode |
+| 3 | 飲み会幹事の傾斜割り勘（固定額＋残り按分・丸め・LINE） | A | /warikan | 幹事 | 固定額控除・端数・LINE文 | P1 | 1,500 | article_03_warikan_fixedmode |
 | 4 | 店舗に合わせて枠数を変えるシフト表 | A | /shift | 店長 | 可変枠1〜3・公平生成・印刷 | P1 | 1,600 | article_04_shift_flexslots |
 | 5 | 箇条書きメモを議事録に整形するアプローチ | A | /report | 事務 | 構造化・コピー・ローカル処理 | P1 | 1,500 | article_05_report_format |
 | 6 | 顧客データをサーバーに送らないWebツールの設計 | B | **/** | セキュリティ関心 | 静的配信・ブラウザ内処理 | P1 | 2,000 | article_06_privacy_design |
@@ -51,13 +51,15 @@
 | 8 | ニュアンス類語検索でマンネリ回避 | C | /reverse | ビジネス | 言い換え手順 | P2 | 1,500 | article_08_reverse |
 | 9 | マナーを意識したギフト提案の仕組み | C | /present | 一般 | 関係性・予算絞り込み | P2 | 1,500 | article_09_present |
 | 10 | SNSプロフィールを文字化けさせずに飾る | A | /sns | SNS運用者 | フォント・文字数カウンター | P2 | 1,600 | article_10_sns |
-| 11 | （候補 · 未確定）fair-draw — Excel抽選卒業 / 景表法一次整理 | A (+B) | /fair-draw | マーケ幹事 · FL | 公平抽選 · 証跡3点 · 非送信 | **P2** | 2,000 | article_11_fairdraw_* |
+| 11 | SNS懸賞の抽選を Excel からやめた話 — 公平シャッフルと説明用PDF | A (+B) | /fair-draw | マーケ幹事 · FL | 証跡3点 · 非送信 · note=景表法 | **P2** | 2,200 | article_11_fairdraw_excel |
 | 12 | Excel列コピーと全角半角サイトの「あるある」— 行数チェック付き正規化 | A (+B) | /normalize | EC·名簿担当 · FL | Gemini事故カタログ · 非送信 · コピーゲート | **P1** | 2,000 | article_12_normalize_oops |
 | **14** | **研修の班分けを Excel の RAND() からやめる** — 納会・ハッカソンで重さが違う | A (+B) | /group-split | 人事 · 研修 · **ハッカソン運営** | 非送信 · 職能名簿 · スイッチャー · TSV/Slack | **P1** | 2,200 | article_14_group_split |
 | **15** | **イベント進行表を同時編集しても行が混ざらない** — 幹事向け衝突フリー同期（CRDT） | B (+A) | sync/timeline | 幹事 · FE · 個人開発 | LSeq · 手動反映 · 短期バッファ · 現場 | **P1** | 2,200 | article_15_sync_crdt_field |
 
-**#11 詳細:** [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](ZENN_FAIR_DRAW_DRAFT_MEMO.md)  
-**#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**  
+**#11 詳細:** [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](ZENN_FAIR_DRAW_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_11_DRAFT.md`](ZENN_ARTICLE_11_DRAFT.md) · **公開:** #14 後推奨  
+**#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**  
+**#6 詳細:** [`docs/notes/ZENN_PRIVACY_DESIGN_DRAFT_MEMO.md`](ZENN_PRIVACY_DESIGN_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_06_DRAFT.md`](ZENN_ARTICLE_06_DRAFT.md)  
+**#3 詳細:** [`docs/notes/ZENN_WARIKAN_DRAFT_MEMO.md`](ZENN_WARIKAN_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_03_DRAFT.md`](ZENN_ARTICLE_03_DRAFT.md)  
 **#14 詳細:** [`docs/notes/ZENN_GROUP_SPLIT_DRAFT_MEMO.md`](ZENN_GROUP_SPLIT_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_14_DRAFT.md`](ZENN_ARTICLE_14_DRAFT.md)  
 **#15 詳細:** [`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`](ZENN_CRDT_SYNC_DRAFT_MEMO.md) · **公開ゲート:** S4 行 CRDT または設計メモ明示
 
@@ -75,17 +77,20 @@
 - **H2:** アカウント不要で始められる理由 / 下書きをローカル保存する意味 / 書類タブ切替で転用
 - **CTA:** https://sugudasu.com/invoice?utm_source=zenn&utm_medium=social&utm_campaign=article_01_invoice_convert
 
-### #2 開発の裏側（7月3週）
+### #2 開発の裏側（P1 · 初稿あり · 9月上旬予定）
 
-- **状態:** アウトライン `docs/notes/ZENN_ARTICLE_02_OUTLINE.md`（§4 同名キーワード節追記済 · 執筆前）
-- **リード:** プログラミング未経験の視点から、AIと並走して作った知見を共有します。
-- **H2:** AIの使い分け / Cloudflare Pages の選択 / Form→changelog の速度 / **「スグダス」同名キーワードと Query Disambiguation**
+- **状態:** [`ZENN_ARTICLE_02_DRAFT.md`](ZENN_ARTICLE_02_DRAFT.md) · Zenn 下書き保存可
+- **公開:** **9月上旬**（#11 の後 · B軸締め）
+- **タイトル案:** `9月上旬エンジニアではないけれど、AIと並走して実務ツールを直すまで`
+- **リード:** ツール連載のあと · AI分担 · Cloudflare · changelog
 - **CTA:** https://sugudasu.com/?utm_source=zenn&utm_medium=social&utm_campaign=article_02_hub_devstory
 
-### #3 固定額割り勘（7月1週）
+### #3 固定額割り勘（P1 · 初稿あり · 9月中旬〜）
 
-- **リード:** 特定グループだけ「一律3,000円」にする精算の手間を短くします。
-- **H2:** 固定額控除ロジック / 端数丸め / LINE用清算文
+- **状態:** [`ZENN_ARTICLE_03_DRAFT.md`](ZENN_ARTICLE_03_DRAFT.md) · Zenn 下書き保存可
+- **公開:** **9月中旬〜下旬**（#2 の後 · A軸再開）
+- **タイトル:** `飲み会幹事の傾斜割り勘 — 固定額＋残り按分・丸め・LINE清算文`
+- **尖り:** 傾斜係数 · 固定額＋残り按分（合コン以外も）· LRM · LINE清算文 · 2次会は別計算
 - **CTA:** https://sugudasu.com/warikan?utm_source=zenn&utm_medium=social&utm_campaign=article_03_warikan_fixedmode
 
 ### #4 可変シフト（8月1週）
@@ -100,6 +105,28 @@
 - **H2:** 構造化のメリット / コピーしてチャットへ / ローカル処理
 - **CTA:** https://sugudasu.com/report?utm_source=zenn&utm_medium=social&utm_campaign=article_05_report_format
 
+### #11 fair-draw（P2 · **スリム版ドラフト** · #14 後）
+
+- **状態:** [`ZENN_ARTICLE_11_DRAFT.md`](ZENN_ARTICLE_11_DRAFT.md)（~2,200字）· note [`NOTE_ARTICLE_FAIR_DRAW_DRAFT.md`](NOTE_ARTICLE_FAIR_DRAW_DRAFT.md)
+- **Zenn 尖り:** RAND 卒業 · 疑惑3事例 · Phase 1 · 証跡3点 · 限界（抽選まで）· Phase 0 は note へ1段落
+- **note 尖り:** 景表法 · 消費者庁 · 法務なし · SNSナレッジ
+- **CTA:** https://sugudasu.com/fair-draw?utm_source=zenn&utm_medium=social&utm_campaign=article_11_fairdraw_excel
+
+### #6 非送信設計（P1 · 初稿あり）
+
+- **状態:** 初稿 [`ZENN_ARTICLE_06_DRAFT.md`](ZENN_ARTICLE_06_DRAFT.md) · 予約投稿は提督判断
+- **リード:** ブラウザは多層 · オンライン/オフラインの切り分け · DevTools
+- **H2:** 静的配信 / Copy-first / 通信レイヤ / DevTools / Sync は別ライン
+- **CTA:** https://sugudasu.com/statements?utm_source=zenn&utm_medium=social&utm_campaign=article_06_privacy_design
+
+### #14 班分け（予約投稿準備 · P1）
+
+- **状態:** 初稿 [`ZENN_ARTICLE_14_DRAFT.md`](ZENN_ARTICLE_14_DRAFT.md) · **予約投稿待ち**（スクショ後）
+- **リード:** `RAND()` は再現説明できない — シード付きシャッフルで「説明できる公平」
+- **H2:** あるある / 納会・ハッカソンで重さが違う / RAND vs シード / ルーレットとの住み分け / TSV·Slack
+- **X 連動:** [`X_POST_ZENN14_LAUNCH.md`](X_POST_ZENN14_LAUNCH.md)
+- **CTA:** https://sugudasu.com/group-split?utm_source=zenn&utm_medium=social&utm_campaign=article_14_group_split
+
 ### #15 CRDT × 現場同期（S4 前後 · P1）
 
 - **状態:** アウトライン [`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`](ZENN_CRDT_SYNC_DRAFT_MEMO.md) · 執筆未
@@ -112,15 +139,40 @@
 
 ## §4 3ヶ月スケジュール
 
+### ストック状況（#12〜#3 · 2026-07-01）
+
+| # | 初稿 | メモ | Zenn 下書き |
+|---|------|------|-------------|
+| #12 normalize | ✅ | `ZENN_NORMALIZE_DRAFT_MEMO` | 予約 7/7 |
+| #14 group-split | ✅ | `ZENN_GROUP_SPLIT_DRAFT_MEMO` | 可 |
+| #6 非送信 | ✅ | `ZENN_PRIVACY_DESIGN_DRAFT_MEMO` | 可 |
+| #11 fair-draw | ✅ | `ZENN_FAIR_DRAW_DRAFT_MEMO` + note 景表法 | 可 |
+| #2 開発裏側 | ✅ | `ZENN_ARTICLE_02_OUTLINE` | 可 |
+| **#3 warikan** | ✅ | `ZENN_WARIKAN_DRAFT_MEMO` | 可（9月） |
+
+**note ストック:** `NOTE_ARTICLE_FAIR_DRAW_DRAFT` · `note-01-group-split-draft`（公開可）
+
+### 確定・進行中（2026年7〜9月 · Zenn）
+
+| 時期 | # | 状態 | 軸 | メモ |
+|------|---|------|-----|------|
+| 6月 | #1 invoice | **公開済** | A | 初回 |
+| 7月 | #15 CRDT | **公開済** | B | Sync 入口（計画より先行可） |
+| **7/7** | #12 normalize | **予約** | A | タイトルに日付入り |
+| **7月中旬〜下旬** | #14 group-split | 下書き | A | RAND 卒業 · 班分け |
+| **8月上旬** | #6 非送信設計 | 下書き | B | 背骨 · DevTools |
+| **8月中旬** | #11 fair-draw | 下書き | A | 懸賞抽選 · note 景表法と同週可 |
+| **9月上旬** | **#2 開発裏側** | 下書き可 | B | AI分担 · changelog · **B軸締め** |
+| **9月中旬〜下旬** | **#3 warikan** | 下書き可 | A | 固定額 · LRM · LINE清算文 |
+
+### 繰越（shift / report — 未執筆）
+
 | 時期 | # | 軸 | X連動メモ |
 |------|---|-----|-----------|
-| **6月4週** | #1 | A | W1-D2 invoice とURL共有 · 固定ピンと連動 |
-| **7月1週** | #3 | A | 固定額割り勘 · 夏の飲み会 |
-| **7月3週** | #2 | B | 非エンジニア×AI開発（社名なし） |
-| **8月1週** | #4 | A | お盆シフト · 可変枠 |
-| **8月3週** | #5 | A | 盆明け · 議事録 |
+| 案 | #4 shift | A | お盆シフト |
+| 案 | #5 report | A | 議事録整形 |
 
-**9月以降（案）:** #6 非送信設計 → #7 label · **#15 Sync CRDT（S4 ゲート）** · receipt は **10月以降**（確定申告前）
+**媒体:** note — [`NOTE_ARTICLE_FAIR_DRAW_DRAFT.md`](NOTE_ARTICLE_FAIR_DRAW_DRAFT.md)（#11 同週）· [`note-01-group-split`](../../drafts/note-01-group-split-draft.md)（#14 連動可）
 
 ---
 
