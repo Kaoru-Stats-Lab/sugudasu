@@ -808,6 +808,42 @@ details.sg-faq > summary svg { display: none; }
   text-align: left;
 }
 
+body.sg-chrome-focus main {
+  padding-bottom: max(5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.sync-s1-delete-muted {
+  opacity: 0.45;
+}
+
+.sync-s1-room-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.sync-s1-room-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.sync-s1-room-del {
+  flex-shrink: 0;
+  align-self: stretch;
+  padding: 0 0.65rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sync-s1-room-del:hover {
+  background: #fef2f2;
+}
+
 /* Growth: bookmark banner (§2-5 A4) */
 .sg-bookmark-banner {
   position: fixed;

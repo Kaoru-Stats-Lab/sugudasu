@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-06-26",
+  "updatedAt": "2026-06-29",
   "entries": [
+    {
+      "date": "2026-06-29",
+      "type": "feat",
+      "title": "実務ガイド /guides を新設（AdSense・SEO 永続コンテンツ）",
+      "body": "イベント運営4本・書類1本のオリジナル記事（各1,500字+）。索引 guides.html · data/guides.json · build-pages で /guides/{slug} 配信。sitemap・hub説明文・フッター導線。戦略正本 GUIDES_CONTENT_STRATEGY.md。",
+      "tools": ["guides.html", "guides/", "hub.html", "sugudasu-shell.js", "build-pages.mjs"]
+    },
     {
       "date": "2026-06-26",
       "type": "improve",

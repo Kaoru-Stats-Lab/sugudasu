@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="研修・ハッカソン・ワークショップの班分けで公平性と再現性を確保する方法。幹事が参加者に説明できる班分けの考え方。">
+    <title>研修・ハッカソンで公平な班分けをする方法 | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="研修・ハッカソンで公平な班分けをする方法">
+    <meta property="og:url" content="https://sugudasu.com/guides/fair-group-split">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="公平な班分け"></div>
+
+<main class="sg-info-page">
+    <article class="sg-card p-6 lg:p-8 sg-info-prose">
+        <header class="border-b border-slate-200 pb-4 mb-6 space-y-2">
+            <p class="text-[11px] font-bold text-emerald-700">イベント運営 · 更新 2026-06-27</p>
+            <h1 class="sg-info-page__title">研修・ハッカソンで公平な班分けをする方法</h1>
+            <p class="sg-info-page__lead">名簿をExcelでシャッフルして終わり——動くんですけど、「なんでうちの班だけ部長ばっかりなんだよ？」って聞かれた瞬間に説明できなくて空気が変わるんですよね。ハッカソンや研修の班分けで、幹事が押さえておきたい<strong>公平性・再現性・制約</strong>を、当日までに言葉にしておく話です。</p>
+        </header>
+
+        <section class="sg-info-callout mb-6">
+            <p class="font-semibold">この記事でわかること</p>
+            <ul>
+                <li>「不公平」という疑問を未然に防ぐ班分けの基本ルール</li>
+                <li>同部署分散・上司部下分離など制約とその優先順位</li>
+                <li>客観性と透明性のための説明とデータ（シード）の残し方</li>
+                <li>欠席や端数が出たときに進行を止めない臨機応変な手順</li>
+            </ul>
+        </section>
+
+        <h2>班分けで起きやすい不満</h2>
+        <p>「同じ部署ばっかり集まってる」「リーダー役がいつも同じ人」「前回の班のまま新人が浮いてる」——ランダムに見えて、実は偏りが起きやすい作業です。ハッカソンや研修では班編成が成果とモチベーションに直結するので、幹事として「なぜこの班か」を一言で答えられる状態にしておくとかなり違います。</p>
+
+        <h2>事前に決める3つのルール</h2>
+        <h3>1. 班のサイズと数</h3>
+        <p>参加者 N 人を k 人班にするか、固定の班数にするかを先に決めておきます。端数が出たら観察役にするか、1班だけ小さくするか——ルールを口頭でサッと言えるようにしておくと、「なんで私だけ？」が減ります。</p>
+
+        <h3>2. 制約（ハード条件）</h3>
+        <p>制約が増えるほど完全ランダムは難しくなります。「制約を満たした上でシャッフルしたよ」と伝えられると、参加者の納得感が全然違います。優先度の目安は下の表の通りです（高いものから満たす）。</p>
+        <table>
+            <thead>
+                <tr><th>制約</th><th>例</th><th>優先度</th><th>説明の一言</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>同部署分散</td><td>営業部同士が同じ班に固まらないよう散らす</td><td>中</td><td>他部署交流には有効。他制約との兼ね合いで調整</td></tr>
+                <tr><td>メンター同班</td><td>新人のいる班に指導役の先輩を1名</td><td>高</td><td>ワークの進行滞留・フォロー漏れを防ぐ</td></tr>
+                <tr><td>上司部下分離</td><td>評価者と被評価者を別班に</td><td>高</td><td>本音の発言・心理的安全性を守る</td></tr>
+                <tr><td>端数処理</td><td>4人班目標だが奇数で5人班が1つ出る</td><td>中</td><td>作業密度が極端に偏らないよう配分調整</td></tr>
+                <tr><td>男女比（任意）</td><td>各班の男女数をおおむね均等化</td><td>低</td><td>スキル・業務制約より優先度は下がりがち</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3. 再現性（シード）</h3>
+        <p>イベント後に「本当にランダム？」と聞かれることがあります。幹事メモに残しておくと説明しやすいポイントは次のとおりです。</p>
+        <ul>
+            <li>班分けは名簿を貼り付け、制約を満たしたうえでシャッフルする手順で行います（ツールまたは手順の明示）。</li>
+            <li><strong>シード値</strong>は乱数の開始番号。同じ名簿・同じシードなら、同じ班分け結果が再現できます。</li>
+            <li>シードを記録しておくと、「やり直しでは？」「特定の人を狙ったのでは？」という問い合わせに、手順を示しやすくなります。</li>
+            <li>確認があったときは、名簿の版数・使った制約・シード値をセットで示すと、主観ではなく手順で決めたことが伝わります。</li>
+            <li>参加者向けには「制約を満たしたうえで、シード○○でシャッフルしました」と1文で足ります。</li>
+        </ul>
+
+        <h2>当日の進め方</h2>
+        <ol>
+            <li>名簿最終版を確定（空行・重複・表記ゆれを除去）。</li>
+            <li>ルールをスライドか口頭で1分。「制約→シャッフル」の順で説明。</li>
+            <li>ツールで実行して、結果をチャットかスクリーンに共有。</li>
+            <li>使ったシードをメモ。後で問い合わせがあったとき用に名簿の版数も残しておく。</li>
+        </ol>
+
+        <h2>ツールでの支援</h2>
+        <p><a href="/group-split">班分けツール</a>は名簿をブラウザに貼って実行し、TSVでSlackなどにすぐコピーできます。名簿はサーバーに送らずブラウザ内で処理する設計です。固定班・班サイズ・シード指定などのオプションも説明しやすい形で使えます（ベータあり · 画面表示に従ってください）。</p>
+
+        <h2>よくある質問</h2>
+        <h3>大人数研修で「不公平」と不満が出ない班分けのコツは？</h3>
+        <p>事前に制約の優先度と端数ルールを口頭で1分説明し、班分け直前に名簿を確定すること。結果を出したらシード値をメモし、「制約→シャッフル」の順で決めたと伝えます。幹事の裁量で班を組み替えない——ここが一番の火種です。</p>
+        <h3>当日朝に欠席が出たとき、公平性を崩さず再調整する手順は？</h3>
+        <p>欠席者を除いた名簿で<strong>最初からやり直し</strong>（同じ制約・新しいシードでも可）。部分だけ入れ替えると「なぜうちだけ」が出やすいです。急ぎのときは端数ルールを再宣言してから実行し、変更理由をチャットに1行残します。</p>
+        <h3>複数回の研修で毎回メンバーが重複しない班分けは？</h3>
+        <p>「前回と同班にしない」を制約として明示し、優先度を上げます。名簿に前回の班番号を列で持たせ、ツールまたは手順で制約付きシャッフル。完全回避は人数次第で不可能な場合もあるため、例外ルールを事前に決めておきましょう。</p>
+
+        <section class="sg-info-callout mt-8">
+            <p class="font-semibold">関連ツール</p>
+            <p><a href="/group-split">SUGUDASU 班分け</a> — TSV/Slack出力 · 非送信 · シード再現</p>
+            <p class="sg-info-caption mt-2"><a href="/guides">← 実務ガイド一覧</a></p>
+        </section>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

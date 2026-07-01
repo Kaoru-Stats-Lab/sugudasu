@@ -197,6 +197,8 @@
       <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
         <p class="text-xs text-slate-500">ブラウザ内完結 · 名簿を預けない設計を中心に</p>
         <p class="text-[11px] text-slate-500">
+          <a href="guides.html" class="text-blue-600 hover:underline">実務ガイド</a>
+          <span class="text-slate-300 mx-1">|</span>
           <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>
           <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a>

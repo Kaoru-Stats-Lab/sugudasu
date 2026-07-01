@@ -1,0 +1,45 @@
+{
+  "updatedAt": "2026-06-27",
+  "articles": [
+    {
+      "slug": "event-runbook",
+      "pillar": "event",
+      "title": "イベント幹事の事前準備チェックリスト",
+      "description": "研修・キックオフ・ウェビナー前に確認すべき項目を時系列で整理。進行表・会場・関係者連絡の抜け漏れを防ぐ。",
+      "tools": ["timeline"],
+      "published": "2026-06-29"
+    },
+    {
+      "slug": "training-timeline-tips",
+      "pillar": "event",
+      "title": "社内研修の進行表をスムーズに作る3つのコツ",
+      "description": "人事・ファシリテーター向け。休憩・アイスブレイク・ワーク時間のバランスと、当日の遅れに備える進行表の作り方。",
+      "tools": ["timeline"],
+      "published": "2026-06-29"
+    },
+    {
+      "slug": "excel-vs-web-timeline",
+      "pillar": "event",
+      "title": "Excel進行表とWebツールの使い分け",
+      "description": "スプレッドシートで十分な場面と、連動再計算・スマホ更新が効く場面を整理。当日運用の失敗パターンも解説。",
+      "tools": ["timeline"],
+      "published": "2026-06-29"
+    },
+    {
+      "slug": "fair-group-split",
+      "pillar": "event",
+      "title": "研修・ハッカソンで公平な班分けをする方法",
+      "description": "名簿の偏り・固定班・再現性の要件を満たす班分けの考え方。幹事が説明責任を果たすためのチェックポイント。",
+      "tools": ["group-split"],
+      "published": "2026-06-29"
+    },
+    {
+      "slug": "invoice-browser-workflow",
+      "pillar": "docs",
+      "title": "ブラウザだけでインボイス請求書を作る手順",
+      "description": "フリーランス・小規模事業者向け。適格請求書の記載事項と、登録不要でPDFまで出す流れをステップで説明。",
+      "tools": ["invoice", "stamp"],
+      "published": "2026-06-29"
+    }
+  ]
+}

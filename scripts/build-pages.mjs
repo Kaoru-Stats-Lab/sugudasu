@@ -8,6 +8,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
+import { stripNonLatin1Env } from '../assets/sync-supabase-sanitize.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -75,17 +76,24 @@ function canonicalPathFromHtml(file) {
 
 function sitemapPriority(pathname) {
   if (pathname === '/') return '1.0';
+  if (pathname === '/guides') return '0.85';
+  if (pathname.startsWith('/guides/')) return '0.75';
   if (pathname === '/invoice' || pathname === '/receipt' || pathname === '/stamp') return '0.9';
   if (pathname === '/updates') return '0.7';
   if (pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer' || pathname === '/statements') return '0.5';
   return '0.8';
 }
 
-function writeSitemapAndRobots(htmlFiles, lastmod) {
-  const paths = ['/', ...htmlFiles
-    .filter((f) => !SITEMAP_SKIP.has(f))
-    .map((f) => canonicalPathFromHtml(f))
-    .filter((p) => p && p !== '/')];
+function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = []) {
+  const paths = [...new Set([
+    '/',
+    '/guides',
+    ...guideSlugs.map((s) => `/guides/${s}`),
+    ...htmlFiles
+      .filter((f) => !SITEMAP_SKIP.has(f))
+      .map((f) => canonicalPathFromHtml(f))
+      .filter((p) => p && p !== '/' && p !== '/guides'),
+  ])];
 
   const urls = paths.map((pathname) => {
     const loc = pathname === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${pathname}`;
@@ -119,7 +127,7 @@ function writeSitemapAndRobots(htmlFiles, lastmod) {
   fs.writeFileSync(path.join(DIST, 'robots.txt'), robots, 'utf8');
 }
 
-function writeRedirects(htmlFiles) {
+function writeRedirects(htmlFiles, guideSlugs = []) {
   const lines = IS_SYNC
     ? [
         '# SUGUDASU Sync — clean paths',
@@ -141,6 +149,10 @@ function writeRedirects(htmlFiles) {
     }
     lines.push('/imgconv /webp-to-jpg 301');
     lines.push('/webp-to-png /webp-to-jpg 301');
+    lines.push('/guides.html /guides 301');
+    for (const slug of guideSlugs) {
+      lines.push(`/guides/${slug}.html /guides/${slug} 301`);
+    }
   } else {
     for (const file of htmlFiles) {
       if (file === 'sync-index.html' || file === 'sync-timeline-lp.html' || file === 'sync-timeline.html') {
@@ -218,13 +230,47 @@ function loadEnvSyncLocal() {
     if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
       val = val.slice(1, -1);
     }
-    if (!process.env[key]) process.env[key] = val;
+    // .env.sync.local はローカル正本 — シェルに残った古いプレースホルダーを上書きする
+    process.env[key] = val;
+  }
+}
+
+function assertValidSyncSupabaseEnv(url, anon, anonRaw = '') {
+  if (!url && !anon) return;
+  const problems = [];
+  if (!url.includes('.supabase.co')) {
+    problems.push('SYNC_SUPABASE_URL が Supabase URL 形式ではありません');
+  }
+  if (!anon.startsWith('eyJ')) {
+    problems.push(
+      'SYNC_SUPABASE_ANON_KEY が JWT (eyJ...) ではありません — プレースホルダー文を貼っていないか確認'
+    );
+  }
+  if (/[\u3000-\u9fff\uff00-\uffef]/.test(anon) || /[\u3000-\u9fff\uff00-\uffef]/.test(url)) {
+    problems.push('環境変数に日本語・全角が含まれています（実キーのみ貼り付け）');
+  }
+  if (problems.length) {
+    console.error('\n[sync-build] FAIL: Sync Supabase 環境変数が不正です');
+    for (const p of problems) console.error(`  - ${p}`);
+    if (anonRaw && !String(anonRaw).trim().replace(/^\uFEFF/, '').startsWith('eyJ')) {
+      console.error(
+        '  - ヒント: PowerShell に古い値が残っている場合 → Remove-Item Env:SYNC_SUPABASE_ANON_KEY -ErrorAction SilentlyContinue'
+      );
+    }
+    console.error('  正本: docs/notes/SYNC_ENV_KEYS.md · .env.sync.local または CF Pages env\n');
+    process.exit(1);
   }
 }
 
 function writeSyncPublicConfig(distDataDir) {
-  const url = process.env.SYNC_SUPABASE_URL || '';
-  const anon = process.env.SYNC_SUPABASE_ANON_KEY || '';
+  const urlRaw = process.env.SYNC_SUPABASE_URL || '';
+  const anonRaw = process.env.SYNC_SUPABASE_ANON_KEY || '';
+  const url = stripNonLatin1Env(urlRaw);
+  const anon = stripNonLatin1Env(anonRaw);
+  if (url.length !== urlRaw.trim().replace(/^\uFEFF/, '').length || anon.length !== anonRaw.trim().replace(/^\uFEFF/, '').length) {
+    console.warn('[sync-build] SYNC_SUPABASE_* から非ASCII文字を除去 — Cloudflare 環境変数を再貼り付け推奨');
+  }
+  assertValidSyncSupabaseEnv(url, anon, anonRaw);
   const body = {
     supabaseUrl: url,
     supabaseAnonKey: anon,
@@ -308,6 +354,8 @@ function compileTailwind() {
 
 function rewriteHtml(html) {
   let out = html
+    .replace(/\.\.\/\.\.\/assets\//g, '/assets/')
+    .replace(/\.\.\/\.\.\/data\//g, '/data/')
     .replace(/\.\.\/assets\//g, '/assets/')
     .replace(/\.\.\/data\//g, '/data/')
     .replace(/href="assets\//g, 'href="/assets/')
@@ -362,6 +410,27 @@ function rewriteHtml(html) {
   out = out.replace(/\n<script>\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*<\/script>\s*/g, '\n');
 
   return out;
+}
+
+/** tools/guides/*.html → dist/guides/{slug}/index.html */
+function writeGuidePages() {
+  const guidesDir = path.join(TOOLS, 'guides');
+  if (IS_SYNC || !fs.existsSync(guidesDir)) return [];
+  const slugs = [];
+  const guideFiles = fs.readdirSync(guidesDir).filter((f) => f.endsWith('.html'));
+  const distGuides = path.join(DIST, 'guides');
+  fs.mkdirSync(distGuides, { recursive: true });
+  for (const file of guideFiles) {
+    const slug = file.replace(/\.html$/, '');
+    slugs.push(slug);
+    const raw = fs.readFileSync(path.join(guidesDir, file), 'utf8');
+    const out = rewriteHtml(raw);
+    fs.writeFileSync(path.join(distGuides, file), out, 'utf8');
+    const slugDir = path.join(distGuides, slug);
+    fs.mkdirSync(slugDir, { recursive: true });
+    fs.copyFileSync(path.join(distGuides, file), path.join(slugDir, 'index.html'));
+  }
+  return slugs;
 }
 
 function bustJsImports() {
@@ -457,10 +526,12 @@ if (IS_SYNC) {
   writeSyncPublicConfig(DIST_DATA);
 }
 
+const guideSlugs = writeGuidePages();
+
 const lastmod = readChangelogLastmod();
 writeCleanUrlDirs(htmlFiles);
-writeSitemapAndRobots(htmlFiles, lastmod);
-writeRedirects(htmlFiles);
+writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs);
+writeRedirects(htmlFiles, guideSlugs);
 writeHeaders();
 
 const count = htmlFiles.length;

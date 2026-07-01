@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="進行表をExcelで作る場合とWebツールを使う場合の使い分け。当日の遅れ対応・モバイル更新・共有の観点で比較。">
+    <title>Excel進行表とWebツールの使い分け | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="Excel進行表とWebツールの使い分け">
+    <meta property="og:url" content="https://sugudasu.com/guides/excel-vs-web-timeline">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="ExcelとWebの使い分け"></div>
+
+<main class="sg-info-page">
+    <article class="sg-card p-6 lg:p-8 sg-info-prose">
+        <header class="border-b border-slate-200 pb-4 mb-6 space-y-2">
+            <p class="text-[11px] font-bold text-emerald-700">イベント運営 · 更新 2026-06-27</p>
+            <h1 class="sg-info-page__title">Excel進行表とWebツールの使い分け</h1>
+            <p class="sg-info-page__lead">「進行表はExcelで十分では？」——企画から印刷までなら確かにその通りです。ただ、当日挨拶が5分伸びた瞬間に #REF! が飛び出して司会がこっちを見る、という現場は結構あります。ExcelとWebツールの<strong>向き不向き</strong>を整理して、捨てずに併用する現実的な使い方をまとめました。</p>
+        </header>
+
+        <section class="sg-info-callout mb-6">
+            <p class="font-semibold">この記事でわかること</p>
+            <ul>
+                <li>企画時と当日運用でツールの得意・不得意がどう違うか</li>
+                <li>Excelの関数崩れ・スマホ閲覧の課題をWebが補える範囲</li>
+                <li>企画から当日修正・事後記録までのExcelとWebの併用手順</li>
+                <li>社内テンプレ義務を守りつつ現場負荷を下げる代替運用</li>
+            </ul>
+        </section>
+
+        <h2>比較の一覧</h2>
+        <table>
+            <thead>
+                <tr><th>観点</th><th>Excel</th><th>Web進行ツール（一般）</th><th>併用のすすめ</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>初版づくり</td><td>◎ 自由編集・並べ替え</td><td>○ 入力枠に制限あり</td><td>企画時はExcelで骨子</td></tr>
+                <tr><td>印刷配布</td><td>◎ A4横など体裁調整</td><td>△ 画面比率の調整が必要</td><td>前日にExcelから印刷</td></tr>
+                <tr><td>当日の連動再計算</td><td>× 関数崩れ・#REF!</td><td>◎ 1コマ変更で後続追従</td><td>当日のみWebで調整</td></tr>
+                <tr><td>スマホ修正</td><td>× セルが小さく困難</td><td>○ ±数分の微調整向き</td><td>会場歩きはWeb</td></tr>
+                <tr><td>チャット共有</td><td>△ ファイル再送が頻発</td><td>◎ テキスト/TSVコピー</td><td>変更都度チャットに貼付</td></tr>
+                <tr><td>複数日管理</td><td>◎ シートで一元管理</td><td>△ 1イベント単位が主</td><td>大規模工程はExcel俯瞰</td></tr>
+                <tr><td>社内テンプレ義務</td><td>◎ 規定書式を遵守</td><td>× 独自フォーマット不可</td><td>提出正本はExcel維持</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Excel（スプレッドシート）が向いている場面</h2>
+        <p>関係者レビューでコメントをもらいながら並べ替える段階は、Excelの得意分野です。企画段階の自由度が高く、印刷物や複数日程、社内テンプレートとの相性もいい。組織の慣習に合わせやすいので、無理に否定する必要はありません。</p>
+        <ul>
+            <li><strong>企画段階</strong>のたたき台：コマ案の比較、関係者へのコメント付きレビュー。</li>
+            <li><strong>印刷物</strong>として配る最終版：会場掲示・配布資料の体裁。</li>
+            <li><strong>複数日・複数会場</strong>の一覧：1シートにマスタ、各日のサブ表参照。</li>
+            <li><strong>社内テンプレ</strong>が義務の組織：法務・ブランドチェック済みフォーマット。</li>
+        </ul>
+
+        <h2>Excelが苦手な場面（当日運用）</h2>
+        <p>トイレの列から「あと何分で終わる？」と聞かれたときに、すぐ答えられないのがExcelのつらいところです。連鎖計算で #REF! が出たり、スマホで直せなかったり、チャット共有が面倒になったりするんですよね。特に研修やキックオフ、ウェビナー、二次会あたりで痛みが出やすいです。</p>
+        <ul>
+            <li><strong>1コマ遅れたときの連鎖計算</strong>：行挿入・#REF! が起きやすい。</li>
+            <li><strong>スマホからの微修正</strong>：結合セル・ズームがストレス。</li>
+            <li><strong>チャットへの即共有</strong>：PDFは重い。プレーン変換が手間。</li>
+            <li><strong>終了予定の共有</strong>：ストップウォッチとの二重管理になりがち。</li>
+        </ul>
+
+        <h2>Webツール（例：SUGUDASU イベント進行）が補うこと</h2>
+        <p>秒単位のテレプロや大人数でのリアルタイム共同編集が目的ではありません。<strong>分単位の連動再計算</strong>と、テキストでサクッと共有できる部分に特化しています。データはブラウザ内で完結、登録も不要です。</p>
+
+        <h2>おすすめの併用パターン</h2>
+        <table>
+            <thead>
+                <tr><th>段階</th><th>担当</th><th>使うもの</th><th>成果物</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>企画</td><td>主幹事</td><td>社内Excelテンプレ</td><td>進行表の初版（たたき台）</td></tr>
+                <tr><td>前日確定</td><td>幹事</td><td>Excel（PDF化）</td><td>印刷用マニュアル・配布PDF</td></tr>
+                <tr><td>当日朝</td><td>幹事（タイムキーパー）</td><td>Excel→Webへ主要コマ転記</td><td>当日操作用の進行データ</td></tr>
+                <tr><td>当日中</td><td>幹事 ⇄ スタッフ</td><td>Web＋チャット</td><td>調整後のテキスト周知</td></tr>
+                <tr><td>事後振り返り</td><td>主幹事</td><td>Webの実績値→Excel転記</td><td>次回用台帳・実績報告</td></tr>
+            </tbody>
+        </table>
+        <p>Excelを捨てる必要はありません。役割を分担して併用する方が、現実的で回しやすいです。</p>
+
+        <h2>よくある質問</h2>
+        <h3>Excel運用からWebへ完全移行する予算や手間がない場合の現実的な代替案は？</h3>
+        <p>全面移行は不要です。企画〜印刷はExcelのまま、<strong>当日中だけWeb</strong>で連動再計算し、変更はチャットにテキスト貼付——この部分導入が最もコストが低いです。</p>
+        <h3>社内指定のExcel雛形がある場合、Webを部分導入する手順は？</h3>
+        <p>提出・保管の正本は雛形Excelを維持。前日確定版を当日朝に主要コマだけWebへ転記し、当日の裏方調整はWeb、事後に実績時刻をExcelへ戻す流れが通りやすいです。</p>
+        <h3>当日のスケジュール変更が多い現場で、Excelの関数崩れを防ぐ使い分けは？</h3>
+        <p>当日はExcelを直接いじらない運用にします。印刷版は参照用、時間のずらしはWebで行い、結果だけテキストで共有。Excelの数式は前日までに凍結するのが鉄則です。</p>
+
+        <section class="sg-info-callout mt-8">
+            <p class="font-semibold">関連ツール</p>
+            <p><a href="/timeline">SUGUDASU イベント進行</a> — 分単位連動 · アンカー警告 · TSVコピー</p>
+            <p class="sg-info-caption mt-2"><a href="/guides">← 実務ガイド一覧</a></p>
+        </section>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

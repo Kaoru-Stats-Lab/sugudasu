@@ -77,6 +77,7 @@
 |--------|------|
 | **updates** | `main.sg-info-page` + ヘッダー + 複数 `section.sg-card` |
 | **statements** | 単一 `article.sg-info-prose` + 目次 · 図解キット |
+| **guides** | 索引 `guides.html` + `guides/{slug}` 記事 · 1,500字+ · `sg-info-prose` |
 | **privacy / terms / disclaimer** | 単一 `article.sg-info-prose`、条文は `h3` + `p` / `ul` |
 
 ---
