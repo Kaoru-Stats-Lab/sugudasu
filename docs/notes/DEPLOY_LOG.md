@@ -178,10 +178,31 @@
 
 ---
 
+## DEPLOY-20260701-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | normalize Tier S LP · Zenn #12 初稿拡張 · FAQ Excel 使い分け |
+| **change_summary** | `7e7129d` · `tools/normalize.html` · `hub.html` · Zenn docs · LP matrix |
+| **local_build** | `pass`（`build:pages` · 2026-07-01 セッション） |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/normalize` LP · FAQ Excel） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-01 | 005 executed（affeee6 · normalize 命名 · Zenn docs） |
+| 2026-07-01 | 002 approved（normalize Tier S LP · Zenn #12 · 提督 push 依頼） |
+| 2026-07-01 | 001 executed（affeee6 · normalize 命名 · Zenn docs） |
 | 2026-06-26 | 初版（asl-dashboard DEPLOY_LOG を雛形 · CF Pages Free · core/sync 分離） |
 | 2026-06-26 | 002 executed（7858bf8）· 004 追加（LP RUNBOOK · b0bb674） |
