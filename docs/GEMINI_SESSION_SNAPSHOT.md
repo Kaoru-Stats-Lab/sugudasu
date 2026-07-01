@@ -35,7 +35,7 @@
 | `/reverse` | 逆引き辞典 | gamma | 言い換え |
 | `/present` | ギフトサジェスター | gamma | Amazon |
 | `/sns` | SNSデコ文字 | gamma | 装飾 |
-| `/normalize` | 文字列正規化 | beta | T03 · 500行cap |
+| `/normalize` | 全角半角整え | beta v1.1 | T03 · 500行cap · 事務OLプリセット |
 | `/webp-to-jpg` | WebP→JPG/PNG | beta | T09 · 非送信変換 |
 | `/group-split` | グループ分け | beta v1.2.1 | **T11 S** · Phase A–C + UX C1 · 250名 |
 | `/fair-draw` | 公平抽選・景品チェック | beta v1.5.1 | 景表 Phase0 + 抽選 + 証跡PDF · **スマホ即抽選** |

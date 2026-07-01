@@ -1,7 +1,7 @@
 # TOOL_FACTS: normalize
 
-status: **reviewed** · updated: 2026-06-22
-productName: SUGUDASU 正規化 · stage: beta · URL: https://sugudasu.com/normalize
+status: **reviewed** · updated: 2026-07-01
+productName: SUGUDASU 全角半角整え · stage: beta · URL: https://sugudasu.com/normalize
 
 ## マーケ（matrix 参照 · 捏造禁止）
 
@@ -12,12 +12,13 @@ productName: SUGUDASU 正規化 · stage: beta · URL: https://sugudasu.com/norm
 
 ## 一行
 
-Excel列コピーの全半角・空白を用途別プリセットで整え、500行まで非送信変換
+Excel列コピーの全半角・空白・改行を用途別プリセットで整え、500行まで外部送信ゼロで変換
 
 ## 実装済み（reviewed のみ Gemini が断定可）
 
 - 500行上限・行数 Before/After 表示
-- 用途プリセット3種（EC登録・名簿・CSV）
+- 用途プリセット5種（EC登録・名簿・全角英数・改行→カンマ・姓名スペース）
+- productName: SUGUDASU 全角半角整え（id=normalize 不変）
 - コピー時に最新設定で再変換してからクリップボードへ
 - 先頭ゼロ保護・カタカナ長音保護（プリセット依存）
 - オフライン動作
@@ -26,6 +27,7 @@ Excel列コピーの全半角・空白を用途別プリセットで整え、500
 
 - 複数列同時の高度なCSVパース
 - サーバー側バッチ処理
+- roster_office / crm_import 専用プリセット
 
 ## データ取り扱い
 
@@ -49,15 +51,17 @@ Excel列コピーの全半角・空白を用途別プリセットで整え、500
 
 ```text
 【normalize 事実 · status=reviewed】
-SUGUDASU 正規化 / https://sugudasu.com/normalize
+SUGUDASU 全角半角整え / https://sugudasu.com/normalize
 Pain: 名簿やコードの全半角混在やスペース崩れを直す手間の多さ
 実装: 500行上限・行数 Before/After 表示
-実装: 用途プリセット3種（EC登録・名簿・CSV）
+実装: 用途プリセット5種（EC登録・名簿・全角英数・改行→カンマ・姓名スペース）
+実装: productName: SUGUDASU 全角半角整え（id=normalize 不変）
 実装: コピー時に最新設定で再変換してからクリップボードへ
 実装: 先頭ゼロ保護・カタカナ長音保護（プリセット依存）
 実装: オフライン動作
 未実装: 複数列同時の高度なCSVパース
 未実装: サーバー側バッチ処理
+未実装: roster_office / crm_import 専用プリセット
 データ: upload=false serverSave=false retention=セッション内のみ
 ```
 

@@ -29,7 +29,7 @@ Excel / 個人開発 / Web開発
 
 スプレッドシートから1列コピーして、どこかの **全角半角変換サイト** に貼り、また Excel に戻す — この作業、地味ですが頻度は高いはずです。私も EC 登録や名簿整理で何度もやりました。経験があるほど **中身を見ずにコピー** しがちで、気づいたときには行がずれていたり、型番の長音がハイフンになっていたりします。
 
-地味なプロダクトですが、**おっちょこ防止** に特化した文字列正規化ツール [SUGUDASU 正規化](https://sugudasu.com/normalize?utm_source=zenn&utm_medium=social&utm_campaign=article_12_normalize_oops) を個人開発しました。入力処理はブラウザ内のみで、名簿テキストを当方サーバーへ POST する API はありません（[プライバシーポリシー](https://sugudasu.com/privacy)）。
+地味なプロダクトですが、**おっちょこ防止** に特化した [SUGUDASU 全角半角整え](https://sugudasu.com/normalize?utm_source=zenn&utm_medium=social&utm_campaign=article_12_normalize_oops) を個人開発しました。入力処理はブラウザ内のみで、名簿テキストを当方サーバーへ POST する API はありません（[プライバシーポリシー](https://sugudasu.com/privacy)）。
 
 この記事では、**変換サイトで起きがちな3つの事故** のほか、よく聞かれる **「Excelの関数でもできるのに？」「なぜ500行？」「なぜ用途を3つに分けた？」** に答えます。EC 担当者向けの手順と、エンジニア向けの設計判断を同じ記事に載せます。
 

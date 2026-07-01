@@ -158,9 +158,30 @@
 
 ---
 
+## DEPLOY-20260701-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `core` |
+| **reason** | normalize 命名刷新 · 事務OLプリセット · Zenn 編集ストック docs |
+| **change_summary** | `affeee6` normalize v1.1 · `104a79d` Zenn drafts · registry/hub/shell |
+| **local_build** | `pass`（`validate:tool-naming` · `build:pages`） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | 1/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `affeee6`（`148bb7e..affeee6` · git push origin main） |
+| **smoke** | `/normalize` — 全角半角整え · 改行→カンマ · 姓名スペース |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-01 | 005 executed（affeee6 · normalize 命名 · Zenn docs） |
 | 2026-06-26 | 初版（asl-dashboard DEPLOY_LOG を雛形 · CF Pages Free · core/sync 分離） |
 | 2026-06-26 | 002 executed（7858bf8）· 004 追加（LP RUNBOOK · b0bb674） |
