@@ -15,6 +15,7 @@
 | **Schedule · Sync UI（Notion Like 表）** | **計画** `SCHEDULE_V3_MASTER_PLAN.md` · **汎用/特化** `SCHEDULE_GENERIC_VS_VERTICAL.md` · **UI文案** `SCHEDULE_UI_COPY.md` · **議論ログ** `SCHEDULE_SPLIT_PANE_DECISION_LOG.md` · **Pain/横展開** `SCHEDULE_SUPERVISOR_PAIN_HORIZON.md` · **週間リスト** `SCHEDULE_WEEKLY_LIST_DESIGN.md` · **エコシステム** `SCHEDULE_CONSTRUCTION_ECOSYSTEM.md` · Gemini週間 `docs/prompts/schedule-weekly-list-gemini-prompt.md` · PoC仕様 `SCHEDULE_SPLIT_PANE_POC_SPEC.md` · **`DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色）· 仕様 `SCHEDULE_TOOL_SPEC.md` · 決定 `SYNC_SCHEDULE_PRODUCT_DECISION.md` · `.cursor/rules/sugudasu-design-schedule.mdc` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
 | **Agent トークン削減（RTK）** | `docs/notes/RTK_CURSOR.md` |
+| **セッション harvest（黄金ルート）** | `.cursor/rules/self-learning-sugudasu.mdc` · Agent 手順のみ `.cursor/rules/learned/` |
 | **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
 | **Sync S1 E2E 試行錯誤ログ** | `docs/notes/SYNC_S1_E2E_SESSION_LOG_20260626.md` |
 
@@ -28,3 +29,9 @@ npm run build:pages
 ```
 
 すべて exit 0 まで完了とみなさない。
+
+## Self-learning（Token 節約）
+
+- **製品知識** → `docs/notes/` · `BACKLOG.md`（`learned/` 禁止）
+- **Agent 手順だけ** → `.cursor/rules/learned/*.mdc`（短く · `alwaysApply: false`）
+- 既存 SSOT にある内容は **再 harvest しない**

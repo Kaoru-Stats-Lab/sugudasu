@@ -1,0 +1,70 @@
+---
+description: >-
+  試行錯誤後の黄金ルートを harvest する（remember this / 再発手順 / 死に筋）。
+  製品知識は docs SSOT、Agent 手順のみ .cursor/rules/learned/。
+  Kulaxyz/self-learning-skills の SUGUDASU 適応版。
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# Self-learning（SUGUDASU · RTK 適応）
+
+セッションで得た **再利用可能な手順** だけを残す。全文ダンプ・ログ貼り付けは **禁止**（RTK 方針）。
+
+## 発火（このときだけ harvest）
+
+- 数回の失敗のあとに成功した **手順・順序・コマンド**
+- 非自明な gotcha（例: PowerShell は `&&` 不可 · `;` を使う）
+- ユーザーが「覚えて」「次もこれ」
+- **再発見コストが高い** Agent 運用手順
+
+**スキップ:** 1回限り · 既に SSOT に書いてある · 検証未完了
+
+## 行き先（MECE · SSOT 優先）
+
+| 内容 | 書く場所 | 例 |
+|------|----------|-----|
+| 製品 · 命名 · 仕様 · デプロイ判断 | 既存 SSOT を **追記** | `BACKLOG.md` · `DEPLOY_LOG.md` · `*_TOOL_SPEC.md` · `docs/notes/` |
+| 提督の残タスク | `docs/notes/TAISHO_PENDING_TASKS.md` | 次セッション TODO |
+| **Cursor/Shell/検証手順のみ** | `.cursor/rules/learned/<slug>.mdc` | npm ゲート順 · Win シェル |
+| 1行の事実 | 該当 SSOT に1行 · **新ファイル禁止** | registry キー名 |
+
+**禁止:** 製品知識を `learned/` に書く · `learned/` に秘密値 · SSOT と二重管理
+
+## Promotion（3条件すべて）
+
+1. **検証済み** — test/build/exit 0 等（「たぶん」不可）
+2. **失敗パターンに名前** — 何を防ぐか1語以上
+3. **却下した案が1つ以上** — 次セッションの試行錯誤削減用
+
+満たさない → SSOT に TODO 1行だけ、または skip。
+
+## `learned/` テンプレ（短く · Token 節約）
+
+```mdc
+---
+description: <何をする + いつ読む · 1行>
+globs: ["optional/path/**"]
+alwaysApply: false
+---
+
+# <title>
+
+**Goal:** …
+
+## Steps
+1. …
+
+## Gotchas
+- …
+
+## Ruled out
+- …（なぜダメだったか）
+```
+
+- **目安 ≤35行** · コマンドは必要最小 · 長文は `docs/notes/` へリンク
+
+## 完了時
+
+harvest したら **1文で報告**（パス · 何を残したか）。提督が commit 依頼するまで **git commit しない**（learned 含む）。
