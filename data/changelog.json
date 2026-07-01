@@ -4,6 +4,13 @@
     {
       "date": "2026-07-01",
       "type": "feat",
+      "title": "全角半角整え — 確認パネル（行数 + 変換前/後）",
+      "body": "行数バッジと先頭5行プレビューを「確認」1ブロックに統合。ラベル日本語化 · モバイル縦積み。改行→カンマは形状変換バッジ付き。",
+      "tools": ["normalize.html", "sugudasu.css"]
+    },
+    {
+      "date": "2026-07-01",
+      "type": "feat",
       "title": "ツールページ内 LP — normalize Tier S · hub 発見専用化",
       "body": "TOOL_PAGE_LP_STRATEGY 正本。normalize に型A FV・3ステップ・社内規程FAQ。hub リード短縮。lp-marketing-matrix 更新。",
       "tools": ["normalize.html", "hub.html", "lp-marketing-matrix.json"]

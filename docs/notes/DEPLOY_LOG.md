@@ -198,10 +198,31 @@
 
 ---
 
+## DEPLOY-20260701-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | normalize 確認パネル — 行数 + 変換前/後 統合 UI |
+| **change_summary** | `tools/normalize.html` · `sugudasu.css` · 形状変換バッジ · changelog |
+| **local_build** | `pass`（`build:pages` · text-normalize.test） |
+| **deploy_count_today** | 3 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/normalize` 確認パネル） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-01 | 003 approved（normalize 確認パネル · 提督 push 依頼） |
 | 2026-07-01 | 002 executed（60a55ea · normalize Tier S LP · Zenn #12） |
 | 2026-07-01 | 002 approved（normalize Tier S LP · Zenn #12 · 提督 push 依頼） |
 | 2026-07-01 | 001 executed（affeee6 · normalize 命名 · Zenn docs） |

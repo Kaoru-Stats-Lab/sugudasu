@@ -67,9 +67,6 @@
 
             <button type="button" id="btn-transform" class="sg-btn-primary w-full sm:w-auto">▶ 変換（プレビュー更新）</button>
 
-            <div id="line-match" class="hidden sg-line-match sg-line-match--ok rounded-lg px-3 py-2 text-sm font-semibold" aria-live="polite"></div>
-            <p id="change-summary" class="hidden text-[11px] font-mono text-slate-500"></p>
-
             <details class="border border-slate-200 rounded-lg bg-slate-50/80">
                 <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">詳細（トグル）</summary>
                 <div class="px-3 pb-3 space-y-2 text-xs">
@@ -79,26 +76,32 @@
                 </div>
             </details>
 
-            <div class="border-t border-slate-100 pt-3 space-y-2">
-                <h3 class="text-xs font-bold text-slate-800">プレビュー（先頭5行）</h3>
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                    <div>
-                        <p class="font-semibold text-slate-500 mb-1">Before</p>
-                        <pre id="preview-before" class="norm-preview bg-slate-50 border border-slate-200 rounded-lg p-2 font-mono whitespace-pre-wrap break-all min-h-[4.5rem]"></pre>
+            <div id="verify-panel" class="norm-verify-panel hidden" aria-live="polite">
+                <div class="norm-verify-panel__head">
+                    <h3 class="norm-verify-panel__title">確認</h3>
+                    <span id="shape-badge" class="norm-shape-badge hidden">形状変換</span>
+                </div>
+                <div id="line-match" class="norm-verify-panel__count sg-line-match sg-line-match--ok" role="status"></div>
+                <p id="shape-hint" class="norm-verify-panel__shape-hint hidden">縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。</p>
+                <p id="change-summary" class="norm-verify-panel__changes hidden"></p>
+                <div class="norm-verify-preview">
+                    <div class="norm-verify-preview__col">
+                        <p class="norm-verify-preview__label">変換前（先頭5行）</p>
+                        <pre id="preview-before" class="norm-preview norm-verify-preview__sample"></pre>
                     </div>
-                    <div>
-                        <p class="font-semibold text-slate-500 mb-1">After</p>
-                        <pre id="preview-after" class="norm-preview bg-emerald-50/50 border border-emerald-200 rounded-lg p-2 font-mono whitespace-pre-wrap break-all min-h-[4.5rem]"></pre>
+                    <div class="norm-verify-preview__arrow" aria-hidden="true"></div>
+                    <div class="norm-verify-preview__col">
+                        <p class="norm-verify-preview__label">変換後（先頭5行）</p>
+                        <pre id="preview-after" class="norm-preview norm-verify-preview__sample norm-verify-preview__sample--after"></pre>
                     </div>
                 </div>
-            </div>
-
-            <div id="copy-gate" class="hidden sg-copy-gate space-y-2 rounded-lg border px-3 py-2 text-xs">
-                <p class="font-bold">行数が変わっています。Excel に貼り戻すとズレる可能性があります。</p>
-                <label class="flex items-start gap-2 cursor-pointer">
-                    <input type="checkbox" id="copy-gate-check" class="mt-0.5">
-                    <span>行数の変化を理解したうえでコピーします</span>
-                </label>
+                <div id="copy-gate" class="hidden norm-verify-panel__gate sg-copy-gate space-y-2 rounded-lg border px-3 py-2 text-xs">
+                    <p class="font-bold">行数が変わっています。Excel に貼り戻すとズレる可能性があります。</p>
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="checkbox" id="copy-gate-check" class="mt-0.5">
+                        <span>行数の変化を理解したうえでコピーします</span>
+                    </label>
+                </div>
             </div>
 
             <div class="flex flex-wrap gap-2 pt-1">
@@ -226,6 +229,9 @@ const inputEl = document.getElementById('input-text');
 const lineCounterEl = document.getElementById('line-counter');
 const leadingZeroBadge = document.getElementById('leading-zero-badge');
 const pasteWarningsEl = document.getElementById('paste-warnings');
+const verifyPanelEl = document.getElementById('verify-panel');
+const shapeBadgeEl = document.getElementById('shape-badge');
+const shapeHintEl = document.getElementById('shape-hint');
 const lineMatchEl = document.getElementById('line-match');
 const changeSummaryEl = document.getElementById('change-summary');
 const previewBeforeEl = document.getElementById('preview-before');
@@ -269,6 +275,28 @@ function syncToggleAvailability(preset) {
   toggleSpace.closest('label').classList.toggle('opacity-50', spaceLocked);
 }
 
+function syncShapeModeUI(preset) {
+  const defs = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
+  const isShape = defs.mode === 'comma_join';
+  shapeBadgeEl.classList.toggle('hidden', !isShape);
+  shapeHintEl.classList.toggle('hidden', !isShape);
+  verifyPanelEl.classList.toggle('norm-verify-panel--shape', isShape);
+}
+
+function hideVerifyPanel() {
+  verifyPanelEl.classList.add('hidden');
+  lineMatchEl.textContent = '';
+  changeSummaryEl.classList.add('hidden');
+  previewBeforeEl.textContent = '';
+  previewAfterEl.textContent = '';
+  copyGateEl.classList.add('hidden');
+}
+
+function showVerifyPanel(preset) {
+  verifyPanelEl.classList.remove('hidden');
+  syncShapeModeUI(preset);
+}
+
 function renderPasteWarnings(text) {
   const scan = scanPasteWarnings(text);
   pasteWarningsEl.innerHTML = '';
@@ -296,12 +324,8 @@ function updateLineCounter() {
   renderPasteWarnings(text);
   if (n === 0) {
     lastResult = null;
-    lineMatchEl.classList.add('hidden');
-    changeSummaryEl.classList.add('hidden');
-    previewBeforeEl.textContent = '';
-    previewAfterEl.textContent = '';
+    hideVerifyPanel();
     btnCopy.disabled = true;
-    copyGateEl.classList.add('hidden');
   }
 }
 
@@ -312,8 +336,9 @@ function runTransform() {
   const result = normalizeText(input, { preset, toggles: getToggles() });
   lastResult = result;
 
-  lineMatchEl.classList.remove('hidden');
+  showVerifyPanel(preset);
   const { match } = updateLineMatchDisplay(lineMatchEl, result.inputLines, result.outputLines);
+  lineMatchEl.classList.add('norm-verify-panel__count');
   if (match) {
     copyGateEl.classList.add('hidden');
     copyGateCheck.checked = false;
@@ -411,6 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     onChange: (value) => {
       applyPresetToggles(value);
+      syncShapeModeUI(value);
       if (inputEl.value.trim()) runTransform();
     },
   });
