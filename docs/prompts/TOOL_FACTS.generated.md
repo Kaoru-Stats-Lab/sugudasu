@@ -1,6 +1,6 @@
 # TOOL_FACTS（Gemini添付用 · 自動生成）
 
-生成日時: 2026-07-01T22:20:51.249Z
+生成日時: 2026-07-01T23:14:22.402Z
 正本: `data/tool-facts/*.json` · `data/tool-registry.json` · `data/lp-marketing-matrix.json`
 次に着手: **timeline**（`data/tool-facts/_queue.json`）
 
@@ -527,10 +527,10 @@ productName: SUGUDASU 全角半角整え · stage: beta · URL: https://sugudasu
 
 ## マーケ（matrix 参照 · 捏造禁止）
 
-- 主Pain: 名簿やコードの全半角混在やスペース崩れを直す手間の多さ
-- 最優先の型: 型D
-- △相当: スペースの有無や全半角の「パッと見では揃って見える」不揃いさ
-- 聞き直し例: 「コピペした名簿、苗字と名前の間のスペース全角半角混ざってない？」
+- 主Pain: 社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる
+- 最優先の型: 型A
+- △相当: 社内規程で「無料の全角半角変換サイト」への貼付が禁止されている
+- 聞き直し例: 「顧客リスト直すだけなのに、社内ツール申請するほどでもないし…」
 
 ## 一行
 
@@ -574,7 +574,7 @@ Excel列コピーの全半角・空白・改行を用途別プリセットで整
 ```text
 【normalize 事実 · status=reviewed】
 SUGUDASU 全角半角整え / https://sugudasu.com/normalize
-Pain: 名簿やコードの全半角混在やスペース崩れを直す手間の多さ
+Pain: 社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる
 実装: 500行上限・行数 Before/After 表示
 実装: 用途プリセット5種（EC登録・名簿・全角英数・改行→カンマ・姓名スペース）
 実装: productName: SUGUDASU 全角半角整え（id=normalize 不変）
@@ -1317,7 +1317,7 @@ Pain: 要確認
 - invoice [OK]: SUGUDASU 請求書 / 型B / https://sugudasu.com/invoice
 - receipt [OK]: SUGUDASU 領収書 / 型B / https://sugudasu.com/receipt
 - fair-draw [OK]: SUGUDASU 抽選 / 型D / https://sugudasu.com/fair-draw
-- normalize [OK]: SUGUDASU 全角半角整え / 型D / https://sugudasu.com/normalize
+- normalize [OK]: SUGUDASU 全角半角整え / 型A / https://sugudasu.com/normalize
 - webp-to-jpg [OK]: SUGUDASU WebP変換 / 型B / https://sugudasu.com/webp-to-jpg
 - shift [OK]: SUGUDASU シフト / 型C / https://sugudasu.com/shift
 - label [OK]: SUGUDASU ラベル / 型D / https://sugudasu.com/label

@@ -27,6 +27,7 @@ alwaysApply: false
 |------|----------|-----|
 | 製品 · 命名 · 仕様 · デプロイ判断 | 既存 SSOT を **追記** | `BACKLOG.md` · `DEPLOY_LOG.md` · `*_TOOL_SPEC.md` · `docs/notes/` |
 | 提督の残タスク | `docs/notes/TAISHO_PENDING_TASKS.md` | 次セッション TODO |
+| **Git/SSH/PAT（2アカウント）** | `~/.cursor/rules/learned/`（global） | SSH remote · gh device flow |
 | **Cursor/Shell/検証手順のみ** | `.cursor/rules/learned/<slug>.mdc` | npm ゲート順 · Win シェル |
 | 1行の事実 | 該当 SSOT に1行 · **新ファイル禁止** | registry キー名 |
 

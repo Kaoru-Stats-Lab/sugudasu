@@ -1,7 +1,7 @@
 # Zenn 向け normalize（T03）記事ネタ — 備忘録
 
-**更新:** 2026-07-01  
-**状態:** 初稿あり · [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md)  
+**更新:** 2026-07-01（#12 初稿 · Excel深堀り · 5プリセット · ~2,800字）  
+**状態:** 初稿確定待ち · [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md) · **7/7 予約** · LP FAQ 要約済 · [`X_POST_ZENN12_LAUNCH.md`](X_POST_ZENN12_LAUNCH.md)  
 **実装背景:** `docs/BACKLOG.md` §1-10 · `docs/notes/NORMALIZE_TEXT_TOOL_SPEC.md`  
 **Gemini リサーチ正本:** `docs/notes/SUGUDASU_OOPS_GUARDRAILS.md`（事例 A01–E02 · 三大事故タイプ）
 
@@ -24,7 +24,7 @@
 |------|------|
 | 軸 | **A 70%**（実務職人）+ **B 30%**（設計 · 非送信 · 共有モジュール） |
 | 読者 | P-B · EC登録担当 · 名簿/CSV幹事 · 「変換サイトに貼るのが嫌」層 |
-| 字数 | 1,800〜2,200 |
+| 字数 | **~2,800**（Excel深堀り節追加 · 5プリセット） |
 | utm_campaign | `article_12_normalize_oops` |
 | 優先 | **P1**（#3 warikan / #6 privacy の次 · invoice #1 非送信 narrative の続き） |
 

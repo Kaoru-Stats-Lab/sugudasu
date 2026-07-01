@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ExcelやECのテキストエラーを1秒解決。顧客名簿や商品データの全角半角・空白・改行を、外部送信なしのブラウザ内だけで安全に整えます。500行まで、行数チェック付き。">
-    <title>全角半角整え（行数チェック） | SUGUDASU</title>
+    <meta name="description" content="社内規程で変換サイトNGでもOK。Excel列の全角半角・空白・改行をブラウザ内だけで整え、外部送信ゼロ。500行まで、行数チェック付き。">
+    <title>変換サイトNGでも名簿を整える — 全角半角整え | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="SUGUDASU 全角半角整え（行数チェック）">
-    <meta property="og:description" content="Excel/スプシから1列コピーしたテキストを用途別に整えます。顧客リストも外部送信ゼロ。入力と出力の行数一致を表示し、うっかり貼り戻しズレを防ぎます。">
+    <meta property="og:title" content="変換サイトNGでも — 全角半角整え（外部送信ゼロ）">
+    <meta property="og:description" content="無料の全角半角サイトに顧客リストを貼れない現場向け。Excel列を用途別プリセットで整え、入力N行→出力M行を表示してからコピー。">
     <meta property="og:url" content="https://sugudasu.com/normalize">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="Excel列コピーの全角半角整え（行数チェック付き）">
-    <meta name="twitter:description" content="登録不要・外部送信ゼロ。500行まで。変換後に「入力N行→出力M行」を確認してからコピー。">
+    <meta name="twitter:title" content="変換サイトNGでも — Excel列の全角半角整え">
+    <meta name="twitter:description" content="社内規程で外部変換サイトに貼れない名簿も、ブラウザ内だけで安全に。500行 · 行数チェック付き。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"社内規程で無料の全角半角変換サイトが禁止でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"当社サーバーへテキストを送りません。処理はブラウザ内のみです。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"Excel の関数でもできますか？","acceptedAnswer":{"@type":"Answer","text":"ASC/TRIM等でシート内なら可能です。本ツールはExcelの代替ではなく、列を別画面へ貼る途中での行ズレ・変換ミスを減らすためのものです。毎週同じ補助列を回すならExcelテンプレの方が向くことが多いです。"}},{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"改行をカンマ区切りの1行にできますか？","acceptedAnswer":{"@type":"Answer","text":"はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。行数が変わるためコピー前に行数バッジを確認してください。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてブラウザ内だけで処理されます。オフラインでも動作し、永続保存もしません。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 全角半角整え" data-sg-subtitle="500行まで · 外部送信ゼロ" data-sg-tool-id="normalize"></div>
@@ -27,10 +27,13 @@
 <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <header class="max-w-3xl space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">外部送信ゼロ · ローカル完結</p>
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">外部送信ゼロ · 事務 · EC登録</p>
         <p class="text-sm text-slate-600 sg-tool-lead">
-            ExcelやECのテキストエラーを<strong>1秒解決</strong>。顧客名簿や商品データの全角半角・空白・改行を、
-            <strong>ブラウザ内だけ</strong>で安全に整えます。変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示。
+            <strong class="font-bold text-slate-800">社内規程で無料の全角半角サイトに名簿を貼れない</strong> — 手打ちや Excel 関数地獄、を
+            <strong class="font-bold text-slate-700">貼付 → 用途ボタン → コピー</strong>でここで終わらせます。
+            顧客名簿 · EC一括登録 · メールリストの<strong>全角半角 · 空白 · 改行</strong>を、<strong>ブラウザ内だけ</strong>で整えます。
+            変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示（行ズレ防止）。
+            班分け前の名簿は <a href="group-split.html" class="text-emerald-800 font-semibold hover:underline">班分け</a> へ。
         </p>
     </header>
 
@@ -109,10 +112,44 @@
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
 
+<section class="no-print max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+    <div class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-800">3ステップで整える</h2>
+        <ol class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-700">
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">1.</span> Excel/スプシから1列コピーして貼付</li>
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">2.</span> 用途プリセット（名簿 · EC · 改行→カンマ等）を選んで変換</li>
+            <li class="rounded-xl bg-slate-50 border border-slate-200 p-3"><span class="font-bold text-slate-900">3.</span> 行数を確認してコピー → Excel / CRM / 班分けへ</li>
+        </ol>
+        <p class="text-[10px] text-slate-500 flex flex-wrap gap-x-3 gap-y-1">
+            <span>外部送信ゼロ（ローカル完結）</span>
+            <span aria-hidden="true">·</span>
+            <span>サーバー保存なし</span>
+            <span aria-hidden="true">·</span>
+            <span>行数不一致時はコピー前に確認</span>
+            <span aria-hidden="true">·</span>
+            <span>500行まで</span>
+        </p>
+    </div>
+</section>
+
 <section class="no-print sg-faq-section">
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">全角半角整えのよくある質問</h2>
+        <p class="text-xs text-slate-500 mb-4">使い方のあとに、社内規程・データの扱いに関する質問を載せています。</p>
         <div class="sg-faq-list">
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4" open>
+                <summary>社内規程で無料の全角半角変換サイトが禁止でも使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>当社サーバーへテキストを送りません。</strong> 処理はお使いのブラウザ内だけです。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。一般的な「外部 Web コンバータに貼る」行為とは、データの行き先が異なります。詳細は <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a> · <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>Excel の関数でもできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。Excel / スプシの <strong>ASC</strong> · <strong>TRIM</strong> · <strong>SUBSTITUTE</strong> · <strong>TEXTJOIN</strong> 等で、<strong>シート内</strong>なら同様の変換は可能です。本ツールは Excel の<strong>代替ではなく</strong>、列をコピーして EC 登録 · CRM · 別 PC へ貼る<strong>途中</strong>での行ズレ · 変換ミスを減らすためのものです。毎週同じブックで補助列を回すなら、Excel テンプレの方が向くことが多いです。</p>
+                    <p class="mt-2">Excel · Web コンバータ · ブラウザ内処理の<strong>使い分け</strong>は、Zenn 記事「Excel列コピーと全角半角サイトのあるある」（<strong>2026/7/7 公開予定</strong>）で詳述します。公開後は <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a> からリンクします。</p>
+                </div>
+            </details>
             <details class="sg-faq">
                 <summary>Excelに貼り戻したら行が上下にズレました</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
@@ -146,7 +183,7 @@
             <details class="sg-faq">
                 <summary>データは外部に送信されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。すべてお使いのブラウザ内だけで処理されます。オフラインでも動作します。</p>
+                    <p><strong>いいえ。</strong> すべてブラウザ内だけで処理されます。オフラインでも動作します。永続保存もしません。DevTools の Network タブでも当方ドメインへの POST は発生しません（<a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a>）。</p>
                 </div>
             </details>
             <details class="sg-faq">

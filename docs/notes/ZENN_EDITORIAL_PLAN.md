@@ -143,7 +143,7 @@
 
 | # | 初稿 | メモ | Zenn 下書き |
 |---|------|------|-------------|
-| #12 normalize | ✅ | `ZENN_NORMALIZE_DRAFT_MEMO` | 予約 7/7 |
+| #12 normalize | ✅ **Excel深堀り · 5プリセット · 事務OL** | `ZENN_NORMALIZE_DRAFT_MEMO` | 予約 **7/7** |
 | #14 group-split | ✅ | `ZENN_GROUP_SPLIT_DRAFT_MEMO` | 可 |
 | #6 非送信 | ✅ | `ZENN_PRIVACY_DESIGN_DRAFT_MEMO` | 可 |
 | #11 fair-draw | ✅ | `ZENN_FAIR_DRAW_DRAFT_MEMO` + note 景表法 | 可 |
@@ -158,7 +158,7 @@
 |------|---|------|-----|------|
 | 6月 | #1 invoice | **公開済** | A | 初回 |
 | 7月 | #15 CRDT | **公開済** | B | Sync 入口（計画より先行可） |
-| **7/7** | #12 normalize | **予約** | A | タイトルに日付入り |
+| **7/7** | #12 normalize | **予約** | A | Excel vs サイト vs SUGUDASU · 5プリセット · 約2,800字 |
 | **7月中旬〜下旬** | #14 group-split | 下書き | A | RAND 卒業 · 班分け |
 | **8月上旬** | #6 非送信設計 | 下書き | B | 背骨 · DevTools |
 | **8月中旬** | #11 fair-draw | 下書き | A | 懸賞抽選 · note 景表法と同週可 |

@@ -58,11 +58,12 @@
     },
     {
       "tool_id": "normalize",
-      "productName": "SUGUDASU 文字列正規化",
+      "productName": "SUGUDASU 全角半角整え",
       "registryStatus": "live",
-      "primaryPain": "名簿やコードの全半角混在やスペース崩れを直す手間の多さ",
-      "primaryType": "D",
-      "typeReason": "EC登録用・名簿用など目的別プリセットで最適化",
+      "lpTier": "S",
+      "primaryPain": "社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる",
+      "primaryType": "A",
+      "typeReason": "ブラウザ内だけで用途別プリセット一括 · 行数チェックで貼り戻し事故防止",
       "implDifficulty": "低"
     },
     {
@@ -186,8 +187,8 @@
     },
     {
       "tool_id": "normalize",
-      "delta": "スペースの有無や全半角の「パッと見では揃って見える」不揃いさ",
-      "typicalAsk": "「コピペした名簿、苗字と名前の間のスペース全角半角混ざってない？」"
+      "delta": "社内規程で「無料の全角半角変換サイト」への貼付が禁止されている",
+      "typicalAsk": "「顧客リスト直すだけなのに、社内ツール申請するほどでもないし…」"
     },
     {
       "tool_id": "table-conv",

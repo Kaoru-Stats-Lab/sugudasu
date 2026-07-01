@@ -1,13 +1,13 @@
 # GEMINI マーケ添付コンテキスト（自動生成）
 
-生成日時: 2026-07-01T22:20:51.354Z
+生成日時: 2026-07-01T23:14:22.509Z
 正本プロンプト: `docs/prompts/kanji-san-lp-patterns-gemini.md`
 
 ---
 
 # TOOL_FACTS（Gemini添付用 · 自動生成）
 
-生成日時: 2026-07-01T22:20:51.249Z
+生成日時: 2026-07-01T23:14:22.402Z
 正本: `data/tool-facts/*.json` · `data/tool-registry.json` · `data/lp-marketing-matrix.json`
 次に着手: **timeline**（`data/tool-facts/_queue.json`）
 
@@ -534,10 +534,10 @@ productName: SUGUDASU 全角半角整え · stage: beta · URL: https://sugudasu
 
 ## マーケ（matrix 参照 · 捏造禁止）
 
-- 主Pain: 名簿やコードの全半角混在やスペース崩れを直す手間の多さ
-- 最優先の型: 型D
-- △相当: スペースの有無や全半角の「パッと見では揃って見える」不揃いさ
-- 聞き直し例: 「コピペした名簿、苗字と名前の間のスペース全角半角混ざってない？」
+- 主Pain: 社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる
+- 最優先の型: 型A
+- △相当: 社内規程で「無料の全角半角変換サイト」への貼付が禁止されている
+- 聞き直し例: 「顧客リスト直すだけなのに、社内ツール申請するほどでもないし…」
 
 ## 一行
 
@@ -581,7 +581,7 @@ Excel列コピーの全半角・空白・改行を用途別プリセットで整
 ```text
 【normalize 事実 · status=reviewed】
 SUGUDASU 全角半角整え / https://sugudasu.com/normalize
-Pain: 名簿やコードの全半角混在やスペース崩れを直す手間の多さ
+Pain: 社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる
 実装: 500行上限・行数 Before/After 表示
 実装: 用途プリセット5種（EC登録・名簿・全角英数・改行→カンマ・姓名スペース）
 実装: productName: SUGUDASU 全角半角整え（id=normalize 不変）
@@ -1324,7 +1324,7 @@ Pain: 要確認
 - invoice [OK]: SUGUDASU 請求書 / 型B / https://sugudasu.com/invoice
 - receipt [OK]: SUGUDASU 領収書 / 型B / https://sugudasu.com/receipt
 - fair-draw [OK]: SUGUDASU 抽選 / 型D / https://sugudasu.com/fair-draw
-- normalize [OK]: SUGUDASU 全角半角整え / 型D / https://sugudasu.com/normalize
+- normalize [OK]: SUGUDASU 全角半角整え / 型A / https://sugudasu.com/normalize
 - webp-to-jpg [OK]: SUGUDASU WebP変換 / 型B / https://sugudasu.com/webp-to-jpg
 - shift [OK]: SUGUDASU シフト / 型C / https://sugudasu.com/shift
 - label [OK]: SUGUDASU ラベル / 型D / https://sugudasu.com/label
@@ -1342,7 +1342,7 @@ Pain: 要確認
 
 # LP マーケティングマトリクス（自動生成）
 
-生成日時: 2026-07-01T22:20:51.334Z
+生成日時: 2026-07-01T23:14:22.490Z
 source: `data/lp-marketing-matrix.json` · version 2026-06-22
 
 ## §1 優先度表
@@ -1354,7 +1354,7 @@ source: `data/lp-marketing-matrix.json` · version 2026-06-22
 | timeline | SUGUDASU イベント進行 | planned | 現場でタイムスケジュールが巻いた・押した時の手計算が破綻 | 型A | 1箇所の時間変更から後続の全予定を連動再計算 | 中 |
 | work-calc | SUGUDASU 労働時間一括集計 | planned | 15分・30分刻みの出退勤テキストの丸め処理と合計が重労働 | 型A | 各社で異なる端数丸めの曖昧さを吸収して一括集計 | 低 |
 | fair-draw | SUGUDASU 公平抽選 | live | キャンペーンの抽選で「内定・サクラ」を疑われる恐怖 | 型D | 一般懸賞か社内イベントかの目的別全自動最適化 | 低 |
-| normalize | SUGUDASU 文字列正規化 | live | 名簿やコードの全半角混在やスペース崩れを直す手間の多さ | 型D | EC登録用・名簿用など目的別プリセットで最適化 | 低 |
+| normalize | SUGUDASU 全角半角整え | live | 社内規程で無料の変換サイトに名簿を貼れず、手打ちやExcel関数地獄になる | 型A | ブラウザ内だけで用途別プリセット一括 · 行数チェックで貼り戻し事故防止 | 低 |
 | table-conv | SUGUDASU 表データ相互コンバータ | planned | ExcelとMarkdownの間で表データをコピペすると構造が壊れる | 型D | コピペ元の形式に合わせた双方向変換の自動最適化 | 低 |
 | label | SUGUDASU 宛名ラベル | live | 郵便番号や住所の分割エラーで市販ラベル印刷がズレる | 型D | 市販ラベル用紙メーカーの型番プリセット最適化 | 中 |
 | invoice | SUGUDASU 見積・請求書 | live | 計算後の金額をもとに請求書PDFを発行する際の手数 | 型B | PDF出力と同時にチャット送付用メッセージを成形 | 中 |
@@ -1381,7 +1381,7 @@ source: `data/lp-marketing-matrix.json` · version 2026-06-22
 | timeline | 各プログラムの「大体5分くらい巻きそう・押しそう」な空気感 | 「今のセッション少し押してるけど、休憩時間何分削る？」 |
 | work-calc | 「10:03着」などの打刻に対し、何分単位で切り捨てるかの規律 | 「うちの店って、一分単位の遅刻も15分単位で丸めていいんだっけ？」 |
 | fair-draw | キャンペーンが「一般消費者向け」か「社内身内向け」かの境界 | 「このアマギフ抽選、対外キャンペーン用の法律上限って何円だっけ？」 |
-| normalize | スペースの有無や全半角の「パッと見では揃って見える」不揃いさ | 「コピペした名簿、苗字と名前の間のスペース全角半角混ざってない？」 |
+| normalize | 社内規程で「無料の全角半角変換サイト」への貼付が禁止されている | 「顧客リスト直すだけなのに、社内ツール申請するほどでもないし…」 |
 | table-conv | Excelのセルをテキストに貼ったときのタブ区切りの見えない構造 | 「Notionにこの表貼りたいんだけど、セル崩れずにコピペできる？」 |
 | label | 住所録の「マンション名が長すぎて枠からはみ出る」文字数の揺らぎ | 「この長い住所、ラベルの枠内に収まるように途中で改行していい？」 |
 | invoice | 税率が10%か8%（軽減税率）か混在する品目のグレーゾーン | 「このお弁当代の請求、中のジュースは消費税何パーセント計算？」 |
