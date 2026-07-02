@@ -34,6 +34,7 @@ python -m http.server 8080
 | [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
+| [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
 | [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |

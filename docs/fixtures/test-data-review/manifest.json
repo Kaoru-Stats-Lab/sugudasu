@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-07-02T13:26:35.967Z",
+  "engine": "assets/test-data-engine.js v0.4.2",
+  "primaryPair": [
+    "employee-seed42-n100-mine0.csv",
+    "payroll-seed42-n100.csv"
+  ],
+  "litePair": [
+    "employee-seed42-n25-mine0.csv",
+    "payroll-seed42-n25.csv"
+  ],
+  "optionalMine": "employee-seed42-n100-mine5.csv",
+  "payrollEmployeeMismatchRows": 0,
+  "prompts": {
+    "full": "test-data-dataset-review-COPYPASTE.txt",
+    "lite": "test-data-dataset-review-COPYPASTE-lite.txt",
+    "chatgptMulti": [
+      "test-data-dataset-review-chatgpt-1-prompt.txt",
+      "test-data-dataset-review-chatgpt-2-employee.txt",
+      "test-data-dataset-review-chatgpt-3-payroll.txt",
+      "test-data-dataset-review-chatgpt-4-mine.txt",
+      "test-data-dataset-review-chatgpt-5-start.txt"
+    ],
+    "geminiRerun": "test-data-dataset-review-gemini-rerun-COPYPASTE.txt",
+    "v042Rerun": "test-data-dataset-review-v042-rerun-COPYPASTE.txt",
+    "v042RerunLite": "test-data-dataset-review-v042-rerun-COPYPASTE-lite.txt",
+    "v042ChatgptMulti": [
+      "test-data-dataset-review-v042-chatgpt-1-prompt.txt",
+      "test-data-dataset-review-v042-chatgpt-2-employee.txt",
+      "test-data-dataset-review-v042-chatgpt-3-payroll.txt",
+      "test-data-dataset-review-v042-chatgpt-4-mine.txt",
+      "test-data-dataset-review-v042-chatgpt-5-start.txt"
+    ]
+  },
+  "stats": {
+    "diverseNameCount": 4,
+    "diverseNameExamples": [
+      {
+        "id": "EMP-2026-0024",
+        "name": "ラジュ・タパ",
+        "kana": "ラジュタパ"
+      },
+      {
+        "id": "EMP-2026-0042",
+        "name": "ラジュ・タパ",
+        "kana": "ラジュタパ"
+      },
+      {
+        "id": "EMP-2026-0096",
+        "name": "ファム・ミン・ドゥック",
+        "kana": "ファムミンドゥック"
+      },
+      {
+        "id": "EMP-2026-0099",
+        "name": "チャン・ティ・フォン",
+        "kana": "チャンティフォン"
+      }
+    ],
+    "salaryRoundedTo1000": true,
+    "zipQuotedInCsv": true,
+    "rehireCount": 9,
+    "employmentMix": {
+      "契約社員": 13,
+      "正社員": 57,
+      "パート": 14,
+      "派遣スタッフ": 7,
+      "再雇用": 9
+    },
+    "payrollMonths": [
+      "2026-01",
+      "2026-02",
+      "2026-03"
+    ],
+    "employeeIdsInPayroll": 100
+  }
+}

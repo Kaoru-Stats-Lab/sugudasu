@@ -32,6 +32,7 @@
             <strong class="font-bold text-slate-800">社内規程で無料の全角半角サイトに名簿を貼れない</strong> — 手打ちや Excel 関数地獄、を
             <strong class="font-bold text-slate-700">貼付 → 用途ボタン → コピー</strong>でここで終わらせます。
             顧客名簿 · EC一括登録 · メールリストの<strong>全角半角 · 空白 · 改行</strong>を、<strong>ブラウザ内だけ</strong>で整えます。
+            社員マスタのダミーCSVは <a href="test-data.html" class="text-emerald-800 font-semibold hover:underline">テストデータ</a> から「全角半角整えで開く」でも渡せます。
             変換後は <strong>入力 N 行 → 出力 M 行</strong> を必ず表示（行ズレ防止）。
             班分け前の名簿は <a href="group-split.html" class="text-emerald-800 font-semibold hover:underline">班分け</a> へ。
         </p>
@@ -216,6 +217,7 @@ import {
   PRESET_DEFAULTS,
 } from '../assets/text-normalize.js';
 import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
+import { readTestDataHandoff, clearTestDataHandoff } from '../assets/test-data-handoff.js';
 
 const PRESET_HINTS = {
   ec_form: '<strong>EC・フォーム:</strong> 英数半角 · 空白整理 · ハイフンは触りません。',
@@ -443,6 +445,23 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPresetToggles('ec_form');
   document.getElementById('preset-hint').innerHTML = PRESET_HINTS.ec_form;
   updateLineCounter();
+
+  const handoff = readTestDataHandoff();
+  if (handoff) {
+    inputEl.value = handoff.csv;
+    updateLineCounter();
+    const preset = handoff.normalizePreset || 'csv_roster';
+    if (presetController && PRESET_HINTS[preset]) {
+      presetController.select(preset);
+      applyPresetToggles(preset);
+      syncShapeModeUI(preset);
+      document.getElementById('preset-hint').innerHTML = PRESET_HINTS[preset];
+    }
+    clearTestDataHandoff();
+    if (!isOverLineLimit(inputEl.value)) runTransform();
+    copyToastEl.textContent = 'テストデータからCSVを受け取りました。変換後にコピーしてください。';
+    copyToastEl.classList.remove('hidden');
+  }
 });
 </script>
 </body>

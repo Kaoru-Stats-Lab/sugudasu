@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="給与SaaS・労務システム向けの社員マスタ風ダミーCSVをブラウザ内だけで生成。フリガナ・住所整合・シード再現・地雷データ。社労士・人事・受託開発のテスト向け。">
+    <title>テスト用ダミーデータ生成（社員マスタ・非送信） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="テスト用ダミーデータ — ブラウザ内だけでCSV生成">
+    <meta property="og:description" content="社員マスタ風CSVをブラウザ内だけで生成。フリガナ・給与・住所整合。シード再現・地雷データ混入。">
+    <meta property="og:url" content="https://sugudasu.com/test-data">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="テスト用ダミーデータ — 非送信CSV生成">
+    <meta name="twitter:description" content="労務・給与向け社員マスタCSV。フリガナ整合・非送信・シード再現。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"ネットのダミーデータCSVをダウンロードするのと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"外部サイトからファイルを取得しません。ブラウザ内だけで生成するため、持ち込み禁止の環境でも説明しやすいです。社内ID書式やメールドメインも画面から指定できます。"}},{"@type":"Question","name":"本物の個人情報や口座番号は使われますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべて架空のデータです。実在の口座番号・マイナンバーは生成しません。テスト・マニュアル・画面確認向けです。"}},{"@type":"Question","name":"同じデータを再現できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。シード値を同じにすれば、同じ件数・同じ設定で同じCSVが再現されます。バグ修正後の再検証に使えます。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。生成からCSVダウンロードまで端末のブラウザ内だけで完結します。"}},{"@type":"Question","name":"地雷データとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"外字・超長文・不正形式のメールなど、画面やバリデーションの境界を試すデータを約5%混入するオプションです。意図的にバグを炙り出すテスト向けです。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU テストデータ" data-sg-subtitle="社員マスタ · 非送信 · シード再現" data-sg-tool-id="test-data"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <header class="max-w-3xl space-y-2">
+        <p class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 inline-block px-3 py-1 rounded-full">労務 · 給与 · テスト · 非送信</p>
+        <p class="text-sm text-slate-600 sg-tool-lead">
+            給与計算SaaSや労務システムの<strong>インポート検証</strong>で、Excel手打ちや怪しい外部DLに頼りたくない現場向けです。
+            <strong>社員マスタ</strong>（氏名 · フリガナ · 給与 · 住所）を<strong>ブラウザ内だけ</strong>で生成します。
+            郵便番号と住所は整合済み。シード固定で再現可能。マイナンバー · 実口座は生成しません。
+            <a href="normalize.html" class="text-blue-800 font-semibold hover:underline">全角半角整え</a> ·
+            <a href="mask.html" class="text-blue-800 font-semibold hover:underline">マスク</a> と併用できます。
+        </p>
+    </header>
+
+    <section class="sg-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">データ種別</h2>
+        <div class="sg-segment sg-segment--cols-4 sg-segment--mode-ec sg-segment--notion-soft" id="preset-segment" role="tablist" aria-label="データ種別">
+            <span class="sg-segment__pill" aria-hidden="true"></span>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="employee" aria-selected="true">社員マスタ</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="payroll" aria-selected="false">給与明細</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="customer" aria-selected="false">顧客マスタ</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="transaction" aria-selected="false">取引明細</button>
+        </div>
+        <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
+
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 pt-2">件数</h2>
+        <div class="sg-segment sg-segment--cols-3 sg-segment--mode-csv sg-segment--notion-soft" id="count-segment" role="tablist" aria-label="件数">
+            <span class="sg-segment__pill" aria-hidden="true"></span>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100" aria-selected="true">100件</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="500" aria-selected="false">500件</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="5000" aria-selected="false">5,000件</button>
+        </div>
+        <p class="sg-segment-hint text-[11px] text-slate-600" id="count-hint" role="note"></p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">IDプレフィックス</span>
+                <input type="text" id="id-prefix" class="sg-input text-sm font-mono" value="" maxlength="16" placeholder="EMP-2026">
+                <span class="text-[10px] text-slate-500">例: EMP-2026-0001 · CUST-00001</span>
+            </label>
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">メールドメイン</span>
+                <input type="text" id="email-domain" class="sg-input text-sm font-mono" value="example.com" placeholder="example.com">
+            </label>
+        </div>
+
+        <div id="employee-year-panel" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">基準年（入社上限 · 支給年月）</span>
+                <input type="number" id="reference-year" class="sg-input text-sm font-mono" min="1980" max="2100" step="1">
+                <span class="text-[10px] text-slate-500">入社年月日の上限 · 給与明細の支給年月（1〜3月）。未指定時は<strong>今年</strong>。</span>
+            </label>
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">入社開始年</span>
+                <input type="number" id="hire-year-min" class="sg-input text-sm font-mono" value="2000" min="1960" max="2100" step="1">
+                <span class="text-[10px] text-slate-500">この年以降に入社。再雇用は原則60歳以降の入社日になります。</span>
+            </label>
+        </div>
+
+        <div id="date-format-panel" class="space-y-3 pt-2 border-t border-slate-100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">生年月日の形式</span>
+                <select id="birth-date-format" class="sg-input text-sm font-mono">
+                    <option value="slash" selected>YYYY/MM/DD</option>
+                    <option value="dash">YYYY-MM-DD</option>
+                    <option value="compact">YYYYMMDD</option>
+                </select>
+            </label>
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">入社年月日の形式</span>
+                <select id="hire-date-format" class="sg-input text-sm font-mono">
+                    <option value="slash">YYYY/MM/DD</option>
+                    <option value="dash" selected>YYYY-MM-DD</option>
+                    <option value="compact">YYYYMMDD</option>
+                </select>
+            </label>
+            </div>
+            <div class="flex flex-wrap gap-2 items-center">
+                <span class="text-[10px] font-semibold text-slate-600">日付を統一:</span>
+                <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-date-preset="slash">両方スラッシュ</button>
+                <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-date-preset="dash">両方ハイフン</button>
+                <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-date-preset="compact">両方コンパクト</button>
+            </div>
+        </div>
+
+        <div id="output-options-panel" class="grid grid-cols-1 gap-2 pt-2 border-t border-slate-100">
+            <p class="text-xs font-semibold text-slate-700">出力オプション（通常データ向け）</p>
+            <label class="flex items-start gap-2">
+                <input type="checkbox" id="quote-zip-csv" class="mt-0.5" checked>
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">郵便番号をCSVでクォート</strong> — Excelで <code class="text-[10px]">030-0801</code> の先頭0が消えるのを防ぎます（ON推奨）。</span>
+            </label>
+            <label id="round-salary-wrap" class="flex items-start gap-2">
+                <input type="checkbox" id="round-salary-1000" class="mt-0.5" checked>
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">基本給・通勤手当を千円単位</strong> — <code class="text-[10px]">460637</code> のような端数を避け、現場らしい金額にします。</span>
+            </label>
+            <label id="foreign-names-wrap" class="flex items-start gap-2">
+                <input type="checkbox" id="include-foreign-names" class="mt-0.5" checked>
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">多様な氏名を約4%混入</strong> — 在留外国人統計を参考にした中国・ベトナム風に加え、<strong class="text-slate-700">日本国籍のハイブリッド風</strong>（例: 小久保玲央ブライアン · 望月 ヘンリー海輝）も混ぜます。</span>
+            </label>
+            <label id="space-diverse-names-wrap" class="flex items-start gap-2 ml-4">
+                <input type="checkbox" id="space-in-diverse-names" class="mt-0.5" checked>
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">多様な氏名に姓と名の間へ半角スペース</strong> — <code class="text-[10px]">伊藤 海輝マイケル</code> · 中黒はスペースに置換（SaaS一括取込向け · ON推奨）。</span>
+            </label>
+            <label id="payroll-variation-wrap" class="flex items-start gap-2">
+                <input type="checkbox" id="payroll-monthly-variation" class="mt-0.5" checked>
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">給与明細に月次変動</strong> — 残業時間・残業代・源泉徴収税額を3ヶ月でばらつかせます（給与明細プリセット時）。</span>
+            </label>
+        </div>
+
+        <details id="header-custom-panel" class="pt-2 border-t border-slate-100 group">
+            <summary class="text-xs font-semibold text-slate-700 cursor-pointer select-none py-1">列名（CSVヘッダー · インポート用）</summary>
+            <div class="mt-3 space-y-3">
+                <p class="text-[10px] text-slate-500 leading-relaxed">給与SaaSのインポート仕様に合わせて<strong>出力列名だけ</strong>変更できます。左の灰字は内部項目名（固定）です。</p>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-header-template="default">SUGUDASU標準</button>
+                    <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-header-template="jugyoin">従業員番号表記</button>
+                    <button type="button" class="sg-btn-secondary text-[10px] py-1 px-2" data-header-template="kyuyo_saas">給与SaaS寄り</button>
+                    <button type="button" id="btn-header-reset" class="sg-btn-secondary text-[10px] py-1 px-2">リセット</button>
+                </div>
+                <div id="header-fields" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"></div>
+            </div>
+        </details>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-700">シード（再現用）</span>
+                <div class="flex gap-2">
+                    <input type="number" id="seed-input" class="sg-input text-sm font-mono flex-1" value="42" min="1" max="999999999">
+                    <button type="button" id="btn-reseed" class="sg-btn-secondary text-xs py-2 px-3 shrink-0">🎲 ランダム</button>
+                </div>
+            </label>
+            <label class="flex items-start gap-2 pt-6">
+                <input type="checkbox" id="mine-toggle" class="mt-0.5">
+                <span class="text-xs text-slate-600 leading-relaxed"><strong class="text-slate-700">地雷データを約5%混入</strong> — 半角カナ · 郵便番号ハイフンなし · 日付形式ゆらぎ · 超長住所 · 不正メールなど。</span>
+            </label>
+        </div>
+
+        <div id="progress-wrap" class="hidden space-y-1">
+            <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-300" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 items-center pt-1">
+            <button type="button" id="btn-generate" class="sg-btn-primary text-sm py-2 px-4">▶ 生成</button>
+            <button type="button" id="btn-download" class="sg-btn-secondary text-sm py-2 px-4" disabled>↓ CSVダウンロード</button>
+            <button type="button" id="btn-copy" class="sg-btn-secondary text-sm py-2 px-4" disabled>コピー</button>
+            <button type="button" id="btn-open-normalize" class="sg-btn-secondary text-sm py-2 px-4" disabled>全角半角整えで開く</button>
+        </div>
+        <p id="status" class="text-xs text-slate-500" aria-live="polite"></p>
+    </section>
+
+    <section class="sg-card p-5 space-y-3 overflow-hidden">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">プレビュー</h2>
+        <p id="preview-note" class="text-[11px] text-slate-500">「生成」を押すとプレビューが表示されます。</p>
+        <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="min-w-full text-[11px]">
+                <thead class="bg-slate-50"><tr id="preview-head"></tr></thead>
+                <tbody id="preview-body"></tbody>
+            </table>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed">
+            <strong class="text-slate-600">架空データです。</strong>
+            本物の個人情報・口座番号ではありません。本番データの代用や外部提供には使わないでください。
+        </p>
+    </section>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">テスト用ダミーデータのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>給与明細は社員マスタと連動しますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。同じシード・件数で社員を生成し、<strong>社員番号</strong>に紐づく<strong>3ヶ月分</strong>の明細行を出力します。基本給・通勤手当は社員マスタと一致します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>生年月日・入社日の形式は変えられますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>YYYY/MM/DD</strong> · <strong>YYYY-MM-DD</strong> · <strong>YYYYMMDD</strong> から選べます。インポート先の日付列仕様に合わせてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>全角半角整えへそのまま渡せますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>生成後の<strong>「全角半角整えで開く」</strong>で、CSV名簿プリセットが選ばれた状態で <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> を開きます（500行まで · ブラウザ内 handoff）。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>入社年月日や社員番号の「年」は固定ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。<strong>基準年</strong>はデフォルトでブラウザの現在年になり、入社年月日の上限に使います。<strong>入社開始年</strong>も指定できます。過去の改修テストでは基準年を下げてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>再雇用・高齢層のデータは含まれますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>雇用形態に<strong>再雇用</strong>（約7%）があり、生年月日は1948〜1964年帯・入社は60歳以降を想定しています。定年後再雇用や高年齢雇用の計算・表示テスト向けです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>給与SaaS（マネーフォワード・freee等）にそのまま入りますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>列名は画面の<strong>「列名（CSVヘッダー）」</strong>で変更できます。テンプレート（従業員番号表記 · 給与SaaS寄り）を選んでから微調整してください。製品ごとに1文字違う場合もここで合わせられます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>ネットのダミーデータCSVと何が違いますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>外部サイトからファイルを取得しません。<strong>ブラウザ内だけ</strong>で生成するため、持ち込み禁止の環境でも説明しやすいです。社内ID書式やメールドメインも画面から指定できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>本物の個人情報は使われますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。すべて<strong>架空のデータ</strong>です。実在の口座番号・マイナンバーは生成しません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>同じデータを再現できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。<strong>シード値</strong>を同じにすれば、同じ件数・設定で同じCSVが再現されます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>データはサーバーに送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。生成からCSVダウンロードまで<strong>端末のブラウザ内</strong>だけです。確認手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a> をご覧ください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>エンタープライズのテストデータ管理ツールの代替ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。本番DBマスキングや大規模負荷試験基盤の代替ではありません。<strong>受託開発・社内テスト・マニュアル担当</strong>が、Excel手打ちや怪しいDLをやめるための軽量ツールです。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/test-data-app.js"></script>
+</body>
+</html>

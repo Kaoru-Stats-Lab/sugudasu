@@ -278,10 +278,31 @@
 
 ---
 
+## DEPLOY-20260702-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | SUGUDASU テストデータ α v0.4.3 本番反映 |
+| **change_summary** | `test-data` 新規（engine/app · 社員/給与/顧客/取引 · v0.4.3 氏名スペース・給与月次変動・日付統一）· hub/nav · normalize handoff · 3AIレビュー fixture/docs |
+| **local_build** | `pending` |
+| **deploy_count_today** | 4 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-02 | 004 approved（test-data α v0.4.3 · 提督 push 依頼） |
 | 2026-07-02 | 003 executed（mask α · Zenn ネタ） |
 | 2026-07-02 | 003 approved（SUGUDASU マスク α · Zenn ネタ · 提督 push 依頼） |
 | 2026-07-02 | 002 executed（334b810 · DEV_GIT_AGENT_DELEGATION docs） |

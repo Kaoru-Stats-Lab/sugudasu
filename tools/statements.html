@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SUGUDASU（すぐだす）は、幹事・店長・フリーランス向けの無料実務ツール集。登録不要・Copy-first・統制システムではない——7つの設計原則と、あえてやらないことを公開しています。">
+    <meta name="description" content="SUGUDASU（すぐだす）の設計原則。登録不要・入力はブラウザ内・DevToolsで確認可能。情報管理・情シス担当向けの通信説明と、あえてやらないことを公開（非契約）。">
     <title>SUGUDASU の約束 — 登録不要 · ブラウザ完結 · 名簿を預けない設計 | すぐだす</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
@@ -44,12 +44,65 @@
                 <span class="sg-statements-pill sg-statements-pill--local">Copy-first</span>
                 <span class="sg-statements-pill sg-statements-pill--neutral">非契約 · 読み物</span>
             </div>
-            <p class="sg-info-caption leading-relaxed">法的な取り扱いは <a href="privacy.html">プライバシーポリシー</a>。本ページは製品設計の約束です。</p>
+            <p class="sg-info-caption leading-relaxed">法的な取り扱いは <a href="privacy.html">プライバシーポリシー</a>。本ページは製品設計の約束です。情報管理担当の方は <a href="#for-it-security">情シス・情報管理向けまとめ</a> からどうぞ。</p>
+        </section>
+
+        <section id="for-it-security" class="space-y-4 scroll-mt-24 bg-slate-50 border border-slate-200 rounded-xl p-5 lg:p-6" aria-labelledby="for-it-security-heading">
+            <h2 id="for-it-security-heading" class="sg-info-section-title">情報管理・情シス担当向けまとめ</h2>
+            <p class="text-sm leading-relaxed">
+                社内規程の最終判断は貴社にお任せします。以下は、SUGUDASU 各ツールの<strong>設計意図</strong>と、
+                現場から「外部にデータを送っていないか」を確認するための<strong>一次情報</strong>です（契約 · 保証ではありません）。
+            </p>
+
+            <div class="bg-white border border-slate-200 rounded-lg p-4 space-y-3 text-sm leading-relaxed">
+                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">申請メモにそのまま貼れる要約（コピー可）</p>
+                <blockquote class="border-l-4 border-violet-400 pl-4 text-slate-700 space-y-2 not-italic">
+                    <p><strong>SUGUDASU</strong> は、静的 HTML + JavaScript をブラウザで実行する無料の実務ツール集です。会員登録はありません。</p>
+                    <p>ユーザーが入力・貼り付けした名簿 · 金額 · 画像 · テキスト等を、<strong>ツール処理のために当社サーバーへ POST する設計にはしていません</strong>。処理の中心は端末内（クライアント）です。結果はコピー · ダウンロードで手元に残します。</p>
+                    <p>ページの初回読込（HTML/JS/CSS）· 広告配信 · アクセス解析 · ホスティングログでは、<strong>入力内容とは別の通信</strong>が発生しうります（<a href="#verify-layers">通信レイヤ</a> · <a href="privacy.html">プライバシーポリシー</a>）。</p>
+                    <p>本番データの匿名化 · マスキング · エンタープライズ TDM の代替ではありません。ダミーデータ生成専用ツールを含み、<strong>実在のマイナンバー · 口座番号は生成しません</strong>。</p>
+                </blockquote>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-[11px] border-collapse min-w-[320px]">
+                    <caption class="sr-only">情報管理担当向けの設計要点</caption>
+                    <thead>
+                        <tr class="border-b border-slate-200 text-left">
+                            <th class="py-2 pr-3 font-bold text-slate-800 w-36">観点</th>
+                            <th class="py-2 font-bold text-slate-800">SUGUDASU の設計</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600">
+                        <tr class="border-b border-slate-100"><th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">認証</th><td class="py-2 align-top">アカウント登録なし。OAuth · SSO なし</td></tr>
+                        <tr class="border-b border-slate-100"><th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">入力データ</th><td class="py-2 align-top">処理目的でのサーバー保存 · POST なし（ツール本体）。ダウンロード後の CSV · PDF 管理は利用者側</td></tr>
+                        <tr class="border-b border-slate-100"><th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">配信形態</th><td class="py-2 align-top">Cloudflare Pages 上の静的ファイル。ユーザーごとの DB · 常時接続サーバーなし</td></tr>
+                        <tr class="border-b border-slate-100"><th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">確認方法</th><td class="py-2 align-top"><a href="#verify-devtools">DevTools（Network / Application）</a> で POST の有無を確認可能。初回読込後はキャッシュによりオフラインでも core 機能が動く場合あり</td></tr>
+                        <tr><th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">組織の判断</th><td class="py-2 align-top">未分類ドメインの閲覧可否 · プロキシ · DLP は貴社ポリシー次第。本ページは<strong>技術説明</strong>であり、利用承認の代わりにはなりません</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="space-y-2 text-sm">
+                <h3 class="font-bold text-slate-800">説明しやすい一言（例）</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-600">
+                    <li>「入力はブラウザ内で処理し、名簿等を当社サーバーに送る設計にはしていない静的 Web ツールです」</li>
+                    <li>「F12 → Network で、貼付 · 生成 · 変換の操作時に入力内容を含む POST が出ないことを確認できます」</li>
+                </ul>
+                <h3 class="font-bold text-slate-800 pt-2">避けたい表現（誤解を招きます）</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-600">
+                    <li>「完全に安全」「100% 非送信」「情シス承認不要」</li>
+                    <li>「本番データを入れても問題ない」「匿名化ツールとして使える」</li>
+                    <li>「AI クラウドが個人情報を自動生成する」（当社ツールは該当しませんが、説明がずれます）</li>
+                </ul>
+            </div>
+            <p class="sg-info-caption">ツール別の注意（テストデータ · 画像変換など）は <a href="#tools-map">ツールと約束の対応</a> · <a href="#wont-do">あえてやらないこと</a> をご覧ください。</p>
         </section>
 
         <nav id="statements-toc" class="sg-statements-toc scroll-mt-24" aria-labelledby="statements-toc-heading">
             <p id="statements-toc-heading" class="sg-statements-toc__title">目次</p>
             <ul>
+                <li><a href="#for-it-security">情報管理・情シス向けまとめ</a></li>
                 <li><a href="#principles">7つの設計原則</a></li>
                 <li><a href="#caveats">正直な但し書き</a></li>
                 <li><a href="#copy-first-flow">Copy-first の流れ</a></li>
@@ -144,7 +197,7 @@
                     </tbody>
                 </table>
             </div>
-            <p><strong>入力した名簿 · 金額 · 抽選リストを、SUGUDASU がサーバーに保存する設計にはしていません。</strong> 例外（拡張機能 · ネットワーク機器 · 第三者タグ等）の可能性は <a href="privacy.html">プライバシーポリシー</a> に記載しています。</p>
+            <p><strong>入力した名簿 · 金額 · 抽選リスト · 生成するダミーデータを、SUGUDASU がサーバーに保存する設計にはしていません。</strong> 例外（拡張機能 · ネットワーク機器 · 第三者タグ等）の可能性は <a href="privacy.html">プライバシーポリシー</a> に記載しています。</p>
         </section>
 
         <section class="space-y-3">
@@ -241,7 +294,7 @@
                     <tbody class="text-slate-600">
                         <tr class="border-b border-slate-100">
                             <th scope="row" class="py-2 pr-3 align-top font-semibold text-slate-700">① 入力処理</th>
-                            <td class="py-2 pr-3 align-top">貼付 · 抽選 · 分割 · 変換などツール本体</td>
+                            <td class="py-2 pr-3 align-top">貼付 · 抽選 · 分割 · 変換 · <strong>架空データ生成</strong> などツール本体</td>
                             <td class="py-2 pr-3 align-top"><strong>端末内のみ</strong>（送信しない）</td>
                             <td class="py-2 align-top">結果のコピーはあなたの操作まで。自動アップロードなし。</td>
                         </tr>
@@ -295,8 +348,9 @@
                 <li class="pl-1">
                     <strong>Network（ネットワーク）</strong>
                     <p class="mt-1 ml-0 sm:ml-4 leading-relaxed">
-                        キーボード <kbd class="sg-kbd">F12</kbd> →「Network」を開き、名簿を貼り付けて抽選 · 分割などを実行します。
-                        一覧に <strong>当社ドメイン以外への POST</strong>（送信ボディに貼付内容が含まれるもの）が
+                        キーボード <kbd class="sg-kbd">F12</kbd> →「Network」を開き、ツールの主操作を実行します
+                        （例: 名簿の貼付 · 抽選 · 班分け · <strong>ダミーCSVの生成</strong> · 画像変換 · テキスト整形）。
+                        一覧に <strong>入力内容をボディに含む POST</strong>（当社ドメイン以外への送信を含む）が
                         出ていないか確認してください。ページ読込 · 広告 · 解析用の GET は別レイヤです。
                     </p>
                 </li>
@@ -354,6 +408,9 @@
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>「AI が最適班を提案」</strong></td><td class="py-2">幹事のルールと <strong>説明責任</strong> を優先</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>投影ルーレット演出</strong></td><td class="py-2">教室向け演出 — 幹事の TSV/Slack が主戦場</td></tr>
                         <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>アカウント必須のクラウド同期</strong></td><td class="py-2">班分け等は <strong>セッション JSON + 同期メモ</strong>（Google Keep 等）で PC→スマホ</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>本番データの匿名化 · マスキング</strong></td><td class="py-2">テスト用<strong>架空</strong>データ生成のみ。実データの仮名化 export は別ツール · 別プロセスの領域</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>マイナンバー · 実口座の生成</strong></td><td class="py-2">コンプライアンス上、ダミーでも生成しません（<a href="test-data.html">テストデータ</a>）</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><strong>エンタープライズ TDM · 負荷試験基盤</strong></td><td class="py-2">大規模 DB マスキング · SQL シード · 百万件生成はスコープ外</td></tr>
                         <tr><td class="py-2 pr-3 align-top"><strong>懸賞 · 人事の統制システム</strong></td><td class="py-2">操作ログ · 権限 · ワークフローは別製品の領域</td></tr>
                     </tbody>
                 </table>
@@ -428,15 +485,25 @@
 
         <section id="tools-map" class="space-y-3 scroll-mt-24">
             <h2 class="sg-info-section-title">ツールと約束の対応</h2>
+            <p class="text-sm text-slate-600">入力データを処理目的でサーバーに送らない設計のツール一覧です。詳細 FAQ は各ツールページ下部にあります。</p>
             <div class="overflow-x-auto">
-                <table class="w-full text-[11px] border-collapse min-w-[320px]">
-                    <thead><tr class="border-b border-slate-200 text-left"><th class="py-2 pr-3 font-bold">ツール</th><th class="py-2 font-bold">この約束のどこに効くか</th></tr></thead>
+                <table class="w-full text-[11px] border-collapse min-w-[480px]">
+                    <thead><tr class="border-b border-slate-200 text-left"><th class="py-2 pr-3 font-bold">ツール</th><th class="py-2 pr-3 font-bold">入力の扱い</th><th class="py-2 font-bold">この約束のどこに効くか</th></tr></thead>
                     <tbody class="text-slate-600">
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="group-split.html">SUGUDASU 班分け</a></td><td class="py-2">名簿を預けない設計 · Copy-first · 欠席タップ再編 · Zoom API なし</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="fair-draw.html">SUGUDASU 抽選</a></td><td class="py-2">証跡 PDF · シード · 統制システムではない</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="invoice.html">SUGUDASU 請求書</a></td><td class="py-2">Desktop-first · 下書き · 見積→請求転用</td></tr>
-                        <tr class="border-b border-slate-100"><td class="py-2 pr-3"><a href="normalize.html">SUGUDASU 全角半角整え</a></td><td class="py-2">500行 cap · コピーゲート · 名簿前処理</td></tr>
-                        <tr><td class="py-2 pr-3"><a href="webp-to-jpg.html">SUGUDASU WebP変換</a></td><td class="py-2">アップロードしない変換</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="group-split.html">SUGUDASU 班分け</a></td><td class="py-2 pr-3 align-top">名簿 · 端末内</td><td class="py-2 align-top">Copy-first · シード再現 · Zoom API なし</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="fair-draw.html">SUGUDASU 抽選</a></td><td class="py-2 pr-3 align-top">名簿 · 端末内</td><td class="py-2 align-top">証跡 PDF · 統制システムではない</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="test-data.html">SUGUDASU テストデータ</a></td><td class="py-2 pr-3 align-top">架空データ生成 · 端末内</td><td class="py-2 align-top">社員マスタ · 本番投入非対応 · マイナンバー/実口座なし · シード · 地雷</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="normalize.html">SUGUDASU 全角半角整え</a></td><td class="py-2 pr-3 align-top">テキスト · 端末内</td><td class="py-2 align-top">500行 cap · 外部コンバータに貼らない代替</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="mask.html">SUGUDASU マスク</a></td><td class="py-2 pr-3 align-top">画像 · Canvas端末内</td><td class="py-2 align-top">マニュアル用黒塗り · アップロード型と差別化</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="webp-to-jpg.html">SUGUDASU WebP変換</a></td><td class="py-2 pr-3 align-top">画像 · 端末内</td><td class="py-2 align-top">運営サーバーへ画像を送らない変換</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="invoice.html">SUGUDASU 請求書</a></td><td class="py-2 pr-3 align-top">帳票下書き · 端末内</td><td class="py-2 align-top">Desktop-first · JSON下書き · 印刷 PDF</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="receipt.html">SUGUDASU 領収書</a></td><td class="py-2 pr-3 align-top">金額 · 端末内</td><td class="py-2 align-top">手取り逆引き · 印刷</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="label.html">SUGUDASU ラベル</a></td><td class="py-2 pr-3 align-top">宛名リスト · 端末内</td><td class="py-2 align-top">一括貼付 · 印刷</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="timeline.html">SUGUDASU イベント進行</a></td><td class="py-2 pr-3 align-top">進行表 · 端末内</td><td class="py-2 align-top">時刻連動 · TSVコピー</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="warikan.html">SUGUDASU 割り勘</a></td><td class="py-2 pr-3 align-top">金額 · 端末内</td><td class="py-2 align-top">清算文コピー · 履歴保存なし</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="report.html">SUGUDASU 議事録</a></td><td class="py-2 pr-3 align-top">メモ · 端末内</td><td class="py-2 align-top">下書き整形 · コピー</td></tr>
+                        <tr class="border-b border-slate-100"><td class="py-2 pr-3 align-top"><a href="shift.html">SUGUDASU シフト</a></td><td class="py-2 pr-3 align-top">シフト表 · 端末内</td><td class="py-2 align-top">印刷 · 公平性表示</td></tr>
+                        <tr><td class="py-2 pr-3 align-top"><a href="stamp.html">SUGUDASU 電子印鑑</a></td><td class="py-2 pr-3 align-top">印影生成 · 端末内</td><td class="py-2 align-top">請求書への handoff · 角印はアップロード</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -457,6 +524,18 @@
                 <summary class="font-bold cursor-pointer select-none">Pro プランや有料版はありますか？</summary>
                 <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>現時点では無料</strong> です（広告 · アフィリエイトで運営）。将来、<strong>広告非表示</strong> や <strong>より高度な機能</strong> などを含む有料プランを検討する余地はあります。ただし <strong>登録なしで使えるコア</strong> を有料の人質にはしない方針です。</p>
             </details>
+            <details class="sg-faq">
+                <summary class="font-bold cursor-pointer select-none">社内利用の承認は不要ですか？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>当社が「承認不要」とは言いません。</strong> 未分類ドメインの閲覧 · 外部 Web ツールの利用可否は、貴社の情報セキュリティポリシーで判断してください。本ページと <a href="#verify-devtools">DevTools 手順</a> は、現場が情シスへ説明するときの<strong>技術根拠</strong>としてご利用ください。</p>
+            </details>
+            <details class="sg-faq">
+                <summary class="font-bold cursor-pointer select-none">本番の顧客データ · 名簿を入力してもよいですか？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed"><strong>想定していません。</strong> 班分け · 請求書などは業務データを扱い得ますが、設計上は「預けない」ことを優先しています。<a href="test-data.html">テストデータ</a> は<strong>架空データの生成専用</strong>で、本番の匿名化 · マスキング用途ではありません。実データを扱う場合は、貴社の個人情報保護規程に従ってください。</p>
+            </details>
+            <details class="sg-faq">
+                <summary class="font-bold cursor-pointer select-none">オフライン · 閉域環境でも使えますか？</summary>
+                <p class="mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">初回はページ（HTML/JS）の取得が必要です。一度読み込んだあと、キャッシュが残っていれば機内モードでも core 機能が動く場合があります（環境依存）。<strong>インターネット遮断が厳しい現場</strong>では、ドメイン自体の閲覧可否がボトルネックになることがあります。確実な検証は <a href="#verify-devtools">Network タブ</a> です。</p>
+            </details>
         </section>
 
         <footer class="space-y-2">
@@ -468,7 +547,7 @@
                 · <a href="terms.html">利用規約</a>
                 · <a href="disclaimer.html">免責事項</a>
             </p>
-            <p class="sg-info-caption pt-2">※本ページは製品哲学の説明であり、契約 · 保証を構成しません。改定: 2026年6月20日</p>
+            <p class="sg-info-caption pt-2">※本ページは製品哲学の説明であり、契約 · 保証を構成しません。改定: 2026年7月2日</p>
         </footer>
     </article>
 </main>

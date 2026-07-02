@@ -158,6 +158,19 @@
       "stage": "alpha",
       "statusNote": "黒塗り/モザイク/スタンプ · Canvas非送信 · マニュアル向け · T09b"
     },
+    "test-data": {
+      "file": "test-data.html",
+      "conceptName": "テストデータ",
+      "productName": "SUGUDASU テストデータ",
+      "navLabel": "テストデータ",
+      "navIcon": "🧪",
+      "inNav": true,
+      "navOrder": 10.6,
+      "name": "テスト用ダミーデータ生成",
+      "version": "0.4.3",
+      "stage": "alpha",
+      "statusNote": "社員マスタ · 氏名スペース · 給与月次変動 · 日付統一 · T10"
+    },
     "group-split": {
       "file": "group-split.html",
       "conceptName": "班分け",

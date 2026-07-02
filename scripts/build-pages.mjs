@@ -318,6 +318,7 @@ const BUST_ASSET_NAMES = [
   'stamp-app.js',
   'stamp-engine.js',
   'stamp-handoff.js',
+  'test-data-handoff.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
 ];

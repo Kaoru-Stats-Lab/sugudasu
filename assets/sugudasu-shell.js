@@ -18,6 +18,7 @@
     { id: 'normalize', file: 'normalize.html', label: '全角半角', icon: '🔤' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
+    { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
