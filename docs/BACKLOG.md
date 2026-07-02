@@ -855,6 +855,15 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - [ ] `M7` 対象（`warikan` / `label`）の XSS再確認
 - [ ] `M8` 対象（空入力・極大値）の挙動統一
 
+### 4-5. `test-data` 件数スケール（SSOT: `TEST_DATA_TOOL_SPEC.md` §7）
+
+- [ ] **P1** v0.5 — IDオフセット · 続きバッチ · 社員番号ユニーク（5,000件×N）
+- [ ] **P2** v0.6 — Web Worker · BlobストリームDL（〜50万行）
+- [ ] **P2** v1.0 — `DOMAIN_MAX` 実装（社員マスタ **24万**・給与明細行1,000万）
+- [ ] **P2** FAQ — 5,000＝1チャンク · 全国≈1,000万人は統計合計で単一マスタ対象外
+
+**根拠:** [労働組合基礎調査 概況](https://www.mhlw.go.jp/toukei/itiran/roudou/roushi/kiso/25/dl/gaikyou.pdf)（全国統計）· [主要団体別附表 H11–12](https://www.mhlw.go.jp/www2/kisya/daijin/20001219_02_d/20001219_02_d_fhyou.html)（業界単産〜100万）· **JP労組** 単一組合実務上限 **21万〜24万人**（正社員加入率9割超）
+
 ---
 
 ## 5) Cloudflare Pages デプロイ Backlog
