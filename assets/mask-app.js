@@ -72,6 +72,8 @@ function pushHistory() {
 function updateHistoryButtons() {
   els.btnUndo.disabled = undoStack.length === 0;
   els.btnRedo.disabled = redoStack.length === 0;
+  const canCopy = !!navigator.clipboard && !!window.ClipboardItem && document.hasFocus();
+  els.btnCopy.disabled = !canCopy;
 }
 
 async function undo() {
@@ -173,11 +175,20 @@ async function downloadPng() {
 }
 
 async function copyPng() {
+  if (!document.hasFocus()) {
+    setStatus('ウィンドウを一度クリックしてフォーカス後に「コピー」を押してください。', true);
+    return;
+  }
   try {
     await copyCanvasPng(els.canvas);
     setStatus('クリップボードにコピーしました。');
   } catch (e) {
-    alert(e.message);
+    const raw = e?.message || '';
+    if (raw.includes('Document is not focused') || e?.name === 'NotAllowedError') {
+      setStatus('コピーはブラウザが前面表示・フォーカス中のみ使えます。前面にして再実行してください。', true);
+      return;
+    }
+    setStatus(`コピーに失敗しました: ${raw || 'PNG保存をご利用ください。'}`, true);
   }
 }
 
@@ -252,13 +263,19 @@ function endDraw(e) {
     dragBaseUrl = null;
     return;
   }
+  const finalRect = previewRect;
   const before = dragBaseUrl;
   dragBaseUrl = null;
   undoStack.push(before);
   if (undoStack.length > MAX_HISTORY) undoStack.shift();
   redoStack = [];
   updateHistoryButtons();
-  restoreSnapshot(els.canvas, ctx, before).then(() => applyTool(previewRect));
+  restoreSnapshot(els.canvas, ctx, before)
+    .then(() => applyTool(finalRect))
+    .catch((err) => {
+      console.error(err);
+      setStatus('編集の適用に失敗しました。もう一度ドラッグしてください。', true);
+    });
   previewRect = null;
 }
 
@@ -322,3 +339,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateHistoryButtons();
   setStatus('画像をドロップ · 選択 · Ctrl+V で貼り付け');
 });
+
+window.addEventListener('focus', updateHistoryButtons);
+window.addEventListener('blur', updateHistoryButtons);

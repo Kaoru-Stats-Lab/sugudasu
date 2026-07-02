@@ -1,7 +1,7 @@
 # ガイド記事ブラッシュアップ — Gemini / Grok パイプライン
 
-**更新:** 2026-06-27  
-**対象:** `tools/guides/*.html`（初回5本）  
+**更新:** 2026-07-02  
+**対象:** `tools/guides/*.html`（初回5本 + `web-production-schedule-excel`）  
 **戦略 SSOT:** [`docs/notes/GUIDES_CONTENT_STRATEGY.md`](../../notes/GUIDES_CONTENT_STRATEGY.md)
 
 ---
@@ -26,6 +26,8 @@
 | `excel-vs-web-timeline` | Excel vs Web 比較マトリクス · 併用フロー表 | 現場の一言（#REF! · トイレから直せない） | `excel-vs-web-timeline.gemini.md` · `excel-vs-web-timeline.grok.md` |
 | `fair-group-split` | 制約優先度表 · シード説明 · 説明用台本 | ワークショップ幹事の口調 · 不満エピソードの具体化 | `fair-group-split.gemini.md` · `fair-group-split.grok.md` |
 | `invoice-browser-workflow` | 記載事項チェック表 · ステップ責任分担表 | フリーランスの締切前不安 · 税務断定の回避維持 | `invoice-browser-workflow.gemini.md` · `invoice-browser-workflow.grok.md` |
+| `web-production-schedule-excel` | SEOクラスター · 失敗5 · 表A/B · FAQ5（Gemini 依頼1–6 済） | ディレクター現場の一言 · 手動リスケあるある | `schedule-web-production-seo-gemini-prompt.md` · `web-production-schedule-excel.grok.md` |
+| `construction-schedule-excel` | SEOクラスター · 失敗5+印刷3 · 表A/B · FAQ8（Gemini + 補完済） | 監督現場の一言 · 掲示/週間あるある | `schedule-construction-seo-gemini-prompt.md` · `construction-schedule-excel.grok.md` |
 
 ---
 

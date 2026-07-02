@@ -13,22 +13,59 @@ python -m http.server 8080
 
 ブラウザで `http://localhost:8080/hub.html` を開く（`assets/` は `../assets/` 参照のため、`tools/` をドキュメントルートにしてください）。
 
+<!-- AUTO:TOOLS_START -->
+
 ## ツール一覧（`tools/`）
 
-| ファイル | 名称 | 印刷 |
-|----------|------|------|
-| [hub.html](tools/hub.html) | ポータル（全ツール入口） | — |
-| [invoice.html](tools/invoice.html) | 見積・納品・請求書（インボイス） | PDF |
-| [present.html](tools/present.html) | ギフトサジェスター（地雷回避） | — |
-| [label.html](tools/label.html) | 宛名ラベル・サンキューカード | PDF |
-| [shift.html](tools/shift.html) | 2ヶ月シフト表 | A4横 |
-| [report.html](tools/report.html) | 議事録・報告書穴埋め | — |
-| [reverse.html](tools/reverse.html) | 逆引き辞典 | — |
-| [warikan.html](tools/warikan.html) | 傾斜割り勘 | — |
-| [sns.html](tools/sns.html) | SNSデコ文字・縦書き | — |
-| [privacy.html](tools/privacy.html) | プライバシーポリシー | — |
-| [terms.html](tools/terms.html) | 利用規約 | — |
-| [disclaimer.html](tools/disclaimer.html) | 免責事項 | — |
+> この一覧は `data/tool-registry.json` を正本として自動同期しています。
+> 更新コマンド: `npm run sync:readme-tools`（検証のみ: `npm run validate:readme-tools`）
+
+### 1) 実務ツール（ユーザー向け本体）
+
+| ファイル | URL | 名称 | ナビ | stage |
+|---|---|---|---|---|
+| [invoice.html](tools/invoice.html) | /invoice | SUGUDASU 請求書 | 請求書 | beta |
+| [stamp.html](tools/stamp.html) | /stamp | SUGUDASU 電子印鑑 | 印鑑 | beta |
+| [receipt.html](tools/receipt.html) | /receipt | SUGUDASU 領収書 | 領収書 | gamma |
+| [label.html](tools/label.html) | /label | SUGUDASU ラベル | ラベル | gamma |
+| [shift.html](tools/shift.html) | /shift | SUGUDASU シフト | シフト | beta |
+| [report.html](tools/report.html) | /report | SUGUDASU 議事録 | 議事録 | gamma |
+| [reverse.html](tools/reverse.html) | /reverse | SUGUDASU 逆引き | 逆引き | gamma |
+| [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
+| [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
+| [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
+| [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
+| [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
+| [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |
+| [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
+| [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
+| [sns.html](tools/sns.html) | /sns | SUGUDASU SNS | SNS | gamma |
+
+### 2) 補助・案内ページ
+
+| ファイル | URL | 名称 | stage |
+|---|---|---|---|
+| [hub.html](tools/hub.html) | / | ツール一覧 | gamma |
+| [font-converter.html](tools/font-converter.html) | /font-converter | SUGUDASU フォント変換 | gamma |
+| [not-a-car.html](tools/not-a-car.html) | /not-a-car | 車ではなく書類 | stable |
+| [statements.html](tools/statements.html) | /statements | SUGUDASU の約束 | gamma |
+| [updates.html](tools/updates.html) | /updates | 更新履歴 | gamma |
+
+### 3) 法務ページ
+
+| ファイル | URL | 名称 | stage |
+|---|---|---|---|
+| [disclaimer.html](tools/disclaimer.html) | /disclaimer | 免責事項 | stable |
+| [privacy.html](tools/privacy.html) | /privacy | プライバシーポリシー | stable |
+| [terms.html](tools/terms.html) | /terms | 利用規約 | stable |
+
+### 4) 内部ページ（非公開運用）
+
+| ファイル | URL | 名称 | stage |
+|---|---|---|---|
+| [brand-logo-preview.html](tools/brand-logo-preview.html) | /brand-logo-preview | ロゴタイプ比較 | alpha |
+
+<!-- AUTO:TOOLS_END -->
 
 請求書の機能正本: [invoice-pdf-generator](https://github.com/Kaoru-Stats-Lab/invoice-pdf-generator)
 

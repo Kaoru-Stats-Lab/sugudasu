@@ -3,7 +3,7 @@
   "private": true,
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
-    "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/sync-readme-tools-table.mjs --check && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
     "build:pages:sync": "node scripts/build-pages.mjs --target=sync && node scripts/verify-pages-free-plan.mjs",
     "deploy:pages:sync": "npm run release:pages:sync && npx wrangler pages deploy dist-sync --project-name=sugudasu-sync --branch=main",
     "deploy:gate": "node scripts/check-deploy-gate.mjs",
@@ -15,6 +15,8 @@
     "scaffold:tool-facts": "node scripts/scaffold-tool-facts.mjs",
     "generate:lp-matrix": "node scripts/generate-lp-marketing-matrix.mjs",
     "generate:marketing-context": "node scripts/generate-marketing-context.mjs",
+    "sync:readme-tools": "node scripts/sync-readme-tools-table.mjs",
+    "validate:readme-tools": "node scripts/sync-readme-tools-table.mjs --check",
     "validate:tool-naming": "node scripts/verify-tool-naming.mjs",
     "validate:ogp": "node scripts/verify-ogp.mjs",
     "generate:favicons": "node scripts/generate-favicons.mjs",

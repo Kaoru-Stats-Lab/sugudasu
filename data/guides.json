@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-27",
+  "updatedAt": "2026-06-29",
   "articles": [
     {
       "slug": "event-runbook",
@@ -40,6 +40,22 @@
       "description": "フリーランス・小規模事業者向け。適格請求書の記載事項と、登録不要でPDFまで出す流れをステップで説明。",
       "tools": ["invoice", "stamp"],
       "published": "2026-06-29"
+    },
+    {
+      "slug": "construction-schedule-excel",
+      "pillar": "production",
+      "title": "工事工程表をExcelで回すときの落とし穴",
+      "description": "現場監督向け。提出用と現場用の二重管理、週間工程の下請周知、LINE画像再送で起きる失敗と、Excelが向く場面・共有の考え方。",
+      "tools": [],
+      "published": "2026-06-29"
+    },
+    {
+      "slug": "web-production-schedule-excel",
+      "pillar": "production",
+      "title": "制作スケジュール表をExcelで回すときの落とし穴",
+      "description": "WEBディレクター向け。クライアント確認の遅れ・版ズレ・手動再計算で起きる進行管理の失敗パターンと、Excelが向く場面・共有ツールが補う場面の整理。",
+      "tools": [],
+      "published": "2026-07-02"
     }
   ]
 }

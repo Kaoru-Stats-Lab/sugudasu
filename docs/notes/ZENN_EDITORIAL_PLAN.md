@@ -1,6 +1,6 @@
 # Zenn 編集カレンダー（Gemini 企画 · SSOT）
 
-**更新:** 2026-07-02（§2 #13/#17/#18 · mask 本番 · オフライン地図ネタ）  
+**更新:** 2026-07-02（§2 #13/#17 更新 · #18は note 移管）  
 **生成:** `docs/prompts/zenn-editorial-gemini.md`  
 **採否:** Claude/Cursor 突合済 · 提督執筆前提（Gemini 本文禁止）
 
@@ -57,7 +57,6 @@
 | **15** | **イベント進行表を同時編集しても行が混ざらない** — 幹事向け衝突フリー同期（CRDT） | B (+A) | sync/timeline | 幹事 · FE · 個人開発 | LSeq · 手動反映 · 短期バッファ · 現場 | **P1** | 2,200 | article_15_sync_crdt_field |
 | **13** | **WebPをJPGに変換するとき** — iLoveIMGに載せない選択肢 | A (+B) | /webp-to-jpg | 経費 · Wiki · FL | DevTools · 非送信 · 20枚 cap | **P1** | 2,000 | article_13_webp_to_jpg |
 | **17** | **マニュアル用スクショの機密消し** — アップロード型黒塗りの代替 | A (+B) | /mask | 情シス · 引き継ぎ担当 | Canvas · スタンプ注記 · 非送信 | **P1** | 2,000 | article_17_mask_screenshot |
-| **18** | **オフラインのブラウザは何ができるのか** — 非送信ツールを選ぶ地図 | B (+A) | /statements | 幹事 · 事務 · FL | 3つのオフライン · DevTools · ツール当てはめ | **P1** | 2,500 | article_18_offline_browser_map |
 
 **#11 詳細:** [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](ZENN_FAIR_DRAW_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_11_DRAFT.md`](ZENN_ARTICLE_11_DRAFT.md) · **公開:** #14 後推奨  
 **#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**  
@@ -67,7 +66,7 @@
 **#15 詳細:** [`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`](ZENN_CRDT_SYNC_DRAFT_MEMO.md) · **公開ゲート:** S4 行 CRDT または設計メモ明示  
 **#13 詳細:** [`docs/notes/ZENN_WEBP_TO_JPG_DRAFT_MEMO.md`](ZENN_WEBP_TO_JPG_DRAFT_MEMO.md)  
 **#17 詳細:** [`docs/notes/ZENN_MASK_DRAFT_MEMO.md`](ZENN_MASK_DRAFT_MEMO.md) · **α v0.1.0 本番 2026-07-02** · #6 実例続編  
-**#18 詳細:** [`docs/notes/ZENN_OFFLINE_BROWSER_DRAFT_MEMO.md`](ZENN_OFFLINE_BROWSER_DRAFT_MEMO.md) · **#6 の読み物版ハブ** · 提督 2026-07-02 起票
+**#18 詳細:** Zenn は保留（note へ移管）· [`docs/notes/NOTE_OFFLINE_BROWSER_DRAFT_MEMO.md`](NOTE_OFFLINE_BROWSER_DRAFT_MEMO.md)
 
 **避けること（共通）:** 競合名指し · 100%安全/完全対応 · 未実装機能 · Vibe Coding
 
@@ -167,8 +166,7 @@
 | **7/7** | #12 normalize | **予約** | A | Excel vs サイト vs SUGUDASU · 5プリセット · 約2,800字 |
 | **7月中旬〜下旬** | #14 group-split | 下書き | A | RAND 卒業 · 班分け |
 | **8月上旬** | #6 非送信設計 | 下書き | B | 背骨 · DevTools |
-| **8月中旬** | **#18 オフライン地図** | 企画 | B+A | **#6 の翌週** · ツール選びハブ |
-| **8月下旬** | **#17 mask** | メモ | A+B | #6/#18 実例 · DevTools |
+| **8月中旬** | **#17 mask** | メモ | A+B | #6 の実例 · DevTools |
 | **9月上旬** | #13 webp-to-jpg | メモ | A+B | 画像系非送信3部作 |
 | **8月中旬** | #11 fair-draw | 下書き | A | 懸賞抽選 · note 景表法と同週可 |
 | **9月上旬** | **#2 開発裏側** | 下書き可 | B | AI分担 · changelog · **B軸締め** |
@@ -181,7 +179,7 @@
 | 案 | #4 shift | A | お盆シフト |
 | 案 | #5 report | A | 議事録整形 |
 
-**媒体:** note — [`NOTE_ARTICLE_FAIR_DRAW_DRAFT.md`](NOTE_ARTICLE_FAIR_DRAW_DRAFT.md)（#11 同週）· [`note-01-group-split`](../../drafts/note-01-group-split-draft.md)（#14 連動可）
+**媒体:** note — [`NOTE_ARTICLE_FAIR_DRAW_DRAFT.md`](NOTE_ARTICLE_FAIR_DRAW_DRAFT.md)（#11 同週）· [`NOTE_ARTICLE_OFFLINE_BROWSER_DRAFT.md`](NOTE_ARTICLE_OFFLINE_BROWSER_DRAFT.md)（非送信地図）· [`note-01-group-split`](../../drafts/note-01-group-split-draft.md)（#14 連動可）
 
 ---
 

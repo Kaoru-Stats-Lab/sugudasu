@@ -8,9 +8,9 @@
 
 ## 提督用 · 3 行結論
 
-1. **第一 PoC 垂直:** **広告・WEB制作**（Gemini）— ただし **提督決定: 作る・自分用仕様が正本** → [`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md)
-2. **勝ち筋一言:** クライアント都合の1日遅れ → **後続全日程の手動再計算と版再送**を、**連動再計算 + 閲覧 URL 1本**で潰す（ガント SaaS ではなく Excel 工程表の上乗せ）
-3. **課金:** Gemini 市場案は案件チケット — **提督: ¥200/月・アカウント**（[`SYNC_SCHEDULE_PRODUCT_DECISION.md`](SYNC_SCHEDULE_PRODUCT_DECISION.md) v2）
+1. **第一 PoC 垂直（Gemini スコア）:** **広告・WEB制作** — **2026-06-29 提督: guides SEO のみ完了 · 製品ペルソナ外**（§0-8）  
+2. **製品 dogfood · SEO v0.2 正本:** **建設（内装・リノベ）** — 監督 · CAD+Excel · 提出/現場/週間  
+3. **勝ち筋一言:** クライアント/天候都合の遅れ → **手動再計算と版再送**を、**連動再計算 + 閲覧 URL 1本**で潰す（ガント SaaS ではなく Excel 工程表の上乗せ）
 
 ---
 
@@ -161,7 +161,7 @@
 ## C. 次アクション
 
 - [ ] 提督：**PoC #1 = 広告・WEB制作** を Go/保留で確定
-- [ ] `SYNC_SCHEDULE_SEO_KEYWORDS.md` 起票（§3 の WEB 制作クラスターのみ v0）
+- [x] `SYNC_SCHEDULE_SEO_KEYWORDS.md` 起票（§3 の WEB 制作クラスター v0.1 · §1–§8 統合）
 - [ ] テンプレ列：タスク名 · 開始 · 終了 · 日数 · 担当 · 備考（§5-1）
 - [ ] `sync.sugudasu.com/schedule` LP ワイヤ（イベント `/timeline` と混同しない）
 - [ ] Grok/GPT 突合（任意）→ §B 更新

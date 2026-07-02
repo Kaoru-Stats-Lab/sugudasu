@@ -34,7 +34,7 @@ process.env.SUGUDASU_DIST = DIST;
 
 /** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
 const SITEMAP_SKIP = new Set(
-  IS_SYNC ? ['sync-index.html', 'sync-timeline.html'] : ['brand-logo-preview.html', 'hub.html']
+  IS_SYNC ? ['sync-index.html', 'sync-timeline.html'] : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html']
 );
 
 function escapeXml(text) {

@@ -38,6 +38,7 @@ sugudasu.com/
 | 柱 | コード | 対象ペルソナ | 代表ツール |
 |----|--------|--------------|------------|
 | **イベント運営** | `event` | 幹事 · 人事 · 司会 | timeline · group-split |
+| **制作・工程管理** | `production` | **現場監督 · 小規模工務**（正本）· WEBディレクターは guides SEO のみ | Sync Schedule（準備中） |
 | **書類・経理** | `docs` | フリーランス · 店舗 | invoice · receipt · stamp |
 | **チーム運用** | `team` | 店長 · 総務 | shift · warikan |
 | **ブランド横断** | `brand` | 初訪問者 | hub · statements |
@@ -57,6 +58,8 @@ sugudasu.com/
 | `excel-vs-web-timeline` | Excel進行表とWebツールの使い分け | event | timeline | 進行表 エクセル 代替 |
 | `fair-group-split` | 研修・ハッカソンで公平な班分けをする方法 | event | group-split | 班分け 公平 研修 |
 | `invoice-browser-workflow` | ブラウザだけでインボイス請求書を作る手順 | docs | invoice · stamp | インボイス 請求書 無料 |
+| `web-production-schedule-excel` | 制作スケジュール表をExcelで回すときの落とし穴 | production | — | 制作スケジュール表 エクセル | **完了 · 追加なし** |
+| `construction-schedule-excel` | 工事工程表をExcelで回すときの落とし穴 | production | — | 工程表 テンプレート エクセル | **HTML 済** |
 
 **拡張ルール（記事追加時）**
 
