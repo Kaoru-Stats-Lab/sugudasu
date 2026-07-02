@@ -1,0 +1,32 @@
+---
+description: マルチAIリファクタ時の Cursor 実装規律（Gemini PM · GLM 設計図 · Cursor 実装）
+alwaysApply: false
+---
+
+# SUGUDASU マルチAIリファクタ — Cursor 実装
+
+**リポジトリ:** sugudasu（asl-dashboard ではない）
+
+## 着手前（必読）
+
+1. **`docs/notes/MULTI_AI_CODER_PLAYBOOK.md`** — レビュー · テスト階層 · ゲート · BLOCKED 条件
+2. **実装パケット**（GLM）+ **INV チェックリスト**（Gemini）が揃っていること
+
+## 実装中
+
+- 許可ファイルのみ · 設計図どおり · ついでリファクタ禁止
+- パッチ不整合 → **BLOCKED**（推測実装禁止）
+- テスト失敗 → 期待値を勝手に変えない
+
+## 検証（変更種別に応じて）
+
+```bash
+npm run test:all          # 共有・広範囲変更時
+npm run test:{tool}       # 単一ツール
+npm run validate:tool-naming
+npm run build:pages
+```
+
+## テンプレ
+
+`docs/templates/multi-ai/` — INV · 実装パケット · Cursor プロンプト

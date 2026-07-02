@@ -35,6 +35,7 @@ Gemini / Claude 向けの要件定義は **HTML に埋め込まず**、このフ
 | [LP_MARKETING_MATRIX.generated.md](LP_MARKETING_MATRIX.generated.md) | `npm run generate:lp-matrix` — Pain · 束 · △問題 · Top3 |
 | [GEMINI_MARKETING_CONTEXT.generated.md](GEMINI_MARKETING_CONTEXT.generated.md) | `npm run generate:marketing-context` — 上記結合（Gemini一括添付） |
 | `data/lp-marketing-matrix.json` | マーケ行列の手動正本（§1-§4） |
+| **マルチAIリファクタ** | [`multi-ai-refactor-RUNBOOK.md`](multi-ai-refactor-RUNBOOK.md) · Gemini [`multi-ai-refactor-gemini-COPYPASTE.txt`](multi-ai-refactor-gemini-COPYPASTE.txt) · GLM [`multi-ai-refactor-glm-COPYPASTE.txt`](multi-ai-refactor-glm-COPYPASTE.txt) · Cursor [`multi-ai-refactor-cursor-COPYPASTE.txt`](multi-ai-refactor-cursor-COPYPASTE.txt) · 正本 [`../notes/MULTI_AI_CODER_PLAYBOOK.md`](../notes/MULTI_AI_CODER_PLAYBOOK.md) |
 | [../scripts/verify-ogp.mjs](../scripts/verify-ogp.mjs) | OGP 必須タグ検証（`npm run validate:ogp`） |
 | [x-editorial-gemini.md](x-editorial-gemini.md) | X 文案生成・監査 |
 | [qiita-editorial-gemini.md](qiita-editorial-gemini.md) | Qiita 短記事構成 |

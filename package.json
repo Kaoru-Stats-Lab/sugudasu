@@ -28,6 +28,7 @@
     "generate:font-styles-math": "node scripts/generate-font-styles-math.mjs",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
     "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs",
+    "test:all": "npm run test:prize-law && npm run test:normalize && npm run test:webp-to-jpg && npm run test:mask && npm run test:test-data && npm run test:group-split && npm run test:timeline && npm run test:linkify",
     "test:prize-law": "node scripts/prize-law-eval.test.mjs",
     "test:lottery": "node scripts/prize-law-eval.test.mjs",
     "test:normalize": "node scripts/text-normalize.test.mjs",

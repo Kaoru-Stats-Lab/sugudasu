@@ -19,6 +19,7 @@
 | **Agent トークン削減（RTK）** | `docs/notes/RTK_CURSOR.md` |
 | **セッション harvest（黄金ルート）** | `.cursor/rules/self-learning-sugudasu.mdc` · Agent 手順 `.cursor/rules/learned/` · Git/SSH `~/.cursor/rules/learned/` |
 | **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
+| **マルチAIリファクタ（コーダー）** | `docs/notes/MULTI_AI_CODER_PLAYBOOK.md` · **Skill** `.cursor/skills/sugudasu-multi-ai-code-review/` · `docs/prompts/multi-ai-refactor-RUNBOOK.md` |
 | **Sync S1 E2E 試行錯誤ログ** | `docs/notes/SYNC_S1_E2E_SESSION_LOG_20260626.md` |
 
 ## 命名変更 · 新規ツール · デプロイ前（必須）
