@@ -262,19 +262,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | SUGUDASU マスク α v0.1.0 本番反映 · Zenn ネタ追記 |
 | **change_summary** | `mask` 新規（engine/app · hub · registry）· `ZENN_MASK_DRAFT_MEMO` · `ZENN_OFFLINE_BROWSER_DRAFT_MEMO` · changelog |
-| **local_build** | `pass`（`release:pages:free` 予定） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 3 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 6/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/mask` · hub カード · nav） |
+| **cf_deployment_id** | `691271d`（`4d29b54..691271d` · git push origin main） |
+| **smoke** | `/mask` — LP + エディタ · hub カード · nav「マスク」· changelog 2026-07-02 |
 
 ---
 
