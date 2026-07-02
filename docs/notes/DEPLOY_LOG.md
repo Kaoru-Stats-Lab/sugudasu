@@ -258,10 +258,32 @@
 
 ---
 
+## DEPLOY-20260702-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | SUGUDASU マスク α v0.1.0 本番反映 · Zenn ネタ追記 |
+| **change_summary** | `mask` 新規（engine/app · hub · registry）· `ZENN_MASK_DRAFT_MEMO` · `ZENN_OFFLINE_BROWSER_DRAFT_MEMO` · changelog |
+| **local_build** | `pass`（`release:pages:free` 予定） |
+| **deploy_count_today** | 3 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/mask` · hub カード · nav） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-02 | 003 executed（mask α · Zenn ネタ） |
+| 2026-07-02 | 003 approved（SUGUDASU マスク α · Zenn ネタ · 提督 push 依頼） |
 | 2026-07-02 | 002 executed（334b810 · DEV_GIT_AGENT_DELEGATION docs） |
 | 2026-07-02 | 002 approved（DEV_GIT_AGENT_DELEGATION · 提督 push 依頼） |
 | 2026-07-02 | 001 executed（51b2d69 · statements 7原則アイコン · crop skill） |

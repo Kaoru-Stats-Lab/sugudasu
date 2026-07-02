@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-07-01",
+  "updatedAt": "2026-07-02",
   "entries": [
+    {
+      "date": "2026-07-02",
+      "type": "feat",
+      "title": "SUGUDASU マスク（mask）α — スクショ機密消し · 非送信",
+      "body": "黒塗り · モザイク · 注記スタンプ（サンプル/ダミー/テスト）。Ctrl+V · D&D · Undo/Redo · PNG DL · クリップボード。25MB cap · 長辺8192超は縮小。hub · nav 追加。v0.1.0 alpha。",
+      "tools": ["mask.html", "mask-engine.js", "mask-app.js", "hub.html", "tool-registry.json"]
+    },
     {
       "date": "2026-07-01",
       "type": "feat",

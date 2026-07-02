@@ -30,6 +30,7 @@
     "test:lottery": "node scripts/prize-law-eval.test.mjs",
     "test:normalize": "node scripts/text-normalize.test.mjs",
     "test:webp-to-jpg": "node scripts/webp-to-jpg.test.mjs",
+    "test:mask": "node scripts/mask-engine.test.mjs",
     "test:group-split": "node scripts/group-split.test.mjs",
     "test:timeline": "node scripts/timeline-engine.test.mjs",
     "test:linkify": "node scripts/sg-linkify.test.mjs",
