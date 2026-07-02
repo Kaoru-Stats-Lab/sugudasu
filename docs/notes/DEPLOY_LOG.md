@@ -238,10 +238,31 @@
 
 ---
 
+## DEPLOY-20260702-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | Git push 委任 docs 正本追加（Agent 向け） |
+| **change_summary** | `8562c97` · `docs/notes/DEV_GIT_AGENT_DELEGATION.md` |
+| **local_build** | `skip`（docs のみ · サイト差分なし） |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · docs-only · 本番 UI 変更なし） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-02 | 002 approved（DEV_GIT_AGENT_DELEGATION · 提督 push 依頼） |
 | 2026-07-02 | 001 executed（51b2d69 · statements 7原則アイコン · crop skill） |
 | 2026-07-02 | 001 approved（statements 7原則アイコン · crop skill · 提督 push 依頼） |
 | 2026-07-01 | 003 executed（53fb792 · normalize 確認パネル） |
