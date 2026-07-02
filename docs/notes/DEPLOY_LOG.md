@@ -242,19 +242,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Git push 委任 docs 正本追加（Agent 向け） |
-| **change_summary** | `8562c97` · `docs/notes/DEV_GIT_AGENT_DELEGATION.md` |
-| **local_build** | `skip`（docs のみ · サイト差分なし） |
+| **change_summary** | `8562c97` · `334b810` · `docs/notes/DEV_GIT_AGENT_DELEGATION.md` |
+| **local_build** | `pass`（`release:pages:free` · docs-only · サイト差分なし） |
 | **deploy_count_today** | 2 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 4/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · docs-only · 本番 UI 変更なし） |
+| **cf_deployment_id** | `334b810`（`a68417f..334b810` · git push origin main） |
+| **smoke** | docs-only · 本番 UI 変更なし · `DEV_GIT_AGENT_DELEGATION.md` 反映 |
 
 ---
 
@@ -262,6 +262,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-02 | 002 executed（334b810 · DEV_GIT_AGENT_DELEGATION docs） |
 | 2026-07-02 | 002 approved（DEV_GIT_AGENT_DELEGATION · 提督 push 依頼） |
 | 2026-07-02 | 001 executed（51b2d69 · statements 7原則アイコン · crop skill） |
 | 2026-07-02 | 001 approved（statements 7原則アイコン · crop skill · 提督 push 依頼） |
