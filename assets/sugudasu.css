@@ -2529,6 +2529,26 @@ body.sg-copy-flash {
   text-decoration: underline;
   color: var(--sg-primary-hover);
 }
+
+/* —— statements · 7原則アイコン行 —— */
+.sg-principle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+.sg-principle-row__icon {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  background: #f1f5f9;
+}
+.sg-principle-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
 .sg-diagram-stack {
   display: flex;
   flex-direction: column;

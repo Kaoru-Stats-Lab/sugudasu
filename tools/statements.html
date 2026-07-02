@@ -73,33 +73,54 @@
             <h2 class="sg-info-section-title">7つの設計原則</h2>
 
             <div class="space-y-4">
-                <div>
-                    <h3>1. 登録不要 — 開いたら、すぐ使えます</h3>
-                    <p class="mt-1">メール認証、OAuth、クレジットカードの登録はありません。幹事・店長・フリーランスが <strong>「今この数分」</strong> だけ困っているときに、障壁を置きません。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-01-signup.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>1. 登録不要 — 開いたら、すぐ使えます</h3>
+                        <p class="mt-1">メール認証、OAuth、クレジットカードの登録はありません。幹事・店長・フリーランスが <strong>「今この数分」</strong> だけ困っているときに、障壁を置きません。</p>
+                    </div>
                 </div>
-                <div>
-                    <h3>2. 入力データは、原則ブラウザ内で処理します</h3>
-                    <p class="mt-1">請求書の宛名、研修の名簿、抽選リスト——<strong>処理の中心はクライアント（あなたのブラウザ）</strong> です。「名簿をアップロードしてから班分け」「クラウドに上げてから変換」を <strong>デフォルトにしません</strong>。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-02-browser-local.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>2. 入力データは、原則ブラウザ内で処理します</h3>
+                        <p class="mt-1">請求書の宛名、研修の名簿、抽選リスト——<strong>処理の中心はクライアント（あなたのブラウザ）</strong> です。「名簿をアップロードしてから班分け」「クラウドに上げてから変換」を <strong>デフォルトにしません</strong>。</p>
+                    </div>
                 </div>
-                <div>
-                    <h3>3. 静的配信 — 重いサーバーに頼りません</h3>
-                    <p class="mt-1">Cloudflare Pages 上の <strong>静的 HTML + JavaScript</strong> で配信します。ユーザーごとの DB、常時接続の同期サーバー、WebSocket ダッシュボードは <strong>スコープ外</strong> です。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-03-static.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>3. 静的配信 — 重いサーバーに頼りません</h3>
+                        <p class="mt-1">Cloudflare Pages 上の <strong>静的 HTML + JavaScript</strong> で配信します。ユーザーごとの DB、常時接続の同期サーバー、WebSocket ダッシュボードは <strong>スコープ外</strong> です。</p>
+                    </div>
                 </div>
-                <div>
-                    <h3>4. 実務3分 — 1 URL · 1 用途</h3>
-                    <p class="mt-1">1つのツールは <strong>1つの幹事の Pain</strong> に閉じ込めます。重い設定画面、事前シナリオエディタ、組織アカウント前提のワークフローは <strong>原則しません</strong>。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-04-three-minute.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>4. 実務3分 — 1 URL · 1 用途</h3>
+                        <p class="mt-1">1つのツールは <strong>1つの幹事の Pain</strong> に閉じ込めます。重い設定画面、事前シナリオエディタ、組織アカウント前提のワークフローは <strong>原則しません</strong>。</p>
+                    </div>
                 </div>
-                <div>
-                    <h3>5. Copy-first — 結果は Slack · Excel · PDF へ</h3>
-                    <p class="mt-1">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします。TSV、Slack 用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。<a href="#copy-first-flow">Copy-first の流れ</a> · <a href="#copy-first-tech">技術選定</a></p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-05-copy-first.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>5. Copy-first — 結果は Slack · Excel · PDF へ</h3>
+                        <p class="mt-1">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします。TSV、Slack 用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。<a href="#copy-first-flow">Copy-first の流れ</a> · <a href="#copy-first-tech">技術選定</a></p>
+                    </div>
                 </div>
-                <div>
-                    <h3>6. 帳票と証跡 — 印刷 · PDF に価値を置きます</h3>
-                    <p class="mt-1">請求書 PDF、抽選の証跡、シフト表の印刷——<strong>紙とファイルに残る成果物</strong> を想定して設計します。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-06-print-pdf.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>6. 帳票と証跡 — 印刷 · PDF に価値を置きます</h3>
+                        <p class="mt-1">請求書 PDF、抽選の証跡、シフト表の印刷——<strong>紙とファイルに残る成果物</strong> を想定して設計します。</p>
+                    </div>
                 </div>
-                <div>
-                    <h3>7. 過剰な断定はしません</h3>
-                    <p class="mt-1">景表法の整理、税務計算、懸賞ルール——<strong>「合法です」「問題ありません」とは言い切りません</strong>。判断材料を出し、最終判断は現場の幹事・法務・専門家に委ねます（<a href="disclaimer.html">免責事項</a> と整合）。</p>
+                <div class="sg-principle-row">
+                    <img src="../assets/icons/principles/principle-07-no-overclaim.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
+                    <div class="sg-principle-row__body">
+                        <h3>7. 過剰な断定はしません</h3>
+                        <p class="mt-1">景表法の整理、税務計算、懸賞ルール——<strong>「合法です」「問題ありません」とは言い切りません</strong>。判断材料を出し、最終判断は現場の幹事・法務・専門家に委ねます（<a href="disclaimer.html">免責事項</a> と整合）。</p>
+                    </div>
                 </div>
             </div>
         </section>
