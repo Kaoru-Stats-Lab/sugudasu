@@ -218,10 +218,31 @@
 
 ---
 
+## DEPLOY-20260702-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | statements 7原則アイコン導入 · WM crop 自動化 skill 追加 |
+| **change_summary** | `tools/statements.html` · `assets/icons/principles/*.png` · `scripts/crop-principle-icons.mjs` · `.cursor/skills/crop-principle-icons/SKILL.md` |
+| **local_build** | `pass`（`build:pages`） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/statements` 7原則アイコン） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-02 | 001 approved（statements 7原則アイコン · crop skill · 提督 push 依頼） |
 | 2026-07-01 | 003 executed（53fb792 · normalize 確認パネル） |
 | 2026-07-01 | 003 approved（normalize 確認パネル · 提督 push 依頼） |
 | 2026-07-01 | 002 executed（60a55ea · normalize Tier S LP · Zenn #12） |
