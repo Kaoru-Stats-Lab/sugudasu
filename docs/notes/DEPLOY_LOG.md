@@ -582,19 +582,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | リード文2段デッキ · ガイド表CSS · sg-tool-intro 幅修正 |
 | **change_summary** | `sg-tool-lead-deck` / `sg-guide-lead-deck` · hub/timeline/fair-draw · 全ツールリード文案 · `sg-guide-table-scroll` · docs/archive |
-| **local_build** | `pass`（`build:pages`） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 15 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 21/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼（本番反映） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `fb43de1`（`ea571fc..fb43de1` · git push origin main） |
+| **smoke** | pass — `/` hub sg-tool-lead-deck · `/normalize` 2段リード · `/guides/invoice-browser-workflow` 表レイアウト |
 
 ---
 
@@ -602,7 +602,9 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 015 executed（fb43de1 · リード2段デッキ · ガイド表） |
 | 2026-07-03 | 015 approved（リード2段デッキ · ガイド表 · 提督 push 依頼） |
+| 2026-07-03 | 014 executed（ea571fc · Core UI Refresh · PAGE_LAYOUT_SELECTOR） |
 | 2026-07-03 | 014 approved（Core UI Refresh · ガイド記事 · PAGE_LAYOUT_SELECTOR · 提督 push 依頼） |
 | 2026-07-03 | 013 executed（67ab4c7 · link-qr cache bust · normalize segment 3×2） |
 | 2026-07-03 | 013 approved（link-qr cache bust hotfix · normalize segment 3×2） |
