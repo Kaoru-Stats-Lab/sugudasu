@@ -298,11 +298,31 @@
 
 ---
 
+## DEPLOY-20260703-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | test-data v0.5 大規模社員CSV · マルチAI体制 docs 本番反映 |
+| **change_summary** | `test-data` v0.5.0（25万行チャンク結合DL · 行別RNG · §8仕様）· `MULTI_AI_CODER_PLAYBOOK` · スケール上限 docs · BACKLOG |
+| **local_build** | `pass`（`release:pages:free` 予定） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/test-data` 大規模DL · hub/nav） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-02 | 004 executed（ce3f10e · test-data α v0.4.3） |
+| 2026-07-03 | 001 approved（test-data v0.5 · multi-ai docs · 提督 push 依頼） |
 | 2026-07-02 | 004 approved（test-data α v0.4.3 · 提督 push 依頼） |
 | 2026-07-02 | 003 executed（mask α · Zenn ネタ） |
 | 2026-07-02 | 003 approved（SUGUDASU マスク α · Zenn ネタ · 提督 push 依頼） |
