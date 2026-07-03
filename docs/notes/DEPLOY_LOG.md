@@ -622,19 +622,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | table-conv 配信 · invoice 源泉 No.2792 · normalize v1.3 · fair-draw CSV · roadmap 対象外 |
 | **change_summary** | `table-conv` registry/hub/FAQ · `invoice-finance` 源泉・手取契約 · `normalize` 行整理/伏字 · `fair-draw` Connpass CSV · `roadmap.json` 表変換対象外 · changelog |
 | **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 23/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼（日付替わり本番反映） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `33474f2`（`ee3224a..33474f2` · git push origin main） |
+| **smoke** | pass — `/table-conv` · `/invoice` 源泉検算 · `/normalize` · `/roadmap#table-conv-md-dialects` |
 
 ---
 
@@ -642,6 +642,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-04 | 001 executed（33474f2 · table-conv · invoice 源泉 · normalize · fair-draw CSV） |
 | 2026-07-04 | 001 approved（table-conv · invoice 源泉 · normalize · fair-draw CSV · roadmap 対象外 · 提督 push 依頼） |
 | 2026-07-03 | 016 executed（5cff6f3 · roadmap · 対ナビ · 透明性粒度） |
 | 2026-07-03 | 016 approved（roadmap · 対ナビ · 透明性粒度 · 提督 push 依頼） |
