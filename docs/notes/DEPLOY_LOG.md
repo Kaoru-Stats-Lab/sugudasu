@@ -422,16 +422,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | mask 黒塗り未適用（再発）— 同期 ImageData + JS キャッシュバスト |
 | **change_summary** | `mask-app.js` 同期プレビュー/適用 · `build-pages` 全 module JS に ?v= · mask-engine バスター |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 7 |
+| **pages_build_budget_after** | 13/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督 hotfix |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `e27c171`（`f7e56ff..e27c171` · git push origin main） |
+| **smoke** | `/mask` — ドラッグ離しで黒塗り · ステータス「黒塗りを適用」· view-source に mask-app.js?v= |
 
 ---
 
@@ -439,6 +442,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 007 executed（e27c171 · mask 同期化+cache bust） |
 | 2026-07-03 | 007 approved（mask 黒塗り再発 hotfix · 同期化+cache bust） |
 | 2026-07-03 | 006 approved（mask 黒塗り未適用 hotfix · 提督報告） |
 | 2026-07-03 | 005 approved（test-data スライダー hotfix · 提督依頼） |
