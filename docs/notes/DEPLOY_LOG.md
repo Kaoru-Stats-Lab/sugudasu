@@ -322,19 +322,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | test-data FAQ — 閉域アイデンティティ · normalize切り分け · 競合比較 · SEO |
 | **change_summary** | `test-data.html` FAQ/OGP/JSON-LD · `TEST_DATA_TOOL_SPEC` §1.1 §6.6 · normalize非連携明記 · 競合5行比較表 |
-| **local_build** | `pass`（`release:pages:free` 予定） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 2 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 8/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/test-data` FAQ 閉域/競合比較） |
+| **cf_deployment_id** | `3e093ed`（`50145d3..3e093ed` · git push origin main） |
+| **smoke** | `/test-data` — 閉域FAQ · 競合比較表 · normalize切り分け · title/OGP |
 
 ---
 
@@ -342,7 +342,9 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 002 executed（3e093ed · test-data FAQ 閉域・競合比較） |
 | 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
+| 2026-07-03 | 001 executed（50145d3 · test-data v0.5 · multi-ai docs） |
 | 2026-07-03 | 001 approved（test-data v0.5 · multi-ai docs · 提督 push 依頼） |
 | 2026-07-02 | 004 approved（test-data α v0.4.3 · 提督 push 依頼） |
 | 2026-07-02 | 003 executed（mask α · Zenn ネタ） |
