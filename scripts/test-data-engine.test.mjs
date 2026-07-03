@@ -23,6 +23,8 @@ import {
   MAX_ROWS,
   ADDRESS_MASTER,
   TXN_PATTERNS,
+  countOptionsForPresetKey,
+  resolveCountForPreset,
 } from '../assets/test-data-engine.js';
 
 const REF = { referenceYear: 2026, hireYearMin: 2000, hireYearMax: 2026 };
@@ -514,6 +516,23 @@ function looksForeignEmployee(row) {
     validateGenerateOptions(100, 1, { ...REF, preset: 'employee', startIndex: DOMAIN_MAX_EMPLOYEE - 98 }).ok,
     false,
   );
+}
+
+{
+  assert.deepEqual(countOptionsForPresetKey('employee'), [100, 500, 5000, 25_000, 100_000, 250_000]);
+  assert.deepEqual(countOptionsForPresetKey('customer'), [100, 500, 5000]);
+
+  const empBulk = resolveCountForPreset('employee', 250_000);
+  assert.equal(empBulk.count, 250_000);
+  assert.equal(empBulk.index, 5);
+
+  const custClamped = resolveCountForPreset('customer', 250_000);
+  assert.equal(custClamped.count, 5000);
+  assert.equal(custClamped.index, 2);
+
+  const payrollSnap = resolveCountForPreset('payroll', 300);
+  assert.equal(payrollSnap.count, 500);
+  assert.equal(payrollSnap.index, 1);
 }
 
 console.log('test-data-engine.test.mjs: all tests passed');

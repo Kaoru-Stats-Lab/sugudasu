@@ -324,6 +324,16 @@ a.sg-segment__btn {
   text-align: center;
   min-width: 0;
   white-space: nowrap;
+  border: none;
+  background: transparent;
+  padding: 0.125rem 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.sg-count-slider__tick:hover {
+  color: #64748b;
 }
 
 .sg-count-slider__tick:first-child { text-align: left; }

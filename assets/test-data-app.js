@@ -3,19 +3,19 @@
  */
 import {
   CHUNK_MAX,
-  COUNT_OPTIONS,
   DOMAIN_MAX_EMPLOYEE,
-  EMPLOYEE_COUNT_OPTIONS,
   MAX_ROWS,
   PAYROLL_MONTHS_PER_EMPLOYEE,
   PRESET_META,
   EMPLOYEE_HEADERS,
   applyEmployeeHeaderTemplate,
+  countOptionsForPresetKey,
   csvWithBom,
   defaultFilename,
   downloadCsvBlob,
   generateDataset,
   getDefaultReferenceYear,
+  resolveCountForPreset,
   validateBulkEmployeeOptions,
   validateGenerateOptions,
 } from './test-data-engine.js';
@@ -86,6 +86,16 @@ function countIndexForValue(n, options = countOptionsForPreset()) {
   return i >= 0 ? i : 0;
 }
 
+function countOptionsForPreset() {
+  return countOptionsForPresetKey(preset);
+}
+
+function snapCountForPreset() {
+  const resolved = resolveCountForPreset(preset, count);
+  count = resolved.count;
+  countSliderIndex = resolved.index;
+}
+
 function syncCountSliderAria(n) {
   if (!els.countSlider) return;
   const options = countOptionsForPreset();
@@ -100,26 +110,24 @@ function renderCountTicks(options = countOptionsForPreset()) {
   els.countTicks.innerHTML = options
     .map((n, i) => {
       const active = i === countSliderIndex ? ' is-active' : '';
-      return `<span class="sg-count-slider__tick${active}">${formatCountShort(n)}</span>`;
+      return `<button type="button" class="sg-count-slider__tick${active}" data-count-index="${i}" aria-label="${formatCountShort(n)}件">${formatCountShort(n)}</button>`;
     })
     .join('');
 }
 
 function syncCountSliderUI({ silent = false } = {}) {
+  snapCountForPreset();
   const options = countOptionsForPreset();
-  if (preset !== 'employee' && count > CHUNK_MAX) {
-    count = CHUNK_MAX;
-  }
-  if (!options.includes(count)) {
-    count = options[0];
-  }
   countSliderIndex = countIndexForValue(count, options);
 
   if (els.countSlider) {
-    els.countSlider.min = '0';
-    els.countSlider.max = String(options.length - 1);
-    els.countSlider.step = '1';
-    els.countSlider.value = String(countSliderIndex);
+    const slider = els.countSlider;
+    slider.min = '0';
+    slider.max = String(options.length - 1);
+    slider.step = '1';
+    slider.value = String(countSliderIndex);
+    // min/max 変更後の range 表示ずれを防ぐ
+    void slider.offsetWidth;
   }
 
   if (els.countDisplay) {
@@ -165,10 +173,6 @@ function isEmployeeLike() {
 
 function isBulkEmployeeCount(n = count) {
   return preset === 'employee' && n > CHUNK_MAX;
-}
-
-function countOptionsForPreset() {
-  return preset === 'employee' ? EMPLOYEE_COUNT_OPTIONS : COUNT_OPTIONS;
 }
 
 function outputLineCount(result = lastResult) {
@@ -257,16 +261,19 @@ function applyDateFormatPreset(style) {
 function countHintText(n) {
   if (preset === 'payroll') {
     const rows = n * PAYROLL_MONTHS_PER_EMPLOYEE;
-    return `社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 1回最大 ${MAX_ROWS.toLocaleString()} 行）`;
+    return `給与明細 — 社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 1回最大 ${MAX_ROWS.toLocaleString()} 行）`;
   }
   if (preset === 'employee' && n > CHUNK_MAX) {
     const chunks = Math.ceil(n / CHUNK_MAX);
-    return `${n.toLocaleString()} 件 — ${CHUNK_MAX.toLocaleString()}件×${chunks}チャンクを結合した <strong>UTF-8 BOM CSV</strong> 一括DL。「生成」で先頭${CHUNK_MAX.toLocaleString()}件をプレビュー。`;
+    return `社員マスタ ${n.toLocaleString()} 件 — ${CHUNK_MAX.toLocaleString()}件×${chunks}チャンクを結合した <strong>UTF-8 BOM CSV</strong> 一括DL。「生成」で先頭${CHUNK_MAX.toLocaleString()}件をプレビュー。`;
   }
   if (preset === 'employee') {
-    return `${n.toLocaleString()} 件（最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} · スライダーで段階選択 · 5,000件超は一括CSV）`;
+    return `社員マスタ ${n.toLocaleString()} 件（最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} · 5,000件超は一括CSV）`;
   }
-  return `${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()}）`;
+  if (preset === 'customer') {
+    return `顧客マスタ ${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()} 件）`;
+  }
+  return `取引明細 ${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()} 件）`;
 }
 
 function syncCountSliderForPreset() {
@@ -556,7 +563,28 @@ async function downloadBulkEmployeeCsv() {
   }
 }
 
+function wireCountSlider() {
+  const wrap = document.getElementById('count-slider-wrap');
+  if (!wrap) return;
+
+  wrap.addEventListener('input', (e) => {
+    if (e.target.id !== 'count-slider') return;
+    setCountFromSliderIndex(Number.parseInt(/** @type {HTMLInputElement} */ (e.target).value, 10) || 0);
+  });
+  wrap.addEventListener('change', (e) => {
+    if (e.target.id !== 'count-slider') return;
+    setCountFromSliderIndex(Number.parseInt(/** @type {HTMLInputElement} */ (e.target).value, 10) || 0);
+  });
+  wrap.addEventListener('click', (e) => {
+    const btn = /** @type {HTMLElement} */ (e.target).closest('[data-count-index]');
+    if (!btn) return;
+    setCountFromSliderIndex(Number.parseInt(btn.getAttribute('data-count-index') || '0', 10) || 0);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  wireCountSlider();
+
   if (window.SUGUDASU_SEGMENT) {
     window.SUGUDASU_SEGMENT.mount({
       segmentId: 'preset-segment',
@@ -577,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       onChange: (value) => {
         preset = value;
+        snapCountForPreset();
         syncEmployeePanels();
         syncIdPrefixPlaceholder();
         lastResult = null;
@@ -584,15 +613,10 @@ document.addEventListener('DOMContentLoaded', () => {
         els.previewBody.innerHTML = '';
         els.previewHead.innerHTML = '';
         els.previewNote.textContent = '「生成」を押すとプレビューが表示されます。';
+        syncCountSliderUI();
         syncNormalizeButton();
       },
     });
-
-    if (els.countSlider) {
-      els.countSlider.addEventListener('input', () => {
-        setCountFromSliderIndex(Number.parseInt(els.countSlider.value, 10) || 0);
-      });
-    }
   }
 
   els.btnGenerate.addEventListener('click', () => generateWithYield());

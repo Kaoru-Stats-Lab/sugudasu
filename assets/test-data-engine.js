@@ -13,6 +13,34 @@ export const BULK_EMPLOYEE_OPTIONS = [25_000, 100_000, 250_000];
 /** 社員マスタの件数セグメント（COUNT + BULK） */
 export const EMPLOYEE_COUNT_OPTIONS = [...COUNT_OPTIONS, ...BULK_EMPLOYEE_OPTIONS];
 
+/** @param {DataPreset} preset */
+export function countOptionsForPresetKey(preset) {
+  return preset === 'employee' ? EMPLOYEE_COUNT_OPTIONS : COUNT_OPTIONS;
+}
+
+/**
+ * プリセットに合わせて件数とスライダー index を正規化
+ * @param {DataPreset} preset
+ * @param {number} rawCount
+ * @returns {{ count: number, index: number, options: number[] }}
+ */
+export function resolveCountForPreset(preset, rawCount) {
+  const options = countOptionsForPresetKey(preset);
+  let count = rawCount;
+  if (preset !== 'employee' && count > CHUNK_MAX) count = CHUNK_MAX;
+  if (!options.includes(count)) {
+    count = options.reduce((best, opt) => {
+      const dOpt = Math.abs(opt - count);
+      const dBest = Math.abs(best - count);
+      if (dOpt < dBest) return opt;
+      if (dOpt > dBest) return best;
+      return opt > best ? opt : best;
+    }, options[0]);
+  }
+  const index = options.indexOf(count);
+  return { count, index: index >= 0 ? index : 0, options };
+}
+
 /** @typedef {'slash'|'dash'|'compact'} DateFormatStyle */
 
 /** @typedef {'employee'|'payroll'|'customer'|'transaction'} DataPreset */

@@ -378,11 +378,28 @@
 
 ---
 
+## DEPLOY-20260703-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | test-data 件数スライダー不具合（表示・生成が100固定） |
+| **change_summary** | `test-data-app.js` スライダーイベント委譲 · プリセット別件数正規化 · ヒント文案 · `resolveCountForPreset` |
+| **local_build** | `pending` |
+| **deploy_count_today** | 5 |
+| **gates** | P1–P7 · 提督 hotfix |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 004 executed（2d3cc6c · AdSense 自動広告 · test-data スライダー/TXN） |
+| 2026-07-03 | 005 approved（test-data スライダー hotfix · 提督依頼） |
 | 2026-07-03 | 004 approved（AdSense 自動広告 · test-data スライダー/TXN · 提督 push 依頼） |
 | 2026-07-03 | 003 approved（test-data 件数UI · §6.8 閉域FAQ · 提督 push 依頼） |
 | 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
