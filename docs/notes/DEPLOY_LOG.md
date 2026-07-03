@@ -302,19 +302,39 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | test-data v0.5 大規模社員CSV · マルチAI体制 docs 本番反映 |
 | **change_summary** | `test-data` v0.5.0（25万行チャンク結合DL · 行別RNG · §8仕様）· `MULTI_AI_CODER_PLAYBOOK` · スケール上限 docs · BACKLOG |
-| **local_build** | `pass`（`release:pages:free` 予定） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 1 |
+| **pages_build_budget_after** | 7/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P7 · 提督依頼 push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `50145d3`（`9629929..50145d3` · git push origin main） |
+| **smoke** | `/test-data` — 大規模エクスポート（2.5万/10万/25万）· v0.5.0 · multi-ai playbook docs |
+
+---
+
+## DEPLOY-20260703-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | test-data FAQ — 閉域アイデンティティ · normalize切り分け · 競合比較 · SEO |
+| **change_summary** | `test-data.html` FAQ/OGP/JSON-LD · `TEST_DATA_TOOL_SPEC` §1.1 §6.6 · normalize非連携明記 · 競合5行比較表 |
+| **local_build** | `pass`（`release:pages:free` 予定） |
+| **deploy_count_today** | 2 |
 | **pages_build_budget_after** | （executed 後） |
 | **gates** | P1–P7 · 提督依頼 push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
 | **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/test-data` 大規模DL · hub/nav） |
+| **smoke** | （executed 後 · `/test-data` FAQ 閉域/競合比較） |
 
 ---
 
@@ -322,6 +342,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
 | 2026-07-03 | 001 approved（test-data v0.5 · multi-ai docs · 提督 push 依頼） |
 | 2026-07-02 | 004 approved（test-data α v0.4.3 · 提督 push 依頼） |
 | 2026-07-02 | 003 executed（mask α · Zenn ネタ） |

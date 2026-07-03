@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="給与SaaS・労務システム向けの社員マスタ風ダミーCSVをブラウザ内だけで生成。フリガナ・住所整合・シード再現・地雷データ。社労士・人事・受託開発のテスト向け。">
-    <title>テスト用ダミーデータ生成（社員マスタ・非送信） | SUGUDASU</title>
+    <meta name="description" content="閉域環境・外部サイト禁止の現場向け。社員マスタ風ダミーCSVをブラウザ内だけで生成（非送信）。給与SaaS・労務のインポート検証。シード再現・最大25万件。">
+    <title>閉域OK・テスト用ダミーデータ（社員マスタCSV・ブラウザのみ） | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="テスト用ダミーデータ — ブラウザ内だけでCSV生成">
-    <meta property="og:description" content="社員マスタ風CSVをブラウザ内だけで生成。フリガナ・給与・住所整合。シード再現・地雷データ混入。">
+    <meta property="og:title" content="閉域OK — テスト用ダミーデータ（ブラウザ内だけでCSV生成）">
+    <meta property="og:description" content="閉域・持ち込み禁止の現場向け。社員マスタCSVを非送信で生成。フリガナ・住所整合・シード再現・最大25万件。">
     <meta property="og:url" content="https://sugudasu.com/test-data">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="テスト用ダミーデータ — 非送信CSV生成">
-    <meta name="twitter:description" content="労務・給与向け社員マスタCSV。フリガナ整合・非送信・シード再現。">
+    <meta name="twitter:title" content="閉域OK — テスト用ダミーデータ（非送信CSV）">
+    <meta name="twitter:description" content="閉域・外部DL禁止の現場向け。社員マスタ風CSVをブラウザ内だけで生成。シード再現・給与インポート検証。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"ネットのダミーデータCSVをダウンロードするのと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"外部サイトからファイルを取得しません。ブラウザ内だけで生成するため、持ち込み禁止の環境でも説明しやすいです。社内ID書式やメールドメインも画面から指定できます。"}},{"@type":"Question","name":"本物の個人情報や口座番号は使われますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべて架空のデータです。実在の口座番号・マイナンバーは生成しません。テスト・マニュアル・画面確認向けです。"}},{"@type":"Question","name":"同じデータを再現できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。シード値を同じにすれば、同じ件数・同じ設定で同じCSVが再現されます。バグ修正後の再検証に使えます。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。生成からCSVダウンロードまで端末のブラウザ内だけで完結します。"}},{"@type":"Question","name":"地雷データとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"外字・超長文・不正形式のメールなど、画面やバリデーションの境界を試すデータを約5%混入するオプションです。意図的にバグを炙り出すテスト向けです。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"閉域環境や外部サイト禁止の現場でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。テストデータの生成からCSVダウンロードまで端末のブラウザ内だけで完結し、入力内容を当社サーバーへ送りません。ネットのダミーCSVを持ち込めない・Mockaroo等の外部SaaSが使えない閉域や持ち込み禁止の現場向けです。初回はページ読み込みが必要です。社内規程の最終判断は情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"なぜSUGUDASU テストデータがあるのですか？","acceptedAnswer":{"@type":"Answer","text":"閉域・本番コピー禁止・外部ファイル持ち込み禁止の現場で、Excel手打ちや怪しいダウンロードに頼らず、整合済みの社員マスタ風CSVを今日作るためです。エンタープライズのTDMの代替ではなく、受託開発・情シス・マニュアル担当向けの軽量ツールです。"}},{"@type":"Question","name":"他のダミーデータ・テストデータ生成ツールと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"閉域・持ち込み禁止の現場で、労務・給与向けに整合済みCSVをブラウザだけで作る楔に絞っている点が違います。ネットのダミーCSVは外部DL・出所説明が課題。Mockaroo等はクラウドSaaSでデータ送信・アカウントが必要。Excel手打ちは整合性と工数が課題。本番マスキング・エンタープライズTDMの代替ではない。汎用ジェネレータより労務プリセット・住所整合・非送信説明が強み。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。生成からCSVダウンロードまで端末のブラウザ内だけです。DevToolsのNetworkで送信がないことを確認する手順を公開しています。"}},{"@type":"Question","name":"同じデータを再現できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。シード値を同じにすれば、同じ件数・設定で同じCSVが再現されます。監査やバグ修正後の再検証に使えます。"}},{"@type":"Question","name":"本物の個人情報は使われますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべて架空のデータです。実在の口座番号・マイナンバーは生成しません。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU テストデータ" data-sg-subtitle="社員マスタ · 非送信 · シード再現" data-sg-tool-id="test-data"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU テストデータ" data-sg-subtitle="閉域OK · ブラウザのみ · シード再現" data-sg-tool-id="test-data"></div>
 
 <main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <header class="max-w-3xl space-y-2">
-        <p class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 inline-block px-3 py-1 rounded-full">労務 · 給与 · テスト · 非送信</p>
+        <p class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 inline-block px-3 py-1 rounded-full">閉域OK · ブラウザのみ · 非送信</p>
         <p class="text-sm text-slate-600 sg-tool-lead">
-            給与計算SaaSや労務システムの<strong>インポート検証</strong>で、Excel手打ちや怪しい外部DLに頼りたくない現場向けです。
-            <strong>社員マスタ</strong>（氏名 · フリガナ · 給与 · 住所）を<strong>ブラウザ内だけ</strong>で生成します。
+            <strong>閉域環境・外部CSV持ち込み禁止</strong>の現場で、給与計算SaaSや労務システムの<strong>インポート検証</strong>用データを作りたいとき向けです。
+            Mockaroo 等の外部SaaSや、ネットのダミーCSVを使えない情シス・受託SI・マニュアル担当の<strong>下位レイヤー</strong>が、Excel手打ちをやめるためのツールです。
+            <strong>社員マスタ</strong>（氏名 · フリガナ · 給与 · 住所）を<strong>ブラウザ内だけ</strong>で生成 — サーバーへデータを送りません。
             郵便番号と住所は整合済み。シード固定で再現可能。マイナンバー · 実口座は生成しません。
-            <a href="normalize.html" class="text-blue-800 font-semibold hover:underline">全角半角整え</a> ·
-            <a href="mask.html" class="text-blue-800 font-semibold hover:underline">マスク</a> と併用できます。
+            大規模試験は<strong>CSVダウンロード</strong>が本線です（<a href="mask.html" class="text-blue-800 font-semibold hover:underline">マスク</a> 等と用途が異なります）。
         </p>
     </header>
 
@@ -185,6 +185,7 @@
             <button type="button" id="btn-copy" class="sg-btn-secondary text-sm py-2 px-4" disabled>コピー</button>
             <button type="button" id="btn-open-normalize" class="sg-btn-secondary text-sm py-2 px-4" disabled>全角半角整えで開く</button>
         </div>
+        <p class="text-[10px] text-slate-500 leading-relaxed">「全角半角整えで開く」は<strong>500行以下のサンプル</strong>向けです。大規模CSV（5,000件超）はダウンロードしてインポート先へ直接投入してください。</p>
         <p id="status" class="text-xs text-slate-500" aria-live="polite"></p>
     </section>
 
@@ -208,8 +209,81 @@
 
 <section class="no-print sg-faq-section">
     <div class="sg-faq-inner">
-        <h2 class="sg-faq-title">テスト用ダミーデータのよくある質問</h2>
+        <h2 class="sg-faq-title">閉域・テストデータのよくある質問</h2>
         <div class="sg-faq-list">
+            <details class="sg-faq border border-blue-200 rounded-xl bg-blue-50/50 p-4" open>
+                <summary>閉域環境や外部サイト禁止の現場でも使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>はい。</strong>テストデータの<strong>生成からCSVダウンロードまで、端末のブラウザ内だけ</strong>で完結します。氏名・給与などの入力データを<strong>当社サーバーへ送りません</strong>。</p>
+                    <p class="mt-2">次のような現場向けです。</p>
+                    <ul class="mt-1 list-disc pl-4 space-y-1">
+                        <li><strong>外部ファイル持ち込み禁止</strong> — ネットのダミーCSVを落とせない</li>
+                        <li><strong>クラウドSaaS禁止</strong> — Mockaroo 等の外部テストデータサービスが使えない</li>
+                        <li><strong>本番・個人情報の持ち出し禁止</strong> — マスキング export も審査が重い</li>
+                        <li><strong>閉域網・顧客VPN内</strong> — ページが開ければ生成処理はオフラインで動く（初回はHTML/JSの読み込みが必要）</li>
+                    </ul>
+                    <p class="mt-2">社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。送信がないことの確認手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a> をご覧ください。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary>なぜ SUGUDASU テストデータがあるのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>閉域で、今日、整合済みのテストデータが欲しいのに、手段がない</strong> — このギャップのためです。</p>
+                    <p class="mt-2">エンタープライズのテストデータ管理（TDM）や本番DBマスキングの代替ではありません。<strong>受託開発・社内情シス・マニュアル担当</strong>が、次のどれかに困っているときの軽量ツールです。</p>
+                    <ul class="mt-1 list-disc pl-4 space-y-1">
+                        <li>Excelで社員マスタを<strong>手打ち</strong>している</li>
+                        <li>ネットのダミーCSVを<strong>持ち込めない</strong></li>
+                        <li>本番コピーが<strong>禁止</strong>で、それっぽいデータがない</li>
+                        <li>「同じデータで再テストせよ」と<strong>監査</strong>に言われた（→シード再現）</li>
+                    </ul>
+                    <p class="mt-2">郵便番号と住所の整合 · 社員↔給与明細の紐づけ · 社内ID書式 — を最初から揃えた<strong>架空CSV</strong>を、ブラウザだけで作れます。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
+                <summary>他のダミーデータ・テストデータ生成ツールと何が違いますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>閉域・持ち込み禁止の現場で、労務・給与向けに「整合済みCSVをブラウザだけで」</strong> — この楔に絞っている点が違います。用途に応じて使い分けてください。</p>
+                    <div class="mt-3 overflow-x-auto">
+                        <table class="min-w-full text-[11px] border border-slate-200 rounded-lg">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="text-left p-2 font-semibold">手段</th>
+                                    <th class="text-left p-2 font-semibold">向くこと</th>
+                                    <th class="text-left p-2 font-semibold">SUGUDASUとの違い</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="p-2 align-top">ネットのダミーCSV</td>
+                                    <td class="p-2 align-top">手軽にファイルが欲しい</td>
+                                    <td class="p-2 align-top"><strong>外部DL不要</strong> · 出所を説明しやすい · 社内ID/列名を指定可</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 align-top">Mockaroo 等のクラウドSaaS</td>
+                                    <td class="p-2 align-top">多型・大量 · API連携</td>
+                                    <td class="p-2 align-top">当社へ<strong>データを送らない</strong> · アカウント不要 · <strong>社内SaaS禁止</strong>でも説明しやすい</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 align-top">Excel手打ち</td>
+                                    <td class="p-2 align-top">数行だけ急ぎ</td>
+                                    <td class="p-2 align-top">郵便番号↔住所 · 社員↔給与明細の<strong>整合</strong> · 最大25万件 · <strong>シード再現</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 align-top">本番DBマスキング · エンタープライズTDM</td>
+                                    <td class="p-2 align-top">本番に近い大規模データ</td>
+                                    <td class="p-2 align-top"><strong>代替ではない</strong> · 架空生成のみ · 受託SI・情シスの<strong>下位レイヤー</strong>向け</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 align-top">汎用のブラウザ型ジェネレータ</td>
+                                    <td class="p-2 align-top">氏名・住所など汎用fake</td>
+                                    <td class="p-2 align-top"><strong>労務・給与プリセット</strong>（再雇用 · 地雷 · 給与3ヶ月連動）· 日本の住所整合 · 非送信の説明資料あり</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2">50型ビルダー全面競合はしません。<strong>よく事故る労務インポート</strong>に深く刺さる範囲だけを増やします。</p>
+                </div>
+            </details>
             <details class="sg-faq">
                 <summary>給与明細は社員マスタと連動しますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
@@ -225,7 +299,8 @@
             <details class="sg-faq">
                 <summary>全角半角整えへそのまま渡せますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>生成後の<strong>「全角半角整えで開く」</strong>で、CSV名簿プリセットが選ばれた状態で <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> を開きます（500行まで · ブラウザ内 handoff）。</p>
+                    <p><strong>500行以下のサンプルだけ</strong>です（ヘッダー含む）。「全角半角整えで開く」で <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> のCSV名簿プリセットに handoff します。</p>
+                    <p class="mt-2"><strong>大規模エクスポート（2.5万〜25万件）</strong>や5,000件超は <strong>CSVダウンロードが正</strong> — normalize とは連携しません。全半角の一括変換はインポート先の仕様に合わせて<strong>生成時の形式</strong>で対応するか、ご自身のスクリプトで行ってください（<a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> は Excel 列コピー500行向けの別ツールです）。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -247,12 +322,6 @@
                 </div>
             </details>
             <details class="sg-faq">
-                <summary>ネットのダミーデータCSVと何が違いますか？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>外部サイトからファイルを取得しません。<strong>ブラウザ内だけ</strong>で生成するため、持ち込み禁止の環境でも説明しやすいです。社内ID書式やメールドメインも画面から指定できます。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
                 <summary>本物の個人情報は使われますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>いいえ。すべて<strong>架空のデータ</strong>です。実在の口座番号・マイナンバーは生成しません。</p>
@@ -261,13 +330,21 @@
             <details class="sg-faq">
                 <summary>同じデータを再現できますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>はい。<strong>シード値</strong>を同じにすれば、同じ件数・設定で同じCSVが再現されます。</p>
+                    <p>はい。<strong>シード値</strong>を同じにすれば、同じ件数・設定で同じCSVが再現されます。バグ修正後の再検証や、<strong>監査で「同じ手順で再テスト」</strong>と言われたときに使えます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>地雷データとは何ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>外字 · 超長住所 · 不正形式のメールなど、画面やバリデーションの<strong>境界を試す</strong>データを約5%混入するオプションです。きれいなダミーだけでは拾えないバグを意図的に炙り出すテスト向けです。</p>
                 </div>
             </details>
             <details class="sg-faq">
                 <summary>データはサーバーに送信されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。生成からCSVダウンロードまで<strong>端末のブラウザ内</strong>だけです。確認手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a> をご覧ください。</p>
+                    <p><strong>いいえ。</strong>生成からCSVダウンロードまで<strong>端末のブラウザ内</strong>だけです。これが閉域・非送信ポリシーの核心です。</p>
+                    <p class="mt-2">Chrome の DevTools → Network で、生成時に当社ドメインへ<strong>POSTが飛ばない</strong>ことをご自身で確認できます。手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a>。</p>
+                    <p class="mt-2 text-slate-500">※ 初回アクセス時の HTML/CSS/JS 読み込みは通常のWebページと同様です。プロキシで <code class="text-[10px]">sugudasu.com</code> 自体がブロックされる場合は別問題です。</p>
                 </div>
             </details>
             <details class="sg-faq">
