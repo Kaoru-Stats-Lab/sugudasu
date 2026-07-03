@@ -462,7 +462,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Prior Art 探索フロー正本化（多言語 Git 検索 · Token 節約） |
 | **change_summary** | `MULTI_AI_CODER_PLAYBOOK.md` §9 · §2.3 · `MASK_TOOL_SPEC.md` §8 実例 · RUNBOOK · `.cursorrules` |
@@ -473,7 +473,7 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | pending |
+| **cf_deployment_id** | `17a6811`（`403e482..17a6811` · git push origin main） |
 | **smoke** | 本番 UI 変更なし · `MULTI_AI_CODER_PLAYBOOK.md` §9 存在確認 |
 
 ---
@@ -482,6 +482,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 009 executed（17a6811 · Prior Art §9 多言語探索） |
 | 2026-07-03 | 009 approved（Prior Art §9 · 多言語探索フロー） |
 | 2026-07-03 | 008 executed（c84ba5f · mask オーバーレイ確定 · ぼかし/同色塗り） |
 | 2026-07-03 | 008 approved（mask オーバーレイ確定 · ぼかし/同色塗り） |
