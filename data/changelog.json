@@ -1,6 +1,13 @@
 {
-  "updatedAt": "2026-07-02",
+  "updatedAt": "2026-07-03",
   "entries": [
+    {
+      "date": "2026-07-03",
+      "type": "fix",
+      "title": "マスク — 矩形確定修正 · ぼかし/同色塗り",
+      "body": "ドラッグ離しで加工が確定しない不具合をオーバーレイ+documentリスナーで修正。マニュアル向けにぼかし（デフォルト）· 同色塗りを追加。モザイクは廃止。",
+      "tools": ["mask.html", "mask-app.js", "mask-engine.js", "hub.html"]
+    },
     {
       "date": "2026-07-02",
       "type": "feat",

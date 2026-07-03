@@ -3,7 +3,8 @@
  */
 import {
   applyBlackRect,
-  applyMosaicRect,
+  applyBlurRect,
+  applyColorRect,
   applyStampRect,
   copyCanvasPng,
   canvasToPngBlob,
@@ -23,6 +24,7 @@ const els = {
   fileInput: document.getElementById('file-input'),
   editor: document.getElementById('editor-panel'),
   canvas: document.getElementById('mask-canvas'),
+  overlay: document.getElementById('mask-overlay'),
   canvasWrap: document.getElementById('canvas-wrap'),
   status: document.getElementById('editor-status'),
   scaledNote: document.getElementById('scaled-note'),
@@ -31,16 +33,21 @@ const els = {
   btnDownload: document.getElementById('btn-download'),
   btnCopy: document.getElementById('btn-copy'),
   btnReset: document.getElementById('btn-reset'),
+  blurRow: document.getElementById('blur-row'),
+  colorRow: document.getElementById('color-row'),
   stampRow: document.getElementById('stamp-row'),
+  fillColor: document.getElementById('fill-color'),
 };
 
 const ctx = els.canvas.getContext('2d', { willReadFrequently: true });
+const overlayCtx = els.overlay.getContext('2d');
 
-/** @type {'black'|'mosaic'|'stamp'} */
-let toolMode = 'black';
+/** @type {'blur'|'black'|'color'|'stamp'} */
+let toolMode = 'blur';
 /** @type {'サンプル'|'ダミー'|'テスト'} */
 let stampText = 'サンプル';
-let mosaicBlock = 12;
+let blurRadius = 8;
+let fillColor = '#f8fafc';
 
 let sourceName = 'screenshot.png';
 /** @type {string[]} */
@@ -48,14 +55,11 @@ let undoStack = [];
 /** @type {string[]} */
 let redoStack = [];
 
-let drawing = false;
+let activeDrag = false;
 let startX = 0;
 let startY = 0;
-let previewRect = null;
-/** @type {string|null} */
-let dragBaseUrl = null;
-/** @type {ImageData|null} */
-let dragBasePixels = null;
+/** @type {{ onMove: (e: PointerEvent) => void, onUp: (e: PointerEvent) => void }|null} */
+let dragListeners = null;
 
 function setStatus(message, isError = false) {
   els.status.textContent = message;
@@ -71,11 +75,57 @@ function updateHistoryButtons() {
   els.btnCopy.disabled = !canCopy;
 }
 
+function syncOverlaySize() {
+  els.overlay.width = els.canvas.width;
+  els.overlay.height = els.canvas.height;
+}
+
+function clearOverlay() {
+  overlayCtx.clearRect(0, 0, els.overlay.width, els.overlay.height);
+}
+
+function drawPreviewStroke(rect) {
+  clearOverlay();
+  if (!rect) return;
+  const { x, y, w, h } = rect;
+  overlayCtx.save();
+  overlayCtx.strokeStyle = '#0ea5e9';
+  overlayCtx.lineWidth = 2;
+  overlayCtx.setLineDash([6, 4]);
+  overlayCtx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+  overlayCtx.restore();
+}
+
+function toolStatusLabel() {
+  if (toolMode === 'blur') return 'ぼかしを適用しました。パスワード・金額などは黒塗りも検討してください。';
+  if (toolMode === 'black') return '黒塗りを適用しました。';
+  if (toolMode === 'color') return '指定色で塗りました。文字は消えていません。機密はぼかし/黒塗りも併用してください。';
+  return `スタンプ「${stampText}」を配置しました。下の実データは消えません。ぼかし/黒塗りと併用してください。`;
+}
+
+function applyTool(rect) {
+  const { x, y, w, h } = rect;
+  if (w < 4 || h < 4) return false;
+  if (toolMode === 'blur') applyBlurRect(ctx, els.canvas, x, y, w, h, blurRadius);
+  else if (toolMode === 'black') applyBlackRect(ctx, x, y, w, h);
+  else if (toolMode === 'color') applyColorRect(ctx, x, y, w, h, fillColor);
+  else applyStampRect(ctx, x, y, w, h, stampText);
+  setStatus(toolStatusLabel());
+  return true;
+}
+
+function updateToolRows(mode) {
+  els.blurRow.classList.toggle('hidden', mode !== 'blur');
+  els.colorRow.classList.toggle('hidden', mode !== 'color');
+  els.stampRow.classList.toggle('hidden', mode !== 'stamp');
+}
+
 async function undo() {
   if (undoStack.length === 0) return;
   redoStack.push(snapshotCanvas(els.canvas));
   const prev = undoStack.pop();
   await restoreSnapshot(els.canvas, ctx, prev);
+  clearOverlay();
   updateHistoryButtons();
   setStatus('1つ戻しました。塗り残しがないか確認してください。');
 }
@@ -85,6 +135,7 @@ async function redo() {
   undoStack.push(snapshotCanvas(els.canvas));
   const next = redoStack.pop();
   await restoreSnapshot(els.canvas, ctx, next);
+  clearOverlay();
   updateHistoryButtons();
   setStatus('やり直しました。');
 }
@@ -99,46 +150,52 @@ function canvasPoint(evt) {
   };
 }
 
-function restoreDragBasePixels() {
-  if (!dragBasePixels) return;
-  ctx.putImageData(dragBasePixels, 0, 0);
+function detachDrag() {
+  if (!dragListeners) return;
+  const { onMove, onUp } = dragListeners;
+  document.removeEventListener('pointermove', onMove);
+  document.removeEventListener('pointerup', onUp);
+  document.removeEventListener('pointercancel', onUp);
+  dragListeners = null;
 }
 
-function drawPreviewStroke() {
-  if (!previewRect) return;
-  const { x, y, w, h } = previewRect;
-  ctx.save();
-  ctx.strokeStyle = '#0ea5e9';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 4]);
-  ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-  ctx.restore();
-}
+function finishDrag(e) {
+  detachDrag();
+  if (!activeDrag) return;
+  activeDrag = false;
 
-function redrawWithPreview() {
-  if (!previewRect || !dragBasePixels) return;
-  restoreDragBasePixels();
-  drawPreviewStroke();
-}
-
-function applyTool(rect) {
-  const { x, y, w, h } = rect;
-  if (w < 4 || h < 4) return false;
-  if (toolMode === 'black') applyBlackRect(ctx, x, y, w, h);
-  else if (toolMode === 'mosaic') applyMosaicRect(ctx, x, y, w, h, mosaicBlock);
-  else applyStampRect(ctx, x, y, w, h, stampText);
-  setStatus(
-    toolMode === 'stamp'
-      ? `スタンプ「${stampText}」を配置しました。下の実データは消えません。黒塗り/モザイクと併用してください。`
-      : `${toolMode === 'black' ? '黒塗り' : 'モザイク'}を適用しました。`,
+  const finalRect = normalizeRect(
+    startX,
+    startY,
+    canvasPoint(e).x,
+    canvasPoint(e).y,
+    els.canvas.width,
+    els.canvas.height,
   );
-  return true;
+  clearOverlay();
+
+  if (finalRect.w < 4 || finalRect.h < 4) return;
+
+  undoStack.push(snapshotCanvas(els.canvas));
+  if (undoStack.length > MAX_HISTORY) undoStack.shift();
+  redoStack = [];
+  updateHistoryButtons();
+  applyTool(finalRect);
 }
 
-function clearDragState() {
-  dragBaseUrl = null;
-  dragBasePixels = null;
-  previewRect = null;
+function attachDrag() {
+  detachDrag();
+  const onMove = (e) => {
+    if (!activeDrag) return;
+    const p = canvasPoint(e);
+    const rect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
+    drawPreviewStroke(rect);
+  };
+  const onUp = (e) => finishDrag(e);
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+  document.addEventListener('pointercancel', onUp);
+  dragListeners = { onMove, onUp };
 }
 
 function showEditor(show) {
@@ -157,12 +214,14 @@ async function loadFile(file) {
     sourceName = name;
     els.canvas.width = width;
     els.canvas.height = height;
+    syncOverlaySize();
     ctx.clearRect(0, 0, width, height);
     ctx.drawImage(img, 0, 0, width, height);
+    clearOverlay();
     undoStack = [];
     redoStack = [];
-    clearDragState();
-    drawing = false;
+    activeDrag = false;
+    detachDrag();
     updateHistoryButtons();
     showEditor(true);
     els.scaledNote.classList.toggle('hidden', !scaled);
@@ -208,75 +267,23 @@ async function copyPng() {
 function resetEditor() {
   undoStack = [];
   redoStack = [];
-  clearDragState();
-  drawing = false;
+  activeDrag = false;
+  detachDrag();
+  clearOverlay();
   showEditor(false);
   els.scaledNote.classList.add('hidden');
   setStatus('画像をドロップ · 選択 · Ctrl+V で貼り付け');
 }
 
 function beginDraw(e) {
-  if (e.button !== 0) return;
+  if (e.button !== 0 || els.editor.classList.contains('hidden')) return;
   e.preventDefault();
-  els.canvas.setPointerCapture(e.pointerId);
-  drawing = true;
-  dragBaseUrl = snapshotCanvas(els.canvas);
-  try {
-    dragBasePixels = ctx.getImageData(0, 0, els.canvas.width, els.canvas.height);
-  } catch (err) {
-    console.error(err);
-    dragBasePixels = null;
-    setStatus('この画像は編集できません。別の形式で保存し直してください。', true);
-    drawing = false;
-    return;
-  }
+  activeDrag = true;
   const p = canvasPoint(e);
   startX = p.x;
   startY = p.y;
-  previewRect = null;
-}
-
-function moveDraw(e) {
-  if (!drawing) return;
-  const p = canvasPoint(e);
-  previewRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
-  redrawWithPreview();
-}
-
-function endDraw(e) {
-  if (!drawing) return;
-  drawing = false;
-  try {
-    if (els.canvas.hasPointerCapture(e.pointerId)) {
-      els.canvas.releasePointerCapture(e.pointerId);
-    }
-  } catch {
-    /* noop */
-  }
-
-  const p = canvasPoint(e);
-  const finalRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
-  previewRect = null;
-
-  if (!dragBasePixels || !dragBaseUrl) {
-    clearDragState();
-    return;
-  }
-
-  restoreDragBasePixels();
-
-  if (finalRect.w < 4 || finalRect.h < 4) {
-    clearDragState();
-    return;
-  }
-
-  const before = dragBaseUrl;
-  clearDragState();
-  undoStack.push(before);
-  if (undoStack.length > MAX_HISTORY) undoStack.shift();
-  redoStack = [];
-  updateHistoryButtons();
-  applyTool(finalRect);
+  clearOverlay();
+  attachDrag();
 }
 
 els.dropZone.addEventListener('click', () => els.fileInput.click());
@@ -314,11 +321,6 @@ document.addEventListener('paste', (e) => {
 });
 
 els.canvas.addEventListener('pointerdown', beginDraw);
-els.canvas.addEventListener('pointermove', moveDraw);
-els.canvas.addEventListener('pointerup', endDraw);
-els.canvas.addEventListener('pointercancel', endDraw);
-window.addEventListener('pointerup', endDraw);
-window.addEventListener('pointercancel', endDraw);
 
 els.btnUndo.addEventListener('click', () => undo());
 els.btnRedo.addEventListener('click', () => redo());
@@ -328,26 +330,34 @@ els.btnReset.addEventListener('click', () => {
   if (confirm('別の画像を開きます。未保存の編集は失われます。')) resetEditor();
 });
 
+if (els.fillColor) {
+  els.fillColor.addEventListener('input', () => {
+    fillColor = els.fillColor.value;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (window.SUGUDASU_SEGMENT) {
     window.SUGUDASU_SEGMENT.mount({
       segmentId: 'tool-segment',
-      order: ['black', 'mosaic', 'stamp'],
-      initial: 'black',
+      order: ['blur', 'black', 'color', 'stamp'],
+      initial: 'blur',
       hints: {
+        blur: '<strong>ぼかし:</strong> マニュアル向け。目立ちすぎず内容を読みにくくします。機密性が高い値は黒塗りも検討。',
         black: '<strong>黒塗り:</strong> パスワード · 金額 · ID など確実に隠したい箇所向け。',
-        mosaic: '<strong>モザイク:</strong> レイアウトを残しつつ内容だけ隠す。機密性が高い値は黒塗り推奨。',
-        stamp: '<strong>スタンプ:</strong> 注記用。下の実データは消えません。黒塗り/モザイクと併用。',
+        color: '<strong>同色塗り:</strong> 背景色に合わせて矩形を塗る。文字は消えません。',
+        stamp: '<strong>スタンプ:</strong> 注記用。下の実データは消えません。ぼかし/黒塗りと併用。',
       },
       hintId: 'tool-hint',
       modeClassMap: {
-        black: 'sg-segment--mode-ec',
-        mosaic: 'sg-segment--mode-csv',
+        blur: 'sg-segment--mode-ec',
+        black: 'sg-segment--mode-csv',
+        color: 'sg-segment--mode-fullwidth',
         stamp: 'sg-segment--mode-fullwidth',
       },
       onChange: (value) => {
         toolMode = value;
-        els.stampRow.classList.toggle('hidden', value !== 'stamp');
+        updateToolRows(value);
       },
     });
 
@@ -361,19 +371,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.SUGUDASU_SEGMENT.mount({
-      segmentId: 'mosaic-segment',
-      order: ['fine', 'coarse'],
-      initial: 'fine',
+      segmentId: 'blur-segment',
+      order: ['soft', 'strong'],
+      initial: 'soft',
       hints: {
-        fine: '細かめ（12px）',
-        coarse: '粗め（24px）',
+        soft: 'やわらかめ（8px）',
+        strong: '強め（16px）',
       },
-      hintId: 'mosaic-hint',
+      hintId: 'blur-hint',
       onChange: (value) => {
-        mosaicBlock = value === 'coarse' ? 24 : 12;
+        blurRadius = value === 'strong' ? 16 : 8;
       },
     });
   }
+  updateToolRows(toolMode);
   updateHistoryButtons();
   setStatus('画像をドロップ · 選択 · Ctrl+V で貼り付け');
 });

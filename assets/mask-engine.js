@@ -75,6 +75,29 @@ export function applyBlackRect(ctx, x, y, w, h) {
   ctx.restore();
 }
 
+/** @param {CanvasRenderingContext2D} ctx @param {HTMLCanvasElement} canvas */
+export function applyBlurRect(ctx, canvas, x, y, w, h, radius = 8) {
+  const amount = Math.max(2, Math.round(radius));
+  const tmp = document.createElement('canvas');
+  tmp.width = w;
+  tmp.height = h;
+  const tctx = tmp.getContext('2d');
+  if (!tctx) return;
+  tctx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+  ctx.save();
+  ctx.filter = `blur(${amount}px)`;
+  ctx.drawImage(tmp, x, y);
+  ctx.restore();
+}
+
+/** @param {CanvasRenderingContext2D} ctx @param {string} color */
+export function applyColorRect(ctx, x, y, w, h, color) {
+  ctx.save();
+  ctx.fillStyle = color || '#ffffff';
+  ctx.fillRect(x, y, w, h);
+  ctx.restore();
+}
+
 /**
  * @param {CanvasRenderingContext2D} ctx
  * @param {number} blockSize

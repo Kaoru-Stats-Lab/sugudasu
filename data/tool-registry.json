@@ -156,7 +156,7 @@
       "name": "スクショ機密消し",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "黒塗り/モザイク/スタンプ · Canvas非送信 · マニュアル向け · T09b"
+      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ · Canvas非送信 · マニュアル向け · T09b"
     },
     "test-data": {
       "file": "test-data.html",

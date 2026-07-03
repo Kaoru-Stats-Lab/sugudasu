@@ -438,10 +438,31 @@
 
 ---
 
+## DEPLOY-20260703-008
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | mask 矩形確定不具合の根治 · マニュアル向けぼかし/同色塗り |
+| **change_summary** | `mask-app.js` オーバーレイ+document drag · `applyBlurRect`/`applyColorRect` · UI ぼかし/黒/同色/スタンプ · モザイク廃止 |
+| **local_build** | `pass`（`release:pages:free`） |
+| **deploy_count_today** | 8 |
+| **pages_build_budget_after** | 14/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P7 · 提督依頼 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | `/mask` — ドラッグ離しでぼかし/黒塗りが残る · 点線消える · ステータス更新 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 008 approved（mask オーバーレイ確定 · ぼかし/同色塗り） |
 | 2026-07-03 | 007 executed（e27c171 · mask 同期化+cache bust） |
 | 2026-07-03 | 007 approved（mask 黒塗り再発 hotfix · 同期化+cache bust） |
 | 2026-07-03 | 006 approved（mask 黒塗り未適用 hotfix · 提督報告） |
