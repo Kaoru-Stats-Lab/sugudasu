@@ -8,8 +8,11 @@
     const pill = segmentEl.querySelector('.sg-segment__pill');
     const active = segmentEl.querySelector('.sg-segment__btn[aria-selected="true"]');
     if (!pill || !active) return;
+    pill.style.left = `${active.offsetLeft}px`;
+    pill.style.top = `${active.offsetTop}px`;
     pill.style.width = `${active.offsetWidth}px`;
-    pill.style.transform = `translateX(${active.offsetLeft}px)`;
+    pill.style.height = `${active.offsetHeight}px`;
+    pill.style.transform = 'none';
   }
 
   function updateHint(hintEl, html) {

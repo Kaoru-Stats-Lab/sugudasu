@@ -538,11 +538,31 @@
 
 ---
 
+## DEPLOY-20260703-013
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | link-qr タブ不能 hotfix（module import cache bust）· normalize プリセット segment 3×2 |
+| **change_summary** | `build-pages` import `?v=` · `link-qr-engine` 新API反映 · `normalize` cols-3 · segment pill 2段対応 |
+| **local_build** | `pending` |
+| **deploy_count_today** | 13 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼（本番反映） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/link-qr` タブ切替 · `/normalize` 6プリセット） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 012 executed（c3a8839 · link-qr イベント連絡 · normalize sql_in） |
+| 2026-07-03 | 013 approved（link-qr cache bust hotfix · normalize segment 3×2） |
 | 2026-07-03 | 012 approved（link-qr イベント連絡 · normalize sql_in · 企画docs） |
 | 2026-07-03 | 011 executed（2238cba · link-qr α） |
 | 2026-07-03 | 011 approved（link-qr α · サーバー非保存リンク集QR） |

@@ -329,6 +329,16 @@ const BUST_ASSET_NAMES = [
   'test-data-engine.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
+  'sg-copy-disclosure.js',
+  'sg-paste-scan.js',
+  'sg-form-validate.js',
+  'link-qr-engine.js',
+  'text-normalize.js',
+  'webp-to-jpg.js',
+  'group-split.js',
+  'group-split-columns.js',
+  'group-split-constraint-form.js',
+  'prize-law-eval.js',
 ];
 
 function computeAssetVersion() {
@@ -402,9 +412,10 @@ function rewriteHtml(html) {
     `src="/assets/$1.js?v=${ASSET_V}"`
   );
 
+  // ツール <script type="module"> の import — /assets/* は immutable 1年のため必須
   out = out.replace(
-    /from '\/assets\/sns-app\.js'/g,
-    `from '/assets/sns-app.js?v=${ASSET_V}'`
+    /from (['"])\/assets\/([^"'?]+\.js)\1/g,
+    (match, quote, file) => `from ${quote}/assets/${file}?v=${ASSET_V}${quote}`
   );
 
   // ツール module 入口（mask-app 等）— /assets/* は immutable 1年のため必須
