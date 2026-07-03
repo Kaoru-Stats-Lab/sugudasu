@@ -75,6 +75,20 @@
 
 ## 7. 未着手（v2）
 
-- ぼかし  
+- OCR / 顔検出  
 - 複数枚キュー  
 - EXIF 除去の明示検証 · FAQ確定
+
+---
+
+## 8. Prior Art（参考実装）
+
+**探索手順:** `MULTI_AI_CODER_PLAYBOOK.md` §9
+
+### Prior Art — mask · 2026-07-03
+
+- **Pain:** スクショ矩形マスク · ドラッグ確定 · ブラウザ内非送信
+- **候補:** [blurrr](https://github.com/creativar/blurrr)（パターン採用）· redactsensitiveinfo（思想参考 · コード未参照）
+- **借りるパターン:** `attachDrag` · ドラッグ中のみ `document` pointermove/up · プレビューと確定の分離（SUGUDASU はオーバーレイ canvas）
+- **借りない:** React · 顔検出/OCR · pan/zoom · 形状編集
+- **SUGUDASU 載せ先:** `mask-app.js` ドラッグ層 · `mask-engine.js` は既存のまま拡張

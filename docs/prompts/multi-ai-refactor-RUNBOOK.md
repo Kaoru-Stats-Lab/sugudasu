@@ -20,6 +20,8 @@
 
 **鉄則:** INV と実装パケットの **両方** が揃うまで Cursor を起動しない。
 
+**新規ツール / 難解 UI バグ:** Cursor 着手前（または GLM 依頼前）に **Prior Art 探索**（Playbook **§9** · 日英独仏検索 · 15〜20 分）。mask 実例は `MASK_TOOL_SPEC.md` §8。
+
 ---
 
 ## ① Gemini への貼り付け
