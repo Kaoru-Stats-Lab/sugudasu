@@ -535,6 +535,108 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
 
 ---
 
+#### 1-15-6. Gemini ブレスト④⑤⑥ — 採否（2026-07-03 · 提督レビュー）
+
+**起源:** 事務OL軸ブレスト「面倒くさい20選」のうち **④⑤⑥**  
+**正本:** 本節 + [`PRODUCT_IDEA_JUDGMENT_LEDGER.md`](notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) **T21** · **T05** · **lottery / fair-draw**
+
+| # | 案（要約） | 判定 | 理由（要約） |
+|---|-----------|------|--------------|
+| **④** | Slack/Notion/Backlog 等の **Markdown方言コンバーター** | **PARK** | **AIに貼って「〇〇形式に直して」で事足りる**（箇条書き・太字・リンク）。非送信ニッチは残るが discoverability 弱い。**表だけ**は planned **`table-conv`** に分離 |
+| **⑤** | FAX/手書きPDFの **ローカルOCR文字起こし** | **PARK〜OUT** | Painは本物だが **クラウドAI/Visionが手書きで勝つ**。レガシー現場は `sugudasu.com` を自走検索しない。Tesseract.jsはFAX/手書きに弱い |
+| **⑥** | Connpass CSV 等の **個人情報セーフ公平抽選**（ドラムロール演出案） | **GO · 既存** | **裏SUGUDASU** — 非送信 × 名簿 × 幹事。そのまま **`fair-draw`**（§1-9 · §15 · `LOTTERY_PRIZE_LAW_TOOL_SPEC.md`）。**新規HTML不要** |
+
+**⑥ と `fair-draw` の対応**
+
+| ブレスト要素 | 現状 | 拡張候補（新ツール不要） |
+|--------------|------|-------------------------|
+| CSV を外部に上げない | ◎ 名簿はブラウザ内 · 証跡PDF/JSON | — |
+| Connpass 参加者リスト | △ **1行1名テキスト貼付** | CSV D&D · **列ピック**（メール/ニックネーム列） |
+| 公平ランダム | ◎ Fisher-Yates · Web Crypto · シード表示 | — |
+| ドラムロール演出 | **却下済**（§15-4 · spec Out） | 会場上映は Zoom/PPT · 製品は **チャット発表用コピー** |
+| イベント最後の景品抽選 | △ 訴求はマーケ懸賞・景表法寄り | LP/hub **`link-qr` 同文脈**（テックイベント幹事）· Zenn #11 |
+
+**再検討条件**
+
+- ④: **`table-conv` 実装時** — 表のみ1レーンに縮小した場合のみ GO 再評価
+- ⑤: **T05** — 印刷文字の機密スクショ・PC専用のみ（FAX/手書きは謳わない）
+- ⑥: 新規 `drum-roll-*` は **作らない**。拡張は **`fair-draw` の名簿UX** · **イベント向けコピー** のみ
+
+**記事ネタ:** ④⑤の Pain は Zenn/note で非送信の **反例** として可 · ⑥は **既存GOの再発見**（「Python書かずに本番CSVで抽選」）
+
+**⑥ 拡張 TODO（任意 · P2）**
+
+- [ ] `fair-draw` — Connpass CSV **ドラッグ＆ドロップ + 列選択**（`normalize` / CSV系と同型）
+- [ ] hub · `link-qr` · イベント guide から **「懇親会・景品抽選」** 導線1行
+- [ ] Zenn #11 初稿 — マーケ懸賞に加え **Connpass 幹事** 段落を1節
+
+---
+
+#### 1-15-7. ITリテラシー高め層ブレスト① — **リスト整形・クレンジング**（2026-07-03 · **採用**）
+
+**起源:** 「本番IDを怪しいWebフォームに貼りたくない」— SQL `IN` 句 · スプシ貼付前のリスト変換  
+**判定:** **GO · 新規HTMLなし** — **`normalize`（T03）拡張** ＋ 多行・列操作は **T06** に委譲  
+**正本:** [`NORMALIZE_TEXT_TOOL_SPEC.md`](notes/NORMALIZE_TEXT_TOOL_SPEC.md) Phase B · 台帳 **T03** · **T06**
+
+**提督メモ:** DBがある限り消えない Pain。SAP · Salesforce 等の **ETL/マスタクレンジング** とは別レイヤ — SUGUDASU は **その場コピペの3分JIT**（Excelを開かない · 外部Converterに貼らない）。
+
+| ブレスト要件 | 現状 | 着手（Phase B · `normalize`） |
+|--------------|------|------------------------------|
+| 改行区切り → カンマ | ◎ `comma_join` | — |
+| `'ID1', 'ID2'`（SQL IN） | × | **`sql_in`** プリセット |
+| タブ区切り → カンマ | × | **`tab_to_comma`** プリセット |
+| trim · 先頭ゼロ維持 | ◎ | — |
+| 重複削除 | × | オプション（**行順変化** · 黄旗）— 余力あれば v1.1 |
+| 1,000行級 | △ cap 500 | 性能テスト後 **上限見直し**（または T06） |
+
+**やらない:** `list-clean` 等新 id · SAP/SF代替を謳う · サーバー保存型クレンジングSaaS化
+
+**訴求:** 事務OL（§1-15-1 Seikei）に加え **エンジニア・データアナリスト** — 「本番ログのIDリストを非送信でIN句化」
+
+**TODO**
+
+- [x] `normalize` — プリセット **`sql_in`**（`assets/text-normalize.js` + テスト）
+- [ ] `normalize` — プリセット **`tab_to_comma`**
+- [ ] LP/FAQ — SQL IN · 本番データ · DevToolsとの使い分け1問
+- [ ] hub · `test-data` · `fair-draw` から **リスト整形** 導線（既存 id のみ）
+- [ ] **T06** — 列選択 · 重複除去 · 行数多めは別途ロードマップ（本件と役割分担）
+
+**⑧ JSON整形 & URLデコード** — 別途 **HOLD**（台帳 T07 · 単体新規しない · ①優先）
+
+---
+
+#### 1-15-8. Vibe Coding MECE 調査 — Gemini 突合（2026-07-03）
+
+**正本:** [`docs/notes/vibe-coding-mece-gemini-RESULT.md`](notes/vibe-coding-mece-gemini-RESULT.md)  
+**プロンプト:** [`docs/prompts/vibe-coding-micro-utils-mece-gemini-research.md`](prompts/vibe-coding-micro-utils-mece-gemini-research.md)
+
+**結論:** 5ドメイン中 **Data Transform が最薄・最優先深掘り**。Visual は次点だが **実装は Data 後**。
+
+**実装優先（Cursor 修正 Top 5）**
+
+1. **`normalize` Phase B** — `sql_in` · `tab_to_comma`（§1-15-7 · **最優先**）
+2. **`table-conv`** — CSV↔JSON↔MD · Shift-JIS/BOM
+3. **`fair-draw`** — Connpass CSV D&D（§1-15-6）
+4. **T07 縮小** — JSON Pretty + URL decode · 1HTML（`reverse` には載せない）
+5. **文字数/バイト** — `sns` または `normalize`（P2 · 役割分担要）
+
+**Gemini Top 5 から下げたもの**
+
+| 案 | 修正判定 | 理由 |
+|----|----------|------|
+| Text Diff 新規 | HOLD | hub増 · IDE競合 |
+| Password 新規 | HOLD | T19 红海 |
+| Contrast 新規 | PARK | M3 · png-to-webp 後 |
+| URL/JWT → `reverse` | **却下** | id 意味が違う |
+
+**TODO（調査のみ · 実装は上記順）**
+
+- [ ] Data Transform — Gemini 依頼6の英日クエリ各5本で競合表更新
+- [ ] `table-conv` SSOT 初稿（JSON 統合 · CP932）
+- [ ] T22 Text Diff — HOLD 理由を台帳に1行（任意）
+
+---
+
 ## 2) 収益戦略 Backlog（AdSense + Amazon 統合）
 
 本会話で合意した方針を、実装可能な TODO に分解。

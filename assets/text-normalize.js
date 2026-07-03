@@ -11,6 +11,7 @@ export const PRESET_DEFAULTS = {
   csv_roster: { mode: 'line', ascii: true, space: true, hyphen: true },
   fullwidth_ascii: { mode: 'line', ascii: true, space: false, hyphen: false, toFullwidth: true },
   comma_join: { mode: 'comma_join', ascii: false, space: true, hyphen: false },
+  sql_in: { mode: 'sql_in', ascii: true, space: true, hyphen: false },
   name_trim: { mode: 'name_trim', ascii: true, space: false, hyphen: false },
 };
 
@@ -128,6 +129,31 @@ export function countChanges(before, after) {
 }
 
 /**
+ * @param {string[]} lines
+ * @param {{ ascii: boolean, space: boolean, toFullwidth: boolean }} opts
+ * @param {{ splitTabs?: boolean }} [listOpts]
+ */
+function collectListItems(lines, opts, listOpts = {}) {
+  const items = [];
+  for (const line of lines) {
+    const parts = listOpts.splitTabs && line.includes('\t') ? line.split('\t') : [line];
+    for (const part of parts) {
+      let t = transformAsciiOnly(part, opts);
+      if (opts.space) t = t.trim();
+      if (t.length) items.push(t);
+    }
+  }
+  return items;
+}
+
+/**
+ * @param {string} value
+ */
+function sqlQuoteLiteral(value) {
+  return `'${String(value).replace(/'/g, "''")}'`;
+}
+
+/**
  * @param {string} input
  * @param {{ preset?: string, toggles?: Partial<{ ascii: boolean, space: boolean, hyphen: boolean }> }} [config]
  */
@@ -149,14 +175,23 @@ export function normalizeText(input, config = {}) {
   const lines = normalizedInput.split('\n');
 
   if (mode === 'comma_join') {
-    const items = lines
-      .map((line) => {
-        let t = transformAsciiOnly(line, opts);
-        if (opts.space) t = t.trim();
-        return t;
-      })
-      .filter((t) => t.length > 0);
+    const items = collectListItems(lines, opts);
     const output = items.join(',');
+    return {
+      output,
+      inputLines: lines.length,
+      outputLines: output ? 1 : 0,
+      lineCountMatch: lines.length === (output ? 1 : 0),
+      changeCount: countChanges(normalizedInput, output),
+      preset,
+      opts,
+      mode,
+    };
+  }
+
+  if (mode === 'sql_in') {
+    const items = collectListItems(lines, opts, { splitTabs: true });
+    const output = items.map(sqlQuoteLiteral).join(', ');
     return {
       output,
       inputLines: lines.length,

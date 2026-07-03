@@ -63,6 +63,7 @@
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="csv_roster" aria-selected="false">CSV名簿</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="fullwidth_ascii" aria-selected="false">全角英数</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="comma_join" aria-selected="false">改行→カンマ</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="sql_in" aria-selected="false">SQL IN</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="name_trim" aria-selected="false">姓名スペース</button>
             </div>
             <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
@@ -180,6 +181,12 @@
                 </div>
             </details>
             <details class="sg-faq">
+                <summary>SQL の IN 句用に 'id1', 'id2' 形式へまとめられますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。<strong>SQL IN</strong> プリセットで、改行またはタブ区切りのリストを <code>'value1', 'value2'</code> の1行にします。値に含まれる単一引用符は SQL 慣習どおり <code>''</code> にエスケープします。本番IDを外部サイトに貼れない場合向けです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
                 <summary>改行をカンマ区切りの1行にできますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。このとき行数は変わるため、コピー前に行数バッジを確認してください。</p>
@@ -225,6 +232,7 @@ const PRESET_HINTS = {
   csv_roster: '<strong>CSV・名簿:</strong> 英数半角 · 空白整理 · ハイフン統一（長音ーは保護）。',
   fullwidth_ascii: '<strong>全角英数:</strong> 見た目用。英数字を全角にします。',
   comma_join: '<strong>改行→カンマ:</strong> 縦一列のリストをカンマ区切りの1行に。<strong>行数が変わります。</strong>',
+  sql_in: '<strong>SQL IN句:</strong> 改行・タブ区切りを <code>\'id1\', \'id2\'</code> に。<strong>本番IDリスト向け · 行数が変わります。</strong>',
   name_trim: '<strong>姓名スペース:</strong> 各行の全角・半角スペースをすべて削除して密着します。',
 };
 
@@ -280,10 +288,16 @@ function syncToggleAvailability(preset) {
 
 function syncShapeModeUI(preset) {
   const defs = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
-  const isShape = defs.mode === 'comma_join';
+  const mode = defs.mode || 'line';
+  const isShape = mode === 'comma_join' || mode === 'sql_in';
   shapeBadgeEl.classList.toggle('hidden', !isShape);
   shapeHintEl.classList.toggle('hidden', !isShape);
   verifyPanelEl.classList.toggle('norm-verify-panel--shape', isShape);
+  if (isShape && mode === 'sql_in') {
+    shapeHintEl.innerHTML = '縦一列（またはタブ区切り）→ <strong>SQL IN 用クォート付き1行</strong>への形状変換です。行数の変化は正常です。';
+  } else if (isShape) {
+    shapeHintEl.innerHTML = '縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。';
+  }
 }
 
 function hideVerifyPanel() {
@@ -426,7 +440,7 @@ btnSwap.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   presetController = window.SUGUDASU_SEGMENT.mount({
     segmentId: 'preset-segment',
-    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'name_trim'],
+    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'sql_in', 'name_trim'],
     initial: 'ec_form',
     hintId: 'preset-hint',
     hints: PRESET_HINTS,
@@ -435,6 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
       csv_roster: 'sg-segment--mode-csv',
       fullwidth_ascii: 'sg-segment--mode-fw',
       comma_join: 'sg-segment--mode-local',
+      sql_in: 'sg-segment--mode-local',
       name_trim: 'sg-segment--mode-label',
     },
     onChange: (value) => {

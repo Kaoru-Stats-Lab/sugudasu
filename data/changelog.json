@@ -4,6 +4,20 @@
     {
       "date": "2026-07-03",
       "type": "feat",
+      "title": "全角半角整え — SQL IN 句プリセット",
+      "body": "改行・タブ区切りの ID リストを 'id1', 'id2' 形式に。本番データを外部 Converter に貼れない向け。単体テスト追加。",
+      "tools": ["normalize.html", "text-normalize.js"]
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
+      "title": "リンク集QR — イベント連絡プリセット · 幹事コピー",
+      "body": "デフォルトを Slack/メール中心の「イベント連絡」に。テックSNSタブ維持。幹事向けアナウンス文案コピー。JIT 文案更新。",
+      "tools": ["link-qr.html", "link-qr-engine.js", "LINK_QR_TOOL_SPEC.md"]
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
       "title": "リンク集QR（link-qr）α — サーバー非保存の即席プロフィール",
       "body": "X · GitHub · Zenn · Qiita 等を URL #fragment にエンコードして QR 化。懇親会フォロー交換向け。閲覧モード · PNG 保存 · v0.1.0 alpha。",
       "tools": ["link-qr.html", "link-qr-engine.js", "hub.html", "tool-registry.json"]

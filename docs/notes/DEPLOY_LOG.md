@@ -518,10 +518,31 @@
 
 ---
 
+## DEPLOY-20260703-012
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | link-qr イベント連絡プリセット · normalize SQL IN · 企画ドキュメント |
+| **change_summary** | `link-qr` イベント連絡/幹事コピー · `normalize` sql_in · BACKLOG §1-15-6〜8 · 台帳 · Vibe MECE 調査 |
+| **local_build** | `pass`（`release:pages:free` 予定） |
+| **deploy_count_today** | 12 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼（溜まり分一括） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 012 approved（link-qr イベント連絡 · normalize sql_in · 企画docs） |
 | 2026-07-03 | 011 executed（2238cba · link-qr α） |
 | 2026-07-03 | 011 approved（link-qr α · サーバー非保存リンク集QR） |
 | 2026-07-03 | 009 executed（17a6811 · Prior Art §9 多言語探索） |

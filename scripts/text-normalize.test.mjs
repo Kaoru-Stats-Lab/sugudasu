@@ -82,6 +82,21 @@ assert.equal(countLines('a\nb'), 2);
   assert.equal(r.lineCountMatch, false);
 }
 
+// sql_in
+{
+  const r = normalizeText('user_a\nuser_b\n', { preset: 'sql_in' });
+  assert.equal(r.output, "'user_a', 'user_b'");
+  assert.equal(r.outputLines, 1);
+}
+{
+  const r = normalizeText("O'Brien\n00234", { preset: 'sql_in' });
+  assert.equal(r.output, "'O''Brien', '00234'");
+}
+{
+  const r = normalizeText('a\tb\nc', { preset: 'sql_in' });
+  assert.equal(r.output, "'a', 'b', 'c'");
+}
+
 // name_trim
 {
   const r = normalizeText('山田　太郎\n山田 太郎', { preset: 'name_trim' });
@@ -93,6 +108,7 @@ assert.equal(countLines('a\nb'), 2);
 assert.equal(PRESET_DEFAULTS.ec_form.hyphen, false);
 assert.equal(PRESET_DEFAULTS.csv_roster.hyphen, true);
 assert.equal(PRESET_DEFAULTS.comma_join.mode, 'comma_join');
+assert.equal(PRESET_DEFAULTS.sql_in.mode, 'sql_in');
 assert.equal(PRESET_DEFAULTS.name_trim.mode, 'name_trim');
 
 // トグル上書き
