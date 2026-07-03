@@ -62,16 +62,11 @@
 - `.sg-faq` の1パターンに統一し、`sg-notion-toggle` との差を縮小。
 - summary行は `13px` 以上、本文は `13px` / 行高 `1.65` を基準。
 
-## 6. 先行適用ページ
+## 6. 先行適用（完了 · アーカイブ）
 
-- `tools/normalize.html`
-- `tools/link-qr.html`
-- `tools/invoice.html`
-- `tools/fair-draw.html`
+2026-07 パイロット4本 → 2026-07-03 に core 全ページへ展開済み。詳細は [`archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](../archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md) §4。
 
-上記でUX回帰がないことを確認後、残りcoreページは共通クラス適用を展開する。
-
-## 7. 受け入れ条件
+## 7. 受け入れ条件（Refresh 完了）
 
 - `/link-qr` と `/normalize` のFAQが中央コンテナで揃い、見出し導入が中央化される。
 - モバイルでヘッダーナビが詰まらず、横スクロールで全ツールへ到達できる。
@@ -93,8 +88,8 @@
 
 - `main.sg-guide-page`（**52rem**）— 法務よりやや広く、比較表の可読性優先。
 - `article.sg-guide-article.sg-guide-article--{pillar}` — 柱カラー（event / production / team / docs）。
-- 構造: パンくず → ヘッダー → 要点 → 本文 → FAQ（`sg-faq`）→ 関連ツール CTA。
-- 表は `.sg-guide-table-scroll` で横スクロール。当日手順の `ol` は `.sg-guide-steps`。
+- 構造: パンくず → ヘッダー（`.sg-guide-lead-deck` でリード2段）→ 要点 → 本文 → FAQ → 関連ツール CTA。
+- 表は `.sg-guide-table-scroll` で横スクロール（3/4/5列は `table-layout: fixed` で列幅配分）。当日手順の `ol` は `.sg-guide-steps`。
 - 新規記事は `scripts/migrate-guide-article-layout.mjs` を雛形参照、または手動で同構造を踏襲。
 
 ## 10. レイアウト選定（Agent 必須）
@@ -102,3 +97,5 @@
 **SSOT:** [`PAGE_LAYOUT_SELECTOR.md`](PAGE_LAYOUT_SELECTOR.md)
 
 新規ページ・大幅改稿の前に、内容に応じて系統 A–F を1つ選ぶ。ガイド記事（E）と法務（D）・実務ツール（A–C）を混同しない。
+
+廃止したレイアウト指定の経緯: [`archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](../archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md)

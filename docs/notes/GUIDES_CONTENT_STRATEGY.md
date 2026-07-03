@@ -65,7 +65,7 @@ sugudasu.com/
 **拡張ルール（記事追加時）**
 
 1. `data/guides.json` にメタデータ追加  
-2. `tools/guides/{slug}.html` を追加（`sg-info-prose` · 関連ツール CTA）  
+2. `tools/guides/{slug}.html` を追加（**`sg-guide-page` + `sg-guide-article--{pillar}`** · [`PAGE_LAYOUT_SELECTOR.md`](PAGE_LAYOUT_SELECTOR.md) E系統）  
 3. `npm run build:pages` で sitemap 自動反映  
 4. 該当ツールページ FAQ から `/guides/{slug}` へ1リンク  
 5. `changelog.json` に1行追記  
@@ -88,7 +88,7 @@ sugudasu.com/
 | 正本 | HTML in `tools/guides/`（ビルドで `/guides/{slug}`） |
 | 索引 | `tools/guides.html` |
 | メタ | `data/guides.json`（将来の動的索引用） |
-| スタイル | `sg-info-page` · `sg-info-prose`（`DESIGN_GUIDELINE_INFO_PAGES.md`） |
+| スタイル | 記事: **`sg-guide-article`**（[`PAGE_LAYOUT_SELECTOR.md`](PAGE_LAYOUT_SELECTOR.md) · [`UI_LAYOUT_REFRESH_GUIDE.md`](UI_LAYOUT_REFRESH_GUIDE.md) §9）· 索引: `sg-info-page` |
 | SEO | 各記事に `meta description` · `og:*` · 更新日 |
 | サイトマップ | `build-pages.mjs` が `/guides` と各 slug を自動登録 |
 | 内部リンク | hub · footer · ツール FAQ から guides へ |
@@ -128,5 +128,5 @@ sugudasu.com/
 ## 参照
 
 - イベント SEO 正本: [`TIMELINE_SEO_MECE.md`](TIMELINE_SEO_MECE.md)  
-- 情報ページ UI: [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md)  
+- 情報ページ UI: [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md) · ガイド記事レイアウト: [`PAGE_LAYOUT_SELECTOR.md`](PAGE_LAYOUT_SELECTOR.md)  
 - AdSense Backlog: [`BACKLOG.md`](../BACKLOG.md) §3 · §2-5

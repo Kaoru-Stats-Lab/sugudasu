@@ -9,14 +9,9 @@
 
 ## 1. 目的
 
-法務・約束・更新履歴は **実務ツールと同じトーン** で読めること。横幅・文字サイズ・色がページごとにバラつくと「別サイト」と感じられ、AdSense 審査・信頼性にも不利。
+法務・約束・更新履歴は **実務ツールと同じトーン** で読めること。横幅・文字サイズ・色は `sg-info-page` / `sg-guide-page` で系統ごとに固定（選定: [`notes/PAGE_LAYOUT_SELECTOR.md`](notes/PAGE_LAYOUT_SELECTOR.md)）。
 
-| 問題（統一前） | 方針 |
-|----------------|------|
-| `max-w-3xl` と `max-w-4xl` が混在 | **48rem（768px）** に固定 |
-| 本文が 12px / 14px / 16px 混在 | 本文 **14px** に統一 |
-| 見出しが h1/h2 でサイズ不揃い | 階層トークンで固定 |
-| リンク色・太さがバラつく | `sg-info-prose a` に集約 |
+統一前の課題・旧 `max-w-*` 指定の経緯は [`archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md)（アーカイブ）。
 
 ---
 
@@ -97,4 +92,5 @@
 ## 7. 参照
 
 - 配色トークン: `DESIGN_GUIDELINE.md` §2
+- 廃止レイアウト経緯: [`archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md)
 - Notion Like カード: `DESIGN_GUIDELINE_NOTION_LIKE.md`（ツール向け。情報ページは **装飾控えめ**）

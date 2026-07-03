@@ -26,14 +26,18 @@
 
 <main class="sg-main-shell flex-1 space-y-6">
 
-    <header class="max-w-3xl space-y-2">
+    <header class="sg-tool-intro space-y-2">
         <p class="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 inline-block px-3 py-1 rounded-full">閉域OK · ブラウザのみ · 非送信</p>
-        <p class="text-sm text-slate-600 sg-tool-lead">
-            <strong>閉域環境・外部CSV持ち込み禁止</strong>の現場で、給与計算SaaSや労務システムの<strong>インポート検証</strong>用データを作りたいとき向けです。
-            Mockaroo 等の外部SaaSや、ネットのダミーCSVを使えない情シス・受託SI・マニュアル担当の<strong>下位レイヤー</strong>が、Excel手打ちをやめるためのツールです。
-            <strong>社員マスタ</strong>（氏名 · フリガナ · 給与 · 住所）を<strong>ブラウザ内だけ</strong>で生成 — サーバーへデータを送りません。
-            郵便番号と住所は整合済み。シード固定で再現可能。マイナンバー · 実口座は生成しません。
-            大規模試験は<strong>CSVダウンロード</strong>が本線です（<a href="mask.html" class="text-blue-800 font-semibold hover:underline">マスク</a> 等と用途が異なります）。
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>閉域環境 · 外部CSV持ち込み禁止</strong>の現場向け。給与計算SaaSや労務システムの<strong>インポート検証</strong>用データを、今日この端末だけで作ります。
+            </p>
+            <p class="sg-tool-lead">
+                Mockaroo 等の外部SaaSが使えない情シス · 受託SI · マニュアル担当向け。<strong>社員マスタ</strong>（氏名 · フリガナ · 給与 · 住所）を<strong>ブラウザ内だけ</strong>で生成し、サーバーへ送りません。
+            </p>
+        </div>
+        <p class="sg-tool-lead sg-tool-lead--meta">
+            郵便番号と住所は整合済み · シード固定で再現 · マイナンバー · 実口座は生成しません。大規模試験は<strong>CSVダウンロード</strong>が本線です（<a href="mask.html">マスク</a> 等と用途が異なります）。
         </p>
     </header>
 

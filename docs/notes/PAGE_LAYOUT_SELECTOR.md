@@ -128,5 +128,6 @@
 |--------------|------|
 | [`UI_LAYOUT_REFRESH_GUIDE.md`](UI_LAYOUT_REFRESH_GUIDE.md) | 幅 · 余白 · タイポ · §8–9 各系統 |
 | [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md) | D 系統の prose ルール |
+| [`archive/README.md`](../archive/README.md) | 廃止ガイドライン一覧 |
 | [`DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) | 色 · 3層アクション · ツール UI |
 | [`CHROME_HEADER_GUARDRAILS.md`](CHROME_HEADER_GUARDRAILS.md) | ヘッダー未表示時 |
