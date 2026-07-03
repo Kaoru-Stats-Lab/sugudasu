@@ -382,16 +382,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | test-data 件数スライダー不具合（表示・生成が100固定） |
 | **change_summary** | `test-data-app.js` スライダーイベント委譲 · プリセット別件数正規化 · ヒント文案 · `resolveCountForPreset` |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 5 |
+| **pages_build_budget_after** | 11/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督 hotfix |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `293258e`（`d1fdae9..293258e` · git push origin main） |
+| **smoke** | `/test-data` — スライダーで500/5000/25万表示 · 生成件数一致 · 種別切替でスケール・ヒント更新 |
 
 ---
 
@@ -399,6 +402,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 005 executed（293258e · test-data スライダー hotfix） |
 | 2026-07-03 | 005 approved（test-data スライダー hotfix · 提督依頼） |
 | 2026-07-03 | 004 approved（AdSense 自動広告 · test-data スライダー/TXN · 提督 push 依頼） |
 | 2026-07-03 | 003 approved（test-data 件数UI · §6.8 閉域FAQ · 提督 push 依頼） |
