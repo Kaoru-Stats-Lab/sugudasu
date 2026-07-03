@@ -362,16 +362,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | AdSense 自動広告タグ（build 注入 + guard）· test-data スライダー · TXN整合 · 閉域FAQ |
 | **change_summary** | `data/adsense.json` · `adsense-pages.mjs` · `verify-adsense-pages.mjs` · `build-pages` head 注入 · test-data UI/FAQ · `TEST_DATA_TOOL_SPEC` |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 4 |
+| **pages_build_budget_after** | 10/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督 push 依頼 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `2d3cc6c`（`75f51c0..2d3cc6c` · git push origin main） |
+| **smoke** | `/` — view-source に AdSense script · `/test-data` — 件数スライダー · 閉域FAQ · Sync 本番はタグなし（別プロジェクト） |
 
 ---
 
@@ -379,6 +382,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 004 executed（2d3cc6c · AdSense 自動広告 · test-data スライダー/TXN） |
 | 2026-07-03 | 004 approved（AdSense 自動広告 · test-data スライダー/TXN · 提督 push 依頼） |
 | 2026-07-03 | 003 approved（test-data 件数UI · §6.8 閉域FAQ · 提督 push 依頼） |
 | 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
