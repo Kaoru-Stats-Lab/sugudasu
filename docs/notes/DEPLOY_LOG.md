@@ -498,11 +498,31 @@
 
 ---
 
+## DEPLOY-20260703-011
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | リンク集QR（link-qr）α — イベント懇親会フォロー交換 |
+| **change_summary** | `link-qr` 新規 · `#p=` base64url · hub · nav · sns 相互リンク · 単体テスト |
+| **local_build** | `pass`（`release:pages:free`） |
+| **deploy_count_today** | 11 |
+| **pages_build_budget_after** | 17/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P7 · 提督依頼 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | `/link-qr` · QR生成 · hash 閲覧モード · `/sns` リンク |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 010 approved（normalize 実務ガイド · 都内OL編） |
+| 2026-07-03 | 011 approved（link-qr α · サーバー非保存リンク集QR） |
 | 2026-07-03 | 009 executed（17a6811 · Prior Art §9 多言語探索） |
 | 2026-07-03 | 009 approved（Prior Art §9 · 多言語探索フロー） |
 | 2026-07-03 | 008 executed（c84ba5f · mask オーバーレイ確定 · ぼかし/同色塗り） |

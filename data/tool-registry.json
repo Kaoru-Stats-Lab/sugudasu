@@ -249,6 +249,19 @@
       "stage": "gamma",
       "statusNote": "font-converter 分離 · プレビュー/お手本は /sns · 23フォントは /font-converter"
     },
+    "link-qr": {
+      "file": "link-qr.html",
+      "conceptName": "リンク集QR",
+      "productName": "SUGUDASU リンク集QR",
+      "navLabel": "リンクQR",
+      "navIcon": "📇",
+      "inNav": true,
+      "navOrder": 16,
+      "name": "リンク集QR（即席プロフィール）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "URL #fragment エンコード · 非送信 · イベント懇親会フォロー交換（LINK_QR_TOOL_SPEC.md）"
+    },
     "font-converter": {
       "file": "font-converter.html",
       "conceptName": "フォント変換",

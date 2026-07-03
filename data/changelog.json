@@ -4,6 +4,13 @@
     {
       "date": "2026-07-03",
       "type": "feat",
+      "title": "リンク集QR（link-qr）α — サーバー非保存の即席プロフィール",
+      "body": "X · GitHub · Zenn · Qiita 等を URL #fragment にエンコードして QR 化。懇親会フォロー交換向け。閲覧モード · PNG 保存 · v0.1.0 alpha。",
+      "tools": ["link-qr.html", "link-qr-engine.js", "hub.html", "tool-registry.json"]
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
       "title": "実務ガイド — 名簿整形（都内総務OL編）",
       "body": "変換サイトに貼れない名簿を整える長文ガイド。EC登録・研修班分け・メールリストの場面想定。/guides と /normalize 相互リンク。",
       "tools": ["guides/office-roster-normalize.html", "guides.html", "normalize.html"]

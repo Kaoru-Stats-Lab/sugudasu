@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="X・GitHub・Zenn・Qiitaなどを1枚のリンク集にまとめ、QRコードで即共有。登録不要・サーバー保存なし。URLの#にデータを埋め込むブラウザ完結ツール。">
+    <title>リンク集QR — 登録不要・サーバー保存なし | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="リンク集QR — テックイベント向け即席プロフィール">
+    <meta property="og:description" content="懇親会でフォロー交換。入力データはURLの#にだけ載り、サーバーに保存されません。QRを読み取るとリンク集が開きます。">
+    <meta property="og:url" content="https://sugudasu.com/link-qr">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="懇親会のフォロー交換をQRで — サーバー保存なし">
+    <meta name="twitter:description" content="X・GitHub・ZennをまとめてQR化。アカウント登録不要。データはURLの#にエンコードされるだけです。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"入力したリンクはサーバーに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。リンク集はURLの#（フラグメント）にエンコードされるだけで、当方サーバーには送信されません。#以降はHTTPリクエストに含まれません。"}},{"@type":"Question","name":"lit.linkやLinktreeとの違いは？","acceptedAnswer":{"@type":"Answer","text":"本ツールはアカウント登録不要で、その場でQRを作る使い捨て向けです。常設プロフィールやアクセス分析はlit.link等が向いています。"}},{"@type":"Question","name":"QRを読み取ったあとリンクを変更できますか？","acceptedAnswer":{"@type":"Answer","text":"静的QRのため、印刷・保存したQRの中身は変わりません。変更したい場合は新しいQRを作り直してください。"}},{"@type":"Question","name":"データは暗号化されていますか？","acceptedAnswer":{"@type":"Answer","text":"暗号化ではありません。誰でもURLから内容を読み取れます。公開してよいSNS・GitHub等のURLだけを入れてください。"}},{"@type":"Question","name":"名刺に印刷できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。生成したQR画像（PNG）を保存し、SUGUDASU宛名ラベルや名刺用紙の印刷に利用できます。"}}]}</script>
+    <style>
+        .lq-view-card { border: 1px solid var(--sg-border, #e2e8f0); border-radius: 0.75rem; padding: 1rem 1.25rem; background: #fff; }
+        .lq-view-card__name { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
+        .lq-view-card__link { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.8125rem; }
+        .lq-view-card__link:last-child { border-bottom: none; }
+        .lq-view-card__label { font-weight: 600; color: #475569; min-width: 4.5rem; flex-shrink: 0; }
+        .lq-view-card__url { color: #2563eb; word-break: break-all; }
+        #qr-canvas { image-rendering: pixelated; }
+    </style>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU リンク集QR" data-sg-subtitle="即席プロフィール · 非送信" data-sg-tool-id="link-qr"></div>
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <header class="max-w-3xl space-y-3">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">非送信 · サーバー保存なし</p>
+        <p class="text-sm text-slate-600 sg-tool-lead">
+            懇親会で「X は？」「GitHub は？」となりがちな<strong>テック系フォロー交換</strong>を、
+            <span class="whitespace-nowrap">リンク集ページ + QR で3分完結。</span>
+            入力は URL の <code class="text-[11px] bg-slate-100 px-1 rounded">#</code> にエンコードされるだけで、<strong>当方サーバーには送られません</strong>。
+        </p>
+    </header>
+
+    <div id="view-only-panel" class="hidden max-w-lg mx-auto w-full">
+        <div class="lq-view-card shadow-sm">
+            <p class="text-[10px] font-bold text-violet-700 uppercase tracking-wide mb-2">共有リンク集</p>
+            <p id="view-name" class="lq-view-card__name"></p>
+            <div id="view-links"></div>
+        </div>
+        <p class="text-center mt-4">
+            <a href="link-qr.html" class="text-sm font-semibold text-blue-600 hover:underline" id="lq-make-own">自分用のリンク集を作る</a>
+        </p>
+    </div>
+
+    <div id="editor-panel" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">リンクを入力</h2>
+            <div>
+                <label for="lq-name" class="block text-xs font-semibold text-slate-600 mb-1.5">表示名</label>
+                <input type="text" id="lq-name" class="sg-input text-sm" maxlength="40" placeholder="例: 山田 太郎 / yamada_dev" autocomplete="name">
+            </div>
+            <div id="lq-slots" class="space-y-3"></div>
+            <p id="lq-errors" class="hidden text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
+            <button type="button" id="lq-btn-update" class="sg-btn-primary w-full sm:w-auto">プレビューとQRを更新</button>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">プレビュー · QR</h2>
+            <div id="lq-preview-empty" class="text-xs text-slate-400 text-center py-10 border border-dashed border-slate-200 rounded-lg">
+                左でリンクを入力し「プレビューとQRを更新」を押してください
+            </div>
+            <div id="lq-preview-wrap" class="hidden space-y-4">
+                <div id="lq-preview-card" class="lq-view-card"></div>
+                <div class="flex flex-col items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <canvas id="qr-canvas" width="256" height="256" class="rounded-lg bg-white shadow-sm" aria-label="QRコード"></canvas>
+                    <p class="text-[10px] text-slate-500 text-center max-w-xs">このQRを読み取ると、上のリンク集が開きます（静的 · 後から変更不可）</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="lq-btn-copy-url" class="sg-btn-primary text-sm">URLをコピー</button>
+                    <button type="button" id="lq-btn-dl-png" class="text-xs font-semibold text-slate-700 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">QRをPNG保存</button>
+                </div>
+                <p id="lq-copy-toast" class="sg-copy-toast hidden" role="status"></p>
+            </div>
+            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
+        </section>
+    </div>
+
+    <section class="max-w-3xl space-y-3 no-print">
+        <h2 class="text-sm font-bold text-slate-900">使い方（3ステップ）</h2>
+        <ol class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-600">
+            <li class="sg-card p-4"><span class="font-bold text-slate-800">1.</span> X · GitHub 等を入力（@handle 可）</li>
+            <li class="sg-card p-4"><span class="font-bold text-slate-800">2.</span> プレビュー確認 → URLコピー or QR保存</li>
+            <li class="sg-card p-4"><span class="font-bold text-slate-800">3.</span> 懇親会でQRを見せる · 名刺に印刷</li>
+        </ol>
+        <p class="text-[11px] text-slate-500">
+            プロフィール文の整えは <a href="sns.html" class="text-blue-600 font-semibold hover:underline">SUGUDASU SNS</a> ·
+            名刺用紙印刷は <a href="label.html" class="text-blue-600 font-semibold hover:underline">宛名ラベル</a> と組み合わせられます。
+        </p>
+    </section>
+
+    <section class="max-w-3xl no-print" aria-labelledby="lq-faq-heading">
+        <h2 id="lq-faq-heading" class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
+        <div class="space-y-2">
+            <details class="sg-faq" open>
+                <summary>入力したリンクはサーバーに保存されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>いいえ。</strong> データは URL の <code>#</code> にエンコードされるだけです。フラグメントは HTTP リクエストに含まれないため、当方サーバーは内容を受け取りません（<a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a>）。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>lit.link や Linktree との違いは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>本ツールは<strong>イベント当日の即席交換</strong>向けです。常設プロフィール · デザイン · アクセス分析は lit.link 等が向いています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>暗号化されていますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>いいえ。</strong> 圧縮エンコードであり、URL を知れば誰でも読み取れます。公開してよいリンクだけを入れてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>QRをあとから変更できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>静的 QR のため<strong>変更できません</strong>。URL を変えたら新しい QR を作り直してください。</p>
+                </div>
+            </details>
+        </div>
+    </section>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  LINK_SLOTS,
+  decodeHash,
+  buildShareUrl,
+  parseFormInputs,
+} from '../assets/link-qr-engine.js';
+import { copyWithFeedback } from '../assets/sg-copy-feedback.js';
+
+const slotsEl = document.getElementById('lq-slots');
+const nameEl = document.getElementById('lq-name');
+const errorsEl = document.getElementById('lq-errors');
+const viewOnlyPanel = document.getElementById('view-only-panel');
+const editorPanel = document.getElementById('editor-panel');
+const viewNameEl = document.getElementById('view-name');
+const viewLinksEl = document.getElementById('view-links');
+const previewEmpty = document.getElementById('lq-preview-empty');
+const previewWrap = document.getElementById('lq-preview-wrap');
+const previewCard = document.getElementById('lq-preview-card');
+const qrCanvas = document.getElementById('qr-canvas');
+const btnUpdate = document.getElementById('lq-btn-update');
+const btnCopyUrl = document.getElementById('lq-btn-copy-url');
+const btnDlPng = document.getElementById('lq-btn-dl-png');
+const copyToast = document.getElementById('lq-copy-toast');
+
+/** @type {string | null} */
+let lastShareUrl = null;
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderViewCard(container, name, links) {
+  const nameHtml = name
+    ? `<p class="lq-view-card__name">${esc(name)}</p>`
+    : '';
+  const linksHtml = links.map((item) => `
+    <div class="lq-view-card__link">
+      <span class="lq-view-card__label">${esc(item.label)}</span>
+      <a href="${esc(item.url)}" class="lq-view-card__url hover:underline" target="_blank" rel="noopener noreferrer">${esc(item.url)}</a>
+    </div>`).join('');
+  container.innerHTML = nameHtml + linksHtml;
+}
+
+function buildSlotInputs() {
+  /** @type {Record<string, string>} */
+  const raw = {};
+  for (const slot of LINK_SLOTS) {
+    const el = document.getElementById(`lq-slot-${slot.id}`);
+    if (el) raw[slot.id] = el.value;
+  }
+  return raw;
+}
+
+function showErrors(messages) {
+  if (!messages.length) {
+    errorsEl.classList.add('hidden');
+    errorsEl.textContent = '';
+    return;
+  }
+  errorsEl.classList.remove('hidden');
+  errorsEl.textContent = messages.join(' ');
+}
+
+for (const slot of LINK_SLOTS) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <label for="lq-slot-${slot.id}" class="block text-xs font-semibold text-slate-600 mb-1">${esc(slot.label)}</label>
+    <input type="text" id="lq-slot-${slot.id}" class="sg-input text-sm" placeholder="${esc(slot.placeholder)}" autocomplete="off">
+  `;
+  slotsEl.appendChild(wrap);
+}
+
+async function renderQr(url) {
+  const mod = await import('https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm');
+  await mod.default.toCanvas(qrCanvas, url, {
+    margin: 2,
+    width: 256,
+    errorCorrectionLevel: 'M',
+  });
+}
+
+async function updatePreview() {
+  sessionStorage.setItem('lq-editor', '1');
+  const { payload, errors } = parseFormInputs(nameEl.value, buildSlotInputs());
+  if (!payload || errors.length) {
+    showErrors(errors);
+    previewWrap.classList.add('hidden');
+    previewEmpty.classList.remove('hidden');
+    lastShareUrl = null;
+    return;
+  }
+  showErrors([]);
+  const share = buildShareUrl(window.location.origin, window.location.pathname, payload);
+  if (share.error || !share.url) {
+    showErrors([share.error || 'URL を生成できませんでした']);
+    return;
+  }
+  lastShareUrl = share.url;
+  history.replaceState(null, '', share.url);
+
+  const dec = decodeHash(`#${share.hash}`);
+  if (dec.links) renderViewCard(previewCard, dec.name || '', dec.links);
+
+  previewEmpty.classList.add('hidden');
+  previewWrap.classList.remove('hidden');
+  try {
+    await renderQr(share.url);
+  } catch {
+    showErrors(['QR の生成に失敗しました。ネットワーク接続を確認してください。']);
+  }
+}
+
+function enterViewOnlyMode(dec) {
+  viewOnlyPanel.classList.remove('hidden');
+  editorPanel.classList.add('hidden');
+  if (dec.name) viewNameEl.textContent = dec.name;
+  else viewNameEl.textContent = 'リンク集';
+  viewLinksEl.innerHTML = '';
+  for (const item of dec.links || []) {
+    const row = document.createElement('div');
+    row.className = 'lq-view-card__link';
+    const lab = document.createElement('span');
+    lab.className = 'lq-view-card__label';
+    lab.textContent = item.label;
+    const a = document.createElement('a');
+    a.className = 'lq-view-card__url hover:underline';
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = item.url;
+    row.appendChild(lab);
+    row.appendChild(a);
+    viewLinksEl.appendChild(row);
+  }
+}
+
+btnUpdate.addEventListener('click', () => { updatePreview(); });
+
+btnCopyUrl.addEventListener('click', async () => {
+  if (!lastShareUrl) return;
+  await copyWithFeedback(lastShareUrl, btnCopyUrl, {
+    toastEl: copyToast,
+    copiedLabel: 'URLをコピーしました',
+    showFilterReminder: false,
+  });
+});
+
+btnDlPng.addEventListener('click', () => {
+  if (!lastShareUrl) return;
+  qrCanvas.toBlob((blob) => {
+    if (!blob) return;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sugudasu-link-qr.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/png');
+});
+
+const makeOwnEl = document.getElementById('lq-make-own');
+if (makeOwnEl) {
+  makeOwnEl.addEventListener('click', () => {
+    sessionStorage.removeItem('lq-editor');
+  });
+}
+
+// 初期: hash があれば閲覧モード（QR経由）or フォーム復元（編集継続）
+(function initFromHash() {
+  const dec = decodeHash(window.location.hash);
+  if (dec.error || !dec.links?.length) return;
+
+  const fromEditor = sessionStorage.getItem('lq-editor') === '1';
+  const forceEdit = new URLSearchParams(window.location.search).has('edit');
+
+  if (!fromEditor && !forceEdit) {
+    enterViewOnlyMode(dec);
+    return;
+  }
+
+  if (dec.name) nameEl.value = dec.name;
+  for (const item of dec.links) {
+    const el = document.getElementById(`lq-slot-${item.id}`);
+    if (el) el.value = item.url;
+  }
+  updatePreview();
+})();
+
+window.addEventListener('hashchange', () => {
+  if (sessionStorage.getItem('lq-editor') === '1') return;
+  const dec = decodeHash(window.location.hash);
+  if (!dec.error && dec.links?.length) enterViewOnlyMode(dec);
+});
+</script>
+</body>
+</html>

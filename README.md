@@ -41,6 +41,7 @@ python -m http.server 8080
 | [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
 | [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
 | [sns.html](tools/sns.html) | /sns | SUGUDASU SNS | SNS | gamma |
+| [link-qr.html](tools/link-qr.html) | /link-qr | SUGUDASU リンク集QR | リンクQR | alpha |
 
 ### 2) 補助・案内ページ
 

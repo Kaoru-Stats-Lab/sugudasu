@@ -24,7 +24,8 @@
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
     { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
-    { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' }
+    { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' },
+    { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' }
   ];
 
   /** 開発(tools/) と本番(dist/) 両対応 */
