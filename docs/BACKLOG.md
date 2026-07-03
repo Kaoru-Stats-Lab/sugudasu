@@ -564,9 +564,9 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
 
 **記事ネタ:** ④⑤の Pain は Zenn/note で非送信の **反例** として可 · ⑥は **既存GOの再発見**（「Python書かずに本番CSVで抽選」）
 
-**⑥ 拡張 TODO（任意 · P2）**
+**⑥ 拡張 TODO（Q3 · scheduled）**
 
-- [ ] `fair-draw` — Connpass CSV **ドラッグ＆ドロップ + 列選択**（`normalize` / CSV系と同型）
+- [ ] `fair-draw` — Connpass CSV **ドラッグ＆ドロップ + 列選択**（仕様: [`LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md) §4-1b）
 - [ ] hub · `link-qr` · イベント guide から **「懇親会・景品抽選」** 導線1行
 - [ ] Zenn #11 初稿 — マーケ懸賞に加え **Connpass 幹事** 段落を1節
 
@@ -612,13 +612,15 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
 
 **結論:** 5ドメイン中 **Data Transform が最薄・最優先深掘り**。Visual は次点だが **実装は Data 後**。
 
+**Priority 深掘り正本:** [`docs/notes/data-finance-priority-gemini-RESULT.md`](notes/data-finance-priority-gemini-RESULT.md)（2026-07-03 · Gemini 依頼1–10 突合済）
+
 **実装優先（Cursor 修正 Top 5）**
 
-1. **`normalize` Phase B** — `sql_in` · `tab_to_comma`（§1-15-7 · **最優先**）
-2. **`table-conv`** — CSV↔JSON↔MD · Shift-JIS/BOM
-3. **`fair-draw`** — Connpass CSV D&D（§1-15-6）
-4. **T07 縮小** — JSON Pretty + URL decode · 1HTML（`reverse` には載せない）
-5. **文字数/バイト** — `sns` または `normalize`（P2 · 役割分担要）
+1. **`normalize` Phase C** — 行ソート · 重複削除 · 行フィルタ（[`NORMALIZE_TEXT_TOOL_SPEC.md`](notes/NORMALIZE_TEXT_TOOL_SPEC.md) § Phase C）
+2. **`table-conv`** — SSOT 済 · Q4 MVP（[`TABLE_CONV_TOOL_SPEC.md`](notes/TABLE_CONV_TOOL_SPEC.md)）
+3. **`fair-draw`** — Connpass CSV D&D（§1-15-6 · [`LOTTERY_PRIZE_LAW_TOOL_SPEC.md`](notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md) §4-1b）
+4. **`invoice`** — 源泉 · 内税（[`INVOICE_FINANCE_EXTENSION_SPEC.md`](notes/INVOICE_FINANCE_EXTENSION_SPEC.md)）
+5. **T07 縮小** — JSON Pretty + URL decode · 1HTML（`reverse` には載せない）
 
 **Gemini Top 5 から下げたもの**
 

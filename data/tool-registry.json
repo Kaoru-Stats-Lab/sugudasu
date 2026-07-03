@@ -37,9 +37,9 @@
       "inNav": true,
       "navOrder": 2,
       "name": "見積・納品・請求書",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "stage": "beta",
-      "statusNote": "P0残: 税計算・複数税率・印刷崩れの品質担保（§4-1 · §6）"
+      "statusNote": "源泉10.21% · 内税8/10%分離 · A4マルチ+下書き"
     },
     "stamp": {
       "file": "stamp.html",
@@ -128,9 +128,22 @@
       "inNav": true,
       "navOrder": 9,
       "name": "全角半角・テキスト整え",
-      "version": "1.1.0",
+      "version": "1.3.0",
       "stage": "beta",
-      "statusNote": "500行cap · 行数Before/After · 用途プリセット5 · 事務OL訴求 · T03"
+      "statusNote": "500行cap · 行整理 · 伏字3種 · sql_in/tab_to_comma · T03"
+    },
+    "table-conv": {
+      "file": "table-conv.html",
+      "conceptName": "表データ変換",
+      "productName": "SUGUDASU 表変換",
+      "navLabel": "表変換",
+      "navIcon": "📊",
+      "inNav": true,
+      "navOrder": 9.5,
+      "name": "表データ相互コンバータ",
+      "version": "1.0.0",
+      "stage": "beta",
+      "statusNote": "Excel貼付/CSV→MD·JSON·TSV · Shift-JIS · 非送信 · 5,000行"
     },
     "webp-to-jpg": {
       "file": "webp-to-jpg.html",
@@ -219,9 +232,9 @@
       "inNav": true,
       "navOrder": 13,
       "name": "公平抽選・景品チェック（証跡PDF）",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "stage": "beta",
-      "statusNote": "キャンペーン識別名必須 · 証跡3点セット · 名簿スナップショット"
+      "statusNote": "Connpass CSV取込 · 証跡3点セット · 名簿スナップショット"
     },
     "warikan": {
       "file": "warikan.html",

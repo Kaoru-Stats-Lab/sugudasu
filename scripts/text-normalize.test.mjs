@@ -12,6 +12,14 @@ import {
   hasLeadingZeroCodes,
   LINE_LIMIT,
   PRESET_DEFAULTS,
+  applyLineOperations,
+  hasLineOps,
+  formatLineOpsBanner,
+  buildPreviewDiff,
+  highlightLineDiffHtml,
+  maskEmailLocal,
+  maskNamePart,
+  formatMaskBanner,
 } from '../assets/text-normalize.js';
 import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
 
@@ -97,6 +105,17 @@ assert.equal(countLines('a\nb'), 2);
   assert.equal(r.output, "'a', 'b', 'c'");
 }
 
+// tab_to_comma
+{
+  const r = normalizeText('a\tb\nc\td', { preset: 'tab_to_comma' });
+  assert.equal(r.output, 'a,b,c,d');
+  assert.equal(r.outputLines, 1);
+}
+{
+  const r = normalizeText('Ａ\tＢ', { preset: 'tab_to_comma' });
+  assert.equal(r.output, 'A,B');
+}
+
 // name_trim
 {
   const r = normalizeText('山田　太郎\n山田 太郎', { preset: 'name_trim' });
@@ -109,6 +128,7 @@ assert.equal(PRESET_DEFAULTS.ec_form.hyphen, false);
 assert.equal(PRESET_DEFAULTS.csv_roster.hyphen, true);
 assert.equal(PRESET_DEFAULTS.comma_join.mode, 'comma_join');
 assert.equal(PRESET_DEFAULTS.sql_in.mode, 'sql_in');
+assert.equal(PRESET_DEFAULTS.tab_to_comma.mode, 'tab_to_comma');
 assert.equal(PRESET_DEFAULTS.name_trim.mode, 'name_trim');
 
 // トグル上書き
@@ -136,5 +156,188 @@ assert.equal(countChanges('abc', 'abd'), 1);
   const s = scanPasteWarnings('00123');
   assert.equal(s.hasLeadingZero, true);
 }
+
+// Phase C — line sort (string)
+{
+  const r = normalizeText('b\na\nc', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { sort: { enabled: true, direction: 'asc' } },
+  });
+  assert.equal(r.output, 'a\nb\nc');
+}
+
+// Phase C — line sort (numeric)
+{
+  const r = normalizeText('10\n2\n1', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { sort: { enabled: true, direction: 'asc', numeric: true } },
+  });
+  assert.equal(r.output, '1\n2\n10');
+}
+
+// Phase C — dedupe exact
+{
+  const r = normalizeText('a\na\nb', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { dedupe: { enabled: true } },
+  });
+  assert.equal(r.output, 'a\nb');
+  assert.equal(r.outputLines, 2);
+  assert.equal(r.lineCountMatch, false);
+}
+
+// Phase C — dedupe ignore case/width
+{
+  const r = normalizeText('A\nＡ\nb', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { dedupe: { enabled: true, ignoreCaseWidth: true } },
+  });
+  assert.equal(r.output, 'A\nb');
+}
+
+// Phase C — filter include
+{
+  const r = normalizeText('foo@x.com\nbar@y.com\nfoo@test.com', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { filter: { enabled: true, keyword: '@x.com', mode: 'include' } },
+  });
+  assert.equal(r.output, 'foo@x.com');
+}
+
+// Phase C — filter exclude
+{
+  const r = normalizeText('ok\nskip me\nfine', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { filter: { enabled: true, keyword: 'skip', mode: 'exclude' } },
+  });
+  assert.equal(r.output, 'ok\nfine');
+}
+
+// Phase C — sql_in with dedupe before join
+{
+  const r = normalizeText('a\na\nb', {
+    preset: 'sql_in',
+    lineOps: { dedupe: { enabled: true } },
+  });
+  assert.equal(r.output, "'a', 'b'");
+}
+
+assert.equal(hasLineOps({ sort: { enabled: true } }), true);
+assert.equal(hasLineOps({}), false);
+assert.deepEqual(
+  applyLineOperations(['c', 'b', 'a'], { sort: { enabled: true } }).lines,
+  ['a', 'b', 'c'],
+);
+
+// Phase C — line ops stats
+{
+  const r = applyLineOperations(['a', 'a', 'b'], { dedupe: { enabled: true } });
+  assert.equal(r.stats.dedupeRemoved, 1);
+  assert.deepEqual(r.lines, ['a', 'b']);
+}
+{
+  const r = applyLineOperations(['keep', 'drop', 'keep2'], {
+    filter: { enabled: true, keyword: 'keep', mode: 'include' },
+  });
+  assert.equal(r.stats.filteredRemoved, 1);
+  assert.deepEqual(r.lines, ['keep', 'keep2']);
+}
+{
+  const r = normalizeText('a\na\nskip\nb', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: {
+      filter: { enabled: true, keyword: 'skip', mode: 'exclude' },
+      dedupe: { enabled: true },
+    },
+  });
+  assert.equal(r.lineOpsStats.filteredRemoved, 1);
+  assert.equal(r.lineOpsStats.dedupeRemoved, 1);
+  assert.equal(r.lineOpsAfterLines, 2);
+}
+assert.equal(
+  formatLineOpsBanner({ inputLines: 10, lineOpsAfterLines: 7, lineOpsStats: { filteredRemoved: 0, dedupeRemoved: 3, emptyRemoved: 0 } }),
+  '重複行を 3 件削除（10 行 → 7 行）',
+);
+
+// Phase C — trim + remove empty
+{
+  const r = normalizeText('  a  \n\nb', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    lineOps: { trim: { enabled: true }, removeEmpty: { enabled: true } },
+  });
+  assert.equal(r.output, 'a\nb');
+  assert.equal(r.lineOpsStats.emptyRemoved, 1);
+}
+
+// preview diff
+{
+  const rows = buildPreviewDiff('ＡＢＣ\nxyz', 'ABC\nxyz', 5);
+  assert.equal(rows[0].changed, true);
+  assert.equal(rows[1].changed, false);
+  assert.ok(highlightLineDiffHtml('Ａ', 'A').includes('<mark'));
+}
+
+// paste scan — header row (A03)
+{
+  const s = scanPasteWarnings('名前\n山田\n佐藤');
+  assert.ok(s.banners.some((b) => b.id === 'header-row'));
+  assert.equal(s.hasHeaderRow, true);
+}
+
+// paste scan — control chars (E01)
+{
+  const s = scanPasteWarnings('ok\nbad\u0001line');
+  assert.ok(s.banners.some((b) => b.id === 'control-chars'));
+  assert.deepEqual(s.controlLines, [2]);
+}
+
+// Phase D — mask email (legacy preset id)
+{
+  const r = normalizeText('yamada.taro@example.com\nnot-an-email', { preset: 'mask_email' });
+  assert.equal(r.output, 'ya***@example.com\nnot-an-email');
+  assert.equal(r.lineCountMatch, true);
+  assert.equal(r.maskStats.maskedLines, 1);
+  assert.equal(r.maskOpsApplied, true);
+}
+
+// Phase D — maskOps multi-select
+{
+  const r = normalizeText('yamada.taro@example.com\n090-1234-5678', {
+    preset: 'ec_form',
+    toggles: { ascii: false, space: false, hyphen: false },
+    maskOps: { email: true, phone: true },
+  });
+  assert.equal(r.output, 'ya***@example.com\n090-****-5678');
+  assert.equal(r.maskStats.maskedLines, 2);
+}
+assert.equal(maskEmailLocal('a@x.com'), 'a***@x.com');
+assert.equal(maskEmailLocal('ab@x.com'), 'ab***@x.com');
+
+// Phase D — mask phone
+{
+  const r = normalizeText('090-1234-5678', { preset: 'mask_phone' });
+  assert.equal(r.output, '090-****-5678');
+}
+{
+  const r = normalizeText('09012345678', { preset: 'mask_phone' });
+  assert.equal(r.output, '090****5678');
+}
+
+// Phase D — mask name
+{
+  const r = normalizeText('山田 太郎', { preset: 'mask_name' });
+  assert.equal(r.output, '山* 太*');
+}
+assert.equal(maskNamePart('山田'), '山*');
+
+assert.equal(formatMaskBanner({ preset: 'ec_form', maskOpsApplied: true, maskStats: { maskedLines: 3 } }), '3 行に伏字を適用しました（行数は変わりません）');
 
 console.log('text-normalize.test.mjs: all tests passed');

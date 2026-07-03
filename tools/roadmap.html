@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="SUGUDASU 開発ロードマップ">
-    <meta name="twitter:description" content="「初スケジュールに入ってますか？」への回答用。予定・検討中・対象外を掲載。">
+    <meta name="twitter:description" content="「開発スケジュールに入ってますか？」への回答用。予定・検討中・対象外を掲載。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
@@ -35,7 +35,7 @@
         <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">予定 · 検討中 · 対象外</p>
         <h1 class="sg-info-page__title">開発ロードマップ</h1>
         <p class="sg-info-page__lead sg-info-prose">
-            「これ、初スケジュールに入ってますか？」——よく聞かれるので、<strong>予定</strong>と<strong>対象外</strong>をここにまとめます。
+            「これ、開発スケジュールに入ってますか？」——よく聞かれるので、<strong>予定</strong>と<strong>対象外</strong>をここにまとめます。
             すでに反映したものは <a href="updates.html">更新履歴</a>、設計思想は <a href="statements.html">SUGUDASUの約束</a> をご覧ください。
         </p>
         <p id="roadmap-updated" class="sg-info-caption"></p>
@@ -77,7 +77,8 @@
         scheduled: { text: '予定', cls: 'sg-roadmap-badge--scheduled' },
         considering: { text: '検討中', cls: 'sg-roadmap-badge--considering' },
         sync_lane: { text: 'Sync', cls: 'sg-roadmap-badge--sync' },
-        out_of_scope: { text: '対象外', cls: 'sg-roadmap-badge--out' }
+        out_of_scope: { text: '対象外', cls: 'sg-roadmap-badge--out' },
+        done: { text: '反映済み', cls: 'sg-roadmap-badge--done' }
     };
 
     function roadmapUrl() {
@@ -160,7 +161,7 @@
                 : lane.id === 'sync'
                     ? '<p class="text-sm text-slate-600 mb-4">工事・制作の工程表は <strong>sync.sugudasu.com</strong> の別ラインです。店舗の勤務表（シフト）とは別物です。</p>'
                     : lane.id === 'core'
-                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。反映済みは <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ。</p>'
+                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。<strong>反映済み</strong>は公開済みです。詳細は <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ。</p>'
                         : '';
             return `
                 <section aria-labelledby="roadmap-lane-${esc(lane.id)}">

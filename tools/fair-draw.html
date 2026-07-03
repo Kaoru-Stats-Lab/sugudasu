@@ -170,7 +170,33 @@
 
             <div>
                 <label for="in-roster" class="block text-xs font-semibold text-slate-600 mb-1">参加者名簿（1行1名）</label>
-                <p class="text-[10px] text-slate-500 mb-2 leading-relaxed">SNS懸賞なら <code class="text-[10px]">@ユーザー名</code> を1行ずつ（表示名ではなくハンドル）。Xの返信から名簿を作る作業は<strong>本ツールの外</strong>（手動コピー or 別の応募管理ツール）。詳しくは下部FAQ。</p>
+                <p class="text-[10px] text-slate-500 mb-2 leading-relaxed">Connpass 等の CSV は下のゾーンにドロップ（<strong>表示名</strong>列を推奨）。SNS懸賞なら <code class="text-[10px]">@ユーザー名</code> を1行ずつ。Xの返信から名簿を作る作業は<strong>本ツールの外</strong>。詳しくは下部FAQ。</p>
+
+                <div id="fd-csv-panel" class="mb-3 space-y-2 rounded-xl border border-slate-200 bg-slate-50/80 p-3">
+                    <p class="text-[10px] font-semibold text-slate-600">CSV 取込（ブラウザ内のみ · 最大 5,000 行）</p>
+                    <div id="fd-csv-drop" class="fd-csv-drop border-2 border-dashed border-slate-300 rounded-lg bg-white px-3 py-6 text-center cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/40 transition-colors" tabindex="0" role="button" aria-label="CSVファイルを選択またはドロップ">
+                        <p class="text-xs font-semibold text-slate-700">CSV をドロップ、またはクリックして選択</p>
+                        <p class="text-[10px] text-slate-500 mt-1">UTF-8 優先 · 文字化け時は Shift-JIS を試してください</p>
+                    </div>
+                    <input type="file" id="fd-csv-file" accept=".csv,text/csv,text/plain" class="hidden">
+                    <div id="fd-csv-controls" class="hidden space-y-2">
+                        <p id="fd-csv-file-label" class="text-[10px] font-mono text-slate-600 truncate"></p>
+                        <div class="flex flex-wrap gap-3 items-end">
+                            <div class="min-w-[10rem] flex-1">
+                                <label for="fd-csv-column" class="block text-[10px] font-semibold text-slate-600 mb-1">抽選に使う列</label>
+                                <select id="fd-csv-column" class="sg-input text-xs w-full"></select>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] text-slate-700 cursor-pointer pb-1">
+                                <input type="checkbox" id="fd-csv-sjis" class="rounded border-slate-300">
+                                Shift-JIS で読む
+                            </label>
+                            <button type="button" id="btn-fd-csv-apply" class="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-lg">名簿に反映</button>
+                        </div>
+                        <p id="fd-csv-preview" class="text-[10px] text-slate-500"></p>
+                    </div>
+                    <p id="fd-csv-warn" class="hidden text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1.5" role="status"></p>
+                </div>
+
                 <textarea id="in-roster" rows="10" class="sg-input text-sm font-mono" placeholder="@user_a&#10;@user_b&#10;山田太郎&#10;…"></textarea>
                 <div id="roster-count-panel" class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center mt-2" aria-live="polite">
                     <p class="text-[10px] font-bold text-slate-600 tracking-wide">名簿（有効行数）</p>
@@ -500,6 +526,15 @@ import {
 import { copyWithFeedback } from '../assets/sg-copy-feedback.js';
 import { mountCopyDisclosure } from '../assets/sg-copy-disclosure.js';
 import { validateFields, bindFieldErrorClear } from '../assets/sg-form-validate.js';
+import {
+  DEFAULT_ROW_LIMIT,
+  extractColumnLines,
+  guessDrawColumnIndex,
+  isEmailColumnHeader,
+  looksLikeMojibake,
+  parseCsvText,
+  readFileText,
+} from '../assets/sg-csv-import.js';
 
 mountCopyDisclosure(document.getElementById('result-actions'), 'fair-draw');
 mountCopyDisclosure(document.getElementById('draw-actions'), 'fair-draw');
@@ -523,6 +558,11 @@ let lastDraw = null;
 let lastDrawRosterKey = null;
 let selectedFormatId = null;
 let selectedCategoryId = null;
+/** @type {{ file: File | null, parsed: import('../assets/sg-csv-import.js').ParsedCsvTable | null, encoding: 'utf-8' | 'shift-jis' }} */
+let csvImportState = { file: null, parsed: null, encoding: 'utf-8' };
+/** @type {{ sourceFileName: string, selectedColumn: string, rowCount: number } | null} */
+let rosterImportMeta = null;
+let lastCsvAppliedKey = null;
 
 function currentAudience() {
   const f = metaData?.campaignFormats.find((x) => x.id === selectedFormatId);
@@ -650,6 +690,9 @@ function updateRosterCountUI() {
       const parts = [`貼付 ${raw} 行`, `有効 ${effective} 行`];
       if (empty) parts.push(`空行 ${empty}`);
       if (duplicates) parts.push(`重複 ${duplicates}`);
+      if (rosterImportMeta?.sourceFileName) {
+        parts.push(`CSV: ${rosterImportMeta.sourceFileName}`);
+      }
       parts.push('Excel と突合してください');
       hintEl.textContent = parts.join(' · ');
     }
@@ -660,7 +703,153 @@ function updateRosterCountUI() {
     panel.classList.toggle('border-slate-200', !(effective === 0 && raw > 0));
     panel.classList.toggle('bg-slate-50', !(effective === 0 && raw > 0));
   }
+  if (lastCsvAppliedKey && rosterContentKey() !== lastCsvAppliedKey) {
+    rosterImportMeta = null;
+    lastCsvAppliedKey = null;
+  }
   updateDrawModeBanner();
+}
+
+function showCsvWarn(message) {
+  const el = document.getElementById('fd-csv-warn');
+  if (!el) return;
+  if (!message) {
+    el.classList.add('hidden');
+    el.textContent = '';
+    return;
+  }
+  el.textContent = message;
+  el.classList.remove('hidden');
+}
+
+function populateCsvColumnSelect(parsed) {
+  const sel = document.getElementById('fd-csv-column');
+  if (!sel) return;
+  sel.innerHTML = parsed.headers
+    .map((h, i) => {
+      const emailNote = isEmailColumnHeader(h) ? ' — 投影非推奨' : '';
+      return `<option value="${i}">${escapeHtml(h)}${emailNote}</option>`;
+    })
+    .join('');
+  sel.value = String(guessDrawColumnIndex(parsed.headers));
+  updateCsvColumnWarn();
+}
+
+function updateCsvColumnWarn() {
+  const sel = document.getElementById('fd-csv-column');
+  if (!sel || !csvImportState.parsed) {
+    showCsvWarn('');
+    return;
+  }
+  const idx = Number(sel.value);
+  const header = csvImportState.parsed.headers[idx] || '';
+  const { lines, truncated, sourceCount } = extractColumnLines(csvImportState.parsed, idx, DEFAULT_ROW_LIMIT);
+  const preview = document.getElementById('fd-csv-preview');
+  if (preview) {
+    const sample = lines.slice(0, 3).join(' · ') || '（空）';
+    preview.textContent = `有効 ${lines.length} 行${truncated ? `（元 ${sourceCount} 行 · 上限 ${DEFAULT_ROW_LIMIT}）` : ''} — 先頭: ${sample}`;
+  }
+  const warns = [];
+  if (isEmailColumnHeader(header)) {
+    warns.push('メールアドレス列はプロジェクター投影で個人情報が漏れる恐れがあります。表示名・ユーザー名を推奨します。');
+  }
+  if (truncated) {
+    warns.push(`行数が上限 ${DEFAULT_ROW_LIMIT} を超えたため切り詰めます。`);
+  }
+  showCsvWarn(warns.join(' '));
+}
+
+async function loadCsvFile(file) {
+  if (!file) return;
+  const encoding = document.getElementById('fd-csv-sjis')?.checked ? 'shift-jis' : 'utf-8';
+  let text;
+  try {
+    text = await readFileText(file, encoding);
+  } catch {
+    alert('ファイルの読み込みに失敗しました。');
+    return;
+  }
+  if (encoding === 'utf-8' && looksLikeMojibake(text)) {
+    showCsvWarn('文字化けの可能性があります。「Shift-JIS で読む」にチェックを入れて再度ファイルを選んでください。');
+  }
+  const parsed = parseCsvText(text);
+  if (!parsed.rows.length) {
+    alert('CSV からデータ行を読み取れませんでした。形式を確認してください。');
+    return;
+  }
+  csvImportState = { file, parsed, encoding };
+  document.getElementById('fd-csv-controls')?.classList.remove('hidden');
+  const label = document.getElementById('fd-csv-file-label');
+  if (label) label.textContent = `${file.name} · ${parsed.rows.length} 行 · ${parsed.headers.length} 列`;
+  populateCsvColumnSelect(parsed);
+}
+
+function applyCsvToRoster() {
+  if (!csvImportState.parsed || !csvImportState.file) {
+    alert('先に CSV を読み込んでください。');
+    return;
+  }
+  const idx = Number(document.getElementById('fd-csv-column')?.value || 0);
+  const header = csvImportState.parsed.headers[idx] || `列${idx + 1}`;
+  const { lines, truncated } = extractColumnLines(csvImportState.parsed, idx, DEFAULT_ROW_LIMIT);
+  if (!lines.length) {
+    alert('選択した列に有効な値がありません。別の列を選んでください。');
+    return;
+  }
+  const rosterEl = document.getElementById('in-roster');
+  rosterEl.value = lines.join('\n');
+  rosterImportMeta = {
+    sourceFileName: csvImportState.file.name,
+    selectedColumn: header,
+    rowCount: lines.length,
+  };
+  lastCsvAppliedKey = rosterContentKey();
+  lastDraw = null;
+  updateRosterCountUI();
+  if (truncated) {
+    showCsvWarn(`名簿に ${lines.length} 行を反映しました（上限 ${DEFAULT_ROW_LIMIT} で切り詰め）。`);
+  } else {
+    showCsvWarn(`名簿に ${lines.length} 行を反映しました。`);
+  }
+}
+
+function initCsvDropZone() {
+  const drop = document.getElementById('fd-csv-drop');
+  const input = document.getElementById('fd-csv-file');
+  if (!drop || !input) return;
+
+  const openPicker = () => input.click();
+  drop.addEventListener('click', openPicker);
+  drop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPicker();
+    }
+  });
+  input.addEventListener('change', () => {
+    const file = input.files?.[0];
+    if (file) loadCsvFile(file);
+    input.value = '';
+  });
+  drop.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    drop.classList.add('border-emerald-400', 'bg-emerald-50/60');
+  });
+  drop.addEventListener('dragleave', () => {
+    drop.classList.remove('border-emerald-400', 'bg-emerald-50/60');
+  });
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.classList.remove('border-emerald-400', 'bg-emerald-50/60');
+    const file = e.dataTransfer?.files?.[0];
+    if (file) loadCsvFile(file);
+  });
+
+  document.getElementById('fd-csv-column')?.addEventListener('change', updateCsvColumnWarn);
+  document.getElementById('fd-csv-sjis')?.addEventListener('change', () => {
+    if (csvImportState.file) loadCsvFile(csvImportState.file);
+  });
+  document.getElementById('btn-fd-csv-apply')?.addEventListener('click', applyCsvToRoster);
 }
 
 const DEFAULT_BANDS = [
@@ -778,6 +967,12 @@ async function executeFairDrawFromForm() {
   audited.conductedBy = getDrawOperatorName();
   audited.campaignLabel = getDrawCampaignLabel();
   audited.rosterSnapshot = lines.join('\n') + '\n';
+  if (rosterImportMeta) {
+    audited.rosterSource = 'csv';
+    audited.sourceFileName = rosterImportMeta.sourceFileName;
+    audited.selectedColumn = rosterImportMeta.selectedColumn;
+    audited.csvRowCount = rosterImportMeta.rowCount;
+  }
   return audited;
 }
 
@@ -797,6 +992,7 @@ function buildRosterSnapshotFileContent(draw) {
     `# 名簿指紋 SHA-256: ${draw.rosterSha256 || ''}`,
     `# シード: ${draw.seedHex || ''}`,
     `# 有効行: ${draw.rosterCount ?? ''}（重複行含む）`,
+    draw.sourceFileName ? `# CSV: ${draw.sourceFileName} · 列: ${draw.selectedColumn || ''}` : '',
     '# ---',
     '',
   ].join('\n');
@@ -997,8 +1193,12 @@ function bindDrawOpsCopyHandlers(draw) {
   bind('btn-copy-winners-slack', () => formatDrawSlackText(draw), '連絡文');
 }
 
-function renderDrawAuditPlainInner() {
+function renderDrawAuditPlainInner(draw) {
+  const csvNote = draw?.sourceFileName
+    ? `<p><strong>名簿の取込:</strong> CSV「${escapeHtml(draw.sourceFileName)}」の列「${escapeHtml(draw.selectedColumn || '')}」から ${draw.csvRowCount ?? draw.rosterCount ?? ''} 行を投影しました。</p>`
+    : '';
   return `
+      ${csvNote}
       <p><strong>やり方:</strong> ${DRAW_ALGORITHM.plain}</p>
       <p><strong>確定のしかた:</strong> 抽選は1回だけ実行し、結果と記録をPDFに残します（Excelの再計算のように当選が勝手に変わることはありません）。</p>
       <p><strong>記録番号（シード）:</strong> 今回の抽選の記録。同じ名簿・同じ記録番号なら同じ結果になります。</p>
@@ -1376,6 +1576,7 @@ function renderAuditPrint() {
         <tr><td class="border p-1">記録番号（シード hex）</td><td class="border p-1 font-mono text-[10px] break-all">${p.phase1.seedHex}</td></tr>
         <tr><td class="border p-1">名簿の指紋（SHA-256）</td><td class="border p-1 font-mono text-[10px] break-all">${p.phase1.rosterSha256}</td></tr>
         <tr><td class="border p-1">参加者数</td><td class="border p-1">${p.phase1.rosterCount}名</td></tr>
+        ${p.phase1.sourceFileName ? `<tr><td class="border p-1">名簿CSV</td><td class="border p-1">${p.phase1.sourceFileName} · 列「${p.phase1.selectedColumn || ''}」</td></tr>` : ''}
         <tr><td class="border p-1">当選者（全体）</td><td class="border p-1 font-bold">${p.phase1.winners.join('、')}</td></tr>
       </table>
     `;
@@ -1602,6 +1803,7 @@ document.getElementById('btn-add-band')?.addEventListener('click', () => {
   updateBandTotalCount();
 });
 initBandRows();
+initCsvDropZone();
 syncDrawPrizeModePanels();
 
 bindFieldErrorClear(document.getElementById('in-prize-name'));

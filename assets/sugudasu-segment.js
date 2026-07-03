@@ -112,6 +112,13 @@
 
     return {
       select,
+      deselect() {
+        current = '';
+        segment.querySelectorAll('.sg-segment__btn').forEach((btn) => {
+          btn.setAttribute('aria-selected', 'false');
+        });
+        syncPill(segment);
+      },
       syncPill: () => syncPill(segment),
       getValue: () => current,
     };

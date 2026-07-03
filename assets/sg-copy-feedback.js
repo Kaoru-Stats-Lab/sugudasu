@@ -41,7 +41,6 @@ export function syncCopyGate(cfg) {
   const { gateEl, checkEl, copyBtn, inputLines, outputLines } = cfg;
   const mismatch = inputLines !== outputLines;
   if (gateEl) gateEl.classList.toggle('hidden', !mismatch);
-  if (mismatch && checkEl) checkEl.checked = false;
   if (copyBtn) {
     if (inputLines === 0) copyBtn.disabled = true;
     else if (mismatch) copyBtn.disabled = !(checkEl && checkEl.checked);
@@ -113,9 +112,6 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
  * @param {{ computeOutput: () => string | null | undefined, buttonEl: HTMLElement | null, toastEl?: HTMLElement | null, gate?: { gateEl, checkEl, getInputLines, getOutputLines }, showFilterReminder?: boolean, toastPrefix?: string }} cfg
  */
 export async function copyLatestTransform(cfg) {
-  const output = cfg.computeOutput();
-  if (!output) throw new Error('empty');
-
   if (cfg.gate) {
     const inLines = cfg.gate.getInputLines();
     const outLines = cfg.gate.getOutputLines();
@@ -124,6 +120,9 @@ export async function copyLatestTransform(cfg) {
       throw new Error('gate');
     }
   }
+
+  const output = cfg.computeOutput();
+  if (!output) throw new Error('empty');
 
   return copyWithFeedback(output, cfg.buttonEl, {
     toastEl: cfg.toastEl,

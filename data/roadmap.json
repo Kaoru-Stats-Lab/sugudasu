@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-07-03",
+  "updatedAt": "2026-07-04",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
     "considering": "検討中 — フィードバックが多いほど優先度が上がります",
     "sync_lane": "Sync ライン — sync.sugudasu.com 側の別プロダクト",
-    "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）"
+    "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）",
+    "done": "反映済み — 公開済み（詳細は更新履歴）"
   },
   "lanes": [
     { "id": "core", "label": "予定 · 検討中（sugudasu.com）" },
@@ -47,6 +48,78 @@
       "toolHref": "shift.html",
       "title": "beta 品質担保（公平性 · 改ページ · FIX）",
       "summary": "自動生成の偏り・印刷改ページ・確定ロック周りの仕上げ。v2 と並行または直前。"
+    },
+    {
+      "id": "normalize-line-ops",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 4,
+      "toolId": "normalize",
+      "toolLabel": "全角半角",
+      "toolHref": "normalize.html",
+      "title": "行ソート · 重複削除 · 行フィルタ",
+      "summary": "1列リストの並び替え・重複除去・含む/含まない抽出。非送信 · 完全一致デフォルト。",
+      "askFeedback": "ソートは文字列順と数値順、どちらをよく使いますか？"
+    },
+    {
+      "id": "fair-draw-connpass-csv",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 5,
+      "toolId": "fair-draw",
+      "toolLabel": "抽選",
+      "toolHref": "fair-draw.html",
+      "title": "Connpass CSV 取込 · 列選択",
+      "summary": "参加者 CSV を D&D で読み込み、表示名列で公平抽選。既存の監査 PDF/JSON を拡張。",
+      "askFeedback": "Connpass 以外のイベント CSV 列名の例があれば教えてください。"
+    },
+    {
+      "id": "table-conv-mvp",
+      "lane": "core",
+      "status": "done",
+      "priority": 6,
+      "toolId": "table-conv",
+      "toolLabel": "表変換",
+      "toolHref": "table-conv.html",
+      "title": "表データ相互コンバータ（Shift-JIS · Markdown）",
+      "summary": "反映済み（v1.0.0 beta）。Excel 貼付/CSV → Markdown·JSON·TSV · 非送信。意図的にやらない領域は下記「対象外 › 表変換」を参照。",
+      "askFeedback": "Notion · Backlog · GitHub のどれに貼ることが多いですか？"
+    },
+    {
+      "id": "invoice-withholding",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 7,
+      "toolId": "invoice",
+      "toolLabel": "請求書",
+      "toolHref": "invoice.html",
+      "title": "源泉徴収 10.21% · 端数 · 累進",
+      "summary": "税抜/税込選択 · 100万円超 20.42% · 端数処理トグル。登録不要の検算用。",
+      "askFeedback": "取引先ごとに端数ルールが違う場合の運用例を歓迎します。"
+    },
+    {
+      "id": "invoice-mixed-tax",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 8,
+      "toolId": "invoice",
+      "toolLabel": "請求書",
+      "toolHref": "invoice.html",
+      "title": "内税 8% / 10% 混在分離",
+      "summary": "税込総額から軽減税率と標準税率を逆算。税率ごとに1回の端数処理。",
+      "askFeedback": "レシート1枚分の入力と、明細複数行のどちらが多いですか？"
+    },
+    {
+      "id": "time-calc-labor",
+      "lane": "core",
+      "status": "considering",
+      "priority": 9,
+      "toolId": "time-calc",
+      "toolLabel": "時間計算",
+      "toolHref": "time-calc.html",
+      "title": "労働時間 h:mm 合計 · 時給",
+      "summary": "タイムカード形式の合計と概算給与。24時間超えも累計表示。新規 id は次四半期枠。",
+      "askFeedback": "入力は `1:30` 形式と `90分` 形式、どちらが多いですか？"
     },
     {
       "id": "invoice-quality",
@@ -148,6 +221,42 @@
       "toolHref": "shift.html",
       "title": "労基法 · 36協定の自動適合判定",
       "summary": "配置のたたき台は作れますが、監査に耐える法令チェックは行いません。"
+    },
+    {
+      "id": "table-conv-md-dialects",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 4,
+      "toolId": "table-conv",
+      "toolLabel": "表変換",
+      "toolHref": "table-conv.html",
+      "title": "Markdown の方言 · リッチ表",
+      "summary": "Zenn の ::: ブロック · Qiita/Obsidian 固有記法などは、サービスごとに解釈が割れ貼り先で崩れるため入出力とも非対応。結合セル復元 · セル内箇条書き · 色・列幅もクリップボードに無く復元不能。出力は最小 GitHub 風 | col | のみ（TABLE_CONV_TOOL_SPEC §7）。",
+      "alternative": "各プラットフォームのネイティブ貼付"
+    },
+    {
+      "id": "table-conv-academic-api",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 5,
+      "toolId": "table-conv",
+      "toolLabel": "表変換",
+      "toolHref": "table-conv.html",
+      "title": "LaTeX · Mermaid · XML · PDF · API",
+      "summary": "論文 · README 図表 · 30形式超の変換はペルソナ外（総務 · Web 担当 · Notion 貼付が主戦場）。非送信・Shift-JIS · 最短ルートに集中するため、TableConvert 等の多機能領域は追わない。",
+      "alternative": "TableConvert · 論文は LaTeX 専用ツール"
+    },
+    {
+      "id": "table-conv-md-reverse",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 6,
+      "toolId": "table-conv",
+      "toolLabel": "表変換",
+      "toolHref": "table-conv.html",
+      "title": "Markdown 表の汎用逆変換（MD → TSV）",
+      "summary": "パイプ表でもエスケープ · 区切り行の揺れ · 方言混在で列ズレしやすい。Excel 往復は TSV タブ出力を Excel に貼れば足りる。需要は限定的で品質リスクが上回るため非対応（恒久 HOLD）。",
+      "alternative": "Excel 往復は表変換の TSV 出力を利用"
     }
   ]
 }

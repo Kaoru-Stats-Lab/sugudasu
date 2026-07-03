@@ -16,6 +16,7 @@
     { id: 'report', file: 'report.html', label: '議事録', icon: '📝' },
     { id: 'reverse', file: 'reverse.html', label: '逆引き', icon: '📖' },
     { id: 'normalize', file: 'normalize.html', label: '全角半角', icon: '🔤' },
+    { id: 'table-conv', file: 'table-conv.html', label: '表変換', icon: '📊' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },

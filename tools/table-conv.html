@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Excelの複数列コピー・CSVを送信せずMarkdown表・JSON・TSVに変換。Shift-JIS対応・5,000行まで。Notion・Backlog・GitHub向け。">
+    <title>ExcelをMarkdown表に — 表変換 · 非送信 | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="ExcelコピペをMarkdown表に — 外部送信ゼロ">
+    <meta property="og:description" content="社内規程で変換サイトNGでもOK。Excel貼付・Shift-JIS CSVをブラウザ内だけでMarkdown·JSON·TSVに。">
+    <meta property="og:url" content="https://sugudasu.com/table-conv">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="ExcelをMarkdown表に — 非送信の表変換">
+    <meta name="twitter:description" content="Excelコピペ・CSVを送信せずMarkdown·JSON·TSVに。Shift-JIS対応。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelやスプレッドシートの表をMarkdownに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"できます。ExcelやGoogleスプレッドシートで範囲をコピーするとタブ区切り（TSV）で貼り付けられるので、入力欄に貼って変換し、Markdownタブの結果をコピーしてください。Notion・Backlog・GitHubのドキュメント向けです。"}},{"@type":"Question","name":"CSVとJSONは相互に変換できますか？","acceptedAnswer":{"@type":"Answer","text":"Excel貼付やCSVファイルを入力に、JSON・CSV・TSV・Markdownを出力できます（片道）。同じ入力から出力タブを切り替えて形式を選べます。Markdown表の貼付からの逆変換はv1.1で検討中です。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込み・変換・コピーまですべてブラウザ内で完結します。当社サーバーへ表データを送りません。F12のNetworkタブで通信ゼロを確認できます。"}},{"@type":"Question","name":"Shift-JISのCSVが文字化けします","acceptedAnswer":{"@type":"Answer","text":"Shift-JIS（CSVファイル）をオンにしてからファイルを読み込んでください。UTF-8のBOM付きCSVは自動で扱います。①・㈱などCP932拡張文字はブラウザ依存で置換される場合があります。"}},{"@type":"Question","name":"TableConvertなど他の変換サイトとの違いは？","acceptedAnswer":{"@type":"Answer","text":"SUGUDASU表変換は社内規程で外部アップロードが禁止の現場向けに非送信を前面に出し、日本のShift-JIS CSVに対応しています。LaTeX・XML・PDF出力やスプレッドシート型エディタ・API連携はありません。1列リストは全角半角整えをご利用ください。"}},{"@type":"Question","name":"会員登録や課金は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"不要です。無料でブラウザからそのまま使えます。"}},{"@type":"Question","name":"1列だけのリストは使えますか？","acceptedAnswer":{"@type":"Answer","text":"2列以上の表向けです。1列だけならテキスト整形（全角半角整え）の方が向いています。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 表変換" data-sg-subtitle="5,000行まで · 外部送信ゼロ" data-sg-tool-id="table-conv"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <div class="flex flex-wrap items-center gap-2">
+            <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full m-0">外部送信ゼロ · Notion · Backlog · GitHub</p>
+            <button type="button" id="btn-network-badge" class="text-[11px] font-bold text-emerald-800 bg-white border border-emerald-300 inline-flex items-center gap-1 px-3 py-1 rounded-full hover:bg-emerald-50 cursor-pointer" title="DevToolsでの確認手順">
+                通信していません · DevToolsで確認
+            </button>
+        </div>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>Excel の複数列コピー / CSV</strong>を、サーバーに送らず <strong>Markdown 表 · JSON · CSV · TSV</strong> に変換します。
+            </p>
+            <p class="sg-tool-lead">
+                社内規程でオンライン変換サイトに貼れない表も、<strong>ブラウザ内だけ</strong>で処理。Shift-JIS の CSV も FileReader で端末内デコード。
+            </p>
+        </div>
+        <p class="sg-tool-lead sg-tool-lead--meta">
+            1列リストの整形は <a href="normalize.html">全角半角整え</a> · 請求書の内税分離は <a href="invoice.html">請求書</a> をご利用ください。
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+
+            <div id="tc-drop" class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-8 text-center cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-colors" tabindex="0" role="button" aria-label="CSVを選択">
+                <p class="text-sm font-semibold text-slate-700">CSV ファイルをドロップ / クリック</p>
+                <p class="text-[10px] text-slate-500 mt-1">最大 5,000 行 · 2MB 目安</p>
+            </div>
+            <input type="file" id="tc-file" accept=".csv,text/csv,text/plain" class="hidden">
+
+            <div>
+                <label for="tc-input" class="block text-xs font-semibold text-slate-600 mb-1">またはテキスト貼付（Excel コピー）</label>
+                <textarea id="tc-input" rows="10" class="sg-input text-xs font-mono" placeholder="Excel からコピーした表を貼り付け…"></textarea>
+            </div>
+
+            <div class="flex flex-wrap gap-4 text-xs">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" id="tc-header" class="rounded border-slate-300" checked>
+                    1行目をヘッダーとみなす
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" id="tc-sjis" class="rounded border-slate-300">
+                    Shift-JIS（CSVファイル）
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                    <input type="checkbox" id="tc-bom" class="rounded border-slate-300">
+                    CSV 出力に UTF-8 BOM
+                </label>
+            </div>
+
+            <button type="button" id="tc-convert" class="sg-btn-primary text-sm font-semibold px-4 py-2.5 rounded-lg w-full sm:w-auto">変換</button>
+            <p id="tc-meta" class="text-[10px] text-slate-500" aria-live="polite"></p>
+            <p id="tc-warn" class="hidden text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1.5" role="alert"></p>
+            <p id="tc-single" class="hidden text-[10px] text-indigo-800 bg-indigo-50 border border-indigo-200 rounded-lg px-2 py-1.5">1列のみ検出 — <a href="normalize.html" class="underline font-semibold">全角半角整え</a> の方が向いている場合があります。</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">結合セルは左上の値のみ · 数式は表示値のみ · セル内改行は Markdown で &lt;br&gt; に置換します。</p>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">出力</h2>
+            <div class="sg-segment sg-segment--cols-4" id="tc-out-segment" role="tablist" aria-label="出力形式">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="md" aria-selected="true">Markdown</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="json" aria-selected="false">JSON</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="csv" aria-selected="false">CSV</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="tsv" aria-selected="false">TSV</button>
+            </div>
+            <textarea id="tc-output" rows="14" class="sg-input text-xs font-mono bg-slate-50" readonly placeholder="変換結果がここに出ます"></textarea>
+            <button type="button" id="tc-copy" class="text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto">コピー</button>
+            <p id="tc-copy-toast" class="sg-copy-toast hidden" role="status"></p>
+        </section>
+    </div>
+
+    <section class="sg-card p-5 lg:p-6 space-y-2 max-w-3xl" id="tc-faq">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 mb-3">よくある質問</h2>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>Excel やスプレッドシートの表を Markdown に変換できますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>できます。Excel や Google スプレッドシートで範囲をコピーすると<strong>タブ区切り（TSV）</strong>で貼り付けられます。入力欄に貼って「変換」→ <strong>Markdown</strong> タブをコピーしてください。</p>
+                <p>出力は<strong>最小の GitHub 風 Markdown 表</strong>（<code class="text-[10px] bg-slate-100 px-1 rounded">| col |</code> + 区切り行）のみです。Zenn · Qiita · Notion 固有の拡張記法は<strong>出力しません</strong>。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>CSV と JSON は相互に変換できますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p><strong>Excel 貼付 / CSV ファイル</strong>を1回入力すれば、<strong>JSON · CSV · TSV · Markdown</strong> を出力タブで切り替えられます（同じ表から複数形式を取り出すイメージ）。</p>
+                <p>Markdown 表を貼って TSV に戻す<strong>逆変換</strong>は<strong>対応しません</strong>（列ズレ・方言混在のリスク）。Excel に戻すときは <strong>TSV</strong> タブの出力をそのまま貼り付けてください。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>データは外部に送信されますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>いいえ。読み込み · 変換 · コピーまですべて<strong>お使いのブラウザ内</strong>で完結します。機密の社内表でも、サーバーへアップロードされません。</p>
+                <p>自分で確認するには F12 → <strong>Network</strong> タブを開き、変換やコピー時にリクエストが出ないことを見てください（<a href="https://tableconvert.com/ja/about/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">TableConvert</a> も同様にブラウザ内処理を謳っていますが、当ツールは日本の Shift-JIS CSV と社内規程向けの非送信訴求に特化しています）。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>Shift-JIS の CSV が文字化けします</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>「<strong>Shift-JIS（CSVファイル）</strong>」をオンにしてから D&amp;D またはファイル選択で読み込んでください。</p>
+                <p>UTF-8 の BOM 付き CSV はそのまま読めます。Excel 向けに再出力するときは「<strong>CSV 出力に UTF-8 BOM</strong>」をオンにすると文字化けしにくくなります。</p>
+                <p>① · ㈱ など CP932 拡張文字はブラウザ依存で置換文字（）になる場合があります — 警告が出たら元データを確認してください。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>TableConvert など他サイトとの違いは？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p><a href="https://tableconvert.com/ja/about/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">TableConvert</a> は 30 以上の形式 · 表エディタ · API など多機能です。SUGUDASU 表変換は<strong>社内規程で外部変換サイト NG</strong>の現場向けに、</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>非送信 · DevTools で確認可能</li>
+                    <li><strong>Shift-JIS CSV</strong>（日本の実務データ）</li>
+                    <li>Excel 貼付 → MD / JSON / CSV / TSV の<strong>最短ルート</strong></li>
+                </ul>
+                <p>に絞っています。LaTeX · XML · PDF 画像出力 · 会員 API はありません。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>変換結果を続けて別の形式に変換できますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>同じ入力からは出力タブ（Markdown / JSON / CSV / TSV）を切り替えるだけで OK です。</p>
+                <p>出力を入力に戻して再変換する場合は、出力欄をコピーして入力欄に貼り直してください（NOVEBLO の「→入力へ」に相当する操作。専用ボタンは今後検討）。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>1列だけのリスト・名簿は使えますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600">
+                <p>2列以上の<strong>表</strong>向けです。縦1列の名簿 · ソート · 重複削除は <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> をご利用ください。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>会員登録・課金・オフラインは？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>会員登録も課金も<strong>不要</strong>です。一度ページを読み込めばオフラインでも変換できます（静的 HTML + ブラウザ内 JS）。データの永続保存はしません。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq">
+            <summary class="sg-notion-toggle__summary"><span>結合セル・数式・色は再現されますか？</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+                <p>いいえ。クリップボードの<strong>表示値</strong>だけを扱います。結合セルは左上の値のみ、セル内改行は Markdown で <code class="text-[10px] bg-slate-100 px-1 rounded">&lt;br&gt;</code> に置換します。書式・数式の復元はしません。</p>
+            </div>
+        </details>
+
+        <details class="sg-faq" open>
+            <summary class="sg-notion-toggle__summary"><span>対応しないこと（意図的にやらない理由）</span></summary>
+            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-3">
+                <p>本ツールは<strong>表データの運搬</strong>（Excel/CSV → 素朴な Markdown·JSON·TSV）に絞っています。次は<strong>対応しません</strong>。</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Markdown の方言</strong>（Zenn の <code class="text-[10px] bg-slate-100 px-1 rounded">:::</code> ブロック · Qiita/Obsidian 固有記法など）— サービスごとに解釈が違い、変換しても貼り先で崩れる。サポート範囲が説明不能になり、混乱だけが増えるため。</li>
+                    <li><strong>LaTeX · Mermaid · XML · PDF 出力</strong> — 論文・README 図表向け。当ツールのペルソナ（総務 · Web 担当 · Notion 貼付）の Pain ではないため。</li>
+                    <li><strong>リッチ表</strong>（結合セル復元 · セル内箇条書き · 色・列幅）— クリップボードに載らない情報は復元できない。出力は GitHub 風の <code class="text-[10px] bg-slate-100 px-1 rounded">| col |</code> 最小形式のみ。</li>
+                    <li><strong>Markdown 表の汎用逆変換</strong>（MD 貼付 → TSV）— パイプ表でもエスケープ・区切り行の揺れ・方言混在で列ズレしやすい。v1 は非対応（Excel 往復は<strong>TSV タブ出力を Excel に貼る</strong>で足りる）。</li>
+                    <li><strong>表エディタ · API · 30形式超</strong> — <a href="https://tableconvert.com/ja/about/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">TableConvert</a> 等の領域。非送信・Shift-JIS · 最短ルートに集中するため。</li>
+                </ul>
+                <p class="text-slate-500">参考: Markdown の方言乱立 — <a href="https://zenn.dev/plusone/articles/efca636ae75404" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Zenn（plusone）</a>。当ツールは<strong>方言に寄せず、壊れにくい最小表だけ</strong>を出します。一覧は <a href="roadmap.html#table-conv-md-dialects" class="text-blue-600 hover:underline">開発ロードマップ（対象外）</a> も参照してください。</p>
+            </div>
+        </details>
+
+        <p class="text-[10px] text-slate-500 leading-relaxed pt-2 border-t border-slate-100">本ツールは一般的な表変換例を提供するものです。税務・会計データの正確性は保証しません。要専門家確認。</p>
+    </section>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-segment.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  assessTableLimits,
+  parseInputTable,
+  scanEncodingIssues,
+  toCsvText,
+  toJsonArray,
+  toMarkdownTable,
+  toTsvText,
+  ROW_LIMIT,
+  SIZE_LIMIT_BYTES,
+} from '../assets/table-conv.js';
+import { readFileText } from '../assets/sg-csv-import.js';
+import { copyWithFeedback } from '../assets/sg-copy-feedback.js';
+
+let lastTable = null;
+let outMode = 'md';
+
+document.getElementById('btn-network-badge')?.addEventListener('click', () => {
+  alert('F12 → Network タブを開き、変換・コピー操作時にリクエストが発生しないことを確認できます。');
+});
+
+function renderOutput() {
+  const out = document.getElementById('tc-output');
+  if (!lastTable || !out) {
+    if (out) out.value = '';
+    return;
+  }
+  const bom = document.getElementById('tc-bom')?.checked;
+  const map = {
+    md: () => toMarkdownTable(lastTable),
+    json: () => toJsonArray(lastTable),
+    csv: () => toCsvText(lastTable, bom),
+    tsv: () => toTsvText(lastTable),
+  };
+  out.value = (map[outMode] || map.md)();
+}
+
+function showWarn(msg) {
+  const el = document.getElementById('tc-warn');
+  if (!el) return;
+  if (!msg) { el.classList.add('hidden'); el.textContent = ''; return; }
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+function runConvert(text) {
+  const hasHeader = document.getElementById('tc-header')?.checked !== false;
+  const enc = scanEncodingIssues(text);
+  lastTable = parseInputTable(text, { hasHeader });
+  const limits = assessTableLimits(lastTable);
+  const meta = document.getElementById('tc-meta');
+  if (meta) {
+    meta.textContent = `入力 ${limits.rowCount} 行 · ${limits.columnCount} 列`;
+  }
+  document.getElementById('tc-single')?.classList.toggle('hidden', !lastTable.singleColumn);
+  const warns = [];
+  if (enc.hasIssue) warns.push(enc.message);
+  if (limits.overRowLimit) warns.push(`行数が目安上限 ${ROW_LIMIT} を超えています。`);
+  if (lastTable.skippedRowNumbers?.length) {
+    warns.push(`不正な行を ${lastTable.skippedRowNumbers.length} 行スキップしました。`);
+  }
+  showWarn(warns.join(' '));
+  renderOutput();
+}
+
+document.getElementById('tc-convert')?.addEventListener('click', () => {
+  runConvert(document.getElementById('tc-input')?.value || '');
+});
+
+document.getElementById('tc-input')?.addEventListener('paste', () => {
+  setTimeout(() => runConvert(document.getElementById('tc-input')?.value || ''), 0);
+});
+
+async function loadFile(file) {
+  if (!file) return;
+  if (file.size > SIZE_LIMIT_BYTES) {
+    showWarn(`ファイルが ${Math.round(SIZE_LIMIT_BYTES / 1024 / 1024)}MB を超えています。`);
+    return;
+  }
+  const enc = document.getElementById('tc-sjis')?.checked ? 'shift-jis' : 'utf-8';
+  const text = await readFileText(file, enc);
+  document.getElementById('tc-input').value = text;
+  runConvert(text);
+}
+
+const drop = document.getElementById('tc-drop');
+const fileInput = document.getElementById('tc-file');
+drop?.addEventListener('click', () => fileInput?.click());
+drop?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput?.click(); }
+});
+drop?.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('border-sky-400'); });
+drop?.addEventListener('dragleave', () => drop.classList.remove('border-sky-400'));
+drop?.addEventListener('drop', (e) => {
+  e.preventDefault();
+  drop.classList.remove('border-sky-400');
+  const f = e.dataTransfer?.files?.[0];
+  if (f) loadFile(f);
+});
+fileInput?.addEventListener('change', () => {
+  const f = fileInput.files?.[0];
+  if (f) loadFile(f);
+  fileInput.value = '';
+});
+
+SUGUDASU_SEGMENT.mount({
+  segmentId: 'tc-out-segment',
+  order: ['md', 'json', 'csv', 'tsv'],
+  initial: 'md',
+  onChange(value) {
+    outMode = value;
+    renderOutput();
+  },
+});
+
+document.getElementById('tc-bom')?.addEventListener('change', renderOutput);
+document.getElementById('tc-header')?.addEventListener('change', () => {
+  runConvert(document.getElementById('tc-input')?.value || '');
+});
+
+document.getElementById('tc-copy')?.addEventListener('click', async (e) => {
+  const text = document.getElementById('tc-output')?.value || '';
+  if (!text) return;
+  await copyWithFeedback(text, e.currentTarget, {
+    toastEl: document.getElementById('tc-copy-toast'),
+    toastPrefix: '出力',
+    lineCount: text.split('\n').length,
+  });
+});
+</script>
+</body>
+</html>

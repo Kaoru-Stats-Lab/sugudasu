@@ -39,7 +39,7 @@
             <strong>これから入れる機能</strong>は <a href="roadmap.html">開発ロードマップ</a>、設計思想は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> です。
         </p>
         <p class="text-xs text-slate-500 leading-relaxed sg-info-prose">
-            掲載粒度は<strong>ユーザーが体感する変更単位</strong>です。CSS クラス名や内部ファイル名は載せません。
+            掲載粒度は<strong>ユーザーが体感する変更単位</strong>です。開発台帳の詳細（CSS クラス名・ファイル名など）は公開しません。
         </p>
         <p id="changelog-updated" class="sg-info-caption"></p>
     </header>
@@ -124,21 +124,61 @@
     const CONTACT_EMAIL = 'banzai.millionaire@gmail.com';
     const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform';
     const TYPE_LABELS = {
+        feat: { text: '新機能', cls: 'sg-changelog-badge--feature' },
         feature: { text: '新機能', cls: 'sg-changelog-badge--feature' },
         fix: { text: '修正', cls: 'sg-changelog-badge--fix' },
         improve: { text: '改善', cls: 'sg-changelog-badge--improve' }
     };
 
-    function changelogUrl() {
+    function resolveBadge(type) {
+        const key = type === 'feat' ? 'feature' : type;
+        return TYPE_LABELS[key] || TYPE_LABELS.improve;
+    }
+
+    function isPublicEntry(entry) {
+        return entry.audience !== 'internal';
+    }
+
+    function dataUrl(relativePath) {
         const link = document.querySelector('link[href*="sugudasu.css"]');
         if (link && link.getAttribute('href')) {
             const href = link.getAttribute('href');
             if (href.includes('/assets/')) {
-                return href.replace(/assets\/sugudasu\.css.*$/, 'data/changelog.json');
+                return href.replace(/assets\/sugudasu\.css.*$/, relativePath);
             }
-            return href.replace(/sugudasu\.css.*$/, '../data/changelog.json');
+            return href.replace(/sugudasu\.css.*$/, relativePath);
         }
-        return '../data/changelog.json';
+        return `../${relativePath}`;
+    }
+
+    function changelogUrl() {
+        return dataUrl('data/changelog.json');
+    }
+
+    function registryUrl() {
+        return dataUrl('data/tool-registry.json');
+    }
+
+    function toolHref(id) {
+        if (!id || id.includes('.') || id.includes('/')) return null;
+        return `${id}.html`;
+    }
+
+    function toolLabel(id, registry) {
+        const meta = registry && registry.tools && registry.tools[id];
+        if (meta && meta.conceptName) return meta.conceptName;
+        return id.replace('.html', '');
+    }
+
+    function renderToolLinks(entry, registry) {
+        const tools = (entry.tools || []).filter(t => toolHref(t));
+        if (!tools.length) return '';
+        const links = tools.map(t => {
+            const href = toolHref(t);
+            const label = escHtml(toolLabel(t, registry));
+            return `<a href="${escHtml(href)}" class="text-blue-600 hover:underline">${label}</a>`;
+        }).join(' · ');
+        return `<p class="sg-changelog-tools">${links}</p>`;
     }
 
     function formatDateJa(iso) {
@@ -199,10 +239,12 @@
         }
     }
 
-    function renderChangelog(data) {
+    function renderChangelog(data, registry) {
         const list = document.getElementById('changelog-list');
         const updated = document.getElementById('changelog-updated');
-        if (!data || !data.entries || !data.entries.length) {
+        const entries = (data && data.entries ? data.entries : []).filter(isPublicEntry);
+
+        if (!entries.length) {
             list.innerHTML = '<p class="sg-info-caption text-center py-6">履歴はまだありません。</p>';
             return;
         }
@@ -211,11 +253,9 @@
             updated.textContent = `最終更新: ${formatDateJa(data.updatedAt)}`;
         }
 
-        list.innerHTML = data.entries.map(entry => {
-            const badge = TYPE_LABELS[entry.type] || TYPE_LABELS.improve;
-            const tools = (entry.tools || []).length
-                ? `<p class="sg-changelog-tools">${entry.tools.map(t => `<a href="${escHtml(t)}" class="text-blue-600 hover:underline">${escHtml(t.replace('.html', ''))}</a>`).join(' · ')}</p>`
-                : '';
+        list.innerHTML = entries.map(entry => {
+            const badge = resolveBadge(entry.type);
+            const tools = renderToolLinks(entry, registry);
 
             const whenBlock = entry.whenToUse
                 ? `<p class="sg-changelog-when"><span class="sg-changelog-label">こんなとき</span>${escHtml(entry.whenToUse)}</p>`
@@ -242,10 +282,14 @@
     async function loadChangelog() {
         const list = document.getElementById('changelog-list');
         try {
-            const res = await fetch(changelogUrl(), { cache: 'no-cache' });
-            if (!res.ok) throw new Error('fetch failed');
-            const data = await res.json();
-            renderChangelog(data);
+            const [changelogRes, registryRes] = await Promise.all([
+                fetch(changelogUrl(), { cache: 'no-cache' }),
+                fetch(registryUrl(), { cache: 'no-cache' }),
+            ]);
+            if (!changelogRes.ok) throw new Error('changelog fetch failed');
+            const data = await changelogRes.json();
+            const registry = registryRes.ok ? await registryRes.json() : null;
+            renderChangelog(data, registry);
         } catch {
             list.innerHTML = '<p class="sg-info-caption text-rose-600 text-center py-6">更新履歴の読み込みに失敗しました。しばらくしてから再読み込みしてください。</p>';
         }

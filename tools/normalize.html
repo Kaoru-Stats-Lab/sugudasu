@@ -27,7 +27,12 @@
 <main class="sg-main-shell flex-1 space-y-6">
 
     <header class="sg-tool-intro space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">外部送信ゼロ · 事務 · EC登録</p>
+        <div class="flex flex-wrap items-center gap-2">
+            <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full m-0">外部送信ゼロ · 事務 · EC登録</p>
+            <button type="button" id="btn-network-badge" class="text-[11px] font-bold text-emerald-800 bg-white border border-emerald-300 inline-flex items-center gap-1 px-3 py-1 rounded-full hover:bg-emerald-50 cursor-pointer" title="DevToolsでの確認手順">
+                通信していません · DevToolsで確認
+            </button>
+        </div>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
                 <strong>社内規程で無料の全角半角サイトに名簿を貼れない</strong> — 手打ちや Excel 関数地獄を、<strong>貼付 → 用途ボタン → コピー</strong>でここで終わらせます。
@@ -38,7 +43,7 @@
         </div>
         <p class="sg-tool-lead sg-tool-lead--meta">
             社員マスタのダミーCSVは <a href="test-data.html">テストデータ</a> から「全角半角整えで開く」でも渡せます。
-            手順の読み物は <a href="guides/office-roster-normalize.html">実務ガイド（都内総務OL編）</a> · 班分け前の名簿は <a href="group-split.html">班分け</a> へ。
+            手順の読み物は <a href="guides/office-roster-normalize.html">実務ガイド（都内総務OL編）</a> · 班分け前の名簿は <a href="group-split.html">班分け</a> · 複数列の表は <a href="table-conv.html">表変換</a> へ。
         </p>
     </header>
 
@@ -67,9 +72,82 @@
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="fullwidth_ascii" aria-selected="false">全角英数</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="comma_join" aria-selected="false">改行→カンマ</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="sql_in" aria-selected="false">SQL IN</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="tab_to_comma" aria-selected="false">タブ→カンマ</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="name_trim" aria-selected="false">姓名スペース</button>
             </div>
+            <details class="border border-violet-200 rounded-lg bg-violet-50/40" id="mask-preset-panel">
+                <summary class="cursor-pointer select-none text-xs font-bold text-violet-900 px-3 py-2">伏字（メール · 電話 · 氏名）</summary>
+                <div class="px-3 pb-3 space-y-2 border-t border-violet-100 pt-2">
+                    <p class="text-[11px] text-violet-900/80 leading-relaxed">リストの個人情報を伏字にします。複数選べます（用途プリセットと併用可）。<strong>行数は変わりません。</strong> スクショの黒塗りは <a href="mask.html" class="font-semibold underline">マスク</a> を使ってください。</p>
+                    <div class="space-y-2 rounded-lg border border-violet-100 bg-white/80 p-2 text-xs">
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-violet-950">
+                            <input type="checkbox" id="mask-op-email"> メールを伏字
+                        </label>
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-violet-950">
+                            <input type="checkbox" id="mask-op-phone"> 電話を伏字
+                        </label>
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-violet-950">
+                            <input type="checkbox" id="mask-op-name"> 氏名を伏字
+                        </label>
+                    </div>
+                    <p class="text-[11px] text-violet-900/70 leading-relaxed" id="mask-preset-hint" role="note">チェックした種類だけ、行内の該当箇所に伏字を入れます。</p>
+                </div>
+            </details>
             <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
+
+            <details class="border border-slate-200 rounded-lg bg-white" id="line-ops-panel">
+                <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">行の整理（ソート · 重複削除 · フィルタ）</summary>
+                <div class="px-3 pb-3 space-y-3 text-xs border-t border-slate-100 pt-2">
+                    <p class="text-[11px] text-slate-500 leading-relaxed">用途プリセットと併用できます。有効にすると<strong>行数が変わる</strong>場合があります（フィルタ・重複削除・空行削除・形状変換）。</p>
+                    <div class="space-y-2 rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-slate-800">
+                            <input type="checkbox" id="line-op-trim"> 各行の前後空白を削除
+                        </label>
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-slate-800 pl-0">
+                            <input type="checkbox" id="line-op-remove-empty"> 空行を削除
+                        </label>
+                    </div>
+                    <div class="space-y-2 rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-slate-800">
+                            <input type="checkbox" id="line-op-sort"> 行を並び替え
+                        </label>
+                        <div class="flex flex-wrap items-center gap-2 pl-5">
+                            <select id="line-op-sort-dir" class="sg-input text-xs py-1 px-2 w-auto" disabled>
+                                <option value="asc">昇順（A→Z）</option>
+                                <option value="desc">降順（Z→A）</option>
+                            </select>
+                            <label class="flex items-center gap-1 text-slate-600">
+                                <input type="checkbox" id="line-op-sort-numeric" disabled> 数値として
+                            </label>
+                        </div>
+                    </div>
+                    <div class="space-y-2 rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-slate-800">
+                            <input type="checkbox" id="line-op-dedupe"> 重複行を削除
+                        </label>
+                        <label class="flex items-start gap-2 pl-5 text-slate-600">
+                            <input type="checkbox" id="line-op-dedupe-fuzzy" class="mt-0.5" disabled>
+                            <span>大文字小文字・全角半角を区別しない（完全一致のみがデフォルト）</span>
+                        </label>
+                    </div>
+                    <div class="space-y-2 rounded-lg border border-slate-100 bg-slate-50/80 p-2">
+                        <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-slate-800">
+                            <input type="checkbox" id="line-op-filter"> 特定の行を抽出・除外
+                        </label>
+                        <div class="pl-5 space-y-2">
+                            <input type="text" id="line-op-filter-keyword" class="sg-input text-xs w-full" placeholder="キーワード（部分一致）" disabled>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1 text-slate-600">
+                                    <input type="radio" name="line-op-filter-mode" value="include" checked disabled> 含む行だけ
+                                </label>
+                                <label class="flex items-center gap-1 text-slate-600">
+                                    <input type="radio" name="line-op-filter-mode" value="exclude" disabled> 含まない行だけ
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
 
             <button type="button" id="btn-transform" class="sg-btn-primary w-full sm:w-auto">▶ 変換（プレビュー更新）</button>
 
@@ -88,6 +166,9 @@
                     <span id="shape-badge" class="norm-shape-badge hidden">形状変換</span>
                 </div>
                 <div id="line-match" class="norm-verify-panel__count sg-line-match sg-line-match--ok" role="status"></div>
+                <p id="line-ops-banner" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
+                <p id="mask-banner" class="hidden text-[11px] font-semibold text-violet-900 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
+                <p id="mask-tool-link" class="hidden text-[11px] text-violet-800 leading-relaxed">画像・スクショの機密は <a href="mask.html" class="font-semibold underline">SUGUDASU マスク</a>（ぼかし · 黒塗り · 非送信）で隠せます。テキスト伏字と併用してください。</p>
                 <p id="shape-hint" class="norm-verify-panel__shape-hint hidden">縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。</p>
                 <p id="change-summary" class="norm-verify-panel__changes hidden"></p>
                 <div class="norm-verify-preview">
@@ -97,7 +178,7 @@
                     </div>
                     <div class="norm-verify-preview__arrow" aria-hidden="true"></div>
                     <div class="norm-verify-preview__col">
-                        <p class="norm-verify-preview__label">変換後（先頭5行）</p>
+                        <p class="norm-verify-preview__label">変換後（先頭5行 · 変更箇所ハイライト）</p>
                         <pre id="preview-after" class="norm-preview norm-verify-preview__sample norm-verify-preview__sample--after"></pre>
                     </div>
                 </div>
@@ -120,6 +201,21 @@
 
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
+
+<dialog id="devtools-dialog" class="sg-card p-5 lg:p-6 max-w-lg w-[calc(100%-2rem)] backdrop:bg-slate-900/40 open:fixed open:top-1/2 open:left-1/2 open:-translate-x-1/2 open:-translate-y-1/2 open:m-0">
+    <form method="dialog" class="space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">DevTools で「送信なし」を確認する</h2>
+        <ol class="text-xs text-slate-700 space-y-2 list-decimal list-inside leading-relaxed">
+            <li><kbd class="sg-kbd">F12</kbd> で開発者ツールを開く</li>
+            <li><strong>Network（ネットワーク）</strong> タブを選び、一覧をクリア（🚫）する</li>
+            <li>テキストを貼り付けて <strong>▶ 変換</strong> または <strong>コピー</strong> を実行する</li>
+            <li>入力内容を含む <strong>POST</strong> が増えていないことを確認（ページ読込・広告の GET は別）</li>
+            <li><strong>Console（コンソール）</strong> タブに <code>[SUGUDASU normalize]</code> のログが出ます（処理は端末内のみ）</li>
+        </ol>
+        <p class="text-[11px] text-slate-500">詳細は <a href="statements.html#verify-devtools" class="text-emerald-800 font-semibold hover:underline">SUGUDASU の約束（DevTools）</a></p>
+        <button type="submit" class="sg-btn-primary text-sm">閉じる</button>
+    </form>
+</dialog>
 
 <section class="no-print sg-section-shell pb-2">
     <div class="sg-card p-5 lg:p-6 space-y-4">
@@ -184,6 +280,48 @@
                 </div>
             </details>
             <details class="sg-faq">
+                <summary>メール・電話・氏名の伏字は同時に使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。「伏字」パネルで<strong>複数チェック</strong>できます。1行にメールと電話が混在するリストでも、選んだ種類だけを順に伏せます。用途プリセット（全角半角など）とも併用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>テキスト伏字と画像の黒塗りはどう使い分けますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>メール・電話・氏名のリスト</strong>は本ツールの伏字プリセット向きです。行数は変わらず、コピーしてそのまま貼れます。<strong>スクショ・マニュアル画像</strong>の機密は <a href="mask.html" class="text-blue-600 hover:underline">マスク</a>（Canvas 黒塗り · ぼかし）を使ってください。どちらもブラウザ内だけで処理し、当社サーバーへ送信しません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>メール伏字はどの部分が残りますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>@より前の<strong>先頭1〜2文字</strong>とドメイン（@以降）は残し、それ以外を <code>***</code> に置き換えます。例: <code>yamada.taro@example.com</code> → <code>ya***@example.com</code>。完全匿名化や復元不能の保証はしません。社内規程に合わせて確認してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>電話伏字のルールは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>ハイフン付き番号は<strong>中央4桁</strong>を <code>****</code> にします（例: <code>090-1234-5678</code> → <code>090-****-5678</code>）。数字のみ11桁・10桁も同様に中央4桁を伏せます。国際番号や内線など特殊形式は意図どおりにならない場合があります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>Excel のタブ区切りをカンマ1行にできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。<strong>タブ→カンマ</strong> プリセットで、Excel から横にコピーしたタブ区切りをカンマ区切りの1行にまとめられます。SQL IN プリセットとの違いは<strong>クォート（'）を付けない</strong>点です。メール一括入力やスプシの TEXTJOIN 前処理向けです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>空行や前後の空白だけを整理できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。「行の整理」で<strong>各行の前後空白を削除</strong> · <strong>空行を削除</strong>を選べます。ソートや重複削除と併用できます。行数が変わるため、コピー前に行数バッジを確認してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>先頭行が「名前」「メール」などの見出しのときは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>貼付時に黄バナーでお知らせします。見出し行は変換対象に含めないよう、データ行だけを貼るか、変換後に先頭行を手動で削除してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
                 <summary>SQL の IN 句用に 'id1', 'id2' 形式へまとめられますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>はい。<strong>SQL IN</strong> プリセットで、改行またはタブ区切りのリストを <code>'value1', 'value2'</code> の1行にします。値に含まれる単一引用符は SQL 慣習どおり <code>''</code> にエスケープします。本番IDを外部サイトに貼れない場合向けです。</p>
@@ -193,6 +331,24 @@
                 <summary>改行をカンマ区切りの1行にできますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。このとき行数は変わるため、コピー前に行数バッジを確認してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>並び替えで「10」が「2」より前に来ます</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>デフォルトは<strong>文字列としての並び替え</strong>です。「1」「10」「2」の順になります。数値の大小順にしたい場合は「行の整理」で<strong>数値として</strong>にチェックを入れてください。全角数字や先頭スペースがある行は意図しない位置になることがあります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>重複削除はどの行が残りますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>デフォルトは<strong>完全一致</strong>のみ削除し、<strong>上から見つかった1行目</strong>を残します。「大文字小文字・全角半角を区別しない」は任意オプションです。表記ゆれを残して確認したい場合はオプションをオフのままにしてください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>行フィルタで正規表現は使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。v1 では<strong>キーワードの含む / 含まない</strong>のみです。ドメインや ID の一部を指定して行を絞り込めます。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -224,8 +380,13 @@ import {
   normalizeText,
   countLines,
   isOverLineLimit,
-  previewLines,
   PRESET_DEFAULTS,
+  hasLineOps,
+  formatLineOpsBanner,
+  formatMaskBanner,
+  buildPreviewDiff,
+  highlightLineDiffHtml,
+  hasMaskOps,
 } from '../assets/text-normalize.js';
 import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
 import { readTestDataHandoff, clearTestDataHandoff } from '../assets/test-data-handoff.js';
@@ -236,8 +397,20 @@ const PRESET_HINTS = {
   fullwidth_ascii: '<strong>全角英数:</strong> 見た目用。英数字を全角にします。',
   comma_join: '<strong>改行→カンマ:</strong> 縦一列のリストをカンマ区切りの1行に。<strong>行数が変わります。</strong>',
   sql_in: '<strong>SQL IN句:</strong> 改行・タブ区切りを <code>\'id1\', \'id2\'</code> に。<strong>本番IDリスト向け · 行数が変わります。</strong>',
+  tab_to_comma: '<strong>タブ→カンマ:</strong> Excel 横コピーのタブ区切りをカンマ1行に（クォートなし）。<strong>行数が変わります。</strong>',
   name_trim: '<strong>姓名スペース:</strong> 各行の全角・半角スペースをすべて削除して密着します。',
 };
+
+const MASK_HINT_PARTS = {
+  email: 'メール: 先頭1〜2文字 + <code>***</code> + @ドメイン',
+  phone: '電話: 中央4桁を <code>****</code>',
+  name: '氏名: 姓・名の2文字目以降を <code>*</code>',
+};
+
+const maskOpEmail = document.getElementById('mask-op-email');
+const maskOpPhone = document.getElementById('mask-op-phone');
+const maskOpName = document.getElementById('mask-op-name');
+const maskPresetHintEl = document.getElementById('mask-preset-hint');
 
 const inputEl = document.getElementById('input-text');
 const lineCounterEl = document.getElementById('line-counter');
@@ -247,6 +420,9 @@ const verifyPanelEl = document.getElementById('verify-panel');
 const shapeBadgeEl = document.getElementById('shape-badge');
 const shapeHintEl = document.getElementById('shape-hint');
 const lineMatchEl = document.getElementById('line-match');
+const lineOpsBannerEl = document.getElementById('line-ops-banner');
+const maskBannerEl = document.getElementById('mask-banner');
+const maskToolLinkEl = document.getElementById('mask-tool-link');
 const changeSummaryEl = document.getElementById('change-summary');
 const previewBeforeEl = document.getElementById('preview-before');
 const previewAfterEl = document.getElementById('preview-after');
@@ -256,12 +432,80 @@ const btnTransform = document.getElementById('btn-transform');
 const btnCopy = document.getElementById('btn-copy');
 const btnSwap = document.getElementById('btn-swap');
 const copyToastEl = document.getElementById('copy-toast');
+const btnNetworkBadge = document.getElementById('btn-network-badge');
+const devtoolsDialog = document.getElementById('devtools-dialog');
 const toggleAscii = document.getElementById('toggle-ascii');
 const toggleSpace = document.getElementById('toggle-space');
 const toggleHyphen = document.getElementById('toggle-hyphen');
 
+const lineOpSort = document.getElementById('line-op-sort');
+const lineOpTrim = document.getElementById('line-op-trim');
+const lineOpRemoveEmpty = document.getElementById('line-op-remove-empty');
+const lineOpSortDir = document.getElementById('line-op-sort-dir');
+const lineOpSortNumeric = document.getElementById('line-op-sort-numeric');
+const lineOpDedupe = document.getElementById('line-op-dedupe');
+const lineOpDedupeFuzzy = document.getElementById('line-op-dedupe-fuzzy');
+const lineOpFilter = document.getElementById('line-op-filter');
+const lineOpFilterKeyword = document.getElementById('line-op-filter-keyword');
+const lineOpFilterModeEls = document.querySelectorAll('input[name="line-op-filter-mode"]');
+
 let lastResult = null;
 let presetController = null;
+let activePreset = 'ec_form';
+
+function getMaskOps() {
+  return {
+    email: maskOpEmail.checked,
+    phone: maskOpPhone.checked,
+    name: maskOpName.checked,
+  };
+}
+
+function syncMaskHint() {
+  const ops = getMaskOps();
+  const parts = [];
+  if (ops.email) parts.push(MASK_HINT_PARTS.email);
+  if (ops.phone) parts.push(MASK_HINT_PARTS.phone);
+  if (ops.name) parts.push(MASK_HINT_PARTS.name);
+  maskPresetHintEl.innerHTML = parts.length
+    ? parts.join(' · ')
+    : 'チェックした種類だけ、行内の該当箇所に伏字を入れます。';
+}
+
+function syncLineOpControls() {
+  const sortOn = lineOpSort.checked;
+  lineOpSortDir.disabled = !sortOn;
+  lineOpSortNumeric.disabled = !sortOn;
+
+  const dedupeOn = lineOpDedupe.checked;
+  lineOpDedupeFuzzy.disabled = !dedupeOn;
+
+  const filterOn = lineOpFilter.checked;
+  lineOpFilterKeyword.disabled = !filterOn;
+  lineOpFilterModeEls.forEach((el) => { el.disabled = !filterOn; });
+}
+
+function getLineOps() {
+  const filterModeEl = document.querySelector('input[name="line-op-filter-mode"]:checked');
+  return {
+    trim: { enabled: lineOpTrim.checked },
+    removeEmpty: { enabled: lineOpRemoveEmpty.checked },
+    sort: {
+      enabled: lineOpSort.checked,
+      direction: lineOpSortDir.value === 'desc' ? 'desc' : 'asc',
+      numeric: lineOpSortNumeric.checked,
+    },
+    dedupe: {
+      enabled: lineOpDedupe.checked,
+      ignoreCaseWidth: lineOpDedupeFuzzy.checked,
+    },
+    filter: {
+      enabled: lineOpFilter.checked,
+      keyword: lineOpFilterKeyword.value,
+      mode: filterModeEl?.value === 'exclude' ? 'exclude' : 'include',
+    },
+  };
+}
 
 function getToggles() {
   return {
@@ -282,9 +526,12 @@ function applyPresetToggles(preset) {
 function syncToggleAvailability(preset) {
   const d = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
   const mode = d.mode || 'line';
-  toggleHyphen.disabled = mode !== 'line';
-  toggleHyphen.closest('label').classList.toggle('opacity-50', mode !== 'line');
-  const spaceLocked = mode === 'name_trim';
+  const lineMode = mode === 'line';
+  toggleAscii.disabled = !lineMode;
+  toggleAscii.closest('label').classList.toggle('opacity-50', !lineMode);
+  toggleHyphen.disabled = !lineMode;
+  toggleHyphen.closest('label').classList.toggle('opacity-50', !lineMode);
+  const spaceLocked = mode === 'name_trim' || !lineMode;
   toggleSpace.disabled = spaceLocked;
   toggleSpace.closest('label').classList.toggle('opacity-50', spaceLocked);
 }
@@ -292,23 +539,58 @@ function syncToggleAvailability(preset) {
 function syncShapeModeUI(preset) {
   const defs = PRESET_DEFAULTS[preset] || PRESET_DEFAULTS.ec_form;
   const mode = defs.mode || 'line';
-  const isShape = mode === 'comma_join' || mode === 'sql_in';
-  shapeBadgeEl.classList.toggle('hidden', !isShape);
-  shapeHintEl.classList.toggle('hidden', !isShape);
-  verifyPanelEl.classList.toggle('norm-verify-panel--shape', isShape);
-  if (isShape && mode === 'sql_in') {
+  const isShape = mode === 'comma_join' || mode === 'sql_in' || mode === 'tab_to_comma';
+  const isMask = hasMaskOps(getMaskOps());
+  const lineOpsOn = hasLineOps(getLineOps());
+  const showShapeHint = isShape || lineOpsOn || isMask;
+  shapeBadgeEl.classList.toggle('hidden', !showShapeHint);
+  shapeHintEl.classList.toggle('hidden', !showShapeHint);
+  verifyPanelEl.classList.toggle('norm-verify-panel--shape', showShapeHint && !isMask);
+  verifyPanelEl.classList.toggle('norm-verify-panel--mask', isMask);
+  if (isMask) {
+    shapeBadgeEl.textContent = '伏字';
+  } else if (isShape) {
+    shapeBadgeEl.textContent = '形状変換';
+  } else if (lineOpsOn) {
+    shapeBadgeEl.textContent = '行数変化';
+  }
+  if (isMask) {
+    shapeHintEl.innerHTML = '伏字プリセットは<strong>行数を変えません</strong>。スクショの機密は <a href="mask.html" class="font-semibold underline">マスク</a> を使ってください。';
+  } else if (isShape && mode === 'sql_in') {
     shapeHintEl.innerHTML = '縦一列（またはタブ区切り）→ <strong>SQL IN 用クォート付き1行</strong>への形状変換です。行数の変化は正常です。';
+  } else if (isShape && mode === 'tab_to_comma') {
+    shapeHintEl.innerHTML = 'タブ区切り → <strong>カンマ1行</strong>への形状変換です（クォートなし）。行数の変化は正常です。';
   } else if (isShape) {
     shapeHintEl.innerHTML = '縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。';
+  } else if (lineOpsOn) {
+    shapeHintEl.innerHTML = '行の整理（フィルタ・重複削除・並び替え）により<strong>行数が変わる</strong>場合があります。コピー前に行数バッジを確認してください。';
   }
+}
+
+function renderPreviewDiff(input, output) {
+  const rows = buildPreviewDiff(input, output, 5);
+  previewBeforeEl.textContent = rows.map((r) => r.before).join('\n') || '（空）';
+  if (rows.length === 0) {
+    previewAfterEl.textContent = '（空）';
+    return;
+  }
+  previewAfterEl.innerHTML = rows
+    .map((r) => (r.changed ? highlightLineDiffHtml(r.before, r.after) : r.after.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')))
+    .join('\n');
 }
 
 function hideVerifyPanel() {
   verifyPanelEl.classList.add('hidden');
   lineMatchEl.textContent = '';
+  lineOpsBannerEl.classList.add('hidden');
+  lineOpsBannerEl.textContent = '';
+  maskBannerEl.classList.add('hidden');
+  maskBannerEl.textContent = '';
+  maskToolLinkEl.classList.add('hidden');
   changeSummaryEl.classList.add('hidden');
   previewBeforeEl.textContent = '';
   previewAfterEl.textContent = '';
+  previewAfterEl.innerHTML = '';
   copyGateEl.classList.add('hidden');
 }
 
@@ -349,21 +631,62 @@ function updateLineCounter() {
   }
 }
 
-function runTransform() {
+function logLocalProcessing(result) {
+  console.info(
+    '%c[SUGUDASU normalize]%c ブラウザ内で処理しました（サーバーへテキスト未送信）',
+    'color:#047857;font-weight:bold',
+    'color:inherit',
+    {
+      at: new Date().toISOString(),
+      inputLines: result.inputLines,
+      outputLines: result.outputLines,
+      preset: result.preset,
+      lineOpsApplied: result.lineOpsApplied,
+      network: '変換・コピー時に入力テキストの POST は発生しません',
+    },
+  );
+}
+
+function runTransform(options = {}) {
   const input = inputEl.value;
   if (!input.trim() || isOverLineLimit(input)) return null;
-  const preset = presetController ? presetController.getValue() : 'ec_form';
-  const result = normalizeText(input, { preset, toggles: getToggles() });
+  const preset = activePreset;
+  const result = normalizeText(input, {
+    preset: activePreset,
+    toggles: getToggles(),
+    lineOps: getLineOps(),
+    maskOps: getMaskOps(),
+  });
   lastResult = result;
 
   showVerifyPanel(preset);
   const { match } = updateLineMatchDisplay(lineMatchEl, result.inputLines, result.outputLines);
   lineMatchEl.classList.add('norm-verify-panel__count');
-  if (match) {
-    copyGateEl.classList.add('hidden');
-    copyGateCheck.checked = false;
+  const bannerText = formatLineOpsBanner(result);
+  if (bannerText) {
+    lineOpsBannerEl.textContent = bannerText;
+    lineOpsBannerEl.classList.remove('hidden');
   } else {
-    copyGateEl.classList.remove('hidden');
+    lineOpsBannerEl.classList.add('hidden');
+    lineOpsBannerEl.textContent = '';
+  }
+  const maskBannerText = formatMaskBanner(result);
+  if (maskBannerText) {
+    maskBannerEl.textContent = maskBannerText;
+    maskBannerEl.classList.remove('hidden');
+  } else {
+    maskBannerEl.classList.add('hidden');
+    maskBannerEl.textContent = '';
+  }
+  maskToolLinkEl.classList.toggle('hidden', !hasMaskOps(getMaskOps()));
+  if (!options.preserveCopyGate) {
+    if (match) {
+      copyGateEl.classList.add('hidden');
+      copyGateCheck.checked = false;
+    } else {
+      copyGateEl.classList.remove('hidden');
+      copyGateCheck.checked = false;
+    }
   }
   syncCopyGate({
     gateEl: copyGateEl,
@@ -381,8 +704,8 @@ function runTransform() {
     changeSummaryEl.textContent = '変更なし（そのままコピーできます）';
   }
 
-  previewBeforeEl.textContent = previewLines(input, 5).join('\n') || '（空）';
-  previewAfterEl.textContent = previewLines(result.output, 5).join('\n') || '（空）';
+  renderPreviewDiff(input, result.output);
+  logLocalProcessing(result);
   return result;
 }
 
@@ -407,13 +730,49 @@ inputEl.addEventListener('input', () => {
   });
 });
 
+[maskOpEmail, maskOpPhone, maskOpName].forEach((el) => {
+  el.addEventListener('change', () => {
+    syncMaskHint();
+    syncShapeModeUI(activePreset);
+    if (inputEl.value.trim()) runTransform();
+  });
+});
+
+[
+  lineOpTrim, lineOpRemoveEmpty,
+  lineOpSort, lineOpSortDir, lineOpSortNumeric,
+  lineOpDedupe, lineOpDedupeFuzzy,
+  lineOpFilter, lineOpFilterKeyword,
+  ...lineOpFilterModeEls,
+].forEach((el) => {
+  el.addEventListener('change', () => {
+    syncLineOpControls();
+    const preset = activePreset;
+    syncShapeModeUI(preset);
+    if (inputEl.value.trim()) runTransform();
+  });
+  if (el.tagName === 'INPUT' && el.type === 'text') {
+    el.addEventListener('input', () => {
+      if (inputEl.value.trim()) runTransform();
+    });
+  }
+});
+
 btnTransform.addEventListener('click', () => runTransform());
+
+btnNetworkBadge.addEventListener('click', () => {
+  if (typeof devtoolsDialog.showModal === 'function') {
+    devtoolsDialog.showModal();
+  } else {
+    window.open('statements.html#verify-devtools', '_blank', 'noopener');
+  }
+});
 
 btnCopy.addEventListener('click', async () => {
   try {
     await copyLatestTransform({
       computeOutput: () => {
-        const r = runTransform();
+        const r = runTransform({ preserveCopyGate: true });
         return r ? r.output : '';
       },
       buttonEl: btnCopy,
@@ -427,7 +786,14 @@ btnCopy.addEventListener('click', async () => {
       },
     });
   } catch (e) {
-    if (e.message === 'gate') return;
+    if (e.message === 'gate') {
+      copyGateEl.classList.remove('hidden');
+      copyGateCheck.focus();
+      copyToastEl.textContent = '行数が変わっています。チェックに同意してからコピーしてください。';
+      copyToastEl.className = 'text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900';
+      copyToastEl.classList.remove('hidden');
+      return;
+    }
     if (e.message === 'empty') alert('コピーするテキストがありません。');
     else alert('コピーに失敗しました。');
   }
@@ -443,7 +809,7 @@ btnSwap.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   presetController = window.SUGUDASU_SEGMENT.mount({
     segmentId: 'preset-segment',
-    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'sql_in', 'name_trim'],
+    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'sql_in', 'tab_to_comma', 'name_trim'],
     initial: 'ec_form',
     hintId: 'preset-hint',
     hints: PRESET_HINTS,
@@ -453,15 +819,19 @@ document.addEventListener('DOMContentLoaded', () => {
       fullwidth_ascii: 'sg-segment--mode-fw',
       comma_join: 'sg-segment--mode-local',
       sql_in: 'sg-segment--mode-local',
+      tab_to_comma: 'sg-segment--mode-local',
       name_trim: 'sg-segment--mode-label',
     },
     onChange: (value) => {
+      activePreset = value;
       applyPresetToggles(value);
       syncShapeModeUI(value);
       if (inputEl.value.trim()) runTransform();
     },
   });
   applyPresetToggles('ec_form');
+  syncLineOpControls();
+  syncMaskHint();
   document.getElementById('preset-hint').innerHTML = PRESET_HINTS.ec_form;
   updateLineCounter();
 
@@ -471,6 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLineCounter();
     const preset = handoff.normalizePreset || 'csv_roster';
     if (presetController && PRESET_HINTS[preset]) {
+      activePreset = preset;
       presetController.select(preset);
       applyPresetToggles(preset);
       syncShapeModeUI(preset);

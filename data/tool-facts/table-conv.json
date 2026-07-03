@@ -1,27 +1,37 @@
 {
   "tool_id": "table-conv",
-  "status": "scaffold",
-  "updatedAt": "2026-06-22",
-  "oneLiner": "",
-  "personas": ["ライター", "Notion運用", "営業資料作成"],
-  "implemented": [],
+  "status": "live",
+  "updatedAt": "2026-07-03",
+  "oneLiner": "Excel貼付・CSVを非送信でMarkdown表·JSON·TSVに変換",
+  "personas": ["Web担当", "Notion運用", "総務", "営業資料作成"],
+  "implemented": [
+    "Excel TSV貼付 → Markdown / JSON / CSV / TSV",
+    "CSVファイル D&D · Shift-JIS",
+    "UTF-8 BOM付きCSV出力オプション",
+    "5,000行 · 2MB目安",
+    "1列検出時 normalize 誘導",
+    "非送信 · オフライン"
+  ],
   "notImplemented": [
-    "ツール未実装（planned · registry 未登録）",
-    "Excel⇔Markdown 双方向変換"
+    "Markdown方言（Zenn/Qiita/Obsidian等）の入出力",
+    "LaTeX · Mermaid · XML · PDF",
+    "Markdown表の汎用逆変換（MD→TSV）",
+    "リッチ表（結合セル復元・セル内箇条書き）",
+    "表エディタ · REST API"
   ],
   "dataHandling": {
     "upload": false,
     "serverSave": false,
-    "localStorage": "要確認（実装時）",
-    "retention": "要確認（実装時）"
+    "localStorage": false,
+    "retention": "なし（メモリのみ）"
   },
   "trust": {
-    "faqStorage": "要確認",
-    "faqEdit": "要確認",
-    "faqRetention": "要確認"
+    "faqStorage": "サーバー保存なし",
+    "faqEdit": "ブラウザ内のみ",
+    "faqRetention": "永続保存なし"
   },
   "postCompletion": [],
-  "relatedTools": ["normalize"],
-  "captainChecks": ["実装着手時に registry 登録"],
-  "promptNotes": "planned — 断定コピー禁止"
+  "relatedTools": ["normalize", "invoice"],
+  "captainChecks": [],
+  "promptNotes": "片道変換v1 · 非送信を前面に"
 }

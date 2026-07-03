@@ -11,7 +11,7 @@
 | 層 | 画面 | 時間 | ユーザーが知りたいこと |
 |----|------|------|------------------------|
 | **更新履歴** | `/updates` | **過去**（Shipped） | 何が変わった？信頼できる？ |
-| **予定 · 検討中** | `/roadmap`（コア · Sync レーン） | **未来** | 初スケジュールに入っている？ |
+| **予定 · 検討中** | `/roadmap`（コア · Sync レーン） | **未来** | 開発スケジュールに入っている？ |
 | **対象外** | `/roadmap`（対象外レーン） | **方針** | やらないと決めた領域は？ |
 
 **対ナビ:** 両ページ共通の `.sg-dev-transparency-nav`（過去 | これから）。
@@ -22,7 +22,19 @@
 
 ## 2. 更新履歴（changelog）の粒度
 
-### 載せる（ユーザー向け1行）
+### 2層データ（MECE 台帳 + public pickup）
+
+| 層 | `audience` | 載せ方 | 画面 |
+|----|------------|--------|------|
+| **MECE 開発台帳** | `internal` | コミット・ファイル・実装詳細を漏れなく追記 | 非公開（JSON のみ） |
+| **ユーザー向け pickup** | `public` | 体感単位 · registry tool id のみ | `/updates` |
+
+- **原則:** デプロイごとに `internal` を必ず追記（MECE）。ユーザーが気づく変更だけ `public` を追加または同日バンドル。
+- **`rollup`:** internal 行がどの public 要約に束ねられたか（public 側の `id` を参照）。
+- **`id`:** public 要約用の安定キー（例: `layout-refresh-20260703`）。
+- **検証:** `npm run validate:changelog` — `audience: public` のみ粒度ルールを強制。`audience` 未設定は legacy として WARN。
+
+### 載せる（public pickup）
 
 - 新ツール · 新プリセット · 計算ロジックの変更
 - ユーザーが**画面で気づく** UX 改善 · 不具合修正
@@ -43,6 +55,7 @@
 
 - **タイトル:** ツールの概念名 + 何が変わったか（例: 「全角半角整え — SQL IN 句プリセット」）
 - **本文:** 1〜3文 · **体感**（誰のどんな作業が楽になるか）
+- **`type`:** `feature`（新機能 · 新設・α）· `fix` · `improve`。**`feat` は禁止**（本番で「改善」表示になる）
 - **`tools` 配列:** registry の **tool id** のみ（`normalize` · `shift`）。`*.html` · `*.css` · パス禁止
 - 横断リリースは **1エントリにまとめる**（例: 「サイト全体のレイアウト改善」）
 
@@ -97,10 +110,11 @@
 
 **changelog 追記前**
 
-- [ ] ユーザーが画面で気づく変更か？
-- [ ] CSS クラス · ファイルパス · 内部 doc 名を本文から除いたか？
-- [ ] 同日の関連変更をバンドルできるか？
-- [ ] `tools` は registry id のみか？
+- [ ] MECE 用に `audience: "internal"` 行を追記したか？（ファイル名・実装詳細 OK）
+- [ ] ユーザーが画面で気づく変更は `audience: "public"`（または同日バンドル）を追加したか？
+- [ ] public 行から CSS クラス · ファイルパス · 内部 doc 名を除いたか？
+- [ ] public の `tools` は registry id のみか？
+- [ ] internal に `rollup` がある場合、public 側 `id` は存在するか？
 
 **roadmap 追記前**
 
@@ -119,4 +133,5 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 2層化 — `audience` internal/public · `validate:changelog` · `/updates` pickup フィルタ |
 | 2026-07-03 | 初版 — 3層粒度 · Too Much 禁止 · 対ナビ実装と同時 |

@@ -1624,6 +1624,10 @@ body.sg-chrome-focus main {
   background: #fff7ed;
   color: #9a3412;
 }
+.sg-roadmap-badge--done {
+  background: #ecfdf5;
+  color: #047857;
+}
 
 /* 開発透明性 — 更新履歴 ⇄ ロードマップ 対ナビ */
 .sg-dev-transparency-nav {
@@ -2970,6 +2974,10 @@ body.sg-chrome-focus main {
   border-color: #fcd34d;
   background: linear-gradient(180deg, #fffbeb 0%, #ffffff 48%);
 }
+.norm-verify-panel--mask {
+  border-color: #c4b5fd;
+  background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 48%);
+}
 .norm-verify-panel__head {
   display: flex;
   flex-wrap: wrap;
@@ -3052,6 +3060,12 @@ body.sg-chrome-focus main {
 .norm-verify-preview__sample--after {
   border-color: #6ee7b7;
   background: #ecfdf5;
+}
+.norm-diff-mark {
+  background: #fef08a;
+  color: inherit;
+  border-radius: 0.125rem;
+  padding: 0 0.05em;
 }
 .norm-verify-preview__arrow {
   display: flex;
