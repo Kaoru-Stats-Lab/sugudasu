@@ -54,6 +54,8 @@ let startY = 0;
 let previewRect = null;
 /** @type {string|null} */
 let dragBaseUrl = null;
+/** 進行中のプレビュー復元を無効化（pointerup 後に古い Promise が黒塗りを消すのを防ぐ） */
+let dragGeneration = 0;
 
 function setStatus(message, isError = false) {
   els.status.textContent = message;
@@ -106,7 +108,9 @@ function canvasPoint(evt) {
 
 function redrawWithPreview() {
   if (!previewRect || !dragBaseUrl) return;
+  const gen = dragGeneration;
   restoreSnapshot(els.canvas, ctx, dragBaseUrl).then(() => {
+    if (gen !== dragGeneration || !previewRect) return;
     const { x, y, w, h } = previewRect;
     ctx.save();
     ctx.strokeStyle = '#0ea5e9';
@@ -235,7 +239,9 @@ document.addEventListener('paste', (e) => {
 });
 
 els.canvas.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
   els.canvas.setPointerCapture(e.pointerId);
+  dragGeneration += 1;
   drawing = true;
   dragBaseUrl = snapshotCanvas(els.canvas);
   const p = canvasPoint(e);
@@ -254,16 +260,25 @@ els.canvas.addEventListener('pointermove', (e) => {
 function endDraw(e) {
   if (!drawing) return;
   drawing = false;
+  dragGeneration += 1;
   try {
     els.canvas.releasePointerCapture(e.pointerId);
   } catch {
     /* noop */
   }
-  if (!previewRect || !dragBaseUrl) {
+
+  const p = canvasPoint(e);
+  const finalRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
+  previewRect = null;
+
+  if (!dragBaseUrl) return;
+
+  if (finalRect.w < 4 || finalRect.h < 4) {
+    restoreSnapshot(els.canvas, ctx, dragBaseUrl).catch(() => {});
     dragBaseUrl = null;
     return;
   }
-  const finalRect = previewRect;
+
   const before = dragBaseUrl;
   dragBaseUrl = null;
   undoStack.push(before);
@@ -276,7 +291,6 @@ function endDraw(e) {
       console.error(err);
       setStatus('編集の適用に失敗しました。もう一度ドラッグしてください。', true);
     });
-  previewRect = null;
 }
 
 els.canvas.addEventListener('pointerup', endDraw);
