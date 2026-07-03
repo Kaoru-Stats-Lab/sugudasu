@@ -323,6 +323,10 @@ const BUST_ASSET_NAMES = [
   'stamp-engine.js',
   'stamp-handoff.js',
   'test-data-handoff.js',
+  'mask-app.js',
+  'mask-engine.js',
+  'test-data-app.js',
+  'test-data-engine.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
 ];
@@ -403,6 +407,9 @@ function rewriteHtml(html) {
     `from '/assets/sns-app.js?v=${ASSET_V}'`
   );
 
+  // ツール module 入口（mask-app 等）— /assets/* は immutable 1年のため必須
+  out = out.replace(/src="\/assets\/([^"?]+\.js)"/g, `src="/assets/$1?v=${ASSET_V}"`);
+
   // 回帰禁止: defer 付与・inline mount 復活（docs/notes/CHROME_HEADER_GUARDRAILS.md）
   if (/sugudasu-shell\.js[^"]*"\s+defer/.test(out)) {
     throw new Error('rewriteHtml: sugudasu-shell.js に defer を付けてはいけません');
@@ -442,7 +449,7 @@ function writeGuidePages() {
 
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
-  const moduleFiles = ['sns-app.js', 'font-converter-app.js', 'stamp-app.js', 'sns-font-engine.js', 'unicode-math-alpha.js'];
+  const moduleFiles = fs.readdirSync(distAssets).filter((name) => name.endsWith('-app.js'));
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);
     if (!fs.existsSync(p)) continue;

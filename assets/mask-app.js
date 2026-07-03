@@ -54,21 +54,14 @@ let startY = 0;
 let previewRect = null;
 /** @type {string|null} */
 let dragBaseUrl = null;
-/** 進行中のプレビュー復元を無効化（pointerup 後に古い Promise が黒塗りを消すのを防ぐ） */
-let dragGeneration = 0;
+/** @type {ImageData|null} */
+let dragBasePixels = null;
 
 function setStatus(message, isError = false) {
   els.status.textContent = message;
   els.status.classList.toggle('text-rose-700', isError);
   els.status.classList.toggle('font-semibold', isError);
   els.status.classList.toggle('text-slate-500', !isError);
-}
-
-function pushHistory() {
-  undoStack.push(snapshotCanvas(els.canvas));
-  if (undoStack.length > MAX_HISTORY) undoStack.shift();
-  redoStack = [];
-  updateHistoryButtons();
 }
 
 function updateHistoryButtons() {
@@ -106,24 +99,31 @@ function canvasPoint(evt) {
   };
 }
 
+function restoreDragBasePixels() {
+  if (!dragBasePixels) return;
+  ctx.putImageData(dragBasePixels, 0, 0);
+}
+
+function drawPreviewStroke() {
+  if (!previewRect) return;
+  const { x, y, w, h } = previewRect;
+  ctx.save();
+  ctx.strokeStyle = '#0ea5e9';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 4]);
+  ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+  ctx.restore();
+}
+
 function redrawWithPreview() {
-  if (!previewRect || !dragBaseUrl) return;
-  const gen = dragGeneration;
-  restoreSnapshot(els.canvas, ctx, dragBaseUrl).then(() => {
-    if (gen !== dragGeneration || !previewRect) return;
-    const { x, y, w, h } = previewRect;
-    ctx.save();
-    ctx.strokeStyle = '#0ea5e9';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([6, 4]);
-    ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
-    ctx.restore();
-  });
+  if (!previewRect || !dragBasePixels) return;
+  restoreDragBasePixels();
+  drawPreviewStroke();
 }
 
 function applyTool(rect) {
   const { x, y, w, h } = rect;
-  if (w < 4 || h < 4) return;
+  if (w < 4 || h < 4) return false;
   if (toolMode === 'black') applyBlackRect(ctx, x, y, w, h);
   else if (toolMode === 'mosaic') applyMosaicRect(ctx, x, y, w, h, mosaicBlock);
   else applyStampRect(ctx, x, y, w, h, stampText);
@@ -132,6 +132,13 @@ function applyTool(rect) {
       ? `スタンプ「${stampText}」を配置しました。下の実データは消えません。黒塗り/モザイクと併用してください。`
       : `${toolMode === 'black' ? '黒塗り' : 'モザイク'}を適用しました。`,
   );
+  return true;
+}
+
+function clearDragState() {
+  dragBaseUrl = null;
+  dragBasePixels = null;
+  previewRect = null;
 }
 
 function showEditor(show) {
@@ -154,6 +161,8 @@ async function loadFile(file) {
     ctx.drawImage(img, 0, 0, width, height);
     undoStack = [];
     redoStack = [];
+    clearDragState();
+    drawing = false;
     updateHistoryButtons();
     showEditor(true);
     els.scaledNote.classList.toggle('hidden', !scaled);
@@ -199,9 +208,75 @@ async function copyPng() {
 function resetEditor() {
   undoStack = [];
   redoStack = [];
+  clearDragState();
+  drawing = false;
   showEditor(false);
   els.scaledNote.classList.add('hidden');
   setStatus('画像をドロップ · 選択 · Ctrl+V で貼り付け');
+}
+
+function beginDraw(e) {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  els.canvas.setPointerCapture(e.pointerId);
+  drawing = true;
+  dragBaseUrl = snapshotCanvas(els.canvas);
+  try {
+    dragBasePixels = ctx.getImageData(0, 0, els.canvas.width, els.canvas.height);
+  } catch (err) {
+    console.error(err);
+    dragBasePixels = null;
+    setStatus('この画像は編集できません。別の形式で保存し直してください。', true);
+    drawing = false;
+    return;
+  }
+  const p = canvasPoint(e);
+  startX = p.x;
+  startY = p.y;
+  previewRect = null;
+}
+
+function moveDraw(e) {
+  if (!drawing) return;
+  const p = canvasPoint(e);
+  previewRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
+  redrawWithPreview();
+}
+
+function endDraw(e) {
+  if (!drawing) return;
+  drawing = false;
+  try {
+    if (els.canvas.hasPointerCapture(e.pointerId)) {
+      els.canvas.releasePointerCapture(e.pointerId);
+    }
+  } catch {
+    /* noop */
+  }
+
+  const p = canvasPoint(e);
+  const finalRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
+  previewRect = null;
+
+  if (!dragBasePixels || !dragBaseUrl) {
+    clearDragState();
+    return;
+  }
+
+  restoreDragBasePixels();
+
+  if (finalRect.w < 4 || finalRect.h < 4) {
+    clearDragState();
+    return;
+  }
+
+  const before = dragBaseUrl;
+  clearDragState();
+  undoStack.push(before);
+  if (undoStack.length > MAX_HISTORY) undoStack.shift();
+  redoStack = [];
+  updateHistoryButtons();
+  applyTool(finalRect);
 }
 
 els.dropZone.addEventListener('click', () => els.fileInput.click());
@@ -238,63 +313,12 @@ document.addEventListener('paste', (e) => {
   loadFile(f);
 });
 
-els.canvas.addEventListener('pointerdown', (e) => {
-  if (e.button !== 0) return;
-  els.canvas.setPointerCapture(e.pointerId);
-  dragGeneration += 1;
-  drawing = true;
-  dragBaseUrl = snapshotCanvas(els.canvas);
-  const p = canvasPoint(e);
-  startX = p.x;
-  startY = p.y;
-  previewRect = null;
-});
-
-els.canvas.addEventListener('pointermove', (e) => {
-  if (!drawing) return;
-  const p = canvasPoint(e);
-  previewRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
-  redrawWithPreview();
-});
-
-function endDraw(e) {
-  if (!drawing) return;
-  drawing = false;
-  dragGeneration += 1;
-  try {
-    els.canvas.releasePointerCapture(e.pointerId);
-  } catch {
-    /* noop */
-  }
-
-  const p = canvasPoint(e);
-  const finalRect = normalizeRect(startX, startY, p.x, p.y, els.canvas.width, els.canvas.height);
-  previewRect = null;
-
-  if (!dragBaseUrl) return;
-
-  if (finalRect.w < 4 || finalRect.h < 4) {
-    restoreSnapshot(els.canvas, ctx, dragBaseUrl).catch(() => {});
-    dragBaseUrl = null;
-    return;
-  }
-
-  const before = dragBaseUrl;
-  dragBaseUrl = null;
-  undoStack.push(before);
-  if (undoStack.length > MAX_HISTORY) undoStack.shift();
-  redoStack = [];
-  updateHistoryButtons();
-  restoreSnapshot(els.canvas, ctx, before)
-    .then(() => applyTool(finalRect))
-    .catch((err) => {
-      console.error(err);
-      setStatus('編集の適用に失敗しました。もう一度ドラッグしてください。', true);
-    });
-}
-
+els.canvas.addEventListener('pointerdown', beginDraw);
+els.canvas.addEventListener('pointermove', moveDraw);
 els.canvas.addEventListener('pointerup', endDraw);
 els.canvas.addEventListener('pointercancel', endDraw);
+window.addEventListener('pointerup', endDraw);
+window.addEventListener('pointercancel', endDraw);
 
 els.btnUndo.addEventListener('click', () => undo());
 els.btnRedo.addEventListener('click', () => redo());
