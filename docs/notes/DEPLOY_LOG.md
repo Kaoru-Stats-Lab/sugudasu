@@ -522,19 +522,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | link-qr イベント連絡プリセット · normalize SQL IN · 企画ドキュメント |
 | **change_summary** | `link-qr` イベント連絡/幹事コピー · `normalize` sql_in · BACKLOG §1-15-6〜8 · 台帳 · Vibe MECE 調査 |
-| **local_build** | `pass`（`release:pages:free` 予定） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 12 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 18/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼（溜まり分一括） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `c3a8839`（`6370d4a..c3a8839` · git push origin main） |
+| **smoke** | pass — `/link-qr` 200 · イベント連絡セグメントあり · `/normalize` 200 · SQL IN プリセットあり |
 
 ---
 
@@ -542,6 +542,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 012 executed（c3a8839 · link-qr イベント連絡 · normalize sql_in） |
 | 2026-07-03 | 012 approved（link-qr イベント連絡 · normalize sql_in · 企画docs） |
 | 2026-07-03 | 011 executed（2238cba · link-qr α） |
 | 2026-07-03 | 011 approved（link-qr α · サーバー非保存リンク集QR） |
