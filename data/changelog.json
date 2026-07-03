@@ -1,12 +1,20 @@
 {
   "updatedAt": "2026-07-03",
+  "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "entries": [
     {
       "date": "2026-07-03",
       "type": "feat",
-      "title": "Core UI Refresh — レイアウト統一・ガイド記事デザイン",
-      "body": "全ツールに sg-main-shell（標準/ワイド/印刷幅）を適用。情報ページ・更新履歴を sg-info-page に統一。実務ガイド8本を sg-guide-article に移行。レイアウト選定ガイド PAGE_LAYOUT_SELECTOR.md を追加。",
-      "tools": ["sugudasu.css", "sugudasu-shell.js", "guides/*.html", "UI_LAYOUT_REFRESH_GUIDE.md"]
+      "title": "開発ロードマップ — 予定と対象外を公開",
+      "body": "更新履歴と対になるページを追加しました。シフト表の今後の改善（複数名配置・繁忙期）や、病院向け24時間シフトなど対象外の領域も掲載しています。",
+      "tools": ["roadmap", "updates", "shift"]
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
+      "title": "サイト全体のレイアウトと読みやすさの改善",
+      "body": "ツールページ・実務ガイド・情報ページの幅と余白をそろえ、スマホとパソコンで読みやすくしました。",
+      "tools": ["hub", "guides", "normalize", "invoice"]
     },
     {
       "date": "2026-07-03",

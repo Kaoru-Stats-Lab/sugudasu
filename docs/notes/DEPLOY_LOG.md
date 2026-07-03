@@ -598,11 +598,31 @@
 
 ---
 
+## DEPLOY-20260703-016
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 開発ロードマップ · 更新履歴対ナビ · シフトFAQ · 透明性粒度ルール |
+| **change_summary** | `/roadmap` · `sg-dev-transparency-nav` · shift FAQ/scope · `DEV_TRANSPARENCY_RULES.md` · changelog 粒度修正 |
+| **local_build** | `pass`（`build:pages`） |
+| **deploy_count_today** | 16 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼（本番反映） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 015 executed（fb43de1 · リード2段デッキ · ガイド表） |
+| 2026-07-03 | 016 approved（roadmap · 対ナビ · 透明性粒度 · 提督 push 依頼） |
 | 2026-07-03 | 015 approved（リード2段デッキ · ガイド表 · 提督 push 依頼） |
 | 2026-07-03 | 014 executed（ea571fc · Core UI Refresh · PAGE_LAYOUT_SELECTOR） |
 | 2026-07-03 | 014 approved（Core UI Refresh · ガイド記事 · PAGE_LAYOUT_SELECTOR · 提督 push 依頼） |

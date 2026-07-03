@@ -284,6 +284,17 @@
       "stage": "gamma",
       "statusNote": "changelog.json SSOT · 開発透明性の発信（§11 · §2-5）"
     },
+    "roadmap": {
+      "file": "roadmap.html",
+      "conceptName": "開発ロードマップ",
+      "productName": "開発ロードマップ",
+      "navLabel": null,
+      "inNav": false,
+      "name": "開発ロードマップ",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "data/roadmap.json SSOT · 予定/検討中/対象外 · FEEDBACK_TRIAGE §6"
+    },
     "statements": {
       "file": "statements.html",
       "conceptName": "約束",

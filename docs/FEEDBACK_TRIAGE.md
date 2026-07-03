@@ -119,5 +119,5 @@ Agent は実装依頼時に **本ファイルと BACKLOG** を読む。スプシ
 
 ## 6. Phase B（任意・将来）
 
-- `data/roadmap.json` に `planned` のみ公開（個人特定・却下理由は載せない）
-- `updates.html` に「予定」セクション — FB キューと同期は **手動**（自動連携はスコープ外）
+- **`data/roadmap.json`** + **`tools/roadmap.html`** — 予定 / 検討中 / 対象外を公開 · **粒度:** [`DEV_TRANSPARENCY_RULES.md`](notes/DEV_TRANSPARENCY_RULES.md)
+- `updates.html` ⇄ `roadmap.html` — `.sg-dev-transparency-nav` 対ナビ · changelog と役割分担（過去 / 未来）

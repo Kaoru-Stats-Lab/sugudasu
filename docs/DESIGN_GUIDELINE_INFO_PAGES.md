@@ -1,6 +1,6 @@
 # SUGUDASU — 情報ページ統一ガイド（Info Pages）
 
-**対象**: `/updates` · `/statements` · `/privacy` · `/terms` · `/disclaimer`  
+**対象**: `/updates` · `/roadmap` · `/statements` · `/privacy` · `/terms` · `/disclaimer`  
 **実装 SSOT**: `assets/sugudasu.css` の `.sg-info-page` · `.sg-info-prose`  
 **親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)  
 **更新**: 2026-06-25

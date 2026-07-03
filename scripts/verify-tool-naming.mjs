@@ -93,7 +93,7 @@ function verifyToolHtml(tools) {
       fail(`${file}: data-sg-title がありません`);
     }
 
-    const expectsToolId = tool.inNav || ['hub', 'updates', 'statements'].includes(id);
+    const expectsToolId = tool.inNav || ['hub', 'updates', 'statements', 'roadmap'].includes(id);
     if (expectsToolId && !chrome.toolId) {
       fail(`${file}: data-sg-tool-id="${id}" が必要です`);
     }

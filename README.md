@@ -50,6 +50,7 @@ python -m http.server 8080
 | [hub.html](tools/hub.html) | / | ツール一覧 | gamma |
 | [font-converter.html](tools/font-converter.html) | /font-converter | SUGUDASU フォント変換 | gamma |
 | [not-a-car.html](tools/not-a-car.html) | /not-a-car | 車ではなく書類 | stable |
+| [roadmap.html](tools/roadmap.html) | /roadmap | 開発ロードマップ | gamma |
 | [statements.html](tools/statements.html) | /statements | SUGUDASU の約束 | gamma |
 | [updates.html](tools/updates.html) | /updates | 更新履歴 | gamma |
 

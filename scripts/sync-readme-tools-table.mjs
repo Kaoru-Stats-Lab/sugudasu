@@ -24,7 +24,7 @@ const CHECK_ONLY = process.argv.includes('--check');
 const CLASSIFICATION = {
   legal: new Set(['privacy', 'terms', 'disclaimer']),
   internal: new Set(['brand-logo-preview']),
-  support: new Set(['hub', 'updates', 'statements', 'not-a-car']),
+  support: new Set(['hub', 'updates', 'roadmap', 'statements', 'not-a-car']),
 };
 
 function fail(message) {

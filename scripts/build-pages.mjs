@@ -84,6 +84,7 @@ function sitemapPriority(pathname) {
   if (pathname.startsWith('/guides/')) return '0.75';
   if (pathname === '/invoice' || pathname === '/receipt' || pathname === '/stamp') return '0.9';
   if (pathname === '/updates') return '0.7';
+  if (pathname === '/roadmap') return '0.68';
   if (pathname === '/privacy' || pathname === '/terms' || pathname === '/disclaimer' || pathname === '/statements') return '0.5';
   return '0.8';
 }

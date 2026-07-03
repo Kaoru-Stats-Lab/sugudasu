@@ -1578,6 +1578,93 @@ body.sg-chrome-focus main {
   color: #1d4ed8;
 }
 
+/* 開発ロードマップ — /roadmap · data/roadmap.json */
+.sg-roadmap-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.sg-roadmap-item {
+  border: 1px solid var(--sg-border);
+  border-radius: 0.75rem;
+  padding: 1rem 1.125rem;
+  background: #fff;
+}
+.sg-roadmap-item__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.375rem;
+}
+.sg-roadmap-item__summary {
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #475569;
+  margin: 0;
+}
+.sg-roadmap-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+.sg-roadmap-badge--scheduled {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+.sg-roadmap-badge--considering {
+  background: #f1f5f9;
+  color: #475569;
+}
+.sg-roadmap-badge--sync {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+.sg-roadmap-badge--out {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+/* 開発透明性 — 更新履歴 ⇄ ロードマップ 対ナビ */
+.sg-dev-transparency-nav {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.1875rem;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  background: #f8fafc;
+}
+.sg-dev-transparency-nav a {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: color 120ms ease, background 120ms ease;
+}
+.sg-dev-transparency-nav a:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+.sg-dev-transparency-nav a[aria-current="page"] {
+  color: #0f172a;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+.sg-dev-transparency-nav__sep {
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  padding: 0 0.125rem;
+  user-select: none;
+}
+.sg-roadmap-item[id] {
+  scroll-margin-top: 5rem;
+}
+
 .sg-changelog-title {
   font-size: 0.875rem;
   font-weight: 700;

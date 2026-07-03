@@ -19,7 +19,7 @@
 | A | **実務ツール（標準）** | `sg-main-shell` | 76rem | 入力フォーム · プレビュー · 使い方 · FAQ が主役の `tools/{id}.html` |
 | B | **実務ツール（ワイド）** | `sg-main-shell sg-main-shell--wide` | 92rem | 横長プレビュー・多列 UI（hub · warikan · timeline 等） |
 | C | **実務ツール（印刷作業）** | `sg-main-shell sg-main-shell--print` | 120rem | 用紙プレビュー・印刷レイアウトが画面の主役（shift · label · receipt） |
-| D | **情報ページ（法務・約束）** | `sg-info-page` | 48rem | privacy · terms · disclaimer · statements · updates · not-a-car · **guides 索引** |
+| D | **情報ページ（法務・約束）** | `sg-info-page` | 48rem | privacy · terms · disclaimer · statements · updates · **roadmap** · not-a-car · **guides 索引** |
 | E | **実務ガイド記事** | `sg-guide-page` | 52rem | `tools/guides/{slug}.html` — 長文・比較表・柱カラー・関連ツール CTA |
 | F | **Sync / Schedule** | Sync 専用 | — | `sync.sugudasu.com` · Notion Like 表。本ガイドの A–E と**混ぜない** |
 
@@ -40,7 +40,7 @@
    YES → E（sg-guide-page + sg-guide-article--{pillar}）
    NO  → 3
 
-3. 法務・約束・更新履歴・ブランド説明か？（privacy / terms / disclaimer / statements / updates / not-a-car / guides 索引）
+3. 法務・約束・更新履歴・**開発ロードマップ**・ブランド説明か？（privacy / terms / disclaimer / statements / updates / **roadmap** / not-a-car / guides 索引）
    YES → D（sg-info-page + sg-info-prose）
    NO  → 4
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="勤務予定・シフト表を登録不要で自動生成。2ヶ月先まで作成でき、希望休やスタッフの偏りを考慮した公平配置をブラウザ内で作れます。">
+    <meta name="description" content="カフェ・美容室・小売など小規模店舗向け。勤務予定・シフト表を登録不要で自動生成。2ヶ月先まで、偏りを抑えてブラウザ内で作成・A4印刷。病院24時間シフトは対象外。">
     <title>シフト表・勤務予定の自動生成 | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
@@ -19,7 +19,7 @@
     <meta name="twitter:description" content="2ヶ月先までの勤務予定に対応。店長が悩むスタッフ間の不公平を自動で調整し、ログインなしでシフト作成を効率化。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。希望休や定休日を考慮し、偏りを抑えた勤務予定を自動生成できます。","@type":"Answer"},"name":"希望休を反映したシフトを自動生成できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。複数月の作成に対応し、店舗運営の先行計画にも使えます。","@type":"Answer"},"name":"2ヶ月先までのシフト作成に対応していますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ブラウザの印刷機能でPDF保存や紙への出力が可能です。","@type":"Answer"},"name":"作成したシフトは印刷できますか？","@type":"Question"},{"acceptedAnswer":{"text":"むしろ「調整がうまい店長」として信頼が上がりやすいです。公平性と説明しやすさが担保されるので、現場の納得感も作りやすくなります。","@type":"Answer"},"name":"シフトパズルが秒で解けたら、店長の威厳が消えませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"どんな店舗・業態のシフト表作成に向いていますか？","acceptedAnswer":{"@type":"Answer","text":"スタッフ5〜30人規模の小規模飲食（カフェ・居酒屋・ラーメン）、美容室・ネイル、小売、学習塾・スタジオの当番、小規模オフィスのサーバ当番など。ブラウザだけで月次勤務表を組みA4印刷。現行は各時間帯1名が基本。"}},{"@type":"Question","name":"向いていない業種・使わない方がよいケースはありますか？","acceptedAnswer":{"@type":"Answer","text":"病院・介護の24時間365日看護シフト、多店舗チェーン、大規模製造物流、大規模DCのオンコール、労基適合の自動証明が必要な勤怠には向きません。専用の勤怠・シフトSaaSを推奨。"}},{"@type":"Question","name":"土日・年末年始・クリスマスなど繁忙期だけ人数を増やせますか？","acceptedAnswer":{"@type":"Answer","text":"現行v1では未対応。日別備考と手動編集で対応。v2で土日・特定日・GWお盆など繁忙期の必要人数ルールを検討中。"}},{"@type":"Question","name":"希望休を反映したシフトを自動生成できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。希望休や定休日を考慮し、偏りを抑えた勤務予定を自動生成できます。"}},{"@type":"Question","name":"2ヶ月先までのシフト作成に対応していますか？","acceptedAnswer":{"@type":"Answer","text":"はい。複数月の作成に対応し、店舗運営の先行計画にも使えます。"}},{"@type":"Question","name":"作成したシフトは印刷できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。ブラウザの印刷機能でPDF保存や紙への出力が可能です。"}},{"@type":"Question","name":"シフトパズルが秒で解けたら、店長の威厳が消えませんか？","acceptedAnswer":{"@type":"Answer","text":"むしろ調整がうまい店長として信頼が上がりやすいです。公平性と説明しやすさが担保されるので、現場の納得感も作りやすくなります。"}}]}</script>
 </head>
 <body class="sg-body bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU シフト" data-sg-subtitle="勤務表 · A4横" data-sg-print="true" data-sg-landscape="true" data-sg-tool-id="shift"></div>
@@ -150,7 +150,45 @@
     <section class="no-print sg-faq-section">
         <div class="sg-faq-inner">
             <h2 class="sg-faq-title">シフト表・勤務表のよくある質問</h2>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-none">小規模店舗の月次勤務表向けです。業態によって向き不向きがあります — 下の2問で確認してください。</p>
             <div class="sg-faq-list">
+                <details class="sg-faq">
+                    <summary>どんな店舗・業態のシフト表作成に向いていますか？</summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                        <p>スタッフ<strong>おおよそ5〜30人</strong>で、来月の「誰がいつ出るか」を<strong>ログインなし・ブラウザだけ</strong>で組み、A4で貼りたい現場向けです。たとえば次のような業態で使われています（いずれも小規模・店長または現場リーダーが表を作る想定）。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>飲食</strong> — カフェ · 居酒屋 · ラーメン · 焼肉 · ファミレス規模の個店（早番・遅番 · 土日の偏りを抑えたい）</li>
+                            <li><strong>美容・サービス</strong> — 美容室 · ネイル · まつげエクステ · エステ（扶養内スタッフ · 連勤上限の目安）</li>
+                            <li><strong>小売</strong> — アパレル · 雑貨 · 書店 · コンビニ個店（シフト名を日勤・準夜などに変更可能）</li>
+                            <li><strong>教育・イベント</strong> — 学習塾 · 英会話スクール · ヨガスタジオ · コミュニティイベントの<strong>受付・清掃当番</strong></li>
+                            <li><strong>オフィス・IT</strong> — 小規模会社の<strong>電話当番 · 社内情シスのサーバ当番</strong>（primary / backup の月次ローテ）</li>
+                        </ul>
+                        <p><strong>現行の注意:</strong> 1日あたりの時間帯は最大3つで、<strong>各時間帯に1名ずつ</strong>が基本です。ランチ帯に「キッチン2名＋ホール2名」のように<strong>同じ時間帯に職種別で複数名</strong>を並べたい飲食店向けの拡張は開発中です（セルの自由入力で複数名を手打ちする回避は可能）。</p>
+                        <p>あなたの業態向けの要望は <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴ページ</a>のフォームから歓迎します。<strong>店名ではなく業態名・人数・時間帯の切り方</strong>があると助かります。</p>
+                    </div>
+                </details>
+                <details class="sg-faq">
+                    <summary>向いていない業種・使わない方がよいケースはありますか？</summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                        <p>はい。ミスマッチを避けるため、<strong>次のような業種・用途では専用の勤怠・シフトSaaSを検討してください。</strong>本ツールは配置のたたき台であり、労働基準法や人員基準の適合を証明するものではありません。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>病院 · 診療所 · 介護施設</strong> — 病棟ナース · 看護師 · 介護士の<strong>24時間365日</strong>シフト（人員基準 · スキル · 法定休憩）。法的要件に耐えません</li>
+                            <li><strong>飲食・小売チェーン（多店舗）</strong> — 店舗横断の人員補充 · 本部承認が必要な大規模運用</li>
+                            <li><strong>製造 · 物流 · コールセンター</strong> — ライン人数 · 変形労働 · 大規模最適化</li>
+                            <li><strong>大規模データセンター · 24/7 NOC</strong> — チーム×リージョンのオンコール · PagerDuty 等との連携</li>
+                            <li><strong>「労務監査にそのまま出せる勤怠」</strong> — 打刻 · 有給残 · 36協定の自動チェックが必要な場合</li>
+                        </ul>
+                        <p>上記に当てはまる場合は、ジョブカン · KING OF TIME · 病院向けシフト専用システムなど、業界向け製品の方が安全です。境界のフィードバックも <a href="updates.html" class="text-blue-600 font-semibold hover:underline">こちら</a>から歓迎します。</p>
+                    </div>
+                </details>
+                <details class="sg-faq">
+                    <summary>土日・年末年始・クリスマスなど繁忙期だけ人数を増やせますか？</summary>
+                    <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                        <p><strong>現行（v1）では未対応です。</strong> 平日3名 · 土日5名 · 12/24だけ全時間帯+1名、のような<strong>日や期間ごとの必要人数</strong>をルール化する機能はありません。あるあるの現場ニーズとして把握しており、v2 で検討中です。</p>
+                        <p><strong>いまできること:</strong> 該当日のセルを手で増やす（自由入力で複数名）· 日別の<strong>備考欄</strong>に「本日5名体制」「クリスマス繁忙」と書いて印刷する。</p>
+                        <p><strong>v2 で想定している方向:</strong> 毎週土日は各時間帯+1 · 特定日（年末 · バレンタイン）· お盆・GWの期間指定など。詳細は <a href="roadmap.html#shift-v2-peak" class="text-blue-600 font-semibold hover:underline">開発ロードマップ（繁忙期）</a> · <a href="roadmap.html#shift-v2-multislot" class="text-blue-600 font-semibold hover:underline">複数名配置</a>。業態別の繁忙パターンのフィードバックを <a href="updates.html" class="text-blue-600 font-semibold hover:underline">こちら</a>で歓迎します。</p>
+                    </div>
+                </details>
                 <details class="sg-faq">
                     <summary>2ヶ月分のシフトを公平に自動で作れますか？</summary>
                     <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">

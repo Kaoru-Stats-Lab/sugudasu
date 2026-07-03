@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SUGUDASUの開発ロードマップ。シフトv2・繁忙期人数・向いている業態を公開。病院24時間看護シフトは対象外と明記。要望はGoogleフォームへ。">
+    <title>開発ロードマップ | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="SUGUDASU 開発ロードマップ">
+    <meta property="og:description" content="予定機能と対象外を正直に公開。シフト表v2・繁忙期・コアツール改善。過去の反映は更新履歴へ。">
+    <meta property="og:url" content="https://sugudasu.com/roadmap">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 開発ロードマップ">
+    <meta name="twitter:description" content="「初スケジュールに入ってますか？」への回答用。予定・検討中・対象外を掲載。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="開発ロードマップ" data-sg-tool-id="roadmap"></div>
+
+<main class="sg-info-page space-y-8">
+
+    <nav class="sg-dev-transparency-nav" aria-label="開発の過去とこれから">
+        <a href="updates.html">更新履歴（過去）</a>
+        <span class="sg-dev-transparency-nav__sep" aria-hidden="true">|</span>
+        <a href="roadmap.html" aria-current="page">開発ロードマップ（予定・対象外）</a>
+    </nav>
+
+    <header class="space-y-2">
+        <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">予定 · 検討中 · 対象外</p>
+        <h1 class="sg-info-page__title">開発ロードマップ</h1>
+        <p class="sg-info-page__lead sg-info-prose">
+            「これ、初スケジュールに入ってますか？」——よく聞かれるので、<strong>予定</strong>と<strong>対象外</strong>をここにまとめます。
+            すでに反映したものは <a href="updates.html">更新履歴</a>、設計思想は <a href="statements.html">SUGUDASUの約束</a> をご覧ください。
+        </p>
+        <p id="roadmap-updated" class="sg-info-caption"></p>
+        <p id="roadmap-disclaimer" class="text-xs text-slate-500 leading-relaxed sg-info-prose"></p>
+    </header>
+
+    <section class="sg-card p-5 lg:p-6 sg-info-prose space-y-3" aria-labelledby="roadmap-legend-heading">
+        <h2 id="roadmap-legend-heading" class="sg-info-card-title">ステータスの見方</h2>
+        <ul id="roadmap-legend" class="space-y-2 text-sm text-slate-700"></ul>
+    </section>
+
+    <div id="roadmap-lanes" class="space-y-8 sg-info-prose"></div>
+
+    <section class="sg-card p-5 lg:p-6 space-y-4 sg-info-prose" aria-labelledby="roadmap-fb-heading">
+        <h2 id="roadmap-fb-heading" class="sg-info-card-title">優先度を上げたいとき</h2>
+        <p>
+            スコープ内の業態（小規模飲食 · 美容室 · 小売 · 塾 · サーバ当番 等）からのフィードバックは<strong>歓迎</strong>します。
+            「うちの店ではこう使いたい」「この業種には向かない」どちらも助かります。
+        </p>
+        <p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Googleフォーム</a>
+            （ログイン不要）· ツール名に <strong>シフト</strong> や <strong>roadmap</strong> と書いてください。
+        </p>
+        <p class="text-xs text-slate-500">
+            個人を特定できる情報は書かないでください。返信は原則行いません。採用した要望はロードマップと更新履歴に反映します。
+        </p>
+    </section>
+
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    const FEEDBACK_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform';
+    const STATUS_LABELS = {
+        scheduled: { text: '予定', cls: 'sg-roadmap-badge--scheduled' },
+        considering: { text: '検討中', cls: 'sg-roadmap-badge--considering' },
+        sync_lane: { text: 'Sync', cls: 'sg-roadmap-badge--sync' },
+        out_of_scope: { text: '対象外', cls: 'sg-roadmap-badge--out' }
+    };
+
+    function roadmapUrl() {
+        const link = document.querySelector('link[href*="sugudasu.css"]');
+        if (link && link.getAttribute('href')) {
+            const href = link.getAttribute('href');
+            if (href.includes('/assets/')) {
+                return href.replace(/assets\/sugudasu\.css.*$/, 'data/roadmap.json');
+            }
+            return href.replace(/sugudasu\.css.*$/, '../data/roadmap.json');
+        }
+        return '../data/roadmap.json';
+    }
+
+    function esc(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function formatDateJa(iso) {
+        const [y, m, d] = iso.split('-');
+        return `${y}年${Number(m)}月${Number(d)}日`;
+    }
+
+    function badgeHtml(status) {
+        const b = STATUS_LABELS[status] || STATUS_LABELS.considering;
+        return `<span class="sg-roadmap-badge ${b.cls}">${esc(b.text)}</span>`;
+    }
+
+    function itemHtml(item) {
+        const toolLink = item.external
+            ? `<a href="${esc(item.toolHref)}" class="text-blue-600 font-semibold hover:underline" target="_blank" rel="noopener noreferrer">${esc(item.toolLabel)}</a>`
+            : item.toolHref
+                ? `<a href="${esc(item.toolHref)}" class="text-blue-600 font-semibold hover:underline">${esc(item.toolLabel)}</a>`
+                : esc(item.toolLabel || '');
+        const alt = item.alternative
+            ? `<p class="text-xs text-slate-500 mt-2"><strong>代替:</strong> ${esc(item.alternative)}</p>`
+            : '';
+        const fb = item.askFeedback
+            ? `<p class="text-xs text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2 mt-2">${esc(item.askFeedback)} <a href="${FEEDBACK_FORM}" class="font-semibold underline" target="_blank" rel="noopener noreferrer">フォーム</a></p>`
+            : '';
+        return `
+            <article class="sg-roadmap-item" id="${esc(item.id)}">
+                <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                    ${badgeHtml(item.status)}
+                    ${toolLink ? `<span class="text-[11px] text-slate-500">${toolLink}</span>` : ''}
+                    <a href="#${esc(item.id)}" class="text-[10px] text-slate-400 hover:text-blue-600 ml-auto no-print" aria-label="この項目へのリンク">#</a>
+                </div>
+                <h3 class="sg-roadmap-item__title">${esc(item.title)}</h3>
+                <p class="sg-roadmap-item__summary">${esc(item.summary)}</p>
+                ${alt}
+                ${fb}
+            </article>
+        `;
+    }
+
+    function renderLegend(data) {
+        const ul = document.getElementById('roadmap-legend');
+        if (!ul || !data.statusLegend) return;
+        ul.innerHTML = Object.entries(data.statusLegend).map(([key, text]) => {
+            const b = STATUS_LABELS[key] || STATUS_LABELS.considering;
+            return `<li class="flex gap-2 items-start"><span class="sg-roadmap-badge ${b.cls} shrink-0">${esc(b.text.split(' — ')[0])}</span><span>${esc(text)}</span></li>`;
+        }).join('');
+    }
+
+    function renderLanes(data) {
+        const root = document.getElementById('roadmap-lanes');
+        if (!root) return;
+        const lanes = data.lanes || [];
+        const items = (data.items || []).slice().sort((a, b) => (a.priority || 99) - (b.priority || 99));
+
+        root.innerHTML = lanes.map((lane) => {
+            const laneItems = items.filter((i) => i.lane === lane.id);
+            if (!laneItems.length) return '';
+            const intro = lane.id === 'out_of_scope'
+                ? '<p class="text-sm text-slate-600 mb-4">ミスマッチを防ぐため、<strong>意図的にスコープ外</strong>としている領域です（Decline 相当 · 個別要望の却下は載せません）。</p>'
+                : lane.id === 'sync'
+                    ? '<p class="text-sm text-slate-600 mb-4">工事・制作の工程表は <strong>sync.sugudasu.com</strong> の別ラインです。店舗の勤務表（シフト）とは別物です。</p>'
+                    : lane.id === 'core'
+                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。反映済みは <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ。</p>'
+                        : '';
+            return `
+                <section aria-labelledby="roadmap-lane-${esc(lane.id)}">
+                    <h2 id="roadmap-lane-${esc(lane.id)}" class="sg-info-section-title">${esc(lane.label)}</h2>
+                    ${intro}
+                    <div class="sg-roadmap-list mt-4">${laneItems.map(itemHtml).join('')}</div>
+                </section>
+            `;
+        }).join('');
+    }
+
+    async function init() {
+        const updatedEl = document.getElementById('roadmap-updated');
+        const discEl = document.getElementById('roadmap-disclaimer');
+        try {
+            const res = await fetch(roadmapUrl());
+            if (!res.ok) throw new Error(String(res.status));
+            const data = await res.json();
+            if (updatedEl && data.updatedAt) {
+                updatedEl.textContent = `ロードマップ更新: ${formatDateJa(data.updatedAt)}`;
+            }
+            if (discEl && data.disclaimer) {
+                discEl.textContent = data.disclaimer;
+            }
+            renderLegend(data);
+            renderLanes(data);
+            if (location.hash) {
+                const el = document.querySelector(location.hash);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        } catch (e) {
+            if (updatedEl) updatedEl.textContent = 'ロードマップを読み込めませんでした。しばらくしてから再度お試しください。';
+            console.error(e);
+        }
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>

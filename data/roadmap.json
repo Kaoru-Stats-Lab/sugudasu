@@ -1,0 +1,153 @@
+{
+  "updatedAt": "2026-07-03",
+  "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
+  "statusLegend": {
+    "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
+    "considering": "検討中 — フィードバックが多いほど優先度が上がります",
+    "sync_lane": "Sync ライン — sync.sugudasu.com 側の別プロダクト",
+    "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）"
+  },
+  "lanes": [
+    { "id": "core", "label": "予定 · 検討中（sugudasu.com）" },
+    { "id": "sync", "label": "Sync（sync.sugudasu.com）" },
+    { "id": "out_of_scope", "label": "対象外" }
+  ],
+  "items": [
+    {
+      "id": "shift-v2-multislot",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 1,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "時間帯 × ポジション × 複数名",
+      "summary": "同じランチ帯にキッチン・ホール・レジを並べられる表。飲食・小規模店舗向けの v2 中核。",
+      "askFeedback": "業態名・1日の時間帯の切り方・各帯の必要人数をフォームで歓迎します。"
+    },
+    {
+      "id": "shift-v2-peak",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 2,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "繁忙期・繁忙日の人数増",
+      "summary": "土日だけ +1名 · 12/24 など特定日 · お盆・GWの期間ルール。v2 の複数名配置の上に載せます。",
+      "askFeedback": "金土夜だけ増やす · 年末年始だけ増やす、など実例があると助かります。"
+    },
+    {
+      "id": "shift-quality",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 3,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "beta 品質担保（公平性 · 改ページ · FIX）",
+      "summary": "自動生成の偏り・印刷改ページ・確定ロック周りの仕上げ。v2 と並行または直前。"
+    },
+    {
+      "id": "invoice-quality",
+      "lane": "core",
+      "status": "considering",
+      "priority": 10,
+      "toolId": "invoice",
+      "toolLabel": "請求書",
+      "toolHref": "invoice.html",
+      "title": "帳票 beta の品質・UX 仕上げ",
+      "summary": "Desktop-first の編集・PDF・下書き周り。優先度は不具合報告次第。"
+    },
+    {
+      "id": "test-data-presets",
+      "lane": "core",
+      "status": "considering",
+      "priority": 11,
+      "toolId": "test-data",
+      "toolLabel": "テストデータ",
+      "toolHref": "test-data.html",
+      "title": "プリセット・大規模エクスポートの拡張",
+      "summary": "閉域向けダミーCSVの列種別・件数レンジ。SI・情シス向け FB を反映。"
+    },
+    {
+      "id": "warikan-url-share",
+      "lane": "core",
+      "status": "considering",
+      "priority": 20,
+      "toolId": "warikan",
+      "toolLabel": "割り勘",
+      "toolHref": "warikan.html",
+      "title": "入力状態の URL 共有（非送信方針維持）",
+      "summary": "ハッシュやローカル復元で幹事と参加者が同じ画面を見る案。サーバー保存はしません。"
+    },
+    {
+      "id": "group-split-url-share",
+      "lane": "core",
+      "status": "considering",
+      "priority": 21,
+      "toolId": "group-split",
+      "toolLabel": "班分け",
+      "toolHref": "group-split.html",
+      "title": "班分け結果の URL 共有",
+      "summary": "Slack/TSV コピーに加え、閲覧専用リンク。非送信・一時的な共有を想定。"
+    },
+    {
+      "id": "shift-chat-share",
+      "lane": "core",
+      "status": "considering",
+      "priority": 22,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "確定前シフトのチャット共有",
+      "summary": "report 等と同型の共有ボタン。個人情報を載せない運用前提。"
+    },
+    {
+      "id": "sync-schedule-v3",
+      "lane": "sync",
+      "status": "sync_lane",
+      "priority": 1,
+      "toolId": null,
+      "toolLabel": "Schedule",
+      "toolHref": "https://sync.sugudasu.com",
+      "title": "工事・制作向け Schedule（Notion 風表）",
+      "summary": "現場監督向けの工程表 · 週間リスト · 印刷。コアのシフト表とは別ラインです。",
+      "external": true
+    },
+    {
+      "id": "shift-hospital-nursing",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 1,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "病院・介護の 24時間365日看護シフト",
+      "summary": "人員基準 · スキル · 法定休憩 — 法的要件に耐えません。病院向け専用システムをご利用ください。",
+      "alternative": "病院向けシフト管理 · 勤怠 SaaS"
+    },
+    {
+      "id": "shift-enterprise-multi-store",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 2,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "多店舗チェーン · 本部承認ワークフロー",
+      "summary": "店舗横断の人員補充と承認フローはジョブカン · KING OF TIME 等の領域です。"
+    },
+    {
+      "id": "labor-law-solver",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 3,
+      "toolId": "shift",
+      "toolLabel": "シフト",
+      "toolHref": "shift.html",
+      "title": "労基法 · 36協定の自動適合判定",
+      "summary": "配置のたたき台は作れますが、監査に耐える法令チェックは行いません。"
+    }
+  ]
+}

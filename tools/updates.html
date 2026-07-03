@@ -25,13 +25,21 @@
 
 <main class="sg-info-page space-y-8">
 
+    <nav class="sg-dev-transparency-nav" aria-label="開発の過去とこれから">
+        <a href="updates.html" aria-current="page">更新履歴（過去）</a>
+        <span class="sg-dev-transparency-nav__sep" aria-hidden="true">|</span>
+        <a href="roadmap.html">開発ロードマップ（予定・対象外）</a>
+    </nav>
+
     <header class="space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">生きた開発ログ</p>
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">反映済みの変更</p>
         <h1 class="sg-info-page__title">更新履歴・改善レポート</h1>
         <p class="sg-info-page__lead sg-info-prose">
-            新機能・計算ロジック修正・料金反映などを時系列で公開しています。
-            数値系ツールの信頼性確認にご利用ください。
-            Copy-first · TSV/JSON の設計方針は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> にまとめています。
+            すでに本番に入った変更を時系列で公開しています。数値系ツールの信頼性確認にご利用ください。
+            <strong>これから入れる機能</strong>は <a href="roadmap.html">開発ロードマップ</a>、設計思想は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> です。
+        </p>
+        <p class="text-xs text-slate-500 leading-relaxed sg-info-prose">
+            掲載粒度は<strong>ユーザーが体感する変更単位</strong>です。CSS クラス名や内部ファイル名は載せません。
         </p>
         <p id="changelog-updated" class="sg-info-caption"></p>
     </header>
