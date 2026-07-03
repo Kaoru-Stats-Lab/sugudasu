@@ -502,7 +502,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | リンク集QR（link-qr）α — イベント懇親会フォロー交換 |
 | **change_summary** | `link-qr` 新規 · `#p=` base64url · hub · nav · sns 相互リンク · 単体テスト |
@@ -513,8 +513,8 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | pending |
-| **smoke** | `/link-qr` · QR生成 · hash 閲覧モード · `/sns` リンク |
+| **cf_deployment_id** | `2238cba`（`ef63666..2238cba` · git push origin main） |
+| **smoke** | pass — `/link-qr` 200 · 本文・フォームあり · `/sns` → link-qr リンク 200 |
 
 ---
 
@@ -522,6 +522,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 011 executed（2238cba · link-qr α） |
 | 2026-07-03 | 011 approved（link-qr α · サーバー非保存リンク集QR） |
 | 2026-07-03 | 009 executed（17a6811 · Prior Art §9 多言語探索） |
 | 2026-07-03 | 009 approved（Prior Art §9 · 多言語探索フロー） |
