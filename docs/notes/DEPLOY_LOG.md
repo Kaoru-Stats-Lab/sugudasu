@@ -602,19 +602,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 開発ロードマップ · 更新履歴対ナビ · シフトFAQ · 透明性粒度ルール |
 | **change_summary** | `/roadmap` · `sg-dev-transparency-nav` · shift FAQ/scope · `DEV_TRANSPARENCY_RULES.md` · changelog 粒度修正 |
-| **local_build** | `pass`（`build:pages`） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 16 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 22/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼（本番反映） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `5cff6f3`（`96907b9..5cff6f3` · git push origin main） |
+| **smoke** | pass — `/roadmap` 3レーン · `/updates` 対ナビ · `/shift` FAQ · `roadmap.html#shift-v2-peak` |
 
 ---
 
@@ -622,6 +622,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 016 executed（5cff6f3 · roadmap · 対ナビ · 透明性粒度） |
 | 2026-07-03 | 016 approved（roadmap · 対ナビ · 透明性粒度 · 提督 push 依頼） |
 | 2026-07-03 | 015 approved（リード2段デッキ · ガイド表 · 提督 push 依頼） |
 | 2026-07-03 | 014 executed（ea571fc · Core UI Refresh · PAGE_LAYOUT_SELECTOR） |
