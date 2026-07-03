@@ -338,11 +338,31 @@
 
 ---
 
+## DEPLOY-20260703-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | test-data 件数UI統合 · §6.7楔境界 · §6.8閉域ホワイトリスト/広告FAQ |
+| **change_summary** | `test-data-app.js` 大規模CSV一括DL統合 · `test-data.html` 件数セグメント2.5万/10万/25万 · FAQ（ホワイトリスト·広告·社内ミラー）· `TEST_DATA_TOOL_SPEC` §6.7 §6.8 · BACKLOG |
+| **local_build** | `pending` |
+| **deploy_count_today** | 3 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督 push 依頼 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （push 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 002 executed（3e093ed · test-data FAQ 閉域・競合比較） |
+| 2026-07-03 | 003 approved（test-data 件数UI · §6.8 閉域FAQ · 提督 push 依頼） |
 | 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
 | 2026-07-03 | 001 executed（50145d3 · test-data v0.5 · multi-ai docs） |
 | 2026-07-03 | 001 approved（test-data v0.5 · multi-ai docs · 提督 push 依頼） |

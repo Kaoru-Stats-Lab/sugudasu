@@ -2,10 +2,10 @@
  * test-data.html — UI wiring
  */
 import {
-  BULK_EMPLOYEE_OPTIONS,
   CHUNK_MAX,
   COUNT_OPTIONS,
   DOMAIN_MAX_EMPLOYEE,
+  EMPLOYEE_COUNT_OPTIONS,
   MAX_ROWS,
   PAYROLL_MONTHS_PER_EMPLOYEE,
   PRESET_META,
@@ -59,16 +59,15 @@ const els = {
   previewNote: document.getElementById('preview-note'),
   progressWrap: document.getElementById('progress-wrap'),
   progressBar: document.getElementById('progress-bar'),
-  bulkExportPanel: document.getElementById('bulk-export-panel'),
-  btnBulkDownload: document.getElementById('btn-bulk-download'),
 };
 
 /** @type {'employee'|'payroll'|'customer'|'transaction'} */
 let preset = 'employee';
 let count = 100;
-let bulkTotal = 250_000;
 /** @type {{ headers: string[], rows: Record<string, string|number>[], csv: string }|null} */
 let lastResult = null;
+/** @type {{ select: (v: string, o?: { silent?: boolean }) => void, syncPill: () => void }|null} */
+let countSegmentApi = null;
 
 function setStatus(message, isError = false) {
   els.status.textContent = message;
@@ -81,21 +80,39 @@ function isEmployeeLike() {
   return preset === 'employee' || preset === 'payroll';
 }
 
+function isBulkEmployeeCount(n = count) {
+  return preset === 'employee' && n > CHUNK_MAX;
+}
+
+function countOptionsForPreset() {
+  return preset === 'employee' ? EMPLOYEE_COUNT_OPTIONS : COUNT_OPTIONS;
+}
+
 function outputLineCount(result = lastResult) {
   if (!result) return 0;
   return result.rows.length + 1;
 }
 
+function syncDownloadButtonLabel() {
+  if (!els.btnDownload) return;
+  els.btnDownload.textContent = isBulkEmployeeCount()
+    ? '↓ 一括CSVダウンロード'
+    : '↓ CSVダウンロード';
+}
+
 function syncNormalizeButton() {
   if (!els.btnOpenNormalize) return;
   const lines = outputLineCount();
-  const canHandoff = Boolean(lastResult) && isEmployeeLike() && lines > 0 && lines <= NORMALIZE_LINE_LIMIT;
+  const canHandoff =
+    Boolean(lastResult) && isEmployeeLike() && !isBulkEmployeeCount() && lines > 0 && lines <= NORMALIZE_LINE_LIMIT;
   els.btnOpenNormalize.disabled = !canHandoff;
   els.btnOpenNormalize.title = canHandoff
     ? ''
-    : lastResult && lines > NORMALIZE_LINE_LIMIT
-      ? `全角半角整えは ${NORMALIZE_LINE_LIMIT} 行までです（ヘッダー含む）。件数を減らすかCSVダウンロードをご利用ください。`
-      : '社員マスタまたは給与明細を生成後に使えます。';
+    : isBulkEmployeeCount()
+      ? '5,000件超は一括CSVダウンロードをご利用ください。'
+      : lastResult && lines > NORMALIZE_LINE_LIMIT
+        ? `全角半角整えは ${NORMALIZE_LINE_LIMIT} 行までです（ヘッダー含む）。件数を減らすかCSVダウンロードをご利用ください。`
+        : '社員マスタまたは給与明細を生成後に使えます。';
 }
 
 function readOptions() {
@@ -104,13 +121,14 @@ function readOptions() {
   const hireYearMin = Number.parseInt(els.hireYearMin?.value ?? '', 10) || 2000;
   const defaultPrefix = isEmployeeLike() ? `EMP-${referenceYear}` : 'CUST';
   const exportHeaders = preset === 'employee' ? readEmployeeExportHeaders() : undefined;
+  const bulk = isBulkEmployeeCount();
   return {
     preset,
     count,
     seed: Number.isFinite(seed) ? seed : 42,
     idPrefix: (els.idPrefix.value || defaultPrefix).trim(),
     emailDomain: (els.emailDomain.value || 'example.com').trim(),
-    mineRate: els.mineToggle.checked && preset === 'employee' ? 0.05 : 0,
+    mineRate: bulk || !els.mineToggle.checked || preset !== 'employee' ? 0 : 0.05,
     referenceYear,
     hireYearMin,
     hireYearMax: referenceYear,
@@ -153,6 +171,40 @@ function applyDateFormatPreset(style) {
   if (els.hireDateFormat) els.hireDateFormat.value = style;
 }
 
+function countHintText(n) {
+  if (preset === 'payroll') {
+    const rows = n * PAYROLL_MONTHS_PER_EMPLOYEE;
+    return `社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 1回最大 ${MAX_ROWS.toLocaleString()} 行）`;
+  }
+  if (preset === 'employee' && n > CHUNK_MAX) {
+    const chunks = Math.ceil(n / CHUNK_MAX);
+    return `${n.toLocaleString()} 件 — ${CHUNK_MAX.toLocaleString()}件×${chunks}チャンクを結合した <strong>UTF-8 BOM CSV</strong> 一括DL。「生成」で先頭${CHUNK_MAX.toLocaleString()}件をプレビュー。`;
+  }
+  if (preset === 'employee') {
+    return `${n.toLocaleString()} 件（最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} · 5,000件超は上段の2.5万〜25万を選択）`;
+  }
+  return `${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()}）`;
+}
+
+function countHintsMap() {
+  return Object.fromEntries(countOptionsForPreset().map((n) => [String(n), countHintText(n)]));
+}
+
+function syncCountSegmentVisibility() {
+  if (!els.countSegment) return;
+  els.countSegment.querySelectorAll('[data-bulk-only]').forEach((btn) => {
+    btn.classList.toggle('hidden', preset !== 'employee');
+  });
+  if (preset !== 'employee' && count > CHUNK_MAX) {
+    count = CHUNK_MAX;
+    countSegmentApi?.select(String(CHUNK_MAX), { silent: true });
+  }
+  countSegmentApi?.syncPill();
+  const hintEl = document.getElementById('count-hint');
+  if (hintEl) hintEl.innerHTML = countHintText(count);
+  syncDownloadButtonLabel();
+}
+
 function syncEmployeePanels() {
   const employee = preset === 'employee';
   const employeeLike = isEmployeeLike();
@@ -176,7 +228,7 @@ function syncEmployeePanels() {
     const mineWrap = els.mineToggle.closest('label');
     if (mineWrap) mineWrap.classList.toggle('hidden', !employee);
   }
-  if (els.bulkExportPanel) els.bulkExportPanel.classList.toggle('hidden', preset !== 'employee');
+  syncCountSegmentVisibility();
 }
 
 function syncIdPrefixFromReferenceYear() {
@@ -201,7 +253,7 @@ function syncIdPrefixPlaceholder() {
   }
 }
 
-function renderPreview(result) {
+function renderPreview(result, totalCount = count) {
   const previewRows = result.rows.slice(0, 10);
   const internal = result.internalHeaders || result.headers;
   els.previewHead.innerHTML = result.headers
@@ -219,26 +271,44 @@ function renderPreview(result) {
           .join('')}</tr>`,
     )
     .join('');
-  const more = result.rows.length > 10 ? `（先頭10件を表示 · 全 ${result.rows.length.toLocaleString()} 件）` : `（全 ${result.rows.length.toLocaleString()} 件）`;
+  const shown = result.rows.length;
+  const more =
+    totalCount > shown
+      ? `（先頭10件を表示 · プレビュー ${shown.toLocaleString()} / 全体 ${totalCount.toLocaleString()} 件）`
+      : shown > 10
+        ? `（先頭10件を表示 · 全 ${shown.toLocaleString()} 件）`
+        : `（全 ${shown.toLocaleString()} 件）`;
   els.previewNote.textContent = more;
   els.btnDownload.disabled = false;
-  els.btnCopy.disabled = !document.hasFocus();
+  els.btnCopy.disabled = isBulkEmployeeCount(totalCount) || !document.hasFocus();
+  syncDownloadButtonLabel();
   syncNormalizeButton();
 }
 
-async function generateWithYield() {
-  const options = readOptions();
-  const check = validateGenerateOptions(options.count, options.seed, {
+function validateOptionsForGenerate(options) {
+  const yearOpts = {
     referenceYear: options.referenceYear,
     hireYearMin: options.hireYearMin,
     hireYearMax: options.hireYearMax,
     preset: options.preset,
     startIndex: 1,
-  });
+  };
+  if (options.preset === 'employee' && options.count > CHUNK_MAX) {
+    return validateBulkEmployeeOptions(options.count, options.seed, yearOpts);
+  }
+  return validateGenerateOptions(options.count, options.seed, yearOpts);
+}
+
+async function generateWithYield() {
+  const options = readOptions();
+  const check = validateOptionsForGenerate(options);
   if (!check.ok) {
     setStatus(check.message, true);
     return;
   }
+
+  const bulk = isBulkEmployeeCount(options.count);
+  const previewCount = bulk ? CHUNK_MAX : options.count;
 
   els.btnGenerate.disabled = true;
   els.btnDownload.disabled = true;
@@ -248,24 +318,30 @@ async function generateWithYield() {
   els.progressBar.style.width = '0%';
 
   try {
-    if (options.count > 500) {
-      setStatus('生成中… 画面が固まらないよう分割処理しています。');
+    if (previewCount > 500) {
+      setStatus(bulk ? '先頭チャンクをプレビュー生成中…' : '生成中… 画面が固まらないよう分割処理しています。');
       await new Promise((r) => requestAnimationFrame(r));
       els.progressBar.style.width = '30%';
       await new Promise((r) => setTimeout(r, 0));
     }
 
-    const result = generateDataset(options);
+    const result = generateDataset({ ...options, count: previewCount, mineRate: bulk ? 0 : options.mineRate });
     lastResult = result;
     els.progressBar.style.width = '100%';
-    renderPreview(result);
-    const unit =
-      options.preset === 'payroll'
-        ? `社員 ${options.count.toLocaleString()} 人 · 明細 ${result.rows.length.toLocaleString()} 行`
-        : `${result.rows.length.toLocaleString()} 件`;
-    setStatus(
-      `${PRESET_META[options.preset].label} · ${unit} · シード ${options.seed} — CSVダウンロードまたはコピーできます。`,
-    );
+    renderPreview(result, options.count);
+    if (bulk) {
+      setStatus(
+        `社員マスタ ${options.count.toLocaleString()} 件 — 先頭 ${CHUNK_MAX.toLocaleString()} 件をプレビュー。「一括CSVダウンロード」で全件取得（シード ${options.seed}）。`,
+      );
+    } else {
+      const unit =
+        options.preset === 'payroll'
+          ? `社員 ${options.count.toLocaleString()} 人 · 明細 ${result.rows.length.toLocaleString()} 行`
+          : `${result.rows.length.toLocaleString()} 件`;
+      setStatus(
+        `${PRESET_META[options.preset].label} · ${unit} · シード ${options.seed} — CSVダウンロードまたはコピーできます。`,
+      );
+    }
   } catch (e) {
     setStatus(e.message || '生成に失敗しました。', true);
     lastResult = null;
@@ -281,13 +357,17 @@ async function generateWithYield() {
 
 function downloadCsv() {
   if (!lastResult) return;
+  if (isBulkEmployeeCount()) {
+    downloadBulkEmployeeCsv();
+    return;
+  }
   const options = readOptions();
   downloadCsvBlob(lastResult.csv, defaultFilename(options.idPrefix, options.preset));
   setStatus('CSV をダウンロードしました。Excel で文字化けする場合は「データから」取り込みを試してください。');
 }
 
 async function copyCsv() {
-  if (!lastResult) return;
+  if (!lastResult || isBulkEmployeeCount()) return;
   if (!document.hasFocus()) {
     setStatus('ウィンドウを一度クリックしてフォーカス後に「コピー」を押してください。', true);
     return;
@@ -307,7 +387,7 @@ async function copyCsv() {
 }
 
 function openNormalize() {
-  if (!lastResult) return;
+  if (!lastResult || isBulkEmployeeCount()) return;
   const lines = outputLineCount();
   if (lines > NORMALIZE_LINE_LIMIT) {
     setStatus(`全角半角整えは ${NORMALIZE_LINE_LIMIT} 行までです。件数を減らしてください。`, true);
@@ -324,34 +404,27 @@ function randomSeed() {
   els.seed.value = String(Math.floor(Math.random() * 999999) + 1);
 }
 
-function countHintText(n) {
-  if (preset === 'payroll') {
-    const rows = n * PAYROLL_MONTHS_PER_EMPLOYEE;
-    return `社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 1回最大 ${MAX_ROWS.toLocaleString()} 行）`;
-  }
-  return `${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()} · 社員マスタは一括 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} まで）`;
-}
-
 async function downloadBulkEmployeeCsv() {
   if (preset !== 'employee') return;
   const options = readOptions();
+  const totalCount = options.count;
   const yearOpts = {
     referenceYear: options.referenceYear,
     hireYearMin: options.hireYearMin,
     hireYearMax: options.hireYearMax,
   };
-  const check = validateBulkEmployeeOptions(bulkTotal, options.seed, yearOpts);
+  const check = validateBulkEmployeeOptions(totalCount, options.seed, yearOpts);
   if (!check.ok) {
     setStatus(check.message, true);
     return;
   }
 
-  const chunkCount = Math.ceil(bulkTotal / CHUNK_MAX);
-  els.btnBulkDownload.disabled = true;
+  const chunkCount = Math.ceil(totalCount / CHUNK_MAX);
+  els.btnDownload.disabled = true;
   els.btnGenerate.disabled = true;
   els.progressWrap.classList.remove('hidden');
   els.progressBar.style.width = '0%';
-  setStatus(`大規模CSVを生成中… 0 / ${bulkTotal.toLocaleString()} 件`);
+  setStatus(`一括CSVを生成中… 0 / ${totalCount.toLocaleString()} 件`);
 
   try {
     /** @type {BlobPart[]} */
@@ -359,8 +432,8 @@ async function downloadBulkEmployeeCsv() {
     let headerLine = '';
     let done = 0;
 
-    for (let startIndex = 1; startIndex <= bulkTotal; startIndex += CHUNK_MAX) {
-      const n = Math.min(CHUNK_MAX, bulkTotal - startIndex + 1);
+    for (let startIndex = 1; startIndex <= totalCount; startIndex += CHUNK_MAX) {
+      const n = Math.min(CHUNK_MAX, totalCount - startIndex + 1);
       const chunk = generateDataset({
         ...options,
         preset: 'employee',
@@ -377,9 +450,9 @@ async function downloadBulkEmployeeCsv() {
       if (body) blobParts.push(`${body}\r\n`);
 
       done += n;
-      const pct = Math.round((done / bulkTotal) * 100);
+      const pct = Math.round((done / totalCount) * 100);
       els.progressBar.style.width = `${pct}%`;
-      setStatus(`大規模CSVを生成中… ${done.toLocaleString()} / ${bulkTotal.toLocaleString()} 件`);
+      setStatus(`一括CSVを生成中… ${done.toLocaleString()} / ${totalCount.toLocaleString()} 件`);
       await new Promise((r) => setTimeout(r, 0));
     }
 
@@ -387,26 +460,26 @@ async function downloadBulkEmployeeCsv() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = defaultFilename(options.idPrefix, 'employee', bulkTotal);
+    a.download = defaultFilename(options.idPrefix, 'employee', totalCount);
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
 
     const previewChunk = generateDataset({
       ...options,
       preset: 'employee',
-      count: Math.min(count, CHUNK_MAX),
+      count: Math.min(CHUNK_MAX, totalCount),
       startIndex: 1,
       mineRate: 0,
     });
     lastResult = previewChunk;
-    renderPreview(previewChunk);
+    renderPreview(previewChunk, totalCount);
     setStatus(
-      `社員マスタ ${bulkTotal.toLocaleString()} 件の CSV をダウンロードしました（${chunkCount} チャンク結合 · シード ${options.seed}）。`,
+      `社員マスタ ${totalCount.toLocaleString()} 件の CSV をダウンロードしました（${chunkCount} チャンク結合 · シード ${options.seed}）。`,
     );
   } catch (e) {
-    setStatus(e.message || '大規模CSVの生成に失敗しました。', true);
+    setStatus(e.message || '一括CSVの生成に失敗しました。', true);
   } finally {
-    els.btnBulkDownload.disabled = false;
+    els.btnDownload.disabled = false;
     els.btnGenerate.disabled = false;
     setTimeout(() => {
       els.progressWrap.classList.add('hidden');
@@ -444,35 +517,25 @@ document.addEventListener('DOMContentLoaded', () => {
         els.previewHead.innerHTML = '';
         els.previewNote.textContent = '「生成」を押すとプレビューが表示されます。';
         syncNormalizeButton();
-        const countHint = document.getElementById('count-hint');
-        if (countHint) countHint.innerHTML = countHintText(count);
       },
     });
 
-    window.SUGUDASU_SEGMENT.mount({
+    countSegmentApi = window.SUGUDASU_SEGMENT.mount({
       segmentId: 'count-segment',
-      order: COUNT_OPTIONS.map(String),
+      order: EMPLOYEE_COUNT_OPTIONS.map(String),
       initial: '100',
-      hints: Object.fromEntries(COUNT_OPTIONS.map((n) => [String(n), countHintText(n)])),
+      hints: countHintsMap(),
       hintId: 'count-hint',
       onChange: (value) => {
         count = Number.parseInt(value, 10) || 100;
-      },
-    });
-
-    window.SUGUDASU_SEGMENT.mount({
-      segmentId: 'bulk-segment',
-      order: BULK_EMPLOYEE_OPTIONS.map(String),
-      initial: '250000',
-      onChange: (value) => {
-        bulkTotal = Number.parseInt(value, 10) || 250_000;
+        syncDownloadButtonLabel();
+        syncNormalizeButton();
       },
     });
   }
 
   els.btnGenerate.addEventListener('click', () => generateWithYield());
   els.btnDownload.addEventListener('click', () => downloadCsv());
-  if (els.btnBulkDownload) els.btnBulkDownload.addEventListener('click', () => downloadBulkEmployeeCsv());
   els.btnCopy.addEventListener('click', () => copyCsv());
   if (els.btnOpenNormalize) els.btnOpenNormalize.addEventListener('click', () => openNormalize());
   els.btnReseed.addEventListener('click', () => randomSeed());
@@ -505,11 +568,12 @@ document.addEventListener('DOMContentLoaded', () => {
   syncEmployeePanels();
   syncIdPrefixPlaceholder();
   syncNormalizeButton();
+  syncDownloadButtonLabel();
   randomSeed();
-  setStatus('プリセットと件数を選び、「生成」を押してください。データはブラウザ内だけで作られます。');
+  setStatus('プリセットと件数を選び、「生成」を押してください。5,000件超は「一括CSVダウンロード」で全件取得できます。');
 
   window.addEventListener('focus', () => {
-    if (lastResult) els.btnCopy.disabled = false;
+    if (lastResult && !isBulkEmployeeCount()) els.btnCopy.disabled = false;
   });
   window.addEventListener('blur', () => {
     els.btnCopy.disabled = true;

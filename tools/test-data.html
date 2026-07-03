@@ -54,20 +54,11 @@
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100" aria-selected="true">100件</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="500" aria-selected="false">500件</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="5000" aria-selected="false">5,000件</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="25000" aria-selected="false" data-bulk-only>2.5万件</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100000" aria-selected="false" data-bulk-only>10万件</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="250000" aria-selected="false" data-bulk-only>25万件</button>
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="count-hint" role="note"></p>
-
-        <div id="bulk-export-panel" class="hidden space-y-2 pt-2 border-t border-slate-100">
-            <h2 class="text-sm font-bold text-slate-900">大規模エクスポート（社員マスタ）</h2>
-            <p class="text-[11px] text-slate-600 leading-relaxed">5,000件チャンクを結合した <strong>UTF-8 BOM CSV</strong>。プレビューは先頭チャンクのみ。Excelで25万行を開くのは非推奨（仕様 §8.3）。</p>
-            <div class="sg-segment sg-segment--cols-3 sg-segment--mode-csv sg-segment--notion-soft" id="bulk-segment" role="tablist" aria-label="大規模件数">
-                <span class="sg-segment__pill" aria-hidden="true"></span>
-                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="25000" aria-selected="false">2.5万件</button>
-                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100000" aria-selected="false">10万件</button>
-                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="250000" aria-selected="true">25万件</button>
-            </div>
-            <button type="button" id="btn-bulk-download" class="sg-btn-secondary text-sm py-2 px-4">↓ 大規模CSVダウンロード</button>
-        </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <label class="block space-y-1">
@@ -223,6 +214,7 @@
                         <li><strong>閉域網・顧客VPN内</strong> — ページが開ければ生成処理はオフラインで動く（初回はHTML/JSの読み込みが必要）</li>
                     </ul>
                     <p class="mt-2">社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。送信がないことの確認手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a> をご覧ください。</p>
+                    <p class="mt-2">プロキシの<strong>ホワイトリスト申請</strong>や<strong>広告</strong>で止まる場合は、下の FAQ「社内のホワイトリスト」「広告があると」を参照してください。</p>
                 </div>
             </details>
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -345,6 +337,42 @@
                     <p><strong>いいえ。</strong>生成からCSVダウンロードまで<strong>端末のブラウザ内</strong>だけです。これが閉域・非送信ポリシーの核心です。</p>
                     <p class="mt-2">Chrome の DevTools → Network で、生成時に当社ドメインへ<strong>POSTが飛ばない</strong>ことをご自身で確認できます。手順は <a href="statements.html#verify-devtools" class="text-blue-600 hover:underline">SUGUDASU の約束（DevTools）</a> · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a>。</p>
                     <p class="mt-2 text-slate-500">※ 初回アクセス時の HTML/CSS/JS 読み込みは通常のWebページと同様です。プロキシで <code class="text-[10px]">sugudasu.com</code> 自体がブロックされる場合は別問題です。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-amber-200 rounded-xl bg-amber-50/40 p-4">
+                <summary>社内のホワイトリスト（閲覧許可）に載せられますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>貴社の情報セキュリティ担当が決めます。</strong>当社が代わりに承認することはできません。ただし、申請しやすいよう <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">情報管理向けまとめ</a> に<strong>コピー可の申請メモ</strong>と DevTools 手順を公開しています。</p>
+                    <p class="mt-2"><strong>エンジニア・情シスがよくやる流れ</strong>（型の例）:</p>
+                    <ol class="mt-1 list-decimal pl-4 space-y-1">
+                        <li>社内規程で「外部Webツール」が許されるか確認</li>
+                        <li>申請書に <code class="text-[10px]">https://sugudasu.com/test-data</code> · 業務目的（テスト用CSV生成）· <strong>入力データをPOSTしない</strong> を記載</li>
+                        <li>プロキシで <code class="text-[10px]">sugudasu.com</code> を許可（フォント用に <code class="text-[10px]">fonts.googleapis.com</code> も求められることがあります · UI用 · 生成には必須ではありません）</li>
+                        <li>許可後、DevTools で生成時に POST が出ないことを確認</li>
+                        <li>インターネット自体が使えない現場は、ビルド済み静的ファイルの<strong>社内ミラー</strong>（下のFAQ）が現実解</li>
+                    </ol>
+                    <p class="mt-2 text-slate-500">受託SIの情シスはこの型に慣れていることが多いですが、事務職だけの現場では型がなく、申請で止まることもあります。</p>
+                </div>
+            </details>
+            <details class="sg-faq border border-amber-200 rounded-xl bg-amber-50/40 p-4">
+                <summary>広告があると、閉域現場で使えませんか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>必ずしも使えません、とは言い切れません。</strong> SUGUDASU コア（<code class="text-[10px]">sugudasu.com</code>）は無料運営のため広告枠があります（現状はプレースホルダ · 本番 AdSense は審査待ち）。一方、<strong>CSVの生成処理には広告は不要</strong>です（<a href="statements.html#verify-layers" class="text-blue-600 hover:underline">通信レイヤの③</a> と①は別）。</p>
+                    <p class="mt-2">よくあるパターン:</p>
+                    <ul class="mt-1 list-disc pl-4 space-y-1">
+                        <li><strong>ページ本体だけ許可</strong> → 広告ドメインはブロックされても生成は動く（枠が空 · 見た目だけ劣化）</li>
+                        <li><strong>広告カテゴリ全面ブロック</strong> → 情シスに「広告は業務に不要」と伝える · <a href="statements.html#for-it-security" class="text-blue-600 hover:underline">申請メモ</a> を添付</li>
+                        <li><strong>外部ドメイン全面禁止</strong> → ホワイトリストではなく <strong>社内ミラー</strong>（静的HTMLを社内サーバに置く）</li>
+                    </ul>
+                    <p class="mt-2">登録・同期が必要な <strong>SUGUDASU Sync</strong>（<code class="text-[10px]">sync.sugudasu.com</code>）は<strong>広告なし</strong>の別製品です。テストデータ楔とは用途が違います。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>インターネットが使えない現場ではどうすればいいですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>社内ミラー</strong>が現実解です。社外で一度 <code class="text-[10px]">npm run build:pages</code> してできた静的ファイル（<code class="text-[10px]">dist/</code>）を、貴社の検証用Webサーバや閉域PCに配置し、社内URLから開きます。広告タグはミラーに含めません。</p>
+                    <p class="mt-2">手順の細部（どのファイルをどこへ置くか · 更新頻度）は<strong>貴社情シスと合意</strong>してください。ダウンロードしたCSVの保管・廃棄も利用者側の責任です。</p>
+                    <p class="mt-2">「ページが一度開ければ、生成はオフラインでも動く」環境もありますが、<strong>初回のHTML/JS取得</strong>がボトルネックになる場合はミラーの方が確実です。</p>
                 </div>
             </details>
             <details class="sg-faq">

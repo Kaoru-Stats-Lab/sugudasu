@@ -865,6 +865,14 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 **根拠:** [労働組合基礎調査 概況](https://www.mhlw.go.jp/toukei/itiran/roudou/roushi/kiso/25/dl/gaikyou.pdf) · [主要団体別附表 H11–12](https://www.mhlw.go.jp/www2/kisya/daijin/20001219_02_d/20001219_02_d_fhyou.html) · **JP労組** 21万〜24万人 · `DOMAIN_MAX` **25万**
 
+### 4-6. `test-data` 楔・ドメイン境界（SSOT: `TEST_DATA_TOOL_SPEC.md` §6.7）
+
+- [ ] **P2** UI — 顧客/取引を **デモ用格下げ**（労務楔と前面混在しない）
+- [ ] **P2** v0.6 — 社員マスタ **部門・事業所** 列
+- [ ] **P3** v0.6+ — **派遣先法人** 別プリセット
+- [ ] **P3** v0.7+ — **配属・契約** 明細（スタッフ×派遣先×期間）
+- [x] 仕様 — 労務楔 vs 金融風顧客 · 派遣3層 · 拡張優先順（§6.7 · 2026-07-03）
+
 ---
 
 ## 5) Cloudflare Pages デプロイ Backlog

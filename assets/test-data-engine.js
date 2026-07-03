@@ -10,6 +10,8 @@ export const DOMAIN_MAX_EMPLOYEE = 250_000;
 export const ROW_RNG_SALT = 1_000_003;
 export const COUNT_OPTIONS = [100, 500, 5000];
 export const BULK_EMPLOYEE_OPTIONS = [25_000, 100_000, 250_000];
+/** 社員マスタの件数セグメント（COUNT + BULK） */
+export const EMPLOYEE_COUNT_OPTIONS = [...COUNT_OPTIONS, ...BULK_EMPLOYEE_OPTIONS];
 
 /** @typedef {'slash'|'dash'|'compact'} DateFormatStyle */
 
