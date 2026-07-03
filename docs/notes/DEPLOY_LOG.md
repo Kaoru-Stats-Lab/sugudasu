@@ -482,7 +482,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | normalize 事務OL訴求 — 実務ガイド（都内総務OL編） |
 | **change_summary** | `guides/office-roster-normalize` · guides 索引 · normalize 相互リンク · mask 提督スモーク追記 |
@@ -493,8 +493,8 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | pending |
-| **smoke** | `/guides/office-roster-normalize` · `/guides` 事務セクション · `/normalize` ガイドリンク |
+| **cf_deployment_id** | `b1b4c23`（`07ec690..b1b4c23` · git push origin main） |
+| **smoke** | pass — `/guides/office-roster-normalize` 200 · `/guides` 事務セクション 200 · `/normalize` ガイドリンク 200 |
 
 ---
 
