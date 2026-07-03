@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-07-03",
+      "type": "feat",
+      "title": "実務ガイド — 名簿整形（都内総務OL編）",
+      "body": "変換サイトに貼れない名簿を整える長文ガイド。EC登録・研修班分け・メールリストの場面想定。/guides と /normalize 相互リンク。",
+      "tools": ["guides/office-roster-normalize.html", "guides.html", "normalize.html"]
+    },
+    {
+      "date": "2026-07-03",
       "type": "fix",
       "title": "マスク — 矩形確定修正 · ぼかし/同色塗り",
       "body": "ドラッグ離しで加工が確定しない不具合をオーバーレイ+documentリスナーで修正。マニュアル向けにぼかし（デフォルト）· 同色塗りを追加。モザイクは廃止。",

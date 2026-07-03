@@ -92,3 +92,4 @@
 - **借りるパターン:** `attachDrag` · ドラッグ中のみ `document` pointermove/up · プレビューと確定の分離（SUGUDASU はオーバーレイ canvas）
 - **借りない:** React · 顔検出/OCR · pan/zoom · 形状編集
 - **SUGUDASU 載せ先:** `mask-app.js` ドラッグ層 · `mask-engine.js` は既存のまま拡張
+- **提督スモーク済み（2026-07-03）:** 本番 `/mask` — ぼかし · 黒塗り · 同色塗り · スタンプ（サンプル/ダミー/テスト）を一連操作で確認 · ドラッグ離しで加工確定 · 点線プレビュー残らず · ステータス更新 OK（DEPLOY-008）

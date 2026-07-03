@@ -60,6 +60,7 @@ sugudasu.com/
 | `invoice-browser-workflow` | ブラウザだけでインボイス請求書を作る手順 | docs | invoice · stamp | インボイス 請求書 無料 |
 | `web-production-schedule-excel` | 制作スケジュール表をExcelで回すときの落とし穴 | production | — | 制作スケジュール表 エクセル | **完了 · 追加なし** |
 | `construction-schedule-excel` | 工事工程表をExcelで回すときの落とし穴 | production | — | 工程表 テンプレート エクセル | **HTML 済** |
+| `office-roster-normalize` | 変換サイトに貼れない名簿を整える — 都内OL編 | team | normalize · group-split | 全角半角 社内規程 名簿 | **HTML 済 2026-07-03** |
 
 **拡張ルール（記事追加時）**
 

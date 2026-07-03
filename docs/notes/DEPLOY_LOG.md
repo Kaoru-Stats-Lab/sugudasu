@@ -454,7 +454,7 @@
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
 | **cf_deployment_id** | `c84ba5f`（`ad84d37..c84ba5f` · git push origin main） |
-| **smoke** | `/mask` — mask-overlay · ぼかし/同色塗り UI · ドラッグ確定（提督確認待ち） |
+| **smoke** | `/mask` — 提督スモーク済（2026-07-03）· ぼかし/黒/同色/スタンプ · 確定 · 点線消去 · ステータス OK |
 
 ---
 
@@ -478,10 +478,31 @@
 
 ---
 
+## DEPLOY-20260703-010
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | normalize 事務OL訴求 — 実務ガイド（都内総務OL編） |
+| **change_summary** | `guides/office-roster-normalize` · guides 索引 · normalize 相互リンク · mask 提督スモーク追記 |
+| **local_build** | `pass`（`release:pages:free`） |
+| **deploy_count_today** | 10 |
+| **pages_build_budget_after** | 16/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P7 · 提督依頼 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | `/guides/office-roster-normalize` · `/guides` 事務セクション · `/normalize` ガイドリンク |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 010 approved（normalize 実務ガイド · 都内OL編） |
 | 2026-07-03 | 009 executed（17a6811 · Prior Art §9 多言語探索） |
 | 2026-07-03 | 009 approved（Prior Art §9 · 多言語探索フロー） |
 | 2026-07-03 | 008 executed（c84ba5f · mask オーバーレイ確定 · ぼかし/同色塗り） |

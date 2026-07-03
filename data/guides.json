@@ -1,6 +1,14 @@
 {
-  "updatedAt": "2026-06-29",
+  "updatedAt": "2026-07-03",
   "articles": [
+    {
+      "slug": "office-roster-normalize",
+      "pillar": "team",
+      "title": "変換サイトに貼れない名簿を整える — 都内オフィスの総務OL編",
+      "description": "総務・営業事務向け。EC一括登録・研修班分け・メールリスト。社内規程で外部コンバータNGでも、Excel列をブラウザ内だけで整える場面と手順。",
+      "tools": ["normalize", "group-split", "test-data"],
+      "published": "2026-07-03"
+    },
     {
       "slug": "event-runbook",
       "pillar": "event",
