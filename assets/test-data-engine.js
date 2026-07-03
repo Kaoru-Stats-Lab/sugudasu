@@ -3,14 +3,19 @@
  * SSOT: docs/notes/TEST_DATA_TOOL_SPEC.md
  */
 
-export const MAX_ROWS = 5000;
+export const CHUNK_MAX = 5000;
+/** @deprecated 互換 alias — 1チャンク上限 */
+export const MAX_ROWS = CHUNK_MAX;
+export const DOMAIN_MAX_EMPLOYEE = 250_000;
+export const ROW_RNG_SALT = 1_000_003;
 export const COUNT_OPTIONS = [100, 500, 5000];
+export const BULK_EMPLOYEE_OPTIONS = [25_000, 100_000, 250_000];
 
 /** @typedef {'slash'|'dash'|'compact'} DateFormatStyle */
 
 /** @typedef {'employee'|'payroll'|'customer'|'transaction'} DataPreset */
 
-/** @typedef {{ preset: DataPreset, count: number, seed: number, idPrefix: string, emailDomain: string, mineRate: number, referenceYear?: number, hireYearMin?: number, hireYearMax?: number, exportHeaders?: string[], birthDateFormat?: DateFormatStyle, hireDateFormat?: DateFormatStyle, quoteZipInCsv?: boolean, roundSalaryTo1000?: boolean, includeForeignNames?: boolean, spaceInDiverseNames?: boolean, payrollMonthlyVariation?: boolean }} GenerateOptions */
+/** @typedef {{ preset: DataPreset, count: number, seed: number, startIndex?: number, idPrefix: string, emailDomain: string, mineRate: number, referenceYear?: number, hireYearMin?: number, hireYearMax?: number, exportHeaders?: string[], birthDateFormat?: DateFormatStyle, hireDateFormat?: DateFormatStyle, quoteZipInCsv?: boolean, roundSalaryTo1000?: boolean, includeForeignNames?: boolean, spaceInDiverseNames?: boolean, payrollMonthlyVariation?: boolean }} GenerateOptions */
 
 export const PRESET_META = {
   employee: {
@@ -594,15 +599,33 @@ export function createSeededRng(seed) {
 }
 
 /**
+ * @param {number} seed
+ * @param {number} rowIndex 1-based employee index
+ */
+export function createEmployeeRowRng(seed, rowIndex) {
+  return createSeededRng((seed + rowIndex * ROW_RNG_SALT) >>> 0);
+}
+
+/**
  * @param {number} count
  * @param {number} seed
- * @param {{ referenceYear?: number, hireYearMin?: number, hireYearMax?: number, preset?: DataPreset }} [yearOpts]
+ * @param {{ referenceYear?: number, hireYearMin?: number, hireYearMax?: number, preset?: DataPreset, startIndex?: number }} [yearOpts]
  */
 export function validateGenerateOptions(count, seed, yearOpts = {}) {
   const preset = yearOpts.preset ?? 'employee';
+  const startIndex = yearOpts.startIndex ?? 1;
   const rowCount = preset === 'payroll' ? count * PAYROLL_MONTHS_PER_EMPLOYEE : count;
   if (!Number.isFinite(count) || count < 1) {
     return { ok: false, message: '件数は 1 以上で指定してください。' };
+  }
+  if (!Number.isFinite(startIndex) || startIndex < 1 || startIndex % 1 !== 0) {
+    return { ok: false, message: '開始番号は 1 以上の整数で指定してください。' };
+  }
+  if (preset === 'employee' && startIndex + count - 1 > DOMAIN_MAX_EMPLOYEE) {
+    return {
+      ok: false,
+      message: `社員番号は ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} までです（開始 ${startIndex.toLocaleString()} + ${count.toLocaleString()} 件）。`,
+    };
   }
   if (preset === 'payroll' && count > Math.floor(MAX_ROWS / PAYROLL_MONTHS_PER_EMPLOYEE)) {
     return {
@@ -632,6 +655,28 @@ export function validateGenerateOptions(count, seed, yearOpts = {}) {
     return { ok: false, message: `入社上限年は基準年（${referenceYear}）以下にしてください。` };
   }
   return { ok: true };
+}
+
+/**
+ * @param {number} totalCount
+ * @param {number} seed
+ * @param {{ referenceYear?: number, hireYearMin?: number, hireYearMax?: number }} [yearOpts]
+ */
+export function validateBulkEmployeeOptions(totalCount, seed, yearOpts = {}) {
+  if (!Number.isFinite(totalCount) || totalCount < 1) {
+    return { ok: false, message: '件数は 1 以上で指定してください。' };
+  }
+  if (totalCount > DOMAIN_MAX_EMPLOYEE) {
+    return {
+      ok: false,
+      message: `社員マスタの一括出力は最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} 件です。`,
+    };
+  }
+  return validateGenerateOptions(
+    Math.min(totalCount, CHUNK_MAX),
+    seed,
+    { ...yearOpts, preset: 'employee', startIndex: 1 },
+  );
 }
 
 /**
@@ -913,9 +958,10 @@ function payrollYearMonths(referenceYear) {
 }
 
 /**
- * @param {() => number} rng
  * @param {object} opts
  * @param {number} opts.count
+ * @param {number} opts.startIndex
+ * @param {number} opts.seed
  * @param {string} opts.idPrefix
  * @param {string} opts.emailDomain
  * @param {number} opts.mineRate
@@ -927,9 +973,11 @@ function payrollYearMonths(referenceYear) {
  * @param {boolean} opts.includeForeignNames
  * @param {boolean} opts.spaceInDiverseNames
  */
-function generateEmployeeRows(rng, opts) {
+function generateEmployeeRows(opts) {
   const {
     count,
+    startIndex = 1,
+    seed,
     idPrefix,
     emailDomain,
     mineRate,
@@ -942,7 +990,9 @@ function generateEmployeeRows(rng, opts) {
     spaceInDiverseNames = true,
   } = opts;
   const rows = [];
-  for (let i = 1; i <= count; i += 1) {
+  const endIndex = startIndex + count - 1;
+  for (let i = startIndex; i <= endIndex; i += 1) {
+    const rng = createEmployeeRowRng(seed, i);
     const addr = pickAddress(rng);
     const useForeign = includeForeignNames && rng() < FOREIGN_EMPLOYEE_RATE;
     let genderLabel;
@@ -1122,11 +1172,12 @@ function toHalfWidthKatakana(katakana) {
  * @param {number} mineRate
  * @param {DataPreset} preset
  */
-function applyMinesToRows(rows, seed, mineRate, preset) {
+function applyMinesToRows(rows, seed, mineRate, preset, startIndex = 1) {
   if (!mineRate || mineRate <= 0) return rows;
-  const mineRng = createSeededRng(seed + 900_001);
-  for (const row of rows) {
-    if (mineRng() < mineRate) applyMineRow(row, mineRng, preset);
+  for (let j = 0; j < rows.length; j += 1) {
+    const employeeIndex = startIndex + j;
+    const mineRng = createSeededRng((seed + 900_001 + employeeIndex * 17) >>> 0);
+    if (mineRng() < mineRate) applyMineRow(rows[j], mineRng, preset);
   }
   return rows;
 }
@@ -1212,15 +1263,18 @@ export function generateDataset(options) {
     payrollMonthlyVariation = true,
   } = options;
 
-  const check = validateGenerateOptions(count, seed, { ...yearOpts, preset });
+  const check = validateGenerateOptions(count, seed, { ...yearOpts, preset, startIndex: options.startIndex ?? 1 });
   if (!check.ok) throw new Error(check.message);
 
+  const startIndex = options.startIndex ?? 1;
   const rng = createSeededRng(seed);
   const quoteKeys = resolveCsvQuoteKeys(preset, quoteZipInCsv);
 
   if (preset === 'employee') {
-    const rows = generateEmployeeRows(rng, {
+    const rows = generateEmployeeRows({
       count,
+      startIndex,
+      seed,
       idPrefix,
       emailDomain,
       mineRate: 0,
@@ -1232,13 +1286,15 @@ export function generateDataset(options) {
       includeForeignNames,
       spaceInDiverseNames,
     });
-    applyMinesToRows(rows, seed, mineRate, 'employee');
+    applyMinesToRows(rows, seed, mineRate, 'employee', startIndex);
     return packageDataset(EMPLOYEE_HEADERS, rows, exportHeaders, quoteKeys);
   }
 
   if (preset === 'payroll') {
-    const employeeRows = generateEmployeeRows(rng, {
+    const employeeRows = generateEmployeeRows({
       count,
+      startIndex,
+      seed,
       idPrefix,
       emailDomain,
       mineRate: 0,
@@ -1311,6 +1367,60 @@ export function generateDataset(options) {
 }
 
 /**
+ * 社員マスタを CHUNK_MAX 単位で結合した CSV（ヘッダー1回 · BOMなし）
+ * @param {GenerateOptions} options
+ * @param {number} totalCount
+ */
+export function generateBulkEmployeeCsv(options, totalCount) {
+  const yearOpts = resolveEmployeeYearOptions(options);
+  const check = validateBulkEmployeeOptions(totalCount, options.seed, yearOpts);
+  if (!check.ok) throw new Error(check.message);
+
+  const {
+    seed,
+    idPrefix,
+    emailDomain,
+    exportHeaders,
+    birthDateFormat = 'slash',
+    hireDateFormat = 'dash',
+    quoteZipInCsv = true,
+    roundSalaryTo1000 = true,
+    includeForeignNames = true,
+    spaceInDiverseNames = true,
+  } = options;
+
+  const internalHeaders = EMPLOYEE_HEADERS;
+  const headers = resolveExportHeaders(internalHeaders, exportHeaders);
+  const quoteKeys = resolveCsvQuoteKeys('employee', quoteZipInCsv !== false);
+  const quoteSet = new Set(quoteKeys);
+  const lines = [headers.join(',')];
+
+  for (let startIndex = 1; startIndex <= totalCount; startIndex += CHUNK_MAX) {
+    const chunkCount = Math.min(CHUNK_MAX, totalCount - startIndex + 1);
+    const rows = generateEmployeeRows({
+      count: chunkCount,
+      startIndex,
+      seed,
+      idPrefix,
+      emailDomain,
+      mineRate: 0,
+      hireYearMin: yearOpts.hireYearMin,
+      hireYearMax: yearOpts.hireYearMax,
+      birthDateFormat,
+      hireDateFormat,
+      roundSalaryTo1000,
+      includeForeignNames,
+      spaceInDiverseNames,
+    });
+    for (const row of rows) {
+      lines.push(internalHeaders.map((k) => formatCsvCell(row[k], quoteSet.has(k))).join(','));
+    }
+  }
+
+  return lines.join('\r\n');
+}
+
+/**
  * @param {string} csv
  * @param {string} filename
  */
@@ -1327,8 +1437,12 @@ export function downloadCsvBlob(csv, filename = 'test-data.csv') {
 /**
  * @param {string} prefix
  * @param {DataPreset} preset
+ * @param {number} [totalCount]
  */
-export function defaultFilename(prefix, preset) {
+export function defaultFilename(prefix, preset, totalCount) {
   const stem = (prefix || 'test').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 20) || 'test';
+  if (preset === 'employee' && totalCount && totalCount > CHUNK_MAX) {
+    return `${stem}-employee-${totalCount}.csv`;
+  }
   return `${stem}-${preset}-${Date.now()}.csv`;
 }

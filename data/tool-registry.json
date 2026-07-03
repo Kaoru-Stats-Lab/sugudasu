@@ -167,9 +167,9 @@
       "inNav": true,
       "navOrder": 10.6,
       "name": "テスト用ダミーデータ生成",
-      "version": "0.4.3",
+      "version": "0.5.0",
       "stage": "alpha",
-      "statusNote": "社員マスタ · 氏名スペース · 給与月次変動 · 日付統一 · T10"
+      "statusNote": "社員マスタ25万一括CSV · IDオフセット · 日付統一 · T10"
     },
     "group-split": {
       "file": "group-split.html",

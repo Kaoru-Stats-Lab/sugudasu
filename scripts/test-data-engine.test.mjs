@@ -2,6 +2,8 @@
 import assert from 'node:assert/strict';
 import {
   createSeededRng,
+  CHUNK_MAX,
+  DOMAIN_MAX_EMPLOYEE,
   EMPLOYEE_HEADERS,
   EMPLOYMENT_TYPES,
   applyEmployeeHeaderTemplate,
@@ -11,11 +13,13 @@ import {
   pickHybridJapaneseIdentity,
   formatDiverseDisplayName,
   generateDataset,
+  generateBulkEmployeeCsv,
   resolveExportHeaders,
   rowsToCsv,
   roundTo1000,
   resolveCsvQuoteKeys,
   validateGenerateOptions,
+  validateBulkEmployeeOptions,
   MAX_ROWS,
   ADDRESS_MASTER,
 } from '../assets/test-data-engine.js';
@@ -403,10 +407,8 @@ function looksForeignEmployee(row) {
     spaceInDiverseNames: true,
     ...REF,
   });
-  const row59 = spaced.rows.find((r) => String(r['社員番号']) === 'EMP-2026-0059');
-  if (row59) {
-    assert.match(String(row59['氏名']), / /, 'hybrid suffix name should get surname space when enabled');
-  }
+  const spacedDiverse = spaced.rows.filter((r) => / /.test(String(r['氏名'])));
+  assert.ok(spacedDiverse.length > 0, 'spaceInDiverseNames should format at least one diverse name with surname space');
   const unified = generateDataset({
     preset: 'employee',
     count: 5,
@@ -419,6 +421,77 @@ function looksForeignEmployee(row) {
     hireDateFormat: 'dash',
   });
   assert.ok(unified.rows.every((r) => String(r['生年月日']).includes('-') && String(r['入社年月日']).includes('-')));
+}
+
+{
+  const batch1 = generateDataset({
+    preset: 'employee',
+    count: 100,
+    startIndex: 1,
+    seed: 42,
+    idPrefix: 'EMP-2026',
+    emailDomain: 'example.com',
+    mineRate: 0,
+    ...REF,
+  });
+  const batch2 = generateDataset({
+    preset: 'employee',
+    count: 100,
+    startIndex: 101,
+    seed: 42,
+    idPrefix: 'EMP-2026',
+    emailDomain: 'example.com',
+    mineRate: 0,
+    ...REF,
+  });
+  const ids = new Set([...batch1.rows, ...batch2.rows].map((r) => r['社員番号']));
+  assert.equal(ids.size, 200, 'offset batches should have unique employee ids');
+  assert.equal(batch1.rows[0]['社員番号'], 'EMP-2026-0001');
+  assert.equal(batch2.rows[0]['社員番号'], 'EMP-2026-0101');
+  const replay = generateDataset({
+    preset: 'employee',
+    count: 100,
+    startIndex: 101,
+    seed: 42,
+    idPrefix: 'EMP-2026',
+    emailDomain: 'example.com',
+    mineRate: 0,
+    ...REF,
+  });
+  assert.equal(batch2.csv, replay.csv, 'offset batch must reproduce with same seed and startIndex');
+}
+
+{
+  const bulk = generateBulkEmployeeCsv(
+    {
+      preset: 'employee',
+      count: CHUNK_MAX,
+      seed: 99,
+      idPrefix: 'EMP-2026',
+      emailDomain: 'example.com',
+      mineRate: 0,
+      ...REF,
+    },
+    12_000,
+  );
+  const lines = bulk.split('\r\n').filter((l) => l.length > 0);
+  assert.equal(lines.length, 12_001, 'bulk csv should be header + 12000 rows');
+  assert.ok(lines[0].startsWith('社員番号,'), 'bulk csv header');
+  assert.ok(lines[1].includes('EMP-2026-0001'), 'first data row');
+  assert.ok(lines.at(-1).includes('EMP-2026-12000'), 'last data row');
+}
+
+{
+  assert.equal(validateBulkEmployeeOptions(DOMAIN_MAX_EMPLOYEE, 1, REF).ok, true);
+  assert.equal(validateBulkEmployeeOptions(DOMAIN_MAX_EMPLOYEE + 1, 1, REF).ok, false);
+  assert.equal(
+    validateGenerateOptions(100, 1, { ...REF, preset: 'employee', startIndex: DOMAIN_MAX_EMPLOYEE - 99 }).ok,
+    true,
+  );
+  assert.equal(
+    validateGenerateOptions(100, 1, { ...REF, preset: 'employee', startIndex: DOMAIN_MAX_EMPLOYEE - 98 }).ok,
+    false,
+  );
 }
 
 console.log('test-data-engine.test.mjs: all tests passed');

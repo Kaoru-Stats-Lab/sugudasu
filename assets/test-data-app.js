@@ -2,7 +2,10 @@
  * test-data.html — UI wiring
  */
 import {
+  BULK_EMPLOYEE_OPTIONS,
+  CHUNK_MAX,
   COUNT_OPTIONS,
+  DOMAIN_MAX_EMPLOYEE,
   MAX_ROWS,
   PAYROLL_MONTHS_PER_EMPLOYEE,
   PRESET_META,
@@ -13,6 +16,7 @@ import {
   downloadCsvBlob,
   generateDataset,
   getDefaultReferenceYear,
+  validateBulkEmployeeOptions,
   validateGenerateOptions,
 } from './test-data-engine.js';
 import { writeTestDataHandoff } from './test-data-handoff.js';
@@ -55,11 +59,14 @@ const els = {
   previewNote: document.getElementById('preview-note'),
   progressWrap: document.getElementById('progress-wrap'),
   progressBar: document.getElementById('progress-bar'),
+  bulkExportPanel: document.getElementById('bulk-export-panel'),
+  btnBulkDownload: document.getElementById('btn-bulk-download'),
 };
 
 /** @type {'employee'|'payroll'|'customer'|'transaction'} */
 let preset = 'employee';
 let count = 100;
+let bulkTotal = 250_000;
 /** @type {{ headers: string[], rows: Record<string, string|number>[], csv: string }|null} */
 let lastResult = null;
 
@@ -169,6 +176,7 @@ function syncEmployeePanels() {
     const mineWrap = els.mineToggle.closest('label');
     if (mineWrap) mineWrap.classList.toggle('hidden', !employee);
   }
+  if (els.bulkExportPanel) els.bulkExportPanel.classList.toggle('hidden', preset !== 'employee');
 }
 
 function syncIdPrefixFromReferenceYear() {
@@ -225,6 +233,7 @@ async function generateWithYield() {
     hireYearMin: options.hireYearMin,
     hireYearMax: options.hireYearMax,
     preset: options.preset,
+    startIndex: 1,
   });
   if (!check.ok) {
     setStatus(check.message, true);
@@ -318,9 +327,92 @@ function randomSeed() {
 function countHintText(n) {
   if (preset === 'payroll') {
     const rows = n * PAYROLL_MONTHS_PER_EMPLOYEE;
-    return `社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 最大 ${MAX_ROWS.toLocaleString()} 行）`;
+    return `社員 ${n.toLocaleString()} 人 → 明細 ${rows.toLocaleString()} 行（×${PAYROLL_MONTHS_PER_EMPLOYEE}ヶ月 · 1回最大 ${MAX_ROWS.toLocaleString()} 行）`;
   }
-  return `${n.toLocaleString()} 件（最大 ${MAX_ROWS.toLocaleString()}）`;
+  return `${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()} · 社員マスタは一括 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} まで）`;
+}
+
+async function downloadBulkEmployeeCsv() {
+  if (preset !== 'employee') return;
+  const options = readOptions();
+  const yearOpts = {
+    referenceYear: options.referenceYear,
+    hireYearMin: options.hireYearMin,
+    hireYearMax: options.hireYearMax,
+  };
+  const check = validateBulkEmployeeOptions(bulkTotal, options.seed, yearOpts);
+  if (!check.ok) {
+    setStatus(check.message, true);
+    return;
+  }
+
+  const chunkCount = Math.ceil(bulkTotal / CHUNK_MAX);
+  els.btnBulkDownload.disabled = true;
+  els.btnGenerate.disabled = true;
+  els.progressWrap.classList.remove('hidden');
+  els.progressBar.style.width = '0%';
+  setStatus(`大規模CSVを生成中… 0 / ${bulkTotal.toLocaleString()} 件`);
+
+  try {
+    /** @type {BlobPart[]} */
+    const blobParts = [];
+    let headerLine = '';
+    let done = 0;
+
+    for (let startIndex = 1; startIndex <= bulkTotal; startIndex += CHUNK_MAX) {
+      const n = Math.min(CHUNK_MAX, bulkTotal - startIndex + 1);
+      const chunk = generateDataset({
+        ...options,
+        preset: 'employee',
+        count: n,
+        startIndex,
+        mineRate: 0,
+      });
+      const lines = chunk.csv.split('\r\n').filter((line, idx, arr) => line.length > 0 || idx < arr.length - 1);
+      if (!headerLine) {
+        headerLine = lines[0] || '';
+        blobParts.push(csvWithBom(`${headerLine}\r\n`));
+      }
+      const body = lines.slice(1).join('\r\n');
+      if (body) blobParts.push(`${body}\r\n`);
+
+      done += n;
+      const pct = Math.round((done / bulkTotal) * 100);
+      els.progressBar.style.width = `${pct}%`;
+      setStatus(`大規模CSVを生成中… ${done.toLocaleString()} / ${bulkTotal.toLocaleString()} 件`);
+      await new Promise((r) => setTimeout(r, 0));
+    }
+
+    const blob = new Blob(blobParts, { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = defaultFilename(options.idPrefix, 'employee', bulkTotal);
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+    const previewChunk = generateDataset({
+      ...options,
+      preset: 'employee',
+      count: Math.min(count, CHUNK_MAX),
+      startIndex: 1,
+      mineRate: 0,
+    });
+    lastResult = previewChunk;
+    renderPreview(previewChunk);
+    setStatus(
+      `社員マスタ ${bulkTotal.toLocaleString()} 件の CSV をダウンロードしました（${chunkCount} チャンク結合 · シード ${options.seed}）。`,
+    );
+  } catch (e) {
+    setStatus(e.message || '大規模CSVの生成に失敗しました。', true);
+  } finally {
+    els.btnBulkDownload.disabled = false;
+    els.btnGenerate.disabled = false;
+    setTimeout(() => {
+      els.progressWrap.classList.add('hidden');
+      els.progressBar.style.width = '0%';
+    }, 400);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -367,10 +459,20 @@ document.addEventListener('DOMContentLoaded', () => {
         count = Number.parseInt(value, 10) || 100;
       },
     });
+
+    window.SUGUDASU_SEGMENT.mount({
+      segmentId: 'bulk-segment',
+      order: BULK_EMPLOYEE_OPTIONS.map(String),
+      initial: '250000',
+      onChange: (value) => {
+        bulkTotal = Number.parseInt(value, 10) || 250_000;
+      },
+    });
   }
 
   els.btnGenerate.addEventListener('click', () => generateWithYield());
   els.btnDownload.addEventListener('click', () => downloadCsv());
+  if (els.btnBulkDownload) els.btnBulkDownload.addEventListener('click', () => downloadBulkEmployeeCsv());
   els.btnCopy.addEventListener('click', () => copyCsv());
   if (els.btnOpenNormalize) els.btnOpenNormalize.addEventListener('click', () => openNormalize());
   els.btnReseed.addEventListener('click', () => randomSeed());

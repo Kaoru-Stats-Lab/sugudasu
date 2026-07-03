@@ -57,6 +57,18 @@
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="count-hint" role="note"></p>
 
+        <div id="bulk-export-panel" class="hidden space-y-2 pt-2 border-t border-slate-100">
+            <h2 class="text-sm font-bold text-slate-900">大規模エクスポート（社員マスタ）</h2>
+            <p class="text-[11px] text-slate-600 leading-relaxed">5,000件チャンクを結合した <strong>UTF-8 BOM CSV</strong>。プレビューは先頭チャンクのみ。Excelで25万行を開くのは非推奨（仕様 §8.3）。</p>
+            <div class="sg-segment sg-segment--cols-3 sg-segment--mode-csv sg-segment--notion-soft" id="bulk-segment" role="tablist" aria-label="大規模件数">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="25000" aria-selected="false">2.5万件</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100000" aria-selected="false">10万件</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="250000" aria-selected="true">25万件</button>
+            </div>
+            <button type="button" id="btn-bulk-download" class="sg-btn-secondary text-sm py-2 px-4">↓ 大規模CSVダウンロード</button>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <label class="block space-y-1">
                 <span class="text-xs font-semibold text-slate-700">IDプレフィックス</span>
