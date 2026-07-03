@@ -47,7 +47,10 @@ const els = {
   headerCustomPanel: document.getElementById('header-custom-panel'),
   headerFields: document.getElementById('header-fields'),
   btnHeaderReset: document.getElementById('btn-header-reset'),
-  countSegment: document.getElementById('count-segment'),
+  countSlider: document.getElementById('count-slider'),
+  countDisplay: document.getElementById('count-display'),
+  countTicks: document.getElementById('count-ticks'),
+  countScaleLabel: document.getElementById('count-scale-label'),
   btnGenerate: document.getElementById('btn-generate'),
   btnDownload: document.getElementById('btn-download'),
   btnCopy: document.getElementById('btn-copy'),
@@ -66,8 +69,88 @@ let preset = 'employee';
 let count = 100;
 /** @type {{ headers: string[], rows: Record<string, string|number>[], csv: string }|null} */
 let lastResult = null;
-/** @type {{ select: (v: string, o?: { silent?: boolean }) => void, syncPill: () => void }|null} */
-let countSegmentApi = null;
+/** @type {number} */
+let countSliderIndex = 0;
+
+function formatCountShort(n) {
+  if (n >= 10_000) {
+    const man = n / 10_000;
+    const s = Number.isInteger(man) ? String(man) : man.toFixed(1).replace(/\.0$/, '');
+    return `${s}万`;
+  }
+  return n.toLocaleString('ja-JP');
+}
+
+function countIndexForValue(n, options = countOptionsForPreset()) {
+  const i = options.indexOf(n);
+  return i >= 0 ? i : 0;
+}
+
+function syncCountSliderAria(n) {
+  if (!els.countSlider) return;
+  const options = countOptionsForPreset();
+  els.countSlider.setAttribute('aria-valuemin', String(options[0]));
+  els.countSlider.setAttribute('aria-valuemax', String(options[options.length - 1]));
+  els.countSlider.setAttribute('aria-valuenow', String(n));
+  els.countSlider.setAttribute('aria-valuetext', `${formatCountShort(n)}件`);
+}
+
+function renderCountTicks(options = countOptionsForPreset()) {
+  if (!els.countTicks) return;
+  els.countTicks.innerHTML = options
+    .map((n, i) => {
+      const active = i === countSliderIndex ? ' is-active' : '';
+      return `<span class="sg-count-slider__tick${active}">${formatCountShort(n)}</span>`;
+    })
+    .join('');
+}
+
+function syncCountSliderUI({ silent = false } = {}) {
+  const options = countOptionsForPreset();
+  if (preset !== 'employee' && count > CHUNK_MAX) {
+    count = CHUNK_MAX;
+  }
+  if (!options.includes(count)) {
+    count = options[0];
+  }
+  countSliderIndex = countIndexForValue(count, options);
+
+  if (els.countSlider) {
+    els.countSlider.min = '0';
+    els.countSlider.max = String(options.length - 1);
+    els.countSlider.step = '1';
+    els.countSlider.value = String(countSliderIndex);
+  }
+
+  if (els.countDisplay) {
+    els.countDisplay.innerHTML = `${formatCountShort(count)}<span class="sg-count-slider__unit">件</span>`;
+  }
+
+  if (els.countScaleLabel) {
+    const lo = formatCountShort(options[0]);
+    const hi = formatCountShort(options[options.length - 1]);
+    els.countScaleLabel.textContent = `${lo} 〜 ${hi}`;
+  }
+
+  renderCountTicks(options);
+  syncCountSliderAria(count);
+
+  const hintEl = document.getElementById('count-hint');
+  if (hintEl) hintEl.innerHTML = countHintText(count);
+
+  if (!silent) {
+    syncDownloadButtonLabel();
+    syncNormalizeButton();
+  }
+}
+
+function setCountFromSliderIndex(index, { silent = false } = {}) {
+  const options = countOptionsForPreset();
+  const i = Math.max(0, Math.min(options.length - 1, index));
+  countSliderIndex = i;
+  count = options[i];
+  syncCountSliderUI({ silent });
+}
 
 function setStatus(message, isError = false) {
   els.status.textContent = message;
@@ -181,28 +264,13 @@ function countHintText(n) {
     return `${n.toLocaleString()} 件 — ${CHUNK_MAX.toLocaleString()}件×${chunks}チャンクを結合した <strong>UTF-8 BOM CSV</strong> 一括DL。「生成」で先頭${CHUNK_MAX.toLocaleString()}件をプレビュー。`;
   }
   if (preset === 'employee') {
-    return `${n.toLocaleString()} 件（最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} · 5,000件超は上段の2.5万〜25万を選択）`;
+    return `${n.toLocaleString()} 件（最大 ${DOMAIN_MAX_EMPLOYEE.toLocaleString()} · スライダーで段階選択 · 5,000件超は一括CSV）`;
   }
   return `${n.toLocaleString()} 件（1回最大 ${MAX_ROWS.toLocaleString()}）`;
 }
 
-function countHintsMap() {
-  return Object.fromEntries(countOptionsForPreset().map((n) => [String(n), countHintText(n)]));
-}
-
-function syncCountSegmentVisibility() {
-  if (!els.countSegment) return;
-  els.countSegment.querySelectorAll('[data-bulk-only]').forEach((btn) => {
-    btn.classList.toggle('hidden', preset !== 'employee');
-  });
-  if (preset !== 'employee' && count > CHUNK_MAX) {
-    count = CHUNK_MAX;
-    countSegmentApi?.select(String(CHUNK_MAX), { silent: true });
-  }
-  countSegmentApi?.syncPill();
-  const hintEl = document.getElementById('count-hint');
-  if (hintEl) hintEl.innerHTML = countHintText(count);
-  syncDownloadButtonLabel();
+function syncCountSliderForPreset() {
+  syncCountSliderUI();
 }
 
 function syncEmployeePanels() {
@@ -228,7 +296,7 @@ function syncEmployeePanels() {
     const mineWrap = els.mineToggle.closest('label');
     if (mineWrap) mineWrap.classList.toggle('hidden', !employee);
   }
-  syncCountSegmentVisibility();
+  syncCountSliderForPreset();
 }
 
 function syncIdPrefixFromReferenceYear() {
@@ -520,18 +588,11 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
 
-    countSegmentApi = window.SUGUDASU_SEGMENT.mount({
-      segmentId: 'count-segment',
-      order: EMPLOYEE_COUNT_OPTIONS.map(String),
-      initial: '100',
-      hints: countHintsMap(),
-      hintId: 'count-hint',
-      onChange: (value) => {
-        count = Number.parseInt(value, 10) || 100;
-        syncDownloadButtonLabel();
-        syncNormalizeButton();
-      },
-    });
+    if (els.countSlider) {
+      els.countSlider.addEventListener('input', () => {
+        setCountFromSliderIndex(Number.parseInt(els.countSlider.value, 10) || 0);
+      });
+    }
   }
 
   els.btnGenerate.addEventListener('click', () => generateWithYield());
@@ -566,11 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
   els.btnDownload.disabled = true;
   els.btnCopy.disabled = true;
   syncEmployeePanels();
+  syncCountSliderUI({ silent: true });
   syncIdPrefixPlaceholder();
   syncNormalizeButton();
   syncDownloadButtonLabel();
   randomSeed();
-  setStatus('プリセットと件数を選び、「生成」を押してください。5,000件超は「一括CSVダウンロード」で全件取得できます。');
+  setStatus('プリセットと件数を選び、「生成」を押してください。スライダー右へほど大規模（5,000件超は一括CSV）。');
 
   window.addEventListener('focus', () => {
     if (lastResult && !isBulkEmployeeCount()) els.btnCopy.disabled = false;

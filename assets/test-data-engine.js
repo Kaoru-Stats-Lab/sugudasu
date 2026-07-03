@@ -34,7 +34,7 @@ export const PRESET_META = {
   },
   transaction: {
     label: '取引明細',
-    description: '入出金 · 金額 · 摘要。一覧・集計の確認向け。',
+    description: '入出金 · 金額 · 摘要（個人通帳風デモ · 摘要と入出金は整合）。一覧・集計の確認向け。',
   },
 };
 
@@ -548,20 +548,28 @@ const MINE_NAMES = ['𠮷田', '髙橋', '轟', '南　太郎'];
 
 export const STATUSES = ['有効', '有効', '有効', '休止', '解約申請中', '要確認'];
 
-export const TXN_TYPES = ['入金', '出金', '入金', '入金', '出金'];
-
-export const TXN_DESCRIPTIONS = [
-  '給与振込',
-  '家賃引落',
-  '公共料金',
-  'カード利用',
-  'ATM出金',
-  '振込手数料',
-  '利息',
-  '還付金',
-  '年金受取',
-  '保険料',
+/**
+ * 取引明細 — 入出金と摘要のペア（個人通帳風デモ · §6.7.2）
+ * @type {{ type: '入金'|'出金', description: string, amountMin: number, amountMax: number, weight?: number }[]}
+ */
+export const TXN_PATTERNS = [
+  { type: '入金', description: '給与振込', amountMin: 180_000, amountMax: 450_000, weight: 3 },
+  { type: '入金', description: '還付金', amountMin: 1_000, amountMax: 80_000, weight: 1 },
+  { type: '入金', description: '年金受取', amountMin: 50_000, amountMax: 120_000, weight: 1 },
+  { type: '入金', description: '利息', amountMin: 10, amountMax: 3_000, weight: 1 },
+  { type: '出金', description: '家賃引落', amountMin: 55_000, amountMax: 130_000, weight: 2 },
+  { type: '出金', description: '公共料金', amountMin: 3_000, amountMax: 25_000, weight: 2 },
+  { type: '出金', description: 'カード利用', amountMin: 500, amountMax: 85_000, weight: 3 },
+  { type: '出金', description: 'ATM出金', amountMin: 10_000, amountMax: 100_000, weight: 1 },
+  { type: '出金', description: '振込手数料', amountMin: 110, amountMax: 880, weight: 1 },
+  { type: '出金', description: '保険料', amountMin: 5_000, amountMax: 35_000, weight: 1 },
 ];
+
+/** @deprecated TXN_PATTERNS を正本 */
+export const TXN_TYPES = TXN_PATTERNS.map((p) => p.type);
+
+/** @deprecated TXN_PATTERNS を正本 */
+export const TXN_DESCRIPTIONS = TXN_PATTERNS.map((p) => p.description);
 
 const MINE_EMAILS = ['test..double@example.com', 'a@', 'toolonglocalpart'.repeat(3) + '@example.com'];
 
@@ -856,6 +864,19 @@ function weightedPick(rng, items, key = 'name') {
  */
 function randInt(rng, min, max) {
   return Math.floor(rng() * (max - min + 1)) + min;
+}
+
+/**
+ * @param {() => number} rng
+ */
+function pickTxnPattern(rng) {
+  const total = TXN_PATTERNS.reduce((s, p) => s + (p.weight ?? 1), 0);
+  let r = rng() * total;
+  for (const p of TXN_PATTERNS) {
+    r -= p.weight ?? 1;
+    if (r <= 0) return p;
+  }
+  return TXN_PATTERNS[TXN_PATTERNS.length - 1];
 }
 
 /**
@@ -1352,15 +1373,15 @@ export function generateDataset(options) {
     const year = randInt(rng, 2024, 2026);
     const month = String(randInt(rng, 1, 12)).padStart(2, '0');
     const day = String(randInt(rng, 1, 28)).padStart(2, '0');
-    const amount = randInt(rng, 500, 500000);
+    const pattern = pickTxnPattern(rng);
     /** @type {Record<string, string|number>} */
     const row = {
       txn_id: `TXN-${String(i).padStart(6, '0')}`,
       customer_id: formatCustomerId(idPrefix, custIndex),
       txn_date: `${year}-${month}-${day}`,
-      txn_type: TXN_TYPES[randInt(rng, 0, TXN_TYPES.length - 1)],
-      amount: String(amount),
-      description: TXN_DESCRIPTIONS[randInt(rng, 0, TXN_DESCRIPTIONS.length - 1)],
+      txn_type: pattern.type,
+      amount: String(randInt(rng, pattern.amountMin, pattern.amountMax)),
+      description: pattern.description,
     };
     rows.push(row);
   }

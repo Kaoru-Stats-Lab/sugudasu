@@ -19,6 +19,7 @@
     "validate:readme-tools": "node scripts/sync-readme-tools-table.mjs --check",
     "validate:tool-naming": "node scripts/verify-tool-naming.mjs",
     "validate:ogp": "node scripts/verify-ogp.mjs",
+    "validate:adsense": "node scripts/verify-adsense-pages.mjs",
     "generate:favicons": "node scripts/generate-favicons.mjs",
     "guard:pages-free": "node scripts/verify-pages-free-plan.mjs",
     "guard:pages-budget": "node scripts/guard-pages-build-budget.mjs check",

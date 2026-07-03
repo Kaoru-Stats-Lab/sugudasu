@@ -48,15 +48,15 @@
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="preset-hint" role="note"></p>
 
-        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 pt-2">件数</h2>
-        <div class="sg-segment sg-segment--cols-3 sg-segment--mode-csv sg-segment--notion-soft" id="count-segment" role="tablist" aria-label="件数">
-            <span class="sg-segment__pill" aria-hidden="true"></span>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100" aria-selected="true">100件</button>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="500" aria-selected="false">500件</button>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="5000" aria-selected="false">5,000件</button>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="25000" aria-selected="false" data-bulk-only>2.5万件</button>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="100000" aria-selected="false" data-bulk-only>10万件</button>
-            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="250000" aria-selected="false" data-bulk-only>25万件</button>
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 pt-2" id="count-heading">件数</h2>
+        <div class="sg-count-slider pt-1" id="count-slider-wrap">
+            <div class="flex items-baseline justify-between gap-2 mb-3">
+                <output id="count-display" for="count-slider" class="sg-count-slider__value tabular-nums">100<span class="sg-count-slider__unit">件</span></output>
+                <span class="text-[10px] text-slate-400 shrink-0" id="count-scale-label" aria-hidden="true">100 〜 25万</span>
+            </div>
+            <input type="range" id="count-slider" class="sg-count-slider__input w-full" min="0" max="5" step="1" value="0"
+                aria-labelledby="count-heading" aria-describedby="count-hint" aria-valuemin="100" aria-valuemax="250000" aria-valuenow="100" aria-valuetext="100件">
+            <div class="sg-count-slider__ticks" id="count-ticks" aria-hidden="true"></div>
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="count-hint" role="note"></p>
 
@@ -221,14 +221,16 @@
                 <summary>なぜ SUGUDASU テストデータがあるのですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p><strong>閉域で、今日、整合済みのテストデータが欲しいのに、手段がない</strong> — このギャップのためです。</p>
-                    <p class="mt-2">エンタープライズのテストデータ管理（TDM）や本番DBマスキングの代替ではありません。<strong>受託開発・社内情シス・マニュアル担当</strong>が、次のどれかに困っているときの軽量ツールです。</p>
+                    <p class="mt-2">エンタープライズのテストデータ管理（TDM）や本番DBマスキングの代替ではありません。次の<strong>2つの現場</strong>向けです。</p>
+                    <p class="mt-2"><strong>① 非エンジニア（社労士事務所 · マニュアル担当 · 総務）</strong> — Excelで社員マスタを<strong>手打ち</strong>している · ネットのダミーCSVを<strong>持ち込めない</strong> · 整合（郵便番号↔住所 · 社員↔給与）を自分では揃えられない。</p>
+                    <p class="mt-2"><strong>② エンジニア（受託SI · 社内QA · 情シス兼務）</strong> — 閉域なら<strong>自前スクリプトやFakerでも作れる</strong>のはその通りです。それでも次で止まることが多いです。</p>
                     <ul class="mt-1 list-disc pl-4 space-y-1">
-                        <li>Excelで社員マスタを<strong>手打ち</strong>している</li>
-                        <li>ネットのダミーCSVを<strong>持ち込めない</strong></li>
-                        <li>本番コピーが<strong>禁止</strong>で、それっぽいデータがない</li>
-                        <li>「同じデータで再テストせよ」と<strong>監査</strong>に言われた（→シード再現）</li>
+                        <li>自作ツールの<strong>社内配布・稟議</strong>が重い（「このURLは説明資料付きの静的ツール」）</li>
+                        <li><strong>労務・給与SaaS向けの列整合</strong>（再雇用 · 給与3ヶ月連動）を毎回自前で書くのが面倒</li>
+                        <li>本番コピー禁止 · 外部SaaS禁止で、<strong>今日・この端末で</strong>CSVが欲しい</li>
+                        <li>監査で<strong>シード再現</strong>を求められる</li>
                     </ul>
-                    <p class="mt-2">郵便番号と住所の整合 · 社員↔給与明細の紐づけ · 社内ID書式 — を最初から揃えた<strong>架空CSV</strong>を、ブラウザだけで作れます。</p>
+                    <p class="mt-2">Excel手打ちのペルソナは<strong>入口の痛みの絵</strong>です。実際の利用者にはエンジニアが混ざりますが、彼らに「Excelやめよう」と売るより、<strong>稟議と整合済みCSVを短時間で</strong>が刺さります。</p>
                 </div>
             </details>
             <details class="sg-faq border border-slate-200 rounded-xl bg-slate-50 p-4">
@@ -339,6 +341,20 @@
                     <p class="mt-2 text-slate-500">※ 初回アクセス時の HTML/CSS/JS 読み込みは通常のWebページと同様です。プロキシで <code class="text-[10px]">sugudasu.com</code> 自体がブロックされる場合は別問題です。</p>
                 </div>
             </details>
+            <details class="sg-faq border border-blue-200 rounded-xl bg-blue-50/50 p-4">
+                <summary>なぜ「通信なし」でデータセットが作れるのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>「通信ゼロ」ではなく、「生成のたびにクラウドへデータを送らない」</strong>という意味です。Mockaroo のように1件ずつサーバーが返すのではありません。</p>
+                    <p class="mt-2"><strong>3ステップで理解できます</strong>（情シス向け · エンジニアは②で足りることが多い）:</p>
+                    <ol class="mt-1 list-decimal pl-4 space-y-2">
+                        <li><strong>初回だけ</strong> — ページとプログラム（JavaScript）· 氏名・住所などの<strong>辞書データ</strong>が端末のブラウザへ届く（通常のWebページ読み込みと同じ通信）</li>
+                        <li><strong>生成ボタン以降</strong> — 届いたプログラムが端末内で乱数とルールを回し、社員行を組み立てる。<strong>この間、氏名・給与などを当社サーバーへ送る API は呼びません</strong></li>
+                        <li><strong>ダウンロード</strong> — できた CSV は端末からファイル保存。アップロードはしません</li>
+                    </ol>
+                    <p class="mt-2">エンジニア向けの一言: <strong>埋め込み辞書 ＋ クライアント側 RNG（シード再現可）＋ POST なし</strong>。25万件もチャンク単位で端末内生成です。</p>
+                    <p class="mt-2 text-slate-500">「完全オフライン」とは言いません。初回の HTML/JS 取得 · 広告 · フォント取得は <a href="statements.html#verify-layers" class="text-blue-600 hover:underline">通信レイヤ</a> の②③と別問題です。生成処理が①（端末内）であることを DevTools で確認できます。</p>
+                </div>
+            </details>
             <details class="sg-faq border border-amber-200 rounded-xl bg-amber-50/40 p-4">
                 <summary>社内のホワイトリスト（閲覧許可）に載せられますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
@@ -357,7 +373,7 @@
             <details class="sg-faq border border-amber-200 rounded-xl bg-amber-50/40 p-4">
                 <summary>広告があると、閉域現場で使えませんか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p><strong>必ずしも使えません、とは言い切れません。</strong> SUGUDASU コア（<code class="text-[10px]">sugudasu.com</code>）は無料運営のため広告枠があります（現状はプレースホルダ · 本番 AdSense は審査待ち）。一方、<strong>CSVの生成処理には広告は不要</strong>です（<a href="statements.html#verify-layers" class="text-blue-600 hover:underline">通信レイヤの③</a> と①は別）。</p>
+                    <p><strong>必ずしも使えません、とは言い切れません。</strong> SUGUDASU コア（<code class="text-[10px]">sugudasu.com</code>）は無料運営のため Google AdSense の自動広告タグを全ページに設置しています（サイト承認は Google 側で進行中）。一方、<strong>CSVの生成処理には広告は不要</strong>です（<a href="statements.html#verify-layers" class="text-blue-600 hover:underline">通信レイヤの③</a> と①は別）。</p>
                     <p class="mt-2">よくあるパターン:</p>
                     <ul class="mt-1 list-disc pl-4 space-y-1">
                         <li><strong>ページ本体だけ許可</strong> → 広告ドメインはブロックされても生成は動く（枠が空 · 見た目だけ劣化）</li>

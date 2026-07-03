@@ -1,6 +1,6 @@
 # Zenn 編集カレンダー（Gemini 企画 · SSOT）
 
-**更新:** 2026-07-02（§2 #13/#17 更新 · #18は note 移管）  
+**更新:** 2026-07-03（§4 Zenn 下書き並び · #16/#19 反映）  
 **生成:** `docs/prompts/zenn-editorial-gemini.md`  
 **採否:** Claude/Cursor 突合済 · 提督執筆前提（Gemini 本文禁止）
 
@@ -57,6 +57,8 @@
 | **15** | **イベント進行表を同時編集しても行が混ざらない** — 幹事向け衝突フリー同期（CRDT） | B (+A) | sync/timeline | 幹事 · FE · 個人開発 | LSeq · 手動反映 · 短期バッファ · 現場 | **P1** | 2,200 | article_15_sync_crdt_field |
 | **13** | **WebPをJPGに変換するとき** — iLoveIMGに載せない選択肢 | A (+B) | /webp-to-jpg | 経費 · Wiki · FL | DevTools · 非送信 · 20枚 cap | **P1** | 2,000 | article_13_webp_to_jpg |
 | **17** | **マニュアル用スクショの機密消し** — アップロード型黒塗りの代替 | A (+B) | /mask | 情シス · 引き継ぎ担当 | Canvas · スタンプ注記 · 非送信 | **P1** | 2,000 | article_17_mask_screenshot |
+| **19** | **閉域でテストデータが欲しいとき** — Fakerは書けるが稟議で止まる話 | B (+A) | /test-data | 受託SI · QA · 情シス兼務 | 辞書+RNG · Mockaroo比較 · DevTools · シード | **P1** | 2,600 | article_19_test_data_closed |
+| **16** | **「万策尽きた」は本当か** — 制作進行で、尽きていなかった手立ての話 | A (+C) | /schedule（導線） | 制作PM · WEBディレクター | SHIROBAKO比喩 · 進行表泥沼 · Schedule楔 | **P2** | 4,000 | article_16_mansaku_schedule |
 
 **#11 詳細:** [`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`](ZENN_FAIR_DRAW_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_11_DRAFT.md`](ZENN_ARTICLE_11_DRAFT.md) · **公開:** #14 後推奨  
 **#12 詳細:** [`docs/notes/ZENN_NORMALIZE_DRAFT_MEMO.md`](ZENN_NORMALIZE_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_12_DRAFT.md`](ZENN_ARTICLE_12_DRAFT.md) — **Gemini `SUGUDASU_OOPS_GUARDRAILS.md` 連動**  
@@ -66,6 +68,8 @@
 **#15 詳細:** [`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`](ZENN_CRDT_SYNC_DRAFT_MEMO.md) · **公開ゲート:** S4 行 CRDT または設計メモ明示  
 **#13 詳細:** [`docs/notes/ZENN_WEBP_TO_JPG_DRAFT_MEMO.md`](ZENN_WEBP_TO_JPG_DRAFT_MEMO.md)  
 **#17 詳細:** [`docs/notes/ZENN_MASK_DRAFT_MEMO.md`](ZENN_MASK_DRAFT_MEMO.md) · **α v0.1.0 本番 2026-07-02** · #6 実例続編  
+**#19 詳細:** [`docs/notes/ZENN_TEST_DATA_DRAFT_MEMO.md`](ZENN_TEST_DATA_DRAFT_MEMO.md) · **初稿:** [`ZENN_ARTICLE_19_DRAFT.md`](ZENN_ARTICLE_19_DRAFT.md) · **Zenn 下書き 10月中旬**（5,233字 · 2026-07-03）· #6 実例続編（労務楔）  
+**#16 詳細:** [`ZENN_ARTICLE_16_DRAFT.md`](ZENN_ARTICLE_16_DRAFT.md) · [`SCHEDULE_MANSAKU_LP_MEMO.md`](SCHEDULE_MANSAKU_LP_MEMO.md) · **Zenn 下書き 10月上旬**（4,059字）  
 **#18 詳細:** Zenn は保留（note へ移管）· [`docs/notes/NOTE_OFFLINE_BROWSER_DRAFT_MEMO.md`](NOTE_OFFLINE_BROWSER_DRAFT_MEMO.md)
 
 **避けること（共通）:** 競合名指し · 100%安全/完全対応 · 未実装機能 · Vibe Coding
@@ -140,6 +144,15 @@
 - **H2:** mom/dad 問題 / CRDT 一言 / Google表型 vs 現場Sync / LSeq / S1→S4 ロードマップ / なぜ今 Zenn に書くか
 - **CTA:** https://sync.sugudasu.com/timeline?utm_source=zenn&utm_medium=social&utm_campaign=article_15_sync_crdt_field
 
+### #19 閉域テストデータ（P1 · 初稿あり · 2026-07-03）
+
+- **状態:** 初稿 [`ZENN_ARTICLE_19_DRAFT.md`](ZENN_ARTICLE_19_DRAFT.md) · メモ [`ZENN_TEST_DATA_DRAFT_MEMO.md`](ZENN_TEST_DATA_DRAFT_MEMO.md)
+- **リード:** 閉域SI — Fakerは書けるが稟議で止まる · 辞書+RNGでPOSTなし
+- **H2:** 止まり方 / 手段比較 / メカニズム / Fakerとの住み分け / DevTools / ホワイトリスト·広告 / やらないこと
+- **公開:** #6（8月上旬）公開後 · test-data FAQ 本番反映後推奨
+- **Zenn:** 下書き保存済 · **10月中旬** 予定（5,233字 · 2026-07-03）
+- **CTA:** https://sugudasu.com/test-data?utm_source=zenn&utm_medium=social&utm_campaign=article_19_test_data_closed
+
 ---
 
 ## §4 3ヶ月スケジュール
@@ -154,23 +167,36 @@
 | #11 fair-draw | ✅ | `ZENN_FAIR_DRAW_DRAFT_MEMO` + note 景表法 | 可 |
 | #2 開発裏側 | ✅ | `ZENN_ARTICLE_02_OUTLINE` | 可 |
 | **#3 warikan** | ✅ | `ZENN_WARIKAN_DRAFT_MEMO` | 可（9月） |
+| **#19 test-data** | ✅ | `ZENN_TEST_DATA_DRAFT_MEMO` | **下書き 10月中旬**（5,233字） |
+| **#16 万策尽きた** | ✅ | `ZENN_ARTICLE_16` · `SCHEDULE_MANSAKU_LP` | **下書き 10月上旬** |
 
 **note ストック:** `NOTE_ARTICLE_FAIR_DRAW_DRAFT` · `note-01-group-split-draft`（公開可）
 
-### 確定・進行中（2026年7〜9月 · Zenn）
+### 確定・進行中（2026年7〜10月 · Zenn ダッシュボード正本 · 2026-07-03）
 
-| 時期 | # | 状態 | 軸 | メモ |
-|------|---|------|-----|------|
-| 6月 | #1 invoice | **公開済** | A | 初回 |
-| 7月 | #15 CRDT | **公開済** | B | Sync 入口（計画より先行可） |
-| **7/7** | #12 normalize | **予約** | A | Excel vs サイト vs SUGUDASU · 5プリセット · 約2,800字 |
-| **7月中旬〜下旬** | #14 group-split | 下書き | A | RAND 卒業 · 班分け |
-| **8月上旬** | #6 非送信設計 | 下書き | B | 背骨 · DevTools |
-| **8月中旬** | **#17 mask** | メモ | A+B | #6 の実例 · DevTools |
-| **9月上旬** | #13 webp-to-jpg | メモ | A+B | 画像系非送信3部作 |
-| **8月中旬** | #11 fair-draw | 下書き | A | 懸賞抽選 · note 景表法と同週可 |
-| **9月上旬** | **#2 開発裏側** | 下書き可 | B | AI分担 · changelog · **B軸締め** |
-| **9月中旬〜下旬** | **#3 warikan** | 下書き可 | A | 固定額 · LRM · LINE清算文 |
+| 時期 | # | 状態（Zenn） | 字数（Zenn） | 軸 | メモ |
+|------|---|--------------|-------------|-----|------|
+| 6月 | #1 invoice | **公開済** | 3,329 | A | 初回 |
+| **7/7 10:51** | #12 normalize | **公開予約** | 7,271 | A | Excel深堀り · 5プリセット |
+| 7月中旬〜下旬 | #14 group-split | 下書き | 4,437 | A | RAND 卒業 · 班分け |
+| **8月上旬** | #6 非送信設計 | 下書き | 6,620 | B | 背骨 · **#19 の前提** |
+| 8月中旬 | #11 fair-draw | 下書き | 3,891 | A | 懸賞抽選 · note 景表法と同週可 |
+| 9月上旬 | #2 開発裏側 | 下書き | 3,325 | B | AI分担 · B軸締め |
+| 9月中旬 | #3 warikan | 下書き | 4,619 | A | 固定額 · LRM · LINE |
+| 7月（先行公開） | #15 CRDT | **公開済** | 4,385 | B | Sync 入口 |
+| **10月上旬** | **#16 万策尽きた** | 下書き | 4,059 | A+C | 制作進行 · Schedule楔 |
+| **10月中旬** | **#19 test-data** | 下書き | 5,233 | B+A | 閉域 · Faker vs 稟議 · #6 実例 |
+
+**並びの意図:** #6（8月）→ … → #19（10月）で **非送信背骨 → 労務CSV実例**。#16 は Schedule 楔で test-data とは別レーン。
+
+### 旧スケジュール（差分メモ）
+
+| 項目 | 旧計画 | 実態（2026-07-03） |
+|------|--------|-------------------|
+| #17 mask | 8月中旬 | **未登録**（繰越可） |
+| #13 webp | 9月上旬 | **未登録**（繰越可） |
+| #16 万策 | なし | **10月上旬** 追加 |
+| #19 test-data | #6 直後案 | **10月中旬**（#16 の次） |
 
 ### 繰越（shift / report — 未執筆）
 

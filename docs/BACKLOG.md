@@ -736,7 +736,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ##### C-1 在庫（インプレッション）
 
-- [ ] **P0** AdSense サイト承認待ち（2026-06-17 申請済）
+  - [ ] **P0** AdSense サイト承認待ち（2026-06-17 申請済 · 2026-07-03 自動広告タグを build:pages 注入）
 - [ ] **P0** 承認後: 全主要ツールに `ad-slot--result` 本番タグ — §2-2
 - [ ] **P1** 未配置ページ完了（`invoice` · `shift` · `label`）
 - [ ] **禁止** フォーム直上 · CTA 密着 · 印刷対象内広告
@@ -897,7 +897,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 - [x] AdSense 所有権の確認（`ads.txt`）完了
 - [x] AdSense サイト追加・有効化手順（`sugudasu.com` · 同意メッセージ済 · 2026-06-17）
-- [ ] AdSense **サイト承認**待ち（メール通知）
+  - [ ] AdSense **サイト承認**待ち（メール通知 · 自動広告タグは `data/adsense.json` + `build:pages` で core 全ページ head 注入済）
 - [ ] 収益導線のABテスト設計（広告位置・回遊CTA）
 
 ### 5-4. Sync ライン — `sugudasu-sync` · `sync.sugudasu.com`（インフラ 2026-06-23 · Supabase 2026-06-26）

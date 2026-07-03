@@ -9,12 +9,16 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execSync, spawnSync } from 'node:child_process';
 import { stripNonLatin1Env } from '../assets/sync-supabase-sanitize.js';
+import { injectAdsenseHead, loadAdsenseConfig } from './adsense-pages.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const TOOLS = path.join(ROOT, 'tools');
 const ASSETS = path.join(ROOT, 'assets');
 const ADS_TXT = path.join(ROOT, 'ads.txt');
+
+/** @type {{ enabled: boolean, client: string } | null} */
+let adsenseConfig = null;
 
 function parseBuildTarget() {
   const arg = process.argv.find((a) => a.startsWith('--target='));
@@ -410,6 +414,8 @@ function rewriteHtml(html) {
   out = out.replace(/\n\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*/g, '\n');
   out = out.replace(/\n<script>\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*<\/script>\s*/g, '\n');
 
+  out = injectAdsenseHead(out, adsenseConfig);
+
   return out;
 }
 
@@ -463,6 +469,10 @@ function prepareDist() {
 }
 
 prepareDist();
+adsenseConfig = loadAdsenseConfig(IS_SYNC);
+if (adsenseConfig) {
+  console.log(`build:pages — AdSense auto ads (${adsenseConfig.client}) · core only`);
+}
 compileTailwind();
 ASSET_V = computeAssetVersion();
 console.log(`  asset cache-bust: ?v=${ASSET_V}`);
@@ -550,4 +560,13 @@ const verifyChrome = spawnSync(process.execPath, [path.join(__dirname, 'verify-c
 });
 if (verifyChrome.status !== 0) {
   process.exit(verifyChrome.status || 1);
+}
+
+const verifyAdsense = spawnSync(
+  process.execPath,
+  [path.join(__dirname, 'verify-adsense-pages.mjs'), `--target=${BUILD_TARGET}`],
+  { stdio: 'inherit', env: { ...process.env, SUGUDASU_DIST: DIST } }
+);
+if (verifyAdsense.status !== 0) {
+  process.exit(verifyAdsense.status || 1);
 }

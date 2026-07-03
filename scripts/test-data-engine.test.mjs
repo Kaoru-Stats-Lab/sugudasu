@@ -22,6 +22,7 @@ import {
   validateBulkEmployeeOptions,
   MAX_ROWS,
   ADDRESS_MASTER,
+  TXN_PATTERNS,
 } from '../assets/test-data-engine.js';
 
 const REF = { referenceYear: 2026, hireYearMin: 2000, hireYearMax: 2026 };
@@ -254,6 +255,27 @@ assert.throws(() => resolveExportHeaders(['a', 'b'], ['only']), /2 列必要/);
 {
   const tx = generateDataset({ preset: 'transaction', count: 5, seed: 7, idPrefix: 'TX', emailDomain: 'x.test', mineRate: 0 });
   assert.equal(tx.headers.length, 6);
+}
+
+{
+  const inDesc = new Set(
+    TXN_PATTERNS.filter((p) => p.type === '入金').map((p) => p.description),
+  );
+  const outDesc = new Set(
+    TXN_PATTERNS.filter((p) => p.type === '出金').map((p) => p.description),
+  );
+  const tx = generateDataset({
+    preset: 'transaction',
+    count: 120,
+    seed: 99,
+    idPrefix: 'CUST',
+    emailDomain: 'x.test',
+    mineRate: 0,
+  });
+  for (const row of tx.rows) {
+    if (row.txn_type === '入金') assert.ok(inDesc.has(row.description));
+    else if (row.txn_type === '出金') assert.ok(outDesc.has(row.description));
+  }
 }
 
 {

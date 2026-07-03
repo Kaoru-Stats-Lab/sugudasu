@@ -358,11 +358,28 @@
 
 ---
 
+## DEPLOY-20260703-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | AdSense 自動広告タグ（build 注入 + guard）· test-data スライダー · TXN整合 · 閉域FAQ |
+| **change_summary** | `data/adsense.json` · `adsense-pages.mjs` · `verify-adsense-pages.mjs` · `build-pages` head 注入 · test-data UI/FAQ · `TEST_DATA_TOOL_SPEC` |
+| **local_build** | `pending` |
+| **deploy_count_today** | 4 |
+| **gates** | P1–P7 · 提督 push 依頼 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-03 | 003 executed（c2d34f6 · test-data 件数UI · §6.8 閉域FAQ） |
+| 2026-07-03 | 004 approved（AdSense 自動広告 · test-data スライダー/TXN · 提督 push 依頼） |
 | 2026-07-03 | 003 approved（test-data 件数UI · §6.8 閉域FAQ · 提督 push 依頼） |
 | 2026-07-03 | 002 approved（test-data FAQ 閉域・競合比較 · 提督 push 依頼） |
 | 2026-07-03 | 001 executed（50145d3 · test-data v0.5 · multi-ai docs） |

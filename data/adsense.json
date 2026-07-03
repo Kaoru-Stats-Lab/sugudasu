@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "client": "ca-pub-5846418506934424",
+  "mode": "auto-ads",
+  "note": "ads.txt 正本と同一 pub · Sync（dist-sync）には注入しない · build-pages が <head> に挿入"
+}
