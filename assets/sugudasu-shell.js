@@ -89,12 +89,12 @@
   function navHtml(activeFile, navItems) {
     const items = navItems || TOOLS;
     return `<nav class="no-print bg-slate-800 border-b border-slate-700" aria-label="SUGUDASU ツール">
-      <div class="max-w-7xl mx-auto px-2 sm:px-4">
+      <div class="sg-section-shell">
         <ul class="sg-nav-list py-1.5 text-[11px] font-semibold">
           ${items.map(t => {
             const active = t.file === activeFile;
             const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-            return `<li class="sg-nav-item"><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+            return `<li class="sg-nav-item"><a href="${t.file}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
               active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
           }).join('')}
@@ -181,7 +181,7 @@
 
   function focusFooterHtml() {
     return `<footer class="no-print border-t border-slate-100 bg-white py-3 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 text-center text-[10px] text-slate-400 space-x-2">
+      <div class="sg-section-shell text-center text-[11px] text-slate-400 space-x-2">
         <a href="${homeHref()}" class="text-slate-500 hover:underline">ツール一覧</a>
         <span aria-hidden="true">·</span>
         <a href="privacy.html" class="hover:underline">プライバシー</a>
@@ -197,7 +197,7 @@
 
   function footerHtml() {
     return `<footer class="no-print border-t border-slate-200 bg-white py-6 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <div class="sg-section-shell text-center space-y-2">
         <p class="text-xs text-slate-500">ブラウザ内完結 · 名簿を預けない設計を中心に</p>
         <p class="text-[11px] text-slate-500">
           <a href="guides.html" class="text-blue-600 hover:underline">実務ガイド</a>
@@ -434,7 +434,7 @@
       nav.innerHTML = navItems.map(t => {
         const active = t.file === file;
         const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-        return `<li class="sg-nav-item"><a href="${t.file}" class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+        return `<li class="sg-nav-item"><a href="${t.file}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
           active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
         }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
       }).join('');

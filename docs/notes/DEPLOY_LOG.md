@@ -558,10 +558,31 @@
 
 ---
 
+## DEPLOY-20260703-014
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | Core UI Refresh 本番反映 · ガイド記事 sg-guide-article · PAGE_LAYOUT_SELECTOR |
+| **change_summary** | `sg-main-shell` 全ツール横展開 · `sg-info-page` 情報ページ · ガイド8本 · `PAGE_LAYOUT_SELECTOR.md` · changelog |
+| **local_build** | `pass`（事前 `build:pages`） |
+| **deploy_count_today** | 14 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督依頼（本番反映） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 014 approved（Core UI Refresh · ガイド記事 · PAGE_LAYOUT_SELECTOR · 提督 push 依頼） |
 | 2026-07-03 | 013 executed（67ab4c7 · link-qr cache bust · normalize segment 3×2） |
 | 2026-07-03 | 013 approved（link-qr cache bust hotfix · normalize segment 3×2） |
 | 2026-07-03 | 012 approved（link-qr イベント連絡 · normalize sql_in · 企画docs） |

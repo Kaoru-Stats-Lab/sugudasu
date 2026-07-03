@@ -16,73 +16,108 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="研修進行表のコツ"></div>
 
-<main class="sg-info-page">
-    <article class="sg-card p-6 lg:p-8 sg-info-prose">
-        <header class="border-b border-slate-200 pb-4 mb-6 space-y-2">
-            <p class="text-[11px] font-bold text-emerald-700">イベント運営 · 更新 2026-06-27</p>
-            <h1 class="sg-info-page__title">社内研修の進行表をスムーズに作る3つのコツ</h1>
-            <p class="sg-info-page__lead">新人研修のたびに「去年のExcel」を開くと、前の担当が残した謎のセルコメントがそのまま残ってるんですよね。安全衛生もマネジメント研修も、定例ほど当日のズレが見えにくい。ファシリを兼務してると、進行表はシンプルに<strong>3つのポイント</strong>に絞った方が結局回しやすいです。</p>
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--event">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>イベント運営</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">イベント運営</p>
+            <p class="sg-guide-meta">更新 2026-06-27</p>
+            <h1 class="sg-guide-title">社内研修の進行表をスムーズに作る3つのコツ</h1>
+            <p class="sg-guide-lead">新人研修のたびに「去年のExcel」を開くと、前の担当が残した謎のセルコメントがそのまま残ってるんですよね。安全衛生もマネジメント研修も、定例ほど当日のズレが見えにくい。ファシリを兼務してると、進行表はシンプルに<strong>3つのポイント</strong>に絞った方が結局回しやすいです。</p>
         </header>
 
-        <section class="sg-info-callout mb-6">
-            <p class="font-semibold">この記事でわかること</p>
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-training-timeline-tips">
+            <h2 id="guide-takeaways-training-timeline-tips" class="sg-guide-takeaways__title">この記事でわかること</h2>
             <ul>
-                <li>受講生の集中力を維持する講義とワークの時間配分比率</li>
+<li>受講生の集中力を維持する講義とワークの時間配分比率</li>
                 <li>遅れを吸収し昼食等の絶対時間を守るアンカー時刻の設計</li>
                 <li>当日のスケジュール変更をスタッフ間へ即座に共有する形式</li>
                 <li>複数ファシリが混在する現場での進行表の一元管理</li>
             </ul>
         </section>
 
-        <h2>コツ1：「教える時間」と「動かす時間」の比率を先に決める</h2>
-        <p>講義コマの詰め込みで一番詰まりやすいです。成人学習では<strong>45〜60分に一度、5〜10分の切り替え</strong>を入れると集中が保てる、というのが現場の肌感覚。9:30〜17:00の枠なら、下の表のような配分が目安になります。</p>
-        <table>
-            <thead>
-                <tr><th>ブロック</th><th>目安比率</th><th>例（9:30-17:00 / 計450分）</th><th>削りやすさ</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>講義</td><td>40%</td><td>180分（3時間）</td><td>低</td></tr>
-                <tr><td>ワーク</td><td>30%</td><td>135分（2時間15分）</td><td>中</td></tr>
-                <tr><td>休憩</td><td>15%</td><td>70分（昼食60分＋小休憩10分）</td><td>低</td></tr>
-                <tr><td>質疑・まとめ</td><td>15%</td><td>65分（1時間5分）</td><td>高</td></tr>
-            </tbody>
-        </table>
-        <p class="sg-info-caption">※時間配分の比率は一般的な目安であり、研修目的や組織の性質により調整が必要です。</p>
-        <p>午前理論・午後演習の二幕構成にすると扱いやすいです。各コマに<strong>担当ファシリ名</strong>を入れておくと、当日「誰が何を話すか」で迷いにくくなります。</p>
+        <div class="sg-guide-body sg-info-prose">
+            <h2>コツ1：「教える時間」と「動かす時間」の比率を先に決める</h2>
+                    <p>講義コマの詰め込みで一番詰まりやすいです。成人学習では<strong>45〜60分に一度、5〜10分の切り替え</strong>を入れると集中が保てる、というのが現場の肌感覚。9:30〜17:00の枠なら、下の表のような配分が目安になります。</p>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>ブロック</th><th>目安比率</th><th>例（9:30-17:00 / 計450分）</th><th>削りやすさ</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>講義</td><td>40%</td><td>180分（3時間）</td><td>低</td></tr>
+                            <tr><td>ワーク</td><td>30%</td><td>135分（2時間15分）</td><td>中</td></tr>
+                            <tr><td>休憩</td><td>15%</td><td>70分（昼食60分＋小休憩10分）</td><td>低</td></tr>
+                            <tr><td>質疑・まとめ</td><td>15%</td><td>65分（1時間5分）</td><td>高</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <p class="sg-info-caption">※時間配分の比率は一般的な目安であり、研修目的や組織の性質により調整が必要です。</p>
+                    <p>午前理論・午後演習の二幕構成にすると扱いやすいです。各コマに<strong>担当ファシリ名</strong>を入れておくと、当日「誰が何を話すか」で迷いにくくなります。</p>
+            
+                    <h2>コツ2：アンカー時刻を先に固定する</h2>
+                    <p>昼食12:00、バス17:30、配信のハードエンドみたいな動かせない時間は、進行表で<strong>アンカー</strong>として明確にしておきます。「お昼までにこの章を終える」より「12:00の昼食に間に合わせる」方が、現場で判断しやすいんです。もし食い込んだら、短縮できるコマ（事例紹介10分→5分など）を事前にマークしておくと、その場で選びやすくなります。</p>
+            
+                    <h2>コツ3：当日更新を前提に「共有形式」を決める</h2>
+                    <p>質疑の延長、アイスブレイクの盛り上がり、機材トラブル——進行表は絶対にズレます。印刷して終わりじゃなく、更新したらすぐ関係者に渡せる手段を決めておくこと。チャットへのテキスト貼りや司会台モニターが現実的です。PDFだけだと再配布が面倒で、スマホで直せない形式だとファシリがPCの前に縛られてしまいます。</p>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>遅れパターン</th><th>典型原因</th><th>幹事の即応</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>質疑延長</td><td>受講生の関心の高まり、ファシリの解説超過</td><td>事前にマークした短縮可能コマを縮小し後続を詰める</td></tr>
+                            <tr><td>アイスブレイク長引き</td><td>受講生同士の盛り上がり、ルール説明不足</td><td>午前のまとめ・質疑を削り、昼食アンカーを守る</td></tr>
+                            <tr><td>機材トラブル</td><td>プロジェクター接続不備、配信回線の瞬断</td><td>回復上限5分、超過時は資料配布へ切替</td></tr>
+                            <tr><td>登壇者遅刻</td><td>交通遅延、前工程の長引き</td><td>後続ワークや幹事解説コマを繰り上げて先に消化</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+            
+                    <h2>ツールで補うとよい部分</h2>
+                    <p>スプレッドシートは初稿作りには便利ですが、<strong>分単位の連動再計算</strong>やスマホからの微調整は苦手です。<a href="/timeline">イベント進行ツール</a>なら、1コマの時間を変えるだけで後続が連動再計算され、プレーンテキストやTSVでそのままコピーできます。社内研修で名簿や予定を外部に預けたくないときは、ブラウザ内で完結する設計が安心です（<a href="/statements">SUGUDASUの約束</a>）。</p>
+        </div>
 
-        <h2>コツ2：アンカー時刻を先に固定する</h2>
-        <p>昼食12:00、バス17:30、配信のハードエンドみたいな動かせない時間は、進行表で<strong>アンカー</strong>として明確にしておきます。「お昼までにこの章を終える」より「12:00の昼食に間に合わせる」方が、現場で判断しやすいんです。もし食い込んだら、短縮できるコマ（事例紹介10分→5分など）を事前にマークしておくと、その場で選びやすくなります。</p>
-
-        <h2>コツ3：当日更新を前提に「共有形式」を決める</h2>
-        <p>質疑の延長、アイスブレイクの盛り上がり、機材トラブル——進行表は絶対にズレます。印刷して終わりじゃなく、更新したらすぐ関係者に渡せる手段を決めておくこと。チャットへのテキスト貼りや司会台モニターが現実的です。PDFだけだと再配布が面倒で、スマホで直せない形式だとファシリがPCの前に縛られてしまいます。</p>
-        <table>
-            <thead>
-                <tr><th>遅れパターン</th><th>典型原因</th><th>幹事の即応</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>質疑延長</td><td>受講生の関心の高まり、ファシリの解説超過</td><td>事前にマークした短縮可能コマを縮小し後続を詰める</td></tr>
-                <tr><td>アイスブレイク長引き</td><td>受講生同士の盛り上がり、ルール説明不足</td><td>午前のまとめ・質疑を削り、昼食アンカーを守る</td></tr>
-                <tr><td>機材トラブル</td><td>プロジェクター接続不備、配信回線の瞬断</td><td>回復上限5分、超過時は資料配布へ切替</td></tr>
-                <tr><td>登壇者遅刻</td><td>交通遅延、前工程の長引き</td><td>後続ワークや幹事解説コマを繰り上げて先に消化</td></tr>
-            </tbody>
-        </table>
-
-        <h2>ツールで補うとよい部分</h2>
-        <p>スプレッドシートは初稿作りには便利ですが、<strong>分単位の連動再計算</strong>やスマホからの微調整は苦手です。<a href="/timeline">イベント進行ツール</a>なら、1コマの時間を変えるだけで後続が連動再計算され、プレーンテキストやTSVでそのままコピーできます。社内研修で名簿や予定を外部に預けたくないときは、ブラウザ内で完結する設計が安心です（<a href="/statements">SUGUDASUの約束</a>）。</p>
-
-        <h2>よくある質問</h2>
-        <h3>複数ファシリがいる研修で、役割分担の重複を防ぐ進行表のコツは？</h3>
-        <p>各コマに「担当者名」を必ず入れ、「司会」「進行」だけにしないこと。さらに幹事1名を「最新版の発信元」に決め、複数人が別Excelを直さない運用にします。初版レビューで重複コマがないかを関係者全員で確認するのが早いです。</p>
-        <h3>新卒研修でワークが後ろ倒しになりがち。時間修正の手間を減らすには？</h3>
-        <p>短縮可能コマを事前にマークし、1コマの変更で後続が連動する形式にしておくと手計算が減ります。ワークは削りやすさ「中」——無理に削らず、質疑・まとめ枠から調整するのが現場では通りやすいです。</p>
-        <h3>外部講師を招くマネジメント研修で、講師と合意形成する手順は？</h3>
-        <p>アンカー時刻（昼食・終了）と短縮候補コマを初版に明記し、開催1週間前までに共有。講師の所要分に合意が取れたら確定版とし、当日はテキスト形式で最新版だけを回すルールにすると揉めにくいです。</p>
-
-        <section class="sg-info-callout mt-8">
-            <p class="font-semibold">関連ツール</p>
-            <p><a href="/timeline">SUGUDASU イベント進行</a> — 研修・キックオフ向けタイムライン</p>
-            <p class="sg-info-caption mt-2"><a href="/guides">← 実務ガイド一覧</a> · <a href="/guides/event-runbook">事前準備チェックリスト</a></p>
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-training-timeline-tips">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-training-timeline-tips" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>複数ファシリがいる研修で、役割分担の重複を防ぐ進行表のコツは？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>各コマに「担当者名」を必ず入れ、「司会」「進行」だけにしないこと。さらに幹事1名を「最新版の発信元」に決め、複数人が別Excelを直さない運用にします。初版レビューで重複コマがないかを関係者全員で確認するのが早いです。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>新卒研修でワークが後ろ倒しになりがち。時間修正の手間を減らすには？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>短縮可能コマを事前にマークし、1コマの変更で後続が連動する形式にしておくと手計算が減ります。ワークは削りやすさ「中」——無理に削らず、質疑・まとめ枠から調整するのが現場では通りやすいです。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>外部講師を招くマネジメント研修で、講師と合意形成する手順は？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>アンカー時刻（昼食・終了）と短縮候補コマを初版に明記し、開催1週間前までに共有。講師の所要分に合意が取れたら確定版とし、当日はテキスト形式で最新版だけを回すルールにすると揉めにくいです。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
         </section>
+
+        <aside class="sg-guide-tools">
+            <h2 class="sg-guide-tools__title">関連ツール</h2>
+            <a href="/timeline" class="sg-guide-tool-card">
+                <span class="sg-guide-tool-card__name">SUGUDASU イベント進行</span>
+                <span class="sg-guide-tool-card__desc">研修・キックオフ向けタイムライン</span>
+            </a>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a> · <a href="/guides/event-runbook">事前準備チェックリスト</a></p>
     </article>
 </main>
 

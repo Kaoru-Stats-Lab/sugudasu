@@ -4,6 +4,13 @@
     {
       "date": "2026-07-03",
       "type": "feat",
+      "title": "Core UI Refresh — レイアウト統一・ガイド記事デザイン",
+      "body": "全ツールに sg-main-shell（標準/ワイド/印刷幅）を適用。情報ページ・更新履歴を sg-info-page に統一。実務ガイド8本を sg-guide-article に移行。レイアウト選定ガイド PAGE_LAYOUT_SELECTOR.md を追加。",
+      "tools": ["sugudasu.css", "sugudasu-shell.js", "guides/*.html", "UI_LAYOUT_REFRESH_GUIDE.md"]
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
       "title": "全角半角整え — SQL IN 句プリセット",
       "body": "改行・タブ区切りの ID リストを 'id1', 'id2' 形式に。本番データを外部 Converter に貼れない向け。単体テスト追加。",
       "tools": ["normalize.html", "text-normalize.js"]

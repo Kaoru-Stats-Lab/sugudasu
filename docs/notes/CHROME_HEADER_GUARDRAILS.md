@@ -49,6 +49,13 @@
 
 **インライン `SUGUDASU_SHELL.mount()` は使わない。** `shell.js` 読込時に `bootstrapChromeFromDom()` が自動実行。
 
+### 3.1 情報量増加時のナビ規律（2026-07）
+
+- モバイルは `.sg-nav-list` を横スクロール（`overflow-x: auto`）で運用し、固定5列化しない。
+- ナビラベルは `11px` 下限、タップ高は `40px` 以上を維持する。
+- アクティブリンクは `aria-current="page"` を付与する。
+- 幅は `sg-section-shell`（本文と同じ左右余白）に合わせる。
+
 ### ビルドゲート
 
 `npm run build:pages` 末尾で `scripts/verify-chrome-mount.mjs` が **必ず** 走る。

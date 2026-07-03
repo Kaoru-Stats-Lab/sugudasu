@@ -77,7 +77,7 @@
 |--------|------|
 | **updates** | `main.sg-info-page` + ヘッダー + 複数 `section.sg-card` |
 | **statements** | 単一 `article.sg-info-prose` + 目次 · 図解キット |
-| **guides** | 索引 `guides.html` + `guides/{slug}` 記事 · 1,500字+ · `sg-info-prose` |
+| **guides** | 索引 `guides.html` + `guides/{slug}` · **`sg-guide-article`**（§9 UI_LAYOUT_REFRESH_GUIDE） |
 | **privacy / terms / disclaimer** | 単一 `article.sg-info-prose`、条文は `h3` + `p` / `ul` |
 
 ---
@@ -86,10 +86,11 @@
 
 新規情報ページ追加時:
 
-1. `main` に `.sg-info-page` を付ける（`max-w-*` は付けない）
-2. 本文ラッパーに `.sg-info-prose`
-3. インライン `text-xs` / `text-sm` / `text-slate-*` を prose に任せる
-4. `npm run build:pages` で dist 確認
+1. [`PAGE_LAYOUT_SELECTOR.md`](notes/PAGE_LAYOUT_SELECTOR.md) で **D（情報）か E（ガイド記事）か** を決める
+2. `main` に `.sg-info-page`（D）または `.sg-guide-page`（E）を付ける（`max-w-*` は付けない）
+3. 本文ラッパーに `.sg-info-prose`（D/E 共通本文）
+4. インライン `text-xs` / `text-sm` / `text-slate-*` を prose に任せる
+5. `npm run build:pages` で dist 確認
 
 ---
 

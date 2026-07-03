@@ -33,7 +33,7 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU リンク集QR" data-sg-subtitle="話した人に連絡 · 非送信" data-sg-tool-id="link-qr"></div>
 
-<main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+<main class="sg-main-shell flex-1 space-y-8">
 
     <header class="max-w-3xl space-y-3">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">登録不要 · その場30秒 · サーバー保存なし</p>
@@ -126,9 +126,10 @@
         </p>
     </section>
 
-    <section class="max-w-3xl no-print" aria-labelledby="lq-faq-heading">
-        <h2 id="lq-faq-heading" class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
-        <div class="space-y-2">
+    <section class="no-print sg-faq-section" aria-labelledby="lq-faq-heading">
+        <div class="sg-faq-inner">
+        <h2 id="lq-faq-heading" class="sg-faq-title">よくある質問</h2>
+        <div class="sg-faq-list space-y-2">
             <details class="sg-faq" open>
                 <summary>アイデアソンで話した人にだけ連絡したいとき使えますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
@@ -171,7 +172,7 @@
                     <p>静的 QR のため<strong>変更できません</strong>。URL を変えたら新しい QR を作り直してください。</p>
                 </div>
             </details>
-        </div>
+        </div></div>
     </section>
 </main>
 

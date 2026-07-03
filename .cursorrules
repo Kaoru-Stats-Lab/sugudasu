@@ -12,6 +12,7 @@
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
+| **ページレイアウト選定（main 系統）** | `docs/notes/PAGE_LAYOUT_SELECTOR.md` · 詳細 `UI_LAYOUT_REFRESH_GUIDE.md` |
 | **Schedule · Sync UI（Notion Like 表）** | **計画** `SCHEDULE_V3_MASTER_PLAN.md` · **汎用/特化** `SCHEDULE_GENERIC_VS_VERTICAL.md` · **UI文案** `SCHEDULE_UI_COPY.md` · **議論ログ** `SCHEDULE_SPLIT_PANE_DECISION_LOG.md` · **Pain/横展開** `SCHEDULE_SUPERVISOR_PAIN_HORIZON.md` · **週間リスト** `SCHEDULE_WEEKLY_LIST_DESIGN.md` · **エコシステム** `SCHEDULE_CONSTRUCTION_ECOSYSTEM.md` · Gemini週間 `docs/prompts/schedule-weekly-list-gemini-prompt.md` · PoC仕様 `SCHEDULE_SPLIT_PANE_POC_SPEC.md` · **`DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色）· 仕様 `SCHEDULE_TOOL_SPEC.md` · 決定 `SYNC_SCHEDULE_PRODUCT_DECISION.md` · `.cursor/rules/sugudasu-design-schedule.mdc` |
 | **ツールページ内 LP（hub ではなく /{tool}）** | `docs/notes/TOOL_PAGE_LP_STRATEGY.md` · §14-9 · `lp-marketing-matrix.json` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |

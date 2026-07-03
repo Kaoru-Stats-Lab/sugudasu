@@ -16,89 +16,121 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="インボイス請求書の作り方"></div>
 
-<main class="sg-info-page">
-    <article class="sg-card p-6 lg:p-8 sg-info-prose">
-        <header class="border-b border-slate-200 pb-4 mb-6 space-y-2">
-            <p class="text-[11px] font-bold text-violet-700">書類・経理 · 更新 2026-06-27</p>
-            <h1 class="sg-info-page__title">ブラウザだけでインボイス請求書を作る手順</h1>
-            <p class="sg-info-page__lead">締切前夜にExcelを開き直して、登録番号の桁を何度も数え直した経験、ありませんか。フリーランスや個人事業主、小規模店舗で適格請求書を出すとき、ツールに頼りきりにならずに最低限押さえておきたい原則と流れをまとめました。税率や登録番号は<strong>ご自身の状況と国税庁最新情報</strong>で必ず確認してください。</p>
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--docs">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>書類・経理</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">書類・経理</p>
+            <p class="sg-guide-meta">更新 2026-06-27</p>
+            <h1 class="sg-guide-title">ブラウザだけでインボイス請求書を作る手順</h1>
+            <p class="sg-guide-lead">締切前夜にExcelを開き直して、登録番号の桁を何度も数え直した経験、ありませんか。フリーランスや個人事業主、小規模店舗で適格請求書を出すとき、ツールに頼りきりにならずに最低限押さえておきたい原則と流れをまとめました。税率や登録番号は<strong>ご自身の状況と国税庁最新情報</strong>で必ず確認してください。</p>
         </header>
 
-        <section class="sg-info-callout mb-6">
-            <p class="font-semibold">この記事でわかること</p>
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-invoice-browser-workflow">
+            <h2 id="guide-takeaways-invoice-browser-workflow" class="sg-guide-takeaways__title">この記事でわかること</h2>
             <ul>
-                <li>インボイス適合の請求書に必要な主要記載事項の確認ポイント</li>
+<li>インボイス適合の請求書に必要な主要記載事項の確認ポイント</li>
                 <li>登録番号・税率区分など漏れやすい項目のセルフチェック</li>
                 <li>マスタ設定から送付保管までの基本6ステップ</li>
                 <li>ブラウザツールだけで完結させるときの注意点と運用のコツ</li>
             </ul>
         </section>
 
-        <h2>適格請求書で押さえる記載事項（概要）</h2>
-        <p>取引先が仕入税額控除を受けるには、一定の記載が求められます。実務上のチェック項目は下表です（必須度は個別案件で要確認）。詳細は<a href="https://www.invoice-kohyo.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁 インボイス制度</a>を参照してください。</p>
-        <table>
-            <thead>
-                <tr><th>項目</th><th>必須度</th><th>よくある漏れ</th><th>確認方法</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>登録番号</td><td>要確認</td><td>Tから始まる13桁の誤記・桁数不足</td><td>公表サイトで番号の有無と登録状況を突合</td></tr>
-                <tr><td>取引年月日</td><td>要確認</td><td>納品日・提供日の漏れ、当月末固定</td><td>契約・検収書の日付と実際の取引発生日を照合</td></tr>
-                <tr><td>税率区分</td><td>要確認</td><td>10%と8%（軽減税率）の区分未表記</td><td>品目ごとの適用税率を精査し、混在時はそれぞれ明記</td></tr>
-                <tr><td>税抜・税額</td><td>要確認</td><td>税率ごとの合計・消費税額の計算ミス</td><td>端数処理ルールを確認し、税率ごとに1回だけ税額計算</td></tr>
-                <tr><td>宛名・発行者名</td><td>要確認</td><td>取引先の正式名称、自社屋号・連絡先の不足</td><td>登記・発注書の組織名・氏名と完全一致するか確認</td></tr>
-            </tbody>
-        </table>
-        <p class="sg-info-caption">※個別の必須要件・記載義務の詳細は、<a href="https://www.invoice-kohyo.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁のインボイス制度概要</a>を確認のうえ、税務署または税理士等に要確認。</p>
-        <p>見積・納品・請求を分けるか一本化するかは慣行次第ですが、「請求の根拠」として日付と金額の整合を取っておきましょう。</p>
+        <div class="sg-guide-body sg-info-prose">
+            <h2>適格請求書で押さえる記載事項（概要）</h2>
+                    <p>取引先が仕入税額控除を受けるには、一定の記載が求められます。実務上のチェック項目は下表です（必須度は個別案件で要確認）。詳細は<a href="https://www.invoice-kohyo.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁 インボイス制度</a>を参照してください。</p>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>項目</th><th>必須度</th><th>よくある漏れ</th><th>確認方法</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>登録番号</td><td>要確認</td><td>Tから始まる13桁の誤記・桁数不足</td><td>公表サイトで番号の有無と登録状況を突合</td></tr>
+                            <tr><td>取引年月日</td><td>要確認</td><td>納品日・提供日の漏れ、当月末固定</td><td>契約・検収書の日付と実際の取引発生日を照合</td></tr>
+                            <tr><td>税率区分</td><td>要確認</td><td>10%と8%（軽減税率）の区分未表記</td><td>品目ごとの適用税率を精査し、混在時はそれぞれ明記</td></tr>
+                            <tr><td>税抜・税額</td><td>要確認</td><td>税率ごとの合計・消費税額の計算ミス</td><td>端数処理ルールを確認し、税率ごとに1回だけ税額計算</td></tr>
+                            <tr><td>宛名・発行者名</td><td>要確認</td><td>取引先の正式名称、自社屋号・連絡先の不足</td><td>登記・発注書の組織名・氏名と完全一致するか確認</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <p class="sg-info-caption">※個別の必須要件・記載義務の詳細は、<a href="https://www.invoice-kohyo.nta.go.jp/" target="_blank" rel="noopener noreferrer">国税庁のインボイス制度概要</a>を確認のうえ、税務署または税理士等に要確認。</p>
+                    <p>見積・納品・請求を分けるか一本化するかは慣行次第ですが、「請求の根拠」として日付と金額の整合を取っておきましょう。</p>
+            
+                    <h2>ブラウザで作る6ステップ</h2>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>ステップ</th><th>用意するもの</th><th>所要目安</th><th>失敗時の影響</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1. マスタ</td><td>登録番号・正式名称・振込先</td><td>3分</td><td>基本情報の誤りで全書類の再作成・再送が必要に</td></tr>
+                            <tr><td>2. 行整理</td><td>品目ごとの単価・数量・税率</td><td>5分</td><td>合計・消費税額の計算ミスの引き金に</td></tr>
+                            <tr><td>3. 書類種別</td><td>見積 / 納品 / 請求の選択</td><td>1分</td><td>合意形成の段階を誤認し回収遅延に</td></tr>
+                            <tr><td>4. 入力・プレビュー</td><td><a href="/invoice">請求書ツール</a>等のプレビュー</td><td>2分</td><td>誤字・レイアウト崩れの見落とし</td></tr>
+                            <tr><td>5. 印影</td><td><a href="/stamp">電子印鑑</a>PNG等（任意）</td><td>1分</td><td>先方の社内規定に合わない恐れ</td></tr>
+                            <tr><td>6. 送付・保管</td><td>PDF・保管フォルダ</td><td>2分</td><td>控え紛失・保存要件の不備（要個別確認）</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <ol>
+                        <li><strong>マスタ情報準備</strong>：自社名・登録番号・住所・振込先をテキストファイルに控えて毎回コピペ。</li>
+                        <li><strong>行単位で整理</strong>：品目・数量・単価・税率（10% or 8%）をしっかり確認。</li>
+                        <li><strong>書類の種類を決める</strong>：同一案件なら見積と請求の金額を揃えておく。</li>
+                        <li><strong>ツールに入力</strong>：ブラウザ内でプレビュー確認 → PDF保存（<a href="/invoice">請求書ツール</a>）。</li>
+                        <li><strong>印影</strong>：必要なら透過PNGを用意して貼る（<a href="/stamp">電子印鑑</a>）。</li>
+                        <li><strong>送付と保管</strong>：年/月/取引先フォルダで控えを残す。</li>
+                    </ol>
+            
+                    <h2>クラウド請求サービスと比べたときの位置づけ</h2>
+                    <p>継続的な請求管理や入金消込、会計連携が必要なら専用クラウドSaaSが向いています。一方で「今すぐ1通だけ出したい」「入力データを外部に預けたくない」というときは、登録不要でブラウザ完結のツールが現実的です。開発者ツールでデータ送信がないことを確認できる設計も安心材料になります（広告等は<a href="/privacy">プライバシーポリシー</a>参照）。</p>
+            
+                    <h2>よくあるミス</h2>
+                    <ul>
+                        <li><strong>登録番号の誤り</strong> — 取引先に差し戻しが来て、仕入税額控除ができなくなる。</li>
+                        <li><strong>税込合計だけ記載</strong> — 税率区分がわからず相手の経理が止まる。</li>
+                        <li><strong>見積と請求の金額不一致</strong> — 先方の承認フローが狂って後で修正対応。</li>
+                        <li><strong>軽減税率の区分漏れ</strong> — 8%対象品目で後から指摘が来て二度手間。</li>
+                    </ul>
+                    <p>本ガイドは税務アドバイスではありません。不安な案件は税理士に相談してください。</p>
+        </div>
 
-        <h2>ブラウザで作る6ステップ</h2>
-        <table>
-            <thead>
-                <tr><th>ステップ</th><th>用意するもの</th><th>所要目安</th><th>失敗時の影響</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>1. マスタ</td><td>登録番号・正式名称・振込先</td><td>3分</td><td>基本情報の誤りで全書類の再作成・再送が必要に</td></tr>
-                <tr><td>2. 行整理</td><td>品目ごとの単価・数量・税率</td><td>5分</td><td>合計・消費税額の計算ミスの引き金に</td></tr>
-                <tr><td>3. 書類種別</td><td>見積 / 納品 / 請求の選択</td><td>1分</td><td>合意形成の段階を誤認し回収遅延に</td></tr>
-                <tr><td>4. 入力・プレビュー</td><td><a href="/invoice">請求書ツール</a>等のプレビュー</td><td>2分</td><td>誤字・レイアウト崩れの見落とし</td></tr>
-                <tr><td>5. 印影</td><td><a href="/stamp">電子印鑑</a>PNG等（任意）</td><td>1分</td><td>先方の社内規定に合わない恐れ</td></tr>
-                <tr><td>6. 送付・保管</td><td>PDF・保管フォルダ</td><td>2分</td><td>控え紛失・保存要件の不備（要個別確認）</td></tr>
-            </tbody>
-        </table>
-        <ol>
-            <li><strong>マスタ情報準備</strong>：自社名・登録番号・住所・振込先をテキストファイルに控えて毎回コピペ。</li>
-            <li><strong>行単位で整理</strong>：品目・数量・単価・税率（10% or 8%）をしっかり確認。</li>
-            <li><strong>書類の種類を決める</strong>：同一案件なら見積と請求の金額を揃えておく。</li>
-            <li><strong>ツールに入力</strong>：ブラウザ内でプレビュー確認 → PDF保存（<a href="/invoice">請求書ツール</a>）。</li>
-            <li><strong>印影</strong>：必要なら透過PNGを用意して貼る（<a href="/stamp">電子印鑑</a>）。</li>
-            <li><strong>送付と保管</strong>：年/月/取引先フォルダで控えを残す。</li>
-        </ol>
-
-        <h2>クラウド請求サービスと比べたときの位置づけ</h2>
-        <p>継続的な請求管理や入金消込、会計連携が必要なら専用クラウドSaaSが向いています。一方で「今すぐ1通だけ出したい」「入力データを外部に預けたくない」というときは、登録不要でブラウザ完結のツールが現実的です。開発者ツールでデータ送信がないことを確認できる設計も安心材料になります（広告等は<a href="/privacy">プライバシーポリシー</a>参照）。</p>
-
-        <h2>よくあるミス</h2>
-        <ul>
-            <li><strong>登録番号の誤り</strong> — 取引先に差し戻しが来て、仕入税額控除ができなくなる。</li>
-            <li><strong>税込合計だけ記載</strong> — 税率区分がわからず相手の経理が止まる。</li>
-            <li><strong>見積と請求の金額不一致</strong> — 先方の承認フローが狂って後で修正対応。</li>
-            <li><strong>軽減税率の区分漏れ</strong> — 8%対象品目で後から指摘が来て二度手間。</li>
-        </ul>
-        <p>本ガイドは税務アドバイスではありません。不安な案件は税理士に相談してください。</p>
-
-        <h2>よくある質問</h2>
-        <h3>小規模事業者がブラウザツールだけでインボイス請求書を出すときの注意点は？</h3>
-        <p>記載事項は国税庁の最新情報と自分の登録状況で都度確認すること。ツールは体裁の補助であり、内容の正確性は発行者の責任です。入力を外部に預けたくない場合は、ブラウザ内処理・非送信の設計かを<a href="/statements">SUGUDASUの約束</a>等で確認してください。本ガイドは税務アドバイスではありません。</p>
-        <h3>ブラウザツールで作ったPDFの控えは、電子帳簿保存法に対応できるか？</h3>
-        <p>要件は取引内容・保存方法・訂正削除の履歴など個別に異なり、<strong>要確認</strong>です。最低限、送付したPDFと同じ版を年/月/取引先で残す習慣をつけ、電帳法の適用可否は税理士に相談してください。</p>
-        <h3>10%と8%が混在するとき、計算ミスを防ぐセルフチェックは？</h3>
-        <p>品目を税率ごとに行分けし、税率ごとの税抜小計・税額・合計を目視で照合します。端数処理（切り捨て/四捨五入）のルールを先に1つ決め、プレビュー画面で合計が手計算と一致するか最終確認するのが確実です。</p>
-
-        <section class="sg-info-callout mt-8">
-            <p class="font-semibold">関連ツール</p>
-            <p><a href="/invoice">SUGUDASU 請求書</a> · <a href="/stamp">電子印鑑</a> · <a href="/receipt">領収書</a></p>
-            <p class="sg-info-caption mt-2"><a href="/guides">← 実務ガイド一覧</a></p>
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-invoice-browser-workflow">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-invoice-browser-workflow" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>小規模事業者がブラウザツールだけでインボイス請求書を出すときの注意点は？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>記載事項は国税庁の最新情報と自分の登録状況で都度確認すること。ツールは体裁の補助であり、内容の正確性は発行者の責任です。入力を外部に預けたくない場合は、ブラウザ内処理・非送信の設計かを<a href="/statements">SUGUDASUの約束</a>等で確認してください。本ガイドは税務アドバイスではありません。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>ブラウザツールで作ったPDFの控えは、電子帳簿保存法に対応できるか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>要件は取引内容・保存方法・訂正削除の履歴など個別に異なり、<strong>要確認</strong>です。最低限、送付したPDFと同じ版を年/月/取引先で残す習慣をつけ、電帳法の適用可否は税理士に相談してください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>10%と8%が混在するとき、計算ミスを防ぐセルフチェックは？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>品目を税率ごとに行分けし、税率ごとの税抜小計・税額・合計を目視で照合します。端数処理（切り捨て/四捨五入）のルールを先に1つ決め、プレビュー画面で合計が手計算と一致するか最終確認するのが確実です。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
         </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/invoice">SUGUDASU 請求書</a> · <a href="/stamp">電子印鑑</a> · <a href="/receipt">領収書</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
     </article>
 </main>
 

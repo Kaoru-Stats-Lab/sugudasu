@@ -17,116 +17,153 @@
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="名簿を整える — 総務OL編"></div>
 
-<main class="sg-info-page">
-    <article class="sg-card p-6 lg:p-8 sg-info-prose">
-        <header class="border-b border-slate-200 pb-4 mb-6 space-y-2">
-            <p class="text-[11px] font-bold text-emerald-700">事務・データ整備 · 更新 2026-07-03</p>
-            <h1 class="sg-info-page__title">変換サイトに貼れない名簿を整える — 都内オフィスの総務OL編</h1>
-            <p class="sg-info-page__lead">丸の内近郊のオフィスビルで働く<strong>総務・営業事務</strong>の方を想定した読み物です。顧客名簿や社員リストを Excel からコピーしたあと、「無料の全角半角サイトに貼るのは社内規程でアウト」と言われて手が止まった経験は、珍しくありません。本記事では<strong>架空の事例</strong>を通して、ブラウザ内だけで列を整える場面と、<a href="/normalize">全角半角整え</a>の使いどころを整理します。</p>
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--team">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>事務・データ整備</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">事務・データ整備</p>
+            <p class="sg-guide-meta">更新 2026-07-03</p>
+            <h1 class="sg-guide-title">変換サイトに貼れない名簿を整える — 都内オフィスの総務OL編</h1>
+            <p class="sg-guide-lead">丸の内近郊のオフィスビルで働く<strong>総務・営業事務</strong>の方を想定した読み物です。顧客名簿や社員リストを Excel からコピーしたあと、「無料の全角半角サイトに貼るのは社内規程でアウト」と言われて手が止まった経験は、珍しくありません。本記事では<strong>架空の事例</strong>を通して、ブラウザ内だけで列を整える場面と、<a href="/normalize">全角半角整え</a>の使いどころを整理します。</p>
         </header>
 
-        <section class="sg-info-callout mb-6">
-            <p class="font-semibold">この記事でわかること</p>
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-office-roster-normalize">
+            <h2 id="guide-takeaways-office-roster-normalize" class="sg-guide-takeaways__title">この記事でわかること</h2>
             <ul>
-                <li>どんな職種の OL が、どんな場面で名簿整形に困るか</li>
+<li>どんな職種の OL が、どんな場面で名簿整形に困るか</li>
                 <li>Excel 関数 · 外部コンバータ · ブラウザ内処理の使い分け</li>
                 <li>行ズレ・先頭ゼロ・全角メールなど、事故りやすいポイント</li>
                 <li>規程説明のときに「データの行き先」をどう伝えるか</li>
             </ul>
         </section>
 
-        <h2>想定ペルソナ（架空）</h2>
-        <table>
-            <thead>
-                <tr><th>項目</th><th>内容</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>お名前（仮）</td><td>田中 美咲（たなか みさき）</td></tr>
-                <tr><td>勤務地</td><td>東京都内（丸の内・大手町エリア想定）· 某商事株式会社</td></tr>
-                <tr><td>職種</td><td><strong>総務課 · 営業サポート</strong>（入社5年目 · 正社員）</td></tr>
-                <tr><td>よく触るデータ</td><td>取引先名簿 · EC会員CSV · 研修参加者 · メール配信リスト</td></tr>
-                <tr><td>社内ルール</td><td>顧客データの<strong>外部 Web サービスへの貼付禁止</strong>（情報セキュリティ規程）</td></tr>
-                <tr><td>普段の武器</td><td>Excel · Outlook · 社内SFA · たまにペイントでスクショ加工</td></tr>
-            </tbody>
-        </table>
-        <p>美咲さんは「エンジニアではない」けれど、現場の<strong>最後の1マイル</strong>（リストを渡す直前の整形）を任されがちです。開発部門にチケットを切るほどでもないが、手作業は毎週つらい — そんな層が <a href="/normalize">全角半角整え</a> の主な読者です。</p>
+        <div class="sg-guide-body sg-info-prose">
+            <h2>想定ペルソナ（架空）</h2>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>項目</th><th>内容</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>お名前（仮）</td><td>田中 美咲（たなか みさき）</td></tr>
+                            <tr><td>勤務地</td><td>東京都内（丸の内・大手町エリア想定）· 某商事株式会社</td></tr>
+                            <tr><td>職種</td><td><strong>総務課 · 営業サポート</strong>（入社5年目 · 正社員）</td></tr>
+                            <tr><td>よく触るデータ</td><td>取引先名簿 · EC会員CSV · 研修参加者 · メール配信リスト</td></tr>
+                            <tr><td>社内ルール</td><td>顧客データの<strong>外部 Web サービスへの貼付禁止</strong>（情報セキュリティ規程）</td></tr>
+                            <tr><td>普段の武器</td><td>Excel · Outlook · 社内SFA · たまにペイントでスクショ加工</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <p>美咲さんは「エンジニアではない」けれど、現場の<strong>最後の1マイル</strong>（リストを渡す直前の整形）を任されがちです。開発部門にチケットを切るほどでもないが、手作業は毎週つらい — そんな層が <a href="/normalize">全角半角整え</a> の主な読者です。</p>
+            
+                    <h2>1日のなかで助けられる場面（4つ）</h2>
+            
+                    <h3>場面A — 9:10 · ECサイトへの一括会員登録前</h3>
+                    <p>営業部から Slack で届いた Excel。「この顧客200件、今週中にモール側に登録お願い」。E列のメールアドレスをコピーしたら、<code>ＴＡＮＡＫＡ＠ＥＸＡＭＰＬＥ．ＣＯ．ＪＰ</code> のように<strong>全角英数だらけ</strong>。モールの管理画面は半角しか受け付けない。</p>
+                    <p>美咲さんが試した退路:</p>
+                    <ol>
+                        <li>Excel で補助列に <code>ASC</code> を入れる案 → ブックが共有中で、触ると他シートの参照が壊れそうで躊躇。</li>
+                        <li>検索で出てきた無料コンバータ → 規程で「顧客メールを外部に送るな」とリマインドされ、タブを閉じる。</li>
+                        <li><a href="/normalize">全角半角整え</a> を開き、列を貼付 → <strong>EC登録</strong>プリセット → 行数バッジが「200 → 200」のまま → コピーして管理画面へ。</li>
+                    </ol>
+                    <p class="sg-info-caption">※本ツールは Excel の代替ではありません。毎週同じブックで補助列を回すなら、テンプレ化の方が向くことが多いです。</p>
+            
+                    <h3>場面B — 11:00 · 新人研修の班分け前</h3>
+                    <p>人事から「来週の研修、32名の班分けお願い」。名簿は問題ないが、<strong>氏名の全角スペースがバラバラ</strong>（「田中　美咲」「山田 太郎」混在）。<a href="/group-split">班分け</a> に渡す前に、姓名の空白を揃えたい。</p>
+                    <p><a href="/normalize">全角半角整え</a> の <strong>姓名スペース</strong> プリセットで1列整形 → 行数確認 → <a href="/group-split">班分け</a> へ。班分け結果を説明するときは、シード番号をメモしておくと「なぜこの組み合わせか」を後から答えやすくなります。</p>
+            
+                    <h3>場面C — 14:30 · メール配信リストを1行にまとめる</h3>
+                    <p>マーケ支援で「BCC用にメールアドレスをカンマ区切り1行で」。縦に並んだ300件を、手でカンマを入れるのは絶望的。</p>
+                    <p><strong>改行→カンマ</strong>プリセットを使うと、意図的に<strong>行数が1行に変わる</strong>。このときだけ「入力 N 行 → 出力 1 行」とバッジが変わるのは正常です。コピー前に必ず目視確認してください。</p>
+            
+                    <h3>場面D — 16:00 · 社員番号の先頭ゼロ</h3>
+                    <p>協力会社向けの連携ファイルで、社員番号 <code>00123</code> が Excel に貼った瞬間 <code>123</code> になる事故が先週あった。美咲さんは今度こそ怖い。</p>
+                    <p><a href="/normalize">全角半角整え</a> は<strong>数値型に変換せず文字列のまま</strong>処理します。画面上部に「0始まりコードを維持します」と出る行もあります。それでも貼り先の Excel が「数値」列だとゼロが落ちるので、<strong>貼り付け先の書式もセットで確認</strong>が必要です。</p>
+            
+                    <h2>職種別 — 誰がどれだけ困るか</h2>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>職種</th><th>典型シーン</th><th>困りごと</th><th>normalize の役割</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>総務 · 人事事務</strong></td><td>社員マスタ · 研修名簿</td><td>規程で外部変換NG · 行ズレ恐怖</td><td>列単位の整形 · 行数表示</td></tr>
+                            <tr><td><strong>営業事務 · 営業アシスタント</strong></td><td>取引先リスト · SFA投入前</td><td>全角メール · 電話番号のハイフン</td><td>EC登録 / CSV名簿プリセット</td></tr>
+                            <tr><td><strong>EC · モール運用</strong></td><td>会員CSVの一括登録</td><td>アップロードエラーで締切直前</td><td>半角英数 · 空白整理</td></tr>
+                            <tr><td><strong>カスタマーサポートリーダー</strong></td><td>障害報告用スクショ</td><td>顧客名のマスキング</td><td>名簿は <a href="/normalize">整え</a> · 画像は <a href="/mask">マスク</a></td></tr>
+                            <tr><td><strong>経理アシスタント</strong></td><td>請求先マスタ</td><td>社名の全角カッコ · 住所</td><td>CSV名簿 · ハイフン統一（長音は保護）</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <p>開発者やデータエンジニアは、Python や Excel マクロで済ませることが多く、<strong>本ツールの主戦場ではありません</strong>。「チケットを切るほどでもないが、規程は厳しい」事務職が中心です。</p>
+            
+                    <h2>3つの手段の使い分け</h2>
+                    <div class="sg-guide-table-scroll">
+            <table>
+                        <thead>
+                            <tr><th>手段</th><th>向くとき</th><th>不向きなとき</th><th>規程説明</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Excel 関数（ASC/TRIM 等）</td><td>同じブックで完結 · 再現性重視</td><td>共有ブックを触れない · 列だけ別画面へ</td><td>データは社内ファイル内</td></tr>
+                            <tr><td>無料の Web コンバータ</td><td>個人メモ · 非機微テキスト</td><td><strong>顧客 · 社員の実データ</strong></td><td>第三者サーバーへ送信されうる</td></tr>
+                            <tr><td><a href="/normalize">全角半角整え</a></td><td>列コピーの途中 · 500行以内 · 説明しやすさ</td><td>毎週千行の ETL · 複数列同時結合</td><td>ブラウザ内完結（<a href="/statements">SUGUDASU の約束</a>）</td></tr>
+                        </tbody>
+                    </table>
+            </div>
+                    <p>情報システム部に聞かれたときは、「<strong>当社ドメインへテキストを POST しない</strong>」ことを DevTools の Network タブで見せられると、説明が早い場合があります。最終判断は貴社のセキュリティ担当へ。</p>
+            
+                    <h2>美咲さん流 · 5分チェックリスト</h2>
+                    <ol>
+                        <li>Excel で<strong>1列だけ</strong>コピー（余計な見出し行を混ぜない）</li>
+                        <li><a href="/normalize">全角半角整え</a> に貼付 · 行数が 500 以下か確認</li>
+                        <li>用途に合うプリセット（EC / 名簿 / カンマ結合 等）を選択</li>
+                        <li><strong>入力 N 行 → 出力 M 行</strong> を確認（通常は N=M。カンマ結合だけ例外）</li>
+                        <li>コピー → 貼り先で先頭数行と末尾数行を目視</li>
+                    </ol>
+                    <p>閉域でテスト用の架空データが先に必要なら、<a href="/test-data">テストデータ</a> から CSV を生成し「全角半角整えで開く」導線も使えます。本番名簿と混ぜないよう、タブを分けてください。</p>
+        </div>
 
-        <h2>1日のなかで助けられる場面（4つ）</h2>
-
-        <h3>場面A — 9:10 · ECサイトへの一括会員登録前</h3>
-        <p>営業部から Slack で届いた Excel。「この顧客200件、今週中にモール側に登録お願い」。E列のメールアドレスをコピーしたら、<code>ＴＡＮＡＫＡ＠ＥＸＡＭＰＬＥ．ＣＯ．ＪＰ</code> のように<strong>全角英数だらけ</strong>。モールの管理画面は半角しか受け付けない。</p>
-        <p>美咲さんが試した退路:</p>
-        <ol>
-            <li>Excel で補助列に <code>ASC</code> を入れる案 → ブックが共有中で、触ると他シートの参照が壊れそうで躊躇。</li>
-            <li>検索で出てきた無料コンバータ → 規程で「顧客メールを外部に送るな」とリマインドされ、タブを閉じる。</li>
-            <li><a href="/normalize">全角半角整え</a> を開き、列を貼付 → <strong>EC登録</strong>プリセット → 行数バッジが「200 → 200」のまま → コピーして管理画面へ。</li>
-        </ol>
-        <p class="sg-info-caption">※本ツールは Excel の代替ではありません。毎週同じブックで補助列を回すなら、テンプレ化の方が向くことが多いです。</p>
-
-        <h3>場面B — 11:00 · 新人研修の班分け前</h3>
-        <p>人事から「来週の研修、32名の班分けお願い」。名簿は問題ないが、<strong>氏名の全角スペースがバラバラ</strong>（「田中　美咲」「山田 太郎」混在）。<a href="/group-split">班分け</a> に渡す前に、姓名の空白を揃えたい。</p>
-        <p><a href="/normalize">全角半角整え</a> の <strong>姓名スペース</strong> プリセットで1列整形 → 行数確認 → <a href="/group-split">班分け</a> へ。班分け結果を説明するときは、シード番号をメモしておくと「なぜこの組み合わせか」を後から答えやすくなります。</p>
-
-        <h3>場面C — 14:30 · メール配信リストを1行にまとめる</h3>
-        <p>マーケ支援で「BCC用にメールアドレスをカンマ区切り1行で」。縦に並んだ300件を、手でカンマを入れるのは絶望的。</p>
-        <p><strong>改行→カンマ</strong>プリセットを使うと、意図的に<strong>行数が1行に変わる</strong>。このときだけ「入力 N 行 → 出力 1 行」とバッジが変わるのは正常です。コピー前に必ず目視確認してください。</p>
-
-        <h3>場面D — 16:00 · 社員番号の先頭ゼロ</h3>
-        <p>協力会社向けの連携ファイルで、社員番号 <code>00123</code> が Excel に貼った瞬間 <code>123</code> になる事故が先週あった。美咲さんは今度こそ怖い。</p>
-        <p><a href="/normalize">全角半角整え</a> は<strong>数値型に変換せず文字列のまま</strong>処理します。画面上部に「0始まりコードを維持します」と出る行もあります。それでも貼り先の Excel が「数値」列だとゼロが落ちるので、<strong>貼り付け先の書式もセットで確認</strong>が必要です。</p>
-
-        <h2>職種別 — 誰がどれだけ困るか</h2>
-        <table>
-            <thead>
-                <tr><th>職種</th><th>典型シーン</th><th>困りごと</th><th>normalize の役割</th></tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>総務 · 人事事務</strong></td><td>社員マスタ · 研修名簿</td><td>規程で外部変換NG · 行ズレ恐怖</td><td>列単位の整形 · 行数表示</td></tr>
-                <tr><td><strong>営業事務 · 営業アシスタント</strong></td><td>取引先リスト · SFA投入前</td><td>全角メール · 電話番号のハイフン</td><td>EC登録 / CSV名簿プリセット</td></tr>
-                <tr><td><strong>EC · モール運用</strong></td><td>会員CSVの一括登録</td><td>アップロードエラーで締切直前</td><td>半角英数 · 空白整理</td></tr>
-                <tr><td><strong>カスタマーサポートリーダー</strong></td><td>障害報告用スクショ</td><td>顧客名のマスキング</td><td>名簿は <a href="/normalize">整え</a> · 画像は <a href="/mask">マスク</a></td></tr>
-                <tr><td><strong>経理アシスタント</strong></td><td>請求先マスタ</td><td>社名の全角カッコ · 住所</td><td>CSV名簿 · ハイフン統一（長音は保護）</td></tr>
-            </tbody>
-        </table>
-        <p>開発者やデータエンジニアは、Python や Excel マクロで済ませることが多く、<strong>本ツールの主戦場ではありません</strong>。「チケットを切るほどでもないが、規程は厳しい」事務職が中心です。</p>
-
-        <h2>3つの手段の使い分け</h2>
-        <table>
-            <thead>
-                <tr><th>手段</th><th>向くとき</th><th>不向きなとき</th><th>規程説明</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Excel 関数（ASC/TRIM 等）</td><td>同じブックで完結 · 再現性重視</td><td>共有ブックを触れない · 列だけ別画面へ</td><td>データは社内ファイル内</td></tr>
-                <tr><td>無料の Web コンバータ</td><td>個人メモ · 非機微テキスト</td><td><strong>顧客 · 社員の実データ</strong></td><td>第三者サーバーへ送信されうる</td></tr>
-                <tr><td><a href="/normalize">全角半角整え</a></td><td>列コピーの途中 · 500行以内 · 説明しやすさ</td><td>毎週千行の ETL · 複数列同時結合</td><td>ブラウザ内完結（<a href="/statements">SUGUDASU の約束</a>）</td></tr>
-            </tbody>
-        </table>
-        <p>情報システム部に聞かれたときは、「<strong>当社ドメインへテキストを POST しない</strong>」ことを DevTools の Network タブで見せられると、説明が早い場合があります。最終判断は貴社のセキュリティ担当へ。</p>
-
-        <h2>美咲さん流 · 5分チェックリスト</h2>
-        <ol>
-            <li>Excel で<strong>1列だけ</strong>コピー（余計な見出し行を混ぜない）</li>
-            <li><a href="/normalize">全角半角整え</a> に貼付 · 行数が 500 以下か確認</li>
-            <li>用途に合うプリセット（EC / 名簿 / カンマ結合 等）を選択</li>
-            <li><strong>入力 N 行 → 出力 M 行</strong> を確認（通常は N=M。カンマ結合だけ例外）</li>
-            <li>コピー → 貼り先で先頭数行と末尾数行を目視</li>
-        </ol>
-        <p>閉域でテスト用の架空データが先に必要なら、<a href="/test-data">テストデータ</a> から CSV を生成し「全角半角整えで開く」導線も使えます。本番名簿と混ぜないよう、タブを分けてください。</p>
-
-        <h2>よくある質問</h2>
-        <h3>都内の中堅商社でも、本当に「変換サイト禁止」はある？</h3>
-        <p>業種・規模は問いません。取引先データや個人情報を扱う部署では、<strong>「無料ツールに貼らない」</strong>ルールは珍しくありません。禁止の有無は貴社の規程を正としてください。本記事は一般的な事務現場の描写です。</p>
-        <h3>Excel だけで十分なのに、わざわざ Web ツールを使う意味は？</h3>
-        <p>意味があるのは<strong>「シートを壊したくない」「列だけ別の画面に持っていく」</strong>ときです。毎週同じマクロで回すなら Excel テンプレが正解です。</p>
-        <h3>スクショの顧客名はどうする？</h3>
-        <p>テキスト列は本記事の <a href="/normalize">全角半角整え</a>、画像のマスキングは <a href="/mask">マスク</a>（ぼかし · 黒塗り · 背景同色）。スタンプだけでは機密は隠れません。</p>
-
-        <section class="sg-info-callout mt-8">
-            <p class="font-semibold">いま試す</p>
-            <p><a href="/normalize" class="font-semibold">SUGUDASU 全角半角整え</a> — 貼付 → 用途ボタン → 行数確認 → コピー（登録不要 · 外部送信ゼロ）</p>
-            <p class="mt-2 text-sm">関連: <a href="/group-split">班分け</a> · <a href="/test-data">テストデータ</a> · <a href="/mask">マスク</a></p>
-            <p class="sg-info-caption mt-2"><a href="/guides">← 実務ガイド一覧</a></p>
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-office-roster-normalize">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-office-roster-normalize" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>都内の中堅商社でも、本当に「変換サイト禁止」はある？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>業種・規模は問いません。取引先データや個人情報を扱う部署では、<strong>「無料ツールに貼らない」</strong>ルールは珍しくありません。禁止の有無は貴社の規程を正としてください。本記事は一般的な事務現場の描写です。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>Excel だけで十分なのに、わざわざ Web ツールを使う意味は？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>意味があるのは<strong>「シートを壊したくない」「列だけ別の画面に持っていく」</strong>ときです。毎週同じマクロで回すなら Excel テンプレが正解です。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>スクショの顧客名はどうする？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>テキスト列は本記事の <a href="/normalize">全角半角整え</a>、画像のマスキングは <a href="/mask">マスク</a>（ぼかし · 黒塗り · 背景同色）。スタンプだけでは機密は隠れません。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
         </section>
+
+        <aside class="sg-guide-tools">
+            <h2 class="sg-guide-tools__title">いま試す</h2>
+            <a href="/normalize" class="sg-guide-tool-card">
+                <span class="sg-guide-tool-card__name">SUGUDASU 全角半角整え</span>
+                <span class="sg-guide-tool-card__desc">貼付 → 用途ボタン → 行数確認 → コピー（登録不要 · 外部送信ゼロ）</span>
+            </a>
+            <p class="sg-guide-tools__more">関連: <a href="/group-split">班分け</a> · <a href="/test-data">テストデータ</a> · <a href="/mask">マスク</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
     </article>
 </main>
 

@@ -25,15 +25,24 @@
 
 <main class="sg-info-page space-y-8">
 
-    <header class="space-y-2 text-center sm:text-left">
+    <header class="space-y-2">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">生きた開発ログ</p>
         <h1 class="sg-info-page__title">更新履歴・改善レポート</h1>
-        <p class="sg-info-page__lead">
+        <p class="sg-info-page__lead sg-info-prose">
             新機能・計算ロジック修正・料金反映などを時系列で公開しています。
             数値系ツールの信頼性確認にご利用ください。
             Copy-first · TSV/JSON の設計方針は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> にまとめています。
         </p>
+        <p id="changelog-updated" class="sg-info-caption"></p>
     </header>
+
+    <!-- タイムライン（本体） -->
+    <section id="changelog" class="sg-info-prose" aria-labelledby="changelog-heading">
+        <h2 id="changelog-heading" class="sg-info-section-title">改善タイムライン</h2>
+        <div id="changelog-list" class="sg-changelog mt-4">
+            <p class="sg-info-caption text-center py-8">読み込み中…</p>
+        </div>
+    </section>
 
     <!-- 報告フォーム -->
     <section class="sg-card p-5 lg:p-6 space-y-4 sg-info-prose" aria-labelledby="feedback-heading">
@@ -49,7 +58,7 @@
         <div class="flex flex-wrap gap-2">
             <a id="btn-google-form" href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform"
                 target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-lg">
+                class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg">
                 Googleフォームで送る
             </a>
         </div>
@@ -58,7 +67,7 @@
             <summary class="font-semibold cursor-pointer select-none">メールで送る（代替）</summary>
             <div class="mt-3 space-y-3 pt-3 border-t border-slate-200">
                 <div>
-                    <label for="fb-tool" class="block text-xs font-semibold text-slate-600 mb-1">対象ツール（任意）</label>
+                    <label for="fb-tool" class="block text-sm font-semibold text-slate-600 mb-1">対象ツール（任意）</label>
                     <select id="fb-tool" class="sg-input text-sm">
                         <option value="">選択なし / 全体</option>
                         <option value="invoice.html">請求書</option>
@@ -74,12 +83,12 @@
                     </select>
                 </div>
                 <div>
-                    <label for="fb-body" class="block text-xs font-semibold text-slate-600 mb-1">内容</label>
+                    <label for="fb-body" class="block text-sm font-semibold text-slate-600 mb-1">内容</label>
                     <textarea id="fb-body" rows="5" class="sg-input text-sm leading-relaxed resize-y"
                         placeholder="例：領収書の手取り逆引きで、源泉OFFのとき端数が1円ずれる"></textarea>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <button type="button" id="btn-mailto" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg">
+                    <button type="button" id="btn-mailto" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-2.5 rounded-lg">
                         メールで送る
                     </button>
                     <button type="button" id="btn-copy-fb" class="sg-btn-secondary">
@@ -92,17 +101,6 @@
                 <p id="copy-toast-updates" class="sg-copy-toast hidden" role="status"></p>
             </div>
         </details>
-    </section>
-
-    <!-- タイムライン -->
-    <section class="space-y-4 sg-info-prose" aria-labelledby="changelog-heading">
-        <div class="flex flex-wrap items-end justify-between gap-2">
-            <h2 id="changelog-heading" class="sg-info-section-title">改善タイムライン</h2>
-            <p id="changelog-updated" class="sg-info-caption"></p>
-        </div>
-        <div id="changelog-list" class="sg-changelog">
-            <p class="sg-info-caption text-center py-8">読み込み中…</p>
-        </div>
     </section>
 
     <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
@@ -197,7 +195,7 @@
         const list = document.getElementById('changelog-list');
         const updated = document.getElementById('changelog-updated');
         if (!data || !data.entries || !data.entries.length) {
-            list.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">履歴はまだありません。</p>';
+            list.innerHTML = '<p class="sg-info-caption text-center py-6">履歴はまだありません。</p>';
             return;
         }
 
@@ -241,7 +239,7 @@
             const data = await res.json();
             renderChangelog(data);
         } catch {
-            list.innerHTML = '<p class="text-xs text-rose-600 text-center py-6">更新履歴の読み込みに失敗しました。しばらくしてから再読み込みしてください。</p>';
+            list.innerHTML = '<p class="sg-info-caption text-rose-600 text-center py-6">更新履歴の読み込みに失敗しました。しばらくしてから再読み込みしてください。</p>';
         }
     }
 
