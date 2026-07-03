@@ -542,19 +542,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | link-qr タブ不能 hotfix（module import cache bust）· normalize プリセット segment 3×2 |
 | **change_summary** | `build-pages` import `?v=` · `link-qr-engine` 新API反映 · `normalize` cols-3 · segment pill 2段対応 |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 13 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 19/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督依頼（本番反映） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/link-qr` タブ切替 · `/normalize` 6プリセット） |
+| **cf_deployment_id** | `67ab4c7`（`b2739d6..67ab4c7` · git push origin main） |
+| **smoke** | pass — `/link-qr` タブ切替・Slack欄表示 · engine `?v=5cfaa875` · `/normalize` 6プリセット cols-3 |
 
 ---
 
@@ -562,6 +562,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 013 executed（67ab4c7 · link-qr cache bust · normalize segment 3×2） |
 | 2026-07-03 | 013 approved（link-qr cache bust hotfix · normalize segment 3×2） |
 | 2026-07-03 | 012 approved（link-qr イベント連絡 · normalize sql_in · 企画docs） |
 | 2026-07-03 | 011 executed（2238cba · link-qr α） |
