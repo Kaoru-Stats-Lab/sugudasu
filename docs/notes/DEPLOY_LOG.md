@@ -402,16 +402,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | mask ドラッグ後に黒塗り/モザイクが適用されない（プレビューだけ残る） |
 | **change_summary** | `mask-app.js` — 非同期プレビューと pointerup の競合修正（dragGeneration） |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 6 |
+| **pages_build_budget_after** | 12/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督 hotfix |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `6a5c145`（`35bffe1..6a5c145` · git push origin main） |
+| **smoke** | `/mask` — ドラッグ離しで黒塗り/モザイクが残る · 点線プレビューだけ残らない |
 
 ---
 
@@ -419,6 +422,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-03 | 006 executed（6a5c145 · mask 黒塗り未適用 hotfix） |
 | 2026-07-03 | 006 approved（mask 黒塗り未適用 hotfix · 提督報告） |
 | 2026-07-03 | 005 approved（test-data スライダー hotfix · 提督依頼） |
 | 2026-07-03 | 004 approved（AdSense 自動広告 · test-data スライダー/TXN · 提督 push 依頼） |

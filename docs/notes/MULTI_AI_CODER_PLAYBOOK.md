@@ -280,8 +280,17 @@ npm run release:pages:sync     # sync（wrangler は別）
 
 ---
 
-## 9. 更新ルール
+## 10. 将来検討ログ（採用見送り含む）
+
+| 日付 | トピック | 判断 | 正本 |
+|------|----------|------|------|
+| 2026-07-03 | **Antigravity ハイブリッド**（Claude Code 指揮 + `agy`/Gemini 実行） | SUGUDASU **採用しない**（量産フェーズでない）· **ASL なら大規模時に効く可能性** · Cursor では Plugin 非対応 | [`MULTI_AI_ANTIGRAVITY_HYBRID_LOG.md`](MULTI_AI_ANTIGRAVITY_HYBRID_LOG.md) |
+
+---
+
+## 11. 更新ルール
 
 - 新ツールに `test:*` を追加したら **§4.1 表** を更新する
 - `test:all` の構成変更は `package.json` と本書を同時更新
 - パイロット完了後、次ツールの INV を Gemini と共同で追記
+- 将来検討のマルチAI構成は **§10** に 1 行追記し、詳細は `docs/notes/MULTI_AI_*_LOG.md` へ
