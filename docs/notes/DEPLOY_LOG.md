@@ -642,19 +642,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | match-board 独立化 · 見積会議（planning-poker）追加 · time-calc 実装 · statements/adsense 運用更新 |
 | **change_summary** | `tools/match-board.html` · `tools/planning-poker.html` · `tools/time-calc.html` · `assets/*` 実装群 · `data/changelog.json` / `data/tool-registry.json` · `docs/notes/sync-specs/*` 整理移動 · `tools/statements.html` |
-| **local_build** | `pass`（`release:pages:free` 実行予定） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後に更新） |
+| **pages_build_budget_after** | 24/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 確認済み |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後に更新） |
-| **smoke** | （executed 後に更新） |
+| **cf_deployment_id** | `d781dd4`（`3e198ce..d781dd4` · git push origin main） |
+| **smoke** | pending — Cloudflare build 完了後に `sugudasu.com` / `updates` / `roadmap` で表示確認 |
 
 ---
 
@@ -662,6 +662,8 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
+| 2026-07-09 | 001 approved（match-board · 見積会議 · time-calc · Sync仕様移管 · 提督 push 依頼） |
 | 2026-07-04 | 001 executed（33474f2 · table-conv · invoice 源泉 · normalize · fair-draw CSV） |
 | 2026-07-04 | 001 approved（table-conv · invoice 源泉 · normalize · fair-draw CSV · roadmap 対象外 · 提督 push 依頼） |
 | 2026-07-03 | 016 executed（5cff6f3 · roadmap · 対ナビ · 透明性粒度） |
