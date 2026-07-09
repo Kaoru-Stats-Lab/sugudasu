@@ -230,6 +230,7 @@
 | P1 | FAQ 2層化（班分け基本 + ツール）· `data/group-split-faq.json` | [x] C1 |
 | **P1** | **M13 スイッチャー対応表（O8）** — BR名·Slack列テンプレ + 班員結合 TSV/Slack · 再編差分1行 | [ ] |
 | P2 | 制約 Excel インポート | [ ] |
+| **P2** | **match-board 初期MVP** — 新卒·ゼミ·**マーケ棚割**等 · 定員スロット · D&D · JSON | [ ] · [`DRAFT_ASSIGNMENT_PRODUCT_NOTE.md`](notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md) |
 | **見送り** | 年齢バランス · 性別比の数値目標 · 属性上限/組 | ソルバ外 · SPEC に明記 |
 | **見送り** | ドラッグ卓割り · 100%最適保証 | スコープ外 |
 

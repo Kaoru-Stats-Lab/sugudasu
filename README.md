@@ -37,12 +37,17 @@ python -m http.server 8080
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
+| [match-board.html](tools/match-board.html) | /match-board | SUGUDASU ドラフト会議 | ドラフト | alpha |
+| [planning-poker.html](tools/planning-poker.html) | /planning-poker | SUGUDASU 見積会議 | 見積会議 | alpha |
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
 | [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |
 | [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
 | [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
 | [sns.html](tools/sns.html) | /sns | SUGUDASU SNS | SNS | gamma |
 | [link-qr.html](tools/link-qr.html) | /link-qr | SUGUDASU リンク集QR | リンクQR | alpha |
+| [qr-reader.html](tools/qr-reader.html) | /qr-reader | SUGUDASU QR読取 | QR読取 | alpha |
+| [diff.html](tools/diff.html) | /diff | SUGUDASU 差分チェック | 差分 | alpha |
+| [time-calc.html](tools/time-calc.html) | /time-calc | SUGUDASU time-calc | 時間計算 | alpha |
 
 ### 2) 補助・案内ページ
 

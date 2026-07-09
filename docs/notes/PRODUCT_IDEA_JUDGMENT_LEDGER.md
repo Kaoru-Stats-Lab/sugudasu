@@ -1,6 +1,6 @@
 # プロダクトアイディア評価台帳 — ジャッジ基準SSOT
 
-**更新**: 2026-07-03  
+**更新**: 2026-07-04  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **起源**: 20〜30代・ITリテラシー高め会社員の「面倒くさい」20選ディスカッション（店長 × ディレクター）
 
@@ -243,12 +243,259 @@
 
 ---
 
-## 11. 関連ドキュメント
+## 11. Sync マイクロSaaS比較デューデリ（2026-07-04）
+
+**起源:** 海外マイクロSaaS × 日本ローカル摩擦の比較表 → Gemini / Claude 並列レビュー → 裁定。  
+**プロンプト正本:** `docs/prompts/sync-micro-saas-dd-handoff.md`  
+**ライン正本:** `docs/notes/SUGUDASU_SYNC_LINE.md`（コア F1–F7 とは別軸。Sync はアカウント・クラウド・有料）
+
+### 11-1. 既存5ドメイン裁定
+
+| 元案 | 判定 | 一言 |
+|------|------|------|
+| Text 定型文ハブ | **PARK** | AI / コア `report`·`sns` コピーで足りる。課金フック弱い |
+| Data API モック | **HOLD→縮小** | 「非送信 API」は信頼分裂。有期限共有ビンのみ残し次々期 |
+| Finance 電帳法ストレージ | **条件付き GO** | 「電帳法対応」断定禁止 → **履歴ルーム**へ再定義 |
+| Visual アセットドライブ | **PARK** | Drive / LINE WORKS と正面衝突 |
+| Crypto 名簿・鍵箱 | **縮小 GO** | PW 管理は **OUT**。当日 Room のみ |
+
+**P0（今）:** Schedule / timeline-sync の製品 E2E。旗艦未完了のまま新ドメイン並列は禁止。
+
+### 11-2. 採択 ID
+
+| ID | 名 | 判定 | Tier | 位置づけ | 実装順メモ |
+|----|-----|------|------|----------|------------|
+| **T-SYNC-INV-ARCHIVE** | 請求・領収履歴ルーム | **条件付き GO** | A | **旗艦以外の第1楔（第2柱）** | 法務・表現・purge/エクスポートゲート後 |
+| **T-SYNC-EVENT-ROOM** | イベント当日ステータス Room | **縮小 GO** | A | **旗艦クラスター拡張（新柱ではない）** | S1 直後の最短実装候補（timeline-sync 同型） |
+| **T-SYNC-SECURE-BIN** | 国内・有期限共有ビン | **HOLD** | B | 旧 API モックの矮小化 | S1 後に再判断 |
+
+#### T-SYNC-INV-ARCHIVE
+
+- **一文:** `invoice` / `receipt` で作った帳票を、オプトインで Sync の有期限ルームに保存し、日付・取引先・金額で検索できる（税務・電帳法の専門家確認はユーザー責任。**対応完了とは謳わない**）。
+- **適合:** Sync ラインのみ。コア UI は最下部オプトインのみ（人質にしない）。
+- **市場:** 小規模事業者の履歴迷子。海外 Invoice SaaS は日本語取引先検索 UX が弱い。
+- **リスク:** 「電帳法対応」誤認 · 無期限保存期待 · purge 後の消失クレーム · コア導線の広告視。
+- **依存:** Sync S1 E2E · Auth · entitlement · 初回免責同意 · 期限前エクスポート義務。
+- **課金:** 月額 ¥780–980 帯（件数上限）。都度のみは検索ジョブと不整合。
+- **やらないこと:** TSA 連携 · 独自デザイン帳票ビルダ · 売掛消込・口座連携 · 「電帳法対応」広告。
+- **禁止表現:** 「電帳法対応」「完全準拠」「真実性を保証」— LP / UI / メタすべて。
+
+#### T-SYNC-EVENT-ROOM
+
+- **一文:** `fair-draw` / `group-split` / `timeline` の当日データを Room で複数端末同期（名簿ステータス・受付・進行）。
+- **適合:** timeline-sync と同型。パスワード管理は **OUT**。
+- **市場:** イベント当日の紙と口頭の摩擦。Wheel of Names 等は受付オペ連動がない。
+- **課金:** イベント都度（Sync 帯 ¥980 前後を基準。極端な低単価は LTV 検証後に改定）。
+- **やらないこと:** QR チケット発券 · メール一斉送信 · 資格情報の永続保管 · 名簿の恒久 DB 化。
+
+#### T-SYNC-SECURE-BIN（HOLD）
+
+- **一文:** `normalize` / `table-conv` 等の出力を、ユーザーが能動選択した場合のみ有期限・日本リージョン明示の共有 URL にする。
+- **やらないこと:** 「非送信」ブランドの流用 · 永続 API · Mockaroo 互換。
+
+### 11-3. 戦略楔 vs 実装キュー（両立）
+
+| 問い | 答え |
+|------|------|
+| 旗艦以外の楔として台帳に載せる第1案は？ | **T-SYNC-INV-ARCHIVE** |
+| S1 直後に実装コスト最小で切る1本は？ | **T-SYNC-EVENT-ROOM**（旗艦同型拡張） |
+| 今四半期の本命リソースは？ | **P0 旗艦 E2E のみ** |
+
+### 11-4. 反証メモ（INV-ARCHIVE）
+
+1. 電帳法完全準拠と誤認 → 免責固定文 + 初回必須同意（F7）。
+2. 有期限 purge でデータ消失クレーム → 残日数表示 · 期限前通知 · 一括エクスポート義務。
+3. コア最下部導線がスルーされる → JTBD 直結のオプトイン訴求（広告っぽい汎用リンク禁止）。
+
+---
+
+## 12. 跳ねた案の出し方 — A×B×C 組み合わせ探索
+
+**問題:** 「海外マイクロSaaS × 日本摩擦」比較は、既知カテゴリの**上澄み（Mass の内挿）**になりやすい。履歴ルーム型は正しいが跳ねない。跳ねる案は **直交する3変数の積**から出す。
+
+### 12-1. 変数定義
+
+| 変数 | 何を入れるか | 例（SUGUDASU 文脈） |
+|------|--------------|---------------------|
+| **A** | **既存アセット**（既に持っている能力・画面・データ形） | `invoice` · `fair-draw` · `timeline` · `normalize` · Schedule DB · Room/Push-Pull · PDF/印刷 · CSV 列ピック |
+| **B** | **制約・摩擦の種類**（制度に限らない。現場オペ・信頼・時間・言語・提出様式） | 電帳法**検索**迷子 · 監理提出の様式分岐 · 当日の版ズレ · 「名簿を外に上げない」 · 日本語取引先名 · Shift-JIS · 有期限で消したい · IT低リテ監督 |
+| **C** | **相互作用の型**（誰が・いつ・何台で・どう終わるか） | 1人ブラウザ完結 · オプトインクラウド · 当日多端末 Room · 有期限共有 URL · Export 一発提出 · 都度課金イベント · 月額現場 |
+
+**プロダクト仮説 = A × B × C の1セル。**  
+「海外ツール名」は変数に入れない（入れると Mass 上澄みに戻る）。
+
+### 12-2. ローカライズ / プロダクト化の手順
+
+1. **格子を埋める（発散）** — A を既存 registry / Sync primitive から列挙。B を制度・現場・信頼・時間から列挙。C をコア完結 / Sync Room / Export / 共有ビンから列挙。日本固有でなくてよい（B は「現場の版ズレ」でも可）。
+2. **セルを1文ピッチにする** — 「A の出力を、B の摩擦に対し、C の型で渡す」。海外 SaaS 名が文中に必要ならそのセルは棄却候補。
+3. **跳ね度フィルタ** — 次のどれか1つ以上が無いセルは「上澄み」として PARK 寄り:
+   - 既存カテゴリ名（Pastebin / Drive / 1Password…）で説明しきれない
+   - A が2つ以上噛み合う（例: fair-draw × timeline × 受付ステータス）
+   - B が「保存場所が欲しい」以外（例: 提出様式・当日同期・非送信のまま証跡）
+4. **ライン振り分け** — F2/F3 を破るなら **Sync のみ**。コアを人質にしない。無期限保存・電帳法断定・PW マネージャは即 OUT。
+5. **本台帳 §2–3 で採点** — GO / HOLD / PARK / OUT。跳ねていても適合×なら OUT。
+
+### 12-3. セル例（未採点・探索用）
+
+| A | B | C | 仮説1文 | 跳ね度メモ |
+|---|---|---|---------|------------|
+| invoice + receipt | 取引先横断の「いくらだっけ」 | Sync 有期限ルーム + インデックス | = **T-SYNC-INV-ARCHIVE**（採択済・上澄み寄りだが摩擦本物） | 低〜中 |
+| fair-draw + timeline | 受付とステージの名簿ズレ | 当日 Room | = **T-SYNC-EVENT-ROOM**（採択済） | 中（組み合わせ） |
+| Schedule DB | 提出/現場/週間で様式が分岐 | Export preset のみ（正本は1つ） | 旗艦 Schedule の芯 | 中（既方針） |
+| normalize + table-conv | 情シスが海外 Pastebin 禁止 | 有期限・国内明示共有ビン | = SECURE-BIN（HOLD） | 低 |
+| lottery + fair-draw | 景表証跡を当日まで持ち歩く | コア PDF + 当日だけ Sync 閲覧 | 証跡は非送信、進行だけ同期 | **中〜高（未採点）** |
+| group-split + timeline | 班と進行時刻が別ファイル | 同一 Room に班ラベルを載せる | 衛星統合 | **中（未採点）** |
+| stamp / 帳票 PDF | 現場監督がスマホで「押した版」だけ共有 | 有期限・閲覧のみ Room | 画像ドライブではなく**版付き証跡** | **中〜高（未採点）** |
+| timeline | 紙進行表＋口頭インカムの「何分押し？」 | 整数パルスだけ当日 Room | = **T-SYNC-SHIFT-METER**（§14 採択） | **高** |
+| label/stamp | 役所・元請け指定の現物紙枠 | コア完結・位置合わせ印刷 | = **CORE-FRAME-PRINT**（§14） | **高** |
+| fair-draw | 名簿を外に出さず結果だけ伝える | 本人番号照会・有期限 URL | = **T-SYNC-DRAW-LOOKUP**（§14） | **中〜高** |
+
+探索セッションでは §12-3 を増やし、跳ね度「中以上」だけを §10 テンプレで本採点する。本採点結果は **§14**。
+
+### 12-4. Agent への指示（ブレスト時）
+
+- **禁止:** 海外マイクロSaaS一覧の日本版焼き直しだけを返すこと。
+- **必須:** 組み合わせ表を先に出し、その後にピッチ化する（軸は2〜4で可）。
+- **必須:** 各案に「このセルが既存カテゴリ名で説明しきれるか？ Y/N」を付ける。Y なら PARK 候補。
+- **出力後:** 本台帳 §2 で採点。Sync 案は `SUGUDASU_SYNC_LINE.md` と矛盾しないこと。
+- **Gemini コピー用プロンプト:** [`docs/prompts/sync-product-combo-jump-prompt.md`](../prompts/sync-product-combo-jump-prompt.md)
+
+---
+
+## 14. 組み合わせ探索 本採点（2026-07-04 · Gemini / Claude / ChatGPT）
+
+**プロンプト:** `docs/prompts/sync-product-combo-jump-prompt.md`  
+**入力:** 3モデル並列。**裁定:** 旗艦正本（手動反映・Export preset）との重複を先に落とす。
+
+### 14-1. 「旗艦そのもの」で棄却（新IDにしない）
+
+| 案（出典） | 棄却理由 |
+|------------|----------|
+| 現場直報ビューワ（Gemini） | = Schedule **K2**（編集1・閲覧多・手動反映バナー）。旗艦仕様の言い換え |
+| 工程表マルチフォーマット / 提出替え（Claude·ChatGPT） | = Schedule **Export preset**（提出/現場/週間）。旗艦の芯 |
+| 名寄せブラウザ（ChatGPT） | = コア `normalize`（既存 GO · Phase B）。新規楔ではない |
+| 現場大部屋デジタル黒板 / 資材表版一元化 等 | サイネージ・Sheets で説明しきれる（Part2 で捨て済み） |
+
+→ これらは **旗艦・既存GOの正しさの追認**。跳ねた新案ではない。
+
+### 14-2. 本採点（跳ね候補のみ）
+
+| ID | 名 | 出典Top | 跳ね度 | 判定 | Tier | 位置づけ |
+|----|-----|---------|--------|------|------|----------|
+| **T-SYNC-SHIFT-METER** | タイムライン押し引きメーター | Gemini #1 | **高** | **GO（縮小）** | A | **旗艦クラスターの尖り楔**（payload=分数整数のみ） |
+| **CORE-FRAME-PRINT** | 現物枠ピタ印刷 | Gemini #2 | **高** | **HOLD→コアGO候補** | A/B | コアのみ。印刷物理リスクあり。Sync と競合しない |
+| **T-SYNC-DRAW-LOOKUP** | 抽選結果本人照会リンク | Claude #2 | 中〜高 | **GO（縮小）** | A | fair-draw クラスター。名簿非公開 |
+| **T-SYNC-ROLE-VIEW** | 役割別タイムライン表示 | ChatGPT #2 | 中 | **HOLD** | B | timeline 拡張。権限肥大化に注意 |
+| **T-SYNC-MASK-SHARE** | 名簿マスク共有リンク | Claude | 中〜高 | **HOLD** | B | EVENT-ROOM / DRAW-LOOKUP と統合検討 |
+| カチンコSync | ビューポート強制スクロール | Gemini | 中 | **HOLD** | B | SHIFT-METER とジョブ近接。後追い |
+| 朝礼配置板ライブ | group-split 当日配信 | Gemini | 中 | **PARK→EVENT-ROOM に吸収** | — | 新ID不要 |
+| 当日席替えライブ | 自動再配分 | Gemini | 中 | **HOLD** | C | 自動ロジックが重い |
+| 使い捨て証跡パス | lottery 監査URL | Gemini | 中 | **HOLD** | B | purge 厳密検証後 |
+| 当日ログ自動報告書 | Room→report | Claude #1 | 中 | **PARK→EVENT-ROOM アドオン** | — | 楔ではなく機能。Room 後 |
+| 検収確認ルーム | 有期限確認 | Claude | 中 | **HOLD** | B | 電子契約誤認リスク |
+| 承認スタンプルーム | stamp 回覧 | Claude | 中 | **HOLD** | C | 法的効力誤認 |
+| 差分証跡 / 匿名CSV | normalize 拡張 | ChatGPT | 中 | **PARK→normalize 拡張** | — | 新ID不要 |
+
+### 14-3. 採択詳細
+
+#### T-SYNC-SHIFT-METER（押し引きメーター）— **今回の本命楔**
+
+- **一文:** 紙の進行表はそのまま。司令塔が「+5分押し」等の**時間差分整数だけ**を当日 Room で全スタッフ画面に点滅同期する。
+- **なぜ跳ねるか:** フル timeline-sync（表全体の版同期）でも、PM SaaS のリアルタイム共同編集でもない。**紙＋口頭の隙間**のジョブ。通信は整数パルスのみ。
+- **適合:** timeline-sync インフラ流用。閲覧 URL・都度課金・retain/purge そのまま。
+- **課金:** イベント都度（¥980–1,500 帯）。
+- **やらないこと:** チャット/音声 · 進行テキストの全文同期 · 詳細閲覧ログ。
+- **旗艦関係:** **拡張（尖り）**。timeline-sync E2E の上に載せる最小機能。INV-ARCHIVE（第2柱）とは別軸。
+- **反証:** 電波不通 → 最終同期時刻表示・オフライン警告。誤タップ大変更 → 閾値超え確認 UI。
+
+#### CORE-FRAME-PRINT（現物枠ピタ印刷）
+
+- **一文:** 指定紙・複写紙を撮影し、枠内にブラウザで文字を位置合わせして1発印字（非送信）。
+- **なぜ跳ねるか:** Drive/帳票SaaS ではなく**現物アナログ差分**。日本の役所・元請け指定紙に直撃。
+- **適合:** コアのみ · F1–F7 ◎。OCR しない（やらないこと）。
+- **リスク:** 撮影パース歪み · プリンタ給紙誤差（mm）。レクティファイ＋印字オフセット必須。
+- **判定:** **HOLD**（PoC: 1様式で印刷成功率を見てからコア GO）。Sync リソースを食わないので旗艦と並列研究可。
+
+#### T-SYNC-DRAW-LOOKUP（抽選結果本人照会）
+
+- **一文:** 名簿を配らず、当選者本人が番号等で結果だけ照会する有期限リンク。
+- **適合:** fair-draw オプトイン。名簿本体はクラウドに載せない（ハッシュ/番号のみ）。
+- **課金:** イベント都度（低単価）。
+- **判定:** **GO（縮小）** — EVENT-ROOM / fair-draw クラスターの衛星。SHIFT-METER より後。
+
+### 14-4. 戦略マップ更新（§11 との関係）
+
+| 層 | ID | 役割 |
+|----|-----|------|
+| P0 | Schedule / timeline-sync E2E | 旗艦完了 |
+| **尖り楔（旗艦クラスター）** | **T-SYNC-SHIFT-METER** | 紙運用を壊さず「分数だけ」同期。**組み合わせ探索の本命** |
+| 旗艦拡張（実装キュー） | T-SYNC-EVENT-ROOM | 名簿・受付ステータス |
+| 第2柱（法務ゲート後） | T-SYNC-INV-ARCHIVE | 帳票履歴ルーム（Mass上澄みだが摩擦本物） |
+| コア研究（Syncと独立） | CORE-FRAME-PRINT | 現物枠印刷 PoC |
+| fair-draw 衛星 | T-SYNC-DRAW-LOOKUP | 本人照会 |
+
+**今、旗艦E2E以外に楔を1つ置くなら:**  
+**T-SYNC-SHIFT-METER**（Gemini 支持を採用）。Claude の「当日ログ報告書」は Room のアドオンであり楔ではない。ChatGPT の「名寄せ」は既存 normalize。
+
+**INV-ARCHIVE との使い分け:**  
+INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を最速で「お金になる尖り」にする楔。P0 完了後は **SHIFT-METER を先に出荷**し、INV-ARCHIVE は表現ゲートと並行でよい。
+
+---
+
+## 16. 別プロダクト — ZoneBoard（戦術ボード · 2026-07-04）
+
+**判定:** **PARK（本線外）** — SUGUDASU / SUGUDASU Sports には載せない。  
+**ブランド:** ZoneBoard · **ドメイン:** `zoneboard.app`（`zoneboard.com` はプレミアム約64万で不取得）
+
+| 正本（移行先） | パス |
+|----------------|------|
+| リポジトリ | `C:\asl_dev\zoneboard` |
+| プロダクトメモ | `C:\asl_dev\zoneboard\docs\PRODUCT_NOTE.md` |
+| **Agent 引き継ぎ** | `C:\asl_dev\zoneboard\docs\AGENT_HANDOFF.md` |
+| Token 経済圏 | `C:\asl_dev\zoneboard\docs\TOKEN_ECONOMY.md`（[RTK](https://github.com/rtk-ai/rtk) · [CodeGraph](https://github.com/colbymchenry/codegraph)） |
+| ポインタ（本リポ） | [`TACTICS_BOARD_PRODUCT_NOTE.md`](TACTICS_BOARD_PRODUCT_NOTE.md) |
+
+### 16-1. 一文
+
+コート俯瞰の戦術ボード。Googleスライド代替。**長時間セッション**（Privnote型と単位経済が違う）。差別化は配信時キャンバス最大化 + ユーザーロゴ透かし。
+
+### 16-2. 要約のみ（詳細は zoneboard リポ）
+
+| 項目 | 内容 |
+|------|------|
+| ペルソナ | 解説 YouTuber · 部活監督（SUGUDASUの会社員・工事監督とは別） |
+| UX芯 | ピッチ ≥80% · 配信モード · 自分のロゴ透かし · WebcamはOBS側 |
+| 次の作業 | **SPEC.md**（実装は仕様後）· 別 Agent は `AGENT_HANDOFF.md` から |
+
+---
+
+## 18. 希望順位割当（ドラフト会議型 · 2026-07-09）
+
+**判定:** **GO（実装開始）** — 独立 `match-board`。`group-split` は初期案生成として連携。
+
+| 項目 | 内容 |
+|------|------|
+| **一文** | 第1〜3希望と定員枠から配属案を作り、会議で手直しする非送信シミュレーションボード |
+| **実装先** | `match-board`（独立プロダクト） |
+| **なぜ跳ねるか** | 新卒配属 · **ゼミ配属** · **マーケ棚割（人気SKU枯れ/不人気余り）** · 研修分科会 · 商談会など |
+| **fair-draw との境界** | 抽選・証跡 vs 希望マッチング・合意形成 — **別ジョブ** |
+| **必須要件** | JSON エクスポート/インポート（長時間会議 · 案A/B · 中断再開） |
+| **正本** | [`DRAFT_ASSIGNMENT_PRODUCT_NOTE.md`](DRAFT_ASSIGNMENT_PRODUCT_NOTE.md) |
+| **起源** | ルート `Draft会議.md` · `draft_meeting.md` |
+
+---
+
+## 17. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
+| `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |
 | `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | SOSA調査ログ + GTM/UX転用SSOT |
+| `docs/notes/SUGUDASU_SYNC_LINE.md` | Sync ライン正本 · 旗艦 Schedule |
+| `docs/notes/TACTICS_BOARD_PRODUCT_NOTE.md` | ZoneBoard へのポインタ（正本: `C:\asl_dev\zoneboard`） |
+| `docs/prompts/sync-micro-saas-dd-handoff.md` | マイクロSaaS DD 引き継ぎ · プロンプト |
+| `docs/prompts/sync-product-combo-jump-prompt.md` | 組み合わせ探索プロンプト |
 | `docs/BACKLOG.md` §15 | lottery タスク |
 | `docs/DESIGN_GUIDELINE.md` §1 | ペルソナ・トーン |
 | `docs/BACKLOG.md` §0 | SUGUDASU前提（静的・非送信） |

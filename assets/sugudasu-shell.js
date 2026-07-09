@@ -21,12 +21,17 @@
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
+    { id: 'match-board', file: 'match-board.html', label: 'ドラフト', icon: '🧩' },
+    { id: 'planning-poker', file: 'planning-poker.html', label: '見積会議', icon: '🃏' },
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
     { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
     { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' },
-    { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' }
+    { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' },
+    { id: 'qr-reader', file: 'qr-reader.html', label: 'QR読取', icon: '📷' },
+    { id: 'diff', file: 'diff.html', label: '差分', icon: '🔎' },
+    { id: 'time-calc', file: 'time-calc.html', label: '時間計算', icon: '⏳' }
   ];
 
   /** 開発(tools/) と本番(dist/) 両対応 */

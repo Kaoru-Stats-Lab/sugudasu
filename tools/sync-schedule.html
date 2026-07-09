@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SUGUDASU Sync Schedule（開発中）">
+    <meta property="og:title" content="SUGUDASU Sync Schedule（開発中）">
+    <meta property="og:description" content="SUGUDASU Sync Schedule は現在開発中です。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU Sync">
+    <meta property="og:url" content="https://sync.sugudasu.com/schedule">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SUGUDASU Sync Schedule（開発中）">
+    <meta name="twitter:description" content="SUGUDASU Sync Schedule は現在開発中です。">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <title>SUGUDASU Sync Schedule（開発中）</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top"
+     data-sg-title="SUGUDASU Sync Schedule"
+     data-sg-subtitle="開発中"
+     data-sg-tool-id="schedule-sync"
+     data-sg-chrome-mode="focus"></div>
+
+<main class="flex-1 max-w-lg mx-auto w-full px-4 py-10 space-y-6">
+    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">開発中</p>
+    <h1 class="text-xl font-bold text-slate-900">Schedule Sync は開発中です</h1>
+    <p class="text-sm text-slate-600 leading-relaxed">
+        工程表のクラウド共有・端末連携を準備しています。現時点では timeline 側のS1画面をご利用ください。
+    </p>
+
+    <div id="sync-qr-onboarding"></div>
+
+    <div class="flex flex-col gap-2 pt-1">
+        <a href="/timeline/app" class="inline-block text-xs text-slate-600 border border-slate-200 rounded-lg px-4 py-2 hover:bg-white">timeline S1 アプリ（ログイン）→</a>
+        <a href="/" class="inline-block text-xs text-slate-600 border border-slate-200 rounded-lg px-4 py-2 hover:bg-white">Sync トップに戻る</a>
+    </div>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import { mountSyncQrOnboarding } from '../assets/sync-qr-onboarding.js';
+mountSyncQrOnboarding(document.getElementById('sync-qr-onboarding'), {
+  products: ['timeline', 'schedule'],
+});
+</script>
+</body>
+</html>

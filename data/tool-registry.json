@@ -197,6 +197,32 @@
       "stage": "beta",
       "statusNote": "PC→スマホ同期メモ · 緩和モード · M02 タップ再編 · セッションJSON · Phase C · 250名cap · T11"
     },
+    "match-board": {
+      "file": "match-board.html",
+      "conceptName": "ドラフト会議",
+      "productName": "SUGUDASU ドラフト会議",
+      "navLabel": "ドラフト",
+      "navIcon": "🧩",
+      "inNav": true,
+      "navOrder": 11.25,
+      "name": "希望順位割当ボード",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "第1〜3希望×定員の長時間調整 · Undo/Redo · JSON再開 · 非送信"
+    },
+    "planning-poker": {
+      "file": "planning-poker.html",
+      "conceptName": "見積会議",
+      "productName": "SUGUDASU 見積会議",
+      "navLabel": "見積会議",
+      "navIcon": "🃏",
+      "inNav": true,
+      "navOrder": 11.35,
+      "name": "見積会議（Planning Poker）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "同時Reveal · 最大/最小理由入力 · 再投票 · CSV出力 · 非送信（Planning Poker対応）"
+    },
     "timeline": {
       "file": "timeline.html",
       "conceptName": "進行タイムライン",
@@ -274,6 +300,45 @@
       "version": "0.1.0",
       "stage": "alpha",
       "statusNote": "URL #fragment エンコード · 非送信 · イベント懇親会フォロー交換（LINK_QR_TOOL_SPEC.md）"
+    },
+    "qr-reader": {
+      "file": "qr-reader.html",
+      "conceptName": "QR読み取り",
+      "productName": "SUGUDASU QR読取",
+      "navLabel": "QR読取",
+      "navIcon": "📷",
+      "inNav": true,
+      "navOrder": 16.5,
+      "name": "QR読取（カメラ・貼り付け・画面共有）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "カメラ/ファイル/貼り付け/画面共有 · 非送信 · link-qr形式カード表示"
+    },
+    "diff": {
+      "file": "diff.html",
+      "conceptName": "差分チェック",
+      "productName": "SUGUDASU 差分チェック",
+      "navLabel": "差分",
+      "navIcon": "🔎",
+      "inNav": true,
+      "navOrder": 16.7,
+      "name": "差分チェック（AIリライト監査）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "危険差分優先表示 · 非送信 · 保存なし · コピー/印刷"
+    },
+    "time-calc": {
+      "file": "time-calc.html",
+      "conceptName": "時間計算",
+      "productName": "SUGUDASU time-calc",
+      "navLabel": "時間計算",
+      "navIcon": "⏳",
+      "inNav": true,
+      "navOrder": 16.8,
+      "name": "time-calc（労働時間 + 時給換算）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "h:mm合計 · 時給換算 · 単機能 · 非送信"
     },
     "font-converter": {
       "file": "font-converter.html",

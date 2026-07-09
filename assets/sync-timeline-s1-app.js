@@ -22,6 +22,7 @@ import {
   loadRoomState,
   saveRoomState,
 } from './sync-room-store.js';
+import { mountSyncQrOnboarding } from './sync-qr-onboarding.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -472,6 +473,9 @@ async function bootApp() {
 }
 
 async function main() {
+  mountSyncQrOnboarding(document.getElementById('sync-qr-onboarding'), {
+    products: ['timeline', 'schedule'],
+  });
   const config = await loadSyncPublicConfig();
   if (!isSyncConfigured(config)) {
     showPanel('sync-s1-setup');

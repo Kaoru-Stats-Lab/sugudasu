@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="見積会議（Planning Poker）で同時公開・再投票。登録不要・ブラウザ完結・非送信。">
+    <title>見積会議（Planning Poker） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="SUGUDASU 見積会議（Planning Poker）">
+    <meta property="og:description" content="数字を決めるより、認識差を見つける。Reveal同時公開で会議を短くする。">
+    <meta property="og:url" content="https://sugudasu.com/planning-poker">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 見積会議（Planning Poker）">
+    <meta name="twitter:description" content="同時Revealで認識のズレを見える化する合意形成ツール。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+        .pp-root{--pp-bg:#f8fafc;--pp-panel:#fff;--pp-text:#0f172a;--pp-sub:#475569;--pp-border:#e2e8f0;--pp-accent:#4f46e5;--pp-ok:#0f766e}
+        .pp-root.pp-dark{--pp-bg:#0f172a;--pp-panel:#111827;--pp-text:#e2e8f0;--pp-sub:#94a3b8;--pp-border:#334155;--pp-accent:#818cf8;--pp-ok:#14b8a6}
+        .pp-wrap{background:var(--pp-bg);color:var(--pp-text)}
+        .pp-panel{background:var(--pp-panel);border:1px solid var(--pp-border);border-radius:12px}
+        .pp-story{display:flex;justify-content:space-between;align-items:center;width:100%;padding:8px 10px;border-radius:8px;font-size:12px;color:var(--pp-sub)}
+        .pp-story:hover{background:rgba(99,102,241,.08)}
+        .pp-story--active{background:rgba(79,70,229,.16);color:var(--pp-text);font-weight:700}
+        .pp-story-point{font-weight:700;color:var(--pp-ok)}
+        .pp-participant{display:flex;justify-content:space-between;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px dashed var(--pp-border)}
+        .pp-card{height:56px;border-radius:10px;border:1px solid var(--pp-border);font-size:20px;font-weight:800;background:var(--pp-panel)}
+        .pp-card:hover{border-color:var(--pp-accent)}
+        .pp-card--selected{background:var(--pp-accent);color:#fff;border-color:var(--pp-accent)}
+        .pp-reveal-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--pp-border);font-size:13px}
+        .pp-reason{display:block;font-size:12px;color:var(--pp-sub);margin-bottom:8px}
+        .pp-reason span{display:block;margin-bottom:4px}
+    </style>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 見積会議" data-sg-subtitle="見積会議（Planning Poker）で認識差を可視化" data-sg-tool-id="planning-poker"></div>
+<main class="sg-main-shell sg-main-shell--wide flex-1">
+    <div id="pp-root" class="pp-root pp-wrap rounded-xl p-4 md:p-6 space-y-4">
+        <header class="space-y-2">
+            <p class="text-[11px] font-bold inline-block px-3 py-1 rounded-full border border-indigo-200 bg-indigo-50 text-indigo-700">登録不要 · 非送信 · 会議を短く</p>
+            <p class="text-sm text-slate-700">数字を当てる道具ではなく、<strong>認識差を最短で見つける</strong>ための見積会議です。Revealは同時公開のみ。</p>
+        </header>
+
+        <section class="pp-panel p-4 space-y-3">
+            <h2 class="text-sm font-bold">開始セットアップ（3秒）</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <label class="block text-xs">
+                    Story一覧（1行1件）
+                    <textarea id="pp-stories-input" rows="6" class="sg-input font-mono text-sm mt-1" placeholder="Login画面改善&#10;請求書PDF余白調整"></textarea>
+                </label>
+                <label class="block text-xs">
+                    参加者（1行1名）
+                    <textarea id="pp-participants-input" rows="6" class="sg-input font-mono text-sm mt-1" placeholder="山田&#10;佐藤&#10;鈴木"></textarea>
+                </label>
+                <div class="space-y-2">
+                    <label class="block text-xs">あなたの名前
+                        <input id="pp-my-name" type="text" class="sg-input text-sm mt-1" placeholder="山田">
+                    </label>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="pp-start" type="button" class="sg-btn-primary">開始</button>
+                        <button id="pp-copy-template" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">Story雛形コピー</button>
+                        <button id="pp-dark-toggle" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">Dark</button>
+                    </div>
+                    <p id="pp-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded px-2 py-1"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pp-empty" class="pp-panel p-6 text-center text-xs text-slate-500">開始すると左にStory一覧、中央にカード、右にReveal結果を表示します。</section>
+
+        <section id="pp-workspace" class="hidden">
+            <div class="grid grid-cols-1 xl:grid-cols-[280px_1fr_320px] gap-4 items-start">
+                <aside class="pp-panel p-3 space-y-3 xl:sticky xl:top-24">
+                    <h3 class="text-sm font-bold">Story一覧</h3>
+                    <div id="pp-story-list" class="space-y-1"></div>
+                    <h4 class="text-xs font-bold pt-2 border-t border-slate-200">参加者</h4>
+                    <ul id="pp-participant-list"></ul>
+                    <button id="pp-export-csv" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2 w-full">CSV出力（Story,Point）</button>
+                </aside>
+
+                <section class="pp-panel p-4 space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <p class="text-xs text-slate-500">現在Story</p>
+                        <p id="pp-current-story" class="text-base font-bold"></p>
+                    </div>
+                    <div id="pp-card-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="pp-reveal" type="button" class="sg-btn-primary">Reveal（同時公開）</button>
+                        <button id="pp-reset-round" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">再投票</button>
+                        <button id="pp-next-story" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">次Story</button>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                        <div class="pp-panel p-2">平均 <strong id="pp-stat-avg">-</strong></div>
+                        <div class="pp-panel p-2">中央値 <strong id="pp-stat-median">-</strong></div>
+                        <div class="pp-panel p-2">最小 <strong id="pp-stat-min">-</strong></div>
+                        <div class="pp-panel p-2">最大 <strong id="pp-stat-max">-</strong></div>
+                    </div>
+                    <div class="pp-panel p-3">
+                        <p class="text-xs font-bold mb-2">議論タイマー</p>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="pp-timer-select" class="sg-input text-sm w-28">
+                                <option value="30">30秒</option>
+                                <option value="60" selected>60秒</option>
+                                <option value="120">120秒</option>
+                            </select>
+                            <button id="pp-timer-start" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">開始</button>
+                            <button id="pp-timer-stop" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">停止</button>
+                            <strong id="pp-timer-view" class="text-base tracking-widest">01:00</strong>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Keyboard: `1-9` 投票 / `Enter` Reveal / `Space` Reveal⇔再投票</p>
+                </section>
+
+                <aside class="pp-panel p-3 space-y-3">
+                    <h3 class="text-sm font-bold">Reveal結果</h3>
+                    <ul id="pp-reveal-panel" class="space-y-1"></ul>
+                    <div class="border-t border-slate-200 pt-2">
+                        <h4 class="text-xs font-bold mb-1">最大/最小の理由</h4>
+                        <div id="pp-discussion-panel"></div>
+                    </div>
+                    <div class="border-t border-slate-200 pt-2 space-y-2">
+                        <h4 class="text-xs font-bold">採用ポイント</h4>
+                        <div class="flex gap-2">
+                            <select id="pp-adopt-point" class="sg-input text-sm flex-1"></select>
+                            <button id="pp-adopt" type="button" class="sg-btn-primary text-xs px-3 py-2">採用</button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+        <section class="sg-faq-section mt-6">
+            <h2 class="sg-faq-title">よくある質問（FAQ）</h2>
+            <div class="sg-faq-list">
+                <details class="sg-faq-item">
+                    <summary>見積会議とは何ですか？</summary>
+                    <p>見積会議は、複数人で工数や難易度を見積もり、認識をすり合わせる無料ツールです。カードを同時公開することで、先に発言した人の数字に引っ張られにくくなります。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>プランニングポーカーとの違いは？</summary>
+                    <p>見積会議は Planning Poker の考え方を取り入れています。スクラム専用ではなく、制作・受託・SIer・社内会議など、数字で合意形成したい場面に使えます。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>登録は必要ですか？無料ですか？</summary>
+                    <p>登録不要・無料です。ブラウザを開いて Story と参加者を入力すれば、すぐに開始できます。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>データは外部へ送信されますか？</summary>
+                    <p>この見積会議ツールはブラウザ内で処理し、入力内容をサーバーへ送信しません。ページを閉じると状態は保持されません。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>なぜ同時公開（Reveal）するのですか？</summary>
+                    <p>先に数字を出した人へ全員が寄ってしまう「アンカリング効果」を避けるためです。同時公開により、チーム内の認識差を発見しやすくなります。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>数字が割れたらどうすればいいですか？</summary>
+                    <p>正解を当てるより、理由を共有することが重要です。最大値/最小値の背景を話し、必要なら再投票して合意に近づけてください。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>AIで正しい見積を出してくれますか？</summary>
+                    <p>いいえ。見積会議は AI 自動見積ツールではありません。チームが前提やリスクを共有し、認識を揃えるための道具です。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>Jira や Backlog と連携できますか？</summary>
+                    <p>現時点では連携していません。まずは会議そのものを短くする体験を優先しています。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>スマートフォンやオンライン会議でも使えますか？</summary>
+                    <p>スマートフォンでも利用できます。Zoom や Google Meet などの画面共有にも対応できますが、比較しながら進行する用途では PC / タブレット推奨です。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>見積以外にも使えますか？</summary>
+                    <p>はい。優先順位付け、リスク評価、難易度評価、アイデア選定など、数字を使って意見を比較し合意形成したい場面で利用できます。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>なぜ「投票」ではなく「見積会議」という名前なのですか？</summary>
+                    <p>目的が票の収集ではなく、認識差を可視化して短時間で合意することだからです。利用シーンが最も伝わる名前として「見積会議」を採用しています。</p>
+                </details>
+                <details class="sg-faq-item">
+                    <summary>このツールが目指していることは何ですか？</summary>
+                    <p>見積会議は工数を機械的に決めるツールではありません。<strong>「なぜその数字になったのか」を話しやすくするツール</strong>です。認識差が見えれば、会議は短くなります。</p>
+                </details>
+            </div>
+        </section>
+    </div>
+</main>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import { mountPlanningPoker } from '../assets/planning-poker-app.js';
+mountPlanningPoker(document.getElementById('pp-root'));
+</script>
+</body>
+</html>

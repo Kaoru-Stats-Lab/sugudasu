@@ -638,6 +638,26 @@
 
 ---
 
+## DEPLOY-20260709-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | match-board 独立化 · 見積会議（planning-poker）追加 · time-calc 実装 · statements/adsense 運用更新 |
+| **change_summary** | `tools/match-board.html` · `tools/planning-poker.html` · `tools/time-calc.html` · `assets/*` 実装群 · `data/changelog.json` / `data/tool-registry.json` · `docs/notes/sync-specs/*` 整理移動 · `tools/statements.html` |
+| **local_build** | `pass`（`release:pages:free` 実行予定） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後に更新） |
+| **gates** | P1–P7 確認済み |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後に更新） |
+| **smoke** | （executed 後に更新） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |

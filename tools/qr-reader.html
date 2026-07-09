@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="カメラ・貼り付け・ファイル・画面共有でQRを非送信読み取り。SUGUDASU リンク集QRはカード表示。">
+    <title>QR読取 — 画面共有・貼り付け対応 | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="QR読取 — 画面共有・貼り付け対応">
+    <meta property="og:description" content="カメラ不要でも読める。Ctrl+V・ファイル・画面共有に対応した非送信QRリーダー。">
+    <meta property="og:url" content="https://sugudasu.com/qr-reader">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="画面をそのままQR読取 — カメラ不要">
+    <meta name="twitter:description" content="画面共有・貼り付け・ファイルでブラウザ内読み取り。データは送信しません。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+        .qr-reader-preview { aspect-ratio: 16 / 10; background: #0f172a; border-radius: 0.75rem; overflow: hidden; position: relative; }
+        .qr-reader-preview video { width: 100%; height: 100%; object-fit: contain; background: #020617; }
+        .qr-reader-overlay {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            color: #cbd5e1; font-size: 0.75rem; background: repeating-linear-gradient(45deg,#0f172a,#0f172a 10px,#111827 10px,#111827 20px);
+        }
+        .qr-reader-card { border: 1px solid #dbeafe; border-radius: 0.75rem; padding: 0.875rem; background: #f8fbff; }
+        .qr-reader-card__badge { font-size: 10px; font-weight: 700; color: #4f46e5; margin-bottom: 0.4rem; }
+        .qr-reader-card__name { font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
+        .qr-reader-card__row { display: grid; grid-template-columns: 5rem 1fr; gap: 0.5rem; font-size: 12px; padding: 0.25rem 0; border-bottom: 1px solid #e2e8f0; }
+        .qr-reader-card__row:last-child { border-bottom: none; }
+        .qr-reader-card__label { color: #64748b; font-weight: 600; }
+        .qr-reader-card__url { color: #2563eb; word-break: break-all; }
+    </style>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU QR読取" data-sg-subtitle="非送信 · カメラ/貼り付け/画面共有" data-sg-tool-id="qr-reader"></div>
+
+<main class="sg-main-shell flex-1 space-y-8">
+    <header class="sg-tool-intro space-y-3">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">登録不要 · 非送信 · ブラウザ完結</p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                画面内QR・実物QR・保存画像をそのまま読み取り。<strong>Ctrl+V貼り付け</strong>と<strong>画面共有</strong>にも対応し、同じPC内のQR読取を楽にします。
+            </p>
+            <p class="sg-tool-lead">
+                Sync専用認証UIは別画面で扱います。本ツールは<strong>汎用QR読取</strong>として独立し、`link-qr`形式はカード表示、Sync形式は専用導線を表示します。
+            </p>
+        </div>
+    </header>
+
+    <div id="qr-sync-mode" class="hidden sg-card p-4 border-violet-200 bg-violet-50">
+        <p class="text-xs font-bold text-violet-800 mb-1">Sync連携モード</p>
+        <p class="text-[11px] text-slate-600 leading-relaxed">
+            読取結果がSync形式（`SGDS1-`）だった場合、ここでは内容確認のみを行います。端末追加の確定は `sync.sugudasu.com` 側（`/timeline` と `/schedule`）で実行してください。
+        </p>
+    </div>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <div class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">読み取り入力</h2>
+            <div class="flex flex-wrap gap-2">
+                <button type="button" id="qr-start-camera" class="sg-btn-primary">カメラ開始</button>
+                <button type="button" id="qr-start-screen" class="sg-btn-secondary">画面共有を読む（PC）</button>
+                <button type="button" id="qr-stop" class="sg-btn-secondary" disabled>停止</button>
+            </div>
+            <div class="flex flex-wrap gap-2 items-center">
+                <input id="qr-file" type="file" accept="image/*" class="hidden">
+                <button type="button" id="qr-pick-file" class="sg-btn-secondary">画像ファイルを読む</button>
+                <span class="text-[11px] text-slate-500">Ctrl+V / Cmd+V でも画像貼り付け可能</span>
+            </div>
+            <p id="qr-status" class="text-xs text-slate-600">待機中です。入力方法を選んでください。</p>
+            <div id="qr-error" class="hidden text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2"></div>
+
+            <div class="qr-reader-preview border border-slate-200">
+                <video id="qr-video" playsinline muted class="hidden"></video>
+                <div id="qr-overlay" class="qr-reader-overlay">プレビュー待機中</div>
+            </div>
+
+            <div class="text-[11px] text-slate-500 space-y-1">
+                <p>※ ブラウザ非対応時はカメラ / 画面共有が使えない場合があります。</p>
+                <p>※ DRM保護画面・セキュアデスクトップは読取対象外です。</p>
+            </div>
+        </div>
+
+        <div class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">読み取り結果</h2>
+            <div id="qr-result-empty" class="text-xs text-slate-400 text-center py-10 border border-dashed border-slate-200 rounded-lg">
+                ここに読取結果を表示します
+            </div>
+            <div id="qr-result-wrap" class="hidden space-y-3">
+                <p class="text-[11px] text-slate-500" id="qr-result-kind"></p>
+                <div id="qr-result-body"></div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="qr-copy" class="sg-btn-primary">結果をコピー</button>
+                    <button type="button" id="qr-open" class="sg-btn-secondary hidden">URLを開く</button>
+                    <a href="link-qr.html" class="text-xs font-semibold text-blue-600 hover:underline px-2 py-2">自分のリンクQRを作る</a>
+                </div>
+                <p id="qr-copy-toast" class="sg-copy-toast hidden" role="status"></p>
+            </div>
+
+            <div class="border-t border-slate-100 pt-3">
+                <p class="text-xs font-semibold text-slate-700 mb-2">直近履歴（セッション内のみ）</p>
+                <ol id="qr-history" class="space-y-1 text-[11px] text-slate-600 list-decimal pl-5"></ol>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import { copyWithFeedback } from '../assets/sg-copy-feedback.js';
+import { QrReaderEngine } from '../assets/qr-reader-engine.js';
+import { parseQrContent, renderParsedContent, isSafeUrl } from '../assets/qr-reader-parser.js';
+
+const videoEl = document.getElementById('qr-video');
+const overlayEl = document.getElementById('qr-overlay');
+const statusEl = document.getElementById('qr-status');
+const errorEl = document.getElementById('qr-error');
+const startCameraBtn = document.getElementById('qr-start-camera');
+const startScreenBtn = document.getElementById('qr-start-screen');
+const stopBtn = document.getElementById('qr-stop');
+const pickFileBtn = document.getElementById('qr-pick-file');
+const fileInput = document.getElementById('qr-file');
+
+const resultEmptyEl = document.getElementById('qr-result-empty');
+const resultWrapEl = document.getElementById('qr-result-wrap');
+const resultKindEl = document.getElementById('qr-result-kind');
+const resultBodyEl = document.getElementById('qr-result-body');
+const copyBtn = document.getElementById('qr-copy');
+const openBtn = document.getElementById('qr-open');
+const copyToastEl = document.getElementById('qr-copy-toast');
+const historyEl = document.getElementById('qr-history');
+const syncModeEl = document.getElementById('qr-sync-mode');
+
+const engine = new QrReaderEngine();
+let activeStream = null;
+let scanTimer = null;
+let lastRaw = '';
+let currentParsed = null;
+/** @type {string[]} */
+let history = [];
+
+function setStatus(text) {
+  statusEl.textContent = text;
+}
+
+function showError(text) {
+  if (!text) {
+    errorEl.classList.add('hidden');
+    errorEl.textContent = '';
+    return;
+  }
+  errorEl.classList.remove('hidden');
+  errorEl.textContent = text;
+}
+
+function resetResult() {
+  lastRaw = '';
+  currentParsed = null;
+  resultWrapEl.classList.add('hidden');
+  resultEmptyEl.classList.remove('hidden');
+  openBtn.classList.add('hidden');
+  copyToastEl.classList.add('hidden');
+}
+
+function renderHistory() {
+  historyEl.innerHTML = history
+    .map((item) => `<li class="break-all">${item.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</li>`)
+    .join('');
+}
+
+function pushHistory(raw) {
+  history = [raw, ...history.filter((v) => v !== raw)].slice(0, 5);
+  renderHistory();
+}
+
+function renderParsed(parsed) {
+  currentParsed = parsed;
+  // DECISION: 種別表示を明示し、Sync連携は「判定→専用画面へ」の責務分離を保つ。
+  if (parsed.type === 'link_qr') resultKindEl.textContent = '判定: SUGUDASU リンク集QR';
+  else if (parsed.type === 'sync_secret') resultKindEl.textContent = '判定: SUGUDASU Sync Secret';
+  else resultKindEl.textContent = `判定: ${parsed.type === 'url' ? 'URL' : 'テキスト'}`;
+  resultBodyEl.innerHTML = renderParsedContent(parsed);
+  resultEmptyEl.classList.add('hidden');
+  resultWrapEl.classList.remove('hidden');
+
+  if (parsed.type === 'url' && isSafeUrl(parsed.raw)) {
+    openBtn.classList.remove('hidden');
+    openBtn.onclick = () => window.open(parsed.raw, '_blank', 'noopener,noreferrer');
+  } else {
+    openBtn.classList.add('hidden');
+    openBtn.onclick = null;
+  }
+}
+
+async function onDetected(raw) {
+  if (!raw || raw === lastRaw) return;
+  lastRaw = raw;
+  pushHistory(raw);
+  renderParsed(parseQrContent(raw));
+}
+
+async function decodeAndHandle(source) {
+  try {
+    const raw = await engine.decodeSource(source);
+    if (raw) await onDetected(raw);
+  } catch {
+    // フレーム単位の例外は握りつぶして継続
+  }
+}
+
+function stopScanLoop() {
+  if (scanTimer) window.clearTimeout(scanTimer);
+  scanTimer = null;
+}
+
+function startScanLoop() {
+  stopScanLoop();
+  const loop = async () => {
+    if (!activeStream) return;
+    await decodeAndHandle(videoEl);
+    scanTimer = window.setTimeout(() => {
+      if (videoEl.requestVideoFrameCallback) videoEl.requestVideoFrameCallback(loop);
+      else window.requestAnimationFrame(loop);
+    }, 150);
+  };
+  loop();
+}
+
+function setStreamActive(active) {
+  startCameraBtn.disabled = active;
+  startScreenBtn.disabled = active;
+  stopBtn.disabled = !active;
+  videoEl.classList.toggle('hidden', !active);
+  overlayEl.classList.toggle('hidden', active);
+}
+
+function stopStream() {
+  stopScanLoop();
+  if (activeStream) activeStream.getTracks().forEach((track) => track.stop());
+  activeStream = null;
+  videoEl.srcObject = null;
+  setStreamActive(false);
+  setStatus('停止しました。');
+}
+
+async function startStream(kind) {
+  showError('');
+  resetResult();
+  try {
+    const stream = kind === 'camera'
+      ? await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false })
+      : await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+
+    activeStream = stream;
+    videoEl.srcObject = stream;
+    await videoEl.play();
+    stream.getVideoTracks()[0]?.addEventListener('ended', stopStream);
+    setStreamActive(true);
+    setStatus(kind === 'camera' ? 'カメラ読取中です。' : '画面共有読取中です。');
+    startScanLoop();
+  } catch (error) {
+    setStatus('開始できませんでした。');
+    showError(error instanceof Error ? error.message : '開始に失敗しました。');
+  }
+}
+
+async function decodeBlob(blob) {
+  showError('');
+  resetResult();
+  try {
+    const bitmap = await createImageBitmap(blob);
+    const raw = await engine.decodeBitmap(bitmap);
+    if (!raw) {
+      showError('QRを検出できませんでした。');
+      return;
+    }
+    await onDetected(raw);
+    setStatus('画像から読み取りました。');
+  } catch (error) {
+    showError(error instanceof Error ? error.message : '画像解析に失敗しました。');
+  }
+}
+
+startCameraBtn.addEventListener('click', () => startStream('camera'));
+startScreenBtn.addEventListener('click', () => startStream('screen'));
+stopBtn.addEventListener('click', stopStream);
+
+pickFileBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', async (event) => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  await decodeBlob(file);
+  fileInput.value = '';
+});
+
+window.addEventListener('paste', async (event) => {
+  const item = Array.from(event.clipboardData?.items || []).find((it) => it.type.startsWith('image/'));
+  if (!item) return;
+  const file = item.getAsFile();
+  if (!file) return;
+  await decodeBlob(file);
+});
+
+copyBtn.addEventListener('click', async () => {
+  if (!currentParsed) return;
+  await copyWithFeedback(currentParsed.raw, copyBtn, {
+    toastEl: copyToastEl,
+    copiedLabel: '結果をコピーしました',
+    showFilterReminder: false,
+  });
+});
+
+window.addEventListener('pagehide', () => {
+  stopStream();
+  engine.dispose();
+});
+
+setStatus(engine.hasNativeDetector()
+  ? '準備完了（BarcodeDetector）'
+  : '準備完了（フォールバックデコーダ）');
+
+if (new URLSearchParams(window.location.search).get('sync') === '1') {
+  syncModeEl.classList.remove('hidden');
+}
+</script>
+</body>
+</html>

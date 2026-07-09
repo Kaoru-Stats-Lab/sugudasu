@@ -343,3 +343,14 @@
 | 2026-06-20 | **2モード（納会 vs ハッカソン）** | 提督実体験 — バッファ型は再編低優先 · ゼロバッファ型はスイッチャー + O8 |
 | 2026-06-20 | **各組必須・緩和モード v1.2.3** | 人数不足時は可能な限り実行 · 未充足組を結果表示 |
 | 2026-06-20 | **O8 スイッチャー対応表** | P1 M13 — BR/Slack 列テンプレ + 班員結合 · Zoom API は見送り |
+| 2026-07-09 | **希望順位割当を独立化** | `match-board` 新設 · `group-split` は初期案生成導線のみ |
+
+## 9. 連携導線 — 希望順位割当（`match-board`）
+
+**ステータス:** 実装開始（`tools/match-board.html`） · **正本:** [`DRAFT_ASSIGNMENT_PRODUCT_NOTE.md`](DRAFT_ASSIGNMENT_PRODUCT_NOTE.md)
+
+現行の均等シャッフル班分けとは別ジョブ。**第1〜3希望 × 定員スロット**のマッチングと、会議での手動調整（プール＆スロット D&D）は `match-board` が担当。
+
+**利用シーン（横展開）:** 新卒一括配属 · **ゼミ配属** · **マーケ景品棚割（人気/不人気フィルタ）** · 大学履修枠 · 研修分科会 · 商談会マッチング · シフト枠調整 など。
+
+**技術調査:** tldraw · Pragmatic Drag and Drop · Yjs — 詳細は [`DRAFT_ASSIGNMENT_PRODUCT_NOTE.md`](DRAFT_ASSIGNMENT_PRODUCT_NOTE.md) §9。

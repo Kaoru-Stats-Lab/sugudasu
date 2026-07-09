@@ -42,12 +42,16 @@
     "test:mask": "node scripts/mask-engine.test.mjs",
     "test:test-data": "node scripts/test-data-engine.test.mjs",
     "test:group-split": "node scripts/group-split.test.mjs",
+    "test:group-split-assign": "node scripts/group-split-assign.test.mjs",
+    "test:planning-poker": "node scripts/planning-poker-engine.test.mjs",
     "test:timeline": "node scripts/timeline-engine.test.mjs",
     "test:linkify": "node scripts/sg-linkify.test.mjs",
     "poc:schedule-gantt": "npx --yes serve . -l 8090",
     "poc:schedule-split-pane": "npx --yes serve . -l 8092"
   },
   "devDependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^2.0.1",
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": "^2.0.0",
     "@tailwindcss/cli": "^4.3.1",
     "frappe-gantt": "^1.2.2",
     "sharp": "^0.35.1",

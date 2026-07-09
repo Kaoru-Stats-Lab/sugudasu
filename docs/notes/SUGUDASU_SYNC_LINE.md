@@ -431,12 +431,18 @@ Phase S4+         任意 — Webhook · 組織 WS
 | **T13-S** | 進行 Sync | SUGUDASU Sync | 衛星 · イベント当日クラスター |
 | **T13** | イベント進行（コア） | SUGUDASU | 無料 · F1 |
 
-将来候補（未 GO）:
+将来候補（Ledger §11 · 2026-07-04 裁定）:
 
 | ID | 案 | 備考 |
 |----|-----|------|
 | T11-S | 班分け Sync | 衛星 · timeline と同クラスター · [`GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md`](GROUP_SPLIT_SYNC_BILLING_CTA_AND_QUOTE.md) |
 | — | 工程周辺 Export | Schedule クラスター内で後追い（打設届等） |
+| **T-SYNC-SHIFT-METER** | 押し引きメーター | **GO（縮小）** · 旗艦クラスター尖り楔 · 分数整数パルスのみ · Ledger §14 |
+| **T-SYNC-INV-ARCHIVE** | 請求・領収履歴ルーム | **条件付き GO** · 第2柱 · 「電帳法対応」断定禁止 · 有期限 |
+| **T-SYNC-EVENT-ROOM** | イベント当日ステータス Room | **縮小 GO** · 旗艦クラスター拡張 · fair-draw 接続 · PW管理 OUT |
+| **T-SYNC-DRAW-LOOKUP** | 抽選結果本人照会 | **GO（縮小）** · fair-draw 衛星 · 名簿非公開 |
+| T-SYNC-SECURE-BIN | 有期限共有ビン | **HOLD** · 旧 API モック矮小化 · S1 後に再判断 |
+| CORE-FRAME-PRINT | 現物枠ピタ印刷 | **HOLD（コアPoC）** · Sync外 · Ledger §14 |
 
 ---
 

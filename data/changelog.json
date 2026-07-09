@@ -11,6 +11,18 @@
   },
   "entries": [
     {
+      "id": "planning-poker-20260709",
+      "date": "2026-07-09",
+      "type": "feature",
+      "audience": "public",
+      "title": "見積会議（planning-poker）α — 同時Revealで認識差を可視化",
+      "body": "Story一覧固定・同時公開・最大/最小理由入力・再投票・採用ポイント・CSV出力を1画面化。登録不要・非送信・外部APIなし。",
+      "tools": [
+        "planning-poker",
+        "hub"
+      ]
+    },
+    {
       "id": "table-conv-20260703",
       "date": "2026-07-03",
       "type": "feature",
