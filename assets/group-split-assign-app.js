@@ -28,8 +28,13 @@ import { copyWithFeedback } from './sg-copy-feedback.js';
  */
 export function mountGroupSplitAssign(root, opts = {}) {
   const els = {
+    root,
+    mainShell: root.closest('.sg-main-shell'),
+    setupPanel: root.querySelector('#gsa-setup-panel'),
+    meetingPanel: root.querySelector('#gsa-meeting-panel'),
     preset: root.querySelector('#gsa-preset'),
     session: root.querySelector('#gsa-session'),
+    sessionView: root.querySelector('#gsa-session-view'),
     slots: root.querySelector('#gsa-slots'),
     roster: root.querySelector('#gsa-roster'),
     seedMode: root.querySelector('#gsa-seed-mode'),
@@ -57,6 +62,9 @@ export function mountGroupSplitAssign(root, opts = {}) {
     dlJson: root.querySelector('#gsa-dl-json'),
     jsonPaste: root.querySelector('#gsa-json-paste'),
     jsonLoad: root.querySelector('#gsa-json-load'),
+    editToggle: root.querySelector('#gsa-edit-toggle'),
+    meetingReady: root.querySelector('#gsa-meeting-ready'),
+    startMeeting: root.querySelector('#gsa-start-meeting'),
   };
 
   /** @type {ReturnType<import('./group-split-assign-engine.js').createAssignState> | null} */
@@ -66,6 +74,10 @@ export function mountGroupSplitAssign(root, opts = {}) {
   /** @type {{ personId: string, fromSlotId: string, toSlotId: string }[]} */
   let redoStack = [];
   let slotFilter = 'all';
+  /** @type {'setup'|'meeting'} */
+  let mode = 'setup';
+  let editOpen = false;
+  let meetingReady = false;
   let draftMode = 'free';
   let turnIndex = 0;
   let turnStep = 1;
@@ -73,6 +85,25 @@ export function mountGroupSplitAssign(root, opts = {}) {
   let turnOrder = [];
   /** @type {(() => void)[]} */
   let dndCleanups = [];
+
+  function updateModeUi() {
+    if (!els.root) return;
+    els.root.classList.toggle('gsa-mode-setup', mode === 'setup');
+    els.root.classList.toggle('gsa-mode-meeting', mode === 'meeting');
+    els.root.classList.toggle('gsa-edit-open', mode === 'meeting' && editOpen);
+    els.mainShell?.classList.toggle('gsa-main-meeting', mode === 'meeting');
+    if (els.meetingReady) els.meetingReady.classList.toggle('hidden', !meetingReady || mode !== 'setup');
+    if (els.editToggle) {
+      els.editToggle.textContent = editOpen ? '✕ 編集を閉じる' : '⚙ 条件を編集';
+    }
+  }
+
+  function showMeetingGuideOnce() {
+    const key = 'gsa_meeting_guide_seen_v1';
+    if (localStorage.getItem(key) === '1') return;
+    alert('会議モードになりました\n\nSpace：次ターン\nE：条件を編集\nEsc：編集を閉じる');
+    localStorage.setItem(key, '1');
+  }
 
   function setError(msg) {
     if (!els.error) return;
@@ -294,6 +325,7 @@ export function mountGroupSplitAssign(root, opts = {}) {
 
     if (els.sat) els.sat.textContent = String(satisfactionPercent(state));
     if (els.poolCount) els.poolCount.textContent = String(state.poolCount);
+    if (els.sessionView) els.sessionView.textContent = state.sessionName || '未設定';
 
     const poolPeople = state.people.filter((p) => (state.assignment.get(p.id) || POOL_ID) === POOL_ID);
     els.pool.innerHTML = poolPeople.map((p) => cardHtml(state, p)).join('') || '<span class="text-[11px] text-slate-400">未配属なし</span>';
@@ -391,11 +423,15 @@ export function mountGroupSplitAssign(root, opts = {}) {
       return;
     }
     state = built.state;
+    mode = 'setup';
+    editOpen = false;
+    meetingReady = true;
     undoStack = [];
     redoStack = [];
     turnIndex = 0;
     turnStep = 1;
     updateHistoryButtons();
+    updateModeUi();
     renderBoard();
   }
 
@@ -463,11 +499,15 @@ export function mountGroupSplitAssign(root, opts = {}) {
     setError('');
     try {
       state = importAssignSnapshot(els.jsonPaste?.value || '');
+      mode = 'meeting';
+      editOpen = false;
+      meetingReady = false;
       undoStack = [];
       redoStack = [];
       turnIndex = 0;
       turnStep = 1;
       updateHistoryButtons();
+      updateModeUi();
       renderBoard();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'JSONの読み込みに失敗しました');
@@ -476,6 +516,54 @@ export function mountGroupSplitAssign(root, opts = {}) {
 
   applyPreset(els.preset?.value || 'hr');
   updateHistoryButtons();
+  updateModeUi();
+
+  els.editToggle?.addEventListener('click', () => {
+    if (mode !== 'meeting') return;
+    editOpen = !editOpen;
+    updateModeUi();
+  });
+
+  els.startMeeting?.addEventListener('click', () => {
+    if (!state) return;
+    mode = 'meeting';
+    editOpen = false;
+    meetingReady = false;
+    updateModeUi();
+    showMeetingGuideOnce();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (mode !== 'meeting') return;
+    const key = e.key.toLowerCase();
+    if (key === 'e' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      editOpen = !editOpen;
+      updateModeUi();
+      return;
+    }
+    if (key === 'escape' && editOpen) {
+      e.preventDefault();
+      editOpen = false;
+      updateModeUi();
+      return;
+    }
+    if (e.code === 'Space' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      moveTurn(false);
+      return;
+    }
+    const zKey = key === 'z' && (e.ctrlKey || e.metaKey);
+    if (zKey && e.shiftKey) {
+      e.preventDefault();
+      els.redo?.click();
+      return;
+    }
+    if (zKey) {
+      e.preventDefault();
+      els.undo?.click();
+    }
+  });
 
   return {
     getState: () => state,

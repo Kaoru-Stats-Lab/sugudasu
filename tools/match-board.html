@@ -33,8 +33,8 @@
         <p class="sg-tool-lead sg-tool-lead--meta">班分けの一発生成は <a href="group-split.html">SUGUDASU 班分け</a>。長時間調整はこのドラフト会議ボードを使い分けます。</p>
     </header>
 
-    <div id="gsa-root" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <section class="sg-card p-5 lg:p-6 space-y-4">
+    <div id="gsa-root" class="gsa-layout gsa-mode-setup">
+        <section id="gsa-setup-panel" class="sg-card p-5 lg:p-6 space-y-4 gsa-setup-panel">
             <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">枠 · 名簿 · プリセット</h2>
             <div class="space-y-1">
                 <label for="gsa-preset" class="block text-xs font-semibold text-slate-600">プリセット</label>
@@ -81,17 +81,43 @@
             <p id="gsa-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
         </section>
 
-        <section class="sg-card p-5 lg:p-6 space-y-4">
+        <section id="gsa-meeting-panel" class="sg-card p-5 lg:p-6 space-y-4 gsa-meeting-panel">
             <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">シミュレーションボード</h2>
             <div id="gsa-empty" class="text-xs text-slate-400 text-center py-10">
                 左で枠と名簿を入力し「たたき台を生成」を押してください。ドラッグで手直しできます。
             </div>
             <div id="gsa-board" class="hidden gsa-board">
-                <div class="gsa-toolbar">
-                    <span>満足度 <strong id="gsa-sat">0</strong>%</span>
-                    <span>未配属 <strong id="gsa-pool-count">0</strong> 名</span>
-                    <span>ターン <strong id="gsa-turn-current">—</strong></span>
-                    <span><span id="gsa-turn-index">0 / 0</span> · <span id="gsa-turn-policy">フリー（順番なし）</span></span>
+                <div class="gsa-toolbar gsa-toolbar--main">
+                    <div class="gsa-toolbar__info">
+                        <span>セッション <strong id="gsa-session-view">—</strong></span>
+                        <span>満足度 <strong id="gsa-sat">0</strong>%</span>
+                        <span>未配置 <strong id="gsa-pool-count">0</strong> 名</span>
+                        <span>ターン <strong id="gsa-turn-current">—</strong></span>
+                        <span id="gsa-turn-index">0 / 0</span>
+                    </div>
+                    <div class="gsa-toolbar__actions">
+                        <button type="button" id="gsa-undo" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200" disabled>← 元に戻す</button>
+                        <button type="button" id="gsa-redo" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200" disabled>→ やり直す</button>
+                        <button type="button" id="gsa-turn-pass" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200">見送りで進める</button>
+                        <button type="button" id="gsa-turn-next" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200">▶ 次ターン</button>
+                    </div>
+                    <details class="gsa-export-menu">
+                        <summary class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200 cursor-pointer select-none">Export ▼</summary>
+                        <div class="gsa-export-menu__panel">
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" id="gsa-dl-json" class="text-xs font-semibold text-slate-700 px-3 py-2 rounded-lg border border-slate-200">JSONを保存</button>
+                                <button type="button" id="gsa-copy-tsv" class="sg-btn-primary text-xs py-2 px-4">TSVをコピー</button>
+                                <button type="button" id="gsa-copy-json" class="text-xs font-bold bg-violet-700 text-white px-4 py-2 rounded-lg">JSONをコピー</button>
+                            </div>
+                            <hr class="my-2 border-slate-200">
+                            <label for="gsa-json-paste" class="block text-[11px] font-semibold text-slate-700 mt-2">JSON貼り付け再開</label>
+                            <textarea id="gsa-json-paste" rows="3" class="sg-input w-full text-[11px] font-mono" spellcheck="false"></textarea>
+                            <button type="button" id="gsa-json-load" class="text-xs font-bold bg-slate-800 text-white px-4 py-2 rounded-lg mt-2">JSONを読み込む</button>
+                        </div>
+                    </details>
+                </div>
+                <div class="gsa-toolbar gsa-toolbar--sub">
+                    <span id="gsa-turn-policy">フリー（順番なし）</span>
                     <label class="inline-flex items-center gap-1 text-[11px]">
                         枠フィルタ
                         <select id="gsa-filter" class="sg-input text-[11px] py-0.5">
@@ -101,10 +127,6 @@
                             <option value="low-stock">埋まり具合（枯れそう）</option>
                         </select>
                     </label>
-                    <button type="button" id="gsa-undo" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200" disabled>Undo</button>
-                    <button type="button" id="gsa-redo" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200" disabled>Redo</button>
-                    <button type="button" id="gsa-turn-pass" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200">パス</button>
-                    <button type="button" id="gsa-turn-next" class="text-[11px] font-semibold px-2 py-1 rounded border border-slate-200">次ターン</button>
                     <label class="inline-flex items-center gap-1 text-[11px]">
                         <input type="checkbox" id="gsa-turn-lock">
                         ターン外配置を禁止
@@ -115,21 +137,140 @@
                 <p class="text-[10px] font-bold text-violet-800">割当先スロット</p>
                 <div id="gsa-slots-area" class="gsa-slots-area"></div>
                 <div id="gsa-detail" class="gsa-detail"></div>
-                <div class="border-t border-slate-100 pt-3 space-y-2">
-                    <p class="text-xs font-bold text-slate-800">出力</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" id="gsa-copy-tsv" class="sg-btn-primary text-xs py-2 px-4">TSVコピー</button>
-                        <button type="button" id="gsa-copy-json" class="text-xs font-bold bg-violet-700 text-white px-4 py-2 rounded-lg">JSONコピー</button>
-                        <button type="button" id="gsa-dl-json" class="text-xs font-semibold text-slate-700 px-3 py-2 rounded-lg border border-slate-200">JSON保存</button>
-                    </div>
-                    <label for="gsa-json-paste" class="block text-[11px] font-semibold text-slate-700">JSON貼り付け（再開）</label>
-                    <textarea id="gsa-json-paste" rows="3" class="sg-input w-full text-[11px] font-mono" spellcheck="false"></textarea>
-                    <button type="button" id="gsa-json-load" class="text-xs font-bold bg-slate-800 text-white px-4 py-2 rounded-lg">読み込む</button>
+                <div id="gsa-meeting-ready" class="hidden gsa-meeting-ready">
+                    <p class="text-xs text-emerald-800 font-semibold">✓ たたき台を生成しました</p>
+                    <button type="button" id="gsa-start-meeting" class="sg-btn-primary text-xs">会議を開始する</button>
                 </div>
+                <button type="button" id="gsa-edit-toggle" class="text-xs font-semibold text-slate-700 px-3 py-2 rounded-lg border border-slate-200 self-start">⚙ 条件を編集</button>
             </div>
         </section>
     </div>
 </main>
+
+<section class="no-print sg-faq-section border-t border-slate-200">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">ドラフト会議ボードのよくある質問</h2>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">
+            SUGUDASU ドラフト会議は、<strong>準備（枠・名簿）</strong>と<strong>会議（ドラッグ調整）</strong>を分けて進めるツールです。
+            ここでは「最初に不安になりやすい点」を先にまとめています。
+        </p>
+
+        <h3 class="text-xs font-bold text-emerald-800 mb-2 mt-2">基本・データの扱い</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq">
+                <summary>このツールは何をするものですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>複数人で配属・担当・役割をドラッグしながら調整する会議用ツールです。新卒配属、ゼミ配属、担当割り当てなどのドラフト会議を想定しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>会員登録は必要ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>不要です。ブラウザだけで開始できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>名簿や希望データはサーバーへ送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>送信されません。名簿や配属結果はブラウザ内だけで処理されます。保存や共有は、利用者がJSONを保存・コピーした場合のみ行われます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>なぜログイン機能がないのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>SUGUDASUは「今すぐ使えること」を優先しているためです。登録やログインなしで、必要な会議操作にすぐ入れる設計です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>なぜクラウド保存ではなくJSON保存なのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>会議で扱う名簿・希望データを外部に預けないためです。必要なときだけJSONを保存・受け渡しして再開できます。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">使い方・会議運用</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq">
+                <summary>どんな流れで使いますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>基本は ①枠・名簿を入力 → ②たたき台を生成 → ③会議モードでドラッグ調整、の3ステップです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>「たたき台」は最終結果ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。たたき台は会議開始の初期案です。最終決定は会議で調整して決めます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>手動で自由に配置できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>できます。カードをドラッグして自由に移動できます。必要なら「条件を編集」で入力を再調整できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>元に戻す・やり直すはできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>できます。会議ヘッダーの「元に戻す」「やり直す」で履歴操作できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>満足度は何を表していますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>希望順位との一致度を示す参考指標です。最終判断（経験・スキル・バランスなど）を置き換えるものではありません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>AIが配属の最適解を決めますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。自動生成は会議の出発点を作るための機能です。最終決定は人が会話しながら行います。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">入力・保存・制限</h3>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>Excelやスプレッドシートから貼り付けできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。Excel や Google スプレッドシートでセル範囲をコピーすると、クリップボードには<strong>タブ区切り（TSV）</strong>の形で入ります。そのまま貼り付けできます。</p>
+                    <p class="mt-2">CSV ファイルから始める場合は、<a href="table-conv.html" class="text-blue-600 hover:underline">SUGUDASU 表変換</a>で TSV に変換してから貼り付けてください（ブラウザ内処理・非送信）。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>保存と再開はどうしますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>JSON保存できます。再開時は「JSON貼り付け再開」に貼り付けて読み込みます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>他の人へ共有できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>同じ状態を再現したい場合はJSONファイルを渡して共有します。URL共有は現在対応していません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>名簿人数や枠数の上限はありますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>明確な上限はありません。ブラウザ上で動作するため、扱える件数は利用環境によって変わります。通常の配属・班分け・担当割り当てなどの用途であれば問題なく利用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>スマートフォンでも使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>利用できますが、ドラッグ操作が中心のためPC利用を推奨します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>オフラインでも使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>現在はインターネット接続がある環境での利用を想定しています。一部ブラウザではキャッシュにより表示できる場合がありますが、オフライン動作は保証していません。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>

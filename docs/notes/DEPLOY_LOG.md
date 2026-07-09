@@ -658,10 +658,31 @@
 
 ---
 
+## DEPLOY-20260709-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | FAQ 白背景統一 · 設定パネル縦スクロール除去 · qr-reader FAQ · match-board FAQ 追記 |
+| **change_summary** | `table-conv` / `stamp` FAQ を `sg-faq-section` 外配置 · `shift` / `label` `.sg-setup-panel`（max-height 除去）· `qr-reader` FAQ · `match-board` FAQ（Excel/表変換案内）· `docs/notes/TWO_COLUMN_WORK_MODE_PATTERN_LOG.md`（Phase 2 作業モードは次段階） |
+| **local_build** | pending |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | pending |
+| **gates** | P1–P7 確認予定 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | pending — `/table-conv` `/stamp` FAQ 白帯 · `/shift` `/label` 左パネル内スクロールなし · `/qr-reader` FAQ |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-09 | 002 approved（FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ · 作業モード Phase 2 ログ） |
 | 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
 | 2026-07-09 | 001 approved（match-board · 見積会議 · time-calc · Sync仕様移管 · 提督 push 依頼） |
 | 2026-07-04 | 001 executed（33474f2 · table-conv · invoice 源泉 · normalize · fair-draw CSV） |

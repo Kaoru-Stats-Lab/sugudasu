@@ -96,37 +96,40 @@
             <p id="tc-copy-toast" class="sg-copy-toast hidden" role="status"></p>
         </section>
     </div>
+</main>
 
-    <section class="sg-card p-5 lg:p-6 space-y-2 max-w-3xl" id="tc-faq">
-        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2 mb-3">よくある質問</h2>
+<section class="no-print sg-faq-section" id="tc-faq">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">表変換のよくある質問</h2>
+        <div class="sg-faq-list">
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>Excel やスプレッドシートの表を Markdown に変換できますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>Excel やスプレッドシートの表を Markdown に変換できますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>できます。Excel や Google スプレッドシートで範囲をコピーすると<strong>タブ区切り（TSV）</strong>で貼り付けられます。入力欄に貼って「変換」→ <strong>Markdown</strong> タブをコピーしてください。</p>
                 <p>出力は<strong>最小の GitHub 風 Markdown 表</strong>（<code class="text-[10px] bg-slate-100 px-1 rounded">| col |</code> + 区切り行）のみです。Zenn · Qiita · Notion 固有の拡張記法は<strong>出力しません</strong>。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>CSV と JSON は相互に変換できますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>CSV と JSON は相互に変換できますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p><strong>Excel 貼付 / CSV ファイル</strong>を1回入力すれば、<strong>JSON · CSV · TSV · Markdown</strong> を出力タブで切り替えられます（同じ表から複数形式を取り出すイメージ）。</p>
                 <p>Markdown 表を貼って TSV に戻す<strong>逆変換</strong>は<strong>対応しません</strong>（列ズレ・方言混在のリスク）。Excel に戻すときは <strong>TSV</strong> タブの出力をそのまま貼り付けてください。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>データは外部に送信されますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>データは外部に送信されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>いいえ。読み込み · 変換 · コピーまですべて<strong>お使いのブラウザ内</strong>で完結します。機密の社内表でも、サーバーへアップロードされません。</p>
                 <p>自分で確認するには F12 → <strong>Network</strong> タブを開き、変換やコピー時にリクエストが出ないことを見てください（<a href="https://tableconvert.com/ja/about/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">TableConvert</a> も同様にブラウザ内処理を謳っていますが、当ツールは日本の Shift-JIS CSV と社内規程向けの非送信訴求に特化しています）。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>Shift-JIS の CSV が文字化けします</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>Shift-JIS の CSV が文字化けします</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>「<strong>Shift-JIS（CSVファイル）</strong>」をオンにしてから D&amp;D またはファイル選択で読み込んでください。</p>
                 <p>UTF-8 の BOM 付き CSV はそのまま読めます。Excel 向けに再出力するときは「<strong>CSV 出力に UTF-8 BOM</strong>」をオンにすると文字化けしにくくなります。</p>
                 <p>① · ㈱ など CP932 拡張文字はブラウザ依存で置換文字（）になる場合があります — 警告が出たら元データを確認してください。</p>
@@ -134,8 +137,8 @@
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>TableConvert など他サイトとの違いは？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>TableConvert など他サイトとの違いは？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p><a href="https://tableconvert.com/ja/about/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">TableConvert</a> は 30 以上の形式 · 表エディタ · API など多機能です。SUGUDASU 表変換は<strong>社内規程で外部変換サイト NG</strong>の現場向けに、</p>
                 <ul class="list-disc pl-5 space-y-1">
                     <li>非送信 · DevTools で確認可能</li>
@@ -147,37 +150,37 @@
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>変換結果を続けて別の形式に変換できますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>変換結果を続けて別の形式に変換できますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>同じ入力からは出力タブ（Markdown / JSON / CSV / TSV）を切り替えるだけで OK です。</p>
                 <p>出力を入力に戻して再変換する場合は、出力欄をコピーして入力欄に貼り直してください（NOVEBLO の「→入力へ」に相当する操作。専用ボタンは今後検討）。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>1列だけのリスト・名簿は使えますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600">
+            <summary>1列だけのリスト・名簿は使えますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                 <p>2列以上の<strong>表</strong>向けです。縦1列の名簿 · ソート · 重複削除は <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> をご利用ください。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>会員登録・課金・オフラインは？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>会員登録・課金・オフラインは？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>会員登録も課金も<strong>不要</strong>です。一度ページを読み込めばオフラインでも変換できます（静的 HTML + ブラウザ内 JS）。データの永続保存はしません。</p>
             </div>
         </details>
 
         <details class="sg-faq">
-            <summary class="sg-notion-toggle__summary"><span>結合セル・数式・色は再現されますか？</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
+            <summary>結合セル・数式・色は再現されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                 <p>いいえ。クリップボードの<strong>表示値</strong>だけを扱います。結合セルは左上の値のみ、セル内改行は Markdown で <code class="text-[10px] bg-slate-100 px-1 rounded">&lt;br&gt;</code> に置換します。書式・数式の復元はしません。</p>
             </div>
         </details>
 
-        <details class="sg-faq" open>
-            <summary class="sg-notion-toggle__summary"><span>対応しないこと（意図的にやらない理由）</span></summary>
-            <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-3">
+        <details class="sg-faq">
+            <summary>対応しないこと（意図的にやらない理由）</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-3">
                 <p>本ツールは<strong>表データの運搬</strong>（Excel/CSV → 素朴な Markdown·JSON·TSV）に絞っています。次は<strong>対応しません</strong>。</p>
                 <ul class="list-disc pl-5 space-y-2">
                     <li><strong>Markdown の方言</strong>（Zenn の <code class="text-[10px] bg-slate-100 px-1 rounded">:::</code> ブロック · Qiita/Obsidian 固有記法など）— サービスごとに解釈が違い、変換しても貼り先で崩れる。サポート範囲が説明不能になり、混乱だけが増えるため。</li>
@@ -190,9 +193,10 @@
             </div>
         </details>
 
-        <p class="text-[10px] text-slate-500 leading-relaxed pt-2 border-t border-slate-100">本ツールは一般的な表変換例を提供するものです。税務・会計データの正確性は保証しません。要専門家確認。</p>
-    </section>
-</main>
+        </div>
+        <p class="text-[10px] text-slate-500 leading-relaxed pt-4 mt-4 border-t border-slate-200/80 text-center">本ツールは一般的な表変換例を提供するものです。税務・会計データの正確性は保証しません。要専門家確認。</p>
+    </div>
+</section>
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-segment.js"></script>

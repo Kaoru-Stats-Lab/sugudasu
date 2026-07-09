@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-03",
+  "updatedAt": "2026-07-09",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,22 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "ui-faq-setup-panel-20260709",
+      "date": "2026-07-09",
+      "type": "improve",
+      "audience": "public",
+      "title": "FAQレイアウト統一・設定パネルの縦表示改善",
+      "body": "表変換・電子印鑑のFAQを他ツール同様の横100%白背景に統一。シフト・ラベルの左設定パネルから内側スクロールを除去。QR読取にFAQを追加。match-boardのExcel貼付案内を補足。",
+      "tools": [
+        "table-conv",
+        "stamp",
+        "shift",
+        "label",
+        "qr-reader",
+        "match-board"
+      ]
+    },
     {
       "id": "planning-poker-20260709",
       "date": "2026-07-09",

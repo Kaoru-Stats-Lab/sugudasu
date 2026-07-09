@@ -1329,6 +1329,11 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   .sg-nav-label { font-size: 11px; }
 }
 
+/* 設定パネル — 縦を切らずページと一緒に伸ばす（shift / label 等） */
+.sg-setup-panel {
+  min-height: 0;
+}
+
 /* FAQ（ツール共通 · Notion toggle — DESIGN_NOTION_SUGUDASU_ADAPT §7） */
 .sg-faq-section {
   margin-top: 2rem;
@@ -3449,10 +3454,48 @@ body.sg-copy-flash {
 }
 
 /* group-split advanced — 希望順位割当（プール＆スロット） */
+.gsa-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+  gap: 1.5rem;
+  align-items: start;
+  position: relative;
+}
+.gsa-mode-setup .gsa-setup-panel {
+  display: block;
+}
+.gsa-mode-meeting {
+  grid-template-columns: minmax(0, 1fr);
+}
+.gsa-mode-meeting .gsa-meeting-panel {
+  min-height: min(88vh, 64rem);
+}
+.gsa-mode-meeting .gsa-setup-panel {
+  display: none;
+}
+.gsa-mode-meeting.gsa-edit-open .gsa-setup-panel {
+  display: block;
+  position: fixed;
+  top: 5.5rem;
+  left: 0.75rem;
+  width: clamp(28rem, 32vw, 35rem);
+  max-height: calc(100vh - 6.5rem);
+  overflow: auto;
+  z-index: 40;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+}
+.gsa-mode-meeting.gsa-edit-open::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.2);
+  z-index: 30;
+}
 .gsa-board {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-height: 60vh;
 }
 .gsa-toolbar {
   display: flex;
@@ -3464,6 +3507,48 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border);
   border-radius: 0.5rem;
   font-size: 0.75rem;
+}
+.gsa-toolbar--main {
+  justify-content: space-between;
+}
+.gsa-toolbar__info {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.85rem;
+}
+.gsa-toolbar__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+}
+.gsa-toolbar--sub {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+  background: #fafafa;
+}
+.gsa-export-menu {
+  position: relative;
+}
+.gsa-export-menu__panel {
+  margin-top: 0.4rem;
+  padding: 0.6rem;
+  min-width: 16rem;
+  border: 1px solid var(--sg-border);
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+.gsa-meeting-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #86efac;
+  background: #f0fdf4;
+  border-radius: 0.5rem;
 }
 .gsa-pool {
   display: flex;
@@ -3481,8 +3566,8 @@ body.sg-copy-flash {
 }
 .gsa-slots-area {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.65rem;
 }
 .gsa-slot {
   border: 1px solid var(--sg-border);
@@ -3534,8 +3619,8 @@ body.sg-copy-flash {
 .gsa-card {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.6875rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
   font-weight: 600;
   border-radius: 0.35rem;
   border: 1px solid #cbd5e1;
@@ -3556,4 +3641,21 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border);
   border-radius: 0.5rem;
   background: #fafafa;
+}
+@media (max-width: 1023px) {
+  .gsa-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gsa-mode-meeting.gsa-edit-open .gsa-setup-panel {
+    width: calc(100vw - 1.5rem);
+    max-height: 55vh;
+    top: auto;
+    bottom: 0.75rem;
+  }
+}
+.sg-main-shell.gsa-main-meeting {
+  max-width: none;
+  width: 100%;
+  padding-left: 12px;
+  padding-right: 16px;
 }

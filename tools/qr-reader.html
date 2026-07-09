@@ -17,6 +17,7 @@
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="画面をそのままQR読取 — カメラ不要">
     <meta name="twitter:description" content="画面共有・貼り付け・ファイルでブラウザ内読み取り。データは送信しません。">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"このツールは何ができますか？","acceptedAnswer":{"@type":"Answer","text":"QRコード画像をブラウザ上で読み取り、内容を確認できます。URL・テキスト・メールアドレスなど、QRコードに含まれる情報を表示します。"}},{"@type":"Question","name":"会員登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。登録不要ですぐ利用できます。"}},{"@type":"Question","name":"アップロードした画像はサーバーへ送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。画像の解析はブラウザ内で行われます。"}},{"@type":"Question","name":"QRコードの内容は保存されますか？","acceptedAnswer":{"@type":"Answer","text":"サーバー保存は行いません。直近履歴はセッション内表示のみで、ページを閉じると保持されません。"}},{"@type":"Question","name":"スクリーンショットでも読み取れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。画面キャプチャや保存済み画像から読み取れます。"}},{"@type":"Question","name":"QRコードが読み取れません。","acceptedAnswer":{"@type":"Answer","text":"QRコード全体が写っているか、ピントが合っているか、画像が小さすぎないか、コードが破損していないかを確認してください。"}},{"@type":"Question","name":"URLは自動で開きますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。内容を表示するだけです。開くかどうかは利用者が判断できます。"}}]}</script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <style>
@@ -108,6 +109,133 @@
         </div>
     </section>
 </main>
+
+<section class="no-print sg-faq-section border-t border-slate-200">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">QR読取のよくある質問</h2>
+        <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">初めて使うときの不安を減らすために、<strong>安全性・使い方・制限</strong>に絞ってまとめています。SUGUDASU QR読取は、登録不要・非送信・ブラウザ完結で「画像を入れたら中身が分かる」を素早く行うツールです。</p>
+
+        <h3 class="text-xs font-bold text-emerald-800 mb-2 mt-2">基本・安全性</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq">
+                <summary>このツールは何ができますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>QRコード画像をブラウザ上で読み取り、内容を確認できます。URL・テキスト・メールアドレスなど、QRコードに含まれる情報を表示します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>会員登録は必要ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。登録不要ですぐ利用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>無料で利用できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。無料で利用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>スマートフォンでも利用できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。PC・スマートフォンのどちらでも利用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>アップロードした画像はサーバーへ送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>送信されません。画像の解析はブラウザ内で行われます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>QRコードの内容は保存されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>サーバー保存は行いません。直近履歴はセッション内表示のみで、ページを閉じると保持されません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>個人情報を含むQRコードも読み取れますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>読み取りは可能ですが、内容を確認したうえで取り扱いには十分ご注意ください。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">使い方・読み取り結果</h3>
+        <div class="sg-faq-list mb-6">
+            <details class="sg-faq">
+                <summary>どんな画像形式に対応していますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>PNG・JPEG・WebPなど、一般的な画像形式に対応しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>スクリーンショットでも読み取れますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。画面キャプチャや保存済み画像から読み取れます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>QRコードが読み取れません。</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>次の点をご確認ください。① QRコード全体が画像に写っているか ② ピントが合っているか ③ 画像が極端に小さくないか ④ QRコードが破損していないか。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>複数のQRコードが写った画像でも読み取れますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>現在は1つずつ読み取ることを推奨しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>URLは自動で開きますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。内容を表示するだけです。開くかどうかは利用者が判断できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>URL以外も読み取れますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。QRコードに記録されている内容であれば、テキストやメールアドレスなども表示できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>QRコードを作ることもできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>このツールは読み取り専用です。作成は <a href="link-qr.html" class="text-blue-600 hover:underline">自分のリンクQRを作る</a> をご利用ください。</p>
+                </div>
+            </details>
+        </div>
+
+        <h3 class="text-xs font-bold text-slate-800 mb-2">制限・設計方針</h3>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>読み取れるQRコードのサイズに制限はありますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>明確な制限はありません。画像サイズやブラウザ環境によって読み取りやすさは変わります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>オフラインでも利用できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>現在はインターネット接続がある環境での利用を想定しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>なぜログイン機能がないのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>SUGUDASUは「すぐ使えること」を重視しているためです。登録やログインなしで、ブラウザだけで利用できる設計です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>なぜ画像を保存しないのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>読み取りだけが目的だからです。不要なデータを保持せず、必要なときだけ使えるシンプルなツールを目指しています。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
