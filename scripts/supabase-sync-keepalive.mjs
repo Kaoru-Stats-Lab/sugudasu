@@ -46,7 +46,7 @@ const res = await fetch(endpoint, {
   },
 });
 
-if (!res.ok && res.status !== 404) {
+if (![200, 401, 404].includes(res.status)) {
   fail(`HTTP ${res.status} from ${endpoint}`);
 }
 

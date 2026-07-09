@@ -4,8 +4,8 @@ name: Supabase Sync Keepalive
 
 on:
   schedule:
-    # Mon + Thu 12:00 UTC — safely under 7-day window
-    - cron: '0 12 * * 1,4'
+    # Daily 03:00 UTC — wider safety margin for Free tier pause window
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
