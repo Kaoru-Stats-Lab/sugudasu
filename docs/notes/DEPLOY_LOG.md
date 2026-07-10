@@ -682,19 +682,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | GSC SEO パイプライン · FAQ 全幅テンプレ · time-calc「時給計算」改名 · og:url clean path |
 | **change_summary** | `build-pages` canonical/robots/X-Robots `/data/` · `verify-ogp` · FAQ main外 · `time-calc` 命名 · planning-poker/link-qr FAQ · SEO SSOT |
-| **local_build** | pending（`release:pages:free`） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 26/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督「本番に反映して」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/` · `/time-calc` · `/planning-poker` · `/robots.txt`） |
+| **cf_deployment_id** | `262c38c`（`32978e7..262c38c` · git push origin main） |
+| **smoke** | pass — `/robots.txt` に `Disallow: /data/` · `/time-calc` に「時給計算」 |
 
 ---
 
@@ -702,19 +702,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `sync` |
 | **reason** | 付箋ルーム（sticky-room）初回 Sync 反映 · 整列/見出し · Room DoD |
 | **change_summary** | `tools/sync-room.html` · `assets/sticky-room-*.js/css` · sticky-room tests · STICKY_ROOM_* docs · release-checklist |
-| **local_build** | pending（`release:pages:sync` / `deploy:pages:sync`） |
+| **local_build** | `pass`（`deploy:pages:sync`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 27/450（2026-07 · sync wrangler · 要 Dashboard 照合） |
 | **gates** | P1–P8 · 提督「本番に反映して」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu-sync` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `sync.sugudasu.com/room`） |
+| **cf_deployment_id** | `f1711774`（https://f1711774.sugudasu-sync.pages.dev） |
+| **smoke** | pass — wrangler Success · `sync.sugudasu.com/room` |
 
 ---
 
@@ -722,6 +722,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
 | 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |
 | 2026-07-09 | 002 executed（7d547d0 · FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ） |
 | 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
