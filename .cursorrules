@@ -10,6 +10,7 @@
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
+| **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
 | **更新履歴 · ロードマップ（粒度）** | `docs/notes/DEV_TRANSPARENCY_RULES.md` · `data/changelog.json` · `data/roadmap.json` |

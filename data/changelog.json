@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-09",
+  "updatedAt": "2026-07-10",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,30 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "seo-gsc-pipeline-20260710",
+      "date": "2026-07-10",
+      "type": "improve",
+      "audience": "public",
+      "title": "検索向けURL整理（canonical · 内部JSON除外）",
+      "body": "各ページに正規URL（canonical）を自動付与。内部データJSONは検索対象外に。時給計算の表示名を統一。見積会議・リンク集QRのFAQ背景を全幅に揃えました。",
+      "tools": [
+        "time-calc",
+        "planning-poker",
+        "link-qr"
+      ]
+    },
+    {
+      "id": "time-calc-rename-20260710",
+      "date": "2026-07-10",
+      "type": "improve",
+      "audience": "public",
+      "title": "time-calc を「時給計算」に改名",
+      "body": "表示名を SUGUDASU 時給計算に統一。勤務時間合計と時給換算のツールであり、給与計算（社保・税金）ではないことを明示しました。",
+      "tools": [
+        "time-calc"
+      ]
+    },
     {
       "id": "ui-faq-setup-panel-20260709",
       "date": "2026-07-09",

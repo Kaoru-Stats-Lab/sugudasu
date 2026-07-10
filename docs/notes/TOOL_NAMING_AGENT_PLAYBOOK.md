@@ -70,6 +70,10 @@
 - `data-sg-tool-id` = registry キーと **同一**
 - 末尾: `sugudasu-shell.js` **同期読込**（`defer` 禁止 · `CHROME_HEADER_GUARDRAILS.md`）
 - `<title>` = **検索意図の日本語** + `| SUGUDASU`（productName の機械連結はしない）
+- **`og:url`** = `https://sugudasu.com/{id}`（**`.html` 禁止** · `npm run validate:ogp` が FAIL）
+- **`<link rel="canonical">` は手書きしない** — `build-pages.mjs` が注入（`docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md`）
+- sitemap / robots / `_redirects` も **触らない**（ビルドが生成）
+- **FAQ** は `</main>` の外に `.sg-faq-section` > `.sg-faq-inner`（`DESIGN_GUIDELINE` §2.5 · 背景フルブリード）
 
 ### Step 3 — `assets/{id}.js`（ロジックがある場合）
 

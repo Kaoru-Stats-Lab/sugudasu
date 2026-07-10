@@ -6,23 +6,23 @@
     <meta name="description" content="勤務時間を複数行で合計して時給換算するシンプル計算ツール。非送信・登録不要・ブラウザ完結。">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="SUGUDASU time-calc">
-    <meta property="og:description" content="労働時間 h:mm合計 + 時給換算。非送信でその場で確認。">
+    <meta property="og:title" content="勤務時間の合計と時給換算 | SUGUDASU 時給計算">
+    <meta property="og:description" content="勤務時間 h:mm合計 + 時給換算。非送信でその場で確認。給与計算・残業代判定ではありません。">
     <meta property="og:url" content="https://sugudasu.com/time-calc">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="SUGUDASU time-calc">
-    <meta name="twitter:description" content="勤務時間の単純合計と時給換算をブラウザ内で。">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"入力した時間や時給はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。計算はブラウザ内だけで行われ、登録やログインも不要です。"}},{"@type":"Question","name":"日またぎ勤務（例: 22:00-6:00）は計算できますか？","acceptedAnswer":{"@type":"Answer","text":"計算できます。終了時刻が開始時刻より小さい場合は翌日跨ぎとして扱い、警告付きで合計に反映します。"}},{"@type":"Question","name":"休憩時間や残業代の計算はできますか？","acceptedAnswer":{"@type":"Answer","text":"このツールでは対応していません。休憩は事前に差し引いた時間を入力し、残業代・割増賃金は勤務先の計算ルールで確認してください。"}},{"@type":"Question","name":"エラー行があると全体の計算は止まりますか？","acceptedAnswer":{"@type":"Answer","text":"止まりません。エラー行は一覧で表示しつつ、その行だけ合計から除外して他の行は計算を継続します。"}},{"@type":"Question","name":"支給額はどのように丸めていますか？","acceptedAnswer":{"@type":"Answer","text":"仕様どおり、円未満は切り捨てです。表示はあくまで概算なので、実際の給与額は勤務先の計算方法をご確認ください。"}}]}</script>
-    <title>SUGUDASU time-calc</title>
+    <meta name="twitter:title" content="SUGUDASU 時給計算 — 勤務時間合計と時給換算">
+    <meta name="twitter:description" content="勤務時間の単純合計と時給換算をブラウザ内で。残業代・社会保険は対象外。">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"入力した時間や時給はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。計算はブラウザ内だけで行われ、登録やログインも不要です。"}},{"@type":"Question","name":"日またぎ勤務（例: 22:00-6:00）は計算できますか？","acceptedAnswer":{"@type":"Answer","text":"計算できます。終了時刻が開始時刻より小さい場合は翌日跨ぎとして扱い、警告付きで合計に反映します。"}},{"@type":"Question","name":"休憩時間や残業代の計算はできますか？","acceptedAnswer":{"@type":"Answer","text":"このツールでは対応していません。休憩は事前に差し引いた時間を入力し、残業代・割増賃金は勤務先の計算ルールで確認してください。"}},{"@type":"Question","name":"エラー行があると全体の計算は止まりますか？","acceptedAnswer":{"@type":"Answer","text":"止まりません。エラー行は一覧で表示しつつ、その行だけ合計から除外して他の行は計算を継続します。"}},{"@type":"Question","name":"支給額はどのように丸めていますか？","acceptedAnswer":{"@type":"Answer","text":"仕様どおり、円未満は切り捨てです。表示はあくまで概算なので、実際の給与額は勤務先の計算方法をご確認ください。"}},{"@type":"Question","name":"給与計算ツールですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。勤務時間の合計と時給換算のみです。社会保険・税金・手取り・残業代の自動計算は行いません。"}}]}</script>
+    <title>勤務時間の合計と時給換算 | SUGUDASU</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU time-calc" data-sg-subtitle="時間合計 + 時給換算" data-sg-tool-id="time-calc"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 時給計算" data-sg-subtitle="勤務時間合計 + 時給換算" data-sg-tool-id="time-calc"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
     <header class="sg-tool-intro space-y-2">
@@ -80,8 +80,8 @@
 
 <section class="no-print sg-faq-section">
     <div class="sg-faq-inner">
-        <h2 class="sg-faq-title">time-calc のよくある質問</h2>
-        <p class="text-xs text-slate-500 mb-4">time-calc は、勤務時間の単純合計と時給換算に特化したツールです。</p>
+        <h2 class="sg-faq-title">時給計算のよくある質問</h2>
+        <p class="text-xs text-slate-500 mb-4">勤務時間の単純合計と時給換算に特化したツールです。給与計算（社会保険・税金・残業代）ではありません。</p>
         <div class="sg-faq-list">
             <details class="sg-faq">
                 <summary>入力した時間や時給はサーバーに送信されますか？</summary>
@@ -111,6 +111,12 @@
                 <summary>支給額はどのように丸めていますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>仕様どおり、円未満は切り捨てです。表示はあくまで概算なので、実際の給与額は勤務先の計算方法をご確認ください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>給与計算ツールですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。勤務時間の合計と時給換算のみです。社会保険・税金・手取り・残業代の自動計算は行いません。</p>
                 </div>
             </details>
         </div>

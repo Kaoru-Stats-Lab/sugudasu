@@ -2,6 +2,9 @@
 /**
  * OGP / Twitter Card 必須タグ検証 — note・SNS リンクプレビュー欠落の再発防止
  * 対象: tools/*.html（SSOT）· assets/og-card.png
+ *
+ * DECISION: og:url は apex clean path のみ許可（.html 付きは FAIL）。
+ * canonical は build-pages が注入するためソース必須ではない。
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,8 +16,19 @@ const TOOLS_DIR = path.join(ROOT, 'tools');
 const OG_IMAGE = 'https://sugudasu.com/assets/og-card.png';
 const SITE_ORIGIN = 'https://sugudasu.com';
 
-/** 内部プレビュー · Sync ライン · sitemap 除外（build-pages SITEMAP_SKIP と同期） */
-const SKIP_HTML = new Set(['brand-logo-preview.html', 'sync-index.html', 'sync-timeline.html']);
+/** 内部プレビュー · Sync ライン（別オリジン）· sitemap 除外（build-pages SITEMAP_SKIP と同期） */
+const SKIP_HTML = new Set([
+  'brand-logo-preview.html',
+  'sync-index.html',
+  'sync-timeline.html',
+  'sync-timeline-lp.html',
+  'sync-room.html',
+  'sync-schedule.html',
+]);
+
+function shouldSkip(file) {
+  return SKIP_HTML.has(file) || file.startsWith('sync-');
+}
 
 const REQUIRED_META = [
   { re: /<meta\s+name="description"\s+content="[^"]+"/, label: 'meta description' },
@@ -72,10 +86,14 @@ function verifyFile(file) {
 
   const ogUrl = extractMetaContent(html, 'og:url');
   const expected = canonicalOgUrl(file);
-  if (ogUrl && ogUrl !== expected && ogUrl !== `${expected.slice(0, -1)}.html` && ogUrl !== `${expected}.html`) {
-    warn(`${file}: og:url が正本と不一致 — 実際=${ogUrl} · 推奨=${expected}`);
-  } else if (ogUrl && ogUrl.includes('.html')) {
-    warn(`${file}: og:url に .html 付き — 推奨=${expected}`);
+  if (!ogUrl) {
+    fail(`${file}: og:url が空です — 推奨=${expected}`);
+  }
+  if (ogUrl.includes('.html')) {
+    fail(`${file}: og:url に .html 付きは禁止 — 実際=${ogUrl} · 必須=${expected}`);
+  }
+  if (ogUrl !== expected) {
+    fail(`${file}: og:url が apex clean path と不一致 — 実際=${ogUrl} · 必須=${expected}`);
   }
 
   for (const { re, label } of WARN_META) {
@@ -109,9 +127,9 @@ verifyOgAsset();
 const files = fs.readdirSync(TOOLS_DIR).filter((f) => f.endsWith('.html')).sort();
 let checked = 0;
 for (const file of files) {
-  if (SKIP_HTML.has(file)) continue;
+  if (shouldSkip(file)) continue;
   verifyFile(file);
   checked += 1;
 }
 
-console.log(`[ogp-guard] OK: ${checked} pages · og-card.png present`);
+console.log(`[ogp-guard] OK: ${checked} pages · og:url clean path · og-card.png present`);

@@ -1,8 +1,8 @@
-# 労働時間計算 — 仕様SSOT（time-calc · 別Agent引き継ぎ用）
+# 時給計算 — 仕様SSOT（time-calc · 別Agent引き継ぎ用）
 
-**更新:** 2026-07-03（Priority 深掘り · Gemini P1-6 突合）  
+**更新:** 2026-07-10（productName **SUGUDASU 時給計算** に確定）  
 **リポジトリ:** `C:\asl_dev\sugudasu`  
-**ステータス:** **企画FIX · 未実装**（Q1'27 新規 id 枠）
+**ステータス:** **実装済 · alpha**
 
 > **別Agentへ:** [`data-finance-priority-gemini-RESULT.md`](data-finance-priority-gemini-RESULT.md) P1-6 · `data/roadmap.json` `time-calc-labor`
 
@@ -13,12 +13,14 @@
 | 項目 | 内容 |
 |------|------|
 | ファイル | `tools/time-calc.html`（URL `/time-calc`） |
-| registry `id` | `time-calc`（**Q1'27 新規 id**） |
-| 命名案 | productName **SUGUDASU 時間計算** · navLabel **時間計算** |
-| 一言 | **タイムカードの h:mm を合計し、時給で概算給与**（非送信） |
+| registry `id` | `time-calc` |
+| 命名 | productName **SUGUDASU 時給計算** · navLabel **時給計算** · conceptName **時給計算** |
+| 一言 | **勤務時間の h:mm を合計し、時給で換算**（非送信） |
 | ペルソナ | アルバイト · フリーランス · 店舗マネージャー |
+| **やらないこと** | 給与計算（社保・税金・手取り）· 残業代・割増の自動判定 |
 
-**id 命名:** `time-calc` を採用（`work-calc` は検索意図がブレる）。
+**id 命名:** `time-calc` を維持（URL 破壊しない）。表示名だけ「時給計算」。  
+**DECISION:** 「給与計算」は過大訴求のため不採用。
 
 ---
 

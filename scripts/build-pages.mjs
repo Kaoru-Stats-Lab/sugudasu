@@ -38,7 +38,7 @@ process.env.SUGUDASU_DIST = DIST;
 
 /** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
 const SITEMAP_SKIP = new Set(
-  IS_SYNC ? ['sync-index.html', 'sync-timeline.html'] : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html']
+  IS_SYNC ? ['sync-index.html', 'sync-timeline.html', 'sync-room.html'] : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html']
 );
 
 function escapeXml(text) {
@@ -122,9 +122,11 @@ function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = []) {
 
   fs.writeFileSync(path.join(DIST, 'sitemap.xml'), xml, 'utf8');
 
+  // DECISION: /data/* は内部 JSON（fetch 可）· 検索インデックス対象外。ファイル増えてもパス単位で一括除外。
   const robots = [
     'User-agent: *',
     'Allow: /',
+    'Disallow: /data/',
     '',
     `Sitemap: ${SITE_ORIGIN}/sitemap.xml`,
     '',
@@ -187,12 +189,24 @@ function writeCleanUrlDirs(htmlFiles) {
 }
 
 function writeHeaders() {
+  const syncRoomHeaders = IS_SYNC
+    ? [
+        '/room',
+        '  Cache-Control: no-store',
+        '',
+        '/room/*',
+        '  Cache-Control: no-store',
+        '',
+      ]
+    : [];
   const headers = [
+    ...syncRoomHeaders,
     '/assets/*',
     '  Cache-Control: public, max-age=31536000, immutable',
     '',
     '/data/*',
     '  Cache-Control: public, max-age=3600',
+    '  X-Robots-Tag: noindex, nofollow',
     '',
     '/*.html',
     '  Cache-Control: public, max-age=600',
@@ -372,7 +386,55 @@ function compileTailwind() {
   console.log(`  tw-build.css ${kb} KiB`);
 }
 
-function rewriteHtml(html) {
+/**
+ * ビルド時の自己参照 canonical URL（クエリなし · apex）
+ * @param {string} file
+ * @param {{ guide?: boolean }} [opts]
+ * @returns {string | null}
+ */
+function absoluteCanonicalUrl(file, opts = {}) {
+  if (opts.guide) {
+    const slug = file.replace(/\.html$/, '');
+    return `${SITE_ORIGIN}/guides/${slug}`;
+  }
+  const pathname = canonicalPathFromHtml(file);
+  if (!pathname) return null;
+  return pathname === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${pathname}`;
+}
+
+/**
+ * DECISION: canonical / og:url は手書きドリフトを許さずビルドが正本にする。
+ * 新規 tools/{id}.html 追加時も SEO 手作業を増やさない（?tab= 等のクエリ重複もここで統合）。
+ * @param {string} html
+ * @param {string} file
+ * @param {{ guide?: boolean }} [opts]
+ */
+function applySeoCanonical(html, file, opts = {}) {
+  const url = absoluteCanonicalUrl(file, opts);
+  if (!url) return html;
+  let out = html;
+  out = out.replace(/\s*<link\s+rel=["']canonical["']\s+href=["'][^"']*["']\s*\/?>/gi, '');
+  if (/property=["']og:url["']/i.test(out)) {
+    out = out.replace(
+      /<meta\s+property=["']og:url["']\s+content=["'][^"']*["']\s*\/?>/i,
+      `<meta property="og:url" content="${url}">`
+    );
+    out = out.replace(
+      /(<meta\s+property=["']og:url["']\s+content=["'][^"']*["']\s*\/?>)/i,
+      `$1\n    <link rel="canonical" href="${url}">`
+    );
+  } else {
+    out = out.replace(/<\/head>/i, `    <link rel="canonical" href="${url}">\n</head>`);
+  }
+  return out;
+}
+
+/**
+ * @param {string} html
+ * @param {string} [file] tools 相対ファイル名（SEO 注入用）
+ * @param {{ guide?: boolean }} [opts]
+ */
+function rewriteHtml(html, file = '', opts = {}) {
   let out = html
     .replace(/\.\.\/\.\.\/assets\//g, '/assets/')
     .replace(/\.\.\/\.\.\/data\//g, '/data/')
@@ -416,7 +478,7 @@ function rewriteHtml(html) {
   // ツール <script type="module"> の import — /assets/* は immutable 1年のため必須
   out = out.replace(
     /from (['"])\/assets\/([^"'?]+\.js)\1/g,
-    (match, quote, file) => `from ${quote}/assets/${file}?v=${ASSET_V}${quote}`
+    (match, quote, assetFile) => `from ${quote}/assets/${assetFile}?v=${ASSET_V}${quote}`
   );
 
   // ツール module 入口（mask-app 等）— /assets/* は immutable 1年のため必須
@@ -435,6 +497,10 @@ function rewriteHtml(html) {
 
   out = injectAdsenseHead(out, adsenseConfig);
 
+  if (file) {
+    out = applySeoCanonical(out, file, opts);
+  }
+
   return out;
 }
 
@@ -450,7 +516,7 @@ function writeGuidePages() {
     const slug = file.replace(/\.html$/, '');
     slugs.push(slug);
     const raw = fs.readFileSync(path.join(guidesDir, file), 'utf8');
-    const out = rewriteHtml(raw);
+    const out = rewriteHtml(raw, file, { guide: true });
     fs.writeFileSync(path.join(distGuides, file), out, 'utf8');
     const slugDir = path.join(distGuides, slug);
     fs.mkdirSync(slugDir, { recursive: true });
@@ -509,7 +575,7 @@ const htmlFiles = fs
   .filter((f) => (IS_SYNC ? f.startsWith('sync-') : !f.startsWith('sync-')));
 for (const file of htmlFiles) {
   const raw = fs.readFileSync(path.join(TOOLS, file), 'utf8');
-  fs.writeFileSync(path.join(DIST, file), rewriteHtml(raw), 'utf8');
+  fs.writeFileSync(path.join(DIST, file), rewriteHtml(raw, file), 'utf8');
 }
 
 if (IS_SYNC) {
@@ -566,8 +632,19 @@ writeHeaders();
 
 const count = htmlFiles.length;
 const label = IS_SYNC ? 'Sync' : `${count} tools + index`;
+{
+  const robotsTxt = fs.readFileSync(path.join(DIST, 'robots.txt'), 'utf8');
+  if (!robotsTxt.includes('Disallow: /data/')) {
+    throw new Error('build-pages: robots.txt に Disallow: /data/ がありません');
+  }
+  const headersTxt = fs.readFileSync(path.join(DIST, '_headers'), 'utf8');
+  if (!/\/data\/\*[\s\S]*?X-Robots-Tag:\s*noindex/.test(headersTxt)) {
+    throw new Error('build-pages: _headers の /data/* に X-Robots-Tag: noindex がありません');
+  }
+}
+
 console.log(`build:pages OK (${BUILD_TARGET}) — ${label} → ${DIST}`);
-console.log(`  SEO: sitemap.xml (${lastmod}) · robots.txt · _redirects`);
+console.log(`  SEO: sitemap.xml (${lastmod}) · robots.txt · _redirects · canonical inject`);
 if (IS_SYNC) {
   console.log('  Preview: npm run preview:pages:sync');
 } else {

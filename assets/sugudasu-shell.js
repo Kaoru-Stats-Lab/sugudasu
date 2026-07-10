@@ -31,7 +31,7 @@
     { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' },
     { id: 'qr-reader', file: 'qr-reader.html', label: 'QR読取', icon: '📷' },
     { id: 'diff', file: 'diff.html', label: '差分', icon: '🔎' },
-    { id: 'time-calc', file: 'time-calc.html', label: '時間計算', icon: '⏳' }
+    { id: 'time-calc', file: 'time-calc.html', label: '時給計算', icon: '⏳' }
   ];
 
   /** 開発(tools/) と本番(dist/) 両対応 */

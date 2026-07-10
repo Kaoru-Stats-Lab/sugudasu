@@ -329,16 +329,16 @@
     },
     "time-calc": {
       "file": "time-calc.html",
-      "conceptName": "時間計算",
-      "productName": "SUGUDASU time-calc",
-      "navLabel": "時間計算",
+      "conceptName": "時給計算",
+      "productName": "SUGUDASU 時給計算",
+      "navLabel": "時給計算",
       "navIcon": "⏳",
       "inNav": true,
       "navOrder": 16.8,
-      "name": "time-calc（労働時間 + 時給換算）",
-      "version": "0.1.0",
+      "name": "時給計算（勤務時間合計 + 時給換算）",
+      "version": "0.1.1",
       "stage": "alpha",
-      "statusNote": "h:mm合計 · 時給換算 · 単機能 · 非送信"
+      "statusNote": "h:mm合計 · 時給換算 · 単機能 · 非送信 · 給与計算ではない"
     },
     "font-converter": {
       "file": "font-converter.html",

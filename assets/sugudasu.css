@@ -1334,12 +1334,23 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   min-height: 0;
 }
 
-/* FAQ（ツール共通 · Notion toggle — DESIGN_NOTION_SUGUDASU_ADAPT §7） */
+/* FAQ（ツール共通 · Notion toggle — DESIGN_NOTION_SUGUDASU_ADAPT §7）
+ * DECISION: FAQ は </main> の外（フルブリード）。誤って .sg-main-shell 内に置いても背景は 100vw にする。 */
 .sg-faq-section {
   margin-top: 2rem;
   padding: 2rem 1rem;
   border-top: 1px solid var(--sg-border);
   background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+.sg-main-shell .sg-faq-section,
+.sg-main-shell--wide .sg-faq-section,
+.sg-main-shell--print .sg-faq-section {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 .sg-faq-inner {
   max-width: var(--sg-faq-max);

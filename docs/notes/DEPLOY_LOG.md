@@ -678,10 +678,51 @@
 
 ---
 
+## DEPLOY-20260710-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | GSC SEO パイプライン · FAQ 全幅テンプレ · time-calc「時給計算」改名 · og:url clean path |
+| **change_summary** | `build-pages` canonical/robots/X-Robots `/data/` · `verify-ogp` · FAQ main外 · `time-calc` 命名 · planning-poker/link-qr FAQ · SEO SSOT |
+| **local_build** | pending（`release:pages:free`） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督「本番に反映して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/` · `/time-calc` · `/planning-poker` · `/robots.txt`） |
+
+---
+
+## DEPLOY-20260710-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `sync` |
+| **reason** | 付箋ルーム（sticky-room）初回 Sync 反映 · 整列/見出し · Room DoD |
+| **change_summary** | `tools/sync-room.html` · `assets/sticky-room-*.js/css` · sticky-room tests · STICKY_ROOM_* docs · release-checklist |
+| **local_build** | pending（`release:pages:sync` / `deploy:pages:sync`） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8 · 提督「本番に反映して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu-sync` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `sync.sugudasu.com/room`） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |
 | 2026-07-09 | 002 executed（7d547d0 · FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ） |
 | 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
 | 2026-07-09 | 001 approved（match-board · 見積会議 · time-calc · Sync仕様移管 · 提督 push 依頼） |

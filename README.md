@@ -47,7 +47,7 @@ python -m http.server 8080
 | [link-qr.html](tools/link-qr.html) | /link-qr | SUGUDASU リンク集QR | リンクQR | alpha |
 | [qr-reader.html](tools/qr-reader.html) | /qr-reader | SUGUDASU QR読取 | QR読取 | alpha |
 | [diff.html](tools/diff.html) | /diff | SUGUDASU 差分チェック | 差分 | alpha |
-| [time-calc.html](tools/time-calc.html) | /time-calc | SUGUDASU time-calc | 時間計算 | alpha |
+| [time-calc.html](tools/time-calc.html) | /time-calc | SUGUDASU 時給計算 | 時給計算 | alpha |
 
 ### 2) 補助・案内ページ
 

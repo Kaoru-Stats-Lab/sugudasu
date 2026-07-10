@@ -115,10 +115,10 @@
       "status": "considering",
       "priority": 9,
       "toolId": "time-calc",
-      "toolLabel": "時間計算",
+      "toolLabel": "時給計算",
       "toolHref": "time-calc.html",
-      "title": "労働時間 h:mm 合計 · 時給",
-      "summary": "タイムカード形式の合計と概算給与。24時間超えも累計表示。新規 id は次四半期枠。",
+      "title": "勤務時間 h:mm 合計 · 時給換算",
+      "summary": "タイムカード形式の合計と時給換算。給与計算（社保・税金）ではない。",
       "askFeedback": "入力は `1:30` 形式と `90分` 形式、どちらが多いですか？"
     },
     {
