@@ -1,0 +1,95 @@
+---
+description: SUGUDASU 付箋ルーム実装時の暴走防止ガードレール（必読）
+alwaysApply: false
+globs:
+  - tools/sync-room.html
+  - assets/sticky-room*.js
+  - assets/sticky-room.css
+  - docs/notes/STICKY_ROOM*.md
+---
+
+着手前に必ず読む:
+- `# SUGUDASU Room 実装仕様書（Cursor向け・v1.0.md`
+- `docs/notes/STICKY_ROOM_RELEASE_DOD.md`（**公開可否** · 次の作業は最初の `[ ]`）
+- `docs/notes/STICKY_ROOM_REFERENCE_REPOS.md`（MUST NOT · ファイル構成 · 開発原則）
+- `docs/notes/STICKY_ROOM_ARCHITECTURE.md`（データフロー図 · 引き継ぎ用）
+- `docs/release-checklist.md`（作業用チェック · 手順）
+
+## MUST NOT（置き換え禁止）
+
+実装中に以下へ差し替えてはいけない。
+
+- Y.js / y-webrtc（Y.Doc 部分）
+- Liveblocks / Partykit / Firebase / Socket.io
+- Supabase でカード状態を Postgres Changes 同期
+- Zustand / Redux / Recoil / Jotai
+- React Context / Provider ツリー
+- React Router / Vue Router / SPA フレームワーク
+- ReactFlow / tldraw 本体 / Excalidraw 本体 / Fabric.js
+- ファイルアップロード · 画像 · PDF · チャット
+- **ホワイトボード化** — ペン · 消しゴム · 図形 · 線/矢印 · コネクタ · リッチテキスト · Markdown · グループ枠
+- 盤上オブジェクトは **sticky + heading（見出し）のみ**（自由テキストオブジェクトも禁止）。詳細は `STICKY_ROOM_REFERENCE_REPOS.md` §オブジェクト種
+
+## ファイル構成（これ以上増やさない）
+
+| ファイル | 役割 |
+|----------|------|
+| `tools/sync-room.html` | 1 HTML（Sync · URL `/room`） |
+| `assets/sticky-room-app.js` | UI · Konva · Map 状態 |
+| `assets/sticky-room-sync.js` | LWW · WebRTC（Phase 2+） |
+| `assets/sticky-room-crypto.js` | WebCrypto（Phase 4+） |
+| `assets/sticky-room.css` | 盤面のみ |
+
+新規 `.js` を増やす場合は提督承認 + SSOT 更新が必要。
+
+## 状態管理
+
+- モジュールスコープの変数 + `Map` のみ
+- React / useState / useContext **禁止**（Vanilla ES modules）
+- カスタムイベントバス・グローバル Store 禁止
+
+## SPA 禁止
+
+- 1 HTML · 複数 ES module で完結
+- ルーター · レイアウト階層 · コード分割フレームワーク禁止
+
+## Bundle
+
+- 初期ロード gzip **250KB 以内**（仕様書 §8）
+- npm 依存を増やす前に **必要理由を1行コメント** + SSOT 追記
+- Konva は CDN ESM のみ（v1）。simple-peer は Phase 2 まで未導入可
+
+## OSS の扱い
+
+OSS は参考資料。SUGUDASU 思想と衝突したら **必ず SUGUDASU を優先**。OSS に設計を寄せない。
+
+## 開発ルール
+
+1. **1機能ずつ** — 動作確認してから次へ。5機能一括禁止
+2. 各ステップで `npm run build:pages:sync`（Room 変更時）
+3. LWW 等は `scripts/sticky-room-sync.test.mjs` で検証可能ならテスト追加
+4. 業務ロジックに `// DECISION:` を残す（`.cursor/rules/sugudasu-decision-comments.mdc`）
+5. **Phase 完了** — `docs/notes/STICKY_ROOM_REFERENCE_REPOS.md` §Definition of Done の □ をすべて満たしてから次 Phase へ
+
+## 開発原則
+
+Room は Zoom / Miro / FigJam ではない。付箋を共有する小さなブラウザツール。
+
+迷ったら「それは本当に付箋共有に必要か？」— **削る方向を優先**。
+
+## 同期OFFでも完成品（横断 DoD）
+
+`/room` は **ホスト/参加しなくても** 1人で便利であること。同期は価値を増やすだけ。
+
+必須操作（接続なし）: 付箋追加 · 色変更 · コピー · 削除 · 並べ替え。  
+詳細: `docs/notes/STICKY_ROOM_REFERENCE_REPOS.md` §横断原則 · §切断 UI
+
+## 切断を最初から（本番）
+
+接続成功だけで終わらない。必須 UI: **Host終了 · Join終了 · ICE failed · Room expired**。  
+盤面ロックは **expired のみ**（他は同期OFFで付箋は残す）。
+
+## 通信と UI の分離
+
+盤面は `boardDispatch`（Action → State → render → broadcast?）。Konva は通信を知らない。  
+詳細: `docs/notes/STICKY_ROOM_REFERENCE_REPOS.md` §通信と UI の分離

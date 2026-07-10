@@ -30,7 +30,7 @@
     "generate:font-styles-math": "node scripts/generate-font-styles-math.mjs",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
     "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs",
-    "test:all": "npm run test:prize-law && npm run test:normalize && npm run test:webp-to-jpg && npm run test:mask && npm run test:test-data && npm run test:group-split && npm run test:timeline && npm run test:linkify && npm run test:link-qr && npm run test:csv-import && npm run test:table-conv && npm run test:invoice-finance",
+    "test:all": "npm run test:prize-law && npm run test:normalize && npm run test:webp-to-jpg && npm run test:mask && npm run test:test-data && npm run test:group-split && npm run test:timeline && npm run test:linkify && npm run test:link-qr && npm run test:csv-import && npm run test:table-conv && npm run test:invoice-finance && npm run test:sticky-room",
     "test:link-qr": "node scripts/link-qr-engine.test.mjs",
     "test:csv-import": "node scripts/sg-csv-import.test.mjs",
     "test:table-conv": "node scripts/table-conv.test.mjs",
@@ -46,6 +46,14 @@
     "test:planning-poker": "node scripts/planning-poker-engine.test.mjs",
     "test:timeline": "node scripts/timeline-engine.test.mjs",
     "test:linkify": "node scripts/sg-linkify.test.mjs",
+    "test:sticky-room": "node scripts/sticky-room-sync.test.mjs && node scripts/sticky-room-crypto.test.mjs && node scripts/sticky-room-lww-conflict.test.mjs && node scripts/sticky-room-longevity.test.mjs",
+    "test:sticky-room:lww": "node scripts/sticky-room-lww-conflict.test.mjs",
+    "test:sticky-room:longevity": "node scripts/sticky-room-longevity.test.mjs",
+    "longevity:sticky-room": "node scripts/sticky-room-longevity-e2e.mjs",
+    "test:sticky-room-crypto": "node scripts/sticky-room-crypto.test.mjs",
+    "verify:sticky-room:phase2-dod": "node scripts/sticky-room-phase2-dod.mjs",
+    "verify:sticky-room:no-store": "node scripts/sticky-room-no-store.test.mjs",
+    "stress:sticky-room": "node scripts/sticky-room-stress.mjs",
     "poc:schedule-gantt": "npx --yes serve . -l 8090",
     "poc:schedule-split-pane": "npx --yes serve . -l 8092"
   },
@@ -54,6 +62,7 @@
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^2.0.0",
     "@tailwindcss/cli": "^4.3.1",
     "frappe-gantt": "^1.2.2",
+    "playwright": "^1.49.1",
     "sharp": "^0.35.1",
     "tailwindcss": "^4.3.1"
   }

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="description" content="SUGUDASU 付箋ルーム — 複数人で付箋を配置し合意形成。記録を残さない Sync ツール。">
+    <title>SUGUDASU 付箋ルーム</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU Sync">
+    <meta property="og:title" content="SUGUDASU 付箋ルーム">
+    <meta property="og:description" content="付箋を共有して合意形成。終われば部屋は消える。">
+    <meta property="og:url" content="https://sync.sugudasu.com/room">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 付箋ルーム">
+    <meta name="twitter:description" content="付箋を共有して合意形成。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <link rel="stylesheet" href="../assets/sticky-room.css">
+</head>
+<body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
+
+<div id="sg-chrome-top"
+     data-sg-title="SUGUDASU 付箋ルーム"
+     data-sg-subtitle="付箋を置いて合意 · 記録は残さない"
+     data-sg-tool-id="sticky-room"
+     data-sg-chrome-mode="focus"></div>
+
+<main class="sticky-room-shell flex-1 flex flex-col min-h-0 w-full max-w-none px-0 py-0">
+
+    <section id="sticky-room-conn" class="sticky-room-conn hidden px-4 py-2 border-b border-slate-200 bg-slate-50 space-y-1">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span id="sticky-room-conn-state" class="sticky-room-conn-badge" data-state="idle">未接続</span>
+            <span id="sticky-room-crypto-badge" class="sticky-room-crypto-badge hidden" data-state="off">E2E 未設定</span>
+            <span id="sticky-room-ttl" class="sticky-room-ttl-badge hidden" data-state="ok">残り —</span>
+            <span id="sticky-room-conn-stats" class="sticky-room-conn-stats text-slate-600">試行 0 · 成功 0 · ICE失敗 0 · 再接続 0</span>
+            <button type="button" id="sticky-room-reconnect" class="hidden text-xs font-bold px-2 py-1 rounded border border-amber-400 bg-amber-50 text-amber-900">
+                再接続
+            </button>
+            <button type="button" id="sticky-room-ping-test" class="hidden text-xs font-bold px-2 py-1 rounded border border-violet-300 bg-violet-50 text-violet-900">
+                Ping 100回テスト
+            </button>
+            <button type="button" id="sticky-room-leave" class="hidden text-xs font-bold px-2 py-1 rounded border border-slate-300 bg-white text-slate-800">
+                ルームから出る
+            </button>
+        </div>
+        <p id="sticky-room-ping-result" class="hidden text-xs font-mono" role="status"></p>
+        <div id="sticky-room-disconnect" class="sticky-room-disconnect hidden" data-reason="" role="alert" aria-live="assertive">
+            <p id="sticky-room-disconnect-title" class="sticky-room-disconnect-title font-bold text-sm"></p>
+            <p id="sticky-room-disconnect-body" class="sticky-room-disconnect-body text-xs mt-1"></p>
+            <div id="sticky-room-disconnect-actions" class="flex flex-wrap gap-2 mt-2"></div>
+        </div>
+        <p id="sticky-room-ttl-expired" class="hidden text-xs text-amber-900 bg-amber-50 border border-amber-300 rounded px-2 py-1" role="alert"></p>
+        <p id="sticky-room-room-link" class="hidden text-xs text-slate-600 break-all"></p>
+        <p id="sticky-room-conn-error" class="hidden text-xs text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1" role="alert"></p>
+    </section>
+
+    <div class="sticky-room-toolbar" role="toolbar" aria-label="付箋ルーム操作">
+        <details class="sticky-room-copy-menu" id="sticky-room-add-wrap">
+            <summary class="sticky-room-copy-trigger sg-btn-primary text-xs font-bold px-3 py-1.5 rounded-lg" id="sticky-room-add-summary">
+                追加
+            </summary>
+            <div class="sticky-room-copy-dropdown" role="menu">
+                <button type="button" id="sticky-room-add" class="sticky-room-copy-item" role="menuitem">
+                    付箋
+                </button>
+                <button type="button" id="sticky-room-add-heading" class="sticky-room-copy-item" role="menuitem" title="背景なしの分類ラベル">
+                    見出し
+                </button>
+            </div>
+        </details>
+        <div id="sticky-room-colors" class="flex items-center gap-1" aria-label="付箋の色"></div>
+        <button type="button" id="sticky-room-delete" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-red-300 bg-red-50 text-red-900 disabled:opacity-40" disabled>
+            削除
+        </button>
+        <details class="sticky-room-copy-menu" id="sticky-room-arrange-wrap">
+            <summary class="sticky-room-copy-trigger text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50" id="sticky-room-arrange-summary">
+                整列
+            </summary>
+            <div class="sticky-room-copy-dropdown" role="menu">
+                <button type="button" id="sticky-room-arrange" class="sticky-room-copy-item" role="menuitem" disabled>
+                    整列
+                </button>
+                <button type="button" id="sticky-room-fit-view" class="sticky-room-copy-item" role="menuitem" disabled title="いま見えている範囲の上端へグリッド詰め">
+                    画面に収める
+                </button>
+            </div>
+        </details>
+        <button type="button" id="sticky-room-undo" class="text-xs font-bold px-2 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled title="元に戻す (Ctrl+Z)">
+            戻す
+        </button>
+        <button type="button" id="sticky-room-redo" class="text-xs font-bold px-2 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-40" disabled title="やり直し (Ctrl+Y)">
+            やり直し
+        </button>
+        <details class="sticky-room-copy-menu" id="sticky-room-copy-wrap">
+            <summary class="sticky-room-copy-trigger text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50">
+                コピー
+            </summary>
+            <div class="sticky-room-copy-dropdown" role="menu">
+                <button type="button" id="sticky-room-copy-selected" class="sticky-room-copy-item" role="menuitem" disabled>
+                    選択付箋をコピー
+                </button>
+                <button type="button" id="sticky-room-copy-all" class="sticky-room-copy-item" role="menuitem" disabled>
+                    全付箋をコピー
+                </button>
+            </div>
+        </details>
+        <details class="sticky-room-copy-menu" id="sticky-room-export-wrap">
+            <summary class="sticky-room-copy-trigger text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50">
+                書き出し
+            </summary>
+            <div class="sticky-room-copy-dropdown" role="menu">
+                <button type="button" id="sticky-room-export-json" class="sticky-room-copy-item" role="menuitem" disabled>
+                    JSON をダウンロード
+                </button>
+                <button type="button" id="sticky-room-import-json" class="sticky-room-copy-item" role="menuitem">
+                    JSON を読み込む
+                </button>
+                <button type="button" id="sticky-room-export-md" class="sticky-room-copy-item" role="menuitem" disabled>
+                    Markdown をコピー
+                </button>
+                <button type="button" id="sticky-room-export-tsv" class="sticky-room-copy-item" role="menuitem" disabled>
+                    TSV をコピー
+                </button>
+            </div>
+        </details>
+        <input id="sticky-room-import-file" type="file" accept="application/json,.json" class="sr-only" tabindex="-1">
+        <p id="sticky-room-status" class="sticky-room-status" role="status">読み込み中…</p>
+        <p id="sticky-room-copy-toast" class="sticky-room-copy-toast hidden" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="sticky-room-board-wrap flex-1 min-h-0">
+        <div id="sticky-room-board" tabindex="0" aria-label="付箋ボード"></div>
+    </div>
+
+    <section id="sticky-room-solo-bar" class="sticky-room-solo-bar" aria-label="共同編集（任意）">
+        <p class="sticky-room-solo-lead">みんなで編集したい？</p>
+        <div class="sticky-room-solo-actions">
+            <button type="button" id="sticky-room-host" class="sg-btn-primary text-xs font-bold px-4 py-2 rounded-lg">
+                ルームを作る
+            </button>
+            <details class="sticky-room-join-details">
+                <summary class="sticky-room-join-summary text-xs text-slate-600">ルーム ID で参加</summary>
+                <div class="sticky-room-join-form flex flex-wrap items-center gap-2 mt-2">
+                    <label class="flex items-center gap-1 text-xs text-slate-700">
+                        <span class="sr-only">ルーム ID</span>
+                        <input id="sticky-room-join-id" type="text" class="sg-input text-xs w-40" placeholder="ルーム ID" autocomplete="off">
+                    </label>
+                    <button type="button" id="sticky-room-join" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50">
+                        参加
+                    </button>
+                </div>
+            </details>
+        </div>
+    </section>
+
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/sticky-room-app.js"></script>
+</body>
+</html>

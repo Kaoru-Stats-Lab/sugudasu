@@ -1,0 +1,418 @@
+/* sticky-room.css — 付箋ルーム盤面（sync-room.html のみ） */
+
+.sticky-room-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.sticky-room-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--sg-border, #e2e8f0);
+  background: #fff;
+}
+
+.sticky-room-status {
+  font-size: 0.6875rem;
+  color: #64748b;
+  margin-left: auto;
+}
+
+.sticky-room-solo-bar {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid var(--sg-border, #e2e8f0);
+  background: #fff;
+  text-align: center;
+}
+
+.sticky-room-solo-bar.hidden {
+  display: none;
+}
+
+.sticky-room-solo-lead {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0 0 0.5rem;
+}
+
+.sticky-room-solo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sticky-room-join-details {
+  text-align: left;
+}
+
+.sticky-room-join-summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.sticky-room-join-summary::-webkit-details-marker {
+  display: none;
+}
+
+.sticky-room-join-summary::before {
+  content: '▸ ';
+  font-size: 0.625rem;
+}
+
+.sticky-room-join-details[open] .sticky-room-join-summary::before {
+  content: '▾ ';
+}
+
+.sticky-room-conn-stats {
+  display: none;
+}
+
+.sticky-room-solo-bar.hidden,
+.sticky-room-lobby.hidden,
+.sticky-room-conn.hidden {
+  display: none;
+}
+
+.sticky-room-color-chip {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.sticky-room-color-chip[aria-pressed='true'] {
+  border-color: #334155;
+  box-shadow: 0 0 0 1px #fff inset;
+}
+
+.sticky-room-board-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 280px;
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px) 0 0 / 24px 24px,
+    #f8fafc;
+  /* 盤面ポリシー: パン/ズームなし · 縦スクロールのみ · Stage は JS で縦拡張 */
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#sticky-room-board {
+  width: 100%;
+  height: auto;
+  min-height: 280px;
+  touch-action: none;
+}
+
+.sticky-room-board-wrap:focus-within {
+  outline: none;
+}
+
+.sticky-room-conn-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.sticky-room-conn-badge[data-state='hosting'],
+.sticky-room-conn-badge[data-state='joining'] {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.sticky-room-conn-badge[data-state='connecting'],
+.sticky-room-conn-badge[data-state='reconnecting'] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.sticky-room-conn-badge[data-state='connected'] {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.sticky-room-conn-badge[data-state='expired'],
+.sticky-room-conn-badge[data-state='host-ended'],
+.sticky-room-conn-badge[data-state='join-ended'] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.sticky-room-disconnect {
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-width: 1px;
+}
+
+.sticky-room-disconnect[data-reason='host-ended'] {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.sticky-room-disconnect[data-reason='join-ended'] {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e3a8a;
+}
+
+.sticky-room-disconnect[data-reason='ice-failed'] {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.sticky-room-disconnect[data-reason='expired'] {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.sticky-room-disconnect.hidden {
+  display: none;
+}
+
+.sticky-room-disconnect-btn {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid;
+}
+
+.sticky-room-disconnect-btn-primary {
+  background: #4f46e5;
+  border-color: #4338ca;
+  color: #fff;
+}
+
+.sticky-room-disconnect-btn-secondary {
+  background: #fff;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.sticky-room-conn-badge[data-state='ice-failed'] {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.sticky-room-crypto-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.sticky-room-crypto-badge[data-state='on'] {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.sticky-room-crypto-badge.hidden {
+  display: none;
+}
+
+.sticky-room-ttl-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.sticky-room-ttl-badge[data-state='warn'] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.sticky-room-ttl-badge.hidden {
+  display: none;
+}
+
+.sticky-room-ping-ok {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.sticky-room-ping-fail {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.sticky-room-copy-menu {
+  position: relative;
+}
+
+#sticky-room-add-wrap > .sticky-room-copy-trigger.sg-btn-primary {
+  color: #fff;
+  border-color: transparent;
+}
+
+#sticky-room-add-wrap > .sticky-room-copy-trigger.sg-btn-primary::after {
+  opacity: 0.9;
+}
+
+#sticky-room-add-wrap .sticky-room-copy-dropdown {
+  right: auto;
+  left: 0;
+}
+
+.sticky-room-copy-trigger {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sticky-room-copy-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.sticky-room-copy-trigger::after {
+  content: ' ▾';
+  font-size: 0.625rem;
+  opacity: 0.7;
+}
+
+.sticky-room-copy-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 20;
+  min-width: 11rem;
+  padding: 0.25rem;
+  border: 1px solid var(--sg-border, #e2e8f0);
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.sticky-room-copy-menu:not([open]) .sticky-room-copy-dropdown {
+  display: none;
+}
+
+.sticky-room-copy-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.375rem;
+  border: none;
+  background: transparent;
+  color: #334155;
+  cursor: pointer;
+}
+
+.sticky-room-copy-item:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.sticky-room-copy-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sticky-room-copy-toast {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.sticky-room-copy-toast.hidden {
+  display: none;
+}
+
+.sticky-room-menu-disabled > summary {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ?stress=1 — P2 ストレステスト用パネル */
+body.sticky-room-stress-mode .sticky-room-solo-bar {
+  display: none;
+}
+
+.sticky-room-stress-panel {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 40;
+  width: min(18rem, calc(100vw - 1.5rem));
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #c4b5fd;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  font-size: 0.6875rem;
+  color: #334155;
+}
+
+.sticky-room-stress-panel h2 {
+  margin: 0 0 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #5b21b6;
+}
+
+.sticky-room-stress-panel pre {
+  margin: 0.375rem 0 0;
+  padding: 0.375rem;
+  border-radius: 0.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 0.625rem;
+  line-height: 1.4;
+  max-height: 10rem;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.sticky-room-stress-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+}
+
+.sticky-room-stress-actions button {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sticky-room-stress-actions button:hover {
+  background: #f1f5f9;
+}
