@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10",
+  "updatedAt": "2026-07-15",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,19 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "image-trim-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "public",
+      "title": "画像トリム α — 指定サイズに一発切出し",
+      "body": "SNSカバーや資料用に、枠を動かさず画像を合わせて指定ピクセルちょうどへ切り出します。登録不要 · データはサーバーに送りません。機密消しはマスクと併用できます。",
+      "tools": [
+        "image-trim",
+        "mask",
+        "hub"
+      ]
+    },
     {
       "id": "seo-gsc-pipeline-20260710",
       "date": "2026-07-10",

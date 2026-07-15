@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SNSカバーや資料用に、指定サイズちょうどへ画像を切り出し。枠は固定、画像を動かして合わせます。非送信・保存なし・ブラウザ完結。">
+    <title>指定サイズに画像を切り出す | SUGUDASU 画像トリム</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="指定サイズに画像を切り出す">
+    <meta property="og:description" content="SNSカバー・アバター・資料用。枠は動かさず、画像を合わせてPNG保存。データは送りません。">
+    <meta property="og:url" content="https://sugudasu.com/image-trim">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 画像トリム">
+    <meta name="twitter:description" content="指定サイズちょうどに切り出し。非送信・保存なし。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+        #trim-canvas { touch-action: none; cursor: grab; max-width: 100%; display: block; margin: 0 auto; background: #0f172a; border-radius: 0.75rem; }
+        #trim-canvas.is-dragging { cursor: grabbing; }
+        .trim-preset[aria-pressed="true"] { border-color: #6366f1; background: #eef2ff; color: #3730a3; }
+    </style>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込みから切り出し・PNG保存までブラウザ内だけで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"マスク（機密消し）との違いは？","acceptedAnswer":{"@type":"Answer","text":"マスクはぼかしや黒塗りで機密を隠す編集ツールです。画像トリムは指定サイズへの切り出し専用です。スクショを隠してからサイズを整える、という流れで併用できます。"}},{"@type":"Question","name":"枠のサイズを自由に変えられますか？","acceptedAnswer":{"@type":"Answer","text":"できません。SNSと資料向けの決まったサイズに絞っています。余白のない切り出しだけを最速で終わらせるためです。"}},{"@type":"Question","name":"HEIC（iPhoneの写真）は使えますか？","acceptedAnswer":{"@type":"Answer","text":"ブラウザが読み込めない形式はエラー表示で止めます。自動変換は行いません。PNG・JPEG・WebPなどでお試しください。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 画像トリム" data-sg-subtitle="指定サイズに一発切出し" data-sg-tool-id="image-trim"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+
+    <header class="sg-tool-intro space-y-2">
+        <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">SNS · 資料貼付 · 外部送信ゼロ</p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                SNSカバーや資料用に、<strong>指定サイズちょうど</strong>へ切り出します。枠は動かさず、画像を動かして合わせます。
+            </p>
+            <p class="sg-tool-lead">
+                機密を隠してから整える場合は先に <a href="mask.html" class="text-violet-800 underline font-semibold">マスク</a>。画像はサーバーに送りません。
+            </p>
+        </div>
+    </header>
+
+    <section id="drop-zone" class="sg-card p-5 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-12 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/40 transition-colors" tabindex="0" role="button" aria-label="画像を選択または貼り付け">
+        <p class="text-sm font-semibold text-slate-700">ドロップ · クリック · <kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">Ctrl</kbd>+<kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">V</kbd> で貼付け</p>
+        <p class="text-[11px] text-slate-500 mt-2">PNG / JPEG / WebP / GIF · 1枚ずつ · 長辺は自動で縮小（作業用）</p>
+        <input type="file" id="file-input" class="sr-only" accept="image/png,image/jpeg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif">
+    </section>
+
+    <p id="trim-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
+
+    <section id="editor-panel" class="hidden space-y-4">
+        <section class="sg-card p-4 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900">出力サイズ</h2>
+            <div class="space-y-3">
+                <div>
+                    <p class="text-[11px] font-semibold text-slate-500 mb-1.5">SNS</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="x-cover" aria-pressed="true">Xカバー 1500×500</button>
+                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="avatar" aria-pressed="false">アバター 256×256</button>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[11px] font-semibold text-slate-500 mb-1.5">資料</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="slide-16x9" aria-pressed="false">16:9 1920×1080</button>
+                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="slide-4x3" aria-pressed="false">4:3 1600×1200</button>
+                    </div>
+                </div>
+            </div>
+            <p id="preset-hint" class="text-[11px] text-slate-500">出力: 1500×500 px</p>
+        </section>
+
+        <section class="sg-card p-4 space-y-3">
+            <div class="flex flex-wrap gap-2 items-center">
+                <button type="button" id="btn-download" class="sg-btn-primary text-xs py-2 px-3" disabled>↓ PNG保存</button>
+                <button type="button" id="btn-copy" class="sg-btn-secondary text-xs py-2 px-3" disabled>コピー</button>
+                <button type="button" id="btn-reset-view" class="sg-btn-secondary text-xs py-2 px-3" disabled>リセット</button>
+                <button type="button" id="btn-clear" class="text-xs font-semibold text-slate-500 underline ml-auto">別の画像</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <label class="flex items-center gap-2 text-xs text-slate-700 flex-1 min-w-[12rem]">
+                    <span class="font-semibold shrink-0">拡大</span>
+                    <input type="range" id="zoom-slider" class="w-full accent-indigo-600" min="100" max="300" value="100" step="1" disabled>
+                    <span id="zoom-label" class="tabular-nums text-slate-500 w-12 text-right">100%</span>
+                </label>
+            </div>
+            <p id="editor-status" class="text-xs text-slate-500" aria-live="polite">画像をドラッグで位置合わせ · ホイールで拡大</p>
+            <div id="canvas-host" class="rounded-xl border border-slate-200 bg-slate-900/90 p-2 overflow-hidden">
+                <canvas id="trim-canvas" width="640" height="360" aria-label="切り出しプレビュー"></canvas>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                枠の外は切り捨てられます。余白は出ないよう、画像は常に枠いっぱいです。
+                ダブルクリックで中央に戻します。機密を隠すのは <a href="mask.html" class="text-violet-800 underline">マスク</a> で。
+            </p>
+        </section>
+    </section>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">画像トリムのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>画像はサーバーに送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。読み込みから切り出し · PNG 保存まで<strong>ブラウザ内だけ</strong>で処理します。タブを閉じるとデータは消えます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>マスク（機密消し）との違いは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><a href="mask.html" class="text-violet-800 underline">マスク</a>はぼかしや黒塗りで機密を隠す編集ツールです。画像トリムは<strong>指定サイズへの切り出し専用</strong>です。スクショを隠してからサイズを整える流れで併用できます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>枠のサイズを自由に変えられますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>できません。SNS と資料向けの決まったサイズに絞っています。余白のない切り出しだけを最速で終わらせるためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>HEIC（iPhoneの写真）は使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>ブラウザが読み込めない形式はエラー表示で止めます。自動変換は行いません。PNG · JPEG · WebP などでお試しください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>縦長の画像がうまく収まりません</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>枠は固定で、画像側だけを動かします。横長の出力枠に縦長を当てると被写体が大きく見えるのは仕様です。必要なら別のプリセットを試すか、あらかじめ撮り直してください。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/image-trim-app.js"></script>
+</body>
+</html>

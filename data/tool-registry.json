@@ -171,6 +171,19 @@
       "stage": "alpha",
       "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ · Canvas非送信 · マニュアル向け · T09b"
     },
+    "image-trim": {
+      "file": "image-trim.html",
+      "conceptName": "画像トリム",
+      "productName": "SUGUDASU 画像トリム",
+      "navLabel": "画像トリム",
+      "navIcon": "✂️",
+      "inNav": true,
+      "navOrder": 10.6,
+      "name": "指定サイズ画像切出し",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V"
+    },
     "test-data": {
       "file": "test-data.html",
       "conceptName": "テストデータ",
