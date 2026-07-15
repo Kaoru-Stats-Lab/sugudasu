@@ -139,7 +139,7 @@
       "toolLabel": "見積会議",
       "toolHref": "planning-poker.html",
       "title": "多人同時投票 · 同時 Reveal",
-      "summary": "現状は1ブラウザ・「あなた」1名分の投票のみ。複数人がカードを伏せたまま集め、同時公開するには同期インフラが必要。候補は URL状態共有 · Sticky Room 型の一時P2P · Syncルーム。調査プロンプト: docs/prompts/planning-poker-simultaneous-reveal-infra-prompt.md",
+      "summary": "正本: docs/notes/PLANNING_POKER_SIMULTANEOUS_REVEAL_SPEC.md。認識差エンジンが本丸で同期は Adapter。順序は (1) core 司会代行入力 (2) URL結果共有 MAY (3) Sync・WebRTC 別画面。現状は単機・自分1票のみ。",
       "askFeedback": "何人規模で、会議ツール画面共有あり／なし、どれが多いですか？"
     },
     {

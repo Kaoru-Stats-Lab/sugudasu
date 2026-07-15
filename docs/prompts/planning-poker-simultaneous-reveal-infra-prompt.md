@@ -2,6 +2,7 @@
 
 **用途:** 他 AI（Gemini / Claude / GPT 等）に投げ、**実装前**に同期アーキテクチャを比較・推奨させる  
 **更新:** 2026-07-15  
+**調査後の正本（FIX済）:** [`docs/notes/PLANNING_POKER_SIMULTANEOUS_REVEAL_SPEC.md`](../notes/PLANNING_POKER_SIMULTANEOUS_REVEAL_SPEC.md) — 新規調査より **SPEC を優先**。本プロンプトは監査・再比較用。  
 **製品ページ:** `https://sugudasu.com/planning-poker`（core · `tools/planning-poker.html`）  
 **roadmap:** `data/roadmap.json` → `planning-poker-simultaneous-reveal`（検討中）  
 **関連既存資産:** Sticky Room（`sync.sugudasu.com/room` · WebRTC · E2E `#k=`）· Sync S1（Supabase rooms）· 割り勘 URL 共有案（`warikan-url-share`）
