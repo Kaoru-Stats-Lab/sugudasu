@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PDFの図形重ねや半透明ペンは復元リスクあり。スクショ・画像をピクセル上書きで隠す安全な手順。SUGUDASUマスクは画像専用・非送信。">
+    <title>画像・PDF黒塗りの正しいセキュリティ手順 | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="画像・PDF黒塗りの正しいセキュリティ手順">
+    <meta property="og:url" content="https://sugudasu.com/guides/pdf-image-masking-security">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="安全な黒塗り手順"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--brand">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>セキュリティ</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">セキュリティ · マスク</p>
+            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <h1 class="sg-guide-title">実務での漏洩を防ぐ画像・PDF黒塗り（マスク）の正しい手順</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">「黒い四角を載せただけ」のPDFは、選択コピーで裏の文字が出ることがあります。見た目の黒さと、<strong>データが消えたか</strong>は別問題です。</p>
+                <p class="sg-guide-lead">SUGUDASU の <a href="/mask">マスク</a>は<strong>画像（PNG / JPEG 等）専用</strong>で、Canvas 上にピクセルを上書きしてから PNG 出力します。PDF本体の墨消しエンジンではありません。PDFはページを画像化してから同手順へ。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-pdf-image-masking-security">
+            <h2 id="guide-takeaways-pdf-image-masking-security" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>PDFの図形重ね・Excel背景黒が危険な理由</li>
+                <li>安全寄りの条件（ラスタ化＋不透明ピクセル上書き）</li>
+                <li>マスクツールでの黒塗り実務と提出前チェック</li>
+                <li>ぼかし・スタンプ・注釈は「隠し」ではないことの整理</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>危険な「見た目だけの黒塗り」</h2>
+            <h3>PDFに黒い図形を重ねただけ</h3>
+            <p>Office で黒矩形を置き PDF にすると、上は図形・下はテキストのまま、という構造になりやすいです。テキスト選択でコピーできるケースがあります。スマートフォンの簡易PDFビューアでは注釈レイヤーが描画されず、<strong>黒が見えず丸見え</strong>になる事故も報告されています。</p>
+            <h3>Excelのセルを黒背景＋黒文字</h3>
+            <p>見た目は隠れてもセル値は残ります。PDF化後もコピーで金額が出ることがあります。隠すなら値そのものを消すか、ラスタ化した画像として塗りつぶしてください。</p>
+            <h3>半透明マーカー・弱いぼかし</h3>
+            <p>不透明度不足のペンや軽いぼかしは、コントラスト調整で輪郭が戻ることがあります。機密値は<strong>不透明な黒塗り（ピクセル置換）</strong>を優先します。</p>
+
+            <h2>安全寄りの技術条件</h2>
+            <ol>
+                <li>テキスト／ベクターを残さず、<strong>1枚のビットマップ</strong>にする（ラスタ化）。</li>
+                <li>隠したい矩形のピクセルを、元データを引き継がない不透明色で<strong>上書き</strong>する。</li>
+                <li>提出前に、別ビューアでテキスト選択できないこと・極端な明るさ調整でも文字が浮かないことを確認する。</li>
+            </ol>
+            <p>Acrobat 等の正式な「墨消し（Redaction）」は PDF 構造ごと削除する別カテゴリです。本ツールはそちらを再現しません。</p>
+
+            <h2>SUGUDASU マスクでの手順</h2>
+            <ol>
+                <li>PDFの場合: OSの印刷「画像として保存」や画面キャプチャで<strong>該当ページを画像化</strong>する（ツールは PDF ファイル直読み非対応）。</li>
+                <li><a href="/mask">マスク</a>に PNG / JPEG / WebP / GIF をドロップ（サーバへアップロードしない設計。Network で確認可 → <a href="/guides/browser-data-privacy">非送信の検証</a>）。</li>
+                <li>モード「黒塗り」で範囲ドラッグ。機密が高い値ほど黒塗り。マニュアル向けの「ぼかし」は推測余地が残る場合あり。</li>
+                <li>「PNG保存」。スタンプは下データを消さない。注釈（矢印・枠）は指摘用でマスクではない。</li>
+                <li>出力を開き、選択コピーと目視の塗り漏れを必ず確認（<strong>塗り漏れは利用者責任</strong>）。</li>
+            </ol>
+
+            <h2>現場の失敗談</h2>
+            <ul>
+                <li>注釈の長方形で目隠し → 別端末ビューアでレイヤー無視。</li>
+                <li>スタンプ「サンプル」だけ貼って実データが残存。</li>
+                <li>ぼかしだけでマイナンバーを隠したつもりになる。</li>
+            </ul>
+
+            <h2>免責</h2>
+            <p>ピクセル上書きは画像そのものの復元を困難にしますが、ファイル名、処理前コピーの残存、塗り範囲の漏れ、メタデータの扱いまで保証しません。重要な公開前は複数ビューアでクロスチェックしてください。<a href="/disclaimer">免責事項</a>・<a href="/privacy">プライバシー</a>も参照。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-pdf-image-masking-security">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-pdf-image-masking-security" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>PDFファイルをそのまま墨消しできますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>できません。画像化したページに対してマスクしてください。複数ページはページごとに画像化します。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>白塗りはできますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>「同色塗り」で背景に近い色を選ぶ運用が近くなります。黒塗りモードが最も「隠した」と説明しやすいです。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>画像はサーバに残りますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>読み込みから PNG 保存までブラウザ内です。タブを閉じるとメモリ上のデータは消えます。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/mask">マスク</a> · <a href="/image-trim">画像切り出し</a> · <a href="/guides/browser-data-privacy">データ非送信の検証</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

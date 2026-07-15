@@ -1,8 +1,9 @@
 # SUGUDASU ガイドコンテンツ戦略 — MECE（Web ディレクター正本）
 
-**更新:** 2026-06-29  
+**更新:** 2026-07-15  
 **目的:** Google AdSense「有用性の低いコンテンツ」突破 **と** 幹事・フリーランスへの実益を両立する **永続資産** の設計  
-**実装:** `tools/guides.html` · `tools/guides/*.html` · `data/guides.json`
+**実装:** `tools/guides.html` · `tools/guides/*.html` · `data/guides.json`  
+**不合格後の監査 · Gemini:** [`ADSENSE_LOW_VALUE_CONTENT_AUDIT_20260715.md`](ADSENSE_LOW_VALUE_CONTENT_AUDIT_20260715.md) · [`../prompts/adsense-low-value-content-gemini-prompt.md`](../prompts/adsense-low-value-content-gemini-prompt.md)
 
 ---
 
@@ -29,6 +30,7 @@ sugudasu.com/
 ├── /guides/{slug}       … 個別記事（1,500字以上 · 折りたたみなし本文）
 ├── /statements          … 製品約束（E-E-A-T）
 ├── /updates             … 更新履歴
+├── /contact             … 問い合わせ（フォーム · メール）
 ├── /privacy · /terms    … 法務（AdSense 必須）
 └── /{tool}              … 各ツール（FAQ は補助 · ガイドが深い層）
 ```

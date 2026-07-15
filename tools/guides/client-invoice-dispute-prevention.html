@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="仕様変更の追加工数をうやむやにしない。見積会議→即日見積/請求PDFの合意フロー。フリーランス・制作会社向け。">
+    <title>仕様変更の追加請求をうやむやにしない実務フロー | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="仕様変更の追加請求をうやむやにしない実務フロー">
+    <meta property="og:url" content="https://sugudasu.com/guides/client-invoice-dispute-prevention">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="追加請求の合意フロー"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--docs">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>書類・経理</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">書類・経理 · フリーランス / 受託</p>
+            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <h1 class="sg-guide-title">仕様変更の追加工数をうやむやにしない、見積・請求の合意フロー</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">「ついでにこれも」を二つ返事したあと、納品時に「そんな話は聞いていない」——受託あるあるの消耗戦です。</p>
+                <p class="sg-guide-lead">変更が発生した日のうちに、<a href="/planning-poker">見積会議</a>でポイントを合意し、<a href="/invoice">請求書／見積</a>で PDF を出すまでの<strong>防衛ワークフロー</strong>を整理します（契約法の助言ではありません）。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-client-invoice-dispute-prevention">
+            <h2 id="guide-takeaways-client-invoice-dispute-prevention" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>タダ働きになりやすいトリガー表現</li>
+                <li>変更当日にやる見積→文書→承認の最短ループ</li>
+                <li>SUGUDASU ツールの役割分担（ポーカーと請求）</li>
+                <li>後回し請求が会計年度を跨ぐリスク</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>なぜ後から揉めるか</h2>
+            <ul>
+                <li>口頭の「ついで」がスコープに残らない。</li>
+                <li>差分をまとめて月末請求 → 先方予算・記憶がすでにクローズ。</li>
+                <li>社内でポイント換算せず感覚見積だけ出し、説明不能。</li>
+            </ul>
+
+            <h2>推奨ループ（当日〜48時間）</h2>
+            <ol>
+                <li><strong>変更を1行で書く</strong>（何を・何のため・完了条件）。チャットでも可。</li>
+                <li><strong>見積会議</strong>で相対ポイントを合意（画面共有＋司会代行入力）。理由メモを残す。<a href="/guides/planning-poker-estimation">進め方ガイド</a></li>
+                <li>金額が出せるなら即、<a href="/invoice">請求書ツール</a>で見積または追加請求の行を切り PDF 化（ブラウザ内。送信設計は <a href="/guides/browser-data-privacy">検証手順</a>）。</li>
+                <li>メール／チャットで PDF を送り、<strong>「この条件で進めてよいか」</strong>の返信をもらうまで実装を広げない（例外は契約で先に決めた無償枠のみ）。</li>
+                <li>承認ログ（スレッドURL・日付）を案件フォルダに控え。</li>
+            </ol>
+
+            <h2>現場の失敗</h2>
+            <ul>
+                <li>納品後に初めて追加費用を出す → 「当初予算内」で拒絶されやすい。</li>
+                <li>請求だけ急ぎ、適格請求書の記載を雑にする → 差し戻し。手順は <a href="/guides/invoice-browser-workflow">インボイス手順</a>。</li>
+                <li>ポイントを即・人日固定し、ジュニア実績と乖離。</li>
+            </ul>
+
+            <h2>免責</h2>
+            <p>契約類型・約款・業界慣行により取れる手段は異なります。本記事は一般的な実務慣行の整理であり、法的助言ではありません。重要な案件は専門家に<strong>要確認</strong>。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-client-invoice-dispute-prevention">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-client-invoice-dispute-prevention" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>無償の「ついで」枠はゼロにすべきですか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>ゼロでも、契約で上限時間を決めても構いません。重要なのは<strong>上限と承認プロセスを先に言語化</strong>することです。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>見積会議の結果は契約になりますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>なりません。合意の補助です。金額・納期は見積PDFや契約変更で確定してください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>クライアントをポーカーに同席させてよいですか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>推奨です。曖昧さがコストになることをその場で共有できます。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/invoice">請求書</a> · <a href="/planning-poker">見積会議</a> · <a href="/stamp">電子印鑑</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

@@ -1,6 +1,46 @@
 {
-  "updatedAt": "2026-07-03",
+  "updatedAt": "2026-07-15",
   "articles": [
+    {
+      "slug": "browser-data-privacy",
+      "pillar": "docs",
+      "title": "ブラウザ完結型ツールの仕組みとデータ非送信の検証手順",
+      "description": "登録不要ツールが業務データをサーバへ送らない仕組みと、DevToolsで自分で検証する手順。総務・情報システム向け。",
+      "tools": ["invoice", "mask"],
+      "published": "2026-07-15"
+    },
+    {
+      "slug": "planning-poker-estimation",
+      "pillar": "team",
+      "title": "プランニングポーカーで見積もりのズレを防ぐ実務ファシリテーション",
+      "description": "認識差を見つける見積会議の進め方。SUGUDASUは司会1画面の代行入力＋Reveal。",
+      "tools": ["planning-poker", "timeline"],
+      "published": "2026-07-15"
+    },
+    {
+      "slug": "pdf-image-masking-security",
+      "pillar": "brand",
+      "title": "実務での漏洩を防ぐ画像・PDF黒塗り（マスク）の正しい手順",
+      "description": "見た目だけの黒塗りの危険性と、画像のピクセル上書き手順。マスクは画像専用・PDF直読みなし。",
+      "tools": ["mask"],
+      "published": "2026-07-15"
+    },
+    {
+      "slug": "event-day-timeline-recovery",
+      "pillar": "event",
+      "title": "イベント当日進行表の遅れ補正と巻き戻し実務",
+      "description": "分単位の連動再計算とアンカーで当日の遅れを補正。秒単位タイマーは対象外。",
+      "tools": ["timeline"],
+      "published": "2026-07-15"
+    },
+    {
+      "slug": "client-invoice-dispute-prevention",
+      "pillar": "docs",
+      "title": "仕様変更の追加工数をうやむやにしない、見積・請求の合意フロー",
+      "description": "変更当日に見積会議→見積/請求PDFで合意する防衛ワークフロー。フリーランス・受託向け。",
+      "tools": ["invoice", "planning-poker"],
+      "published": "2026-07-15"
+    },
     {
       "slug": "office-roster-normalize",
       "pillar": "team",

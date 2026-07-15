@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="イベント当日に5分押したときの進行表の巻き戻し。分単位の連動再計算とアンカー。秒単位タイマーは対象外。">
+    <title>イベント当日進行表の遅れ補正と巻き戻し実務 | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="イベント当日進行表の遅れ補正と巻き戻し実務">
+    <meta property="og:url" content="https://sugudasu.com/guides/event-day-timeline-recovery">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="当日進行の遅れ補正"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--event">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>イベント運営</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">イベント運営 · 幹事 / 司会</p>
+            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <h1 class="sg-guide-title">イベント当日進行表の遅れ補正と巻き戻し実務</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">前半が3分延びた瞬間、後半の持ち時間が頭の中で崩れます。Excelの同時編集で行がズレ、誰も終了予定を言えない——当日あるあるです。</p>
+                <p class="sg-guide-lead"><a href="/timeline">進行タイムライン</a>は<strong>分単位</strong>でコマ所要を変えると後続が連動再計算されます。秒単位のテレプロ／放送タイマーは対象外です（意図的なスコープ）。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-event-day-timeline-recovery">
+            <h2 id="guide-takeaways-event-day-timeline-recovery" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>ドミノ遅延を数字で見せるための進行表設計</li>
+                <li>+5分操作とアンカー（昼食・バスなど固定時刻）</li>
+                <li>修正後をチャットへコピー共有する運用</li>
+                <li>秒単位・同時編集が必要なときの他手段への見極め</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>何が壊れるか</h2>
+            <ul>
+                <li>挨拶延長 → ゲスト持ち時間不足。現場で誰も残りを計算できない。</li>
+                <li>スプレッドシートの共同編集 → 行挿入で式や時刻列が崩壊。</li>
+                <li>固定枠（昼食・閉館）を無視した後ろ倒しで退場トラブル。</li>
+            </ul>
+
+            <h2>事前に入れておく設計</h2>
+            <ol>
+                <li>コマを「所要分」で持ち、開始終了はツールに任せる。</li>
+                <li>動かせない枠は<strong>アンカー</strong>にする（食い込みは赤字表示。自動短縮はしない）。</li>
+                <li>目標終了時刻を入れ、over / early を見る。</li>
+                <li>バッファコマ（質疑・歓談）を後ろに1つ置き、削れる場所を先に決める。</li>
+            </ol>
+
+            <h2>当日の補正フロー</h2>
+            <ol>
+                <li>押したコマの所要を <strong>+5分</strong>（または必要な分）に直す → 後続が一斉再計算。</li>
+                <li>アンカー衝突が出たら、手前の歓談・休憩を削って帳尻合わせ。</li>
+                <li>プレビューで現在コマの残り・次コマを確認。</li>
+                <li>プレーンテキスト / TSV をコピーし、運営チャットへ「新スケジュール」を貼る（サーバ同期ではない）。</li>
+            </ol>
+
+            <h2>このツールで足りないとき</h2>
+            <p>秒単位のキュー出し、外部モニター専用タイマー、音響卓とのフレーム同期が必要なら放送・配信向け専用機材／SaaSへ。SUGUDASU は<strong>幹事が1端末で直し、テキストで配る</strong>層に振っています。詳細は <a href="/guides/excel-vs-web-timeline">Excelとの使い分け</a> ・ <a href="/guides/event-runbook">幹事チェックリスト</a> も参照。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-event-day-timeline-recovery">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-event-day-timeline-recovery" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>秒単位の補正はできますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>できません。分単位の連動再計算がスコープです。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>複数人で同時編集できますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>コア版は1端末編集が主です。修正結果をコピー共有してください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>進行データはサーバに送られますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>送りません。編集はブラウザ内です。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/timeline">進行タイムライン</a> · <a href="/guides/training-timeline-tips">研修進行表のコツ</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

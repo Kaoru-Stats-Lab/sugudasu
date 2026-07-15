@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="プランニングポーカー（見積会議）で認識差を見つけ、声の大きい人に流されない進め方。SUGUDASUは司会1画面の代行入力＋Reveal。">
+    <title>プランニングポーカーで見積もりのズレを防ぐ実務ファシリテーション | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="プランニングポーカーで見積もりのズレを防ぐ実務">
+    <meta property="og:url" content="https://sugudasu.com/guides/planning-poker-estimation">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="見積会議の回し方"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--team">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>チーム運用</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">チーム運用 · PM / ディレクター</p>
+            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <h1 class="sg-guide-title">プランニングポーカーで見積もりのズレを防ぐ実務ファシリテーション</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">「この画面、何日？」が先に出た瞬間、全員がその数字に寄りがちです。正解当てより、<strong>認識差の抽出</strong>がプランニングポーカーの本丸です。</p>
+                <p class="sg-guide-lead">SUGUDASU の <a href="/planning-poker">見積会議</a>は登録不要。いまは<strong>司会が1画面で代行入力し、Reveal で同時公開</strong>する運用です（別端末からの個別投票は未対応）。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-planning-poker-estimation">
+            <h2 id="guide-takeaways-planning-poker-estimation" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>なぜ先出しの数字が会議を歪めるか</li>
+                <li>フィボナッチ系デッキ（相対サイズ）の使い方</li>
+                <li>SUGUDASU 見積会議での司会代行入力 → Reveal 5ステップ</li>
+                <li>ポイントを人日に即換算しない・中間値妥協を避ける判断</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>見積会議が崩れる典型パターン</h2>
+            <ul>
+                <li>声の大きい人・納期プレッシャー側の数字に全員が寄る（アンカリング）</li>
+                <li>経験の浅いメンバーが「短く言った方がいい」とリスクを黙る</li>
+                <li>「どこまでがスコープか」が揃わないままスタートし、後半で予算が崩れる</li>
+            </ul>
+            <p>ポーカーは「正しい工数をAIが出す道具」ではありません。<strong>最大と最小の理由を並べ、前提を揃える会議術</strong>です。</p>
+
+            <h2>デッキと相対ポイント</h2>
+            <p>SUGUDASU の標準デッキは <code>0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ?, ☕</code> です。隣同士の差が広がるほど、「大きいほど不確実性も大きい」ことを直感で共有できます。</p>
+            <p>基準タスクを1つ決め（例:「既知の画面文言変更を 3」）、他を相対比較します。<strong>最初から 1pt＝1人日と固定しない</strong>のがコツです。換算はチームのベロシティが溜まってから。</p>
+
+            <h2>SUGUDASU 見積会議 — 司会ファシリ 5ステップ</h2>
+            <ol>
+                <li><strong>Story と参加者名を入れる。</strong>「あなたの名前」に司会名を入れ開始。Zoom / Meet / Teams でこの画面を共有する。</li>
+                <li><strong>基準を共有</strong>したうえで、参加者に口頭またはチャットで点数を伝えるよう促す。司会は左の参加者を選び、カードを伏せ入力する（Reveal前は点数非表示・投票済みのみ）。</li>
+                <li><strong>全員そろうまで代行入力。</strong>未投票者がいれば次の名前へ。途中で他人の点数は見えない。</li>
+                <li><strong>Reveal（同時公開）。</strong>平均・中央値・最小/最大を見る。離れた人から理由を聞く（隠れたAPI・調査・再利用の差など）。</li>
+                <li><strong>前提を整理して再投票</strong>し、採用ポイントを決める。必要なら CSV 出力。スケジュール化は <a href="/timeline">進行タイムライン</a> や既存のチケットへ転記。</li>
+            </ol>
+            <p>別々の PC から同時に投票する同期機能は<strong>まだありません</strong>（検討中）。画面共有＋代行入力が現行の正解ルートです。</p>
+
+            <h2>失敗談と判断分岐</h2>
+            <ul>
+                <li><strong>即・人日換算:</strong> ジュニアとシニアで1日の意味が違う。スプリント実績でベロシティを測ってから。</li>
+                <li><strong>機械的な中間値:</strong> 3 と 13 の平均 8 は議論放棄に近い。差が残るなら分割かスパイク（調査タスク）を入れる。</li>
+                <li><strong>クライアント同席はむしろ有効:</strong> 「仕様が曖昧だとポイントが跳ねる」をその場で見せられる。</li>
+            </ul>
+
+            <h2>免責</h2>
+            <p>本ガイドとツールが示すポイントは合意形成の補助であり、納期・費用・契約成果を保証しません。最終判断は当事者の責任です。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-planning-poker-estimation">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-planning-poker-estimation" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>各自のスマホから個別投票できますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>現時点ではできません。司会の1画面で代行入力し、Revealで同時公開します。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>Tシャツサイズ（S/M/L）は使えますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>標準は数値デッキです。社内で S=3 / M=8 などの対応表を決めて運用するチームはあります（ツール内切替は現状なし）。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>Reveal前に点数は見えますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>いいえ。「投票済み / 未投票」のみです。アンカリング防止が目的です。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/planning-poker">見積会議</a> · <a href="/timeline">進行タイムライン</a> · <a href="/guides/excel-vs-web-timeline">Excel進行表との使い分け</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

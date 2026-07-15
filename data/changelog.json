@@ -11,6 +11,24 @@
   },
   "entries": [
     {
+      "id": "guides-adsense-value-20260715",
+      "date": "2026-07-15",
+      "type": "improve",
+      "audience": "public",
+      "title": "実務ガイドを5本追加（非送信検証・見積会議・マスク・当日進行・追加請求）",
+      "body": "AdSense「有用性」改善の一環として、ブラウザ完結の検証手順、見積会議の回し方、安全な黒塗り、当日進行の遅れ補正、仕様変更の請求合意フローを公開しました。",
+      "tools": ["invoice", "mask", "planning-poker", "timeline"]
+    },
+    {
+      "id": "contact-page-adsense-20260715",
+      "date": "2026-07-15",
+      "type": "improve",
+      "audience": "internal",
+      "title": "問い合わせページ新設（AdSense有用性対応の一部）",
+      "body": "/contact を追加しフッターからリンク。プライバシー・規約に続く信頼導線。",
+      "tools": []
+    },
+    {
       "id": "planning-poker-facilitator-20260715",
       "date": "2026-07-15",
       "type": "improve",

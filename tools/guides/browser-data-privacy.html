@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="登録不要のブラウザ完結ツールが、業務データをサーバーへ送らない仕組みと、DevToolsで自分で検証する手順。総務・情報システム向け。">
+    <title>ブラウザ完結ツールのデータ非送信を検証する手順 | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="ブラウザ完結ツールのデータ非送信を検証する手順">
+    <meta property="og:url" content="https://sugudasu.com/guides/browser-data-privacy">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="データ非送信の検証"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--docs">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>書類・経理</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">書類・経理 · セキュリティ</p>
+            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <h1 class="sg-guide-title">ブラウザ完結型ツールの仕組みとデータ非送信の検証手順</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">請求書の宛先やマスクしたスクショを「無料のWebツール」に乗せると、情報システムから必ず聞かれます。<strong>本当にサーバーへ送っていないのか</strong>、です。</p>
+                <p class="sg-guide-lead">SUGUDASU は静的配信＋ブラウザ内処理を前提にしています。本記事では仕組みの読み方と、<strong>Chrome DevTools で自分で検証する手順</strong>を書きます。最終判断は貴社のセキュリティ規程に従ってください。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-browser-data-privacy">
+            <h2 id="guide-takeaways-browser-data-privacy" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>クラウド型（サーバー処理）とブラウザ完結型の違い</li>
+                <li>「業務データが送られない」と「ページ表示のための通信」の切り分け</li>
+                <li>Network タブで請求書・マスク操作をセルフ監査する手順</li>
+                <li>タブ閉じで消える・運営は復元できない、という運用上の注意</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>なぜ登録不要ツールは警戒されやすいか</h2>
+            <p>一般的な SaaS では、入力内容やアップロードファイルが一度サーバーへ行き、そこで保存・PDF化・解析されます。便利な反面、委託契約やデータ所在の説明が必要になります。</p>
+            <p>登録不要のサイトだと「アカウントがない＝追跡不能に見える」ため、逆に<strong>送信の有無</strong>が見えにくい、という不安が残ります。そこで必要なのは宣伝文句ではなく、<strong>自分のブラウザで通信を見ること</strong>です。</p>
+
+            <h2>SUGUDASU の構造（要約）</h2>
+            <p>SUGUDASU のコアツール群は Cloudflare Pages などから <strong>HTML / CSS / JavaScript を配信</strong>し、計算や PDF 体裁、画像のキャンバス加工は<strong>端末のブラウザ内</strong>で行います。製品の約束は <a href="/statements">SUGUDASU の約束</a> 、収集範囲は <a href="/privacy">プライバシーポリシー</a> を参照してください。</p>
+            <pre class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-3 overflow-x-auto">一般 SaaS: 端末 ──(業務データ)──► サーバ処理 → 結果返却
+SUGUDASU:  端末 ◄──(アプリ本体)── 静的配信
+           └─ 業務データはブラウザメモリ内で処理（POSTしない設計）</pre>
+            <p><strong>注意:</strong> ページ表示のための静的ファイル取得、広告・アクセス解析などの通信は別物です。「業務の入力内容が SUGUDASU の処理用 API に飛んでいないか」を見るのが本手順の焦点です。</p>
+
+            <h2>実証手順（Chrome · 請求書の例）</h2>
+            <h3>ステップ1 — Network を開く</h3>
+            <ol>
+                <li><a href="/invoice">請求書ツール</a>を開く。</li>
+                <li><kbd>F12</kbd>（または右クリック「検証」）→ <strong>Network</strong>。</li>
+                <li>フィルタで <strong>Fetch/XHR</strong> を選択し、ログをクリアする。</li>
+            </ol>
+            <h3>ステップ2 — 業務データを入力して PDF / 印刷フローを試す</h3>
+            <p>テスト用の取引先名・金額を入力し、プレビューや PDF 保存（ブラウザ印刷）まで進みます。この間、Fetch/XHR に<strong>入力文字列をボディに載せた不審な POST</strong>が増えていないかを見ます。</p>
+            <h3>ステップ3 — マスクでも同様に確認</h3>
+            <p><a href="/mask">マスク</a>にダミー画像をドロップし、黒塗りして PNG 保存します。画像バイナリを SUGUDASU サーバへ送るリクエストが走らないことを確認します（処理は Canvas 上）。</p>
+            <p>拡張機能や社内プロキシが入っていると余分な通信が見えることがあります。検証端末は可能なら普段使いの社内標準ブラウザと、別プロファイルの両方で見ると説明しやすいです。</p>
+
+            <h2>稟議・説明で使える論点（断定しすぎない）</h2>
+            <ul>
+                <li><strong>処理場所:</strong> コア機能はクライアント側 JS。サーバ側で業務データを預かる API を前提にしていない。</li>
+                <li><strong>実証可能性:</strong> 上記 Network 手順のスクショを添付できる。</li>
+                <li><strong>復元不可:</strong> 運営もユーザー入力を持たないため、閉じたタブの内容は戻せない。作業中は PDF / PNG / CSV など手元保存が必要。</li>
+            </ul>
+            <p>個人情報保護法や GDPR の「第三者提供に該当するか」は個別事案です。本記事は法的助言ではありません。情報システム担当・法務に<strong>要確認</strong>してください。</p>
+
+            <h2>現場でありがちな失敗</h2>
+            <ul>
+                <li><strong>タブを閉じて復元依頼:</strong> サーバ保存が無いため運営側では復旧できません。こまめなエクスポート運用にしてください。</li>
+                <li><strong>「通信ゼロ」と社内に説明してしまう:</strong> 広告・解析があるページでは通信は発生します。言うべきは「<strong>入力した業務データ処理用の外部送信がない</strong>」です。</li>
+                <li><strong>オフライン断定:</strong> 初回表示に CDN / フォント等が必要な場合があります。すでに開いたあとでも、機能ごとに差があります。</li>
+            </ul>
+
+            <h2>免責</h2>
+            <p>通信挙動は端末・ブラウザ拡張・プロキシ・将来の実装変更で変わり得ます。導入前に必ず自組織で検証し、<a href="/disclaimer">免責事項</a>も併読してください。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-browser-data-privacy">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-browser-data-privacy" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>入力データは SUGUDASU のサーバに保存されますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>コアツールの設計では、入力をサーバ側DBに預ける前提ではありません。タブやメモリ上の状態は閉じると消える運用が基本です。詳細は <a href="/statements">約束</a>・<a href="/privacy">プライバシー</a> を確認してください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>広告や解析があると「非送信」と言えないのでは？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>サイト表示のための通信と、ツールが業務データをPOSTすることは分けて説明します。収集の種類はプライバシーポリシーに従います。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>ソースは監査できますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>ブラウザに配信される JS は DevTools で読めます。社内監査の手順に合わせて Network と Sources を併用してください。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール · 関連ページ</h2>
+            <p><a href="/invoice">請求書</a> · <a href="/mask">マスク</a> · <a href="/statements">SUGUDASU の約束</a> · <a href="/privacy">プライバシー</a> · <a href="/contact">問い合わせ</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

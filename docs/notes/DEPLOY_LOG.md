@@ -798,10 +798,31 @@
 
 ---
 
+## DEPLOY-20260715-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | AdSense有用性対策 — `/contact` · 実務ガイド5本 · 主要ツールへのガイド導線（提督「本番に反映して」· 同日 core 5回目 · P7 override） |
+| **change_summary** | `tools/contact.html` · `tools/guides/*` 5本 · `data/guides.json` · `tools/guides.html` · invoice/mask/planning-poker/timeline 導線 · `assets/sugudasu-shell.js` footer · AdSense監査/プロンプト docs · changelog |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 5（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「本番に反映して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-15 | 005 approved（AdSense guides · contact · P7 override · 提督本番反映） |
 | 2026-07-15 | 004 executed（3c149b5 · 見積会議 FAQ/updates · 司会代行 · P7 override） |
 | 2026-07-15 | 003 executed（99c2124 · roadmap 文字注釈検討中 · image-trim 対象外 · P7 override） |
 | 2026-07-15 | 002 executed（f4a3b11 · Skitch 本家矢印 · 枠白フチ縮小 · P7 override） |

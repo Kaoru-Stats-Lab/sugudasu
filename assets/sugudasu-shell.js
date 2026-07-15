@@ -209,6 +209,8 @@
         <p class="text-[11px] text-slate-500">
           <a href="guides.html" class="text-blue-600 hover:underline">実務ガイド</a>
           <span class="text-slate-300 mx-1">|</span>
+          <a href="contact.html" class="text-blue-600 hover:underline">問い合わせ</a>
+          <span class="text-slate-300 mx-1">|</span>
           <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>
           <a href="roadmap.html" class="text-blue-600 hover:underline">開発ロードマップ</a>
