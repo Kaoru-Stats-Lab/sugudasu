@@ -264,31 +264,15 @@ export function formatBytes(n) {
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-/** 注釈（固定色 · 白フチ）— PinkArrows / Skitch 型の「塗りポリゴン矢印」 */
+/** 注釈（固定色 · 白フチ · 影）— 本家 Skitch 型の塗り矢印 */
 export const ANNOTATE_MAGENTA = '#FF007F';
 export const ANNOTATE_WHITE = '#ffffff';
-/** @deprecated 実描画は annotateStrokeWidths / ポリゴンを使う */
+/** @deprecated 実描画は annotateStrokeWidths / skitch パスを使う */
 export const ANNOTATE_STROKE_INNER = 12;
 /** @deprecated */
 export const ANNOTATE_STROKE_OUTER = 22;
 export const ANNOTATE_HIT_PAD = 32;
 export const ANNOTATE_HANDLE_R = 14;
-
-/**
- * PinkArrows `src/arrow.js` の矢印テンプレ（MIT · https://github.com/robbalian/pinkarrows）
- * 線+三角ではなく、シャフトごと塗りつぶす「Skitchのアレ」の形状。
- * 基準長は x=0→40。
- */
-const PINKARROWS_TEMPLATE = [
-  { x: 0, y: 0 },
-  { x: 26, y: 2 },
-  { x: 25, y: 5 },
-  { x: 40, y: 0 },
-  { x: 25, y: -5 },
-  { x: 26, y: -2 },
-  { x: 0, y: 0 },
-];
-const PINKARROWS_BASE_LEN = 40;
 
 /**
  * @param {CanvasRenderingContext2D} ctx
@@ -297,7 +281,6 @@ export function annotateStrokeWidths(ctx) {
   const base = Math.min(ctx.canvas.width, ctx.canvas.height) || 900;
   const s = Math.max(1, Math.min(2.6, base / 700));
   return {
-    // 枠線用（矢印は塗り主体なので白フチは相対的に厚め）
     inner: Math.round(10 * s),
     outer: Math.round(18 * s),
     scale: s,
@@ -311,27 +294,29 @@ export function annotateStrokeWidths(ctx) {
  */
 
 /**
- * @param {number} x0 @param {number} y0 @param {number} x1 @param {number} y1
- * @returns {{ x: number, y: number }[]}
+ * Skitch 型矢印のローカル座標パス（原点=始点 · +X=先端方向）。
+ * DECISION: PinkArrows の平行シャフトではなく、尾が尖りヘッドでフレアする
+ * PureMark Annotate 系の 6 点シルエット（+ わずかなバーブ）に白フチと影を足す。
+ * @param {number} len
+ * @param {number} unit  太さの単位（画像短辺連動）
+ * @returns {Path2D}
  */
-function pinkArrowPolygon(x0, y0, x1, y1) {
-  const dx = x1 - x0;
-  const dy = y1 - y0;
-  const len = Math.hypot(dx, dy) || 1;
-  const angle = Math.atan2(dy, dx);
-  const scaleX = len / PINKARROWS_BASE_LEN;
-  // PinkArrows 同様: 長さに合わせて少し太く、短くても細線にならない下限を持つ
-  const scaleY = Math.max(1.35, Math.min(3.2, scaleX * 1.15));
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  return PINKARROWS_TEMPLATE.map((p) => {
-    const sx = p.x * scaleX;
-    const sy = p.y * scaleY;
-    return {
-      x: x0 + sx * cos - sy * sin,
-      y: y0 + sx * sin + sy * cos,
-    };
-  });
+function skitchArrowPath(len, unit) {
+  const headHalf = unit * 10;
+  const shaftHalf = unit * 3.5;
+  const headLen = Math.min(len * 0.4, unit * 12);
+  const shaftLen = Math.max(1, len - headLen);
+  // わずかにバーブを後ろへ（垂直エッジの「安い三角」感を避ける）
+  const wingX = Math.max(shaftLen * 0.55, shaftLen - headLen * 0.12);
+  const path = new Path2D();
+  path.moveTo(0, 0);
+  path.lineTo(shaftLen, shaftHalf);
+  path.lineTo(wingX, headHalf);
+  path.lineTo(len, 0);
+  path.lineTo(wingX, -headHalf);
+  path.lineTo(shaftLen, -shaftHalf);
+  path.closePath();
+  return path;
 }
 
 /**
@@ -340,25 +325,46 @@ function pinkArrowPolygon(x0, y0, x1, y1) {
  * @param {boolean} [selected]
  */
 export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
-  const { outer, scale } = annotateStrokeWidths(ctx);
-  const pts = pinkArrowPolygon(x0, y0, x1, y1);
+  const { scale } = annotateStrokeWidths(ctx);
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const len = Math.hypot(dx, dy) || 1;
+  if (len < 4) return;
+  const angle = Math.atan2(dy, dx);
+  // 短すぎても「極細線」に落ちない下限、長すぎてもヘッドが暴走しない上限
+  const unit = Math.max(2.8, Math.min(6.5, 3.4 * scale, len * 0.028));
+  const path = skitchArrowPath(len, unit);
+  const whiteW = Math.max(2.5, 2.8 * scale);
+
   ctx.save();
+  ctx.translate(x0, y0);
+  ctx.rotate(angle);
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
-  ctx.beginPath();
-  pts.forEach((p, i) => {
-    if (i === 0) ctx.moveTo(p.x, p.y);
-    else ctx.lineTo(p.x, p.y);
-  });
-  ctx.closePath();
-  // 白フチ → マゼンタ塗り（Skitch / PinkArrows）
-  ctx.strokeStyle = ANNOTATE_WHITE;
-  ctx.lineWidth = Math.max(6, Math.round(outer * 0.85));
-  ctx.stroke();
+
+  // ドロップシャドウ（本体の下にうっすら）
+  ctx.save();
+  ctx.translate(2.5 * scale, 4 * scale);
+  ctx.fillStyle = 'rgba(0,0,0,0.32)';
+  try {
+    ctx.filter = `blur(${Math.max(3, 5 * scale)}px)`;
+  } catch {
+    /* filter 非対応はオフセット塗りだけ */
+  }
+  ctx.fill(path);
+  ctx.restore();
+  ctx.filter = 'none';
+
   ctx.fillStyle = ANNOTATE_MAGENTA;
-  ctx.fill();
+  ctx.fill(path);
+  ctx.strokeStyle = ANNOTATE_WHITE;
+  ctx.lineWidth = whiteW;
+  ctx.stroke(path);
+  ctx.restore();
+
   if (selected) {
     const hr = Math.max(7, 7 * scale);
+    ctx.save();
     ctx.fillStyle = ANNOTATE_WHITE;
     ctx.strokeStyle = ANNOTATE_MAGENTA;
     ctx.lineWidth = Math.max(2, Math.round(2.5 * scale));
@@ -368,8 +374,8 @@ export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
       ctx.fill();
       ctx.stroke();
     }
+    ctx.restore();
   }
-  ctx.restore();
 }
 
 /**
@@ -379,10 +385,10 @@ export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
  */
 export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
   const { scale } = annotateStrokeWidths(ctx);
-  // DECISION: PinkArrows rect は strokeWidth:4（白フチなし）だが、Skitch の「太い枠」記憶に合わせ
-  // 塗り矢印と同じ視覚ウエイト（マゼンタ本体 + 白フチ）にする。
-  const magentaW = Math.max(14, Math.round(16 * scale));
-  const whiteW = Math.max(24, Math.round(28 * scale));
+  // Skitch 枠: マゼンタ太線 + 白フチ（見える白帯は片側≒2–3px · 本体の約20–30%）
+  // DECISION: 白16–20はステッカー過多。白 = マゼンタ + 4〜5（片側2〜2.5）が2020年代の読みやすさ上限。
+  const magentaW = Math.max(10, Math.round(12 * scale));
+  const whiteW = magentaW + Math.max(4, Math.round(5 * scale));
   const r = Math.min(14 * scale, Math.max(6, Math.min(w, h) * 0.1));
   const strokeOnce = (color, width) => {
     ctx.strokeStyle = color;
@@ -398,7 +404,12 @@ export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
     ctx.stroke();
   };
   ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.28)';
+  ctx.shadowBlur = Math.max(4, 6 * scale);
+  ctx.shadowOffsetX = 2 * scale;
+  ctx.shadowOffsetY = 3 * scale;
   strokeOnce(ANNOTATE_WHITE, whiteW);
+  ctx.shadowColor = 'transparent';
   strokeOnce(ANNOTATE_MAGENTA, magentaW);
   if (selected) {
     const hr = Math.max(7, 7 * scale);

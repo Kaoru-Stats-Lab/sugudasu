@@ -738,10 +738,31 @@
 
 ---
 
+## DEPLOY-20260715-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 本家 Skitch 型矢印へ差し替え · 枠の白フチを適度に狭く（提督「本番に反映して」· 同日 core 2回目 · P7 オーバーライド） |
+| **change_summary** | `assets/mask-engine.js` · `assets/mask-app.js` · `tools/mask.html` · `data/changelog.json` |
+| **local_build** | （`release:pages:free` 前） |
+| **deploy_count_today** | 2（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「枠の白を修正してから本番に反映して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/mask`） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-15 | 002 approved（core · Skitch 矢印本家寄せ · 枠白フチ縮小 · P7 override） |
 | 2026-07-15 | 001 executed（57ed661 · core · mask Skitch 型注釈） |
 | 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
 | 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |

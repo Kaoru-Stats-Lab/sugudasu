@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
         black: '<strong>黒塗り:</strong> パスワード · 金額 · ID など確実に隠したい箇所向け。',
         color: '<strong>同色塗り:</strong> 背景色に合わせて矩形を塗る。文字は消えません。',
         stamp: '<strong>スタンプ:</strong> 注記用。下の実データは消えません。ぼかし/黒塗りと併用。',
-        annotate: '<strong>注釈:</strong> Skitch 風の太いピンク矢印・枠（色固定）。図形を選んで削除できます。',
+        annotate: '<strong>注釈:</strong> 本家 Skitch 型のマゼンタ矢印・枠（色固定 · 白フチ · 影）。図形を選んで削除できます。',
       },
       hintId: 'tool-hint',
       modeClassMap: {
