@@ -11,24 +11,36 @@
   },
   "entries": [
     {
-      "id": "image-trim-rename-20260715",
+      "id": "diff-copy-job-words-20260715",
       "date": "2026-07-15",
       "type": "improve",
       "audience": "public",
+      "title": "差分チェック — 仕事語の案内に整理",
+      "body": "「危険差分」「Before/After」など開発者向けの表現を、事務でも分かる案内に直しました。見落としやすい変更から確認する使い方はそのままです。",
+      "tools": [
+        "diff"
+      ]
+    },
+    {
+      "id": "image-trim-rename-20260715",
+      "date": "2026-07-15",
+      "type": "improve",
+      "audience": "internal",
       "title": "画像切り出し — 名称をわかりやすく変更",
-      "body": "「画像トリム」を「画像切り出し」に改名しました。指定サイズちょうどへ切り出すツールです。機能は同じで、データは送りません。",
+      "body": "表示名を画像トリム→画像切り出しへ変更（public は image-trim-20260715 に束ね）。",
       "tools": [
         "image-trim",
         "hub"
-      ]
+      ],
+      "rollup": "image-trim-20260715"
     },
     {
       "id": "time-calc-tenkey-20260715",
       "date": "2026-07-15",
       "type": "feature",
       "audience": "public",
-      "title": "時給計算 — コロン不要（数字とハイフンだけ）",
-      "body": "出勤〜退勤は 900-1800、実働は 130（1時間30分）のように、テンキーだけで入力できます。あいまいな行は↺で解釈切替。合計の10進小数表示はそのままです。",
+      "title": "時給計算 — コロン不要入力と10進小数",
+      "body": "出勤〜退勤は 900-1800、実働は 130（1時間30分）のように数字とハイフンだけで入力できます。あいまいな行は↺で切替。合計は「14:45（＝14.75時間）」のように10進小数も併記します。給与計算そのものではありません。",
       "tools": [
         "time-calc"
       ]
@@ -37,33 +49,36 @@
       "id": "time-calc-decimal-hours-20260715",
       "date": "2026-07-15",
       "type": "feature",
-      "audience": "public",
+      "audience": "internal",
       "title": "時給計算 — 合計時間を10進小数でも表示",
-      "body": "合計時間の横に「14:45（＝14.75時間）」のように10進小数を併記します。給与監査や請求書向けの換算メモに使えます。給与計算そのものではありません。",
+      "body": "10進小数併記（public は time-calc-tenkey-20260715 に束ね）。",
       "tools": [
         "time-calc"
-      ]
+      ],
+      "rollup": "time-calc-tenkey-20260715"
     },
     {
       "id": "normalize-date-unify-20260715",
       "date": "2026-07-15",
       "type": "feature",
-      "audience": "public",
+      "audience": "internal",
       "title": "全角半角整え — 日付表記を YYYY/MM/DD に統一",
-      "body": "「日付統一」プリセットで、バラバラな日付をゼロ埋めの YYYY/MM/DD に揃えます。令和・スラッシュ／ハイフン／ドット・年月日に対応。Excelのシリアル値（数字だけ）は変換しません。",
+      "body": "日付統一プリセット（public は mask-normalize-20260715 に束ね）。",
       "tools": [
         "normalize"
-      ]
+      ],
+      "rollup": "mask-normalize-20260715"
     },
     {
-      "id": "mask-annotate-20260715",
+      "id": "mask-normalize-20260715",
       "date": "2026-07-15",
       "type": "feature",
       "audience": "public",
-      "title": "マスク — 注釈（矢印・四角）",
-      "body": "スクショで「ここ」を指す矢印と角丸の枠を追加。色・太さは固定。機密消しのぼかし・黒塗りと同一画面で使えます。データは送りません。",
+      "title": "マスク注釈・日付統一を追加",
+      "body": "マスクに矢印と角丸枠の注釈を追加。全角半角整えに「日付統一」プリセット（YYYY/MM/DD）を追加。どちらもブラウザ内のみで、データは送りません。",
       "tools": [
-        "mask"
+        "mask",
+        "normalize"
       ]
     },
     {
@@ -71,8 +86,8 @@
       "date": "2026-07-15",
       "type": "feature",
       "audience": "public",
-      "title": "画像トリム α — 指定サイズに一発切出し",
-      "body": "SNSカバーや資料用に、枠を動かさず画像を合わせて指定ピクセルちょうどへ切り出します。登録不要 · データはサーバーに送りません。機密消しはマスクと併用できます。",
+      "title": "画像切り出し α — 指定サイズに一発切出し",
+      "body": "SNSカバーや資料用に、枠を動かさず画像を合わせて指定ピクセルちょうどへ切り出します。名称は「切り出し」です（旧称トリム）。登録不要 · データは送りません。機密消しはマスクと併用できます。",
       "tools": [
         "image-trim",
         "mask",
@@ -493,7 +508,7 @@
       "tools": [
         "updates"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
@@ -635,7 +650,7 @@
       "tools": [
         "updates"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -974,7 +989,7 @@
       "tools": [
         "invoice"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -994,7 +1009,7 @@
       "tools": [
         "hub"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -1044,7 +1059,7 @@
       "tools": [
         "invoice"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -1065,7 +1080,7 @@
       "tools": [
         "hub"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -1075,7 +1090,7 @@
       "tools": [
         "sns"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -1122,7 +1137,7 @@
         "receipt",
         "updates"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -1184,7 +1199,7 @@
       "title": "AdSense 所有権確認用 ads.txt を公開",
       "body": "サイトルートに ads.txt を配置しました（審査申請は別途）。",
       "tools": [],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-16",
@@ -1195,7 +1210,7 @@
         "hub",
         "invoice"
       ],
-      "audience": "public"
+      "audience": "internal"
     },
     {
       "date": "2026-06-16",

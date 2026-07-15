@@ -78,7 +78,7 @@
         considering: { text: '検討中', cls: 'sg-roadmap-badge--considering' },
         sync_lane: { text: 'Sync', cls: 'sg-roadmap-badge--sync' },
         out_of_scope: { text: '対象外', cls: 'sg-roadmap-badge--out' },
-        done: { text: '反映済み', cls: 'sg-roadmap-badge--done' }
+        done: { text: '反映済み', cls: 'sg-roadmap-badge--done' } /* legacy JSON 互換 · 新規は載せない */
     };
 
     function roadmapUrl() {
@@ -161,7 +161,7 @@
                 : lane.id === 'sync'
                     ? '<p class="text-sm text-slate-600 mb-4">工事・制作の工程表は <strong>sync.sugudasu.com</strong> の別ラインです。店舗の勤務表（シフト）とは別物です。</p>'
                     : lane.id === 'core'
-                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。<strong>反映済み</strong>は公開済みです。詳細は <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ。</p>'
+                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。すでに公開したものは <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ（ロードマップからは外します）。</p>'
                         : '';
             return `
                 <section aria-labelledby="roadmap-lane-${esc(lane.id)}">

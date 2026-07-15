@@ -32,6 +32,10 @@ const PATH_LIKE_RE = /(?:^|[\s「『(])([\w./-]+\.(?:html|css|js|mjs|md))\b/;
 const ALLOWED_TYPES = new Set(['feature', 'fix', 'improve', 'chore']);
 const FEAT_ALIAS = 'feat';
 const NEW_TOOL_TITLE_RE = /新設|（\/[\w-]+）新設|α\s*[—–-]/;
+/** public 禁止 — インフラ · 見た目微調整（DEV_TRANSPARENCY_RULES §2） */
+const PUBLIC_INFRA_TITLE_RE =
+  /canonical|og:url|robots|GSC|noindex|FAQ\s*レイアウト|設定パネル|内側スクロール|内部JSON|ビルドパイプライン|X-Robots/i;
+const PUBLIC_SLUG_LEAD_RE = /^(?:[a-z][\w-]*)\s*(?:を|—|–|-)/;
 
 function normalizeType(type) {
   return type === FEAT_ALIAS ? 'feature' : type;
@@ -51,7 +55,7 @@ function warn(msg) {
 }
 
 function isPublicEntry(entry) {
-  return entry.audience !== 'internal';
+  return entry.audience === 'public';
 }
 
 function loadRegistryIds() {
@@ -75,6 +79,13 @@ function validatePublicEntry(entry, index, registryIds, idIndex) {
 
   if (type === 'chore') {
     fail(`${label}: type=chore は audience:"internal" にしてください`);
+  }
+
+  if (PUBLIC_INFRA_TITLE_RE.test(entry.title || '')) {
+    fail(`${label}: インフラ・見た目微調整は audience:"internal"（ユーザー価値テスト参照）`);
+  }
+  if (PUBLIC_SLUG_LEAD_RE.test(entry.title || '')) {
+    fail(`${label}: タイトル先頭を registry slug にしない — 概念名（navLabel）を使う`);
   }
 
   for (const tool of entry.tools || []) {
@@ -153,26 +164,28 @@ function main() {
       validateInternalEntry(entry, index, idIndex);
       return;
     }
-    if (entry.audience === 'public' || entry.audience === undefined) {
-      if (entry.audience === 'public') {
-        validatePublicEntry(entry, index, registryIds, idIndex);
-      } else {
-        validateLegacyPublic(entry, index);
-      }
-    } else {
-      fail(`entries[${index}]: 未知の audience — "${entry.audience}"`);
+    if (entry.audience === 'public') {
+      validatePublicEntry(entry, index, registryIds, idIndex);
+      return;
     }
+    if (entry.audience === undefined) {
+      validateLegacyPublic(entry, index);
+      warn(`entries[${index}] (${entry.date} · ${entry.title}): audience 未設定 — /updates 非表示。public または internal を明示`);
+      return;
+    }
+    fail(`entries[${index}]: 未知の audience — "${entry.audience}"`);
   });
 
   const publicCount = entries.filter(isPublicEntry).length;
   const internalCount = entries.filter(e => e.audience === 'internal').length;
+  const legacyCount = entries.filter(e => e.audience === undefined).length;
 
   if (errors) {
     console.error(`[changelog-guard] ${errors} error(s), ${warns} warn(s) · public=${publicCount} internal=${internalCount}`);
     process.exit(1);
   }
 
-  console.log(`[changelog-guard] OK: ${entries.length} entries · public=${publicCount} internal=${internalCount}${warns ? ` · ${warns} warn` : ''}`);
+  console.log(`[changelog-guard] OK: ${entries.length} entries · public=${publicCount} internal=${internalCount}${legacyCount ? ` legacy=${legacyCount}` : ''}${warns ? ` · ${warns} warn` : ''}`);
 }
 
 main();
