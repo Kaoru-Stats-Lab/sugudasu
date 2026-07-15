@@ -578,7 +578,21 @@ if (els.fillColor) {
 document.addEventListener('keydown', (e) => {
   if (els.editor.classList.contains('hidden')) return;
   const tag = (e.target && e.target.tagName) || '';
-  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  const mod = e.ctrlKey || e.metaKey;
+  const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  // DECISION: 「戻す」ボタンがある履歴UIは Ctrl/Cmd+Z を必須配線（ボタンと対）。Redo は OS差吸収で Y と Shift+Z 両方。
+  if (mod && key === 'z' && !e.shiftKey) {
+    e.preventDefault();
+    undo();
+    return;
+  }
+  if (mod && (key === 'y' || (key === 'z' && e.shiftKey))) {
+    e.preventDefault();
+    redo();
+    return;
+  }
 
   if ((e.key === 'Delete' || e.key === 'Backspace') && toolMode === 'annotate' && selectedId) {
     e.preventDefault();
