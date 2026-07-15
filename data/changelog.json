@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "mask-pinkarrows-20260715",
+      "date": "2026-07-15",
+      "type": "improve",
+      "audience": "public",
+      "title": "マスク注釈 — Skitch 風の太い矢印に変更",
+      "body": "注釈の矢印を線＋三角から、塗りつぶしの太いポリゴン（PinkArrows / Skitch 型）に差し替えました。白フチ付きのマゼンタで、どの背景でも指し先が一目で分かります。",
+      "tools": [
+        "mask"
+      ]
+    },
+    {
       "id": "diff-copy-job-words-20260715",
       "date": "2026-07-15",
       "type": "improve",

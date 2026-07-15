@@ -50,13 +50,13 @@ assert.equal(outputFilename('x'), 'x-masked.png');
   assert.equal(hitTestArrow(arrow, 50, 0), 'body');
   assert.equal(hitTestArrow(arrow, 0, 0), 'start');
   assert.equal(hitTestArrow(arrow, 100, 0), 'end');
-  assert.equal(hitTestArrow(arrow, 50, 40), null);
+  assert.equal(hitTestArrow(arrow, 50, 80), null);
 }
 {
-  const rect = { id: 'r1', type: 'rect', x: 10, y: 10, w: 80, h: 40 };
+  const rect = { id: 'r1', type: 'rect', x: 10, y: 10, w: 200, h: 120 };
   assert.equal(hitTestRoundedFrame(rect, 10, 10), 'nw');
-  assert.equal(hitTestRoundedFrame(rect, 10, 30), 'body');
-  assert.equal(hitTestRoundedFrame(rect, 50, 30), null);
+  assert.equal(hitTestRoundedFrame(rect, 10, 70), 'body');
+  assert.equal(hitTestRoundedFrame(rect, 110, 70), null);
 }
 {
   const canvas = { toDataURL: () => 'data:image/png;base64,xx' };

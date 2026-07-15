@@ -264,13 +264,45 @@ export function formatBytes(n) {
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-/** 注釈（固定色 · 白フチ） */
-export const ANNOTATE_MAGENTA = '#e11d8f';
+/** 注釈（固定色 · 白フチ）— PinkArrows / Skitch 型の「塗りポリゴン矢印」 */
+export const ANNOTATE_MAGENTA = '#FF007F';
 export const ANNOTATE_WHITE = '#ffffff';
-export const ANNOTATE_STROKE_INNER = 4;
-export const ANNOTATE_STROKE_OUTER = 8;
-export const ANNOTATE_HIT_PAD = 12;
-export const ANNOTATE_HANDLE_R = 10;
+/** @deprecated 実描画は annotateStrokeWidths / ポリゴンを使う */
+export const ANNOTATE_STROKE_INNER = 12;
+/** @deprecated */
+export const ANNOTATE_STROKE_OUTER = 22;
+export const ANNOTATE_HIT_PAD = 32;
+export const ANNOTATE_HANDLE_R = 14;
+
+/**
+ * PinkArrows `src/arrow.js` の矢印テンプレ（MIT · https://github.com/robbalian/pinkarrows）
+ * 線+三角ではなく、シャフトごと塗りつぶす「Skitchのアレ」の形状。
+ * 基準長は x=0→40。
+ */
+const PINKARROWS_TEMPLATE = [
+  { x: 0, y: 0 },
+  { x: 26, y: 2 },
+  { x: 25, y: 5 },
+  { x: 40, y: 0 },
+  { x: 25, y: -5 },
+  { x: 26, y: -2 },
+  { x: 0, y: 0 },
+];
+const PINKARROWS_BASE_LEN = 40;
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ */
+export function annotateStrokeWidths(ctx) {
+  const base = Math.min(ctx.canvas.width, ctx.canvas.height) || 900;
+  const s = Math.max(1, Math.min(2.6, base / 700));
+  return {
+    // 枠線用（矢印は塗り主体なので白フチは相対的に厚め）
+    inner: Math.round(10 * s),
+    outer: Math.round(18 * s),
+    scale: s,
+  };
+}
 
 /**
  * @typedef {{ id: string, type: 'arrow', x0: number, y0: number, x1: number, y1: number }} ArrowShape
@@ -279,50 +311,60 @@ export const ANNOTATE_HANDLE_R = 10;
  */
 
 /**
+ * @param {number} x0 @param {number} y0 @param {number} x1 @param {number} y1
+ * @returns {{ x: number, y: number }[]}
+ */
+function pinkArrowPolygon(x0, y0, x1, y1) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const len = Math.hypot(dx, dy) || 1;
+  const angle = Math.atan2(dy, dx);
+  const scaleX = len / PINKARROWS_BASE_LEN;
+  // PinkArrows 同様: 長さに合わせて少し太く、短くても細線にならない下限を持つ
+  const scaleY = Math.max(1.35, Math.min(3.2, scaleX * 1.15));
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  return PINKARROWS_TEMPLATE.map((p) => {
+    const sx = p.x * scaleX;
+    const sy = p.y * scaleY;
+    return {
+      x: x0 + sx * cos - sy * sin,
+      y: y0 + sx * sin + sy * cos,
+    };
+  });
+}
+
+/**
  * @param {CanvasRenderingContext2D} ctx
  * @param {number} x0 @param {number} y0 @param {number} x1 @param {number} y1
  * @param {boolean} [selected]
  */
 export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
-  const dx = x1 - x0;
-  const dy = y1 - y0;
-  const len = Math.hypot(dx, dy) || 1;
-  const ux = dx / len;
-  const uy = dy / len;
-  const head = Math.min(22, Math.max(12, len * 0.22));
-  const hx = x1 - ux * head;
-  const hy = y1 - uy * head;
-  const px = -uy;
-  const py = ux;
-
-  const strokeOnce = (color, width) => {
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = width;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.beginPath();
-    ctx.moveTo(x0, y0);
-    ctx.lineTo(hx, hy);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(hx + px * head * 0.45, hy + py * head * 0.45);
-    ctx.lineTo(hx - px * head * 0.45, hy - py * head * 0.45);
-    ctx.closePath();
-    ctx.fill();
-  };
-
+  const { outer, scale } = annotateStrokeWidths(ctx);
+  const pts = pinkArrowPolygon(x0, y0, x1, y1);
   ctx.save();
-  strokeOnce(ANNOTATE_WHITE, ANNOTATE_STROKE_OUTER);
-  strokeOnce(ANNOTATE_MAGENTA, ANNOTATE_STROKE_INNER);
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  });
+  ctx.closePath();
+  // 白フチ → マゼンタ塗り（Skitch / PinkArrows）
+  ctx.strokeStyle = ANNOTATE_WHITE;
+  ctx.lineWidth = Math.max(6, Math.round(outer * 0.85));
+  ctx.stroke();
+  ctx.fillStyle = ANNOTATE_MAGENTA;
+  ctx.fill();
   if (selected) {
+    const hr = Math.max(7, 7 * scale);
     ctx.fillStyle = ANNOTATE_WHITE;
     ctx.strokeStyle = ANNOTATE_MAGENTA;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = Math.max(2, Math.round(2.5 * scale));
     for (const [x, y] of [[x0, y0], [x1, y1]]) {
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.arc(x, y, hr, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
     }
@@ -336,10 +378,17 @@ export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
  * @param {boolean} [selected]
  */
 export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
-  const r = Math.min(12, Math.max(4, Math.min(w, h) * 0.12));
+  const { scale } = annotateStrokeWidths(ctx);
+  // DECISION: PinkArrows rect は strokeWidth:4（白フチなし）だが、Skitch の「太い枠」記憶に合わせ
+  // 塗り矢印と同じ視覚ウエイト（マゼンタ本体 + 白フチ）にする。
+  const magentaW = Math.max(14, Math.round(16 * scale));
+  const whiteW = Math.max(24, Math.round(28 * scale));
+  const r = Math.min(14 * scale, Math.max(6, Math.min(w, h) * 0.1));
   const strokeOnce = (color, width) => {
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
     ctx.beginPath();
     if (typeof ctx.roundRect === 'function') {
       ctx.roundRect(x, y, w, h, r);
@@ -349,13 +398,13 @@ export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
     ctx.stroke();
   };
   ctx.save();
-  ctx.lineJoin = 'round';
-  strokeOnce(ANNOTATE_WHITE, ANNOTATE_STROKE_OUTER);
-  strokeOnce(ANNOTATE_MAGENTA, ANNOTATE_STROKE_INNER);
+  strokeOnce(ANNOTATE_WHITE, whiteW);
+  strokeOnce(ANNOTATE_MAGENTA, magentaW);
   if (selected) {
+    const hr = Math.max(7, 7 * scale);
     ctx.fillStyle = ANNOTATE_WHITE;
     ctx.strokeStyle = ANNOTATE_MAGENTA;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = Math.max(2, Math.round(2.5 * scale));
     for (const [cx, cy] of [
       [x, y],
       [x + w, y],
@@ -363,7 +412,7 @@ export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
       [x + w, y + h],
     ]) {
       ctx.beginPath();
-      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, hr, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
     }
@@ -392,9 +441,10 @@ function distToSegment(px, py, x0, y0, x1, y1) {
 
 /** @param {ArrowShape} shape */
 export function hitTestArrow(shape, px, py, pad = ANNOTATE_HIT_PAD) {
+  const strokePad = Math.max(pad, ANNOTATE_STROKE_OUTER);
   if (Math.hypot(px - shape.x0, py - shape.y0) <= ANNOTATE_HANDLE_R) return 'start';
   if (Math.hypot(px - shape.x1, py - shape.y1) <= ANNOTATE_HANDLE_R) return 'end';
-  if (distToSegment(px, py, shape.x0, shape.y0, shape.x1, shape.y1) <= pad) return 'body';
+  if (distToSegment(px, py, shape.x0, shape.y0, shape.x1, shape.y1) <= strokePad) return 'body';
   return null;
 }
 
