@@ -20,6 +20,8 @@ import {
   maskEmailLocal,
   maskNamePart,
   formatMaskBanner,
+  parseNormalizeDate,
+  formatDateUnifyBanner,
 } from '../assets/text-normalize.js';
 import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
 
@@ -337,6 +339,47 @@ assert.equal(maskEmailLocal('ab@x.com'), 'ab***@x.com');
   assert.equal(r.output, '山* 太*');
 }
 assert.equal(maskNamePart('山田'), '山*');
+
+// date_unify preset
+{
+  assert.equal(parseNormalizeDate('2026/7/1').value, '2026/07/01');
+  assert.equal(parseNormalizeDate('2026-07-01').value, '2026/07/01');
+  assert.equal(parseNormalizeDate('2026.7.11').value, '2026/07/11');
+  assert.equal(parseNormalizeDate('2026年7月11日').value, '2026/07/11');
+  assert.equal(parseNormalizeDate('R8/7/11').value, '2026/07/11');
+  assert.equal(parseNormalizeDate('令和8年7月11日').value, '2026/07/11');
+
+  const yy = parseNormalizeDate('26/7/11');
+  assert.equal(yy.ok, true);
+  assert.equal(yy.value, '2026/07/11');
+  assert.ok(yy.warning);
+
+  const md = parseNormalizeDate('7/11', { now: new Date(2026, 0, 1) });
+  assert.equal(md.ok, true);
+  assert.equal(md.value, '2026/07/11');
+  assert.ok(md.warning);
+
+  const serial = parseNormalizeDate('46210');
+  assert.equal(serial.ok, false);
+  assert.equal(serial.value, '46210');
+  assert.ok(serial.error);
+
+  const junk = parseNormalizeDate('ABC123');
+  assert.equal(junk.ok, false);
+  assert.equal(junk.value, 'ABC123');
+
+  const heisei = parseNormalizeDate('平成30年7月11日');
+  assert.equal(heisei.ok, false);
+  assert.equal(heisei.value, '平成30年7月11日');
+
+  const batch = normalizeText('2026/7/1\n46210\nR8/7/11\n平成30年1月1日', { preset: 'date_unify' });
+  assert.equal(batch.output, '2026/07/01\n46210\n2026/07/11\n平成30年1月1日');
+  assert.equal(batch.dateStats.ok, 2);
+  assert.equal(batch.dateStats.error, 2);
+  assert.equal(batch.lineCountMatch, true);
+  assert.ok(formatDateUnifyBanner(batch).includes('失敗'));
+  assert.equal(PRESET_DEFAULTS.date_unify.mode, 'date_unify');
+}
 
 assert.equal(formatMaskBanner({ preset: 'ec_form', maskOpsApplied: true, maskStats: { maskedLines: 3 } }), '3 行に伏字を適用しました（行数は変わりません）');
 

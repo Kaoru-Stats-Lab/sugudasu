@@ -39,7 +39,7 @@
             <strong>これから入れる機能</strong>は <a href="roadmap.html">開発ロードマップ</a>、設計思想は <a href="statements.html#copy-first-tech">SUGUDASUの約束</a> です。
         </p>
         <p class="text-xs text-slate-500 leading-relaxed sg-info-prose">
-            掲載粒度は<strong>ユーザーが体感する変更単位</strong>です。開発台帳の詳細（CSS クラス名・ファイル名など）は公開しません。
+            <code class="text-[10px] bg-slate-100 px-1 rounded">changelog.json</code> には開発用の明細も残せます。この画面には<strong>仕事が変わる変更</strong>（新ツール · 計算・手順の変化 · 不具合修正）だけを載せます。
         </p>
         <p id="changelog-updated" class="sg-info-caption"></p>
     </header>
@@ -136,7 +136,7 @@
     }
 
     function isPublicEntry(entry) {
-        return entry.audience !== 'internal';
+        return entry.audience === 'public';
     }
 
     function dataUrl(relativePath) {

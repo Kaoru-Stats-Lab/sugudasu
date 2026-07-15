@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10",
+  "updatedAt": "2026-07-15",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -11,16 +11,87 @@
   },
   "entries": [
     {
-      "id": "seo-gsc-pipeline-20260710",
-      "date": "2026-07-10",
+      "id": "diff-copy-job-words-20260715",
+      "date": "2026-07-15",
       "type": "improve",
       "audience": "public",
-      "title": "検索向けURL整理（canonical · 内部JSON除外）",
-      "body": "各ページに正規URL（canonical）を自動付与。内部データJSONは検索対象外に。時給計算の表示名を統一。見積会議・リンク集QRのFAQ背景を全幅に揃えました。",
+      "title": "差分チェック — 仕事語の案内に整理",
+      "body": "「危険差分」「Before/After」など開発者向けの表現を、事務でも分かる案内に直しました。見落としやすい変更から確認する使い方はそのままです。",
       "tools": [
-        "time-calc",
-        "planning-poker",
-        "link-qr"
+        "diff"
+      ]
+    },
+    {
+      "id": "image-trim-rename-20260715",
+      "date": "2026-07-15",
+      "type": "improve",
+      "audience": "internal",
+      "title": "画像切り出し — 名称をわかりやすく変更",
+      "body": "表示名を画像トリム→画像切り出しへ変更（public は image-trim-20260715 に束ね）。",
+      "tools": [
+        "image-trim",
+        "hub"
+      ],
+      "rollup": "image-trim-20260715"
+    },
+    {
+      "id": "time-calc-tenkey-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "public",
+      "title": "時給計算 — コロン不要入力と10進小数",
+      "body": "出勤〜退勤は 900-1800、実働は 130（1時間30分）のように数字とハイフンだけで入力できます。あいまいな行は↺で切替。合計は「14:45（＝14.75時間）」のように10進小数も併記します。給与計算そのものではありません。",
+      "tools": [
+        "time-calc"
+      ]
+    },
+    {
+      "id": "time-calc-decimal-hours-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "internal",
+      "title": "時給計算 — 合計時間を10進小数でも表示",
+      "body": "10進小数併記（public は time-calc-tenkey-20260715 に束ね）。",
+      "tools": [
+        "time-calc"
+      ],
+      "rollup": "time-calc-tenkey-20260715"
+    },
+    {
+      "id": "normalize-date-unify-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "internal",
+      "title": "全角半角整え — 日付表記を YYYY/MM/DD に統一",
+      "body": "日付統一プリセット（public は mask-normalize-20260715 に束ね）。",
+      "tools": [
+        "normalize"
+      ],
+      "rollup": "mask-normalize-20260715"
+    },
+    {
+      "id": "mask-normalize-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "public",
+      "title": "マスク注釈・日付統一を追加",
+      "body": "マスクに矢印と角丸枠の注釈を追加。全角半角整えに「日付統一」プリセット（YYYY/MM/DD）を追加。どちらもブラウザ内のみで、データは送りません。",
+      "tools": [
+        "mask",
+        "normalize"
+      ]
+    },
+    {
+      "id": "image-trim-20260715",
+      "date": "2026-07-15",
+      "type": "feature",
+      "audience": "public",
+      "title": "画像切り出し α — 指定サイズに一発切出し",
+      "body": "SNSカバーや資料用に、枠を動かさず画像を合わせて指定ピクセルちょうどへ切り出します。名称は「切り出し」です（旧称トリム）。登録不要 · データは送りません。機密消しはマスクと併用できます。",
+      "tools": [
+        "image-trim",
+        "mask",
+        "hub"
       ]
     },
     {
@@ -28,26 +99,10 @@
       "date": "2026-07-10",
       "type": "improve",
       "audience": "public",
-      "title": "time-calc を「時給計算」に改名",
-      "body": "表示名を SUGUDASU 時給計算に統一。勤務時間合計と時給換算のツールであり、給与計算（社保・税金）ではないことを明示しました。",
+      "title": "時給計算 — 表示名を統一",
+      "body": "ナビとヘッダーを「時給計算」にそろえました。勤務時間の合計と時給換算のツールで、給与計算（社保・税金）ではありません。",
       "tools": [
         "time-calc"
-      ]
-    },
-    {
-      "id": "ui-faq-setup-panel-20260709",
-      "date": "2026-07-09",
-      "type": "improve",
-      "audience": "public",
-      "title": "FAQレイアウト統一・設定パネルの縦表示改善",
-      "body": "表変換・電子印鑑のFAQを他ツール同様の横100%白背景に統一。シフト・ラベルの左設定パネルから内側スクロールを除去。QR読取にFAQを追加。match-boardのExcel貼付案内を補足。",
-      "tools": [
-        "table-conv",
-        "stamp",
-        "shift",
-        "label",
-        "qr-reader",
-        "match-board"
       ]
     },
     {
@@ -55,8 +110,8 @@
       "date": "2026-07-09",
       "type": "feature",
       "audience": "public",
-      "title": "見積会議（planning-poker）α — 同時Revealで認識差を可視化",
-      "body": "Story一覧固定・同時公開・最大/最小理由入力・再投票・採用ポイント・CSV出力を1画面化。登録不要・非送信・外部APIなし。",
+      "title": "見積会議 α — 同時 Reveal で認識差を可視化",
+      "body": "Story 一覧を固定したまま、全員のポイントを同時に公開。最大・最小の理由入力 · 再投票 · 採用ポイント · CSV 出力まで1画面。登録不要 · データは外部に送りません。",
       "tools": [
         "planning-poker",
         "hub"
@@ -67,8 +122,8 @@
       "date": "2026-07-03",
       "type": "feature",
       "audience": "public",
-      "title": "表変換（table-conv）— Excel/CSV → Markdown·JSON",
-      "body": "Excel複数列コピー・Shift-JIS CSVを非送信でMarkdown表·JSON·CSV·TSVに変換。5,000行まで。1列は全角半角整えへ誘導。v1.0.0 beta。",
+      "title": "表変換 — Excel / CSV を Markdown · JSON に",
+      "body": "Excel の複数列コピーや Shift-JIS の CSV を、サーバーに送らず Markdown 表 · JSON · CSV · TSV に変換します。最大 5,000 行。1列だけの名簿は全角半角整えへ。",
       "tools": [
         "table-conv"
       ]
@@ -79,7 +134,7 @@
       "type": "feature",
       "audience": "public",
       "title": "開発ロードマップ — 予定と対象外を公開",
-      "body": "更新履歴と対になるページを追加しました。シフト表の今後の改善（複数名配置・繁忙期）や、病院向け24時間シフトなど対象外の領域も掲載しています。",
+      "body": "これから入れる機能と、意図的にやらない領域（例: 病院向け24時間シフト）を一覧にしました。更新履歴と対でご覧ください。",
       "tools": [
         "roadmap",
         "updates",
@@ -87,27 +142,68 @@
       ]
     },
     {
-      "id": "layout-refresh-20260703",
+      "id": "normalize-sql-in-20260703",
       "date": "2026-07-03",
       "type": "feature",
       "audience": "public",
-      "title": "サイト全体のレイアウトと読みやすさの改善",
-      "body": "ツールページ・実務ガイド・情報ページの幅と余白をそろえ、スマホとパソコンで読みやすくしました。",
+      "title": "全角半角整え — SQL IN 句プリセット",
+      "body": "改行やタブ区切りの ID リストを 'id1', 'id2' 形式に整形。本番データを外部の変換サイトに貼れない方向けです。",
+      "tools": [
+        "normalize"
+      ]
+    },
+    {
+      "id": "seo-gsc-pipeline-20260710",
+      "date": "2026-07-10",
+      "type": "improve",
+      "audience": "internal",
+      "title": "GSC / SEO パイプライン — canonical · /data/ noindex",
+      "body": "build-pages で canonical + og:url 正規化。robots Disallow /data/ · X-Robots-Tag。verify-ogp で .html 付き og:url を FAIL。FAQ 全幅は planning-poker / link-qr。",
+      "tools": [
+        "time-calc",
+        "planning-poker",
+        "link-qr"
+      ]
+    },
+    {
+      "id": "roadmap-refresh-20260710",
+      "date": "2026-07-10",
+      "type": "improve",
+      "audience": "internal",
+      "title": "roadmap.json — 実装済みを外し v2/未着手を MECE 再編",
+      "body": "table-conv · time-calc · normalize line-ops · fair-draw CSV · invoice 源泉/内税を削除。shift v2 · group-split M13 · png-to-webp · sticky-room Undo · mask OCR 等を追加。",
+      "tools": [
+        "roadmap"
+      ]
+    },
+    {
+      "id": "ui-faq-setup-panel-20260709",
+      "date": "2026-07-09",
+      "type": "improve",
+      "audience": "internal",
+      "title": "FAQ 全幅 · 設定パネル縦表示 · QR FAQ",
+      "body": "table-conv / stamp FAQ を main 外テンプレ化。shift / label 左パネル内側スクロール除去。qr-reader FAQ · match-board Excel 案内。",
+      "tools": [
+        "table-conv",
+        "stamp",
+        "shift",
+        "label",
+        "qr-reader",
+        "match-board"
+      ]
+    },
+    {
+      "id": "layout-refresh-20260703",
+      "date": "2026-07-03",
+      "type": "improve",
+      "audience": "internal",
+      "title": "レイアウト刷新 — ツール/ガイド/情報ページの幅・余白",
+      "body": "PAGE_LAYOUT_SELECTOR 系の幅・余白統一。見た目の横断調整のみのため public 非掲載。",
       "tools": [
         "hub",
         "guides",
         "normalize",
         "invoice"
-      ]
-    },
-    {
-      "date": "2026-07-03",
-      "type": "feature",
-      "audience": "public",
-      "title": "全角半角整え — SQL IN 句プリセット",
-      "body": "改行・タブ区切りの ID リストを 'id1', 'id2' 形式に。本番データを外部 Converter に貼れない向け。単体テスト追加。",
-      "tools": [
-        "normalize"
       ]
     },
     {
@@ -128,7 +224,7 @@
       "date": "2026-07-03",
       "type": "feature",
       "audience": "public",
-      "title": "リンク集QR（link-qr）α — サーバー非保存の即席プロフィール",
+      "title": "リンク集QR α — サーバー非保存の即席プロフィール",
       "body": "X · GitHub · Zenn · Qiita 等を URL #fragment にエンコードして QR 化。懇親会フォロー交換向け。閲覧モード · PNG 保存 · v0.1.0 alpha。",
       "tools": [
         "link-qr",
@@ -141,45 +237,41 @@
       "title": "実務ガイド — 名簿整形（都内総務OL編）",
       "body": "変換サイトに貼れない名簿を整える長文ガイド。EC登録・研修班分け・メールリストの場面想定。/guides と /normalize 相互リンク。",
       "tools": [
-        "guides/office-roster-normalize.html",
-        "guides.html",
-        "normalize.html"
-      ]
+        "guides",
+        "normalize"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-07-03",
       "type": "fix",
-      "title": "マスク — 矩形確定修正 · ぼかし/同色塗り",
-      "body": "ドラッグ離しで加工が確定しない不具合をオーバーレイ+documentリスナーで修正。マニュアル向けにぼかし（デフォルト）· 同色塗りを追加。モザイクは廃止。",
+      "title": "マスク — 黒塗りが確定しない不具合を修正",
+      "body": "ドラッグを離しても加工が確定しない不具合を修正。マニュアル向けにぼかし（既定）と同色塗りを追加しました。",
       "tools": [
-        "mask.html",
-        "mask-app.js",
-        "mask-engine.js",
-        "hub.html"
-      ]
+        "mask"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-07-02",
       "type": "feature",
-      "title": "SUGUDASU マスク（mask）α — スクショ機密消し · 非送信",
+      "title": "マスク α — スクショの機密消し（非送信）",
       "body": "黒塗り · モザイク · 注記スタンプ（サンプル/ダミー/テスト）。Ctrl+V · D&D · Undo/Redo · PNG DL · クリップボード。25MB cap · 長辺8192超は縮小。hub · nav 追加。v0.1.0 alpha。",
       "tools": [
-        "mask.html",
-        "mask-engine.js",
-        "mask-app.js",
-        "hub.html",
-        "tool-registry.json"
-      ]
+        "mask",
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-07-01",
       "type": "feature",
       "title": "全角半角整え — 確認パネル（行数 + 変換前/後）",
-      "body": "行数バッジと先頭5行プレビューを「確認」1ブロックに統合。ラベル日本語化 · モバイル縦積み。改行→カンマは形状変換バッジ付き。",
+      "body": "行数と変換前/後の先頭行を「確認」ブロックにまとめ、コピー前に結果を確かめやすくしました。",
       "tools": [
-        "normalize.html",
-        "sugudasu.css"
-      ]
+        "normalize"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-07-01",
@@ -190,34 +282,34 @@
         "normalize.html",
         "hub.html",
         "lp-marketing-matrix.json"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-07-01",
       "type": "feature",
-      "title": "全角半角整え（normalize）— 命名刷新・事務OLプリセット2種",
+      "title": "全角半角整え — 命名刷新・事務OLプリセット2種",
       "body": "productName を SUGUDASU 全角半角整え / navLabel 全角半角 に変更（id=normalize 不変）。プリセット追加: 改行→カンマ · 姓名スペース削除。hub・外部送信ゼロバッジ・両方ターゲットコピー。v1.1.0。",
       "tools": [
-        "normalize.html",
-        "hub.html",
-        "text-normalize.js",
-        "group-split.html",
-        "statements.html"
+        "normalize",
+        "hub",
+        "group-split",
+        "statements"
       ],
-      "id": "normalize-naming-20260701"
+      "id": "normalize-naming-20260701",
+      "audience": "public"
     },
     {
       "date": "2026-06-29",
       "type": "feature",
-      "title": "実務ガイド /guides を新設（AdSense・SEO 永続コンテンツ）",
-      "body": "イベント運営4本・書類1本のオリジナル記事（各1,500字+）。索引 guides.html · data/guides.json · build-pages で /guides/{slug} 配信。sitemap・hub説明文・フッター導線。戦略正本 GUIDES_CONTENT_STRATEGY.md。",
+      "title": "実務ガイド — /guides を新設",
+      "body": "名簿整形など、長く読める実務向けガイドをまとめました。ツールページからも相互リンクします。",
       "tools": [
-        "guides.html",
-        "guides/",
-        "hub.html",
-        "sugudasu-shell.js",
-        "build-pages.mjs"
-      ]
+        "guides",
+        "normalize"
+      ],
+      "audience": "public",
+      "id": "guides-launch-20260629"
     },
     {
       "date": "2026-06-26",
@@ -260,7 +352,8 @@
         "sync-timeline-s1-app.js",
         "sync-auth.js",
         "SYNC_ENV_KEYS.md"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-25",
@@ -274,7 +367,8 @@
         "privacy.html",
         "terms.html",
         "disclaimer.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-25",
@@ -288,7 +382,8 @@
         "sns.html",
         "build-pages.mjs",
         "ads.txt"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-25",
@@ -299,18 +394,18 @@
         "sugudasu.css",
         "hub.html",
         "scripts/notion-migrate-html.mjs"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-24",
       "type": "feature",
-      "title": "イベント進行タイムライン（/timeline）新設 · alpha",
-      "body": "コマ所要分の連動再計算エンジン（timeline-engine.js）と当日UI。±5分・行追加/削除・アンカー衝突警告・プレーン/TSVコピー。スマホ sticky フッターと編集|プレビュータブ。非送信・登録不要。",
+      "title": "イベント進行タイムライン — 新設（α）",
+      "body": "コマ所要分の連動再計算エンジン（）と当日UI。±5分・行追加/削除・アンカー衝突警告・プレーン/TSVコピー。スマホ sticky フッターと編集|プレビュータブ。非送信・登録不要。",
       "tools": [
-        "timeline.html",
-        "timeline-engine.js",
-        "timeline-app.js"
-      ]
+        "timeline"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
@@ -321,48 +416,49 @@
         "stamp.html",
         "stamp-engine.js",
         "build-pages.mjs"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-23",
       "type": "fix",
-      "title": "電子印鑑：認印のみに絞り角印・偽古印体を削除",
-      "body": "角印は枠内組版の品質を保証できないため削除（社印は請求書の画像アップロード）。古印体風（実体は明朝+字間）を廃止し、明朝体と Google Fonts Yuji Boku（行書風・OFL）に整理。文字サイズは丸枠内 auto-fit。",
+      "title": "電子印鑑 — 認印に絞り、角印はアップロード運用へ",
+      "body": "ブラウザ生成は認印のみに。角印・偽古印体は削除し、実印相当は画像アップロードで対応する方針にそろえました。",
       "tools": [
-        "stamp.html",
-        "stamp-engine.js",
-        "stamp-app.js",
-        "invoice.html",
-        "hub.html"
-      ]
+        "stamp"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
       "type": "feature",
-      "title": "電子印鑑メーカー（/stamp）新設 · 請求書連携",
+      "title": "電子印鑑メーカー — 請求書連携つきで新設",
       "body": "認印・角印の透過PNGをブラウザ内で作成。画像型である旨をFAQ・黄旗で明示。担当者印/社印サイズ（42px・62px）に合わせた出力と、sessionStorage 経由で請求書へ1クリック handoff。書類クラスタナビ（印鑑·請求·領収）を追加。",
       "tools": [
-        "stamp.html",
-        "invoice.html",
-        "receipt.html"
-      ]
+        "stamp",
+        "invoice",
+        "receipt"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
       "type": "feature",
-      "title": "フォント変換ページ（/font-converter）新設",
+      "title": "フォント変換 — ページを新設",
       "body": "Unicode フォント23種（白抜き・筆記体・ギャル文字・半角カタ等）と特殊記号444件を追加。/sns はプレビュー・お手本・装飾変換を維持し、2ページ相互リンクでUIを分割。",
       "tools": [
-        "font-converter.html",
-        "sns.html"
-      ]
+        "font-converter",
+        "sns"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
       "type": "fix",
       "title": "フッター「SUGUDASUの約束」が古いキャッシュで残る不具合",
       "body": "sugudasu-shell.js の文言は既に更新済みだったが、build-pages の固定 ?v= と /assets/* の immutable キャッシュの組み合わせで旧 JS が配信され続けていた。アセット内容ハッシュで ?v= を自動更新するよう修正。",
-      "tools": []
+      "tools": [],
+      "audience": "internal"
     },
     {
       "date": "2026-06-23",
@@ -370,8 +466,9 @@
       "title": "割り勘：型D信頼FAQ（幹事の手間削減訴求）",
       "body": "幹事は誰もやりたくない前提で手間・心理ハードル削減をFV・FAQに整理。信頼4問：サーバー非送信（将来URL共有も同様）・永続なしと復元ロードマップ・端数が幹事表示に集まる理由とLRM・透明精算文。2次会・3次会は別途計算。meta/OG/JSON-LD同期。",
       "tools": [
-        "warikan.html"
-      ]
+        "warikan"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-23",
@@ -379,8 +476,9 @@
       "title": "割り勘：不足表示を幹事に優しい文案に変更",
       "body": "「幹事が補填」など自腹を決めつけない表現に。不足・余りは「調整のすき間」「現場でご相談」。清算文に不足分メモ（追って調整）を追加可能。",
       "tools": [
-        "warikan.html"
-      ]
+        "warikan"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
@@ -388,8 +486,9 @@
       "title": "割り勘：LRMの過剰集金バグ修正とお釣りメモ",
       "body": "1000円単位などでお会計が割り切れないときに集金が上振れする不具合を修正。不足時は100円単位推奨を表示。余りが出た場合は「次回に回す」幹事メモを清算文に追加可能。",
       "tools": [
-        "warikan.html"
-      ]
+        "warikan"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-23",
@@ -397,8 +496,9 @@
       "title": "割り勘：LRM・幹事の心理ハードル対策",
       "body": "最大剰余法で集金総額とお会計を一致。2次会は回ごと再計算の方針をFV・FAQに明記。清算文の公のお礼、個別に聞かれたとき即答文（DMコピー）、幹事の手間と心理ハードル削減を主眼に整理。",
       "tools": [
-        "warikan.html"
-      ]
+        "warikan"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-22",
@@ -406,15 +506,17 @@
       "title": "note 公式アカウント開設 · 引き算の記録 #1",
       "body": "https://note.com/sugudasu を開設。シリーズ「引き算の記録」初稿「ハッカソン直前、班分けが崩れた瞬間の胃の痛み」（SUGUDASU 班分け）を公開。",
       "tools": [
-        "updates.html"
-      ]
+        "updates"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
       "type": "improve",
       "title": "ツール命名 Agent Playbook と自動検証",
       "body": "TOOL_NAMING_AGENT_PLAYBOOK.md · validate:tool-naming · .cursorrules。build:pages 前に registry/HTML/shell/hub 整合を機械チェック。",
-      "tools": []
+      "tools": [],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
@@ -424,7 +526,8 @@
       "tools": [
         "hub.html",
         "statements.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
@@ -432,101 +535,112 @@
       "title": "Statements にサマリー・目次・図解を追加",
       "body": "30秒サマリーと11項目目次。Copy-first 3ステップフロー、通信レイヤの CSS 積み上げ図（表は折りたたみ）。",
       "tools": [
-        "statements.html"
-      ]
+        "statements"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
-      "type": "improve",
+      "type": "feature",
       "title": "通信レイヤ表と DevTools 確認手順を公開",
       "body": "statements.html に5レイヤの通信表・例外 footnote・Network/Application/機内モードの3ステップを追加。Copy-first 技術選定からアンカーリンク。",
       "tools": [
-        "statements.html"
-      ]
+        "statements"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
-      "type": "improve",
+      "type": "feature",
       "title": "Copy-first の技術選定を公開",
       "body": "statements.html に TSV/JSON/コピペ方針の正本を追加。fair-draw・group-split のコピー欄に非連携免責と折りたたみ説明。updates から statements へリンク。",
       "tools": [
-        "statements.html",
-        "fair-draw.html",
-        "group-split.html",
-        "updates.html"
-      ]
+        "statements",
+        "fair-draw",
+        "group-split",
+        "updates"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-20",
       "type": "feature",
-      "title": "SUGUDASU の約束（statements.html）",
+      "title": "SUGUDASU の約束 — 設計原則を公開",
       "body": "7つの設計原則・但し書き・カテゴリ別比較・FAQ。登録不要・Copy-first・統制システムではない——差別化とE-E-A-Tの正本URL。",
       "tools": [
-        "statements.html"
-      ]
+        "statements"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "improve",
-      "title": "group-split PC→スマホ（同期メモ）",
+      "title": "班分け — PC→スマホの同期メモ",
       "body": "セッションJSONパネルを結果に常時表示。Google Keep等の同期メモ経由でPC→会場スマホ復元・欠席タップの手順を明示。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "improve",
-      "title": "group-split 各組必須の緩和モード",
+      "title": "班分け — 各組必須の緩和モード",
       "body": "人数不足で全組を満たせないとき、チェックまたは確認ダイアログで「可能な限り」実行。不足組を結果に表示。矛盾（固定班×離すペア等）は従来どおり停止。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "feature",
-      "title": "group-split M02 Resilience（タップ除外 · セッションJSON）",
+      "title": "班分け — タップ除外 · セッション再開",
       "body": "結果の名前タップで欠席扱い→シード維持で再構成。PC→会場用セッションJSONのコピー/読込。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "improve",
-      "title": "group-split UX C1（Step UI · 名簿ピッカー · preset）",
+      "title": "班分け — Step UI · 名簿ピッカー · プリセット",
       "body": "①〜④ Step表示。属性条件=メイン・名前ルール=任意。固定班/離すペア/固定配置を名簿から選択。各組に役員preset。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "feature",
-      "title": "group-split Phase C（Excel複数列 · 属性条件 · cap 250）",
+      "title": "班分け — Excel複数列 · 属性条件",
       "body": "Excel貼付の列マッピング。属性2〜3列で分散·各組必須。名簿上限1000→250。TSVに属性列出力。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "feature",
-      "title": "group-split Phase B（制約 · 定員超過表示）",
+      "title": "班分け — 制約 · 定員超過表示",
       "body": "固定班·固定配置·離すペア·タグ分散·各組必須タグ·物理上限。名簿1000名FIX。超過理由バッジ。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-20",
       "type": "improve",
-      "title": "group-split 名簿上限 1000名 · Slack上限連動",
+      "title": "班分け — 名簿上限 1000名",
       "body": "硬上限200→1000。Slack 1投稿4万字を基準。200名超はTSV推奨警告。結果DOMは40組まで表示。",
       "tools": [
-        "group-split.html"
-      ]
+        "group-split"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
@@ -534,83 +648,92 @@
       "title": "Zenn 公式アカウント開設",
       "body": "https://zenn.dev/sugudasu を開設。Tech/個人開発向け記事の正本チャネル（#1 見積→請求転用 予約投稿済）。",
       "tools": [
-        "updates.html"
-      ]
+        "updates"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "グループ分け（group-split · 非送信 · T11 Phase A）",
+      "title": "班分け — 非送信のグループ分け",
       "body": "研修·ハッカソン向け班分け。シードシャッフル+ラウンドロビン。Excel TSV·Slack·LINE·告知·JSON出力。",
       "tools": [
-        "group-split.html",
-        "hub.html"
-      ]
+        "group-split",
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "WebP→JPG/PNG（webp-to-jpg · 非送信）",
+      "title": "WebP→JPG/PNG — ブラウザ内変換（非送信）",
       "body": "URL・貼り付け・ファイル対応。アップロード型コンバータと違い画像を運営サーバーへ送らない。",
       "tools": [
-        "webp-to-jpg.html",
-        "hub.html"
-      ]
+        "webp-to-jpg",
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "fair-draw キャンペーン識別名（必須）",
+      "title": "抽選 — キャンペーン識別名（必須）",
       "body": "抽選タブにキャンペーン名（識別用）必須入力。PDF/JSON/名簿txt/ファイル名に記録。Phase0概要から自動補完。並行CP向け。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "fair-draw 証跡3点セット · 実施者 · 名簿スナップショット",
+      "title": "抽選 — 証跡3点セット · 実施者 · 名簿スナップショット",
       "body": "抽選実施者（幹事名）必須入力。実行時に roster-*.txt 自動DL（名簿全文+メタ）。PDF/JSON/画面に実施者記録。sessionStorageで実施者名を次回復元。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "improve",
-      "title": "fair-draw 結果UI · 賞帯表・証跡整理",
+      "title": "抽選 — 賞帯表・証跡の整理",
       "body": "賞帯別は表+TSVコピーがデフォルト。シード/SHA-256は常時表示。発表用大表示は削除（PPT等は運営側）。法務向け説明のみ折りたたみ。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "improve",
-      "title": "fair-draw 抽選結果 · 運用コピー（1行1名/TSV/連絡文）",
+      "title": "抽選 — 運用コピー（1行1名 / TSV / 連絡文）",
       "body": "抽選後に Excel/DM/発送向けの1行1名リストを上部表示。TSV（賞帯付き）· Slack連絡文コピー。大きい発表用表示は折りたたみ。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "fair-draw Phase 0: P12–P15 + キャンペーン型4種",
+      "title": "抽選 — キャンペーン型の拡充",
       "body": "揉め事パターン P12（複数コース）· P13（複数SNS口数増）· P14（購入ティア口数）· P15（紹介/Wチャンス）。campaignFormats に multi_course_lottery / multi_sns_bonus / purchase_tier_entries / referral_wchance。加重・コース別は抽選UI変更なし・FAQ5問で名簿重複行/Excel分割運用を明記。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "improve",
-      "title": "fair-draw 案C: 1URL・2入口（?tab=check|draw）",
-      "body": "Hubに景品リスク判定/公平抽選の2カード。URLクエリで初期タブ切替。命名を「公平抽選・景品チェック」に統一。prize-check.html 等の物理分割は見送り。",
+      "title": "抽選 — チェックと抽選の2入口",
+      "body": "Hubに景品リスク判定/公平抽選の2カード。URLクエリで初期タブ切替。命名を「公平抽選・景品チェック」に統一。 等の物理分割は見送り。",
       "tools": [
-        "fair-draw.html",
-        "hub.html"
-      ]
+        "fair-draw",
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
@@ -627,7 +750,8 @@
         "updates.html",
         "sns.html",
         "normalize.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -644,30 +768,33 @@
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "文字列正規化ツール（normalize.html · T03 Phase A）",
+      "title": "全角半角整え — 文字列の正規化",
       "body": "Excel列コピーの全角半角/空白/ハイフン整理。500行cap、入力→出力行数チェック、コピー時再変換+緑フラッシュ、貼付スキャン、用途プリセット3種。",
       "tools": [
-        "normalize.html",
-        "hub.html"
-      ]
+        "normalize",
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "improve",
-      "title": "fair-draw FAQ: X応募者名簿の取得方法（製品境界）",
+      "title": "抽選 — X応募者名簿の取得方法（製品境界）",
       "body": "フォロー・リプライ抽選の@ユーザー名は手動コピー or 別ツールで集める旨をFAQ・JSON-LD・名簿入力ヒント・公平性説明に追加。名簿取得はスコープ外と明記。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
       "type": "improve",
       "title": "景品カテゴリ21種に拡充",
-      "body": "prize-law-campaign-meta.json の景品群を21種に拡充（カテゴリの網羅性を改善）。Step 0b UIは3列グリッド。",
+      "body": "の景品群を21種に拡充（カテゴリの網羅性を改善）。Step 0b UIは3列グリッド。",
       "tools": [
-        "fair-draw.html"
-      ]
+        "fair-draw"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
@@ -676,7 +803,8 @@
       "body": "統制システムではない旨・監査がいなくても使う意味・Excelとの違い・名簿の指紋の説明と限界をFAQ・JSON-LD・抽選タブ内説明に反映。",
       "tools": [
         "fair-draw.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -686,7 +814,8 @@
       "tools": [
         "fair-draw.html",
         "hub.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -696,7 +825,8 @@
       "tools": [
         "lottery.html",
         "hub.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -720,7 +850,8 @@
         "terms.html",
         "disclaimer.html",
         "not-a-car.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -729,17 +860,18 @@
       "body": "lottery.html: 賞帯ごとの発表形式（1人ずつ/一括/即表示）・ドラムロール秒数・幹事向け残り秒タイマー・画面分割・全画面オプション。公平抽選と名簿共有・同一Fisher-Yatesエンジン。",
       "tools": [
         "lottery.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
       "type": "feature",
-      "title": "景品表示法チェック・公平抽選ツール（lottery.html）",
+      "title": "景品表示法チェック・公平抽選ツール（）",
       "body": "Phase 0: P01〜P11揉め事カード＋告示ベース数値判定＋監査PDF/JSON。Phase 1: Fisher-Yates + Web Crypto公平抽選・シード表示・参加者SHA-256。赤フラグ時は自己責任ゲート。LLM判定なし。",
       "tools": [
-        "lottery.html",
-        "hub.html"
-      ]
+        "hub"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-19",
@@ -748,7 +880,8 @@
       "body": "512pxマスター（384/416）から16・32・48・180を生成。透過PNGから白背景に変更し、ダークタブでも視認しやすくしました。",
       "tools": [
         "hub.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -757,7 +890,8 @@
       "body": "高頻度だったヘッダー未表示を防ぐため、sg-chrome-top の data-sg-title で shell が自動マウントする方式に統一。verify-chrome-mount を build に組込み、defer と inline mount を禁止しました。",
       "tools": [
         "hub.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -765,8 +899,9 @@
       "title": "共通ヘッダーが表示されない不具合を修正",
       "body": "本番ビルドで sugudasu-shell.js と mount 呼び出しに defer を付けていたため、実行順が崩れ SUGUDASU_SHELL.mount が失敗していました。shell は同期読み込みに戻しました。",
       "tools": [
-        "hub.html"
-      ]
+        "hub"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -781,7 +916,8 @@
         "reverse.html",
         "label.html",
         "present.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -790,7 +926,8 @@
       "body": "見積・納品・請求の切替にスライドピルアニメ（180ms）・モード別ヒントフェード・プレビュー連動を追加。キーボード左右キー対応。他ツール展開用の sg-segment を sugudasu.css に定義しました。",
       "tools": [
         "invoice.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -798,11 +935,12 @@
       "title": "同名キーワード対策（スバル SUGDAS との差別化）",
       "body": "「スグダス」検索の迷子向けに not-a-car.html・hub 案内バナー・フッター注記を追加。請求書・領収書に中古車販売・整備向けFAQを追加。Xガイドラインに複合語投稿テンプレを追記しました。",
       "tools": [
-        "hub.html",
-        "not-a-car.html",
-        "invoice.html",
-        "receipt.html"
-      ]
+        "hub",
+        "not-a-car",
+        "invoice",
+        "receipt"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -811,7 +949,8 @@
       "body": "本番ビルドで Tailwind を事前コンパイル（browser CDN 廃止）・Webフォントを Noto+Montserrat に絞り preconnect・静的アセット長期キャッシュ・ヘッダー注入前の CLS 抑止を実施しました。",
       "tools": [
         "hub.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-19",
@@ -829,7 +968,8 @@
         "reverse.html",
         "present.html",
         "sns.html"
-      ]
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -837,8 +977,9 @@
       "title": "見積・請求書：下書きの納品・請求への転用を案内",
       "body": "見積で保存した下書きデータを読み込み、書類種別タブで納品書・請求書に切り替えて転用できる旨を、画面上部・下書き欄・FAQ・読み込み後の案内に追記しました。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -846,8 +987,9 @@
       "title": "見積・請求書：書類タイトルと備考ラベルの文言整理",
       "body": "「御見積書」などの敬称を外し、見積書・納品書・請求書のニュートラル表記に統一しました。見積書の備考見出しは「【備考】」のみとし、初期文面から振込先の記載を削除しています。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -855,8 +997,9 @@
       "title": "見積・請求書：品名あり・0円の明細を印刷対象に明示",
       "body": "サンプル品や無償提供など、品名を入れて単価0円の行はPDFに出力されます。印刷されないのは品名も単価も空の行だけです。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -864,8 +1007,9 @@
       "title": "全ページ：公式Xリンクをフッターに追加",
       "body": "公式アカウント @sugudasu へのリンクをフッターに追加しました（X公式ロゴSVG）。",
       "tools": [
-        "hub.html"
-      ]
+        "hub"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -873,8 +1017,9 @@
       "title": "見積・請求書：印刷時に未入力のヘッダー項目を非表示",
       "body": "宛名・件名・番号・備考など、未入力のヘッダー項目はPDFに出ないようにしました。明細の空行は従来どおり非表示、改ページ用空行は余白として印刷されます。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -882,8 +1027,9 @@
       "title": "見積・請求書：送付文面と共有UIの見直し",
       "body": "送付文面から確認URLを削除し、入力済みの番号・件名・合計などだけをコピーする形式に変更しました。チャットボタンは「〇〇で送る」表記に統一し、帳票入力エリア横のXシェアは削除しました。下書きデータの使い方FAQも追加しています。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -891,8 +1037,9 @@
       "title": "見積・請求書：改ページ用空行と印刷時の未入力行非表示",
       "body": "明細が多いときに1枚目の区切りを調整できる「改ページ用空行」を追加しました。品名未入力・金額0の行は印刷されません（画面上の照合用には表示されます）。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -900,8 +1047,9 @@
       "title": "見積・請求書：明細行の入力しやすさ改善",
       "body": "明細が増えても枠内スクロールに閉じ込めず、下に伸びるように変更しました。パソコンではプレビューを固定表示し、入力と帳票の照合がしやすくなっています。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -909,8 +1057,9 @@
       "title": "見積・請求書：PC推奨の案内を常設",
       "body": "帳票の最終確認・PDF保存はパソコン向けである旨を、ページ上部に短い案内として表示するようにしました。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -919,8 +1068,9 @@
       "body": "入力内容（明細・ロゴ・印鑑画像を含む）をファイルで保存し、別のPCやあとから開き直せるようにしました。PDFは送付用、データファイルは編集用です。",
       "whenToUse": "同じ書類を何度も直したり、社内で下書きを共有したいとき。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -928,8 +1078,9 @@
       "title": "SUGUDASU ブランドロゴ（Canva正本画像）",
       "body": "ヘッダー左上に Canva 出力のロゴ PNG（sugudasu-logo.png）を配置。ファビコンはロケットシンボル単体の favicon.png。手書き SVG パスは廃止。",
       "tools": [
-        "hub.html"
-      ]
+        "hub"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -937,8 +1088,9 @@
       "title": "SNSデコ：お手本ギャラリーとパーツチップのUI改善",
       "body": "プロフィールお手本をギャラリーカード化（文面中心・コンパクトなコピー操作）。飾りパーツはカテゴリ別チップでタップコピー。変換結果カードもラベル＋ピル型コピーに整理。",
       "tools": [
-        "sns.html"
-      ]
+        "sns"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -946,8 +1098,9 @@
       "title": "SNSデコ：自分用テンプレ差し替え・文字数カウンター",
       "body": "プロフィールお手本に「自分用にコピー」を追加（入力1行目=名前・2行目=キャッチで自動差し替え）。Instagram 150字 / X 160字のカウンターを入力欄・変換カード・テンプレに表示。超過時はコピー前に確認。",
       "tools": [
-        "sns.html"
-      ]
+        "sns"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -956,8 +1109,9 @@
       "body": "インスタ/X風の貼り付けプレビュー、枠ごとコピーできるプロフィールテンプレ5種、区切り線・飾り文字パーツ集を追加。ユースケースが一目で分かるようにしました。",
       "whenToUse": "インスタの自己紹介をおしゃれにしたいが、どう組み合わせるか分からないとき。",
       "tools": [
-        "sns.html"
-      ]
+        "sns"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -966,22 +1120,24 @@
       "body": "初期値を sugudasu に変更し、Mathematical Alphanumeric 系フォントが開いた瞬間にプレビューされるようにしました。日本語入力時は打ち消し線・下線など結合文字スタイルを非対応表示にし、豆腐文字化けを防止。サンセリフ（細）・ボールド・フラクトゥール・スペース+✨ などを追加。",
       "whenToUse": "インスタやXのプロフィール名を英字でおしゃれにしたいとき。",
       "tools": [
-        "sns.html"
-      ]
+        "sns"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
       "type": "feature",
       "title": "ブックマーク誘導とXシェア（既存アカウント向け）",
-      "body": "ツール利用完了後にホーム画面追加の案内バナーを表示。割り勘・請求書・領収書の結果から、ログイン中のXアカウントで投稿画面を開けるシェアボタンを追加しました。updates.html には運営向けの初回投稿文面も掲載しています。",
+      "body": "ツール利用完了後にホーム画面追加の案内バナーを表示。割り勘・請求書・領収書の結果から、ログイン中のXアカウントで投稿画面を開けるシェアボタンを追加しました。 には運営向けの初回投稿文面も掲載しています。",
       "whenToUse": "幹事が割り勘結果をXで共有したいとき、フリーランスが請求書・領収書ツールを紹介したいとき。",
       "highlight": "新規Xアカウントは不要。twitter.com/intent/tweet で既存アカウントの投稿画面を開きます。",
       "tools": [
-        "warikan.html",
-        "invoice.html",
-        "receipt.html",
-        "updates.html"
-      ]
+        "warikan",
+        "invoice",
+        "receipt",
+        "updates"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-17",
@@ -991,17 +1147,19 @@
       "whenToUse": "日勤だけ・2交代制・「準夜」「深夜」など独自の呼び方を使っている現場。",
       "highlight": "Googleフォームから届いた改善リクエスト（2026/06/17）を反映しました。",
       "tools": [
-        "shift.html"
-      ]
+        "shift"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
       "type": "feature",
       "title": "「更新履歴・改善レポート」ページを公開",
-      "body": "data/changelog.json を正本とするタイムラインと、不具合・要望の mailto 報告導線を追加。全ページフッターからリンクできます。",
+      "body": "を正本とするタイムラインと、不具合・要望の mailto 報告導線を追加。全ページフッターからリンクできます。",
       "tools": [
-        "updates.html"
-      ]
+        "updates"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -1011,8 +1169,9 @@
       "whenToUse": "合コン・懇親会で「女性（または特定グループ）だけ3,000円」と決めて、残りを男性全員で割りたいとき。係数2.0/1.0より、金額が最初から決まっている現場向けです。",
       "highlight": "幹事が「総額 − 固定×人数」を電卓で割る手間をなくし、端数丸め後の過不足表示とLINE清算文まで一括で出せます。",
       "tools": [
-        "warikan.html"
-      ]
+        "warikan"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-17",
@@ -1020,8 +1179,9 @@
       "title": "新ツール「手取り逆引き・領収書」を公開",
       "body": "手取りジャスト金額から本体・消費税・源泉徴収を逆算。1枚印刷・A4マルチ・チャット共有・URL共有に対応しました。",
       "tools": [
-        "receipt.html"
-      ]
+        "receipt"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-16",
@@ -1029,15 +1189,17 @@
       "title": "請求書ツールにチャット共有（Phase 1）",
       "body": "Slack / Chatwork / Google Chat / Teams / LINE WORKS 向けに、送付文面のコピーと送信先URL起動を追加しました。",
       "tools": [
-        "invoice.html"
-      ]
+        "invoice"
+      ],
+      "audience": "public"
     },
     {
       "date": "2026-06-16",
-      "type": "improve",
+      "type": "feature",
       "title": "AdSense 所有権確認用 ads.txt を公開",
       "body": "サイトルートに ads.txt を配置しました（審査申請は別途）。",
-      "tools": []
+      "tools": [],
+      "audience": "internal"
     },
     {
       "date": "2026-06-16",
@@ -1045,16 +1207,18 @@
       "title": "ツール一覧（index）と請求書 URL を分離",
       "body": "トップ `/` はポータル、請求書は `/invoice` に統一。リンク迷子を解消しました。",
       "tools": [
-        "hub.html",
-        "invoice.html"
-      ]
+        "hub",
+        "invoice"
+      ],
+      "audience": "internal"
     },
     {
       "date": "2026-06-16",
       "type": "improve",
       "title": "全ツールに FAQ・広告枠基盤を整備",
       "body": "ad-slot--result と sg-faq-section を各ツールへ展開。ヘッダーナビにアイコン＋短ラベルを追加しました。",
-      "tools": []
+      "tools": [],
+      "audience": "internal"
     },
     {
       "date": "2026-06-16",
@@ -1062,10 +1226,11 @@
       "title": "法務3ページ（プライバシー・利用規約・免責）を公開",
       "body": "フッターから常時リンク。AdSense 審査・信頼基盤として先行整備しました。",
       "tools": [
-        "privacy.html",
-        "terms.html",
-        "disclaimer.html"
-      ]
+        "privacy",
+        "terms",
+        "disclaimer"
+      ],
+      "audience": "public"
     }
   ]
 }

@@ -1,4 +1,4 @@
-# SUGUDASU（すぐだす）
+﻿# SUGUDASU（すぐだす）
 
 単一ドメイン・1ファイル完結の無料ビジネスツール8本＋法務ページ3本。ブラウザ内だけで完結し、入力データは外部に送信しません。
 
@@ -35,6 +35,7 @@ python -m http.server 8080
 | [table-conv.html](tools/table-conv.html) | /table-conv | SUGUDASU 表変換 | 表変換 | beta |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
+| [image-trim.html](tools/image-trim.html) | /image-trim | SUGUDASU 画像切り出し | 画像切り出し | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
 | [match-board.html](tools/match-board.html) | /match-board | SUGUDASU ドラフト会議 | ドラフト | alpha |

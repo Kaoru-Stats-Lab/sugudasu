@@ -19,6 +19,7 @@
     { id: 'table-conv', file: 'table-conv.html', label: '表変換', icon: '📊' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
+    { id: 'image-trim', file: 'image-trim.html', label: '画像切り出し', icon: '✂️' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'match-board', file: 'match-board.html', label: 'ドラフト', icon: '🧩' },

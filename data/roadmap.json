@@ -1,12 +1,11 @@
 {
-  "updatedAt": "2026-07-04",
+  "updatedAt": "2026-07-10",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
     "considering": "検討中 — フィードバックが多いほど優先度が上がります",
     "sync_lane": "Sync ライン — sync.sugudasu.com 側の別プロダクト",
-    "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）",
-    "done": "反映済み — 公開済み（詳細は更新履歴）"
+    "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）"
   },
   "lanes": [
     { "id": "core", "label": "予定 · 検討中（sugudasu.com）" },
@@ -50,76 +49,28 @@
       "summary": "自動生成の偏り・印刷改ページ・確定ロック周りの仕上げ。v2 と並行または直前。"
     },
     {
-      "id": "normalize-line-ops",
+      "id": "group-split-m13-switcher",
       "lane": "core",
       "status": "scheduled",
       "priority": 4,
-      "toolId": "normalize",
-      "toolLabel": "全角半角",
-      "toolHref": "normalize.html",
-      "title": "行ソート · 重複削除 · 行フィルタ",
-      "summary": "1列リストの並び替え・重複除去・含む/含まない抽出。非送信 · 完全一致デフォルト。",
-      "askFeedback": "ソートは文字列順と数値順、どちらをよく使いますか？"
+      "toolId": "group-split",
+      "toolLabel": "班分け",
+      "toolHref": "group-split.html",
+      "title": "スイッチャー対応表（BR名 · Slack 列 · 再編差分）",
+      "summary": "Zoom/Teams のブレイクアウト名と Slack チャンネルを列に載せ、再編時は差分1行。班分け本体の v1 は公開済み。",
+      "askFeedback": "BR名と Slack チャンネル名の付け方の実例があると助かります。"
     },
     {
-      "id": "fair-draw-connpass-csv",
+      "id": "png-to-webp",
       "lane": "core",
       "status": "scheduled",
       "priority": 5,
-      "toolId": "fair-draw",
-      "toolLabel": "抽選",
-      "toolHref": "fair-draw.html",
-      "title": "Connpass CSV 取込 · 列選択",
-      "summary": "参加者 CSV を D&D で読み込み、表示名列で公平抽選。既存の監査 PDF/JSON を拡張。",
-      "askFeedback": "Connpass 以外のイベント CSV 列名の例があれば教えてください。"
-    },
-    {
-      "id": "table-conv-mvp",
-      "lane": "core",
-      "status": "done",
-      "priority": 6,
-      "toolId": "table-conv",
-      "toolLabel": "表変換",
-      "toolHref": "table-conv.html",
-      "title": "表データ相互コンバータ（Shift-JIS · Markdown）",
-      "summary": "反映済み（v1.0.0 beta）。Excel 貼付/CSV → Markdown·JSON·TSV · 非送信。意図的にやらない領域は下記「対象外 › 表変換」を参照。",
-      "askFeedback": "Notion · Backlog · GitHub のどれに貼ることが多いですか？"
-    },
-    {
-      "id": "invoice-withholding",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 7,
-      "toolId": "invoice",
-      "toolLabel": "請求書",
-      "toolHref": "invoice.html",
-      "title": "源泉徴収 10.21% · 端数 · 累進",
-      "summary": "税抜/税込選択 · 100万円超 20.42% · 端数処理トグル。登録不要の検算用。",
-      "askFeedback": "取引先ごとに端数ルールが違う場合の運用例を歓迎します。"
-    },
-    {
-      "id": "invoice-mixed-tax",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 8,
-      "toolId": "invoice",
-      "toolLabel": "請求書",
-      "toolHref": "invoice.html",
-      "title": "内税 8% / 10% 混在分離",
-      "summary": "税込総額から軽減税率と標準税率を逆算。税率ごとに1回の端数処理。",
-      "askFeedback": "レシート1枚分の入力と、明細複数行のどちらが多いですか？"
-    },
-    {
-      "id": "time-calc-labor",
-      "lane": "core",
-      "status": "considering",
-      "priority": 9,
-      "toolId": "time-calc",
-      "toolLabel": "時給計算",
-      "toolHref": "time-calc.html",
-      "title": "勤務時間 h:mm 合計 · 時給換算",
-      "summary": "タイムカード形式の合計と時給換算。給与計算（社保・税金）ではない。",
-      "askFeedback": "入力は `1:30` 形式と `90分` 形式、どちらが多いですか？"
+      "toolId": "webp-to-jpg",
+      "toolLabel": "WebP→JPG",
+      "toolHref": "webp-to-jpg.html",
+      "title": "PNG/JPG → WebP 圧縮（逆方向）",
+      "summary": "既存の WebP→JPG の逆。LP/EC 向けの軽量化。非送信・ブラウザ内のみ。",
+      "askFeedback": "透過 PNG を残したいケースは多いですか？"
     },
     {
       "id": "invoice-quality",
@@ -130,7 +81,7 @@
       "toolLabel": "請求書",
       "toolHref": "invoice.html",
       "title": "帳票 beta の品質・UX 仕上げ",
-      "summary": "Desktop-first の編集・PDF・下書き周り。優先度は不具合報告次第。"
+      "summary": "Desktop-first の編集・PDF・下書き周り。源泉・内税分離は公開済み。優先度は不具合報告次第。"
     },
     {
       "id": "test-data-presets",
@@ -142,6 +93,30 @@
       "toolHref": "test-data.html",
       "title": "プリセット・大規模エクスポートの拡張",
       "summary": "閉域向けダミーCSVの列種別・件数レンジ。SI・情シス向け FB を反映。"
+    },
+    {
+      "id": "warikan-paypay-link",
+      "lane": "core",
+      "status": "considering",
+      "priority": 12,
+      "toolId": "warikan",
+      "toolLabel": "割り勘",
+      "toolHref": "warikan.html",
+      "title": "送金リンク（PayPay 等）",
+      "summary": "幹事が集金しやすい Web URL / ディープリンク。端末差のスパイク後に実装判断。",
+      "askFeedback": "PayPay · 銀行振込 · その他、現場で多い手段を教えてください。"
+    },
+    {
+      "id": "mask-ocr-v2",
+      "lane": "core",
+      "status": "considering",
+      "priority": 13,
+      "toolId": "mask",
+      "toolLabel": "マスク",
+      "toolHref": "mask.html",
+      "title": "OCR / 顔検出による自動マスク候補",
+      "summary": "手動矩形のマスクは公開済み。自動検出は v2 候補（完全匿名化の保証はしない）。",
+      "askFeedback": "手動で足りる場面と、自動候補が欲しい場面の比率を歓迎します。"
     },
     {
       "id": "warikan-url-share",
@@ -183,9 +158,21 @@
       "priority": 1,
       "toolId": null,
       "toolLabel": "Schedule",
-      "toolHref": "https://sync.sugudasu.com",
+      "toolHref": "https://sync.sugudasu.com/schedule",
       "title": "工事・制作向け Schedule（Notion 風表）",
       "summary": "現場監督向けの工程表 · 週間リスト · 印刷。コアのシフト表とは別ラインです。",
+      "external": true
+    },
+    {
+      "id": "sticky-room-undo-v2",
+      "lane": "sync",
+      "status": "sync_lane",
+      "priority": 2,
+      "toolId": null,
+      "toolLabel": "Room",
+      "toolHref": "https://sync.sugudasu.com/room",
+      "title": "Sticky Room — Undo / Export（v2）",
+      "summary": "付箋・見出しのリアルタイム共有は v1 公開済み。Undo/Redo · JSON/MD/TSV 書き出しは v2。ドローやチャットは対象外。",
       "external": true
     },
     {
@@ -257,6 +244,31 @@
       "title": "Markdown 表の汎用逆変換（MD → TSV）",
       "summary": "パイプ表でもエスケープ · 区切り行の揺れ · 方言混在で列ズレしやすい。Excel 往復は TSV タブ出力を Excel に貼れば足りる。需要は限定的で品質リスクが上回るため非対応（恒久 HOLD）。",
       "alternative": "Excel 往復は表変換の TSV 出力を利用"
+    },
+    {
+      "id": "time-calc-payroll",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 7,
+      "toolId": "time-calc",
+      "toolLabel": "時給計算",
+      "toolHref": "time-calc.html",
+      "title": "給与計算（社保 · 税金 · 振込明細）",
+      "summary": "勤務時間の合計と時給換算は公開済み。社会保険・所得税・振込明細は給与ソフトの領域です。",
+      "alternative": "給与計算ソフト · 社労士・税理士への相談"
+    },
+    {
+      "id": "sticky-room-whiteboard",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 8,
+      "toolId": null,
+      "toolLabel": "Room",
+      "toolHref": "https://sync.sugudasu.com/room",
+      "title": "ホワイトボード化（ドロー · 線 · チャット）",
+      "summary": "Sticky Room は付箋・見出しの共有に絞ります。ペン・図形・ファイル転送・チャットは Miro / FigJam 等の領域です。",
+      "alternative": "Miro · FigJam · ホワイトボード SaaS",
+      "external": true
     }
   ]
 }

@@ -246,8 +246,8 @@ function renderSummary(changes) {
   mediumEl.textContent = String(medium);
   lowEl.textContent = String(low);
   statusEl.textContent = changes.length
-    ? `危険度順に ${Math.min(5, high || changes.length)} 件から確認してください。`
-    : '差分は見つかりませんでした。';
+    ? `要確認から順に ${Math.min(5, high || changes.length)} 件を見てください。`
+    : '目立った変更は見つかりませんでした。';
 }
 
 function renderMiniMap(changes) {
@@ -255,7 +255,7 @@ function renderMiniMap(changes) {
   if (!map) return;
   map.innerHTML = '';
   if (!changes.length) {
-    map.innerHTML = '<p class="text-[11px] text-slate-500">差分なし</p>';
+    map.innerHTML = '<p class="text-[11px] text-slate-500">変更なし</p>';
     return;
   }
   const top = changes.length;
@@ -334,15 +334,15 @@ function rankedChanges(changes) {
 function buildCopyReport(changes) {
   const lines = [
     'SUGUDASU 差分チェック',
-    `総差分: ${changes.length}`,
-    `高リスク(★4-5): ${changes.filter((c) => c.risk.score >= 4).length}`,
+    `変更の件数: ${changes.length}`,
+    `要確認（高）: ${changes.filter((c) => c.risk.score >= 4).length}`,
     '',
   ];
   changes.forEach((c, i) => {
-    lines.push(`#${i + 1} ${c.risk.label} ${changeTypeLabel(c.type)} L${c.beforeLine}->L${c.afterLine}`);
+    lines.push(`#${i + 1} ${c.risk.label} ${changeTypeLabel(c.type)}（元 ${c.beforeLine}行目 → 後 ${c.afterLine}行目）`);
     lines.push(`理由: ${c.risk.reasons.join(' / ')}`);
-    lines.push(`Before: ${c.before || '（なし）'}`);
-    lines.push(`After : ${c.after || '（なし）'}`);
+    lines.push(`元の文: ${c.before || '（なし）'}`);
+    lines.push(`書き換え後: ${c.after || '（なし）'}`);
     lines.push('');
   });
   return lines.join('\n');
@@ -353,7 +353,7 @@ async function copyReport() {
   const report = buildCopyReport(latestChanges);
   try {
     await navigator.clipboard.writeText(report);
-    if (status) status.textContent = '監査結果をコピーしました。';
+    if (status) status.textContent = '結果をコピーしました。';
   } catch {
     if (status) status.textContent = 'コピーに失敗しました。手動で選択してコピーしてください。';
   }

@@ -1,28 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="マニュアル用スクショの機密をブラウザ内だけで隠す。ぼかし・黒塗り・背景同色・スタンプ。画像はサーバーへ送信しません。社内規程でアップロード型加工サイトが使えない方向け。">
-    <title>スクショの機密消し（アップロード不要） | SUGUDASU</title>
+    <meta name="description" content="マニュアル用スクショの機密消しと、矢印・枠の注釈。ぼかし・黒塗り・同色塗り・スタンプ・注釈。画像はサーバーへ送信しません。">
+    <title>スクショの機密消しと注釈（アップロード不要） | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="スクショの機密消し — ブラウザ内だけでぼかし・黒塗り">
-    <meta property="og:description" content="引き継ぎマニュアル・障害報告用。画像は端末内だけで処理。iLoveIMG等のアップロード型と違い、POSTしません。">
+    <meta property="og:title" content="スクショの機密消しと注釈 — ブラウザ内だけで完結">
+    <meta property="og:description" content="隠してから矢印で指す。Teams/Slack向けのスクショ加工。データは送りません。">
     <meta property="og:url" content="https://sugudasu.com/mask">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="スクショの機密消し — 非送信マスク">
-    <meta name="twitter:description" content="ペイントの手動黒塗りより速く。社外秘スクショをブラウザ内だけで加工。">
+    <meta name="twitter:title" content="スクショの機密消しと注釈 — 非送信">
+    <meta name="twitter:description" content="ぼかし・黒塗りに加え、矢印と枠で「ここ」を指せます。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"社内規程で外部アップロード禁止でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"画像の処理はブラウザ内のCanvasだけで完結し、SUGUDASUのサーバーへ画像ファイルをPOSTしません。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"ぼかしと黒塗りはどちらを使えばよいですか？","acceptedAnswer":{"@type":"Answer","text":"マニュアルでは目立ちにくいぼかしが向きます。パスワード・マイナンバー・金額など機密性が高い値は黒塗りを推奨します。ぼかしは復元や推測の余地が残る場合があります。"}},{"@type":"Question","name":"画像はサーバーに残りますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込みから編集・PNG保存まで端末のブラウザ内メモリで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"スタンプだけで機密は隠せますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。サンプル・ダミー・テストのスタンプは注記用で、下の実データは消えません。ぼかしまたは黒塗りと併用してください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"社内規程で外部アップロード禁止でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"画像の処理はブラウザ内のCanvasだけで完結し、SUGUDASUのサーバーへ画像ファイルをPOSTしません。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"ぼかしと黒塗りはどちらを使えばよいですか？","acceptedAnswer":{"@type":"Answer","text":"マニュアルでは目立ちにくいぼかしが向きます。パスワード・マイナンバー・金額など機密性が高い値は黒塗りを推奨します。ぼかしは復元や推測の余地が残る場合があります。"}},{"@type":"Question","name":"注釈モードとは何ですか？","acceptedAnswer":{"@type":"Answer","text":"矢印と角丸の枠で、スクショの「ここ」を指すためのモードです。色や太さは選べません（固定）。機密を隠すのはぼかし・黒塗り、指摘は注釈、と分けて使います。"}},{"@type":"Question","name":"画像はサーバーに残りますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込みから編集・PNG保存まで端末のブラウザ内メモリで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"スタンプだけで機密は隠せますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。サンプル・ダミー・テストのスタンプは注記用で、下の実データは消えません。ぼかしまたは黒塗りと併用してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU マスク" data-sg-subtitle="スクショの機密消し · 非送信" data-sg-tool-id="mask"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU マスク" data-sg-subtitle="機密消し · 注釈 · 非送信" data-sg-tool-id="mask"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
 
@@ -30,22 +30,23 @@
         <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">マニュアル · 障害報告 · 外部送信ゼロ</p>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
-                引き継ぎマニュアルや障害報告の<strong>スクショ</strong>から、顧客名 · ID · 金額を隠したい。<strong>ペイントの手動黒塗りは面倒</strong>で、<strong>Webの画像加工サイトは社内規程で禁止</strong> — という現場向けです。
+                引き継ぎや障害報告の<strong>スクショ</strong>で、顧客名 · ID · 金額を隠したい。<strong>「ここ」を矢印で指したい</strong>。ペイント起動や重いツールは不要です。
             </p>
             <p class="sg-tool-lead">
-                画像は<strong>ブラウザ内だけ</strong>でぼかし · 黒塗り · 背景同色 · スタンプ。<a href="normalize.html">全角半角整え</a> · <a href="webp-to-jpg.html">WebP変換</a> と同型の非送信画像ツールです。
+                画像は<strong>ブラウザ内だけ</strong>でぼかし · 黒塗り · 注釈（矢印・枠）。サイズ調整は <a href="image-trim.html">画像切り出し</a> へ。
             </p>
         </div>
     </header>
 
     <section class="sg-card p-5 space-y-4">
         <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">加工モード</h2>
-        <div class="sg-segment sg-segment--cols-4 sg-segment--mode-ec sg-segment--notion-soft" id="tool-segment" role="tablist" aria-label="加工モード">
+        <div class="sg-segment sg-segment--cols-5 sg-segment--mode-ec sg-segment--notion-soft" id="tool-segment" role="tablist" aria-label="加工モード">
             <span class="sg-segment__pill" aria-hidden="true"></span>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="blur" aria-selected="true">ぼかし</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="black" aria-selected="false">黒塗り</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="color" aria-selected="false">同色塗り</button>
             <button type="button" role="tab" class="sg-segment__btn" data-segment-value="stamp" aria-selected="false">スタンプ</button>
+            <button type="button" role="tab" class="sg-segment__btn" data-segment-value="annotate" aria-selected="false">注釈</button>
         </div>
         <p class="sg-segment-hint text-[11px] text-slate-600" id="tool-hint" role="note"></p>
 
@@ -76,6 +77,16 @@
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="テスト" aria-selected="false">テスト</button>
             </div>
         </div>
+
+        <div id="annotate-row" class="hidden space-y-2">
+            <p class="text-xs font-semibold text-slate-700">図形（色・太さは固定）</p>
+            <div class="sg-segment sg-segment--cols-2 sg-segment--mode-fullwidth sg-segment--notion-soft" id="annotate-segment" role="tablist" aria-label="注釈の図形">
+                <span class="sg-segment__pill" aria-hidden="true"></span>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="arrow" aria-selected="true">矢印</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="rect" aria-selected="false">四角</button>
+            </div>
+            <p class="sg-segment-hint text-[11px] text-slate-600" id="annotate-hint" role="note">ドラッグで描く。図形を選んで削除できます（Delete）。</p>
+        </div>
     </section>
 
     <section id="drop-zone" class="sg-card p-5 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-12 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/40 transition-colors" tabindex="0" role="button" aria-label="画像を選択または貼り付け">
@@ -88,6 +99,7 @@
         <div class="flex flex-wrap gap-2 items-center">
             <button type="button" id="btn-undo" class="sg-btn-secondary text-xs py-2 px-3" disabled>↩ 戻す</button>
             <button type="button" id="btn-redo" class="sg-btn-secondary text-xs py-2 px-3" disabled>↪ やり直し</button>
+            <button type="button" id="btn-delete-shape" class="sg-btn-secondary text-xs py-2 px-3" disabled>削除</button>
             <button type="button" id="btn-download" class="sg-btn-primary text-xs py-2 px-3">↓ PNG保存</button>
             <button type="button" id="btn-copy" class="sg-btn-secondary text-xs py-2 px-3">コピー</button>
             <button type="button" id="btn-reset" class="text-xs font-semibold text-slate-500 underline ml-auto">別の画像</button>
@@ -103,6 +115,7 @@
         <p class="text-[11px] text-slate-500 leading-relaxed">
             <strong class="text-slate-600">塗り残しは利用者責任です。</strong>
             出力前に必ず目視確認してください。スタンプは下のデータを消しません。
+            サイズを整えるときは <a href="image-trim.html" class="text-violet-800 underline">画像切り出し</a> へ。
         </p>
     </section>
 
@@ -126,6 +139,12 @@
                 </div>
             </details>
             <details class="sg-faq">
+                <summary>注釈（矢印・枠）はどう使いますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>注釈</strong>モードでドラッグすると矢印（または四角の枠）が付きます。色や太さは固定です。図形をクリックして選び、「削除」または Delete キーで消せます。機密を隠す用途にはぼかし・黒塗りを使ってください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
                 <summary>画像はサーバーに残りますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>いいえ。読み込みから編集 · PNG 保存まで<strong>端末のブラウザ内</strong>です。タブを閉じるとメモリ上のデータは消えます。</p>
@@ -140,13 +159,13 @@
             <details class="sg-faq">
                 <summary>3nd.jp や iLoveIMG との違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>多くの無料ツールもブラウザ内処理を謳っています。SUGUDASU の差は<strong>マニュアル向けスタンプ</strong> · <strong>非送信の説明しやすさ</strong>（<a href="statements.html" class="text-violet-800 underline">SUGUDASU の約束</a> 同型）· 請求書など既存ツール群との併用です。高度な OCR 自動検出はありません。</p>
+                    <p>多くの無料ツールもブラウザ内処理を謳っています。SUGUDASU の差は<strong>マニュアル向けスタンプ</strong> · <strong>矢印注釈</strong> · <strong>非送信の説明しやすさ</strong>（<a href="statements.html" class="text-violet-800 underline">SUGUDASU の約束</a> 同型）· 請求書など既存ツール群との併用です。高度な OCR 自動検出はありません。</p>
                 </div>
             </details>
             <details class="sg-faq">
                 <summary>PDFや顔の自動検出はできますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>できません。本ツールは<strong>画面スクショ1枚</strong>の矩形加工に特化しています。</p>
+                    <p>できません。本ツールは<strong>画面スクショ1枚</strong>の矩形加工と注釈に特化しています。</p>
                 </div>
             </details>
         </div>
