@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10",
+  "updatedAt": "2026-07-15",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
@@ -117,6 +117,18 @@
       "title": "OCR / 顔検出による自動マスク候補",
       "summary": "手動矩形のマスクは公開済み。自動検出は v2 候補（完全匿名化の保証はしない）。",
       "askFeedback": "手動で足りる場面と、自動候補が欲しい場面の比率を歓迎します。"
+    },
+    {
+      "id": "mask-annotate-text",
+      "lane": "core",
+      "status": "considering",
+      "priority": 14,
+      "toolId": "mask",
+      "toolLabel": "マスク",
+      "toolHref": "mask.html",
+      "title": "注釈の文字入れ（Skitch 風）",
+      "summary": "矢印・枠の注釈は公開済み。旧 Skitch 利用者が求める「ここに短文」の文字注釈を候補に置く。非送信・色固定の方針は維持予定。",
+      "askFeedback": "矢印＋枠だけで足りる場面と、短いキャプションが欲しい場面の比率を歓迎します。"
     },
     {
       "id": "warikan-url-share",
@@ -269,6 +281,30 @@
       "summary": "Sticky Room は付箋・見出しの共有に絞ります。ペン・図形・ファイル転送・チャットは Miro / FigJam 等の領域です。",
       "alternative": "Miro · FigJam · ホワイトボード SaaS",
       "external": true
+    },
+    {
+      "id": "image-trim-url-capture",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 9,
+      "toolId": "image-trim",
+      "toolLabel": "画像切り出し",
+      "toolHref": "image-trim.html",
+      "title": "Webページ URL の取込・自動キャプチャから切出し",
+      "summary": "サーバーでページを開いて撮る方式も、ブラウザ内の擬似キャプチャもやりません。非送信方針と「自分で撮って貼る」前提を崩さないためです。スクショを Ctrl+V / ドロップで渡してください。",
+      "alternative": "OS のスクショ → 画像切り出しへ貼付 · またはブラウザ拡張のキャプチャ"
+    },
+    {
+      "id": "image-trim-full-editor",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 10,
+      "toolId": "image-trim",
+      "toolLabel": "画像切り出し",
+      "toolHref": "image-trim.html",
+      "title": "回転 · フィルタ · 文字 · 図形などの画像編集化",
+      "summary": "枠固定の切出し専用です。Canva / ペイント寄りの編集はマスク（機密消し · 注釈）や他ツールの領域に分けます。",
+      "alternative": "注釈・機密消しはマスク · 総合編集は専用ソフト"
     }
   ]
 }

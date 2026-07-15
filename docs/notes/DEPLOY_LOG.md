@@ -758,10 +758,31 @@
 
 ---
 
+## DEPLOY-20260715-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | roadmap — マスク文字注釈を検討中 · 画像切り出し URL取込/編集化を対象外（提督依頼 · 同日 core 3回目 · P7 override） |
+| **change_summary** | `data/roadmap.json` · `docs/notes/DEPLOY_LOG.md` |
+| **local_build** | （`release:pages:free` 前） |
+| **deploy_count_today** | 3（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「検討中で入れて · 対象外も記載」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/roadmap`） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-15 | 003 approved（core · roadmap 文字注釈検討中 · image-trim 対象外 · P7 override） |
 | 2026-07-15 | 002 executed（f4a3b11 · Skitch 本家矢印 · 枠白フチ縮小 · P7 override） |
 | 2026-07-15 | 001 executed（57ed661 · core · mask Skitch 型注釈） |
 | 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
