@@ -48,10 +48,13 @@ export function mountPlanningPoker(root) {
     adoptBtn: root.querySelector('#pp-adopt'),
     exportCsv: root.querySelector('#pp-export-csv'),
     darkToggle: root.querySelector('#pp-dark-toggle'),
+    activeVoterLabel: root.querySelector('#pp-active-voter'),
   };
 
   let state = null;
   let myParticipantId = '';
+  /** @type {string} 司会がカード入力する対象（参加者 id） */
+  let activeVoterId = '';
   let timerId = 0;
   let timerLeftSec = 0;
 
@@ -80,6 +83,8 @@ export function mountPlanningPoker(root) {
     const me = participants.find((p) => p.name === myName);
     if (!me) return setError('あなたの名前は参加者一覧に含めてください。');
     myParticipantId = me.id;
+    // DECISION: 開始直後は司会本人。一覧タップで入力先を切り替え全員分を伏せ入力できる（SPEC §3.1 core 次）。
+    activeVoterId = me.id;
     els.empty?.classList.add('hidden');
     els.workspace?.classList.remove('hidden');
     render();
@@ -87,9 +92,13 @@ export function mountPlanningPoker(root) {
 
   function render() {
     if (!state) return;
+    if (!state.participants.some((p) => p.id === activeVoterId)) {
+      activeVoterId = myParticipantId || state.participants[0]?.id || '';
+    }
     renderStories();
     renderParticipants();
     renderCurrentStory();
+    renderActiveVoter();
     renderCards();
     renderRevealPanel();
     renderStats();
@@ -123,9 +132,29 @@ export function mountPlanningPoker(root) {
         const vote = state.votes.get(p.id);
         const mask = state.reveal ? esc(vote || '-') : vote ? '投票済み' : '未投票';
         const me = p.id === myParticipantId ? '（あなた）' : '';
-        return `<li class="pp-participant"><span>${esc(p.name)} ${me}</span><strong>${mask}</strong></li>`;
+        const active = p.id === activeVoterId ? 'pp-participant--active' : '';
+        return `<li><button type="button" class="pp-participant ${active}" data-voter-id="${escAttr(p.id)}"><span>${esc(p.name)} ${me}</span><strong>${mask}</strong></button></li>`;
       })
       .join('');
+    els.participantList.querySelectorAll('[data-voter-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (state.reveal) return;
+        activeVoterId = btn.getAttribute('data-voter-id') || activeVoterId;
+        render();
+      });
+    });
+  }
+
+  function renderActiveVoter() {
+    if (!els.activeVoterLabel || !state) return;
+    const p = state.participants.find((x) => x.id === activeVoterId);
+    if (state.reveal) {
+      els.activeVoterLabel.textContent = 'Reveal済み。再投票で入力を再開できます。';
+      return;
+    }
+    els.activeVoterLabel.textContent = p
+      ? `入力中: ${p.name} — 口頭・チャットで受けた点数をカードで伏せ入力。全員そろったら Reveal。`
+      : '左の参加者を選んで入力してください。';
   }
 
   function renderCurrentStory() {
@@ -134,19 +163,36 @@ export function mountPlanningPoker(root) {
   }
 
   function renderCards() {
+    const locked = !!state.reveal;
     els.cardGrid.innerHTML = DEFAULT_DECK
       .map((point) => {
-        const selected = state.selectedPointByParticipant.get(myParticipantId) === point ? 'pp-card--selected' : '';
-        return `<button type="button" class="pp-card ${selected}" data-point="${escAttr(point)}">${esc(point)}</button>`;
+        const selected = state.selectedPointByParticipant.get(activeVoterId) === point ? 'pp-card--selected' : '';
+        return `<button type="button" class="pp-card ${selected}" data-point="${escAttr(point)}" ${locked ? 'disabled' : ''}>${esc(point)}</button>`;
       })
       .join('');
     els.cardGrid.querySelectorAll('[data-point]').forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (state.reveal || !activeVoterId) return;
         const point = btn.getAttribute('data-point') || '';
-        setVote(state, myParticipantId, point);
+        setVote(state, activeVoterId, point);
+        advanceActiveVoter();
         render();
       });
     });
+  }
+
+  /** 司会向け: 入力後は未投票の次の人へ（SPEC 司会代行の摩擦低減） */
+  function advanceActiveVoter() {
+    if (!state || state.reveal) return;
+    const list = state.participants;
+    const idx = list.findIndex((p) => p.id === activeVoterId);
+    for (let step = 1; step <= list.length; step += 1) {
+      const cand = list[(idx + step) % list.length];
+      if (!state.votes.has(cand.id)) {
+        activeVoterId = cand.id;
+        return;
+      }
+    }
   }
 
   function renderRevealPanel() {
@@ -245,10 +291,12 @@ export function mountPlanningPoker(root) {
     if (!state) return;
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
     if (/^[1-9]$/.test(e.key)) {
+      if (state.reveal || !activeVoterId) return;
       const map = { '1': '1', '2': '2', '3': '3', '4': '5', '5': '8', '6': '13', '7': '21', '8': '34', '9': '55' };
       const point = map[e.key];
       if (point) {
-        setVote(state, myParticipantId, point);
+        setVote(state, activeVoterId, point);
+        advanceActiveVoter();
         render();
       }
       return;

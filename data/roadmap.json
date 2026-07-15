@@ -139,7 +139,7 @@
       "toolLabel": "見積会議",
       "toolHref": "planning-poker.html",
       "title": "多人同時投票 · 同時 Reveal",
-      "summary": "正本: docs/notes/PLANNING_POKER_SIMULTANEOUS_REVEAL_SPEC.md。認識差エンジンが本丸で同期は Adapter。順序は (1) core 司会代行入力 (2) URL結果共有 MAY (3) Sync・WebRTC 別画面。現状は単機・自分1票のみ。",
+      "summary": "正本: docs/notes/PLANNING_POKER_SIMULTANEOUS_REVEAL_SPEC.md。core 司会代行入力（1画面で全員分を伏せ入力→Reveal）は公開済み。次は URL結果共有 MAY · Sync・WebRTC 別画面。参考Repoは組み込まず Sticky Adapter 共有方針。",
       "askFeedback": "何人規模で、会議ツール画面共有あり／なし、どれが多いですか？"
     },
     {

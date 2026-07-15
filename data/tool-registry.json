@@ -234,7 +234,7 @@
       "name": "見積会議（Planning Poker）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "同時Reveal · 最大/最小理由入力 · 再投票 · CSV出力 · 非送信（Planning Poker対応）"
+      "statusNote": "司会代行で全員分伏せ入力 · 同時Reveal · 最大/最小理由 · CSV · 非送信（多人端末同期は検討中）"
     },
     "timeline": {
       "file": "timeline.html",
