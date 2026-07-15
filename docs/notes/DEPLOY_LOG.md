@@ -722,19 +722,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | マスク注釈を Skitch / PinkArrows 型の太い塗り矢印・枠へ差し替え |
 | **change_summary** | `assets/mask-engine.js` · `assets/mask-app.js` · `tools/mask.html` · `data/changelog.json` · `scripts/mask-engine.test.mjs` |
-| **local_build** | （`release:pages:free` 前） |
+| **local_build** | `pass`（`release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 28/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督「本番に反映して」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/mask`） |
+| **cf_deployment_id** | `57ed661`（`7015aea..57ed661` · git push origin main） |
+| **smoke** | pass — `/mask` 200 · 文案に「Skitch」· `mask-app.js?v=` cache-bust あり |
 
 ---
 
@@ -742,7 +742,7 @@
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-15 | 001 approved（core · mask Skitch 型注釈 · 提督「本番に反映して」） |
+| 2026-07-15 | 001 executed（57ed661 · core · mask Skitch 型注釈） |
 | 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
 | 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |
 | 2026-07-09 | 002 executed（7d547d0 · FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ） |
