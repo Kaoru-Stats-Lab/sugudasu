@@ -131,6 +131,18 @@
       "askFeedback": "矢印＋枠だけで足りる場面と、短いキャプションが欲しい場面の比率を歓迎します。"
     },
     {
+      "id": "planning-poker-simultaneous-reveal",
+      "lane": "core",
+      "status": "considering",
+      "priority": 15,
+      "toolId": "planning-poker",
+      "toolLabel": "見積会議",
+      "toolHref": "planning-poker.html",
+      "title": "多人同時投票 · 同時 Reveal",
+      "summary": "現状は1ブラウザ・「あなた」1名分の投票のみ。複数人がカードを伏せたまま集め、同時公開するには同期インフラが必要。候補は URL状態共有 · Sticky Room 型の一時P2P · Syncルーム。調査プロンプト: docs/prompts/planning-poker-simultaneous-reveal-infra-prompt.md",
+      "askFeedback": "何人規模で、会議ツール画面共有あり／なし、どれが多いですか？"
+    },
+    {
       "id": "warikan-url-share",
       "lane": "core",
       "status": "considering",
