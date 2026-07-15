@@ -21,6 +21,7 @@ export const PRESET_DEFAULTS = {
   sql_in: { mode: 'sql_in', ascii: true, space: true, hyphen: false },
   tab_to_comma: { mode: 'tab_to_comma', ascii: true, space: true, hyphen: false },
   name_trim: { mode: 'name_trim', ascii: true, space: false, hyphen: false },
+  date_unify: { mode: 'date_unify', ascii: true, space: true, hyphen: false },
   mask_email: { mode: 'mask_email', ascii: false, space: false, hyphen: false },
   mask_phone: { mode: 'mask_phone', ascii: false, space: false, hyphen: false },
   mask_name: { mode: 'mask_name', ascii: false, space: false, hyphen: false },
@@ -118,6 +119,138 @@ function transformLine(line, opts) {
     out = out.trim();
   }
   return out;
+}
+
+/**
+ * @param {number} y
+ * @param {number} m
+ * @param {number} d
+ */
+function isValidYmd(y, m, d) {
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return false;
+  if (m < 1 || m > 12 || d < 1 || d > 31) return false;
+  const dt = new Date(y, m - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d;
+}
+
+/**
+ * @param {number} y
+ * @param {number} m
+ * @param {number} d
+ */
+function formatYmdSlash(y, m, d) {
+  const yy = String(y).padStart(4, '0');
+  const mm = String(m).padStart(2, '0');
+  const dd = String(d).padStart(2, '0');
+  return `${yy}/${mm}/${dd}`;
+}
+
+/**
+ * 日付1行を YYYY/MM/DD に揃える（Excelシリアル自動判定なし · 令和のみ元号対応）
+ * @param {string} line
+ * @param {{ now?: Date }} [options]
+ * @returns {{ ok: boolean, value: string, warning?: string, error?: string }}
+ */
+export function parseNormalizeDate(line, options = {}) {
+  const original = String(line ?? '');
+  const now = options.now instanceof Date && !Number.isNaN(options.now.getTime())
+    ? options.now
+    : new Date();
+
+  let s = original.replace(/^[\u3000\s]+|[\u3000\s]+$/g, '');
+  let half = '';
+  for (let i = 0; i < s.length; i += 1) {
+    half += toHalfwidthChar(s[i]);
+  }
+  s = half.replace(/\u3000/g, ' ').trim();
+
+  if (!s) {
+    return { ok: true, value: '' };
+  }
+
+  if (/^\d+$/.test(s)) {
+    return { ok: false, value: original, error: '数字のみ（シリアル候補）は変換しません' };
+  }
+
+  if (/平成|昭和/.test(s) || /^[HhSs]\d/.test(s)) {
+    return { ok: false, value: original, error: '平成・昭和は未対応です' };
+  }
+
+  let year;
+  let month;
+  let day;
+  /** @type {string|undefined} */
+  let warning;
+
+  const reiwaKanji = s.match(/^令和\s*(\d{1,2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日$/);
+  if (reiwaKanji) {
+    year = 2018 + Number(reiwaKanji[1]);
+    month = Number(reiwaKanji[2]);
+    day = Number(reiwaKanji[3]);
+  } else {
+    const reiwaLetter = s.match(/^[Rr]\s*(\d{1,2})\s*[/.\-]\s*(\d{1,2})\s*[/.\-]\s*(\d{1,2})$/);
+    if (reiwaLetter) {
+      year = 2018 + Number(reiwaLetter[1]);
+      month = Number(reiwaLetter[2]);
+      day = Number(reiwaLetter[3]);
+    } else {
+      const jp = s.match(/^(\d{2,4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日$/);
+      if (jp) {
+        year = Number(jp[1]);
+        month = Number(jp[2]);
+        day = Number(jp[3]);
+        if (jp[1].length === 2) {
+          year = 2000 + year;
+          warning = '2桁年を20xxとして解釈しました';
+        }
+      } else {
+        const ymd = s.match(/^(\d{2,4})\s*[/.\-]\s*(\d{1,2})\s*[/.\-]\s*(\d{1,2})$/);
+        if (ymd) {
+          year = Number(ymd[1]);
+          month = Number(ymd[2]);
+          day = Number(ymd[3]);
+          if (ymd[1].length === 2) {
+            year = 2000 + year;
+            warning = '2桁年を20xxとして解釈しました';
+          }
+        } else {
+          const md = s.match(/^(\d{1,2})\s*[/.\-]\s*(\d{1,2})$/);
+          if (md) {
+            year = now.getFullYear();
+            month = Number(md[1]);
+            day = Number(md[2]);
+            warning = '年なしのため実行年で補完しました';
+          } else {
+            return { ok: false, value: original, error: '日付として解釈できません' };
+          }
+        }
+      }
+    }
+  }
+
+  if (!isValidYmd(year, month, day)) {
+    return { ok: false, value: original, error: '実在しない日付です' };
+  }
+
+  const value = formatYmdSlash(year, month, day);
+  if (warning) return { ok: true, value, warning };
+  return { ok: true, value };
+}
+
+/**
+ * 日付統一バナー文案（UI 用）
+ * @param {{ mode?: string, dateStats?: { ok: number, warn: number, error: number } }} result
+ */
+export function formatDateUnifyBanner(result) {
+  if (result.mode !== 'date_unify' || !result.dateStats) return '';
+  const { ok, warn, error } = result.dateStats;
+  let msg = `日付統一: 成功 ${ok} · 警告 ${warn} · 失敗 ${error}`;
+  if (error > 0) {
+    msg += '。失敗行は変換せず残しています（数字のみのシリアル値は対象外）';
+  } else if (warn > 0) {
+    msg += '。警告行は変換済みです（2桁年・年なしなど）';
+  }
+  return msg;
 }
 
 /**
@@ -519,6 +652,46 @@ export function normalizeText(input, config = {}) {
       opts,
       mode,
       maskStats,
+      ...lineOpsBase,
+    };
+  }
+
+  if (mode === 'date_unify') {
+    const dateStats = { ok: 0, warn: 0, error: 0 };
+    /** @type {string[]} */
+    const dateMessages = [];
+    const outLines = lines.map((line, idx) => {
+      const parsed = parseNormalizeDate(line);
+      if (parsed.ok) {
+        dateStats.ok += 1;
+        if (parsed.warning) {
+          dateStats.warn += 1;
+          if (dateMessages.length < 5) {
+            dateMessages.push(`${idx + 1}行目: ${parsed.warning}`);
+          }
+        }
+        return parsed.value;
+      }
+      dateStats.error += 1;
+      if (dateMessages.length < 5) {
+        dateMessages.push(`${idx + 1}行目: ${parsed.error || '変換できません'}`);
+      }
+      return parsed.value;
+    });
+    const { lines: maskedOut, maskStats } = applyMaskToLines(outLines, maskOps);
+    const output = maskedOut.join('\n');
+    return {
+      output,
+      inputLines: rawLines.length,
+      outputLines: maskedOut.length,
+      lineCountMatch: rawLines.length === maskedOut.length,
+      changeCount: countChanges(normalizedInput, output),
+      preset,
+      opts,
+      mode,
+      maskStats,
+      dateStats,
+      dateMessages,
       ...lineOpsBase,
     };
   }

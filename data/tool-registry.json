@@ -128,9 +128,9 @@
       "inNav": true,
       "navOrder": 9,
       "name": "全角半角・テキスト整え",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "stage": "beta",
-      "statusNote": "500行cap · 行整理 · 伏字3種 · sql_in/tab_to_comma · T03"
+      "statusNote": "500行cap · 行整理 · 伏字3種 · 日付統一 · sql_in/tab_to_comma · T03"
     },
     "table-conv": {
       "file": "table-conv.html",
@@ -169,18 +169,18 @@
       "name": "スクショ機密消し",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ · Canvas非送信 · マニュアル向け · T09b"
+      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ/注釈（矢印·枠） · Canvas非送信 · マニュアル向け · T09b"
     },
     "image-trim": {
       "file": "image-trim.html",
-      "conceptName": "画像トリム",
-      "productName": "SUGUDASU 画像トリム",
-      "navLabel": "画像トリム",
+      "conceptName": "画像切り出し",
+      "productName": "SUGUDASU 画像切り出し",
+      "navLabel": "画像切り出し",
       "navIcon": "✂️",
       "inNav": true,
       "navOrder": 10.6,
       "name": "指定サイズ画像切出し",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "stage": "alpha",
       "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V"
     },
@@ -335,10 +335,10 @@
       "navIcon": "🔎",
       "inNav": true,
       "navOrder": 16.7,
-      "name": "差分チェック（AIリライト監査）",
+      "name": "差分チェック",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "危険差分優先表示 · 非送信 · 保存なし · コピー/印刷"
+      "statusNote": "危険な変更の優先表示 · 非送信 · 保存なし · コピー/印刷"
     },
     "time-calc": {
       "file": "time-calc.html",
@@ -349,9 +349,9 @@
       "inNav": true,
       "navOrder": 16.8,
       "name": "時給計算（勤務時間合計 + 時給換算）",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "stage": "alpha",
-      "statusNote": "h:mm合計 · 時給換算 · 単機能 · 非送信 · 給与計算ではない"
+      "statusNote": "テンキー正規（コロン不要）· 候補↺ · 10進小数 · 時給換算 · 給与計算ではない"
     },
     "font-converter": {
       "file": "font-converter.html",

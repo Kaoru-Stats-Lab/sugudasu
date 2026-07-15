@@ -19,7 +19,7 @@
     <meta name="twitter:description" content="社内規程で外部変換サイトに貼れない名簿も、ブラウザ内だけで安全に。500行 · 行数チェック付き。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"社内規程で無料の全角半角変換サイトが禁止でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"当社サーバーへテキストを送りません。処理はブラウザ内のみです。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"Excel の関数でもできますか？","acceptedAnswer":{"@type":"Answer","text":"ASC/TRIM等でシート内なら可能です。本ツールはExcelの代替ではなく、列を別画面へ貼る途中での行ズレ・変換ミスを減らすためのものです。毎週同じ補助列を回すならExcelテンプレの方が向くことが多いです。"}},{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"改行をカンマ区切りの1行にできますか？","acceptedAnswer":{"@type":"Answer","text":"はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。行数が変わるためコピー前に行数バッジを確認してください。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてブラウザ内だけで処理されます。オフラインでも動作し、永続保存もしません。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"社内規程で無料の全角半角変換サイトが禁止でも使えますか？","acceptedAnswer":{"@type":"Answer","text":"当社サーバーへテキストを送りません。処理はブラウザ内のみです。社内規程の最終判断は貴社の情報セキュリティ担当にご確認ください。"}},{"@type":"Question","name":"Excel の関数でもできますか？","acceptedAnswer":{"@type":"Answer","text":"ASC/TRIM等でシート内なら可能です。本ツールはExcelの代替ではなく、列を別画面へ貼る途中での行ズレ・変換ミスを減らすためのものです。毎週同じ補助列を回すならExcelテンプレの方が向くことが多いです。"}},{"@type":"Question","name":"Excelに貼り戻したら行が上下にズレました","acceptedAnswer":{"@type":"Answer","text":"セル内改行（Alt+Enter）や、Excel側のフィルター・非表示行が原因のことが多いです。本ツールはデフォルトで行数を変えませんが、貼り付け先もご確認ください。"}},{"@type":"Question","name":"先頭ゼロ付きコード（00123）は消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。Excelのように数値型に変換せず、文字列のまま処理します。"}},{"@type":"Question","name":"カタカナの伸ばし棒（ー）がハイフンになりますか？","acceptedAnswer":{"@type":"Answer","text":"なりません。カタカナ直後の長音「ー」は保護し、型番などのハイフン類だけを統一します（CSV名簿プリセットでONの場合）。"}},{"@type":"Question","name":"変換ボタンを押し忘れて古いデータをコピーしませんか？","acceptedAnswer":{"@type":"Answer","text":"「コピー」ボタンは押した瞬間に最新設定で再変換してからクリップボードへ保存します。入力欄の生テキストはコピーしません。"}},{"@type":"Question","name":"改行をカンマ区切りの1行にできますか？","acceptedAnswer":{"@type":"Answer","text":"はい。「改行→カンマ」プリセットで、縦並びのリストをカンマ区切りの1行にまとめられます。行数が変わるためコピー前に行数バッジを確認してください。"}},{"@type":"Question","name":"日付のバラバラ表記を揃えられますか？","acceptedAnswer":{"@type":"Answer","text":"はい。「日付統一」プリセットで YYYY/MM/DD（ゼロ埋め）に揃えます。スラッシュ・ハイフン・ドット・年月日、および令和に対応します。Excelのシリアル値（数字だけ）や平成以前は変換せず残します。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。すべてブラウザ内だけで処理されます。オフラインでも動作し、永続保存もしません。"}},{"@type":"Question","name":"Mac から Windows へコピペすると文字化けしますか？","acceptedAnswer":{"@type":"Answer","text":"化けた文字（� や ?? など）を検知した場合、画面上部に警告を表示します。元のテキストを確認してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 全角半角整え" data-sg-subtitle="500行まで · 外部送信ゼロ" data-sg-tool-id="normalize"></div>
@@ -74,6 +74,7 @@
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="sql_in" aria-selected="false">SQL IN</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="tab_to_comma" aria-selected="false">タブ→カンマ</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-segment-value="name_trim" aria-selected="false">姓名スペース</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-segment-value="date_unify" aria-selected="false">日付統一</button>
             </div>
             <details class="border border-violet-200 rounded-lg bg-violet-50/40" id="mask-preset-panel">
                 <summary class="cursor-pointer select-none text-xs font-bold text-violet-900 px-3 py-2">伏字（メール · 電話 · 氏名）</summary>
@@ -168,6 +169,7 @@
                 <div id="line-match" class="norm-verify-panel__count sg-line-match sg-line-match--ok" role="status"></div>
                 <p id="line-ops-banner" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
                 <p id="mask-banner" class="hidden text-[11px] font-semibold text-violet-900 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
+                <p id="date-unify-banner" class="hidden text-[11px] font-semibold text-sky-900 bg-sky-50 border border-sky-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
                 <p id="mask-tool-link" class="hidden text-[11px] text-violet-800 leading-relaxed">画像・スクショの機密は <a href="mask.html" class="font-semibold underline">SUGUDASU マスク</a>（ぼかし · 黒塗り · 非送信）で隠せます。テキスト伏字と併用してください。</p>
                 <p id="shape-hint" class="norm-verify-panel__shape-hint hidden">縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。</p>
                 <p id="change-summary" class="norm-verify-panel__changes hidden"></p>
@@ -334,6 +336,12 @@
                 </div>
             </details>
             <details class="sg-faq">
+                <summary>日付のバラバラ表記を揃えられますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。「日付統一」プリセットで <code>YYYY/MM/DD</code>（ゼロ埋め）に揃えます。<code>/</code>・<code>-</code>・<code>.</code>・年月日、および令和（R8・令和8年…）に対応します。Excelのシリアル値（数字だけ）や平成以前は変換せず、元の行のまま残します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
                 <summary>並び替えで「10」が「2」より前に来ます</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>デフォルトは<strong>文字列としての並び替え</strong>です。「1」「10」「2」の順になります。数値の大小順にしたい場合は「行の整理」で<strong>数値として</strong>にチェックを入れてください。全角数字や先頭スペースがある行は意図しない位置になることがあります。</p>
@@ -387,6 +395,7 @@ import {
   buildPreviewDiff,
   highlightLineDiffHtml,
   hasMaskOps,
+  formatDateUnifyBanner,
 } from '../assets/text-normalize.js';
 import { scanPasteWarnings } from '../assets/sg-paste-scan.js';
 import { readTestDataHandoff, clearTestDataHandoff } from '../assets/test-data-handoff.js';
@@ -399,6 +408,7 @@ const PRESET_HINTS = {
   sql_in: '<strong>SQL IN句:</strong> 改行・タブ区切りを <code>\'id1\', \'id2\'</code> に。<strong>本番IDリスト向け · 行数が変わります。</strong>',
   tab_to_comma: '<strong>タブ→カンマ:</strong> Excel 横コピーのタブ区切りをカンマ1行に（クォートなし）。<strong>行数が変わります。</strong>',
   name_trim: '<strong>姓名スペース:</strong> 各行の全角・半角スペースをすべて削除して密着します。',
+  date_unify: '<strong>日付統一:</strong> 各行を <code>YYYY/MM/DD</code> に揃えます（ゼロ埋め）。令和・2桁年・年なしは補完します。数字のみのシリアルは変換しません。',
 };
 
 const MASK_HINT_PARTS = {
@@ -422,6 +432,7 @@ const shapeHintEl = document.getElementById('shape-hint');
 const lineMatchEl = document.getElementById('line-match');
 const lineOpsBannerEl = document.getElementById('line-ops-banner');
 const maskBannerEl = document.getElementById('mask-banner');
+const dateUnifyBannerEl = document.getElementById('date-unify-banner');
 const maskToolLinkEl = document.getElementById('mask-tool-link');
 const changeSummaryEl = document.getElementById('change-summary');
 const previewBeforeEl = document.getElementById('preview-before');
@@ -586,6 +597,8 @@ function hideVerifyPanel() {
   lineOpsBannerEl.textContent = '';
   maskBannerEl.classList.add('hidden');
   maskBannerEl.textContent = '';
+  dateUnifyBannerEl.classList.add('hidden');
+  dateUnifyBannerEl.textContent = '';
   maskToolLinkEl.classList.add('hidden');
   changeSummaryEl.classList.add('hidden');
   previewBeforeEl.textContent = '';
@@ -677,6 +690,14 @@ function runTransform(options = {}) {
   } else {
     maskBannerEl.classList.add('hidden');
     maskBannerEl.textContent = '';
+  }
+  const dateBannerText = formatDateUnifyBanner(result);
+  if (dateBannerText) {
+    dateUnifyBannerEl.textContent = dateBannerText;
+    dateUnifyBannerEl.classList.remove('hidden');
+  } else {
+    dateUnifyBannerEl.classList.add('hidden');
+    dateUnifyBannerEl.textContent = '';
   }
   maskToolLinkEl.classList.toggle('hidden', !hasMaskOps(getMaskOps()));
   if (!options.preserveCopyGate) {
@@ -809,7 +830,7 @@ btnSwap.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   presetController = window.SUGUDASU_SEGMENT.mount({
     segmentId: 'preset-segment',
-    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'sql_in', 'tab_to_comma', 'name_trim'],
+    order: ['ec_form', 'csv_roster', 'fullwidth_ascii', 'comma_join', 'sql_in', 'tab_to_comma', 'name_trim', 'date_unify'],
     initial: 'ec_form',
     hintId: 'preset-hint',
     hints: PRESET_HINTS,
@@ -821,6 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sql_in: 'sg-segment--mode-local',
       tab_to_comma: 'sg-segment--mode-local',
       name_trim: 'sg-segment--mode-label',
+      date_unify: 'sg-segment--mode-label',
     },
     onChange: (value) => {
       activePreset = value;

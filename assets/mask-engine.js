@@ -264,4 +264,205 @@ export function formatBytes(n) {
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+/** 注釈（固定色 · 白フチ） */
+export const ANNOTATE_MAGENTA = '#e11d8f';
+export const ANNOTATE_WHITE = '#ffffff';
+export const ANNOTATE_STROKE_INNER = 4;
+export const ANNOTATE_STROKE_OUTER = 8;
+export const ANNOTATE_HIT_PAD = 12;
+export const ANNOTATE_HANDLE_R = 10;
+
+/**
+ * @typedef {{ id: string, type: 'arrow', x0: number, y0: number, x1: number, y1: number }} ArrowShape
+ * @typedef {{ id: string, type: 'rect', x: number, y: number, w: number, h: number }} RectShape
+ * @typedef {ArrowShape|RectShape} AnnotateShape
+ */
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x0 @param {number} y0 @param {number} x1 @param {number} y1
+ * @param {boolean} [selected]
+ */
+export function drawArrow(ctx, x0, y0, x1, y1, selected = false) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const head = Math.min(22, Math.max(12, len * 0.22));
+  const hx = x1 - ux * head;
+  const hy = y1 - uy * head;
+  const px = -uy;
+  const py = ux;
+
+  const strokeOnce = (color, width) => {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(hx, hy);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(hx + px * head * 0.45, hy + py * head * 0.45);
+    ctx.lineTo(hx - px * head * 0.45, hy - py * head * 0.45);
+    ctx.closePath();
+    ctx.fill();
+  };
+
+  ctx.save();
+  strokeOnce(ANNOTATE_WHITE, ANNOTATE_STROKE_OUTER);
+  strokeOnce(ANNOTATE_MAGENTA, ANNOTATE_STROKE_INNER);
+  if (selected) {
+    ctx.fillStyle = ANNOTATE_WHITE;
+    ctx.strokeStyle = ANNOTATE_MAGENTA;
+    ctx.lineWidth = 2;
+    for (const [x, y] of [[x0, y0], [x1, y1]]) {
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x @param {number} y @param {number} w @param {number} h
+ * @param {boolean} [selected]
+ */
+export function drawRoundedFrame(ctx, x, y, w, h, selected = false) {
+  const r = Math.min(12, Math.max(4, Math.min(w, h) * 0.12));
+  const strokeOnce = (color, width) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+      ctx.roundRect(x, y, w, h, r);
+    } else {
+      ctx.rect(x, y, w, h);
+    }
+    ctx.stroke();
+  };
+  ctx.save();
+  ctx.lineJoin = 'round';
+  strokeOnce(ANNOTATE_WHITE, ANNOTATE_STROKE_OUTER);
+  strokeOnce(ANNOTATE_MAGENTA, ANNOTATE_STROKE_INNER);
+  if (selected) {
+    ctx.fillStyle = ANNOTATE_WHITE;
+    ctx.strokeStyle = ANNOTATE_MAGENTA;
+    ctx.lineWidth = 2;
+    for (const [cx, cy] of [
+      [x, y],
+      [x + w, y],
+      [x, y + h],
+      [x + w, y + h],
+    ]) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+/** @param {AnnotateShape} shape @param {boolean} [selected] */
+export function drawAnnotateShape(ctx, shape, selected = false) {
+  if (shape.type === 'arrow') {
+    drawArrow(ctx, shape.x0, shape.y0, shape.x1, shape.y1, selected);
+  } else {
+    drawRoundedFrame(ctx, shape.x, shape.y, shape.w, shape.h, selected);
+  }
+}
+
+function distToSegment(px, py, x0, y0, x1, y1) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const len2 = dx * dx + dy * dy;
+  if (len2 === 0) return Math.hypot(px - x0, py - y0);
+  let t = ((px - x0) * dx + (py - y0) * dy) / len2;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (x0 + t * dx), py - (y0 + t * dy));
+}
+
+/** @param {ArrowShape} shape */
+export function hitTestArrow(shape, px, py, pad = ANNOTATE_HIT_PAD) {
+  if (Math.hypot(px - shape.x0, py - shape.y0) <= ANNOTATE_HANDLE_R) return 'start';
+  if (Math.hypot(px - shape.x1, py - shape.y1) <= ANNOTATE_HANDLE_R) return 'end';
+  if (distToSegment(px, py, shape.x0, shape.y0, shape.x1, shape.y1) <= pad) return 'body';
+  return null;
+}
+
+/** @param {RectShape} shape */
+export function hitTestRoundedFrame(shape, px, py, pad = ANNOTATE_HIT_PAD) {
+  const { x, y, w, h } = shape;
+  const corners = [
+    ['nw', x, y],
+    ['ne', x + w, y],
+    ['sw', x, y + h],
+    ['se', x + w, y + h],
+  ];
+  for (const [name, cx, cy] of corners) {
+    if (Math.hypot(px - cx, py - cy) <= ANNOTATE_HANDLE_R) return name;
+  }
+  const nearLeft = Math.abs(px - x) <= pad && py >= y - pad && py <= y + h + pad;
+  const nearRight = Math.abs(px - (x + w)) <= pad && py >= y - pad && py <= y + h + pad;
+  const nearTop = Math.abs(py - y) <= pad && px >= x - pad && px <= x + w + pad;
+  const nearBottom = Math.abs(py - (y + h)) <= pad && px >= x - pad && px <= x + w + pad;
+  const inside = px >= x && px <= x + w && py >= y && py <= y + h;
+  const inRim = inside && (nearLeft || nearRight || nearTop || nearBottom
+    || px <= x + pad || px >= x + w - pad || py <= y + pad || py >= y + h - pad);
+  if (nearLeft || nearRight || nearTop || nearBottom || inRim) return 'body';
+  return null;
+}
+
+/**
+ * @param {AnnotateShape[]} shapes
+ * @param {number} px @param {number} py
+ * @returns {{ shape: AnnotateShape, handle: string }|null}
+ */
+export function hitTestShapes(shapes, px, py) {
+  for (let i = shapes.length - 1; i >= 0; i -= 1) {
+    const s = shapes[i];
+    const handle = s.type === 'arrow' ? hitTestArrow(s, px, py) : hitTestRoundedFrame(s, px, py);
+    if (handle) return { shape: s, handle };
+  }
+  return null;
+}
+
+/**
+ * @param {HTMLCanvasElement} canvas
+ * @param {AnnotateShape[]} shapes
+ */
+export function snapshotState(canvas, shapes) {
+  return {
+    png: snapshotCanvas(canvas),
+    shapesJson: JSON.stringify(shapes || []),
+  };
+}
+
+/**
+ * @param {HTMLCanvasElement} canvas
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ png?: string, shapesJson?: string }|string} entry
+ */
+export async function restoreState(canvas, ctx, entry) {
+  const png = typeof entry === 'string' ? entry : entry.png;
+  const shapesJson = typeof entry === 'string' ? '[]' : (entry.shapesJson || '[]');
+  await restoreSnapshot(canvas, ctx, png);
+  let shapes = [];
+  try {
+    shapes = JSON.parse(shapesJson);
+    if (!Array.isArray(shapes)) shapes = [];
+  } catch {
+    shapes = [];
+  }
+  return shapes;
+}
+
 export { ACCEPT_EXT };
