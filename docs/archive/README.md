@@ -23,6 +23,7 @@
 |----------|----------|----------|
 | [`DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md) | Core UI Refresh（2026-07-03）前の幅・ヘッダー・ガイド記事指定 | `PAGE_LAYOUT_SELECTOR` · `UI_LAYOUT_REFRESH_GUIDE` |
 | [`UI_MODE_SWITCH_DESIGN_PROPOSAL.md`](UI_MODE_SWITCH_DESIGN_PROPOSAL.md) | モード切替 PoC 提案 — `DESIGN_GUIDELINE` §3.3 に統合済（2026-06-19） | `DESIGN_GUIDELINE.md` §3.2–3.3 · `sugudasu.css` `.sg-segment*` |
+| [`cursor-specs-20260715/`](cursor-specs-20260715/) | 2026-07-15 実装済み Cursor 向け仕様書（time-calc v2 · 日付統一 · マスク注釈 · 画像切出し） | `TIME_CALC_TOOL_SPEC` · `NORMALIZE_TEXT_TOOL_SPEC` · `MASK_TOOL_SPEC` · `image-trim` |
 
 ---
 
