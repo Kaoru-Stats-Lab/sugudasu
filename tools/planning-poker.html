@@ -147,7 +147,36 @@
             <details class="sg-faq">
                 <summary>見積会議とは何ですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>見積会議は、複数人で工数や難易度を見積もり、認識をすり合わせる無料ツールです。カードを同時公開することで、先に発言した人の数字に引っ張られにくくなります。</p>
+                    <p>複数人で工数や難易度を見積もり、<strong>認識のズレを短時間で見つける</strong>ための無料ツールです。正解の数字を当てるAIではありません。カードを一気に公開（Reveal）することで、先に喋った人の数字に引っ張られにくくなります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>どう使えばいいですか？（いまの基本手順）</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li>Story（議題）と参加者名を入れ、「あなたの名前」（司会）を設定して開始します。</li>
+                        <li>会議ではこの画面を共有します。左の<strong>参加者名を選び</strong>、口頭やチャットで聞いた点数をカードで入力します（Reveal前は点数は出ず「投票済み」だけ見えます）。</li>
+                        <li>全員分がそろったら <strong>Reveal（同時公開）</strong>。平均・中央値・最小/最大が出ます。ずれが大きい人の理由を書いてから、必要なら再投票・採用ポイント・CSV出力へ進みます。</li>
+                    </ol>
+                    <p>1人だけでも練習できます。複数人でも<strong>今は端末を分けず、司会の1画面</strong>で進める想定です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>みんな別々のPC／スマホから投票できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>まだできません</strong>（検討中です）。無料版はブラウザ1つで完結します。Zoom / Meet / Teams などで画面を共有し、司会が参加者を切り替えて入力してください。口頭でもチャットで点数を送ってもらっても大丈夫です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>入力中にほかの人の点数は見えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>Reveal前は<strong>点数は表示しません</strong>（「投票済み / 未投票」のみ）。先に数字が見えてしまうとアンカリングが起きるためです。公開は Reveal ボタン（または Enter）のタイミングだけです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>「あなたの名前」は何ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>この画面を操作する<strong>司会（ファシリテータ）</strong>の名前です。参加者一覧にも同じ名前を入れてください。開始後は左の一覧から入力対象を切り替え、全員分を代行入力できます。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -159,25 +188,19 @@
             <details class="sg-faq">
                 <summary>登録は必要ですか？無料ですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>登録不要・無料です。ブラウザを開いて Story と参加者を入力すれば、すぐに開始できます。</p>
+                    <p>登録不要・無料です。ブラウザを開いて Story と参加者を入力すれば、すぐに開始できます。ログインやアカウント作成はありません。</p>
                 </div>
             </details>
             <details class="sg-faq">
                 <summary>データは外部へ送信されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>この見積会議ツールはブラウザ内で処理し、入力内容をサーバーへ送信しません。ページを閉じると状態は保持されません。</p>
+                    <p>いいえ。入力内容は端末のブラウザ内だけで処理し、SUGUDASUのサーバーへ送信しません。タブを閉じると状態は消えます（クラウドに会議ログは残りません）。</p>
                 </div>
             </details>
             <details class="sg-faq">
                 <summary>なぜ同時公開（Reveal）するのですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>先に数字を出した人へ全員が寄ってしまう「アンカリング効果」を避けるためです。同時公開により、チーム内の認識差を発見しやすくなります。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
-                <summary>みんな別々の端末から投票できますか？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いまの無料版は<strong>1ブラウザ</strong>です。画面共有しながら司会が参加者名を選び、口頭やチャットで受けた点数をカードで入力してから Reveal してください。別端末の同時投票は検討中です。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -195,13 +218,13 @@
             <details class="sg-faq">
                 <summary>Jira や Backlog と連携できますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>現時点では連携していません。まずは会議そのものを短くする体験を優先しています。</p>
+                    <p>現時点では連携していません。まずは会議そのものを短くする体験を優先しています。結果は CSV で書き出せます。</p>
                 </div>
             </details>
             <details class="sg-faq">
                 <summary>スマートフォンやオンライン会議でも使えますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>スマートフォンでも利用できます。Zoom や Google Meet などの画面共有にも対応できますが、比較しながら進行する用途では PC / タブレット推奨です。</p>
+                    <p>はい。司会のPCで開き、Zoom / Google Meet / Teams などで画面共有するのがおすすめです。参加者は手元端末から投票するのではなく、点数を口頭またはチャットで司会に伝えます。進行しながら比較する場合は PC / タブレット推奨です。</p>
                 </div>
             </details>
             <details class="sg-faq">
