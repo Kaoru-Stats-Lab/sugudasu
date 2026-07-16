@@ -818,6 +818,24 @@
 
 ---
 
+## DEPLOY-20260716-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `core` |
+| **reason** | AdSense 監査向け /guides 加筆（5本）＋`/guides` 索引レイアウト幅調整 |
+| **change_summary** | `tools/guides/{planning-poker-estimation,pdf-image-masking-security,browser-data-privacy,client-invoice-dispute-prevention,event-day-timeline-recovery}.html` · `tools/guides.html` · `assets/sugudasu.css` · `docs/notes/ADSENSE_LOW_VALUE_CONTENT_AUDIT_20260715.md` |
+| **local_build** | `pass`（terminal 2 build log） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （要 Dashboard 照合） |
+| **gates** | P1–P7（台帳追記は後追い。以後は deploy 前に必須） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `0776420`（`8a57b6f..0776420` · git push origin main） |
+| **smoke** | pending — `https://sugudasu.com/guides` の cards 幅 / 加筆本文の反映確認待ち |
+
 ## 変更履歴
 
 | 日付 | 内容 |
