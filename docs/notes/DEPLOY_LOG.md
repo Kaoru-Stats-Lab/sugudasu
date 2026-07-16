@@ -836,10 +836,32 @@
 | **cf_deployment_id** | `0776420`（`8a57b6f..0776420` · git push origin main） |
 | **smoke** | pending — `https://sugudasu.com/guides` の cards 幅 / 加筆本文の反映確認待ち |
 
+---
+
+## DEPLOY-20260716-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | ユーザー向け文言の slug/開発者口調除去（FAQ · hub · statements · Sync LP 一部）· USER_FACING 指針追加（提督「Commit&Push」） |
+| **change_summary** | hub/fair-draw/statements/font-converter/test-data/qr-reader/diff · sync-index/timeline LP·app · prize-law-patterns · `USER_FACING_COPY_VISIBILITY.md` · GUIDES/DESIGN/.cursorrules リンク |
+| **local_build** | `pass`（`release:pages:free` · budget 33/450） |
+| **deploy_count_today** | 2（P7 override · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「たまっているものをCommit&Push」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-16 | 002 approved（ユーザー向け slug 口調除去 · Commit&Push） |
+| 2026-07-16 | 001 executed（0776420 · guides 加筆 · /guides 幅） |
 | 2026-07-15 | 005 executed（5984fbb · AdSense guides · contact · P7 override） |
 | 2026-07-15 | 004 executed（3c149b5 · 見積会議 FAQ/updates · 司会代行 · P7 override） |
 | 2026-07-15 | 003 executed（99c2124 · roadmap 文字注釈検討中 · image-trim 対象外 · P7 override） |

@@ -17,7 +17,7 @@
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"コア無料版（sugudasu.com）との違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"1人で進行表を組むコア無料版はデータ非送信です。Sync有料版は共有URLを発行し、チーム間で進行表共有とリアルタイム共有を可能にします。"}},{"@type":"Question","name":"送信した進行表データはいつまでサーバーに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"永続保存はされません。イベントごとに設定された期限（retain_until）経過後、バックアップ含め物理削除され、復旧不能になります。"}},{"@type":"Question","name":"イベント本番中にクレジットカードで支払う必要がありますか？","acceptedAnswer":{"@type":"Answer","text":"不要です。本番中の決済トラブルを防ぐため、事前チケット購入制を採用しています。当日はチケットを1タップ消費するだけで同期を開始できます。"}},{"@type":"Question","name":"現在のリアルタイム同期機能（S2）の状況を教えてください。","acceptedAnswer":{"@type":"Answer","text":"最新の版バナーを検知して複数端末を一斉更新するリアルタイム同期機能（S2）は、現在設計中です。現在は利用登録と閲覧URL発行を行うS1機能の稼働準備を進めています。"}},{"@type":"Question","name":"URLを知っていれば誰でも見られる仕様で、版管理は安全ですか？","acceptedAnswer":{"@type":"Answer","text":"共有URLは複雑なIDで保護されますが、URLの漏洩管理はユーザーの自己責任です。なお、実名データの暗号化通信の詳細は現在法務確認中です。"}}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"コア無料版（sugudasu.com）との違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"1人で進行表を組むコア無料版はデータ非送信です。Sync有料版は共有URLを発行し、チーム間で進行表共有とリアルタイム共有を可能にします。"}},{"@type":"Question","name":"送信した進行表データはいつまでサーバーに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"永続保存はされません。イベントごとに決めた保持期限を過ぎると削除され、復旧できません。"}},{"@type":"Question","name":"イベント本番中にクレジットカードで支払う必要がありますか？","acceptedAnswer":{"@type":"Answer","text":"不要です。本番中の決済トラブルを防ぐため、事前チケット購入制を採用しています。当日はチケットを1タップ消費するだけで同期を開始できます。"}},{"@type":"Question","name":"リアルタイム同期はいつ使えますか？","acceptedAnswer":{"@type":"Answer","text":"複数端末へのリアルタイム反映は準備中です。いまは利用登録と閲覧URL発行の準備を進めています。"}},{"@type":"Question","name":"URLを知っていれば誰でも見られる仕様で、版管理は安全ですか？","acceptedAnswer":{"@type":"Answer","text":"共有URLは複雑なIDで保護されますが、URLの漏洩管理はユーザーの自己責任です。なお、実名データの暗号化通信の詳細は現在法務確認中です。"}}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SUGUDASU Sync","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"500","priceCurrency":"JPY","description":"イベント単位の料金は確定前の目安です（要確認）"}}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
@@ -33,7 +33,7 @@
     <!-- Hero + デモ -->
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center" aria-labelledby="stlp-hero-h1">
         <div class="space-y-4">
-            <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S2 · 同期機能は設計中</p>
+            <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">同期機能は準備中</p>
             <h1 id="stlp-hero-h1" class="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">本番前の変更を、全員の進行表に。</h1>
             <p class="text-sm text-slate-600 leading-relaxed">エクセル進行表の「どれが最新？」を URL1本の<strong>進行表共有</strong>で解決。分刻みの<strong>進行表の当日変更</strong>に追従する多端末同期システム。</p>
             <p class="text-[11px] text-slate-500">イベント進行管理 · 多端末リアルタイム共有（SUGUDASU Sync）</p>
@@ -117,10 +117,10 @@
                     <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">データ送信</td><td class="p-3">なし（ブラウザ内完結）</td><td class="p-3">あり（同期バッファへ一時送信）</td></tr>
                     <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">共有方法</td><td class="p-3">プレーン / TSV のコピー</td><td class="p-3">共有 URL（パスワードレス閲覧）</td></tr>
                     <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">版管理</td><td class="p-3">手動（コピー版を自己管理）</td><td class="p-3">サーバー側で最新版を提示</td></tr>
-                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">当日±5分</td><td class="p-3">連動再計算（自端末のみ）</td><td class="p-3">連動再計算（全端末へ反映 · S2）</td></tr>
-                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">同時編集</td><td class="p-3">不可（1端末）</td><td class="p-3">複数スタッフ編集（S2 設計中）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">当日±5分</td><td class="p-3">連動再計算（自端末のみ）</td><td class="p-3">連動再計算（全端末へ反映 · 準備中）</td></tr>
+                    <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">同時編集</td><td class="p-3">不可（1端末）</td><td class="p-3">複数スタッフ編集（準備中）</td></tr>
                     <tr class="border-b border-slate-100"><td class="p-3 font-semibold text-slate-800">接続端末数</td><td class="p-3">—（ローカルのみ）</td><td class="p-3">プラン別上限（要確認）</td></tr>
-                    <tr><td class="p-3 font-semibold text-slate-800">データ保持</td><td class="p-3">ページを閉じると消える</td><td class="p-3">短期パージ（retain_until 後に削除）</td></tr>
+                    <tr><td class="p-3 font-semibold text-slate-800">データ保持</td><td class="p-3">ページを閉じると消える</td><td class="p-3">短期間のみ保持し、期限後に削除</td></tr>
                 </tbody>
             </table>
         </div>
@@ -135,18 +135,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="sg-card p-5 space-y-2">
                 <h3 class="text-sm font-bold text-slate-900">短期バッファによる自動消去</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">進行表データは永続保存せず短期バッファとして処理。期限（retain_until）経過後はサーバーから物理削除。</p>
+                <p class="text-xs text-slate-600 leading-relaxed">進行表データは永続保存せず、短期間だけ保持します。設定した期限を過ぎるとサーバーから削除され、復旧できません。</p>
                 <p class="text-[10px] text-slate-500">※消去後の復旧は不可</p>
             </div>
             <div class="sg-card p-5 space-y-2">
-                <h3 class="text-sm font-bold text-slate-900">行レベルセキュリティ（RLS）</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">Supabase の RLS を採用。他アカウントからの不正アクセスを構造的に隔離。</p>
+                <h3 class="text-sm font-bold text-slate-900">アカウントごとのデータ隔離</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">他のアカウントから進行表を読めないよう、行単位のアクセス制御で隔離しています。</p>
                 <p class="text-[10px] text-slate-500">※安全性を保証するものではありません</p>
             </div>
             <div class="sg-card p-5 space-y-2">
                 <h3 class="text-sm font-bold text-slate-900">実名データの送信回避設計</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">サーバー側は ID と属性（時間等）の処理に特化。実名の他端末表示・暗号化連携は設計中。</p>
-                <p class="text-[10px] text-slate-500">※E2EE 等の詳細は要確認</p>
+                <p class="text-xs text-slate-600 leading-relaxed">サーバー側は ID と時刻などの属性処理が中心です。実名の他端末表示や暗号化連携は準備中です。</p>
+                <p class="text-[10px] text-slate-500">※詳細は要確認</p>
             </div>
         </div>
     </section>
@@ -201,7 +201,7 @@
             <details class="sg-faq">
                 <summary>送信した進行表データはいつまでサーバーに保存されますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>永続保存はされません。イベントごとの期限（retain_until）経過後、バックアップ含め物理削除され、復旧不能になります。</p>
+                    <p>永続保存はされません。イベントごとに決めた保持期限を過ぎると削除され、復旧できません。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -211,9 +211,9 @@
                 </div>
             </details>
             <details class="sg-faq">
-                <summary>現在のリアルタイム同期機能（S2）の状況を教えてください。</summary>
+                <summary>リアルタイム同期はいつ使えますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>リアルタイム同期（S2）は<strong class="text-violet-700">設計中</strong>です。利用登録と閲覧 URL 発行を行う S1 の稼働準備を進めています。</p>
+                    <p>複数端末へのリアルタイム反映は<strong class="text-violet-700">準備中</strong>です。いまは利用登録と閲覧 URL 発行の準備を進めています。</p>
                 </div>
             </details>
             <details class="sg-faq">

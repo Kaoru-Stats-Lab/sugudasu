@@ -19,7 +19,7 @@
     <meta name="twitter:description" content="幹事・マーケ向け。景表法一次チェック＋Web Crypto公平抽選。統制システムではなく、説明用PDFを渡すツール。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"内部監査向けの統制システムですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。社内統制・操作ログ・権限管理を備えた懸賞抽選システムではありません。幹事・マーケ向けの無料ブラウザツールで、抽選結果と説明用の監査PDF・JSONをローカル生成します。名簿は外部に送信しません。SUGUDASU全体の設計原則は statements ページ（SUGUDASUの約束）にまとめています。"}},{"@type":"Question","name":"内部監査がいなくても使う意味はありますか？","acceptedAnswer":{"@type":"Answer","text":"あります。監査人が横にいない懸賞でも、景品が大きい・人数が多い・前回揉めた・SNS懸賞など説明責任は残ります。Excelより「いつ・どの名簿で・どう決めたか」を1セットで残し、あとから上司・法務・問い合わせ先への説明コストを下げます。小規模の気軽な抽選なら表計算でも十分な場合もあります。"}},{"@type":"Question","name":"社内イベントだけでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Step 0で社内ビンゴ・慰労会を選ぶと、景表法射程外になりやすい旨を表示しつつ、社外公開リスクをチェックできます。公平抽選は社内外どちらでも利用可能です。"}},{"@type":"Question","name":"このツールで「合法」「違法」と判定されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ルール表と数値による一次スクリーニングのみです。要確認・リスク高・専門家確認推奨の表現に留めます。"}},{"@type":"Question","name":"ChatGPTに景表法を聞く前に使うと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"LLMは断定・ハルシネーションのリスクがあります。本ツールは告示ベースのルール表で一次スクリーニングし、証跡PDFを残せます。法的助言の代替にはなりません。"}},{"@type":"Question","name":"Xでフォロー・リプライ抽選するとき、応募者のIDはどう集めますか？","acceptedAnswer":{"@type":"Answer","text":"本ツールは応募者の取得はしません。名簿が手元にある前提で1行1名（多くはXの@ユーザー名）を貼り付けて抽選します。小規模懸賞では返信欄から@を手動コピーする幹事が多く、件数が増えると応募管理ツールやAPI連携に寄ります。X公式には返信者一覧のCSVエクスポートはほぼありません。フォロー確認まで手動だと負担が大きいです。fair-drawは名簿作成の次の段階（公平シャッフルと監査PDF）を担当します。"}},{"@type":"Question","name":"Excelなど表計算の乱数で抽選するのと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"表計算の乱数は再計算で変わり得て、いつどの乱数で決めたか説明しづらいことがあります。本ツールは抽選を1回確定し、方式・シード・名簿の指紋・当選者を監査PDFに残します。表計算が悪いのではなく、手軽な試算と証跡付き本番抽選で役割が違います。内部監査を黙らせる魔法ではなく、説明の会話を短くする材料です。"}},{"@type":"Question","name":"本当に公平に抽選できていますか？","acceptedAnswer":{"@type":"Answer","text":"名簿を1回シャッフルして当選者を選びます。方式はFisher-Yatesシャッフル、乱数はWeb Cryptoです。名簿は外部に送信しません。抽選は1回確定し、シード・名簿指紋・当選者を監査PDFに残せます。"}},{"@type":"Question","name":"シード（記録番号）とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"今回の抽選の記録番号です。同じ名簿・同じシードなら同じ結果になります。名簿の指紋とセットで、説明用の材料としてPDFに残します。"}},{"@type":"Question","name":"名簿の指紋（SHA-256）って何ですか？","acceptedAnswer":{"@type":"Answer","text":"参加者リスト全体から作った確認用の番号です。1行でも書き換えると番号が変わります。当選後に名簿だけ直した疑いを、PDFの記録と突き合わせて話す目安になります。抽選前の名簿が正しかったかまでは、このPDFだけでは分かりません。技術名はSHA-256です。"}},{"@type":"Question","name":"監査PDFには何が載りますか？","acceptedAnswer":{"@type":"Answer","text":"実施日時・景品名・金額・当選人数・判定結果・抽選方式・シード・名簿の指紋・当選者名など。方式・記録番号・指紋・当選者を1セットにした説明用パッケージです。ローカル生成で外部送信はありません。法的断定や統制ログの代替にはなりません。"}},{"@type":"Question","name":"内部監査の人が横で見ています。和らげる機能はありますか？","acceptedAnswer":{"@type":"Answer","text":"監査人の目つきを優しくする機能はありません。監査PDFに方式・シード・名簿の指紋・当選者が載るので、その場で渡せば説明の会話は短くなりやすいです。統制システムの代替ではありません。"}},{"@type":"Question","name":"抽選の方式は将来変わりますか？","acceptedAnswer":{"@type":"Answer","text":"v1ではFisher-YatesとWeb Cryptoに固定。加重・口数2倍・コース別は名簿の重複行やExcel分割で表現する運用（FAQ参照）。自動加重計算は追加予定なし。"}},{"@type":"Question","name":"複数Prizeコースは1回の抽選でまとめられますか？","acceptedAnswer":{"@type":"Answer","text":"コースごとに名簿と抽選を分ける運用を推奨。Excelでコース別シートに分け、fair-drawをコースごとに実行し監査PDFもコース別に保存。Step 0で複数Prizeコース型とP12を選択。"}},{"@type":"Question","name":"XとIG両方で当選確率2倍は自動計算されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。フォロー確認も口数計算も本ツール外。2口の人は名簿に同じ@を2行（重複行）で貼る。Step 0で複数SNS口数増型とP13を選択。"}},{"@type":"Question","name":"口数2倍の名簿の作り方は？","acceptedAnswer":{"@type":"Answer","text":"スプシで口数列を付け、口数ぶんID行を複写。fair-drawに貼付し有効行数と重複件数を確認。賞帯間既当選者除外ONで抽選。加重の自動計算機能は追加予定なし。"}},{"@type":"Question","name":"Excelでコース別にfair-drawを複数回使う流れは？","acceptedAnswer":{"@type":"Answer","text":"抽選単位でシートを分け、1シートずつ名簿貼付→賞帯設定→実行→監査PDFをコース名入りで保存。景品チェックはキャンペーン全体で1回、抽選は単位ごとに複数回が一般的。"}},{"@type":"Question","name":"名簿の重複と空行の違いは？","acceptedAnswer":{"@type":"Answer","text":"空行は抽選から除外。重複は同一IDが2行以上。意図的な口数2倍なら重複は正常。fair-drawは重複を自動統合しない。口数設計はExcel、公平シャッフルはfair-draw。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"内部監査向けの統制システムですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。社内統制・操作ログ・権限管理を備えた懸賞抽選システムではありません。幹事・マーケ向けの無料ブラウザツールで、抽選結果と説明用の監査PDF・JSONをローカル生成します。名簿は外部に送信しません。SUGUDASU全体の設計原則は「SUGUDASUの約束」ページにまとめています。"}},{"@type":"Question","name":"内部監査がいなくても使う意味はありますか？","acceptedAnswer":{"@type":"Answer","text":"あります。監査人が横にいない懸賞でも、景品が大きい・人数が多い・前回揉めた・SNS懸賞など説明責任は残ります。Excelより「いつ・どの名簿で・どう決めたか」を1セットで残し、あとから上司・法務・問い合わせ先への説明コストを下げます。小規模の気軽な抽選なら表計算でも十分な場合もあります。"}},{"@type":"Question","name":"社内イベントだけでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。Step 0で社内ビンゴ・慰労会を選ぶと、景表法射程外になりやすい旨を表示しつつ、社外公開リスクをチェックできます。公平抽選は社内外どちらでも利用可能です。"}},{"@type":"Question","name":"このツールで「合法」「違法」と判定されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ルール表と数値による一次スクリーニングのみです。要確認・リスク高・専門家確認推奨の表現に留めます。"}},{"@type":"Question","name":"ChatGPTに景表法を聞く前に使うと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"LLMは断定・ハルシネーションのリスクがあります。本ツールは告示ベースのルール表で一次スクリーニングし、証跡PDFを残せます。法的助言の代替にはなりません。"}},{"@type":"Question","name":"Xでフォロー・リプライ抽選するとき、応募者のIDはどう集めますか？","acceptedAnswer":{"@type":"Answer","text":"本ツールは応募者の取得はしません。名簿が手元にある前提で1行1名（多くはXの@ユーザー名）を貼り付けて抽選します。小規模懸賞では返信欄から@を手動コピーする幹事が多く、件数が増えると応募管理ツールやAPI連携に寄ります。X公式には返信者一覧のCSVエクスポートはほぼありません。フォロー確認まで手動だと負担が大きいです。本ツールは名簿作成の次の段階（公平シャッフルと監査PDF）を担当します。"}},{"@type":"Question","name":"Excelなど表計算の乱数で抽選するのと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"表計算の乱数は再計算で変わり得て、いつどの乱数で決めたか説明しづらいことがあります。本ツールは抽選を1回確定し、方式・シード・名簿の指紋・当選者を監査PDFに残します。表計算が悪いのではなく、手軽な試算と証跡付き本番抽選で役割が違います。内部監査を黙らせる魔法ではなく、説明の会話を短くする材料です。"}},{"@type":"Question","name":"本当に公平に抽選できていますか？","acceptedAnswer":{"@type":"Answer","text":"名簿を1回シャッフルして当選者を選びます。方式はFisher-Yatesシャッフル、乱数はWeb Cryptoです。名簿は外部に送信しません。抽選は1回確定し、シード・名簿指紋・当選者を監査PDFに残せます。"}},{"@type":"Question","name":"シード（記録番号）とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"今回の抽選の記録番号です。同じ名簿・同じシードなら同じ結果になります。名簿の指紋とセットで、説明用の材料としてPDFに残します。"}},{"@type":"Question","name":"名簿の指紋（SHA-256）って何ですか？","acceptedAnswer":{"@type":"Answer","text":"参加者リスト全体から作った確認用の番号です。1行でも書き換えると番号が変わります。当選後に名簿だけ直した疑いを、PDFの記録と突き合わせて話す目安になります。抽選前の名簿が正しかったかまでは、このPDFだけでは分かりません。技術名はSHA-256です。"}},{"@type":"Question","name":"監査PDFには何が載りますか？","acceptedAnswer":{"@type":"Answer","text":"実施日時・景品名・金額・当選人数・判定結果・抽選方式・シード・名簿の指紋・当選者名など。方式・記録番号・指紋・当選者を1セットにした説明用パッケージです。ローカル生成で外部送信はありません。法的断定や統制ログの代替にはなりません。"}},{"@type":"Question","name":"内部監査の人が横で見ています。和らげる機能はありますか？","acceptedAnswer":{"@type":"Answer","text":"監査人の目つきを優しくする機能はありません。監査PDFに方式・シード・名簿の指紋・当選者が載るので、その場で渡せば説明の会話は短くなりやすいです。統制システムの代替ではありません。"}},{"@type":"Question","name":"抽選の方式は将来変わりますか？","acceptedAnswer":{"@type":"Answer","text":"v1ではFisher-YatesとWeb Cryptoに固定。加重・口数2倍・コース別は名簿の重複行やExcel分割で表現する運用（FAQ参照）。自動加重計算は追加予定なし。"}},{"@type":"Question","name":"複数の景品コースは1回の抽選でまとめられますか？","acceptedAnswer":{"@type":"Answer","text":"コースごとに名簿と抽選を分ける運用を推奨。Excelでコース別シートに分け、本ツールをコースごとに実行し監査PDFもコース別に保存。Step 0で複数の景品コース型を選び、景品チェックで該当パターンを確認。"}},{"@type":"Question","name":"XとIG両方で当選確率2倍は自動計算されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。フォロー確認も口数計算も本ツール外。2口の人は名簿に同じ@を2行（重複行）で貼る。Step 0で複数SNS口数増型を選び、景品チェックで該当パターンを確認。"}},{"@type":"Question","name":"口数2倍の名簿の作り方は？","acceptedAnswer":{"@type":"Answer","text":"スプシで口数列を付け、口数ぶんID行を複写。本ツールに貼付し有効行数と重複件数を確認。賞帯間既当選者除外ONで抽選。加重の自動計算機能は追加予定なし。"}},{"@type":"Question","name":"Excelでコース別に公平抽選を複数回使う流れは？","acceptedAnswer":{"@type":"Answer","text":"抽選単位でシートを分け、1シートずつ名簿貼付→賞帯設定→実行→監査PDFをコース名入りで保存。景品チェックはキャンペーン全体で1回、抽選は単位ごとに複数回が一般的。"}},{"@type":"Question","name":"名簿の重複と空行の違いは？","acceptedAnswer":{"@type":"Answer","text":"空行は抽選から除外。重複は同一IDが2行以上。意図的な口数2倍なら重複は正常。本ツールは重複を自動統合しません。口数設計はExcel、公平シャッフルは本ツール。"}}]}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 抽選" data-sg-subtitle="公平抽選 · 景品チェック · 証跡PDF" data-sg-tool-id="fair-draw"></div>
@@ -341,7 +341,7 @@
             <details class="sg-faq">
                 <summary>社内イベントだけでも使えますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>はい。Step 0 で<strong>「社内ビンゴ・慰労会」</strong>を選ぶと、景表法の射程外になりやすい旨を表示しつつ、社外公開リスク（P11）をチェックできます。公平抽選は社内外どちらでも利用可能です。</p>
+                    <p>はい。Step 0 で<strong>「社内ビンゴ・慰労会」</strong>を選ぶと、景表法の射程外になりやすい旨を表示しつつ、社外公開リスクのチェック項目を案内できます。公平抽選は社内外どちらでも利用可能です。</p>
                 </div>
             </details>
             <!-- 2. 景品チェック（Phase 0） -->
@@ -361,7 +361,7 @@
             <details class="sg-faq">
                 <summary>Xでフォロー・リプライ抽選するとき、応募者のIDはどう集めますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
-                    <p><strong>本ツールは応募者の取得はしません。</strong> 名簿が手元にある前提で、上の入力欄に<strong>1行1名</strong>を貼って抽選します。fair-draw が担当するのはその<strong>次の段階</strong>（公平シャッフルと監査PDF）です。</p>
+                    <p><strong>本ツールは応募者の取得はしません。</strong> 名簿が手元にある前提で、上の入力欄に<strong>1行1名</strong>を貼って抽選します。本ツールが担当するのはその<strong>次の段階</strong>（公平シャッフルと監査PDF）です。</p>
                     <p>実務で集める「ID」は、数値のユーザーIDではなく<strong>ほぼ <code>@ユーザー名</code>（ハンドル）</strong>です。表示名は同名・改名があるので名簿には向きません。</p>
                     <ul class="list-disc pl-4 space-y-1">
                         <li><strong>小規模（数十〜数百件）</strong> — 締切後、元ツイートの<strong>返信欄</strong>や通知から <code>@</code> を<strong>手動コピー</strong>してスプシに並べる幹事が多いです。重複削除・条件外の除去も目視。</li>
@@ -374,13 +374,13 @@
             </details>
             <!-- 3b. 複数コース・加重口数（運用オペ） -->
             <details class="sg-faq">
-                <summary>Aコース・Bコースなど複数Prizeコースは、1回の抽選でまとめてできますか？</summary>
+                <summary>Aコース・Bコースなど複数の景品コースは、1回の抽選でまとめてできますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                     <p><strong>コースごとに分ける運用を推奨します。</strong> 本ツールに「コース選択UI」はありません。Aコース用・Bコース用で<strong>名簿と抽選を分ける</strong>と、当選人数・景品・監査PDFの説明がきれいに残ります。</p>
                     <ol class="list-decimal pl-4 space-y-1">
                         <li>Excel/スプシで<strong>コース別シート</strong>（または別ファイル）に応募者を整理</li>
-                        <li>Step 0 で「複数Prizeコース → コース別抽選」を選び、景品チェック（P12）</li>
-                        <li>fair-draw で<strong>コースごとに</strong>名簿貼付 → 賞帯別抽選 → 監査PDF（ファイル名にコース名を付けると後で楽）</li>
+                        <li>Step 0 で「複数の景品コース → コース別抽選」を選び、景品チェックで該当パターンを確認</li>
+                        <li>本ツールで<strong>コースごとに</strong>名簿貼付 → 賞帯別抽選 → 監査PDF（ファイル名にコース名を付けると後で楽）</li>
                     </ol>
                     <p>1つの名簿に全コースを混ぜて1回だけ回すことも技術的には可能ですが、当選者と景品の対応が説明しづらくなりやすいです。</p>
                 </div>
@@ -388,8 +388,8 @@
             <details class="sg-faq">
                 <summary>XとIG両方フォロー＆RPで「当選確率2倍」— ツールが自動計算してくれますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
-                    <p><strong>いいえ。</strong> X/IGのフォロー確認も、口数2倍の計算も<strong>本ツールの外</strong>です。fair-draw は「確定した名簿」を公平にシャッフルするだけです。</p>
-                    <p>Step 0 で「複数SNS・条件達成で口数増」を選ぶと P13 が提案されます。告知に口数ルールを書いたうえで、<strong>2口の人は名簿に同じ <code>@</code> を2行</strong>（重複行）で貼ってください。抽選は重複行をそのまま口数として扱います。</p>
+                    <p><strong>いいえ。</strong> X/IGのフォロー確認も、口数2倍の計算も<strong>本ツールの外</strong>です。本ツールは「確定した名簿」を公平にシャッフルするだけです。</p>
+                    <p>Step 0 で「複数SNS・条件達成で口数増」を選ぶと、口数ルール向けのチェック項目が提案されます。告知に口数ルールを書いたうえで、<strong>2口の人は名簿に同じ <code>@</code> を2行</strong>（重複行）で貼ってください。抽選は重複行をそのまま口数として扱います。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -398,7 +398,7 @@
                     <ol class="list-decimal pl-4 space-y-1">
                         <li>締切後、条件達成をスプシで確認（Xのみ / X+IG / 購入3口 など）</li>
                         <li><strong>口数列</strong>を付け、口数ぶんだけID行を複写（例: 2口なら <code>@user_a</code> を2行）</li>
-                        <li>fair-draw に貼付 — 名簿パネルで「有効行数」と「<strong>重複 N</strong>」を確認（空行とは別カウント）</li>
+                        <li>本ツールに貼付 — 名簿パネルで「有効行数」と「<strong>重複 N</strong>」を確認（空行とは別カウント）</li>
                         <li>「賞帯間で既当選者を除外」ON のまま抽選（同一IDの2口当選は起きない）</li>
                         <li>監査PDFを保存。社内説明用に「口数は重複行で表現」と1行メモしてもよい</li>
                     </ol>
@@ -406,14 +406,14 @@
                 </div>
             </details>
             <details class="sg-faq">
-                <summary>Excelでコース別・段階別に分けて、fair-draw を複数回使う流れは？</summary>
+                <summary>Excelでコース別・段階別に分けて、抽選を複数回使う流れは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
-                    <p>Wチャンス・コース別・一次/二次抽選は、<strong>回数＝fair-draw の実行回数</strong>と考えてください。</p>
+                    <p>Wチャンス・コース別・一次/二次抽選は、<strong>回数＝抽選の実行回数</strong>と考えてください。</p>
                     <ol class="list-decimal pl-4 space-y-1">
                         <li>シート（またはファイル）を<strong>抽選単位</strong>で分ける — 例: <code>Aコース</code> / <code>Bコース</code> / <code>Wチャンス</code></li>
                         <li>各シートの最終行数と「有効行数」を突合</li>
-                        <li>1シートずつ fair-draw に貼付 → 賞帯（1位1枠…）を設定 → 実行 → 監査PDF/JSONを<strong>コース名入りで保存</strong></li>
-                        <li>Phase 0 の景品チェックは<strong>キャンペーン全体</strong>で1回、抽選は<strong>単位ごと</strong>に複数回、が一般的です</li>
+                        <li>1シートずつ本ツールに貼付 → 賞帯（1位1枠…）を設定 → 実行 → 監査PDF/JSONを<strong>コース名入りで保存</strong></li>
+                        <li>景品チェックは<strong>キャンペーン全体</strong>で1回、抽選は<strong>単位ごと</strong>に複数回、が一般的です</li>
                     </ol>
                 </div>
             </details>
@@ -425,7 +425,7 @@
                         <li><strong>重複</strong> — 同じIDが2行以上ある状態。意図的な<strong>口数2倍</strong>なら重複は正常です（例: 有効16行・重複2＝ユニーク14名・2名が2口）。</li>
                         <li><strong>ミス</strong> — 本来1口なのに同じ人が2行 → 重複カウントで気づきやすくなります。Excel と突合してください。</li>
                     </ul>
-                    <p>fair-draw は重複を自動で1行にまとめません。口数設計は幹事のExcel側、公平シャッフルは fair-draw 側、という分担です。</p>
+                    <p>本ツールは重複を自動で1行にまとめません。口数設計は幹事のExcel側、公平シャッフルは本ツール側、という分担です。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -985,7 +985,7 @@ function auditFileStamp(draw) {
 
 function buildRosterSnapshotFileContent(draw) {
   const header = [
-    '# SUGUDASU fair-draw 名簿スナップショット',
+    '# SUGUDASU 公平抽選 名簿スナップショット',
     `# キャンペーン: ${draw.campaignLabel || ''}`,
     `# 実施日時(JST): ${draw.drawnAtJst || ''}`,
     `# 実施者: ${draw.conductedBy || ''}`,
@@ -1538,7 +1538,7 @@ function renderAuditPrint() {
     const inp = p.phase0.input;
     const res = p.phase0.result;
     html += `
-      <h2 class="font-bold mt-4 mb-2">Phase 0 — 景品チェック</h2>
+      <h2 class="font-bold mt-4 mb-2">景品チェック</h2>
       <table class="w-full text-xs border-collapse mb-2">
         <tr><td class="border p-1 w-1/3">対象</td><td class="border p-1">${inp.audience === 'internal' ? '社内イベント' : '一般向けキャンペーン'}</td></tr>
         <tr><td class="border p-1">キャンペーン型</td><td class="border p-1">${inp.campaignFormatLabel || '—'} / ${inp.prizeCategoryLabel || '—'}</td></tr>
@@ -1564,7 +1564,7 @@ function renderAuditPrint() {
   }
   if (p.phase1) {
     html += `
-      <h2 class="font-bold mt-4 mb-2">公平抽選（Phase 1）</h2>
+      <h2 class="font-bold mt-4 mb-2">公平抽選</h2>
       <p class="text-xs mb-2"><strong>やり方（平易）:</strong> ${DRAW_ALGORITHM.plain}。抽選は1回確定（Excelの再計算のように当選が変わることはありません）。</p>
       <p class="text-xs mb-2"><strong>記録番号（シード）:</strong> 今回の抽選の記録。同じ名簿・同じ記録番号なら同じ結果。</p>
       <p class="text-xs mb-2"><strong>名簿の指紋（SHA-256）:</strong> 抽選時の名簿と同じかの目安。1行でも書き換えると変わります。</p>

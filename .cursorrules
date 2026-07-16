@@ -13,6 +13,7 @@
 | **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |
+| **ユーザー向け文言 · 見せる/見せない** | `docs/notes/USER_FACING_COPY_VISIBILITY.md`（`docs/` パス · slug ラベル禁止） |
 | **更新履歴 · ロードマップ（粒度）** | `docs/notes/DEV_TRANSPARENCY_RULES.md` · `data/changelog.json` · `data/roadmap.json` |
 | **ページレイアウト選定（main 系統）** | `docs/notes/PAGE_LAYOUT_SELECTOR.md` · 詳細 `UI_LAYOUT_REFRESH_GUIDE.md` |
 | **廃止デザイン指定（アーカイブ）** | `docs/archive/README.md` |

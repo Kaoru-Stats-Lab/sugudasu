@@ -47,7 +47,7 @@
                 画面内QR・実物QR・保存画像をそのまま読み取り。<strong>Ctrl+V貼り付け</strong>と<strong>画面共有</strong>にも対応し、同じPC内のQR読取を楽にします。
             </p>
             <p class="sg-tool-lead">
-                Sync専用認証UIは別画面で扱います。本ツールは<strong>汎用QR読取</strong>として独立し、`link-qr`形式はカード表示、Sync形式は専用導線を表示します。
+                Sync専用の認証画面は別です。本ツールは<strong>汎用のQR読取</strong>です。<a href="/link-qr">リンク集QR</a>の形式はカード表示し、Sync用QRは専用の案内を出します。
             </p>
         </div>
     </header>
@@ -55,7 +55,11 @@
     <div id="qr-sync-mode" class="hidden sg-card p-4 border-violet-200 bg-violet-50">
         <p class="text-xs font-bold text-violet-800 mb-1">Sync連携モード</p>
         <p class="text-[11px] text-slate-600 leading-relaxed">
-            読取結果がSync形式（`SGDS1-`）だった場合、ここでは内容確認のみを行います。端末追加の確定は `sync.sugudasu.com` 側（`/timeline` と `/schedule`）で実行してください。
+            読取結果が Sync 連携用のQRだった場合、ここでは内容確認のみです。端末の追加は Sync 側の
+            <a href="https://sync.sugudasu.com/timeline">イベント進行</a>
+            または
+            <a href="https://sync.sugudasu.com/schedule">工程表</a>
+            で行ってください。
         </p>
     </div>
 

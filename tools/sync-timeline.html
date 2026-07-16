@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="SUGUDASU Sync イベント進行 — 登録・ルーム保存（Phase S1）。">
+    <meta name="description" content="SUGUDASU Sync イベント進行 — 登録・ルーム保存（試験公開）。">
     <title>SUGUDASU Sync イベント進行</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU Sync">
     <meta property="og:title" content="Sync イベント進行">
-    <meta property="og:description" content="登録 · ルーム · クラウド保存（S1）。">
+    <meta property="og:description" content="登録 · ルーム · クラウド保存（試験公開）。">
     <meta property="og:url" content="https://sync.sugudasu.com/timeline/app">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
@@ -25,22 +25,21 @@
 
 <div id="sg-chrome-top"
      data-sg-title="SUGUDASU Sync イベント進行"
-     data-sg-subtitle="S1 · 登録 · ルーム保存"
+     data-sg-subtitle="試験公開 · 登録 · ルーム保存"
      data-sg-tool-id="timeline-sync"
      data-sg-chrome-mode="focus"></div>
 
 <main class="flex-1 max-w-lg mx-auto w-full px-4 py-8 space-y-5">
 
-    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">Phase S1 · Auth · ルーム · クラウド保存</p>
+    <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">試験公開 · ログイン · ルーム保存</p>
 
     <div id="sync-s1-status" class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2" role="status"></div>
 
     <section id="sync-s1-setup" class="hidden space-y-3">
-        <h1 class="text-lg font-bold text-slate-900">バックエンド設定が必要です</h1>
+        <h1 class="text-lg font-bold text-slate-900">ただいまご利用いただけません</h1>
         <p class="text-sm text-slate-600 leading-relaxed">
-            提督が Supabase プロジェクトを作成し、環境変数と SQL マイグレーションを適用すると、ログインとルーム保存が有効になります。
+            サーバー設定が未完了のため、ログインとルーム保存を開始できません。しばらくしてから再度お試しいただくか、<a href="https://sugudasu.com/contact" class="text-blue-600 underline font-semibold">お問い合わせ</a>ください。
         </p>
-        <p class="text-xs text-slate-500">正本: <code>docs/notes/SYNC_ENV_KEYS.md</code></p>
     </section>
 
     <section id="sync-s1-auth" class="hidden space-y-4">
@@ -126,8 +125,8 @@
 
         <div class="border border-slate-200 rounded-lg p-3 space-y-3 bg-white">
             <p class="text-xs text-slate-500">選択中: <span id="sync-s1-active-room" class="font-semibold text-slate-800">（未選択）</span></p>
-            <p class="text-[11px] text-slate-500">保持期限（retain_until）: <span id="sync-s1-retain-until" class="font-mono text-slate-700">—</span></p>
-            <label class="block text-xs font-semibold text-slate-700" for="sync-s1-event-title">イベント名（保存テスト用 · S1）</label>
+            <p class="text-[11px] text-slate-500">データ保持期限: <span id="sync-s1-retain-until" class="font-mono text-slate-700">—</span></p>
+            <label class="block text-xs font-semibold text-slate-700" for="sync-s1-event-title">イベント名（保存テスト用）</label>
             <input id="sync-s1-event-title" type="text" class="sg-input w-full text-sm" placeholder="例: 6/30 社内研修" autocomplete="off">
             <pre id="sync-s1-payload-preview" class="text-xs text-slate-600 whitespace-pre-wrap font-mono bg-slate-50 rounded p-2"></pre>
             <div class="flex flex-col gap-2 relative z-10">
@@ -135,7 +134,7 @@
                 <button type="button" id="sync-s1-delete-room" class="cursor-pointer text-sm text-red-700 border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50 sync-s1-delete-muted">ルームを削除</button>
                 <button type="button" id="sync-s1-import-core" class="text-xs text-slate-600 underline text-left">コア進行の下書きを取り込む（同一ブラウザ）</button>
             </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">S1 は保存・再開まで。フルエディタ · 閲覧者同期（新版バナー）は S2 以降。</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">いまは保存・再開まで。フルエディタ · 閲覧者同期（新版バナー）は準備中です。</p>
         </div>
 
         <div id="sync-qr-onboarding"></div>
