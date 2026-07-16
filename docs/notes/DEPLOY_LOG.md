@@ -862,24 +862,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | invoice 税率「対象外」(0) が sync で 10% に潰れるバグ修正 · FAQ に国税庁 No.6359 案内（提督 Commit&Push） |
 | **change_summary** | `tools/invoice.html` parseInvoiceTaxRate · FAQ · `scripts/invoice-finance.test.mjs` 値引きケース |
 | **local_build** | `pass`（`release:pages:free` · budget consume 34/450） |
 | **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 34/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit & Push して」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `8274572`（`389b198..8274572` · git push origin main） |
+| **smoke** | pending — `/invoice` 値引き行を「対象外」にしたときプレビュー税率が「対象外」のままか |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-16 | 003 executed（8274572 · invoice 対象外税率バグ） |
 | 2026-07-16 | 003 approved（invoice 対象外税率バグ · No.6359 FAQ） |
 | 2026-07-16 | 002 executed（c1f10da · ユーザー向け slug 口調除去） |
 | 2026-07-16 | 002 approved（ユーザー向け slug 口調除去 · Commit&Push） |
