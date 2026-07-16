@@ -36,6 +36,33 @@ assert.equal(applyRounding(10.1, 'ceil'), 11);
   assert.equal(t.totalInTax, 164000);
 }
 
+// 課税値引きは同税率で相殺（国税庁 No.6359 の実務対応 · ツール設計）
+{
+  const t = computeInvoiceTotals([
+    { name: 'A', qty: 1, price: 350000, taxRate: 10 },
+    { name: 'B', qty: 1, price: 200000, taxRate: 10 },
+    { name: 'C', qty: 1, price: 150000, taxRate: 10 },
+    { name: 'D', qty: 1, price: 200000, taxRate: 10 },
+    { name: '値引き', qty: 1, price: -50000, taxRate: 10 },
+  ]);
+  assert.equal(t.subtotal, 850000);
+  assert.equal(t.base10, 850000);
+  assert.equal(t.tax10, 85000);
+  assert.equal(t.totalInTax, 935000);
+}
+
+// 対象外(0)のマイナス行は課税標準に入れない（UI で 0 を潰さないことと対で保証）
+{
+  const t = computeInvoiceTotals([
+    { name: 'A', qty: 1, price: 900000, taxRate: 10 },
+    { name: '値引き', qty: 1, price: -50000, taxRate: 0 },
+  ]);
+  assert.equal(t.subtotal, 850000);
+  assert.equal(t.base10, 900000);
+  assert.equal(t.tax10, 90000);
+  assert.equal(t.totalInTax, 940000);
+}
+
 // 源泉 10.21% 切捨て
 assert.equal(computeWithholdingTax(500000), Math.floor(500000 * 0.1021));
 

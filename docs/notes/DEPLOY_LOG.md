@@ -856,10 +856,31 @@
 | **cf_deployment_id** | `c1f10da`（`38eb104..c1f10da` · git push origin main） |
 | **smoke** | pending — `/` hub カード文言 · `/fair-draw` FAQ · `/statements` WebP変換表記 |
 
+---
+
+## DEPLOY-20260716-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | invoice 税率「対象外」(0) が sync で 10% に潰れるバグ修正 · FAQ に国税庁 No.6359 案内（提督 Commit&Push） |
+| **change_summary** | `tools/invoice.html` parseInvoiceTaxRate · FAQ · `scripts/invoice-finance.test.mjs` 値引きケース |
+| **local_build** | `pass`（`release:pages:free` · budget consume 34/450） |
+| **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit & Push して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-16 | 003 approved（invoice 対象外税率バグ · No.6359 FAQ） |
 | 2026-07-16 | 002 executed（c1f10da · ユーザー向け slug 口調除去） |
 | 2026-07-16 | 002 approved（ユーザー向け slug 口調除去 · Commit&Push） |
 | 2026-07-16 | 001 executed（0776420 · guides 加筆 · /guides 幅） |

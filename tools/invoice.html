@@ -459,7 +459,9 @@
                     <span>出精値引き（マイナス金額）を入れたときの消費税計算は？</span>
                 </summary>
                 <div class="sg-notion-toggle__body text-xs leading-relaxed text-slate-600 space-y-2">
-                    <p>明細行のマイナス単価（値引き）は、該当する税率区分の対象額から相殺したうえで消費税を算出します（端数は切り捨て）。税率ごとに分けて計算するため、混在取引でも整合しやすい設計です。</p>
+                    <p>明細行のマイナス単価（値引き）は、<strong>その行に選んだ税率区分</strong>の対象額から相殺したうえで消費税を算出します（端数は切り捨て）。税率ごとに分けて計算するため、混在取引でも整合しやすい設計です。</p>
+                    <p><strong>課税売上げに対する値引き</strong>（出精値引きなど）は、消費税法上「売上げに係る対価の返還等」として、元の課税取引と同じ税率で調整するのが原則です（国税庁タックスアンサー <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6359.htm" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">No.6359</a>）。実務では値引き行も<strong>10%（または元取引が軽減なら8%）</strong>を選んでください。</p>
+                    <p>「対象外」は、消費税の課税対象にならない取引（不課税など）向けです。課税明細の値引きに「対象外」を付けると、税額調整の対象から外れ、税込合計が意図とずれることがあります。</p>
                 </div>
             </details>
 
@@ -1036,6 +1038,16 @@
             return price === 0;
         }
 
+        /**
+         * @param {unknown} raw
+         * @returns {0|8|10}
+         */
+        function parseInvoiceTaxRate(raw) {
+            // DECISION: 「対象外」は value=0。`|| 10` だと falsy で 10% に潰れるため、0/8 を明示許容する（import と同じ正規化）。
+            const taxRaw = parseInt(String(raw), 10);
+            return taxRaw === 8 || taxRaw === 0 ? taxRaw : 10;
+        }
+
         function syncDetailItemsFromForm() {
             detailItems.forEach((item) => {
                 if (isSpacerRow(item)) return;
@@ -1047,7 +1059,7 @@
                 item.name = nameEl.value;
                 item.qty = parseFloat(qtyEl.value) || 0;
                 item.price = parseFloat(priceEl.value) || 0;
-                item.taxRate = parseInt(taxEl.value, 10) || 10;
+                item.taxRate = parseInvoiceTaxRate(taxEl.value);
             });
         }
 
@@ -1065,8 +1077,8 @@
                 const name = document.getElementById(`item-name-${id}`).value;
                 const qty = parseFloat(document.getElementById(`item-qty-${id}`).value) || 0;
                 const price = parseFloat(document.getElementById(`item-price-${id}`).value) || 0;
-                const taxRate = parseInt(document.getElementById(`item-tax-${id}`).value, 10);
-                
+                const taxRate = parseInvoiceTaxRate(document.getElementById(`item-tax-${id}`).value);
+
                 return { id, name, qty, price, taxRate, spacer: false };
             });
 
@@ -1238,8 +1250,7 @@
                 return [{ id: 1, name: '', qty: 1, price: 0, taxRate: 10 }];
             }
             return items.map((item, index) => {
-                const taxRaw = parseInt(item.taxRate, 10);
-                const taxRate = taxRaw === 8 || taxRaw === 0 ? taxRaw : 10;
+                const taxRate = parseInvoiceTaxRate(item.taxRate);
                 return {
                     id: Number.isFinite(item.id) ? item.id : index + 1,
                     name: typeof item.name === 'string' ? item.name : '',
