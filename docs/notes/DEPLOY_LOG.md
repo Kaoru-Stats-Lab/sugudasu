@@ -842,24 +842,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | ユーザー向け文言の slug/開発者口調除去（FAQ · hub · statements · Sync LP 一部）· USER_FACING 指針追加（提督「Commit&Push」） |
 | **change_summary** | hub/fair-draw/statements/font-converter/test-data/qr-reader/diff · sync-index/timeline LP·app · prize-law-patterns · `USER_FACING_COPY_VISIBILITY.md` · GUIDES/DESIGN/.cursorrules リンク |
-| **local_build** | `pass`（`release:pages:free` · budget 33/450） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 33/450） |
 | **deploy_count_today** | 2（P7 override · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 33/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「たまっているものをCommit&Push」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `c1f10da`（`38eb104..c1f10da` · git push origin main） |
+| **smoke** | pending — `/` hub カード文言 · `/fair-draw` FAQ · `/statements` WebP変換表記 |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-16 | 002 executed（c1f10da · ユーザー向け slug 口調除去） |
 | 2026-07-16 | 002 approved（ユーザー向け slug 口調除去 · Commit&Push） |
 | 2026-07-16 | 001 executed（0776420 · guides 加筆 · /guides 幅） |
 | 2026-07-15 | 005 executed（5984fbb · AdSense guides · contact · P7 override） |
