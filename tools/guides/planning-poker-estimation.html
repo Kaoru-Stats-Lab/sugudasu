@@ -26,7 +26,7 @@
 
         <header class="sg-guide-header">
             <p class="sg-guide-eyebrow">チーム運用 · PM / ディレクター</p>
-            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <p class="sg-guide-meta">更新 2026-07-16</p>
             <h1 class="sg-guide-title">プランニングポーカーで見積もりのズレを防ぐ実務ファシリテーション</h1>
             <div class="sg-guide-lead-deck">
                 <p class="sg-guide-lead">「この画面、何日？」が先に出た瞬間、全員がその数字に寄りがちです。正解当てより、<strong>認識差の抽出</strong>がプランニングポーカーの本丸です。</p>
@@ -73,6 +73,54 @@
                 <li><strong>機械的な中間値:</strong> 3 と 13 の平均 8 は議論放棄に近い。差が残るなら分割かスパイク（調査タスク）を入れる。</li>
                 <li><strong>クライアント同席はむしろ有効:</strong> 「仕様が曖昧だとポイントが跳ねる」をその場で見せられる。</li>
             </ul>
+
+            <h2>会議前チェックリスト（10分で確認）</h2>
+            <div class="sg-guide-table-scroll" role="region" aria-label="見積会議前チェックリスト">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>チェック項目</th>
+                            <th>やること</th>
+                            <th>失敗時の症状</th>
+                            <th>対処</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>完了条件</td>
+                            <td>「実装だけ」か「テスト/レビュー込み」かを先に宣言</td>
+                            <td>同じStoryで3と13が頻発する</td>
+                            <td>Definition of Doneを1行で固定する</td>
+                        </tr>
+                        <tr>
+                            <td>基準タスク</td>
+                            <td>既知タスクを1つ選び「3」など基準化</td>
+                            <td>毎回デッキの数字解釈がぶれる</td>
+                            <td>会議冒頭に基準を再確認する</td>
+                        </tr>
+                        <tr>
+                            <td>入力担当</td>
+                            <td>司会が代行入力し、Reveal前は点数非表示で進行</td>
+                            <td>他人の点数を見て後出しが起きる</td>
+                            <td>未投票者を名前で呼び、順に入力する</td>
+                        </tr>
+                        <tr>
+                            <td>記録</td>
+                            <td>採用ポイントと差分理由を短文で残す</td>
+                            <td>後日「なぜこの数字か」を説明できない</td>
+                            <td>CSVと議事メモを同時保存する</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>乖離が大きいときの判断分岐</h2>
+            <ol class="sg-guide-steps">
+                <li><strong>3段階以上の差</strong>（例: 3 と 21）が出たら、平均で閉じない。</li>
+                <li>最大値・最小値の理由をそれぞれ60秒で話す。</li>
+                <li>論点が「未知調査」ならスパイクタスク化、「実装範囲差」ならStory分割。</li>
+                <li>分割後の小Storyで再投票し、採用ポイントを確定する。</li>
+            </ol>
 
             <h2>免責</h2>
             <p>本ガイドとツールが示すポイントは合意形成の補助であり、納期・費用・契約成果を保証しません。最終判断は当事者の責任です。</p>

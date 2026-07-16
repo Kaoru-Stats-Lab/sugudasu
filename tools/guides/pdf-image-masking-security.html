@@ -17,7 +17,7 @@
 <div id="sg-chrome-top" data-sg-title="安全な黒塗り手順"></div>
 
 <main class="sg-guide-page">
-    <article class="sg-guide-article sg-guide-article--brand">
+    <article class="sg-guide-article sg-guide-article--docs">
         <nav class="sg-guide-breadcrumb" aria-label="パンくず">
             <a href="/guides">実務ガイド</a>
             <span aria-hidden="true">›</span>
@@ -26,7 +26,7 @@
 
         <header class="sg-guide-header">
             <p class="sg-guide-eyebrow">セキュリティ · マスク</p>
-            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <p class="sg-guide-meta">更新 2026-07-16</p>
             <h1 class="sg-guide-title">実務での漏洩を防ぐ画像・PDF黒塗り（マスク）の正しい手順</h1>
             <div class="sg-guide-lead-deck">
                 <p class="sg-guide-lead">「黒い四角を載せただけ」のPDFは、選択コピーで裏の文字が出ることがあります。見た目の黒さと、<strong>データが消えたか</strong>は別問題です。</p>
@@ -76,6 +76,46 @@
                 <li>スタンプ「サンプル」だけ貼って実データが残存。</li>
                 <li>ぼかしだけでマイナンバーを隠したつもりになる。</li>
             </ul>
+
+            <h2>提出前チェックリスト（塗り漏れ防止）</h2>
+            <div class="sg-guide-table-scroll" role="region" aria-label="黒塗り提出前チェックリスト">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>フェーズ</th>
+                            <th>確認項目</th>
+                            <th>最低ライン</th>
+                            <th>見落としやすい点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>処理前</td>
+                            <td>PDFを画像化したか</td>
+                            <td>選択コピーできない画像になっている</td>
+                            <td>PDF本体をそのまま配布してしまう</td>
+                        </tr>
+                        <tr>
+                            <td>処理中</td>
+                            <td>黒塗り範囲の余白</td>
+                            <td>文字外周を1〜2文字ぶん含める</td>
+                            <td>桁末尾や記号だけはみ出す</td>
+                        </tr>
+                        <tr>
+                            <td>処理後</td>
+                            <td>別ビューアで再確認</td>
+                            <td>拡大・明るさ調整でも可読断片なし</td>
+                            <td>同一アプリでしか確認しない</td>
+                        </tr>
+                        <tr>
+                            <td>提出直前</td>
+                            <td>添付ファイルの取り違え</td>
+                            <td>加工済み画像のみ添付</td>
+                            <td>原本PDFを誤添付する</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <h2>免責</h2>
             <p>ピクセル上書きは画像そのものの復元を困難にしますが、ファイル名、処理前コピーの残存、塗り範囲の漏れ、メタデータの扱いまで保証しません。重要な公開前は複数ビューアでクロスチェックしてください。<a href="/disclaimer">免責事項</a>・<a href="/privacy">プライバシー</a>も参照。</p>

@@ -601,6 +601,9 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   margin-right: auto;
   padding: 1.5rem 1rem;
 }
+.sg-info-page--guides {
+  --sg-info-max-width: 76rem;
+}
 @media (min-width: 640px) {
   .sg-info-page { padding-left: 1.5rem; padding-right: 1.5rem; }
 }

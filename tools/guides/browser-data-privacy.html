@@ -26,7 +26,7 @@
 
         <header class="sg-guide-header">
             <p class="sg-guide-eyebrow">書類・経理 · セキュリティ</p>
-            <p class="sg-guide-meta">更新 2026-07-15</p>
+            <p class="sg-guide-meta">更新 2026-07-16</p>
             <h1 class="sg-guide-title">ブラウザ完結型ツールの仕組みとデータ非送信の検証手順</h1>
             <div class="sg-guide-lead-deck">
                 <p class="sg-guide-lead">請求書の宛先やマスクしたスクショを「無料のWebツール」に乗せると、情報システムから必ず聞かれます。<strong>本当にサーバーへ送っていないのか</strong>、です。</p>
@@ -83,6 +83,41 @@ SUGUDASU:  端末 ◄──(アプリ本体)── 静的配信
                 <li><strong>「通信ゼロ」と社内に説明してしまう:</strong> 広告・解析があるページでは通信は発生します。言うべきは「<strong>入力した業務データ処理用の外部送信がない</strong>」です。</li>
                 <li><strong>オフライン断定:</strong> 初回表示に CDN / フォント等が必要な場合があります。すでに開いたあとでも、機能ごとに差があります。</li>
             </ul>
+
+            <h2>稟議に添付しやすい監査メモ雛形</h2>
+            <div class="sg-guide-table-scroll" role="region" aria-label="監査メモ雛形">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>項目</th>
+                            <th>記載例</th>
+                            <th>証跡</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>対象ツール</td>
+                            <td>`/invoice`, `/mask`</td>
+                            <td>対象URL一覧</td>
+                        </tr>
+                        <tr>
+                            <td>検証日/環境</td>
+                            <td>2026-07-16 / Chrome 127 / 社内NW</td>
+                            <td>画面キャプチャ</td>
+                        </tr>
+                        <tr>
+                            <td>確認観点</td>
+                            <td>Fetch/XHRに業務データを含むPOSTがない</td>
+                            <td>Networkログ</td>
+                        </tr>
+                        <tr>
+                            <td>補足</td>
+                            <td>静的アセット・広告・解析通信は別レイヤで発生</td>
+                            <td>privacy/statements参照</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <h2>免責</h2>
             <p>通信挙動は端末・ブラウザ拡張・プロキシ・将来の実装変更で変わり得ます。導入前に必ず自組織で検証し、<a href="/disclaimer">免責事項</a>も併読してください。</p>

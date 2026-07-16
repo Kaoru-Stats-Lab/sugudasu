@@ -6,10 +6,19 @@ const MAX_FILE_BYTES = 25 * 1024 * 1024;
 const ZOOM_MAX_RATIO = 3;
 
 const PRESETS = {
-  'x-cover': { group: 'SNS', label: 'Xカバー', w: 1500, h: 500 },
-  avatar: { group: 'SNS', label: 'アバター', w: 256, h: 256 },
-  'slide-16x9': { group: '資料', label: '16:9', w: 1920, h: 1080 },
-  'slide-4x3': { group: '資料', label: '4:3', w: 1600, h: 1200 },
+  'ig-feed-square': { category: 'sns', group: 'SNS', label: 'Instagram 1:1', w: 1080, h: 1080 },
+  'ig-feed-portrait': { category: 'sns', group: 'SNS', label: 'Instagram 4:5', w: 1080, h: 1350 },
+  'story-9x16': { category: 'sns', group: 'SNS', label: 'ストーリー 9:16', w: 1080, h: 1920 },
+  'x-horizontal': { category: 'sns', group: 'SNS', label: 'X 横', w: 1200, h: 675 },
+  'x-portrait': { category: 'sns', group: 'SNS', label: 'X 縦', w: 1080, h: 1350 },
+  'youtube-thumb': { category: 'sns', group: 'SNS', label: 'YouTube 16:9', w: 1280, h: 720 },
+  'slack-share-16x9': { category: 'work', group: '書類・仕事', label: '社内共有 16:9', w: 1280, h: 720 },
+  'doc-share-4x3': { category: 'work', group: '書類・仕事', label: '資料貼り 4:3', w: 1600, h: 1200 },
+  'a4-portrait': { category: 'work', group: '書類・仕事', label: 'A4縦', w: 2100, h: 2970 },
+  // OGP は 1.91 の近似値ではなく 1200/630 の比率を正として使う
+  ogp: { category: 'web', group: 'Web', label: 'OGP', w: 1200, h: 630 },
+  'web-banner': { category: 'web', group: 'Web', label: 'Webバナー 3:1', w: 1200, h: 400 },
+  avatar: { category: 'web', group: 'Web', label: 'アバター 1:1', w: 512, h: 512 },
 };
 
 const els = {
@@ -36,9 +45,10 @@ let bitmap = null;
 let imgW = 0;
 let imgH = 0;
 let sourceName = 'image.png';
-let presetId = 'x-cover';
-let frameW = PRESETS['x-cover'].w;
-let frameH = PRESETS['x-cover'].h;
+let presetId = 'ig-feed-square';
+let frameW = PRESETS['ig-feed-square'].w;
+let frameH = PRESETS['ig-feed-square'].h;
+let activeCategory = 'sns';
 /** scale in output-pixel space: drawn size = imgW * scale */
 let scale = 1;
 let offsetX = 0;
@@ -68,6 +78,20 @@ function setStatus(message) {
 
 function hasImage() {
   return !!bitmap;
+}
+
+function updateUpscaleWarning() {
+  const warn = document.getElementById('upscale-warning');
+  if (!warn) return;
+  if (!bitmap) {
+    warn.classList.add('hidden');
+    return;
+  }
+  if (coverMinScale() > 1) {
+    warn.classList.remove('hidden');
+  } else {
+    warn.classList.add('hidden');
+  }
 }
 
 function coverMinScale() {
@@ -201,10 +225,49 @@ function setPreset(id) {
     btn.setAttribute('aria-pressed', btn.getAttribute('data-preset') === id ? 'true' : 'false');
   });
   els.presetHint.textContent = `出力: ${frameW}×${frameH} px（${p.group} · ${p.label}）`;
+  const wInput = document.getElementById('custom-width');
+  const hInput = document.getElementById('custom-height');
+  if (wInput) wInput.value = String(frameW);
+  if (hInput) hInput.value = String(frameH);
   if (bitmap) {
     coverFitCenter();
     schedulePaint();
   }
+  updateUpscaleWarning();
+}
+
+function setCategory(category) {
+  activeCategory = category;
+  document.querySelectorAll('.trim-category').forEach((btn) => {
+    btn.setAttribute('aria-pressed', btn.getAttribute('data-category') === category ? 'true' : 'false');
+  });
+  document.querySelectorAll('.trim-preset').forEach((btn) => {
+    const itemCategory = btn.getAttribute('data-category');
+    btn.classList.toggle('hidden', category !== 'all' && itemCategory !== category);
+  });
+}
+
+function applyCustomSize() {
+  const wInput = document.getElementById('custom-width');
+  const hInput = document.getElementById('custom-height');
+  if (!wInput || !hInput) return;
+  const w = Math.round(Number(wInput.value));
+  const h = Math.round(Number(hInput.value));
+  if (!Number.isFinite(w) || !Number.isFinite(h) || w < 1 || h < 1 || w > 8192 || h > 8192) {
+    showError('カスタムサイズは 1〜8192 px の整数で入力してください。');
+    return;
+  }
+  clearError();
+  presetId = 'custom';
+  frameW = w;
+  frameH = h;
+  document.querySelectorAll('.trim-preset').forEach((btn) => btn.setAttribute('aria-pressed', 'false'));
+  els.presetHint.textContent = `出力: ${frameW}×${frameH} px（カスタム）`;
+  if (bitmap) {
+    coverFitCenter();
+    schedulePaint();
+  }
+  updateUpscaleWarning();
 }
 
 async function decodeToBitmap(file) {
@@ -275,6 +338,7 @@ async function loadFile(file) {
     updateActionButtons();
     setStatus('画像をドラッグで位置合わせ · ホイールで拡大');
     schedulePaint();
+    updateUpscaleWarning();
   } catch (err) {
     showError(err && err.message ? err.message : '画像の読み込みに失敗しました。');
     updateActionButtons();
@@ -290,6 +354,7 @@ function clearImage() {
   els.dropZone.classList.remove('hidden');
   updateActionButtons();
   clearError();
+  updateUpscaleWarning();
 }
 
 function exportCanvas() {
@@ -433,6 +498,25 @@ document.querySelectorAll('.trim-preset').forEach((btn) => {
     setPreset(btn.getAttribute('data-preset'));
   });
 });
+document.querySelectorAll('.trim-category').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    setCategory(btn.getAttribute('data-category') || 'all');
+  });
+});
+const applyCustomBtn = document.getElementById('btn-apply-custom');
+if (applyCustomBtn) applyCustomBtn.addEventListener('click', applyCustomSize);
+const customW = document.getElementById('custom-width');
+const customH = document.getElementById('custom-height');
+if (customW) {
+  customW.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') applyCustomSize();
+  });
+}
+if (customH) {
+  customH.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') applyCustomSize();
+  });
+}
 
 els.zoomSlider.addEventListener('input', () => {
   if (!bitmap) return;
@@ -467,5 +551,6 @@ window.addEventListener('resize', () => {
   if (bitmap) schedulePaint();
 });
 
-setPreset('x-cover');
+setCategory('sns');
+setPreset('ig-feed-square');
 updateActionButtons();

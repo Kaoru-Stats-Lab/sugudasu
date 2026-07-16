@@ -23,6 +23,7 @@
         #trim-canvas { touch-action: none; cursor: grab; max-width: 100%; display: block; margin: 0 auto; background: #0f172a; border-radius: 0.75rem; }
         #trim-canvas.is-dragging { cursor: grabbing; }
         .trim-preset[aria-pressed="true"] { border-color: #6366f1; background: #eef2ff; color: #3730a3; }
+        .trim-category[aria-pressed="true"] { border-color: #4f46e5; background: #eef2ff; color: #3730a3; }
     </style>
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込みから切り出し・PNG保存までブラウザ内だけで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"マスク（機密消し）との違いは？","acceptedAnswer":{"@type":"Answer","text":"マスクはぼかしや黒塗りで機密を隠す編集ツールです。画像切り出しは指定サイズへの切り出し専用です。スクショを隠してからサイズを整える、という流れで併用できます。"}},{"@type":"Question","name":"枠のサイズを自由に変えられますか？","acceptedAnswer":{"@type":"Answer","text":"できません。SNSと資料向けの決まったサイズに絞っています。余白のない切り出しだけを最速で終わらせるためです。"}},{"@type":"Question","name":"HEIC（iPhoneの写真）は使えますか？","acceptedAnswer":{"@type":"Answer","text":"ブラウザが読み込めない形式はエラー表示で止めます。自動変換は行いません。PNG・JPEG・WebPなどでお試しください。"}}]}</script>
 </head>
@@ -54,23 +55,43 @@
     <section id="editor-panel" class="hidden space-y-4">
         <section class="sg-card p-4 space-y-3">
             <h2 class="text-sm font-bold text-slate-900">出力サイズ</h2>
-            <div class="space-y-3">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 mb-1.5">SNS</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="x-cover" aria-pressed="true">Xカバー 1500×500</button>
-                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="avatar" aria-pressed="false">アバター 256×256</button>
-                    </div>
+            <div class="space-y-2">
+                <p class="text-[11px] font-semibold text-slate-500">カテゴリ</p>
+                <div class="flex gap-2 overflow-x-auto pb-1">
+                    <button type="button" class="trim-category shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50" data-category="sns" aria-pressed="true">SNS</button>
+                    <button type="button" class="trim-category shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50" data-category="work" aria-pressed="false">書類・仕事</button>
+                    <button type="button" class="trim-category shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50" data-category="web" aria-pressed="false">Web</button>
+                    <button type="button" class="trim-category shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50" data-category="all" aria-pressed="false">すべて</button>
                 </div>
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 mb-1.5">資料</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="slide-16x9" aria-pressed="false">16:9 1920×1080</button>
-                        <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="slide-4x3" aria-pressed="false">4:3 1600×1200</button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex flex-wrap gap-2" id="preset-list">
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="ig-feed-square" data-category="sns" aria-pressed="false">Instagram 1:1（1080）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="ig-feed-portrait" data-category="sns" aria-pressed="false">Instagram 4:5（1080×1350）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="story-9x16" data-category="sns" aria-pressed="false">ストーリー 9:16（1080×1920）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="x-horizontal" data-category="sns" aria-pressed="false">X 横（1200×675）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="x-portrait" data-category="sns" aria-pressed="false">X 縦（1080×1350）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="youtube-thumb" data-category="sns" aria-pressed="false">YouTube 16:9（1280×720）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="slack-share-16x9" data-category="work" aria-pressed="false">社内共有 16:9（1280×720）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="doc-share-4x3" data-category="work" aria-pressed="false">資料貼り 4:3（1600×1200）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="a4-portrait" data-category="work" aria-pressed="false">A4縦（210:297）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="ogp" data-category="web" aria-pressed="false">OGP（1200×630）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="web-banner" data-category="web" aria-pressed="false">Webバナー 3:1（1200×400）</button>
+                    <button type="button" class="trim-preset text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50" data-preset="avatar" data-category="web" aria-pressed="false">アバター 1:1（512）</button>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 space-y-2">
+                    <p class="text-[11px] font-semibold text-slate-600">カスタム（px）</p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <input id="custom-width" type="number" min="1" max="8192" step="1" inputmode="numeric" class="w-24 rounded-md border border-slate-300 px-2 py-1.5 text-xs" placeholder="幅">
+                        <span class="text-xs text-slate-500">×</span>
+                        <input id="custom-height" type="number" min="1" max="8192" step="1" inputmode="numeric" class="w-24 rounded-md border border-slate-300 px-2 py-1.5 text-xs" placeholder="高さ">
+                        <span class="text-xs text-slate-500">px</span>
+                        <button type="button" id="btn-apply-custom" class="sg-btn-secondary text-xs py-1.5 px-3">カスタム適用</button>
                     </div>
                 </div>
             </div>
             <p id="preset-hint" class="text-[11px] text-slate-500">出力: 1500×500 px</p>
+            <p id="upscale-warning" class="hidden text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5">元画像より大きい出力です。画質が粗くなる場合があります。</p>
         </section>
 
         <section class="sg-card p-4 space-y-3">
@@ -120,7 +141,7 @@
             <details class="sg-faq">
                 <summary>枠のサイズを自由に変えられますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>できません。SNS と資料向けの決まったサイズに絞っています。余白のない切り出しだけを最速で終わらせるためです。</p>
+                    <p>プリセットに加えて、幅×高さのカスタム入力（px）にも対応しています。よく使う用途はプリセット、入稿指定はカスタムで使い分けてください。</p>
                 </div>
             </details>
             <details class="sg-faq">

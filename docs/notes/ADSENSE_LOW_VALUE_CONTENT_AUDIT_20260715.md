@@ -43,7 +43,7 @@
 |------|------|------|
 | P0 | `/contact` 新設 + footer「問い合わせ」 | Cursor（本セッション） |
 | P0 | お支払い情報（AdSense） | **提督** |
-| P1 | Gemini で新規ガイド 3〜5 本（planning-poker / mask / 非送信実務 等） | Gemini → Cursor 実装 |
+| P1 | Gemini で新規ガイド 3〜5 本（planning-poker / mask / 非送信実務 等） | Gemini → Cursor 実装 · プロンプト: [`adsense-guides-batch-p1-gemini-prompt.md`](../prompts/adsense-guides-batch-p1-gemini-prompt.md) |
 | P1 | 既存 event 系ガイドの加筆（失敗談・チェックリスト） | Gemini → Cursor |
 | P2 | 主要ツール導入文・FAQ→guides 導線の増強 | Cursor |
 | P3 | GSC インデックス（別件）· www→apex 301 | 提督 + 別スレ |
