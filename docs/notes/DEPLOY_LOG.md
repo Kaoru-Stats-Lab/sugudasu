@@ -902,24 +902,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 検索式ビルダー UI 磨き（site blur 正規化 · 詳細折りたたみ · 文言整理 · 4AI実装後レビュー反映） |
 | **change_summary** | `tools/search-query.html` · `docs/notes/SEARCH_QUERY_BUILDER_SPEC.md` |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 36/450） |
 | **deploy_count_today** | 2（P7 override · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 36/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit & Push して」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/search-query` site blur · 詳細折りたたみ） |
+| **cf_deployment_id** | `8f9aaf9`（`3ddcc42..8f9aaf9` · git push origin main） |
+| **smoke** | pending — `/search-query` site blur 置換 · 詳細折りたたみ · Googleで開く |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 002 executed（8f9aaf9 · search-query UI 磨き） |
 | 2026-07-17 | 002 approved（search-query UI 磨き · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 001 executed（d8f9e91 · search-query · match-board 定員） |
 | 2026-07-17 | 001 approved（search-query · match-board 定員 · roadmap · 提督 Commit&Push） |
