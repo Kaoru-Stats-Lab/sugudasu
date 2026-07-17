@@ -922,24 +922,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | statements 製品地図 MECE 化 · video-frame α · roadmap scheduled · 同タイミング更新ゲート |
 | **change_summary** | `data/statements-product.json` · `tools/statements.html` · `tools/video-frame.html` · `assets/video-frame.js` · `scripts/verify-statements-product.mjs` · registry/hub/shell · roadmap · changelog · DEV_TRANSPARENCY |
 | **local_build** | `pass`（`release:pages:free` · budget consume 37/450） |
 | **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 37/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Pushして」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `3c506b5`（`23534ad..3c506b5` · git push origin main） |
+| **smoke** | pending — `/statements` カテゴリ8 · ツール対応に動画コマ抜き · `/video-frame` ドロップ→PNG |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 003 executed（3c506b5 · statements MECE · video-frame） |
 | 2026-07-17 | 003 approved（statements MECE · video-frame · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 002 executed（8f9aaf9 · search-query UI 磨き） |
 | 2026-07-17 | 002 approved（search-query UI 磨き · P7 override · 提督 Commit&Push） |
