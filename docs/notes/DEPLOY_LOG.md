@@ -882,24 +882,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 検索式ビルダー α · match-board 定員スペース区切り修正 · roadmap 対象外宣言（提督 Commit&Push） |
 | **change_summary** | `tools/search-query.html` · `assets/search-query.js` · registry/hub/shell · match-board parseSlotsText · roadmap/changelog · SPEC |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 35/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 35/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P7 · 提督「たまっているものをCommit&Push」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/search-query` · `/match-board` 定員） |
+| **cf_deployment_id** | `d8f9e91`（`41ef83d..d8f9e91` · git push origin main） |
+| **smoke** | pending — `/search-query` プリセットPDF · `/match-board` スペース区切り定員 |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 001 executed（d8f9e91 · search-query · match-board 定員） |
 | 2026-07-17 | 001 approved（search-query · match-board 定員 · roadmap · 提督 Commit&Push） |
 | 2026-07-16 | 003 executed（8274572 · invoice 対象外税率バグ） |
 | 2026-07-16 | 003 approved（invoice 対象外税率バグ · No.6359 FAQ） |
