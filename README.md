@@ -32,6 +32,7 @@ python -m http.server 8080
 | [report.html](tools/report.html) | /report | SUGUDASU 議事録 | 議事録 | gamma |
 | [reverse.html](tools/reverse.html) | /reverse | SUGUDASU 逆引き | 逆引き | gamma |
 | [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
+| [search-query.html](tools/search-query.html) | /search-query | SUGUDASU 検索式ビルダー | 検索式 | alpha |
 | [table-conv.html](tools/table-conv.html) | /table-conv | SUGUDASU 表変換 | 表変換 | beta |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |

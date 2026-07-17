@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-17",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,25 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "search-query-20260717",
+      "date": "2026-07-17",
+      "type": "feature",
+      "audience": "public",
+      "title": "検索式ビルダー — filetype 付き Google 検索式を非送信で作成",
+      "body": "用途を選んでキーワードを入れるだけで filetype:pdf や site: の検索式をコピーできます。検索結果は表示せず、キーワードは SUGUDASU に送りません。",
+      "tools": ["search-query"]
+    },
+    {
+      "id": "search-query-impl-20260717",
+      "date": "2026-07-17",
+      "type": "feature",
+      "audience": "internal",
+      "title": "search-query α — registry · hub · ホスト正規化 · LocalStorage除外",
+      "body": "tools/search-query.html · assets/search-query.js · SEARCH_QUERY_BUILDER_SPEC.md v0.1",
+      "tools": ["search-query"],
+      "rollup": "search-query-20260717"
+    },
     {
       "id": "guides-adsense-value-20260715",
       "date": "2026-07-15",

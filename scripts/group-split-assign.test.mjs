@@ -29,6 +29,29 @@ const ROSTER = `氏名\t第1\t第2\t第3\n佐藤\t部署A\t部署B\t部署C\n田
 }
 
 {
+  // 半角・全角スペース区切り（本番でよくある手入力）
+  const slots = parseSlotsText(
+    '武田軍（武田信玄）　3\n織田軍（織田信長） 3\n豊臣軍（豊臣秀吉）　3\n徳川軍（徳川家康）　3'
+  );
+  assert.equal(slots.length, 4);
+  assert.equal(slots[0].name, '武田軍（武田信玄）');
+  assert.equal(slots[0].capacity, 3);
+  assert.equal(slots[1].name, '織田軍（織田信長）');
+  assert.equal(slots[1].capacity, 3);
+  assert.equal(slots[2].capacity, 3);
+  assert.equal(slots[3].capacity, 3);
+}
+
+{
+  // 全角数字・名前内スペース
+  const slots = parseSlotsText('部署 A　４\nSKU-B 5 10');
+  assert.equal(slots[0].name, '部署 A');
+  assert.equal(slots[0].capacity, 4);
+  assert.equal(slots[1].capacity, 5);
+  assert.equal(slots[1].popularity, 10);
+}
+
+{
   const slots = parseSlotsText(SLOTS);
   const nameToId = new Map(slots.map((s) => [s.name, s.id]));
   const { people } = parseAssignRosterText(ROSTER, { slotNameToId: nameToId });

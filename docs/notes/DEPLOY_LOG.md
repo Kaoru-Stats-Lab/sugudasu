@@ -876,10 +876,31 @@
 | **cf_deployment_id** | `8274572`（`389b198..8274572` · git push origin main） |
 | **smoke** | pending — `/invoice` 値引き行を「対象外」にしたときプレビュー税率が「対象外」のままか |
 
+---
+
+## DEPLOY-20260717-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 検索式ビルダー α · match-board 定員スペース区切り修正 · roadmap 対象外宣言（提督 Commit&Push） |
+| **change_summary** | `tools/search-query.html` · `assets/search-query.js` · registry/hub/shell · match-board parseSlotsText · roadmap/changelog · SPEC |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 · 提督「たまっているものをCommit&Push」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/search-query` · `/match-board` 定員） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 001 approved（search-query · match-board 定員 · roadmap · 提督 Commit&Push） |
 | 2026-07-16 | 003 executed（8274572 · invoice 対象外税率バグ） |
 | 2026-07-16 | 003 approved（invoice 対象外税率バグ · No.6359 FAQ） |
 | 2026-07-16 | 002 executed（c1f10da · ユーザー向け slug 口調除去） |

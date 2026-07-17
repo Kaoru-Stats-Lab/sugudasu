@@ -132,6 +132,19 @@
       "stage": "beta",
       "statusNote": "500行cap · 行整理 · 伏字3種 · 日付統一 · sql_in/tab_to_comma · T03"
     },
+    "search-query": {
+      "file": "search-query.html",
+      "conceptName": "検索式",
+      "productName": "SUGUDASU 検索式ビルダー",
+      "navLabel": "検索式",
+      "navIcon": "🔍",
+      "inNav": true,
+      "navOrder": 9.2,
+      "name": "検索式ビルダー（filetype / site）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "Google検索式のローカル組み立て · 非送信 · SEARCH_QUERY_BUILDER_SPEC.md"
+    },
     "table-conv": {
       "file": "table-conv.html",
       "conceptName": "表データ変換",

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="filetype:pdf や site: など Google 検索式を、演算子を覚えずにフォームから組み立て。非送信・登録不要。検索結果は表示しません。">
+    <title>検索式を組み立ててコピー — 検索式ビルダー | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="検索式を組み立ててコピー | SUGUDASU 検索式ビルダー">
+    <meta property="og:description" content="filetype:pdf · site: · -site: をフォームから生成。キーワードは SUGUDASU に送りません。">
+    <meta property="og:url" content="https://sugudasu.com/search-query">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 検索式ビルダー">
+    <meta name="twitter:description" content="演算子を覚えず Google 検索式を作成。非送信。">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"検索結果は表示しますか？","acceptedAnswer":{"@type":"Answer","text":"しません。このツールは検索式の作成だけです。コピーするか「Googleで開く」で検索エンジン側に進んでください。"}},{"@type":"Question","name":"キーワードはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"SUGUDASU のサーバーには送信しません。処理はブラウザ内だけです。「Googleで開く」を使うと、キーワードは Google に送られます。"}},{"@type":"Question","name":"複数のファイル形式を同時に指定できますか？","acceptedAnswer":{"@type":"Answer","text":"現状は1つだけ選べます。複数をスペースで並べると検索結果が0件になりやすいためです。"}},{"@type":"Question","name":"site欄にURLを貼ってもよいですか？","acceptedAnswer":{"@type":"Answer","text":"はい。https:// やパス付きでも、ドメイン部分だけを取り出して式に使います。"}},{"@type":"Question","name":"Google Dork / OSINT 用の拡張ツールと同じですか？","acceptedAnswer":{"@type":"Answer","text":"違います。ペンテスト向けの大量演算子は扱いません。PDFだけ集める・官公庁寄り・まとめ除外など、実務の調べものを30秒で終わらせる用途に絞っています。"}}]}</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 検索式ビルダー" data-sg-subtitle="filetype · site · 非送信" data-sg-tool-id="search-query"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">単機能 · 非送信 · 登録不要</p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>用途を選んでキーワードを入れる</strong>だけで、<code>filetype:pdf</code> などの Google 検索式を作ります。演算子の手打ちは不要です。セキュリティ調査用の Google Dork ツールではなく、営業・情シス・総務の調べもの向けです。</p>
+            <p class="sg-tool-lead">検索結果は表示しません。コピーして貼るか、「Googleで開く」で進んでください。</p>
+        </div>
+        <p class="sg-tool-lead sg-tool-lead--meta">キーワードは SUGUDASU のサーバーに送りません。「Googleで開く」時だけ Google に送られます。</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">用途・入力</h2>
+
+            <div>
+                <p class="text-xs font-semibold text-slate-600 mb-2">用途</p>
+                <div class="flex flex-wrap gap-2" id="sq-presets" role="radiogroup" aria-label="用途プリセット"></div>
+                <p class="text-[11px] text-slate-600 mt-2" id="sq-preset-hint" role="note"></p>
+            </div>
+
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-600">キーワード（空白区切り＝AND）</span>
+                <input id="sq-keywords" type="text" maxlength="500" class="sg-input text-sm w-full" placeholder="例: 競合A 料金表" autocomplete="off">
+            </label>
+
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-600">完全一致フレーズ（任意）</span>
+                <input id="sq-phrase" type="text" class="sg-input text-sm w-full" placeholder="例: 料金表" autocomplete="off">
+            </label>
+
+            <details class="border border-slate-200 rounded-lg bg-white">
+                <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">タイトルに含む（intitle · 任意）</summary>
+                <div class="px-3 pb-3 border-t border-slate-100 pt-2">
+                    <input id="sq-intitle" type="text" class="sg-input text-sm w-full" placeholder="例: 事例" autocomplete="off">
+                </div>
+            </details>
+
+            <fieldset class="space-y-2">
+                <legend class="text-xs font-semibold text-slate-600">ファイル種別（1つ）</legend>
+                <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-slate-800">
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="" checked> なし</label>
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="pdf"> PDF</label>
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="xlsx"> Excel</label>
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="docx"> Word</label>
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="pptx"> PowerPoint</label>
+                    <label class="inline-flex items-center gap-1"><input type="radio" name="sq-filetype" value="csv"> CSV</label>
+                </div>
+            </fieldset>
+
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-600">含めるサイト（URLでも可）</span>
+                <input id="sq-site" type="text" class="sg-input text-sm w-full font-mono" placeholder="例: go.jp または https://www.example.co.jp/path" autocomplete="off">
+                <p class="text-[11px] text-slate-500" id="sq-site-norm" aria-live="polite"></p>
+                <div class="flex flex-wrap gap-2 mt-1">
+                    <button type="button" class="text-[11px] font-semibold text-blue-700 underline sq-site-chip" data-host="go.jp">go.jp</button>
+                    <button type="button" class="text-[11px] font-semibold text-blue-700 underline sq-site-chip" data-host="lg.jp">lg.jp</button>
+                    <button type="button" class="text-[11px] font-semibold text-blue-700 underline sq-site-chip" data-host="ac.jp">ac.jp</button>
+                </div>
+            </label>
+
+            <div class="space-y-2">
+                <p class="text-xs font-semibold text-slate-600">除くサイト（最大3）</p>
+                <div id="sq-excludes" class="space-y-2"></div>
+                <button type="button" id="sq-exclude-add" class="text-[11px] font-semibold text-blue-700 underline">除外を追加</button>
+                <div id="sq-recent-excludes" class="flex flex-wrap gap-2"></div>
+            </div>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">完成した検索式</h2>
+            <p id="sq-warn" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" role="alert"></p>
+            <pre id="sq-query" class="sg-input font-mono text-sm whitespace-pre-wrap break-all min-h-[4.5rem] bg-slate-50" aria-live="polite"></pre>
+            <div class="flex flex-wrap gap-2 items-center">
+                <button type="button" id="sq-copy" class="sg-btn-primary">コピー</button>
+                <a id="sq-google" class="sg-btn-secondary" href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Googleで開く（新規タブ）</a>
+                <span id="sq-copy-toast" class="hidden text-[11px] font-bold text-emerald-800" aria-live="polite">コピーしました</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">このツールは検索式を作成します。結果の件数・順位は検索エンジン側で決まり、網羅性は保証しません。</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">「Googleで開く」を使うと、キーワードは Google に送られます。SUGUDASU のサーバーには送信しません。</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">結果が0件のときは、キーワードを減らすか、ファイル形式・サイト限定を外してみてください。</p>
+        </section>
+    </div>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">検索式ビルダーのよくある質問</h2>
+        <p class="text-xs text-slate-500 mb-4">演算子を覚えずに Google 検索式を作るツールです。検索結果の表示やスクレイピングはしません。</p>
+        <div class="sg-faq-list">
+            <details class="sg-faq" open>
+                <summary>検索結果は表示しますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>しません。</strong> このツールは検索式の作成だけです。コピーするか「Googleで開く」で検索エンジン側に進んでください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>キーワードはサーバーに送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>SUGUDASU のサーバーには送信しません。処理はブラウザ内だけです。「Googleで開く」を使うと、キーワードは Google に送られます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>複数のファイル形式を同時に指定できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>現状は<strong>1つだけ</strong>選べます。複数をスペースで並べると検索結果が0件になりやすいためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>site欄にURLを貼ってもよいですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>はい。<code>https://</code> やパス付きでも、ドメイン部分だけを取り出して式に使います。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>Google Dork / OSINT 用の拡張ツールと同じですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>違います。</strong> ペンテストや大量の演算子（<code>inurl:</code> · <code>cache:</code> 等）は扱いません。「PDFだけ集める」「官公庁寄り」「まとめ除外」など、実務の調べものを30秒で終わらせる用途プリセットに絞っています。拡張のインストールも不要です。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module">
+import {
+  SEARCH_PRESETS,
+  EXCLUDE_MAX,
+  buildSearchQuery,
+  googleSearchUrl,
+  normalizeHost,
+  loadRecentExcludes,
+  rememberExcludes,
+} from '../assets/search-query.js';
+
+const presetRoot = document.getElementById('sq-presets');
+const presetHint = document.getElementById('sq-preset-hint');
+const keywordsEl = document.getElementById('sq-keywords');
+const phraseEl = document.getElementById('sq-phrase');
+const intitleEl = document.getElementById('sq-intitle');
+const siteEl = document.getElementById('sq-site');
+const siteNormEl = document.getElementById('sq-site-norm');
+const excludesRoot = document.getElementById('sq-excludes');
+const recentRoot = document.getElementById('sq-recent-excludes');
+const queryEl = document.getElementById('sq-query');
+const warnEl = document.getElementById('sq-warn');
+const copyBtn = document.getElementById('sq-copy');
+const googleLink = document.getElementById('sq-google');
+const toastEl = document.getElementById('sq-copy-toast');
+const addExcludeBtn = document.getElementById('sq-exclude-add');
+
+/** @type {keyof typeof SEARCH_PRESETS} */
+let activePreset = 'pdf_gather';
+
+function filetypeValue() {
+  const el = document.querySelector('input[name="sq-filetype"]:checked');
+  return el ? el.value : '';
+}
+
+function setFiletype(value) {
+  const el = document.querySelector(`input[name="sq-filetype"][value="${value}"]`)
+    || document.querySelector('input[name="sq-filetype"][value=""]');
+  if (el) el.checked = true;
+}
+
+function excludeInputs() {
+  return [...excludesRoot.querySelectorAll('input.sq-exclude-input')];
+}
+
+function readExcludes() {
+  return excludeInputs().map((el) => el.value);
+}
+
+function addExcludeRow(value = '') {
+  if (excludeInputs().length >= EXCLUDE_MAX) return;
+  const row = document.createElement('div');
+  row.className = 'flex gap-2 items-center';
+  row.innerHTML = `<input type="text" class="sg-input text-sm font-mono flex-1 sq-exclude-input" placeholder="例: example.com" autocomplete="off">
+    <button type="button" class="text-[11px] font-semibold text-slate-500 underline sq-exclude-remove">削除</button>`;
+  const input = row.querySelector('input');
+  input.value = value;
+  input.addEventListener('input', refresh);
+  row.querySelector('.sq-exclude-remove').addEventListener('click', () => {
+    row.remove();
+    syncExcludeAdd();
+    refresh();
+  });
+  excludesRoot.appendChild(row);
+  syncExcludeAdd();
+}
+
+function syncExcludeAdd() {
+  addExcludeBtn.classList.toggle('hidden', excludeInputs().length >= EXCLUDE_MAX);
+}
+
+function applyPreset(id) {
+  activePreset = id;
+  const p = SEARCH_PRESETS[id];
+  presetHint.textContent = p.hint;
+  setFiletype(p.filetype);
+  siteEl.value = p.site;
+  [...presetRoot.querySelectorAll('button')].forEach((btn) => {
+    const on = btn.dataset.preset === id;
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    btn.className = on
+      ? 'text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-600 bg-emerald-50 text-emerald-900'
+      : 'text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50';
+  });
+  refresh();
+}
+
+function renderPresets() {
+  presetRoot.innerHTML = '';
+  for (const [id, p] of Object.entries(SEARCH_PRESETS)) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.role = 'radio';
+    btn.dataset.preset = id;
+    btn.textContent = p.label;
+    btn.addEventListener('click', () => applyPreset(/** @type {any} */ (id)));
+    presetRoot.appendChild(btn);
+  }
+}
+
+function renderRecent() {
+  recentRoot.innerHTML = '';
+  const recent = loadRecentExcludes();
+  if (!recent.length) return;
+  const label = document.createElement('span');
+  label.className = 'text-[11px] text-slate-500 w-full';
+  label.textContent = '直近の除外:';
+  recentRoot.appendChild(label);
+  for (const host of recent.slice(0, 5)) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'text-[11px] font-semibold text-blue-700 underline';
+    btn.textContent = host;
+    btn.addEventListener('click', () => {
+      const empty = excludeInputs().find((el) => !el.value.trim());
+      if (empty) empty.value = host;
+      else if (excludeInputs().length < EXCLUDE_MAX) addExcludeRow(host);
+      refresh();
+    });
+    recentRoot.appendChild(btn);
+  }
+}
+
+function refresh() {
+  const siteN = normalizeHost(siteEl.value);
+  siteNormEl.textContent = siteEl.value.trim() && siteN.host
+    ? `→ ${siteN.host} に正規化`
+    : (siteN.warning || '');
+
+  const built = buildSearchQuery({
+    keywords: keywordsEl.value,
+    phrase: phraseEl.value,
+    filetype: filetypeValue(),
+    site: siteEl.value,
+    excludes: readExcludes(),
+    intitle: intitleEl.value,
+  });
+
+  queryEl.textContent = built.query || '（キーワードを入力してください）';
+  const msgs = [];
+  if (built.conflict) msgs.push('含めるサイトと除くサイトが同じです。どちらかを外してください。');
+  if (built.siteWarning) msgs.push(built.siteWarning);
+  for (const w of built.excludeWarnings) msgs.push(w);
+  warnEl.textContent = msgs.join(' ');
+  warnEl.classList.toggle('hidden', !msgs.length);
+
+  if (built.query) {
+    googleLink.href = googleSearchUrl(built.query);
+    googleLink.classList.remove('pointer-events-none', 'opacity-50');
+  } else {
+    googleLink.href = 'https://www.google.com/';
+    googleLink.classList.add('pointer-events-none', 'opacity-50');
+  }
+}
+
+copyBtn.addEventListener('click', async () => {
+  const built = buildSearchQuery({
+    keywords: keywordsEl.value,
+    phrase: phraseEl.value,
+    filetype: filetypeValue(),
+    site: siteEl.value,
+    excludes: readExcludes(),
+    intitle: intitleEl.value,
+  });
+  if (!built.query) return;
+  try {
+    await navigator.clipboard.writeText(built.query);
+  } catch {
+    return;
+  }
+  const hosts = [];
+  for (const raw of readExcludes()) {
+    const n = normalizeHost(raw);
+    if (n.host) hosts.push(n.host);
+  }
+  rememberExcludes(hosts);
+  renderRecent();
+  toastEl.classList.remove('hidden');
+  queryEl.classList.add('ring-2', 'ring-emerald-400');
+  window.setTimeout(() => {
+    toastEl.classList.add('hidden');
+    queryEl.classList.remove('ring-2', 'ring-emerald-400');
+  }, 1200);
+});
+
+addExcludeBtn.addEventListener('click', () => {
+  addExcludeRow();
+  refresh();
+});
+
+document.querySelectorAll('.sq-site-chip').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    siteEl.value = btn.getAttribute('data-host') || '';
+    refresh();
+  });
+});
+
+[keywordsEl, phraseEl, intitleEl, siteEl].forEach((el) => {
+  el.addEventListener('input', refresh);
+});
+document.querySelectorAll('input[name="sq-filetype"]').forEach((el) => {
+  el.addEventListener('change', refresh);
+});
+
+googleLink.addEventListener('click', () => {
+  const hosts = [];
+  for (const raw of readExcludes()) {
+    const n = normalizeHost(raw);
+    if (n.host) hosts.push(n.host);
+  }
+  if (hosts.length) {
+    rememberExcludes(hosts);
+    renderRecent();
+  }
+});
+
+renderPresets();
+addExcludeRow();
+renderRecent();
+applyPreset('pdf_gather');
+</script>
+</body>
+</html>

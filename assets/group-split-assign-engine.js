@@ -51,6 +51,46 @@ export const ASSIGN_PRESETS = {
 const POOL_ID = '__pool__';
 
 /**
+ * 全角数字 → 半角（定員パース用）
+ * @param {string} s
+ */
+function toHalfWidthDigits(s) {
+  return String(s || '').replace(/[０-９]/g, (ch) =>
+    String.fromCharCode(ch.charCodeAt(0) - 0xfee0)
+  );
+}
+
+/**
+ * 枠 1 行を名前・定員・人気に分解。
+ * タブ/カンマ優先。それ以外はスペース（半角・全角）区切りで、末尾の数値を定員（・人気）にする。
+ * @param {string} line
+ * @returns {{ name: string, capacity: number, popularityRaw: string|null }}
+ */
+function splitSlotLine(line) {
+  const raw = toHalfWidthDigits(line.trim());
+  if (/[\t,]/.test(raw)) {
+    const parts = raw.split(/\t|,/).map((p) => p.trim()).filter(Boolean);
+    return {
+      name: parts[0] || '',
+      capacity: Math.max(0, Number(parts[1]) || 0),
+      popularityRaw: parts[2] != null && parts[2] !== '' ? parts[2] : null,
+    };
+  }
+  // DECISION: スペース区切りも許容（「武田軍（武田信玄）　3」）。末尾数値を定員にし、名前内スペースは残す。
+  const tokens = raw.split(/[\s\u3000]+/).filter(Boolean);
+  /** @type {string[]} */
+  const nums = [];
+  while (tokens.length > 1 && /^-?\d+(\.\d+)?$/.test(tokens[tokens.length - 1])) {
+    nums.unshift(/** @type {string} */ (tokens.pop()));
+  }
+  return {
+    name: tokens.join(' '),
+    capacity: nums.length >= 1 ? Math.max(0, Number(nums[0]) || 0) : 0,
+    popularityRaw: nums.length >= 2 ? nums[1] : null,
+  };
+}
+
+/**
  * @param {string} text
  * @returns {{ id: string, name: string, capacity: number, popularity: number }[]}
  */
@@ -63,12 +103,11 @@ export function parseSlotsText(text) {
   const slots = [];
   const seen = new Set();
   lines.forEach((line, i) => {
-    const parts = line.split(/\t|,/).map((p) => p.trim()).filter(Boolean);
-    if (!parts.length) return;
-    const name = parts[0];
-    const capacity = Math.max(0, Number(parts[1]) || 0);
+    const { name, capacity, popularityRaw } = splitSlotLine(line);
+    if (!name) return;
     // DECISION: 第3列を人気スコア（高いほど人気）として任意入力。マーケ棚割フィルタ用。
-    const popularity = parts[2] != null && parts[2] !== '' ? Number(parts[2]) || 0 : slots.length + 1;
+    const popularity =
+      popularityRaw != null ? Number(popularityRaw) || 0 : slots.length + 1;
     const baseId = slugId(name) || `slot-${i + 1}`;
     let id = baseId;
     let n = 2;
