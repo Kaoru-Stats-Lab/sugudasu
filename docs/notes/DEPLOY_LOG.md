@@ -962,24 +962,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 非送信主張の是正（入力データ vs テレメトリ）· 共通 privacy-badge · statements GA4/AdSense/Fonts 開示 · statements productName hotfix 統合 · diff 空白クレンジング任意オプション |
 | **change_summary** | `tools/statements.html` · `assets/sugudasu-shell.js` · 各 tools HTML · guides · `DATA_PRIVACY_CLAIM_POLICY.md` · `DESIGN_GUIDELINE.md` · `data/statements-product.json` · `diff.html` / `diff-app.js` · changelog · README |
 | **local_build** | `pass`（`release:pages:free` · budget consume 38/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 38/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P8（core）確認済み · 提督最終承認（フェーズ1〜3） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `c290f81`（`4c3b48a..c290f81` · git push origin main） |
+| **smoke** | pending — `/statements#telemetry-disclosure` · `#verify-devtools` · `/normalize` privacy-badge · `/diff` 空白無視 |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 001 executed（c290f81 · 非送信主張是正 · privacy-badge · telemetry 開示） |
 | 2026-07-18 | 001 approved（非送信主張是正 · privacy-badge · telemetry 開示 · 004 統合） |
 | 2026-07-17 | 004 aborted（statements productName hotfix · 20260718-001 に統合） |
 | 2026-07-17 | 004 approved（statements productName hotfix · P7 override） |
