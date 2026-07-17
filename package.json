@@ -22,6 +22,7 @@
     "validate:ogp": "node scripts/verify-ogp.mjs",
     "validate:statements-product": "node scripts/verify-statements-product.mjs",
     "sync:statements-product-date": "node scripts/verify-statements-product.mjs --sync-date",
+    "sync:statements-product-names": "node scripts/sync-statements-product-names.mjs",
     "validate:adsense": "node scripts/verify-adsense-pages.mjs",
     "generate:favicons": "node scripts/generate-favicons.mjs",
     "guard:pages-free": "node scripts/verify-pages-free-plan.mjs",

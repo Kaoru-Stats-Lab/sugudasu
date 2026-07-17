@@ -936,10 +936,53 @@
 | **cf_deployment_id** | `3c506b5`（`23534ad..3c506b5` · git push origin main） |
 | **smoke** | pending — `/statements` カテゴリ8 · ツール対応に動画コマ抜き · `/video-frame` ドロップ→PNG |
 
+---
+
+## DEPLOY-20260717-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `aborted` |
+| **target** | `core` |
+| **reason** | statements ツール名が slug（video-frame）表示されていた hotfix · productName を JSON に埋め込み |
+| **change_summary** | `data/statements-product.json` · `tools/statements.html` · `scripts/sync-statements-product-names.mjs` · verify |
+| **local_build** | skip（未 release · **DEPLOY-20260718-001 に統合**） |
+| **deploy_count_today** | — |
+| **pages_build_budget_after** | — |
+| **gates** | aborted · 同梱先 20260718-001 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | — |
+| **smoke** | — |
+
+---
+
+## DEPLOY-20260718-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 非送信主張の是正（入力データ vs テレメトリ）· 共通 privacy-badge · statements GA4/AdSense/Fonts 開示 · statements productName hotfix 統合 · diff 空白クレンジング任意オプション |
+| **change_summary** | `tools/statements.html` · `assets/sugudasu-shell.js` · 各 tools HTML · guides · `DATA_PRIVACY_CLAIM_POLICY.md` · `DESIGN_GUIDELINE.md` · `data/statements-product.json` · `diff.html` / `diff-app.js` · changelog · README |
+| **local_build** | `pass`（`release:pages:free` · budget consume 38/450） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8（core）確認済み · 提督最終承認（フェーズ1〜3） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 001 approved（非送信主張是正 · privacy-badge · telemetry 開示 · 004 統合） |
+| 2026-07-17 | 004 aborted（statements productName hotfix · 20260718-001 に統合） |
+| 2026-07-17 | 004 approved（statements productName hotfix · P7 override） |
 | 2026-07-17 | 003 executed（3c506b5 · statements MECE · video-frame） |
 | 2026-07-17 | 003 approved（statements MECE · video-frame · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 002 executed（8f9aaf9 · search-query UI 磨き） |

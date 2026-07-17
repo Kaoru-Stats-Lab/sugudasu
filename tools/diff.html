@@ -38,9 +38,7 @@
         <p class="text-xs text-slate-600 leading-relaxed">
             すべての違いを並べるのではなく、数字・日付・URL・「必須／推奨」など<strong>見逃すとまずい変更</strong>から確認します。登録不要・保存なし・データはサーバーに送りません。
         </p>
-        <p class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-            入力内容はサーバーへ送信しません。タブを閉じると内容は消えます。
-        </p>
+        <p data-sg-privacy-badge data-subject="入力内容" data-extra="タブを閉じると内容は消えます" class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
         <p id="diff-warning" class="text-[11px] text-red-700"></p>
     </section>
 
@@ -59,6 +57,11 @@
         <!-- DECISION: コピーはSlack/メールでの共有運用、印刷は紙での回覧・押印運用を想定して用意。
              社内Wikiへの転記や監査ログ保存は現状スコープ外。 -->
         <button id="diff-run" type="button" class="sg-btn-primary text-sm">危険な変更を確認</button>
+        <label class="inline-flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer select-none">
+            <input type="checkbox" id="diff-cleanse-ws" class="rounded border-slate-300">
+            <span>全角・行末スペースを無視して比較</span>
+        </label>
+        <span class="text-[11px] text-slate-500">入力欄の文字は変わりません</span>
         <button id="diff-copy" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">結果をコピー</button>
         <button id="diff-print" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">印刷 / PDF</button>
         <button id="diff-layout-side" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">左右</button>
@@ -137,6 +140,12 @@
                 <summary>入力中に自動で解析されないのはなぜですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>長い文章で負荷が高くなるため、入力のたびに動かさず「危険な変更を確認」ボタンで明示実行する設計です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>「全角・行末スペースを無視」すると何が消えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>比較のときだけ、全角スペース・一部の特殊空白・タブ・行末の余分な半角スペースの違いを揃えます。<strong>入力欄の文字は変わりません。</strong> 数字・日付・文言の違いは残ります。貼り戻す前に本文自体を整えたい場合は <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> を使ってください。</p>
                 </div>
             </details>
         </div>

@@ -1,6 +1,6 @@
 ﻿# SUGUDASU（すぐだす）
 
-単一ドメイン・1ファイル完結の無料ビジネスツール8本＋法務ページ3本。ブラウザ内だけで完結し、入力データは外部に送信しません。
+単一ドメインの無料ビジネスツール群。入力データは処理目的で外部サーバーに送信しません（ページ配信・解析・フォント等のテレメトリ通信は別。詳細は [SUGUDASU の約束](https://sugudasu.com/statements) · [主張ポリシー](docs/notes/DATA_PRIVACY_CLAIM_POLICY.md)）。
 
 `asl-dashboard` とは別フォルダ／別デプロイを想定しています。
 
@@ -97,11 +97,18 @@ python -m http.server 8080
 
 `#sg-chrome-top` に `data-sg-title`（必須）· `data-sg-print` · `data-sg-landscape` を付与。詳細は `docs/notes/CHROME_HEADER_GUARDRAILS.md`。
 
+### 新規ツール必須（入力データ非送信）
+
+- 浅い安心バッジは **共通コンポーネント経由のみ**（承認後実装 · ハードコード禁止）。核文言: `{対象物}はサーバーに送信しません`
+- `通信ゼロ` · `外部送信ゼロ` · 「Network でリクエストが出ない」など **通信全般の不在** を主張しない
+- 正本: [`docs/notes/DATA_PRIVACY_CLAIM_POLICY.md`](docs/notes/DATA_PRIVACY_CLAIM_POLICY.md) · デザイン規約 §3.6b
+
 ## ドキュメント
 
 | ファイル | 内容 |
 |----------|------|
 | [docs/DESIGN_GUIDELINE.md](docs/DESIGN_GUIDELINE.md) | トンマナ・印刷・コンポーネント規約（実装の正本） |
+| [docs/notes/DATA_PRIVACY_CLAIM_POLICY.md](docs/notes/DATA_PRIVACY_CLAIM_POLICY.md) | **入力データ非送信の主張 SSOT**（通信ゼロ禁止 · バッジ核 · Sync ガードレール） |
 | [docs/PRODUCT_UX_AUDIT.md](docs/PRODUCT_UX_AUDIT.md) | **PdM/UX 監査（STEP1〜5・チェックリスト）** |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | 運用コマンド早見表（何をする時に何を実行するか） |
 | [docs/notes/DEPLOY_CLOUDFLARE_PAGES.md](docs/notes/DEPLOY_CLOUDFLARE_PAGES.md) | **本番デプロイ SSOT（Agent 必須 · CF Pages · トラブル表）** |

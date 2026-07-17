@@ -12,8 +12,16 @@
         "altLabel": "クラウド請求 SaaS",
         "oursLabel": "SUGUDASU 帳票",
         "rows": [
-          { "aspect": "データ", "alt": "クラウド · チーム共有", "ours": "下書き JSON · ブラウザ内" },
-          { "aspect": "向く人", "alt": "継続請求 · 経理連携", "ours": "フリーランス · 単発の印刷 PDF" }
+          {
+            "aspect": "データ",
+            "alt": "クラウド · チーム共有",
+            "ours": "下書き JSON · ブラウザ内"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "継続請求 · 経理連携",
+            "ours": "フリーランス · 単発の印刷 PDF"
+          }
         ]
       }
     },
@@ -26,8 +34,16 @@
         "altLabel": "勤怠 · シフト SaaS",
         "oursLabel": "SUGUDASU シフト / 時給計算",
         "rows": [
-          { "aspect": "主目的", "alt": "打刻 · 申請 · 給与連携", "ours": "表の作成 · 印刷 · 時間の合計" },
-          { "aspect": "向く人", "alt": "多店舗 · 人事労務", "ours": "店長 · 単店の週次シフト" }
+          {
+            "aspect": "主目的",
+            "alt": "打刻 · 申請 · 給与連携",
+            "ours": "表の作成 · 印刷 · 時間の合計"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "多店舗 · 人事労務",
+            "ours": "店長 · 単店の週次シフト"
+          }
         ]
       }
     },
@@ -40,8 +56,16 @@
         "altLabel": "オンライン整形 · 変換サイト",
         "oursLabel": "SUGUDASU テキスト系",
         "rows": [
-          { "aspect": "データ", "alt": "サーバーへ送信されがち", "ours": "ブラウザ内で整形 · コピー" },
-          { "aspect": "向く人", "alt": "巨大バッチ · API 連携", "ours": "社外秘テキストを貼りたくない現場" }
+          {
+            "aspect": "データ",
+            "alt": "サーバーへ送信されがち",
+            "ours": "ブラウザ内で整形 · コピー"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "巨大バッチ · API 連携",
+            "ours": "社外秘テキストを貼りたくない現場"
+          }
         ]
       }
     },
@@ -54,8 +78,16 @@
         "altLabel": "アップロード型変換",
         "oursLabel": "SUGUDASU メディア系",
         "rows": [
-          { "aspect": "データ", "alt": "運営サーバーへ送信", "ours": "Canvas / 端末内のみ" },
-          { "aspect": "向く人", "alt": "大量バッチ · ZIP", "ours": "社内スクショ · 操作動画の1コマ" }
+          {
+            "aspect": "データ",
+            "alt": "運営サーバーへ送信",
+            "ours": "Canvas / 端末内のみ"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "大量バッチ · ZIP",
+            "ours": "社内スクショ · 操作動画の1コマ"
+          }
         ]
       }
     },
@@ -68,9 +100,21 @@
         "altLabel": "投影ルーレット / 班分けSaaS / 統制型懸賞",
         "oursLabel": "SUGUDASU 配属 · 抽選",
         "rows": [
-          { "aspect": "主目的", "alt": "演出 · 組織連携 · 監査ログ", "ours": "事務 · 共有 · 説明できる結果" },
-          { "aspect": "名簿", "alt": "送信 · サーバー保存がありうる", "ours": "ブラウザ内を設計中心" },
-          { "aspect": "向く人", "alt": "MC · IT部門 · 法務監査", "ours": "研修幹事 · キャンペーン担当" }
+          {
+            "aspect": "主目的",
+            "alt": "演出 · 組織連携 · 監査ログ",
+            "ours": "事務 · 共有 · 説明できる結果"
+          },
+          {
+            "aspect": "名簿",
+            "alt": "送信 · サーバー保存がありうる",
+            "ours": "ブラウザ内を設計中心"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "MC · IT部門 · 法務監査",
+            "ours": "研修幹事 · キャンペーン担当"
+          }
         ]
       }
     },
@@ -83,8 +127,16 @@
         "altLabel": "専用進行アプリ · 会計アプリ",
         "oursLabel": "SUGUDASU 当日運営",
         "rows": [
-          { "aspect": "導入", "alt": "アカウント · 端末配布", "ours": "URL を開いてすぐ" },
-          { "aspect": "向く人", "alt": "常設オペレーション", "ours": "単発イベント · 懇親会" }
+          {
+            "aspect": "導入",
+            "alt": "アカウント · 端末配布",
+            "ours": "URL を開いてすぐ"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "常設オペレーション",
+            "ours": "単発イベント · 懇親会"
+          }
         ]
       }
     },
@@ -97,8 +149,16 @@
         "altLabel": "エンタープライズ TDM",
         "oursLabel": "SUGUDASU テストデータ",
         "rows": [
-          { "aspect": "対象", "alt": "本番マスキング · SQL シード", "ours": "架空データの生成のみ" },
-          { "aspect": "向く人", "alt": "基盤・セキュリティ部門", "ours": "閉域でダミー CSV が欲しい開発・検証" }
+          {
+            "aspect": "対象",
+            "alt": "本番マスキング · SQL シード",
+            "ours": "架空データの生成のみ"
+          },
+          {
+            "aspect": "向く人",
+            "alt": "基盤・セキュリティ部門",
+            "ours": "閉域でダミー CSV が欲しい開発・検証"
+          }
         ]
       }
     },
@@ -111,39 +171,221 @@
     }
   ],
   "tools": [
-    { "toolId": "invoice", "categoryId": "docs", "inputHandling": "帳票下書き · 端末内", "promiseNote": "Desktop-first · JSON下書き · 印刷 PDF" },
-    { "toolId": "stamp", "categoryId": "docs", "inputHandling": "印影生成 · 端末内", "promiseNote": "請求書へ印影を渡す · 角印はアップロード可" },
-    { "toolId": "receipt", "categoryId": "docs", "inputHandling": "金額 · 端末内", "promiseNote": "手取り逆引き · 印刷" },
-    { "toolId": "label", "categoryId": "docs", "inputHandling": "宛名リスト · 端末内", "promiseNote": "一括貼付 · 印刷" },
-
-    { "toolId": "shift", "categoryId": "staffing", "inputHandling": "シフト表 · 端末内", "promiseNote": "印刷 · 公平性表示 · 勤怠打刻ではない" },
-    { "toolId": "time-calc", "categoryId": "staffing", "inputHandling": "勤務時間 · 端末内", "promiseNote": "合計 · 時給換算 · 給与計算ではない" },
-
-    { "toolId": "normalize", "categoryId": "text", "inputHandling": "テキスト · 端末内", "promiseNote": "500行 cap · 外部コンバータに貼らない代替" },
-    { "toolId": "table-conv", "categoryId": "text", "inputHandling": "表 · CSV · 端末内", "promiseNote": "Excel貼付→MD/JSON/TSV · 非送信" },
-    { "toolId": "search-query", "categoryId": "text", "inputHandling": "キーワード · 端末内", "promiseNote": "検索式の組み立てのみ · 結果は表示しない" },
-    { "toolId": "diff", "categoryId": "text", "inputHandling": "2面テキスト · 端末内", "promiseNote": "差分表示 · 保存なし · 非送信" },
-    { "toolId": "reverse", "categoryId": "text", "inputHandling": "用語 · 端末内", "promiseNote": "逆引き辞典 · ブラウザ内" },
-    { "toolId": "report", "categoryId": "text", "inputHandling": "メモ · 端末内", "promiseNote": "下書き整形 · コピー" },
-
-    { "toolId": "webp-to-jpg", "categoryId": "media", "inputHandling": "画像 · 端末内", "promiseNote": "運営サーバーへ画像を送らない変換" },
-    { "toolId": "video-frame", "categoryId": "media", "inputHandling": "動画 · 端末内 Blob", "promiseNote": "操作動画から PNG 1枚 · GIF化なし" },
-    { "toolId": "mask", "categoryId": "media", "inputHandling": "画像 · Canvas 端末内", "promiseNote": "マニュアル用黒塗り · アップロード型と差別化" },
-    { "toolId": "image-trim", "categoryId": "media", "inputHandling": "画像 · 端末内", "promiseNote": "指定サイズちょうどへ切り出し" },
-
-    { "toolId": "group-split", "categoryId": "people", "inputHandling": "名簿 · 端末内", "promiseNote": "Copy-first · シード再現 · Zoom API なし" },
-    { "toolId": "match-board", "categoryId": "people", "inputHandling": "希望 · 定員 · 端末内", "promiseNote": "ドラフト会議 · JSON再開 · 非送信" },
-    { "toolId": "planning-poker", "categoryId": "people", "inputHandling": "見積カード · 端末内", "promiseNote": "同時 Reveal · 多人リアルタイム同期は別" },
-    { "toolId": "fair-draw", "categoryId": "people", "inputHandling": "名簿 · 端末内", "promiseNote": "証跡 PDF · 統制システムではない" },
-
-    { "toolId": "timeline", "categoryId": "ops", "inputHandling": "進行表 · 端末内", "promiseNote": "時刻連動 · TSVコピー" },
-    { "toolId": "warikan", "categoryId": "ops", "inputHandling": "金額 · 端末内", "promiseNote": "清算文コピー · 履歴のサーバー保存なし" },
-    { "toolId": "present", "categoryId": "ops", "inputHandling": "条件 · 端末内", "promiseNote": "ギフト候補の提案 · 購入は外部" },
-    { "toolId": "link-qr", "categoryId": "ops", "inputHandling": "URL一覧 · 端末内", "promiseNote": "fragment エンコード · サーバー非保存" },
-    { "toolId": "qr-reader", "categoryId": "ops", "inputHandling": "カメラ/画像 · 端末内", "promiseNote": "読取のみ · サーバー非送信" },
-
-    { "toolId": "test-data", "categoryId": "devtest", "inputHandling": "架空データ生成 · 端末内", "promiseNote": "本番投入非対応 · マイナンバー/実口座なし" },
-
-    { "toolId": "sns", "categoryId": "creative", "inputHandling": "文字列 · 端末内", "promiseNote": "デコ文字 · 業務保管ではない" }
+    {
+      "toolId": "invoice",
+      "categoryId": "docs",
+      "productName": "SUGUDASU 請求書",
+      "file": "invoice.html",
+      "inputHandling": "帳票下書き · 端末内",
+      "promiseNote": "Desktop-first · JSON下書き · 印刷 PDF"
+    },
+    {
+      "toolId": "stamp",
+      "categoryId": "docs",
+      "productName": "SUGUDASU 電子印鑑",
+      "file": "stamp.html",
+      "inputHandling": "印影生成 · 端末内",
+      "promiseNote": "請求書へ印影を渡す · 角印はアップロード可"
+    },
+    {
+      "toolId": "receipt",
+      "categoryId": "docs",
+      "productName": "SUGUDASU 領収書",
+      "file": "receipt.html",
+      "inputHandling": "金額 · 端末内",
+      "promiseNote": "手取り逆引き · 印刷"
+    },
+    {
+      "toolId": "label",
+      "categoryId": "docs",
+      "productName": "SUGUDASU ラベル",
+      "file": "label.html",
+      "inputHandling": "宛名リスト · 端末内",
+      "promiseNote": "一括貼付 · 印刷"
+    },
+    {
+      "toolId": "shift",
+      "categoryId": "staffing",
+      "productName": "SUGUDASU シフト",
+      "file": "shift.html",
+      "inputHandling": "シフト表 · 端末内",
+      "promiseNote": "印刷 · 公平性表示 · 勤怠打刻ではない"
+    },
+    {
+      "toolId": "time-calc",
+      "categoryId": "staffing",
+      "productName": "SUGUDASU 時給計算",
+      "file": "time-calc.html",
+      "inputHandling": "勤務時間 · 端末内",
+      "promiseNote": "合計 · 時給換算 · 給与計算ではない"
+    },
+    {
+      "toolId": "normalize",
+      "categoryId": "text",
+      "productName": "SUGUDASU 全角半角整え",
+      "file": "normalize.html",
+      "inputHandling": "テキスト · 端末内",
+      "promiseNote": "500行 cap · 外部コンバータに貼らない代替"
+    },
+    {
+      "toolId": "table-conv",
+      "categoryId": "text",
+      "productName": "SUGUDASU 表変換",
+      "file": "table-conv.html",
+      "inputHandling": "表 · CSV · 端末内",
+      "promiseNote": "Excel貼付→MD/JSON/TSV · 非送信"
+    },
+    {
+      "toolId": "search-query",
+      "categoryId": "text",
+      "productName": "SUGUDASU 検索式ビルダー",
+      "file": "search-query.html",
+      "inputHandling": "キーワード · 端末内",
+      "promiseNote": "検索式の組み立てのみ · 結果は表示しない"
+    },
+    {
+      "toolId": "diff",
+      "categoryId": "text",
+      "productName": "SUGUDASU 差分チェック",
+      "file": "diff.html",
+      "inputHandling": "2面テキスト · 端末内",
+      "promiseNote": "差分表示 · 保存なし · 非送信"
+    },
+    {
+      "toolId": "reverse",
+      "categoryId": "text",
+      "productName": "SUGUDASU 逆引き",
+      "file": "reverse.html",
+      "inputHandling": "用語 · 端末内",
+      "promiseNote": "逆引き辞典 · ブラウザ内"
+    },
+    {
+      "toolId": "report",
+      "categoryId": "text",
+      "productName": "SUGUDASU 議事録",
+      "file": "report.html",
+      "inputHandling": "メモ · 端末内",
+      "promiseNote": "下書き整形 · コピー"
+    },
+    {
+      "toolId": "webp-to-jpg",
+      "categoryId": "media",
+      "productName": "SUGUDASU WebP変換",
+      "file": "webp-to-jpg.html",
+      "inputHandling": "画像 · 端末内",
+      "promiseNote": "運営サーバーへ画像を送らない変換"
+    },
+    {
+      "toolId": "video-frame",
+      "categoryId": "media",
+      "productName": "SUGUDASU 動画コマ抜き",
+      "file": "video-frame.html",
+      "inputHandling": "動画 · 端末内 Blob",
+      "promiseNote": "操作動画から PNG 1枚 · GIF化なし"
+    },
+    {
+      "toolId": "mask",
+      "categoryId": "media",
+      "productName": "SUGUDASU マスク",
+      "file": "mask.html",
+      "inputHandling": "画像 · Canvas 端末内",
+      "promiseNote": "マニュアル用黒塗り · アップロード型と差別化"
+    },
+    {
+      "toolId": "image-trim",
+      "categoryId": "media",
+      "productName": "SUGUDASU 画像切り出し",
+      "file": "image-trim.html",
+      "inputHandling": "画像 · 端末内",
+      "promiseNote": "指定サイズちょうどへ切り出し"
+    },
+    {
+      "toolId": "group-split",
+      "categoryId": "people",
+      "productName": "SUGUDASU 班分け",
+      "file": "group-split.html",
+      "inputHandling": "名簿 · 端末内",
+      "promiseNote": "Copy-first · シード再現 · Zoom API なし"
+    },
+    {
+      "toolId": "match-board",
+      "categoryId": "people",
+      "productName": "SUGUDASU ドラフト会議",
+      "file": "match-board.html",
+      "inputHandling": "希望 · 定員 · 端末内",
+      "promiseNote": "ドラフト会議 · JSON再開 · 非送信"
+    },
+    {
+      "toolId": "planning-poker",
+      "categoryId": "people",
+      "productName": "SUGUDASU 見積会議",
+      "file": "planning-poker.html",
+      "inputHandling": "見積カード · 端末内",
+      "promiseNote": "同時 Reveal · 多人リアルタイム同期は別"
+    },
+    {
+      "toolId": "fair-draw",
+      "categoryId": "people",
+      "productName": "SUGUDASU 抽選",
+      "file": "fair-draw.html",
+      "inputHandling": "名簿 · 端末内",
+      "promiseNote": "証跡 PDF · 統制システムではない"
+    },
+    {
+      "toolId": "timeline",
+      "categoryId": "ops",
+      "productName": "SUGUDASU イベント進行",
+      "file": "timeline.html",
+      "inputHandling": "進行表 · 端末内",
+      "promiseNote": "時刻連動 · TSVコピー"
+    },
+    {
+      "toolId": "warikan",
+      "categoryId": "ops",
+      "productName": "SUGUDASU 割り勘",
+      "file": "warikan.html",
+      "inputHandling": "金額 · 端末内",
+      "promiseNote": "清算文コピー · 履歴のサーバー保存なし"
+    },
+    {
+      "toolId": "present",
+      "categoryId": "ops",
+      "productName": "SUGUDASU ギフト",
+      "file": "present.html",
+      "inputHandling": "条件 · 端末内",
+      "promiseNote": "ギフト候補の提案 · 購入は外部"
+    },
+    {
+      "toolId": "link-qr",
+      "categoryId": "ops",
+      "productName": "SUGUDASU リンク集QR",
+      "file": "link-qr.html",
+      "inputHandling": "URL一覧 · 端末内",
+      "promiseNote": "fragment エンコード · サーバー非保存"
+    },
+    {
+      "toolId": "qr-reader",
+      "categoryId": "ops",
+      "productName": "SUGUDASU QR読取",
+      "file": "qr-reader.html",
+      "inputHandling": "カメラ/画像 · 端末内",
+      "promiseNote": "読取のみ · サーバー非送信"
+    },
+    {
+      "toolId": "test-data",
+      "categoryId": "devtest",
+      "productName": "SUGUDASU テストデータ",
+      "file": "test-data.html",
+      "inputHandling": "架空データ生成 · 端末内",
+      "promiseNote": "本番投入非対応 · マイナンバー/実口座なし"
+    },
+    {
+      "toolId": "sns",
+      "categoryId": "creative",
+      "productName": "SUGUDASU SNS",
+      "file": "sns.html",
+      "inputHandling": "文字列 · 端末内",
+      "promiseNote": "デコ文字 · 業務保管ではない"
+    }
   ]
 }

@@ -30,7 +30,7 @@
 
 <main class="sg-main-shell flex-1 space-y-4">
     <header class="sg-tool-intro no-print space-y-2">
-        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">ブラウザ内完結 · 景品情報は外部に送信しません</p>
+        <p data-sg-privacy-badge data-subject="景品情報" data-extra="登録不要" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
                 アマギフや自社商品を配る前に、<strong>景表法の上限を超えていないか</strong>を1分でセルフチェック。法律用語ではなく「キャンペーンの型」で選べます。
@@ -482,7 +482,7 @@
                 <summary>監査PDFには何が載りますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
                     <p>実施日時・景品名・金額・当選人数・景品チェック結果・抽選方式・シード・名簿の指紋・当選者名など。</p>
-                    <p>幹事が<strong>そのまま上司・法務・監査に渡す</strong>ことを想定した、説明用の1枚です。ローカル生成で<strong>外部送信はありません</strong>。</p>
+                    <p>幹事が<strong>そのまま上司・法務・監査に渡す</strong>ことを想定した、説明用の1枚です。ブラウザ内で生成し、<strong>名簿はサーバーに送信しません</strong>。</p>
                     <p>法的断定や、社内統制のログ代替にはなりません。</p>
                 </div>
             </details>
@@ -1527,7 +1527,7 @@ function renderAuditPrint() {
     <h1 class="text-lg font-bold text-slate-900 border-b pb-2 mb-4">SUGUDASU 公平抽選チェック — 説明用証跡</h1>
     <p class="text-xs text-slate-600 mb-2">実施日時（JST）: ${p.generatedAtJst}<br>
     ツール: ${p.tool}<br>
-    <strong>ローカル生成・外部送信なし</strong></p>
+    <strong>ローカル生成 · 名簿はサーバーに送信しません</strong></p>
     <p class="text-[10px] text-slate-600 mb-4 border border-slate-200 bg-slate-50 p-2 rounded">
       本書面は幹事・マーケ向け無料ツールの出力です。<strong>社内統制・操作ログを備えた懸賞抽選システムではありません。</strong>
       方式・記録番号（シード）・名簿の指紋・当選者を1セットにした説明用資料です。
@@ -1757,7 +1757,7 @@ document.getElementById('btn-dl-roster-snapshot').addEventListener('click', () =
 
 const LOTTERY_TAB_HINTS = {
   check: 'アマギフや自社商品を配る前に。その企画が景表法の上限を超えていないか1分でセルフチェック。',
-  draw: '箱も抽選用紙も不要。名簿を貼り付けるだけで、公平抽選と監査PDFをその場で出力（外部送信なし）。',
+  draw: '箱も抽選用紙も不要。名簿を貼り付けるだけで、公平抽選と監査PDFをその場で出力（名簿はサーバーに送信しません）。',
 };
 
 function resolveInitialLotteryTab() {

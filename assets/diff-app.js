@@ -32,6 +32,25 @@ function normalizeInput(raw) {
     .replace(/\r/g, '\n');
 }
 
+/**
+ * 比較専用の空白揃え（textarea は書き換えない）。
+ * DECISION: normalize ツールのルールは持ち込まない。実務頻出の空白のみ（DIFF_PRECOMPARE_CLEANSE_SPEC）。
+ * @param {string} text
+ */
+export function normalizeWhitespaceForDiff(text) {
+  return String(text ?? '')
+    .replace(/\u3000/g, ' ')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\t/g, ' ')
+    .split('\n')
+    .map((line) => line.replace(/ +$/g, ''))
+    .join('\n');
+}
+
+function isCleanseOn() {
+  return Boolean($('diff-cleanse-ws')?.checked);
+}
+
 function splitLines(text) {
   if (!text) return [];
   return text.split('\n');
@@ -229,7 +248,7 @@ function computeChanges(beforeText, afterText) {
   });
 }
 
-function renderSummary(changes) {
+function renderSummary(changes, cleanseOn = false) {
   const totalEl = $('diff-total');
   const highEl = $('diff-high');
   const mediumEl = $('diff-medium');
@@ -245,9 +264,13 @@ function renderSummary(changes) {
   highEl.textContent = String(high);
   mediumEl.textContent = String(medium);
   lowEl.textContent = String(low);
-  statusEl.textContent = changes.length
+  let status = changes.length
     ? `要確認から順に ${Math.min(5, high || changes.length)} 件を見てください。`
     : '目立った変更は見つかりませんでした。';
+  if (cleanseOn) {
+    status += ' 空白のゆれを無視して比較しています。入力欄の原文には全角スペース等が残っている場合があります。';
+  }
+  statusEl.textContent = status;
 }
 
 function renderMiniMap(changes) {
@@ -365,8 +388,13 @@ function analyze() {
   const warningEl = $('diff-warning');
   if (!beforeEl || !afterEl) return;
 
-  const beforeText = normalizeInput(beforeEl.value);
-  const afterText = normalizeInput(afterEl.value);
+  let beforeText = normalizeInput(beforeEl.value);
+  let afterText = normalizeInput(afterEl.value);
+  const cleanseOn = isCleanseOn();
+  if (cleanseOn) {
+    beforeText = normalizeWhitespaceForDiff(beforeText);
+    afterText = normalizeWhitespaceForDiff(afterText);
+  }
 
   if (!beforeText && !afterText) return;
   if (beforeText.length > MAX_CHARS || afterText.length > MAX_CHARS) {
@@ -377,7 +405,7 @@ function analyze() {
 
   const changes = rankedChanges(computeChanges(beforeText, afterText));
   latestChanges = changes;
-  renderSummary(changes);
+  renderSummary(changes, cleanseOn);
   renderMiniMap(changes);
   renderChanges(changes);
 }
@@ -404,4 +432,6 @@ function bindEvents() {
   });
 }
 
-bindEvents();
+if (typeof document !== 'undefined') {
+  bindEvents();
+}

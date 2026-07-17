@@ -322,10 +322,21 @@
     });
   }
 
+  function initPrivacyBadges() {
+    document.querySelectorAll('[data-sg-privacy-badge]').forEach((el) => {
+      const subject = String(el.getAttribute('data-subject') || '入力内容').trim() || '入力内容';
+      const extra = String(el.getAttribute('data-extra') || '').trim();
+      let text = subject + 'はサーバーに送信しません';
+      if (extra) text += ' · ' + extra;
+      el.textContent = text;
+    });
+  }
+
   function bootstrapChromeFromDom() {
     const opts = readMountOptsFromDom();
     if (opts) mount(opts);
     initDocClusterNav();
+    initPrivacyBadges();
   }
 
   function loadGa4() {
@@ -542,6 +553,7 @@
   global.SUGUDASU_SHELL = {
     mount,
     bootstrapChromeFromDom,
+    initPrivacyBadges,
     TOOLS,
     navItemsFromRegistry,
     assetUrl,

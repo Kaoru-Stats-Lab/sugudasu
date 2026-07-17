@@ -75,6 +75,14 @@ function main() {
     if (!catIds.has(row.categoryId)) fail(`${id}: 未知の categoryId=${row.categoryId}`);
     if (!registry.tools[id]) fail(`${id}: tool-registry に存在しません`);
     if (!row.inputHandling || !row.promiseNote) fail(`${id}: inputHandling / promiseNote 必須`);
+    const meta = registry.tools[id];
+    if (!row.productName) fail(`${id}: productName 必須（slug 表示禁止）`);
+    if (row.productName !== meta.productName) {
+      fail(`${id}: productName 不一致 statements="${row.productName}" registry="${meta.productName}"`);
+    }
+    if (row.file && row.file !== meta.file) {
+      fail(`${id}: file 不一致 statements="${row.file}" registry="${meta.file}"`);
+    }
   }
 
   const missing = expected.filter((id) => !seen.has(id));

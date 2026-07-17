@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-18",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,43 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "privacy-claim-align-20260718",
+      "date": "2026-07-18",
+      "type": "fix",
+      "audience": "public",
+      "title": "データの扱いの説明を明確化 — 入力は送らない · ページ読込・解析は別",
+      "body": "各ツールの表示を「入力内容はサーバーに送信しません」に揃えました。約束ページに、アクセス解析（GA4）・フォント・広告（予定）など入力以外の通信の説明を追加しています。",
+      "tools": ["statements"]
+    },
+    {
+      "id": "privacy-claim-impl-20260718",
+      "date": "2026-07-18",
+      "type": "fix",
+      "audience": "internal",
+      "title": "非送信主張是正 — privacy-badge · telemetry 開示 · 通信ゼロ/外部送信ゼロ除去",
+      "body": "data-sg-privacy-badge（shell）· statements #telemetry-disclosure · #verify-devtools 必須一文 · DATA_PRIVACY_CLAIM_POLICY · DESIGN_GUIDELINE §3.6b · 各 tools/guides 表記統一 · normalize dialog 廃止",
+      "tools": ["statements"],
+      "rollup": "privacy-claim-align-20260718"
+    },
+    {
+      "id": "diff-whitespace-cleanse-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "public",
+      "title": "差分チェック — 全角・行末スペースを無視して比較（任意）",
+      "body": "比較時だけ空白の見え方を揃えるチェックを追加しました。入力欄の原文は変わりません。",
+      "tools": ["diff"]
+    },
+    {
+      "id": "statements-productname-hotfix-20260717",
+      "date": "2026-07-17",
+      "type": "fix",
+      "audience": "internal",
+      "title": "statements — ツール対応表で productName を JSON 埋め込み（slug 表示禁止）",
+      "body": "registry キャッシュずれで video-frame 等が slug 表示されていた。statements-product.json に productName/file を必須化。",
+      "tools": ["statements"]
+    },
     {
       "id": "statements-product-mece-20260717",
       "date": "2026-07-17",

@@ -26,7 +26,7 @@
 
 <main class="sg-main-shell flex-1 space-y-4">
     <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
-        ブラウザ内完結・メモは外部に送信しません
+        <p data-sg-privacy-badge data-subject="メモ" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
     </p>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -85,7 +85,7 @@
                     AIで仕上げる（Gemini）
                 </button>
             </div>
-            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。</p>
+            <p class="sg-segment-hint" id="output-tab-hint" role="note"><strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。メモはサーバーに送信しません。</p>
 
             <div id="output-panel-card" class="sg-card p-5 lg:p-6 flex flex-col gap-3 min-h-[420px]">
                 <div id="tab-content-local" class="flex flex-col gap-3 flex-1">
@@ -159,7 +159,7 @@
     'use strict';
 
     const OUTPUT_TAB_HINTS = {
-        local: '<strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。社外秘メモも外部送信しません。',
+        local: '<strong>そのまま使える文面：</strong>ブラウザ内で整形した結果をコピー。メモはサーバーに送信しません。',
         gemini: '<strong>AIで仕上げる：</strong>Gemini用の指示文をコピーして貼り付け。本文はご自身の判断で送信してください。',
     };
 
