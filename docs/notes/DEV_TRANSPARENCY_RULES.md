@@ -1,8 +1,8 @@
 # 開発透明性 — 更新履歴 · 予定 · 対象外（粒度 SSOT）
 
-**更新:** 2026-07-15  
-**正本データ:** `data/changelog.json` · `data/roadmap.json`  
-**画面:** [`/updates`](../../tools/updates.html) · [`/roadmap`](../../tools/roadmap.html)
+**更新:** 2026-07-17  
+**正本データ:** `data/changelog.json` · `data/roadmap.json` · **`data/statements-product.json`**  
+**画面:** [`/updates`](../../tools/updates.html) · [`/roadmap`](../../tools/roadmap.html) · [`/statements`](../../tools/statements.html)（他サービスとの違い · ツールと約束）
 
 ---
 
@@ -17,15 +17,18 @@
 
 ---
 
-## 1. 3層（対になる構造）
+## 1. 層構造（対になる画面）
 
 | 層 | 画面 | 時間 | ユーザーが知りたいこと |
 |----|------|------|------------------------|
 | **更新履歴** | `/updates` | **過去**（Shipped） | 何が変わった？信頼できる？ |
 | **予定 · 検討中** | `/roadmap`（コア · Sync レーン） | **未来** | 開発スケジュールに入っている？ |
 | **対象外** | `/roadmap`（対象外レーン） | **方針** | やらないと決めた領域は？ |
+| **約束 · 製品地図** | `/statements`（カテゴリ別比較 · ツール対応表） | **横断** | 他サービスとの違い · 入力の扱い |
 
-**対ナビ:** 両ページ共通の `.sg-dev-transparency-nav`（過去 | これから）。
+**対ナビ:** updates / roadmap は `.sg-dev-transparency-nav`（過去 | これから）。statements は約束ページ本体。
+
+**製品カテゴリ（MECE）:** `data/statements-product.json` — 1ツール1カテゴリ。registry の `inNav` 製品と検証で同期（`npm run validate:statements-product` · `build:pages` に含む）。roadmap や新ツールと同じタイミングで更新する。
 
 **載せないもの（別台帳）:** 個別 FB の却下理由 · スプシ生データ → `FEEDBACK_TRIAGE.md` のみ。
 
@@ -152,6 +155,13 @@
 - [ ] `id` は kebab-case で安定か？
 - [ ] 予定 / 検討中 / 対象外 のどれか明確か？
 - [ ] 対象外は**領域**単位か（個別 FB ではないか）？
+- [ ] **同一 PR で** `statements-product.json` の `updatedAt` を合わせたか？（`npm run sync:statements-product-date` 可）新ツールなら tools[] · category も更新
+
+**新ツール追加時（roadmap と同タイミング）**
+
+- [ ] `data/statements-product.json` に `toolId` · `categoryId` · `inputHandling` · `promiseNote` を追加したか？
+- [ ] 既存 MECE カテゴリに収まるか？収まらなければカテゴリ新設と compare の有無を決めたか？
+- [ ] `npm run validate:statements-product` が通るか？
 
 **デプロイ後**
 
@@ -164,6 +174,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | §1 に statements-product（MECE 製品地図）を追加 · roadmap と同タイミング更新を必須化 |
 | 2026-07-15 | §0 — changelog.json=全履歴 · `/updates`=public のみ、を明示 |
 | 2026-07-10 | **ユーザー価値テスト**追加 · FAQ/SEO/パネル微調整を public 禁止 · 新ツールは feature で独立 |
 | 2026-07-03 | 2層化 — `audience` internal/public · `validate:changelog` · `/updates` pickup フィルタ |

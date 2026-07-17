@@ -19,6 +19,7 @@
     { id: 'search-query', file: 'search-query.html', label: '検索式', icon: '🔍' },
     { id: 'table-conv', file: 'table-conv.html', label: '表変換', icon: '📊' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
+    { id: 'video-frame', file: 'video-frame.html', label: '動画コマ抜き', icon: '🎬' },
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
     { id: 'image-trim', file: 'image-trim.html', label: '画像切り出し', icon: '✂️' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },

@@ -171,6 +171,19 @@
       "stage": "beta",
       "statusNote": "WebP→JPG/PNG · 非送信（アップロード型と差別化）· T09"
     },
+    "video-frame": {
+      "file": "video-frame.html",
+      "conceptName": "動画コマ抜き",
+      "productName": "SUGUDASU 動画コマ抜き",
+      "navLabel": "動画コマ抜き",
+      "navIcon": "🎬",
+      "inNav": true,
+      "navOrder": 10.2,
+      "name": "動画から静止画PNG（コマ抜き）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "ローカル MP4/WebM → PNG · 非送信 · VIDEO_FRAME_PNG_SPEC.md"
+    },
     "mask": {
       "file": "mask.html",
       "conceptName": "スクショ消し",

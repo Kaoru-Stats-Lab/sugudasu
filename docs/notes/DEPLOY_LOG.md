@@ -916,10 +916,31 @@
 | **cf_deployment_id** | `8f9aaf9`（`3ddcc42..8f9aaf9` · git push origin main） |
 | **smoke** | pending — `/search-query` site blur 置換 · 詳細折りたたみ · Googleで開く |
 
+---
+
+## DEPLOY-20260717-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | statements 製品地図 MECE 化 · video-frame α · roadmap scheduled · 同タイミング更新ゲート |
+| **change_summary** | `data/statements-product.json` · `tools/statements.html` · `tools/video-frame.html` · `assets/video-frame.js` · `scripts/verify-statements-product.mjs` · registry/hub/shell · roadmap · changelog · DEV_TRANSPARENCY |
+| **local_build** | `pass`（`release:pages:free` · budget consume 37/450） |
+| **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Pushして」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 003 approved（statements MECE · video-frame · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 002 executed（8f9aaf9 · search-query UI 磨き） |
 | 2026-07-17 | 002 approved（search-query UI 磨き · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 001 executed（d8f9e91 · search-query · match-board 定員） |

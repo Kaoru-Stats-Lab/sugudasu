@@ -127,7 +127,7 @@ npm run build:pages
 2. **`tools/{id}.html`** の `data-sg-title`（= productName）· 必要なら `data-sg-subtitle`
 3. **`tools/hub.html`** の該当カード `<h3>`
 4. **`assets/sugudasu-shell.js`** の `TOOLS[].label`（= navLabel）
-5. ユーザー向け比較表（`statements.html` 等）に slug 表記が残っていれば **productName** に
+5. ユーザー向け比較表は **`data/statements-product.json`** を更新（`npm run validate:statements-product`）。手書きで `statements.html` の表だけ直さない。
 6. **`npm run validate:tool-naming`** → **`npm run build:pages`**
 7. **`data/changelog.json`** 1 行
 

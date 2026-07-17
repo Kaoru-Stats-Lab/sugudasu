@@ -11,6 +11,44 @@
   },
   "entries": [
     {
+      "id": "statements-product-mece-20260717",
+      "date": "2026-07-17",
+      "type": "improve",
+      "audience": "public",
+      "title": "SUGUDASUの約束 — 製品カテゴリを整理し全ツール対応表を最新化",
+      "body": "他サービスとの違いとツール対応表を、帳票・シフト・テキスト・画像・配属・当日運営などに相互排他で分け、ナビにあるツールをすべて掲載するようにしました。",
+      "tools": ["statements"]
+    },
+    {
+      "id": "statements-product-impl-20260717",
+      "date": "2026-07-17",
+      "type": "improve",
+      "audience": "internal",
+      "title": "statements-product.json SSOT · validate を build:pages に追加 · roadmap 同タイミング更新",
+      "body": "data/statements-product.json · scripts/verify-statements-product.mjs · DEV_TRANSPARENCY_RULES · tools/statements.html 動的描画",
+      "tools": ["statements"],
+      "rollup": "statements-product-mece-20260717"
+    },
+    {
+      "id": "video-frame-20260717",
+      "date": "2026-07-17",
+      "type": "feature",
+      "audience": "public",
+      "title": "動画コマ抜き — 操作動画からマニュアル用PNGを非送信で保存",
+      "body": "手元の MP4/WebM を開き、シークとコマ送りで止めて PNG 保存。再生UIは映り込まず、動画は端末内だけ。GIF化はしません。",
+      "tools": ["video-frame"]
+    },
+    {
+      "id": "video-frame-impl-20260717",
+      "date": "2026-07-17",
+      "type": "feature",
+      "audience": "internal",
+      "title": "video-frame α — registry · hub · ファイル名ゼロ埋め · VIDEO_FRAME_PNG_SPEC",
+      "body": "tools/video-frame.html · assets/video-frame.js · 前後フレーム相当 · キーボード矢印 · Blobのみ",
+      "tools": ["video-frame"],
+      "rollup": "video-frame-20260717"
+    },
+    {
       "id": "search-query-20260717",
       "date": "2026-07-17",
       "type": "feature",

@@ -184,8 +184,8 @@
       "toolLabel": "差分",
       "toolHref": "diff.html",
       "title": "比較前の全角・空白クレンジング（任意）",
-      "summary": "既存の差分チェックへの薄い拡張。Excel 由来の全角スペース等でノイズ差分が増えるときだけ、比較前に正規化するオプション。新規ツールではない。",
-      "askFeedback": "全角スペースや改行の揺れで、差分がうるさく感じることはありますか？"
+      "summary": "v0.1 実装済（全角・行末スペース無視チェック）。仕様: docs/notes/DIFF_PRECOMPARE_CLEANSE_SPEC.md。入力欄非改変 · 既定OFF · ON時注記 · FAQ。",
+      "askFeedback": "全角スペースや行末スペースで、差分がうるさく感じることはありますか？"
     },
     {
       "id": "search-query-builder",
@@ -214,14 +214,14 @@
     {
       "id": "mask-video-frame-capture",
       "lane": "core",
-      "status": "considering",
-      "priority": 26,
-      "toolId": "mask",
-      "toolLabel": "マスク",
-      "toolHref": "mask.html",
+      "status": "scheduled",
+      "priority": 6,
+      "toolId": "video-frame",
+      "toolLabel": "動画コマ抜き",
+      "toolHref": "video-frame.html",
       "title": "ローカル動画からの静止画コマ抜き（PNG）",
-      "summary": "操作説明・マニュアル用。手元の MP4 等から任意フレームを PNG 保存。GIF 化・画面自動録画・手順書の自動生成（Tango 型）はしません。透かしなし。",
-      "askFeedback": "すでに撮った操作動画からコマを抜きたい場面は多いですか？"
+      "summary": "実装済み α（VIDEO_FRAME_PNG_SPEC.md）。nav「動画コマ抜き」· id video-frame。GIF/Tango OUT。コマ送り・キーボード・時刻付きファイル名。",
+      "askFeedback": "操作マニュアル用に、手元の録画から画面PNGを抜くことはありますか？"
     },
     {
       "id": "sync-schedule-v3",
@@ -533,7 +533,7 @@
       "title": "動画の GIF 化 · アニメ書き出し",
       "summary": "検討中のコマ抜きは静止画（PNG）まで。GIF / WebM 書き出しは別製品領域です。",
       "alternative": "専用 GIF メーカー · 動画編集ソフト"
-    }
+    },
     {
       "id": "oos-standalone-microwave",
       "lane": "out_of_scope",

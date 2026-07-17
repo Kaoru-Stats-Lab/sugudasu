@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="手元の操作動画からマニュアル用の静止画PNGを1枚抜く。再生UIが映り込まない。MP4/WebMは端末内だけで処理し、サーバーへ送りません。">
+    <title>動画から静止画PNGを抜く — 動画コマ抜き | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="動画から説明用PNGを1枚抜く | SUGUDASU 動画コマ抜き">
+    <meta property="og:description" content="シークとコマ送りで止めてPNG保存。GIF化・動画編集はしません。非送信・登録不要。">
+    <meta property="og:url" content="https://sugudasu.com/video-frame">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 動画コマ抜き">
+    <meta name="twitter:description" content="操作動画からマニュアル用PNG。非送信。">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"GIFは作れますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールは説明用の静止画PNGを1枚取り出す用途専用です。GIFや動画編集は対象外です。"}},{"@type":"Question","name":"動画はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ファイルはお使いの端末のブラウザ内だけで読み込み・切り出しされます。SUGUDASUのサーバーへアップロードしません。"}},{"@type":"Question","name":"画面が真っ黒で再生できません","acceptedAnswer":{"@type":"Answer","text":"ブラウザが対応していないコーデックの可能性があります。MP4（H.264）またはWebMを推奨します。iPhoneの標準録画など一部形式は表示できないことがあります。"}},{"@type":"Question","name":"1フレームずつ正確に止められますか？","acceptedAnswer":{"@type":"Answer","text":"前後フレーム相当の微調整です。動画のfpsやブラウザ実装により誤差が出ることがあります。キーボードの左右矢印でも操作できます。"}},{"@type":"Question","name":"画質は良くなりますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。元動画の解像度のままPNGとして保存します。画質向上は行いません。"}}]}</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 動画コマ抜き" data-sg-subtitle="動画→PNG · 非送信" data-sg-tool-id="video-frame"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <p class="text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200 inline-block px-3 py-1 rounded-full">単機能 · 非送信 · 登録不要</p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>操作動画から「この画面」をPNGで保存</strong> — プレイヤーのシークバーが映り込みません。GIF化・動画編集はしません。
+            </p>
+        </div>
+    </header>
+
+    <section class="sg-card p-5 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">動画を開く</h2>
+        <div id="vf-drop"
+             class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-10 text-center cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-colors"
+             tabindex="0" role="button" aria-label="動画ファイルを選択またはドロップ">
+            <p class="text-sm font-semibold text-slate-700">MP4 / WebM をドロップ · クリック</p>
+            <p class="text-[11px] text-slate-500 mt-2">サーバーに送信しません · 大きな動画は端末によって処理できない場合があります</p>
+            <p class="text-[11px] text-amber-800 mt-1">再生できない場合は MP4（H.264）または WebM を試してください</p>
+        </div>
+        <input type="file" id="vf-file" class="sr-only" accept="video/mp4,video/webm,.mp4,.webm">
+        <p id="vf-status" class="text-xs text-slate-500" aria-live="polite"></p>
+    </section>
+
+    <p id="vf-empty" class="text-sm text-slate-500">動画を開くと、プレビューとコマ送りがここに表示されます。</p>
+
+    <section id="vf-workspace" class="sg-card p-5 space-y-4 hidden" aria-label="プレビューと保存">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-sm font-bold text-slate-900">プレビュー</h2>
+            <p id="vf-filename" class="text-[11px] text-slate-500 font-mono truncate max-w-full"></p>
+        </div>
+
+        <div class="rounded-lg overflow-hidden bg-slate-900 border border-slate-200">
+            <video id="vf-video" class="w-full max-h-[min(70vh,560px)] mx-auto block bg-black" playsinline preload="metadata"></video>
+        </div>
+
+        <div class="space-y-2">
+            <label for="vf-seek" class="sr-only">シーク</label>
+            <input type="range" id="vf-seek" min="0" max="0" step="any" value="0" disabled
+                   class="w-full accent-sky-600">
+            <div class="flex flex-wrap items-center gap-2">
+                <p id="vf-time" class="text-xs font-mono text-slate-600 tabular-nums" aria-live="polite">00:00</p>
+                <button type="button" id="vf-play" class="sg-btn-secondary text-xs py-1.5 px-3">再生</button>
+                <button type="button" id="vf-frame-back" class="sg-btn-secondary text-xs py-1.5 px-3" title="1コマ相当戻る（←）">◀ ←</button>
+                <button type="button" id="vf-frame-fwd" class="sg-btn-secondary text-xs py-1.5 px-3" title="1コマ相当進む（→）">→ ▶</button>
+            </div>
+            <p class="text-[11px] text-slate-500">前後フレーム相当の微調整です。誤差が出ることがあります。キーボードの左右矢印でも操作できます。</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <button type="button" id="vf-save" class="sg-btn-primary" disabled>現在の画面をPNG保存</button>
+            <p id="vf-toast" class="hidden text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-1.5" role="status"></p>
+        </div>
+        <p class="text-[11px] text-slate-500">画質向上はしません。元の解像度のまま保存します。ファイル名に経過時間（例: 01m05s）が付きます。</p>
+        <p class="text-[11px] text-slate-600">
+            黒塗りやぼかしが必要なら保存後に
+            <a href="mask.html" class="text-sky-700 underline">マスク</a>
+            、サイズ合わせは
+            <a href="image-trim.html" class="text-sky-700 underline">画像切り出し</a>
+            へ。
+        </p>
+    </section>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">動画コマ抜きのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>GIFは作れますか？</summary>
+                <p>いいえ。説明用の静止画 PNG を1枚取り出す用途専用です。GIF・動画編集は対象外です。</p>
+            </details>
+            <details class="sg-faq">
+                <summary>動画はサーバーに送信されますか？</summary>
+                <p>いいえ。お使いの端末のブラウザ内だけで処理します。DevTools のネットワークで動画のアップロードがないことを確認できます。</p>
+            </details>
+            <details class="sg-faq">
+                <summary>画面が真っ黒で再生できません</summary>
+                <p>ブラウザが対応していない形式のことがあります。MP4（H.264）または WebM を推奨します。iPhone の標準録画など一部は表示できないことがあります。</p>
+            </details>
+            <details class="sg-faq">
+                <summary>1フレームずつ正確に止められますか？</summary>
+                <p>前後フレーム相当の微調整です。動画の fps やブラウザにより誤差が出ることがあります。左右矢印キーでも操作できます。</p>
+            </details>
+            <details class="sg-faq">
+                <summary>画質は良くなりますか？</summary>
+                <p>いいえ。元動画の解像度のまま PNG として保存します。</p>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script type="module" src="../assets/video-frame.js"></script>
+<script src="../assets/sugudasu-shell.js"></script>
+</body>
+</html>
