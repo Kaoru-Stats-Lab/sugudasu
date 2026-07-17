@@ -557,18 +557,12 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   margin-bottom: 0.25rem;
 }
 
-/* ツールリード — シェル幅いっぱい · PCは2段で改行を意図的に制御 */
+/* ツールリード — シェル幅いっぱい · 単列スタック（読みやすさ優先 · 2列禁止） */
 .sg-tool-lead-deck {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
   width: 100%;
-}
-@media (min-width: 1024px) {
-  .sg-tool-lead-deck {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-    column-gap: 2.5rem;
-    align-items: start;
-  }
 }
 .sg-tool-lead {
   margin: 0;
@@ -799,15 +793,9 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 }
 .sg-guide-lead-deck {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.625rem;
   margin-top: 0.75rem;
-}
-@media (min-width: 640px) {
-  .sg-guide-lead-deck {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 1.5rem;
-    align-items: start;
-  }
 }
 .sg-guide-lead {
   font-size: 0.875rem;
@@ -886,9 +874,12 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 }
 .sg-guide-table-scroll table {
   width: 100%;
+  min-width: 36rem;
   margin: 0;
   border-collapse: collapse;
-  table-layout: fixed;
+  /* DECISION: fixed + 列幅%仮定は「2列目が短い」前提で中列が潰れ、文言が重なる。
+     auto + 横スクロールで全列を読めることを優先する。 */
+  table-layout: auto;
   font-size: 13px;
   line-height: 1.55;
   color: #475569;
@@ -899,6 +890,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   border-bottom: 1px solid #f1f5f9;
   vertical-align: top;
   text-align: left;
+  white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
@@ -914,75 +906,26 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-size: 12px;
   font-weight: 700;
   color: #0f172a;
-  white-space: normal;
   line-height: 1.45;
 }
-.sg-guide-table-scroll td:first-child {
+.sg-guide-table-scroll td:first-child,
+.sg-guide-table-scroll th:first-child {
   font-weight: 600;
   color: #334155;
-}
-/* 3列（遅れパターン等） */
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) th:nth-child(1),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) td:nth-child(1) {
-  width: 22%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) th:nth-child(2),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) td:nth-child(2) {
-  width: 30%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) th:nth-child(3),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(3):nth-last-child(1)) td:nth-child(3) {
-  width: 48%;
-}
-/* 4列（チェックリスト・ステップ・配分） */
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) th:nth-child(1),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) td:nth-child(1) {
-  width: 16%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) th:nth-child(2),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) td:nth-child(2) {
-  width: 12%;
   white-space: nowrap;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) th:nth-child(3),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) td:nth-child(3) {
-  width: 42%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) th:nth-child(4),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(4):nth-last-child(1)) td:nth-child(4) {
-  width: 30%;
-}
-/* 5列（記載事項等） */
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) th:nth-child(1),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) td:nth-child(1) {
-  width: 14%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) th:nth-child(2),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) td:nth-child(2) {
-  width: 10%;
-  white-space: nowrap;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) th:nth-child(3),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) td:nth-child(3) {
-  width: 24%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) th:nth-child(4),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) td:nth-child(4) {
-  width: 22%;
-}
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) th:nth-child(5),
-.sg-guide-table-scroll table:has(thead tr > th:nth-child(5):nth-last-child(1)) td:nth-child(5) {
-  width: 30%;
 }
 @media (max-width: 639px) {
   .sg-guide-table-scroll table {
-    table-layout: auto;
     min-width: 32rem;
     font-size: 12px;
   }
   .sg-guide-table-scroll th,
   .sg-guide-table-scroll td {
     padding: 0.5rem 0.625rem;
+  }
+  .sg-guide-table-scroll td:first-child,
+  .sg-guide-table-scroll th:first-child {
+    white-space: normal;
   }
 }
 

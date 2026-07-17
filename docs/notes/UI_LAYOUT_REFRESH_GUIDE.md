@@ -88,7 +88,7 @@
 
 - `main.sg-guide-page`（**52rem**）— 法務よりやや広く、比較表の可読性優先。
 - `article.sg-guide-article.sg-guide-article--{pillar}` — 柱カラー（event / production / team / docs）。
-- 構造: パンくず → ヘッダー（`.sg-guide-lead-deck` でリード2段）→ 要点 → 本文 → FAQ → 関連ツール CTA。
+- 構造: パンくず → ヘッダー（`.sg-guide-lead-deck` でリード**単列**）→ 要点 → 本文 → FAQ → 関連ツール CTA。
 - 表は `.sg-guide-table-scroll` で横スクロール（3/4/5列は `table-layout: fixed` で列幅配分）。当日手順の `ol` は `.sg-guide-steps`。
 - 新規記事は `scripts/migrate-guide-article-layout.mjs` を雛形参照、または手動で同構造を踏襲。
 
