@@ -896,10 +896,31 @@
 | **cf_deployment_id** | `d8f9e91`（`41ef83d..d8f9e91` · git push origin main） |
 | **smoke** | pending — `/search-query` プリセットPDF · `/match-board` スペース区切り定員 |
 
+---
+
+## DEPLOY-20260717-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 検索式ビルダー UI 磨き（site blur 正規化 · 詳細折りたたみ · 文言整理 · 4AI実装後レビュー反映） |
+| **change_summary** | `tools/search-query.html` · `docs/notes/SEARCH_QUERY_BUILDER_SPEC.md` |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 2（P7 override · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit & Push して」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/search-query` site blur · 詳細折りたたみ） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-17 | 002 approved（search-query UI 磨き · P7 override · 提督 Commit&Push） |
 | 2026-07-17 | 001 executed（d8f9e91 · search-query · match-board 定員） |
 | 2026-07-17 | 001 approved（search-query · match-board 定員 · roadmap · 提督 Commit&Push） |
 | 2026-07-16 | 003 executed（8274572 · invoice 対象外税率バグ） |

@@ -28,10 +28,8 @@
     <header class="sg-tool-intro space-y-2">
         <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">単機能 · 非送信 · 登録不要</p>
         <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead"><strong>用途を選んでキーワードを入れる</strong>だけで、<code>filetype:pdf</code> などの Google 検索式を作ります。演算子の手打ちは不要です。セキュリティ調査用の Google Dork ツールではなく、営業・情シス・総務の調べもの向けです。</p>
-            <p class="sg-tool-lead">検索結果は表示しません。コピーして貼るか、「Googleで開く」で進んでください。</p>
+            <p class="sg-tool-lead"><strong>Google検索を30秒で作成</strong> — PDFだけ · 官公庁寄り · まとめ除外。演算子は覚えなくてOK。キーワードは SUGUDASU に送りません。</p>
         </div>
-        <p class="sg-tool-lead sg-tool-lead--meta">キーワードは SUGUDASU のサーバーに送りません。「Googleで開く」時だけ Google に送られます。</p>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -48,18 +46,6 @@
                 <span class="text-xs font-semibold text-slate-600">キーワード（空白区切り＝AND）</span>
                 <input id="sq-keywords" type="text" maxlength="500" class="sg-input text-sm w-full" placeholder="例: 競合A 料金表" autocomplete="off">
             </label>
-
-            <label class="block space-y-1">
-                <span class="text-xs font-semibold text-slate-600">完全一致フレーズ（任意）</span>
-                <input id="sq-phrase" type="text" class="sg-input text-sm w-full" placeholder="例: 料金表" autocomplete="off">
-            </label>
-
-            <details class="border border-slate-200 rounded-lg bg-white">
-                <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">タイトルに含む（intitle · 任意）</summary>
-                <div class="px-3 pb-3 border-t border-slate-100 pt-2">
-                    <input id="sq-intitle" type="text" class="sg-input text-sm w-full" placeholder="例: 事例" autocomplete="off">
-                </div>
-            </details>
 
             <fieldset class="space-y-2">
                 <legend class="text-xs font-semibold text-slate-600">ファイル種別（1つ）</legend>
@@ -90,6 +76,20 @@
                 <button type="button" id="sq-exclude-add" class="text-[11px] font-semibold text-blue-700 underline">除外を追加</button>
                 <div id="sq-recent-excludes" class="flex flex-wrap gap-2"></div>
             </div>
+
+            <details class="border border-slate-200 rounded-lg bg-white">
+                <summary class="cursor-pointer select-none text-xs font-bold text-slate-700 px-3 py-2">詳細（完全一致 · タイトル）</summary>
+                <div class="px-3 pb-3 space-y-3 border-t border-slate-100 pt-2">
+                    <label class="block space-y-1">
+                        <span class="text-xs font-semibold text-slate-600">完全一致フレーズ（任意）</span>
+                        <input id="sq-phrase" type="text" class="sg-input text-sm w-full" placeholder="例: 料金表" autocomplete="off">
+                    </label>
+                    <label class="block space-y-1">
+                        <span class="text-xs font-semibold text-slate-600">タイトルに含む（intitle · 任意）</span>
+                        <input id="sq-intitle" type="text" class="sg-input text-sm w-full" placeholder="例: 事例" autocomplete="off">
+                    </label>
+                </div>
+            </details>
         </section>
 
         <section class="sg-card p-5 lg:p-6 space-y-4">
@@ -98,12 +98,11 @@
             <pre id="sq-query" class="sg-input font-mono text-sm whitespace-pre-wrap break-all min-h-[4.5rem] bg-slate-50" aria-live="polite"></pre>
             <div class="flex flex-wrap gap-2 items-center">
                 <button type="button" id="sq-copy" class="sg-btn-primary">コピー</button>
-                <a id="sq-google" class="sg-btn-secondary" href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Googleで開く（新規タブ）</a>
+                <a id="sq-google" class="sg-btn-secondary" href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Googleで開く</a>
                 <span id="sq-copy-toast" class="hidden text-[11px] font-bold text-emerald-800" aria-live="polite">コピーしました</span>
             </div>
             <p class="text-[11px] text-slate-500 leading-relaxed">このツールは検索式を作成します。結果の件数・順位は検索エンジン側で決まり、網羅性は保証しません。</p>
             <p class="text-[11px] text-slate-500 leading-relaxed">「Googleで開く」を使うと、キーワードは Google に送られます。SUGUDASU のサーバーには送信しません。</p>
-            <p class="text-[11px] text-slate-500 leading-relaxed">結果が0件のときは、キーワードを減らすか、ファイル形式・サイト限定を外してみてください。</p>
         </section>
     </div>
 </main>
@@ -234,6 +233,25 @@ function applyPreset(id) {
       : 'text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50';
   });
   refresh();
+  if (id === 'exclude_noise') {
+    const first = excludeInputs()[0];
+    if (first) {
+      first.focus();
+      first.classList.add('ring-2', 'ring-emerald-400');
+      window.setTimeout(() => first.classList.remove('ring-2', 'ring-emerald-400'), 900);
+    }
+  }
+}
+
+function commitSiteField() {
+  const n = normalizeHost(siteEl.value);
+  if (n.host) {
+    siteEl.value = n.host;
+    siteNormEl.textContent = '';
+  } else {
+    siteNormEl.textContent = n.warning || '';
+  }
+  refresh();
 }
 
 function renderPresets() {
@@ -274,9 +292,14 @@ function renderRecent() {
 
 function refresh() {
   const siteN = normalizeHost(siteEl.value);
-  siteNormEl.textContent = siteEl.value.trim() && siteN.host
-    ? `→ ${siteN.host} に正規化`
-    : (siteN.warning || '');
+  // 入力中は警告のみ。確定置換は blur（commitSiteField）
+  if (document.activeElement === siteEl) {
+    siteNormEl.textContent = siteN.warning || '';
+  } else if (siteEl.value.trim() && siteN.host && siteEl.value.trim().toLowerCase() !== siteN.host) {
+    siteNormEl.textContent = '';
+  } else {
+    siteNormEl.textContent = siteN.warning || '';
+  }
 
   const built = buildSearchQuery({
     keywords: keywordsEl.value,
@@ -290,7 +313,7 @@ function refresh() {
   queryEl.textContent = built.query || '（キーワードを入力してください）';
   const msgs = [];
   if (built.conflict) msgs.push('含めるサイトと除くサイトが同じです。どちらかを外してください。');
-  if (built.siteWarning) msgs.push(built.siteWarning);
+  if (built.siteWarning && document.activeElement !== siteEl) msgs.push(built.siteWarning);
   for (const w of built.excludeWarnings) msgs.push(w);
   warnEl.textContent = msgs.join(' ');
   warnEl.classList.toggle('hidden', !msgs.length);
@@ -349,6 +372,7 @@ document.querySelectorAll('.sq-site-chip').forEach((btn) => {
 [keywordsEl, phraseEl, intitleEl, siteEl].forEach((el) => {
   el.addEventListener('input', refresh);
 });
+siteEl.addEventListener('blur', commitSiteField);
 document.querySelectorAll('input[name="sq-filetype"]').forEach((el) => {
   el.addEventListener('change', refresh);
 });
