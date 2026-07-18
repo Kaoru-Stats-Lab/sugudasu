@@ -1162,19 +1162,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 相対リンク罠の修正（ルート絶対クリーンURL）· 提督 Commit&Push · 同日 core 11回目 · P7 override |
 | **change_summary** | `assets/sugudasu-shell.js` · `scripts/build-pages.mjs` · `SEO_GSC_AND_BUILD_PIPELINE.md` · changelog |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 47/450） |
 | **deploy_count_today** | 11（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 47/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Push」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `737332a`（`f111d9f..737332a` · git push origin main） |
+| **smoke** | pass — dist hub `href="/slot-board"` · `/invoice`（相対 `.html` なし） |
 
 ---
 
@@ -1182,6 +1182,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 011 executed（737332a · 相対リンク罠修正 · P7 override） |
 | 2026-07-18 | 011 approved（相対リンク罠修正 · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 010 executed（25b62e2 · 見積名著 · Diff FAQ · P7 override） |
 | 2026-07-18 | 010 approved（見積ガイド名著 · Diff FAQ · P7 override · 提督 Commit&Push） |
