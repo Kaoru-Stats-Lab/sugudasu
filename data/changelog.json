@@ -11,6 +11,15 @@
   },
   "entries": [
     {
+      "id": "guide-planning-poker-estimation-rewrite-20260718",
+      "date": "2026-07-18",
+      "type": "improve",
+      "audience": "public",
+      "title": "実務ガイド — 見積もりすり合わせを「はじめての人」向けに書き換え",
+      "body": "開発以外（マーケ・人事・営業）のシーン、事務／企画／飲食店メニューものさし、3つの鉄則を追加。FAQに Agile Marketing / HR とサイズ運用を併記。",
+      "tools": ["planning-poker"]
+    },
+    {
       "id": "planning-poker-reveal-panel-fix-20260718",
       "date": "2026-07-18",
       "type": "fix",

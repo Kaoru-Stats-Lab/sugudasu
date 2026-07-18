@@ -12,10 +12,11 @@
     {
       "slug": "planning-poker-estimation",
       "pillar": "team",
-      "title": "プランニングポーカーで見積もりのズレを防ぐ実務ファシリテーション",
-      "description": "認識差を見つける見積会議の進め方。SUGUDASUは司会1画面の代行入力＋Reveal。",
+      "title": "業務の「無茶振り」と「納期遅れ」を暴く：はじめての見積もりすり合わせ会議",
+      "description": "幹事・人事・総務・マーケ・営業向け。開発以外でも使える見積もりすり合わせ（プランニングポーカー）のシーン・ものさし・鉄則。",
       "tools": ["planning-poker", "timeline"],
-      "published": "2026-07-15"
+      "published": "2026-07-15",
+      "updated": "2026-07-18"
     },
     {
       "slug": "pdf-image-masking-security",
