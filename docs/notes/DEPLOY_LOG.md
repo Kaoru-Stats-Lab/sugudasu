@@ -976,10 +976,31 @@
 | **cf_deployment_id** | `c290f81`（`4c3b48a..c290f81` · git push origin main） |
 | **smoke** | pending — `/statements#telemetry-disclosure` · `#verify-devtools` · `/normalize` privacy-badge · `/diff` 空白無視 |
 
+---
+
+## DEPLOY-20260718-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | watermark / pdf-images 本番公開 · hub・ナビリンク追加 · ガイド表/リード単列修正 |
+| **change_summary** | `tools/watermark.html` · `tools/pdf-images.html` · hub/shell/registry · vendor pdfjs · guide table/lead CSS · SSOT · changelog/roadmap |
+| **local_build** | `pass`（`release:pages:free` · budget consume 39/450） |
+| **deploy_count_today** | 2（**P7 override** · 提督指示「確認してPUSHまで」· 同一日2回目） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8（core）確認済み · P7 override 明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | — |
+| **smoke** | — |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 002 approved（watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 001 executed（c290f81 · 非送信主張是正 · privacy-badge · telemetry 開示） |
 | 2026-07-18 | 001 approved（非送信主張是正 · privacy-badge · telemetry 開示 · 004 統合） |
 | 2026-07-17 | 004 aborted（statements productName hotfix · 20260718-001 に統合） |
