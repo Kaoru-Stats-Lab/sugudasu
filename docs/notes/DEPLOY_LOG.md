@@ -1142,19 +1142,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 見積ガイドに計画の錯誤・名著案内 · Diff FAQ · 台帳更新（提督「未コミットすべて Commit&Push」· 同日 core 10回目 · P7 override） |
 | **change_summary** | `planning-poker-estimation` · guides · changelog · `diff.html` · DIFF_PRECOMPARE · PRODUCT_IDEA · DEPLOY_LOG |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 46/450） |
 | **deploy_count_today** | 10（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 46/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「未コミットのすべてをCommit&Push」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `25b62e2`（`48d034b..25b62e2` · git push origin main） |
+| **smoke** | pass — `/guides/planning-poker-estimation` 計画の錯誤 · Cohn/McConnell · tag=harusineision-22 · `/diff` faq-diff-cleanse |
 
 ---
 
@@ -1162,6 +1162,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 010 executed（25b62e2 · 見積名著 · Diff FAQ · P7 override） |
 | 2026-07-18 | 010 approved（見積ガイド名著 · Diff FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 009 executed（3cb6813 · 見積ガイド · 開発以外 · FAQ · P7 override） |
 | 2026-07-18 | 009 approved（見積ガイド · 開発以外 · FAQ · P7 override · 提督 Commit&Push） |
