@@ -982,24 +982,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | watermark / pdf-images 本番公開 · hub・ナビリンク追加 · ガイド表/リード単列修正 |
 | **change_summary** | `tools/watermark.html` · `tools/pdf-images.html` · hub/shell/registry · vendor pdfjs · guide table/lead CSS · SSOT · changelog/roadmap |
 | **local_build** | `pass`（`release:pages:free` · budget consume 39/450） |
 | **deploy_count_today** | 2（**P7 override** · 提督指示「確認してPUSHまで」· 同一日2回目） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 39/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P8（core）確認済み · P7 override 明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | — |
-| **smoke** | — |
+| **cf_deployment_id** | `dd14049`（`6acf9c0..dd14049` · git push origin main） |
+| **smoke** | pending — `/` hub に透かし・PDF画像抽出 · `/watermark` · `/pdf-images` |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 002 executed（dd14049 · watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 002 approved（watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 001 executed（c290f81 · 非送信主張是正 · privacy-badge · telemetry 開示） |
 | 2026-07-18 | 001 approved（非送信主張是正 · privacy-badge · telemetry 開示 · 004 統合） |
