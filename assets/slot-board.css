@@ -1,4 +1,13 @@
 /* slot-board 専用 — 既存 sugudasu.css の構造は変更しない */
+.sg-usecase {
+  padding: 0.875rem 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+.sb-empty {
+  margin: 0;
+  padding: 1rem 0.25rem;
+}
 .sb-summary {
   display: flex;
   flex-wrap: wrap;
@@ -9,6 +18,9 @@
   border: 1px solid #e2e8f0;
   background: #f8fafc;
   font-size: 0.8125rem;
+}
+.sb-summary.hidden {
+  display: none;
 }
 .sb-summary--ok {
   border-color: #86efac;
@@ -21,13 +33,17 @@
   color: #991b1b;
 }
 .sb-summary__badge {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 800;
+  line-height: 1.45;
 }
 .sb-lanes {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+.sb-empty.hidden {
+  display: none;
 }
 .sb-lane {
   border: 1px solid #e2e8f0;

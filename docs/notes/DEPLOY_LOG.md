@@ -1056,11 +1056,31 @@
 | **cf_deployment_id** | `66cc1ef`（playbook MECE · `git push origin main`） |
 | **smoke** | NA（製品画面変更なし） |
 
+---
+
+## DEPLOY-20260718-006
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `core` |
+| **reason** | slot-board ファーストビュー · FAQ再構成（用途明示 · サマリー · 空状態）· 提督 Commit&Push |
+| **change_summary** | `tools/slot-board.html` · `slot-board-app.js` · `slot-board.css` · `SLOT_BOARD_SPEC.md` |
+| **local_build** | `pass`（`release:pages:free` · budget consume 42/450） |
+| **deploy_count_today** | 6（**P7 override** · 提督 Commit&Push · 同一日6回目） |
+| **pages_build_budget_after** | 42/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P8（core）確認済み · P7 override 明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後 · slot-board FV） |
+| **smoke** | pending — `/slot-board` サブコピー · 用途 · FAQ7 · 空プレースホルダ |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 006 executed（slot-board FV · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 005 executed（66cc1ef · Playbook §1.5 MECE · P7 override · local release skip） |
 | 2026-07-18 | 005 approved（Playbook §1.5 MECE · P7 override） |
 | 2026-07-18 | 004 executed（4e678b0 · slot-board α · hub · P7 override） |

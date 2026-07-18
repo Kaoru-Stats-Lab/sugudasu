@@ -43,24 +43,37 @@ async function copyText(text) {
 
 function renderSummary() {
   const stats = computeLaneStats(lanes, items);
-  const total = items.length;
-  const totalEl = $('sb-total');
   const badge = $('sb-summary-badge');
   const box = $('sb-summary');
-  if (totalEl) totalEl.textContent = String(total);
   if (!badge || !box) return;
 
-  const ok = isAllWithinLimits(stats) && total > 0;
-  const anyOver = stats.some((s) => s.over > 0);
+  const hasData = lanes.length > 0 || items.length > 0;
+  if (!hasData) {
+    box.classList.add('hidden');
+    box.classList.remove('sb-summary--ok', 'sb-summary--over');
+    badge.textContent = '';
+    return;
+  }
+
+  box.classList.remove('hidden');
+  const overNames = [];
+  for (const lane of lanes) {
+    const st = stats.find((s) => s.laneId === lane.id);
+    if (st && st.over > 0) overNames.push(lane.name);
+  }
+  const anyOver = overNames.length > 0;
+  const ok = isAllWithinLimits(stats);
+
   box.classList.remove('sb-summary--ok', 'sb-summary--over');
-  if (ok) {
-    box.classList.add('sb-summary--ok');
-    badge.textContent = '✅ 枠内';
-  } else if (anyOver) {
+  if (anyOver) {
     box.classList.add('sb-summary--over');
-    badge.textContent = '枠内超過あり';
+    badge.textContent = `🚨 枠内超過あり（${overNames.join(' · ')}）`;
+  } else if (ok) {
+    box.classList.add('sb-summary--ok');
+    badge.textContent = '✅ 全レーン枠内';
   } else {
-    badge.textContent = total ? '上限未設定あり' : '';
+    // 上限未設定のみ等 — 超過ではないので中立表示
+    badge.textContent = '配置を確認中（上限未設定のレーンあり）';
   }
 }
 
@@ -87,11 +100,18 @@ function render() {
 
 function renderLanesOnly(statsById) {
   const root = $('sb-lanes');
+  const empty = $('sb-empty');
   if (!root) return;
   if (!statsById) {
     statsById = new Map(computeLaneStats(lanes, items).map((s) => [s.laneId, s]));
   }
   root.innerHTML = '';
+
+  if (!lanes.length) {
+    if (empty) empty.classList.remove('hidden');
+    return;
+  }
+  if (empty) empty.classList.add('hidden');
 
   lanes.forEach((lane, idx) => {
     const st = statsById.get(lane.id) || { count: 0, limit: null, over: 0 };
