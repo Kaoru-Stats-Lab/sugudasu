@@ -1036,10 +1036,33 @@
 | **cf_deployment_id** | `4e678b0`（`71fd6b1..4e678b0` · git push origin main） |
 | **smoke** | pending — `/` hub 枠取り · `/slot-board` |
 
+---
+
+## DEPLOY-20260718-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `executed` |
+| **target** | `core` |
+| **reason** | 新規ツール公開 MECE を Playbook §1.5 に固定（Agent Token 節約） |
+| **change_summary** | `TOOL_NAMING_AGENT_PLAYBOOK.md` §1.5 · `.cursorrules` · tool-naming.mdc · learned/tool-ship-mece.mdc |
+| **local_build** | `skip`（製品 HTML/アセット差分なし · Agent SSOT / ルールのみ） |
+| **deploy_count_today** | 5（**P7 override** · docs/Agent手順 · 同一日5回目） |
+| **pages_build_budget_after** | （git push による CF 自動ビルド +1 · Dashboard 照合） |
+| **gates** | P1–P8（core）· P7 override · 製品差分なしのため local release 省略 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | `66cc1ef`（playbook MECE · `git push origin main`） |
+| **smoke** | NA（製品画面変更なし） |
+
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 005 executed（66cc1ef · Playbook §1.5 MECE · P7 override · local release skip） |
+| 2026-07-18 | 005 approved（Playbook §1.5 MECE · P7 override） |
 | 2026-07-18 | 004 executed（4e678b0 · slot-board α · hub · P7 override） |
 | 2026-07-18 | 004 approved（slot-board α · hub · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 003 executed（22e1f0f · pdf-images 範囲選択 · FAQ · P7 override） |
