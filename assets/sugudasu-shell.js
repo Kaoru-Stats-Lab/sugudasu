@@ -312,6 +312,50 @@
     applyCtaLabels(file);
     applyDevStageBadge();
     applyToolNamingFromRegistry();
+    recordRecentTool(file);
+  }
+
+  /** Hub IA: recentTools に tool id のみ（入力内容は保存しない） */
+  function recordRecentTool(file) {
+    const id = String(file || '')
+      .replace(/^.*\//, '')
+      .replace(/\.html$/i, '');
+    if (!id || id === 'hub' || id.indexOf('sync-') === 0) return;
+    const support = {
+      updates: 1,
+      roadmap: 1,
+      statements: 1,
+      privacy: 1,
+      terms: 1,
+      disclaimer: 1,
+      'not-a-car': 1,
+      guides: 1,
+      contact: 1,
+    };
+    if (support[id]) return;
+    try {
+      if (global.SUGUDASU_HUB_IA && typeof global.SUGUDASU_HUB_IA.pushRecent === 'function') {
+        global.SUGUDASU_HUB_IA.pushRecent(id);
+      } else {
+        const key = 'recentTools';
+        const raw = localStorage.getItem(key);
+        let list = [];
+        if (raw) {
+          try {
+            list = JSON.parse(raw);
+          } catch (_) {
+            list = [];
+          }
+        }
+        if (!Array.isArray(list)) list = [];
+        list = list.filter((x) => x !== id);
+        list.unshift(id);
+        localStorage.setItem(key, JSON.stringify(list.slice(0, 8)));
+      }
+      trackGaEvent('product_opened', { tool_id: id });
+    } catch (_) {
+      /* noop */
+    }
   }
 
   /** #sg-chrome-top の data-sg-* から同期マウント（inline mount 不要 · defer 事故防止） */

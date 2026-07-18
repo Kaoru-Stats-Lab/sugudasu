@@ -15,7 +15,8 @@
 |----|-------------------|-----|-------------------|
 | **id** | レジストリキー · `data-sg-tool-id` · `{id}.html` | `invoice` | 開発者のみ（URL パスは `/invoice`） |
 | **概念名** | `conceptName` · ナビは `navLabel` | 請求書 | ダークナビ · 帳票タブ · 本文 |
-| **プロダクト名** | `productName` | SUGUDASU 請求書 | 白ヘッダー · hub カード `<h3>` |
+| **プロダクト名** | `productName` | SUGUDASU 請求書 | 白ヘッダー · Product ページ |
+| **Hub カード名** | `conceptName` | 請求書 | hub カード `<h3>`（SUGUDASU 接頭辞なし） |
 
 **鉄則**
 
@@ -87,12 +88,13 @@ HTML と **同名 id**。registry キー · ファイル名 · `data-sg-tool-id`
 
 ```html
 <a href="{id}.html" class="sg-card block p-5 …">
-  <h3 class="font-bold text-slate-900">{productName}</h3>
-  <p class="text-xs text-slate-500 mt-2">{conceptName ベースの機能説明}</p>
+  <h3 class="font-bold text-slate-900">{conceptName}</h3>
+  <p class="text-xs text-slate-500 mt-2">{機能説明 · hub-cards.json}</p>
 </a>
 ```
 
-- `<h3>` = **`productName` 完全一致**
+- `<h3>` = **`conceptName`**（Hub。productName は Product ヘッダー専用）
+- 実運用は `data/hub-cards.json` + `npm run validate:hub-ia` で生成（手メンテ禁止）
 - hub title / OG に **ツール件数（N選）を書かない**（`BACKLOG.md` §8-11）
 
 ### Step 5 — `assets/sugudasu-shell.js` の `TOOLS`
@@ -139,9 +141,9 @@ npm run build:pages
 | A1 | `data/tool-registry.json` | id · file · conceptName · productName · navLabel · inNav · navOrder · stage | `validate:tool-naming` |
 | A2 | `tools/{id}.html` | `data-sg-tool-id` = id · `data-sg-title` = productName · `og:url` = `https://sugudasu.com/{id}`（`.html` なし）· FAQ は main 外 | naming · ogp |
 | A3 | `assets/{id}-*.js` / 専用 CSS | ロジックがあるなら同 id プレフィックス。**既存 `sugudasu.css` 構造を壊さない**（専用 CSS 追加は可） | （目視 · build） |
-| A4 | `tools/hub.html` | カード1枚 · `<h3>` = productName · `href="{id}.html"`（**トップページ = hub**） | naming |
+| A4 | `tools/hub.html` + `data/hub-cards.json` | カード · `<h3>` = **conceptName** | naming · hub-ia |
 | A5 | `assets/sugudasu-shell.js` `TOOLS[]` | id · file · label=navLabel · icon · **navOrder 順** | naming |
-| A6 | `data/statements-product.json` | inNav ツールは1行必須 · productName 一致 · categoryId 既存のみ | `validate:statements-product` |
+| A6 | `data/statements-product.json` · `categories.json` | inNav 1行 · productName 一致 · categoryId | statements · hub-ia |
 | A7 | `data/changelog.json` | public エントリ · `tools: ["{id}"]` | `verify-changelog`（build 内） |
 | A8 | `README.md` | ツール表が registry と一致 | `sync:readme-tools --check` |
 | A9 | `package.json` | 単体テストがあるなら `test:{id}`（任意だが追加したら `test:all` にも） | （任意） |
@@ -183,7 +185,7 @@ validate:tool-naming · statements · ogp · build:pages: exit 0
 
 1. **`data/tool-registry.json`** の `conceptName` / `productName` / `navLabel` を先に直す
 2. **`tools/{id}.html`** の `data-sg-title`（= productName）· 必要なら `data-sg-subtitle`
-3. **`tools/hub.html`** の該当カード `<h3>`
+3. **`data/hub-cards.json`** を更新し `npm run validate:hub-ia`（カード再生成）
 4. **`assets/sugudasu-shell.js`** の `TOOLS[].label`（= navLabel）
 5. ユーザー向け比較表は **`data/statements-product.json`** を更新（`npm run validate:statements-product`）。手書きで `statements.html` の表だけ直さない。
 6. **`npm run validate:tool-naming`** → **`npm run build:pages`**
@@ -204,7 +206,7 @@ npm run validate:tool-naming
 | registry 完全性 | 全ツールに `conceptName` · `productName` |
 | HTML ヘッダー | `data-sg-tool-id` があるページで `data-sg-title` === `productName` |
 | shell ナビ | `TOOLS[].label` === registry `navLabel`（`inNav` のみ） |
-| hub カード | ナビ掲載ツールの `<h3>` に `productName` が含まれる |
+| hub カード | ナビ掲載ツールの `<h3>` に **`conceptName`** が含まれる（productName は Hub に出さない） |
 
 失敗時は `[tool-naming-guard] FAIL:` のファイル名と期待値を読んで **registry 起点**で直す。
 

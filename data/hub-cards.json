@@ -1,0 +1,224 @@
+{
+  "updatedAt": "2026-07-18",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
+  "disclaimer": "Hub カードの説明文。タイトルは registry.conceptName。ビルド時に hub へ注入。",
+  "cards": [
+    {
+      "toolId": "invoice",
+      "href": "invoice.html",
+      "eyebrow": "実務で人気",
+      "blurb": "見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。PDF保存・印刷までブラウザで完結。",
+      "meta": null
+    },
+    {
+      "toolId": "stamp",
+      "href": "stamp.html",
+      "eyebrow": "NEW · 請求書連携",
+      "blurb": "認印（丸）の透過PNGをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。",
+      "meta": null
+    },
+    {
+      "toolId": "receipt",
+      "href": "receipt.html",
+      "eyebrow": "NEW",
+      "blurb": "手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応PDFの印刷・保存までブラウザで完結。",
+      "meta": null
+    },
+    {
+      "toolId": "label",
+      "href": "label.html",
+      "eyebrow": null,
+      "blurb": "宛名ラベル · シールを一括印刷。主要メーカー型番検索 · Excel/CSV取込 · コピペ対応。",
+      "meta": null
+    },
+    {
+      "toolId": "report",
+      "href": "report.html",
+      "eyebrow": null,
+      "blurb": "議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。Gemini下書きにも対応。",
+      "meta": null
+    },
+    {
+      "toolId": "shift",
+      "href": "shift.html",
+      "eyebrow": null,
+      "blurb": "シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。",
+      "meta": null
+    },
+    {
+      "toolId": "present",
+      "href": "present.html",
+      "eyebrow": null,
+      "blurb": "AIギフト提案 · 贈り物選び。NGな品（地雷）を回避。Amazon導線で候補確認。",
+      "meta": null
+    },
+    {
+      "toolId": "fair-draw",
+      "href": "fair-draw.html?tab=check",
+      "eyebrow": "キャンペーン企画 · 景品チェック",
+      "blurb": "景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。",
+      "meta": "ベータ版 · 抽選タブと証跡PDFは一体 →"
+    },
+    {
+      "toolId": "fair-draw",
+      "href": "fair-draw.html?tab=draw",
+      "eyebrow": "名簿抽選 · 公平抽選",
+      "blurb": "公平抽選 · 名簿抽選。Web Crypto で抽選。シード · 名簿指紋付き監査PDF/JSONを出力。",
+      "meta": "ベータ版 · 景品チェックと同一ツール →"
+    },
+    {
+      "toolId": "reverse",
+      "href": "reverse.html",
+      "eyebrow": null,
+      "blurb": "逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。",
+      "meta": null
+    },
+    {
+      "toolId": "normalize",
+      "href": "normalize.html",
+      "eyebrow": null,
+      "blurb": "ExcelやECのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。",
+      "meta": "ベータ版 · 500行まで →"
+    },
+    {
+      "toolId": "search-query",
+      "href": "search-query.html",
+      "eyebrow": "調べもの · 非送信 · NEW",
+      "blurb": "filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。",
+      "meta": "アルファ版 · Googleで開く可 →"
+    },
+    {
+      "toolId": "table-conv",
+      "href": "table-conv.html",
+      "eyebrow": null,
+      "blurb": "Excelの複数列コピー・CSVを送信せず Markdown 表 · JSON · TSV に。Shift-JIS 対応。1列だけなら全角半角整えへ。",
+      "meta": "ベータ版 · 5,000行まで →"
+    },
+    {
+      "toolId": "webp-to-jpg",
+      "href": "webp-to-jpg.html",
+      "eyebrow": "WebP→JPG/PNG · 非送信",
+      "blurb": "WebP→JPG/PNG（アップロード不要）。運営サーバーへ送らず端末内変換。",
+      "meta": "ベータ版 · PC推奨 →"
+    },
+    {
+      "toolId": "video-frame",
+      "href": "video-frame.html",
+      "eyebrow": "マニュアル · 非送信 · NEW",
+      "blurb": "操作動画から説明用PNGを1枚。再生UIが映り込まず、端末内だけで処理。",
+      "meta": "アルファ版 · MP4/WebM →"
+    },
+    {
+      "toolId": "mask",
+      "href": "mask.html",
+      "eyebrow": "マニュアル · 非送信 · NEW",
+      "blurb": "スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。",
+      "meta": "アルファ版 · Ctrl+V対応 →"
+    },
+    {
+      "toolId": "image-trim",
+      "href": "image-trim.html",
+      "eyebrow": "SNS · 資料 · 非送信 · NEW",
+      "blurb": "カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。",
+      "meta": "アルファ版 · Ctrl+V対応 →"
+    },
+    {
+      "toolId": "watermark",
+      "href": "watermark.html",
+      "eyebrow": null,
+      "blurb": "文字またはロゴを9点に焼き込み。透過3段階。複数枚はZIPで一括。PDF・動画は対象外。",
+      "meta": "アルファ版 · 最大20枚 →"
+    },
+    {
+      "toolId": "pdf-images",
+      "href": "pdf-images.html",
+      "eyebrow": null,
+      "blurb": "仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。ZIP保存。",
+      "meta": "アルファ版 · PC推奨 →"
+    },
+    {
+      "toolId": "test-data",
+      "href": "test-data.html",
+      "eyebrow": "労務 · 給与 · 非送信 · NEW",
+      "blurb": "社員マスタ風ダミーCSV。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。",
+      "meta": "アルファ版 · 最大5,000件 →"
+    },
+    {
+      "toolId": "group-split",
+      "href": "group-split.html",
+      "eyebrow": "研修 · ハッカソン · NEW",
+      "blurb": "グループ分け · TSV/Slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。",
+      "meta": "ベータ版 · 制約対応（固定班等）→"
+    },
+    {
+      "toolId": "match-board",
+      "href": "match-board.html",
+      "eyebrow": "配属 · ゼミ · 棚割 · NEW",
+      "blurb": "第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。Undo/Redo · JSON再開対応。",
+      "meta": "アルファ版 · 長時間合意形成ボード →"
+    },
+    {
+      "toolId": "slot-board",
+      "href": "slot-board.html",
+      "eyebrow": null,
+      "blurb": "定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · TSV。自動配置はしません。",
+      "meta": "アルファ版 · PC推奨 →"
+    },
+    {
+      "toolId": "planning-poker",
+      "href": "planning-poker.html",
+      "eyebrow": "開発 · 見積 · 合意形成 · NEW",
+      "blurb": "見積会議（Planning Poker）を1画面化。同時Revealで認識差を可視化し、再投票と合意を短時間で進めます。",
+      "meta": "アルファ版 · 非送信・登録不要 →"
+    },
+    {
+      "toolId": "timeline",
+      "href": "timeline.html",
+      "eyebrow": "当日進行 · NEW",
+      "blurb": "進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · TSVコピー。非送信。",
+      "meta": "アルファ版 · 幹事イベント束 →"
+    },
+    {
+      "toolId": "warikan",
+      "href": "warikan.html",
+      "eyebrow": null,
+      "blurb": "傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。",
+      "meta": null
+    },
+    {
+      "toolId": "sns",
+      "href": "sns.html",
+      "eyebrow": null,
+      "blurb": "SNSデコ文字 · 特殊フォント変換。Instagram · X向けに縦書き · 装飾文字へ一括変換。",
+      "meta": null
+    },
+    {
+      "toolId": "link-qr",
+      "href": "link-qr.html",
+      "eyebrow": "登壇者 · 懇親会 · NEW",
+      "blurb": "X · GitHub · Zenn をまとめて QR。登録不要 · サーバー保存なし（URLの#にだけ載る）。",
+      "meta": "アルファ版 · SNSプロフィールと登壇者セット →"
+    },
+    {
+      "toolId": "qr-reader",
+      "href": "qr-reader.html",
+      "eyebrow": "読み取り · 画面共有 · NEW",
+      "blurb": "カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集QRの形式はカードで表示。",
+      "meta": "アルファ版 · リンク集QRと相互導線 →"
+    },
+    {
+      "toolId": "diff",
+      "href": "diff.html",
+      "eyebrow": "AI文書監査 · NEW",
+      "blurb": "AIに書き直させた文で、数字・日付・URLなど見逃すとまずい変更から確認。データは送りません。",
+      "meta": "アルファ版 · 非送信・保存なし →"
+    },
+    {
+      "toolId": "time-calc",
+      "href": "time-calc.html",
+      "eyebrow": "単機能 · NEW",
+      "blurb": "勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。",
+      "meta": "アルファ版 · 非送信・登録不要 →"
+    }
+  ]
+}

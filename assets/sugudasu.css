@@ -531,6 +531,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   display: block;
   text-decoration: none;
   transition: border-color 150ms ease;
+  position: relative;
 }
 .sg-hub-card:hover {
   border-color: #93c5fd;
@@ -549,6 +550,96 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-size: 11px;
   color: #64748b;
   margin-top: 0.5rem;
+}
+.sg-hub-search-label {
+  display: block;
+  max-width: 36rem;
+  margin-top: 0.5rem;
+}
+.sg-hub-search {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9375rem;
+  background: #fff;
+  color: #0f172a;
+}
+.sg-hub-search:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+.sg-hub-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.sg-hub-chip {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.sg-hub-chip.is-active,
+.sg-hub-chip[aria-selected='true'] {
+  border-color: #64748b;
+  background: #f8fafc;
+  color: #0f172a;
+}
+.sg-hub-more-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+.sg-hub-more-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.sg-hub-fav {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+.sg-hub-fav.is-on {
+  color: #ca8a04;
+}
+.sg-hub-rail {
+  space: 0;
+}
+.sg-hub-rail__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+.sg-hub-rail__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.sg-hub-rail__link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1d4ed8;
+  text-decoration: underline;
 }
 
 .sg-tool-intro {

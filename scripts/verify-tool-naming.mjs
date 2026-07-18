@@ -153,10 +153,17 @@ function verifyHubCards(tools) {
     }
     const idx = hub.indexOf(hrefNeedle);
     const slice = hub.slice(idx, idx + 600);
-    if (!slice.includes(tool.productName)) {
+    // Hub カード h3 = conceptName（SUGUDASU 接頭辞なし）。Product ヘッダーは productName のまま。
+    if (!slice.includes(tool.conceptName)) {
       fail(
-        `hub.html ${tool.file}: カード付近に productName "${tool.productName}" がありません\n` +
-        `  → <h3> を productName にしてください（PLAYBOOK §1 Step 4）`
+        `hub.html ${tool.file}: カード付近に conceptName "${tool.conceptName}" がありません\n` +
+          `  → <h3> を conceptName にしてください（PLAYBOOK · Hub IA）`
+      );
+    }
+    if (tool.productName && tool.productName !== tool.conceptName && slice.includes(`>${tool.productName}<`)) {
+      fail(
+        `hub.html ${tool.file}: カード h3 に productName "${tool.productName}" があります\n` +
+          `  → Hub では conceptName のみ（SUGUDASU 接頭辞なし）`
       );
     }
   }

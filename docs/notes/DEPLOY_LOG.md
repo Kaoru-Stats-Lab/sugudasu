@@ -1178,10 +1178,31 @@
 
 ---
 
+
+## DEPLOY-20260719-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | Hub IA Refresh Phase 1 · カテゴリ SSOT 昇格 · 提督 Commit&Push |
+| **change_summary** | categories/hub-config/synonyms · hub-ia.js · /category/{id} · image-trim Ctrl+V 文言 · ADR-0003 · Tsukutta 事実ブロック · 画像系判定台帳 |
+| **local_build** | `pending`（release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 時） |
+| **gates** | P1–P8（本エントリ承認後に gate） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 時） |
+| **smoke** | （executed 時） |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-19 | 001 approved（Hub IA Phase 1 · 提督 Commit&Push） |
 | 2026-07-18 | 011 executed（737332a · 相対リンク罠修正 · P7 override） |
 | 2026-07-18 | 011 approved（相対リンク罠修正 · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 010 executed（25b62e2 · 見積名著 · Diff FAQ · P7 override） |

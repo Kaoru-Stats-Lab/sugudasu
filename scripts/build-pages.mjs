@@ -74,6 +74,9 @@ function canonicalPathFromHtml(file) {
     const slug = file.replace(/^sync-/, '').replace(/\.html$/, '');
     return slug === 'index' ? '/' : `/${slug}`;
   }
+  if (file.startsWith('category/')) {
+    return `/${file.replace(/\.html$/, '')}`;
+  }
   const slug = file.replace(/\.html$/, '');
   return slug === 'hub' ? '/' : `/${slug}`;
 }
@@ -82,6 +85,7 @@ function sitemapPriority(pathname) {
   if (pathname === '/') return '1.0';
   if (pathname === '/guides') return '0.85';
   if (pathname.startsWith('/guides/')) return '0.75';
+  if (pathname.startsWith('/category/')) return '0.6';
   if (pathname === '/invoice' || pathname === '/receipt' || pathname === '/stamp') return '0.9';
   if (pathname === '/updates') return '0.7';
   if (pathname === '/roadmap') return '0.68';
@@ -89,11 +93,12 @@ function sitemapPriority(pathname) {
   return '0.8';
 }
 
-function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = []) {
+function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = [], categoryIds = []) {
   const paths = [...new Set([
     '/',
     '/guides',
     ...guideSlugs.map((s) => `/guides/${s}`),
+    ...categoryIds.map((id) => `/category/${id}`),
     ...htmlFiles
       .filter((f) => !SITEMAP_SKIP.has(f))
       .map((f) => canonicalPathFromHtml(f))
@@ -134,7 +139,7 @@ function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = []) {
   fs.writeFileSync(path.join(DIST, 'robots.txt'), robots, 'utf8');
 }
 
-function writeRedirects(htmlFiles, guideSlugs = []) {
+function writeRedirects(htmlFiles, guideSlugs = [], categoryIds = []) {
   const lines = IS_SYNC
     ? [
         '# SUGUDASU Sync — clean paths',
@@ -160,6 +165,9 @@ function writeRedirects(htmlFiles, guideSlugs = []) {
     for (const slug of guideSlugs) {
       lines.push(`/guides/${slug}.html /guides/${slug} 301`);
     }
+    for (const id of categoryIds) {
+      lines.push(`/category/${id}.html /category/${id} 301`);
+    }
   } else {
     for (const file of htmlFiles) {
       if (file === 'sync-index.html' || file === 'sync-timeline-lp.html' || file === 'sync-timeline.html') {
@@ -171,6 +179,101 @@ function writeRedirects(htmlFiles, guideSlugs = []) {
   }
 
   fs.writeFileSync(path.join(DIST, '_redirects'), `${lines.join('\n')}\n`, 'utf8');
+}
+
+/** /category/{id} — Hub と同カード見た目 · BreadcrumbList のみ（既存ツール JSON-LD は触らない） */
+function writeCategoryPages() {
+  if (IS_SYNC) return [];
+  const catDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/categories.json'), 'utf8'));
+  const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-registry.json'), 'utf8'));
+  const hubCards = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
+  const ids = [];
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  for (const cat of catDoc.categories || []) {
+    ids.push(cat.id);
+    const cards = (hubCards.cards || []).filter((c) => {
+      const t = registry.tools[c.toolId];
+      return t && t.categoryId === cat.id;
+    });
+    const cardHtml = cards
+      .map((card) => {
+        const tool = registry.tools[card.toolId];
+        const title = tool.conceptName || tool.navLabel || card.toolId;
+        const href = card.href;
+        const parts = [
+          `<a href="${esc(href)}" class="sg-hub-card sg-card p-5" data-tool-id="${esc(card.toolId)}">`,
+        ];
+        if (card.eyebrow) parts.push(`<p class="sg-hub-card__eyebrow">${esc(card.eyebrow)}</p>`);
+        parts.push(`<h3 class="sg-hub-card__title">${esc(title)}</h3>`);
+        parts.push(`<p class="text-xs text-slate-500 mt-2">${esc(card.blurb)}</p>`);
+        if (card.meta) parts.push(`<p class="sg-hub-card__meta">${esc(card.meta)}</p>`);
+        parts.push('</a>');
+        return parts.join('\n            ');
+      })
+      .join('\n            ');
+
+    const breadcrumbLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'SUGUDASU', item: `${SITE_ORIGIN}/` },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: cat.label,
+          item: `${SITE_ORIGIN}/category/${cat.id}`,
+        },
+      ],
+    };
+
+    const html = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${esc(cat.description)}">
+    <title>${esc(cat.label)} | SUGUDASU</title>
+    <link rel="canonical" href="${SITE_ORIGIN}/category/${esc(cat.id)}">
+    <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"><\/script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased">
+<div id="sg-chrome-top" data-sg-title="${esc(cat.label)}" data-sg-tool-id="hub"></div>
+<main class="sg-main-shell sg-main-shell--wide flex-1 space-y-6">
+    <nav class="text-xs text-slate-500" aria-label="パンくず">
+        <a href="/hub.html" class="text-blue-600 hover:underline">一覧</a>
+        <span class="mx-1">/</span>
+        <span>${esc(cat.label)}</span>
+    </nav>
+    <header class="space-y-2">
+        <h1 class="text-xl font-semibold text-slate-900">${esc(cat.label)}</h1>
+        <p class="text-sm text-slate-600">${esc(cat.description)}</p>
+    </header>
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="${esc(cat.label)}のツール">
+            ${cardHtml}
+    </section>
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"><\/script>
+</body>
+</html>
+`;
+    const dir = path.join(DIST, 'category', cat.id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), rewriteHtml(html, `category/${cat.id}.html`), 'utf8');
+  }
+  console.log(`  category pages: ${ids.length}`);
+  return ids;
 }
 
 /** /{slug} を python http.server 等でも配信できるよう {slug}/index.html を複製 */
@@ -328,6 +431,7 @@ function copyDir(src, dest) {
 /** ?v= バスター対象（_headers で /assets/* は immutable 1年） */
 const BUST_ASSET_NAMES = [
   'sugudasu-shell.js',
+  'hub-ia.js',
   'sugudasu.css',
   'sugudasu-segment.js',
   'tw-build.css',
@@ -644,11 +748,12 @@ if (IS_SYNC) {
 }
 
 const guideSlugs = writeGuidePages();
+const categoryIds = writeCategoryPages();
 
 const lastmod = readChangelogLastmod();
 writeCleanUrlDirs(htmlFiles);
-writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs);
-writeRedirects(htmlFiles, guideSlugs);
+writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs, categoryIds);
+writeRedirects(htmlFiles, guideSlugs, categoryIds);
 writeHeaders();
 
 const count = htmlFiles.length;

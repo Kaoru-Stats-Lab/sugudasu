@@ -524,6 +524,18 @@
 (function () {
     'use strict';
 
+    function categoriesUrl() {
+        const link = document.querySelector('link[href*="sugudasu.css"]');
+        if (link && link.getAttribute('href')) {
+            const href = link.getAttribute('href');
+            if (href.includes('/assets/')) {
+                return href.replace(/assets\/sugudasu\.css.*$/, 'data/categories.json');
+            }
+            return href.replace(/sugudasu\.css.*$/, '../data/categories.json');
+        }
+        return '../data/categories.json';
+    }
+
     function productUrl() {
         const link = document.querySelector('link[href*="sugudasu.css"]');
         if (link && link.getAttribute('href')) {
@@ -548,6 +560,15 @@
         if (!iso) return '';
         const [y, m, d] = iso.split('-');
         return `${y}年${Number(m)}月${Number(d)}日`;
+    }
+
+    function mergeCategories(catDoc, product) {
+        const compare = product.categoryCompare || {};
+        return (catDoc.categories || []).map((c) => ({
+            ...c,
+            blurb: c.description || c.blurb || '',
+            compare: compare[c.id] != null ? compare[c.id] : c.compare,
+        }));
     }
 
     function renderCompare(categories) {
@@ -624,18 +645,19 @@
         root.innerHTML = parts.join('');
     }
 
-    fetch(productUrl())
-        .then((r) => {
-            if (!r.ok) throw new Error('statements-product');
-            return r.json();
-        })
-        .then((product) => {
+    Promise.all([fetch(categoriesUrl()), fetch(productUrl())])
+        .then(async ([cr, pr]) => {
+            if (!cr.ok) throw new Error('categories');
+            if (!pr.ok) throw new Error('statements-product');
+            const catDoc = await cr.json();
+            const product = await pr.json();
+            const categories = mergeCategories(catDoc, product);
             const updated = document.getElementById('statements-product-updated');
             if (updated && product.updatedAt) {
                 updated.textContent = `製品地図の更新日: ${formatDateJa(product.updatedAt)}（roadmap と同タイミングで更新）`;
             }
-            renderCompare(product.categories || []);
-            renderToolsMap(product.categories || [], product.tools || []);
+            renderCompare(categories);
+            renderToolsMap(categories, product.tools || []);
         })
         .catch(() => {
             const c = document.getElementById('statements-compare-root');

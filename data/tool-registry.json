@@ -4,9 +4,10 @@
   "namingLegend": {
     "id": "コード識別子（ファイル名 · data-sg-tool-id · JS）",
     "conceptName": "概念名（本文 · 帳票種別 · 説明）",
-    "productName": "プロダクト名（白ヘッダー data-sg-title · hub カード）",
+    "productName": "プロダクト名（白ヘッダー data-sg-title · Product ページ）",
     "navLabel": "ナビ短ラベル（SUGUDASU 接頭辞なし）",
-    "name": "開発バッジ用の長い表示名（レジストリ互換）"
+    "name": "開発バッジ用の長い表示名（レジストリ互換）",
+    "hubCardTitle": "Hub カード h3 = conceptName（SUGUDASU 接頭辞なし）"
   },
   "stageLegend": {
     "alpha": "骨格確認中。欠落・不具合があり得ます。",
@@ -39,7 +40,8 @@
       "name": "見積・納品・請求書",
       "version": "1.3.0",
       "stage": "beta",
-      "statusNote": "源泉10.21% · 内税8/10%分離 · A4マルチ+下書き"
+      "statusNote": "源泉10.21% · 内税8/10%分離 · A4マルチ+下書き",
+      "categoryId": "docs"
     },
     "stamp": {
       "file": "stamp.html",
@@ -52,7 +54,8 @@
       "name": "電子印鑑（請求書用）",
       "version": "1.0.0",
       "stage": "beta",
-      "statusNote": "認印のみ · 明朝/行書風 · 請求書 handoff · 角印はアップロード"
+      "statusNote": "認印のみ · 明朝/行書風 · 請求書 handoff · 角印はアップロード",
+      "categoryId": "docs"
     },
     "receipt": {
       "file": "receipt.html",
@@ -65,7 +68,8 @@
       "name": "手取り逆引き・領収書",
       "version": "1.1.0",
       "stage": "gamma",
-      "statusNote": "MVP+A4マルチ+URL共有済 · 内税等は後続（§9）"
+      "statusNote": "MVP+A4マルチ+URL共有済 · 内税等は後続（§9）",
+      "categoryId": "docs"
     },
     "label": {
       "file": "label.html",
@@ -78,7 +82,8 @@
       "name": "宛名ラベル",
       "version": "1.1.0",
       "stage": "gamma",
-      "statusNote": "一括貼付: ヘッダー行除外 · 姓名スペース保護 · sg-segment統一済"
+      "statusNote": "一括貼付: ヘッダー行除外 · 姓名スペース保護 · sg-segment統一済",
+      "categoryId": "docs"
     },
     "shift": {
       "file": "shift.html",
@@ -91,7 +96,8 @@
       "name": "シフト表",
       "version": "1.1.0",
       "stage": "beta",
-      "statusNote": "P1: 公平性・改ページ・FIXロックの品質担保（§4-1 · §6）"
+      "statusNote": "P1: 公平性・改ページ・FIXロックの品質担保（§4-1 · §6）",
+      "categoryId": "staffing"
     },
     "report": {
       "file": "report.html",
@@ -104,7 +110,8 @@
       "name": "議事録・報告書",
       "version": "1.0.0",
       "stage": "gamma",
-      "statusNote": "UX改善済 · チャット共有Phase2は未（§2-4）"
+      "statusNote": "UX改善済 · チャット共有Phase2は未（§2-4）",
+      "categoryId": "text"
     },
     "reverse": {
       "file": "reverse.html",
@@ -117,7 +124,8 @@
       "name": "逆引き辞典",
       "version": "1.0.0",
       "stage": "gamma",
-      "statusNote": "STEP5 UX改善完了 · sns相互導線はP2（§1-2 · §4-3b）"
+      "statusNote": "STEP5 UX改善完了 · sns相互導線はP2（§1-2 · §4-3b）",
+      "categoryId": "text"
     },
     "normalize": {
       "file": "normalize.html",
@@ -130,7 +138,8 @@
       "name": "全角半角・テキスト整え",
       "version": "1.4.0",
       "stage": "beta",
-      "statusNote": "500行cap · 行整理 · 伏字3種 · 日付統一 · sql_in/tab_to_comma · T03"
+      "statusNote": "500行cap · 行整理 · 伏字3種 · 日付統一 · sql_in/tab_to_comma · T03",
+      "categoryId": "text"
     },
     "search-query": {
       "file": "search-query.html",
@@ -143,7 +152,8 @@
       "name": "検索式ビルダー（filetype / site）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "Google検索式のローカル組み立て · 非送信 · SEARCH_QUERY_BUILDER_SPEC.md"
+      "statusNote": "Google検索式のローカル組み立て · 非送信 · SEARCH_QUERY_BUILDER_SPEC.md",
+      "categoryId": "text"
     },
     "table-conv": {
       "file": "table-conv.html",
@@ -156,7 +166,8 @@
       "name": "表データ相互コンバータ",
       "version": "1.0.0",
       "stage": "beta",
-      "statusNote": "Excel貼付/CSV→MD·JSON·TSV · Shift-JIS · 非送信 · 5,000行"
+      "statusNote": "Excel貼付/CSV→MD·JSON·TSV · Shift-JIS · 非送信 · 5,000行",
+      "categoryId": "text"
     },
     "webp-to-jpg": {
       "file": "webp-to-jpg.html",
@@ -169,7 +180,8 @@
       "name": "WebP→JPG/PNG",
       "version": "1.0.0",
       "stage": "beta",
-      "statusNote": "WebP→JPG/PNG · 非送信（アップロード型と差別化）· T09"
+      "statusNote": "WebP→JPG/PNG · 非送信（アップロード型と差別化）· T09",
+      "categoryId": "media"
     },
     "video-frame": {
       "file": "video-frame.html",
@@ -182,7 +194,8 @@
       "name": "動画から静止画PNG（コマ抜き）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "ローカル MP4/WebM → PNG · 非送信 · VIDEO_FRAME_PNG_SPEC.md"
+      "statusNote": "ローカル MP4/WebM → PNG · 非送信 · VIDEO_FRAME_PNG_SPEC.md",
+      "categoryId": "media"
     },
     "mask": {
       "file": "mask.html",
@@ -195,7 +208,8 @@
       "name": "スクショ機密消し",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ/注釈（矢印·枠） · Canvas非送信 · マニュアル向け · T09b"
+      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ/注釈（矢印·枠） · Canvas非送信 · マニュアル向け · T09b",
+      "categoryId": "media"
     },
     "image-trim": {
       "file": "image-trim.html",
@@ -208,7 +222,8 @@
       "name": "指定サイズ画像切出し",
       "version": "0.1.1",
       "stage": "alpha",
-      "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V"
+      "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V",
+      "categoryId": "media"
     },
     "watermark": {
       "file": "watermark.html",
@@ -221,7 +236,8 @@
       "name": "画像透かし一括",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "文字/ロゴ · 9点 · 透過3段階 · ZIP · 非送信 · WATERMARK_TOOL_SPEC.md"
+      "statusNote": "文字/ロゴ · 9点 · 透過3段階 · ZIP · 非送信 · WATERMARK_TOOL_SPEC.md",
+      "categoryId": "media"
     },
     "pdf-images": {
       "file": "pdf-images.html",
@@ -234,7 +250,8 @@
       "name": "PDF埋め込み画像抽出",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "埋め込み画像のみ · ZIP · pdfjs 5.4.296 · PDF_IMAGE_EXTRACT_SPEC.md"
+      "statusNote": "埋め込み画像のみ · ZIP · pdfjs 5.4.296 · PDF_IMAGE_EXTRACT_SPEC.md",
+      "categoryId": "media"
     },
     "test-data": {
       "file": "test-data.html",
@@ -247,7 +264,8 @@
       "name": "テスト用ダミーデータ生成",
       "version": "0.5.0",
       "stage": "alpha",
-      "statusNote": "社員マスタ25万一括CSV · IDオフセット · 日付統一 · T10"
+      "statusNote": "社員マスタ25万一括CSV · IDオフセット · 日付統一 · T10",
+      "categoryId": "devtest"
     },
     "group-split": {
       "file": "group-split.html",
@@ -260,7 +278,8 @@
       "name": "グループ分け",
       "version": "1.2.4",
       "stage": "beta",
-      "statusNote": "PC→スマホ同期メモ · 緩和モード · M02 タップ再編 · セッションJSON · Phase C · 250名cap · T11"
+      "statusNote": "PC→スマホ同期メモ · 緩和モード · M02 タップ再編 · セッションJSON · Phase C · 250名cap · T11",
+      "categoryId": "people"
     },
     "match-board": {
       "file": "match-board.html",
@@ -273,7 +292,8 @@
       "name": "希望順位割当ボード",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "第1〜3希望×定員の長時間調整 · Undo/Redo · JSON再開 · 非送信"
+      "statusNote": "第1〜3希望×定員の長時間調整 · Undo/Redo · JSON再開 · 非送信",
+      "categoryId": "people"
     },
     "slot-board": {
       "file": "slot-board.html",
@@ -286,7 +306,8 @@
       "name": "定員付き枠取りカンバン",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "制限付きカンバン · 超過赤表示 · 復元コード · TSV · 非送信"
+      "statusNote": "制限付きカンバン · 超過赤表示 · 復元コード · TSV · 非送信",
+      "categoryId": "people"
     },
     "planning-poker": {
       "file": "planning-poker.html",
@@ -299,7 +320,8 @@
       "name": "見積会議（Planning Poker）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "司会代行で全員分伏せ入力 · 同時Reveal · 最大/最小理由 · CSV · 非送信（多人端末同期は検討中）"
+      "statusNote": "司会代行で全員分伏せ入力 · 同時Reveal · 最大/最小理由 · CSV · 非送信（多人端末同期は検討中）",
+      "categoryId": "people"
     },
     "timeline": {
       "file": "timeline.html",
@@ -312,7 +334,8 @@
       "name": "イベント進行タイムライン",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "T13 M01 · 連動再計算 · ±5 · 差し込み · TSVコピー · 非送信 · alpha"
+      "statusNote": "T13 M01 · 連動再計算 · ±5 · 差し込み · TSVコピー · 非送信 · alpha",
+      "categoryId": "ops"
     },
     "present": {
       "file": "present.html",
@@ -325,7 +348,8 @@
       "name": "ギフトサジェスター",
       "version": "1.0.0",
       "stage": "gamma",
-      "statusNote": "Amazon主戦場 · アフィ最適化はP1（§2-1 · §2-3）"
+      "statusNote": "Amazon主戦場 · アフィ最適化はP1（§2-1 · §2-3）",
+      "categoryId": "ops"
     },
     "fair-draw": {
       "file": "fair-draw.html",
@@ -338,7 +362,8 @@
       "name": "公平抽選・景品チェック（証跡PDF）",
       "version": "1.6.0",
       "stage": "beta",
-      "statusNote": "Connpass CSV取込 · 証跡3点セット · 名簿スナップショット"
+      "statusNote": "Connpass CSV取込 · 証跡3点セット · 名簿スナップショット",
+      "categoryId": "people"
     },
     "warikan": {
       "file": "warikan.html",
@@ -351,7 +376,8 @@
       "name": "傾斜割り勘",
       "version": "1.1.0",
       "stage": "gamma",
-      "statusNote": "端数過不足ヒーロー表示 · sg-copy-feedback · Xシェア導線済"
+      "statusNote": "端数過不足ヒーロー表示 · sg-copy-feedback · Xシェア導線済",
+      "categoryId": "ops"
     },
     "sns": {
       "file": "sns.html",
@@ -364,7 +390,8 @@
       "name": "SNSデコ文字",
       "version": "1.1.0",
       "stage": "gamma",
-      "statusNote": "font-converter 分離 · プレビュー/お手本は /sns · 23フォントは /font-converter"
+      "statusNote": "font-converter 分離 · プレビュー/お手本は /sns · 23フォントは /font-converter",
+      "categoryId": "creative"
     },
     "link-qr": {
       "file": "link-qr.html",
@@ -377,7 +404,8 @@
       "name": "リンク集QR（即席プロフィール）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "URL #fragment エンコード · 非送信 · イベント懇親会フォロー交換（LINK_QR_TOOL_SPEC.md）"
+      "statusNote": "URL #fragment エンコード · 非送信 · イベント懇親会フォロー交換（LINK_QR_TOOL_SPEC.md）",
+      "categoryId": "ops"
     },
     "qr-reader": {
       "file": "qr-reader.html",
@@ -390,7 +418,8 @@
       "name": "QR読取（カメラ・貼り付け・画面共有）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "カメラ/ファイル/貼り付け/画面共有 · 非送信 · link-qr形式カード表示"
+      "statusNote": "カメラ/ファイル/貼り付け/画面共有 · 非送信 · link-qr形式カード表示",
+      "categoryId": "ops"
     },
     "diff": {
       "file": "diff.html",
@@ -403,7 +432,8 @@
       "name": "差分チェック",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "危険な変更の優先表示 · 非送信 · 保存なし · コピー/印刷"
+      "statusNote": "危険な変更の優先表示 · 非送信 · 保存なし · コピー/印刷",
+      "categoryId": "text"
     },
     "time-calc": {
       "file": "time-calc.html",
@@ -416,7 +446,8 @@
       "name": "時給計算（勤務時間合計 + 時給換算）",
       "version": "0.2.0",
       "stage": "alpha",
-      "statusNote": "テンキー正規（コロン不要）· 候補↺ · 10進小数 · 時給換算 · 給与計算ではない"
+      "statusNote": "テンキー正規（コロン不要）· 候補↺ · 10進小数 · 時給換算 · 給与計算ではない",
+      "categoryId": "staffing"
     },
     "font-converter": {
       "file": "font-converter.html",

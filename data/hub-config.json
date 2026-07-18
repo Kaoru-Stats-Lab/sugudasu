@@ -1,0 +1,33 @@
+{
+  "updatedAt": "2026-07-18",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
+  "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。",
+  "chipOrder": [
+    "docs",
+    "staffing",
+    "text",
+    "media",
+    "people",
+    "ops",
+    "devtest",
+    "creative"
+  ],
+  "chipLabels": {
+    "docs": "帳票",
+    "staffing": "シフト",
+    "text": "テキスト",
+    "media": "画像",
+    "people": "配属",
+    "ops": "イベント",
+    "devtest": "テスト",
+    "creative": "SNS"
+  },
+  "primaryCategories": [
+    "docs",
+    "text",
+    "media",
+    "ops"
+  ],
+  "maxVisibleChipsDesktop": 8,
+  "maxVisibleChipsMobile": 4
+}

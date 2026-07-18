@@ -1,0 +1,55 @@
+{
+  "updatedAt": "2026-07-18",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/DEV_TRANSPARENCY_RULES.md · docs/decisions/ADR-0003-hub-product-independence.md",
+  "disclaimer": "カテゴリは相互排他。1ツールは1カテゴリのみ。表示制御（チップ順・モバイル）は data/hub-config.json。検索語は data/synonyms.json。",
+  "categories": [
+    {
+      "id": "docs",
+      "label": "帳票 · 印刷",
+      "order": 1,
+      "description": "見積・請求・領収・宛名・印影。下書きは端末内。クラウド請求の代替ではありません。"
+    },
+    {
+      "id": "staffing",
+      "label": "シフト · 時給",
+      "order": 2,
+      "description": "小規模店のシフト表と勤務時間の足し算。勤怠打刻・労基自動判定の SaaS ではありません。"
+    },
+    {
+      "id": "text",
+      "label": "テキスト · 表 · 検索",
+      "order": 3,
+      "description": "全角半角・表変換・差分・検索式・逆引き・議事録。貼った文字列を整形してコピーする系。"
+    },
+    {
+      "id": "media",
+      "label": "画像 · 動画",
+      "order": 4,
+      "description": "WebP変換・マスク・切り出し・動画コマ抜き。マニュアル用の素材処理。動画編集・GIF 化はしません。"
+    },
+    {
+      "id": "people",
+      "label": "配属 · 合意 · 抽選",
+      "order": 5,
+      "description": "班分け・ドラフト会議・見積会議・公平抽選。名簿や希望を端末内で扱い、結果をコピー・印刷します。"
+    },
+    {
+      "id": "ops",
+      "label": "当日運営 · 連絡",
+      "order": 6,
+      "description": "イベント進行・割り勘・ギフト・リンク集QR・QR読取。その場で共有・清算・フォロー交換する系。"
+    },
+    {
+      "id": "devtest",
+      "label": "テストデータ",
+      "order": 7,
+      "description": "架空の社員マスタ風 CSV 生成。本番の匿名化・マスキング・TDM の代替ではありません。"
+    },
+    {
+      "id": "creative",
+      "label": "SNS · 文字装飾",
+      "order": 8,
+      "description": "デコ文字・見た目の装飾。業務データの保管場所ではありません。"
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
  * statements-product.json の MECE 検証
+ * — カテゴリ正本: data/categories.json
  * — registry の inNav 製品ツールと 1:1 対応
- * — カテゴリ相互排他 · 網羅
  *
  *   node scripts/verify-statements-product.mjs
- *   node scripts/verify-statements-product.mjs --sync-date   # updatedAt を roadmap に合わせる
+ *   node scripts/verify-statements-product.mjs --sync-date
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -15,6 +15,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const REGISTRY = path.join(ROOT, 'data', 'tool-registry.json');
 const PRODUCT = path.join(ROOT, 'data', 'statements-product.json');
+const CATEGORIES = path.join(ROOT, 'data', 'categories.json');
 const ROADMAP = path.join(ROOT, 'data', 'roadmap.json');
 
 const SUPPORT_IDS = new Set([
@@ -39,6 +40,7 @@ function main() {
   const syncDate = process.argv.includes('--sync-date');
   const registry = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
   const product = JSON.parse(fs.readFileSync(PRODUCT, 'utf8'));
+  const catDoc = JSON.parse(fs.readFileSync(CATEGORIES, 'utf8'));
   const roadmap = JSON.parse(fs.readFileSync(ROADMAP, 'utf8'));
 
   if (syncDate) {
@@ -47,11 +49,19 @@ function main() {
     console.log(`[statements-product] updatedAt → ${product.updatedAt} (from roadmap)`);
   }
 
-  const cats = product.categories || [];
+  if (product.categories) {
+    fail('statements-product.json に categories[] が残っています。正本は data/categories.json です');
+  }
+
+  const cats = catDoc.categories || [];
   const tools = product.tools || [];
   const catIds = new Set();
   for (const c of cats) {
     if (!c.id || !c.label) fail(`category に id/label が必要: ${JSON.stringify(c)}`);
+    if (c.hub || c.chipLabel || c.mobilePrimary || c.showChip) {
+      fail(`categories.json に UI フィールドがあります (${c.id})。hub-config.json へ`);
+    }
+    if (c.blurb && !c.description) fail(`${c.id}: blurb ではなく description を使ってください`);
     if (catIds.has(c.id)) fail(`category id 重複: ${c.id}`);
     catIds.add(c.id);
   }
@@ -83,6 +93,10 @@ function main() {
     if (row.file && row.file !== meta.file) {
       fail(`${id}: file 不一致 statements="${row.file}" registry="${meta.file}"`);
     }
+    if (meta.categoryId && meta.categoryId !== row.categoryId) {
+      fail(`${id}: registry.categoryId=${meta.categoryId} ≠ statements=${row.categoryId}`);
+    }
+    if (!meta.categoryId) fail(`${id}: tool-registry に categoryId がありません`);
   }
 
   const missing = expected.filter((id) => !seen.has(id));

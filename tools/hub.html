@@ -35,6 +35,10 @@
                 SUGUDASU（すぐだす）は、請求書 · 進行表 · 班分けなど<strong>その場で完結する業務</strong>に特化した無料ツール集。登録不要 · 完全ローカル処理です。
             </p>
         </div>
+        <label class="sg-hub-search-label" for="sg-hub-search">
+            <span class="sr-only">ツールを検索</span>
+            <input type="search" id="sg-hub-search" class="sg-hub-search" placeholder="何をしたいですか？" autocomplete="off" enterkeyhint="search">
+        </label>
         <p class="sg-tool-lead sg-tool-lead--meta">
             各ツールページに用途別の説明と FAQ があります。手順は<a href="guides.html">実務ガイド</a>、データの扱いは<a href="statements.html">SUGUDASUの約束</a>をご覧ください。
         </p>
@@ -62,183 +66,229 @@
         </p>
     </section>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="invoice.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">実務で人気</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 請求書</h3>
-            <p class="text-xs text-slate-500 mt-2">見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。PDF保存・印刷までブラウザで完結。</p>
-        </a>
-        <a href="stamp.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">NEW · 請求書連携</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 電子印鑑</h3>
-            <p class="text-xs text-slate-500 mt-2">認印（丸）の透過PNGをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。</p>
-        </a>
-        <a href="receipt.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 領収書</h3>
-            <p class="text-xs text-slate-500 mt-2">手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応PDFの印刷・保存までブラウザで完結。</p>
-        </a>
-        <a href="label.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU ラベル</h3>
-            <p class="text-xs text-slate-500 mt-2">宛名ラベル · シールを一括印刷。主要メーカー型番検索 · Excel/CSV取込 · コピペ対応。</p>
-        </a>
-        <a href="report.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU 議事録</h3>
-            <p class="text-xs text-slate-500 mt-2">議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。Gemini下書きにも対応。</p>
-        </a>
-        <a href="shift.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU シフト</h3>
-            <p class="text-xs text-slate-500 mt-2">シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。</p>
-        </a>
-        <a href="present.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU ギフト</h3>
-            <p class="text-xs text-slate-500 mt-2">AIギフト提案 · 贈り物選び。NGな品（地雷）を回避。Amazon導線で候補確認。</p>
-        </a>
-        <a href="fair-draw.html?tab=check" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">キャンペーン企画 · 景品チェック</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 抽選</h3>
-            <p class="text-xs text-slate-500 mt-2">景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。</p>
-            <p class="sg-hub-card__meta">ベータ版 · 抽選タブと証跡PDFは一体 →</p>
-        </a>
-        <a href="fair-draw.html?tab=draw" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">名簿抽選 · 公平抽選</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 抽選</h3>
-            <p class="text-xs text-slate-500 mt-2">公平抽選 · 名簿抽選。Web Crypto で抽選。シード · 名簿指紋付き監査PDF/JSONを出力。</p>
-            <p class="sg-hub-card__meta">ベータ版 · 景品チェックと同一ツール →</p>
-        </a>
-        <a href="reverse.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU 逆引き</h3>
-            <p class="text-xs text-slate-500 mt-2">逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。</p>
-        </a>
-        <a href="normalize.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow"><span data-sg-privacy-badge data-subject="入力内容" data-extra="NEW"></span></p>
-            <h3 class="sg-hub-card__title">SUGUDASU 全角半角整え</h3>
-            <p class="text-xs text-slate-500 mt-2">ExcelやECのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。</p>
-            <p class="sg-hub-card__meta">ベータ版 · 500行まで →</p>
-        </a>
-        <a href="search-query.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">調べもの · 非送信 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 検索式ビルダー</h3>
-            <p class="text-xs text-slate-500 mt-2">filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。</p>
-            <p class="sg-hub-card__meta">アルファ版 · Googleで開く可 →</p>
-        </a>
-                <a href="table-conv.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow"><span data-sg-privacy-badge data-subject="入力内容" data-extra="NEW"></span></p>
-            <h3 class="sg-hub-card__title">SUGUDASU 表変換</h3>
-            <p class="text-xs text-slate-500 mt-2">Excelの複数列コピー・CSVを送信せず Markdown 表 · JSON · TSV に。Shift-JIS 対応。1列だけなら全角半角整えへ。</p>
-            <p class="sg-hub-card__meta">ベータ版 · 5,000行まで →</p>
-        </a>
-        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">WebP→JPG/PNG · 非送信</p>
-            <h3 class="sg-hub-card__title">SUGUDASU WebP変換</h3>
-            <p class="text-xs text-slate-500 mt-2">WebP→JPG/PNG（アップロード不要）。運営サーバーへ送らず端末内変換。</p>
-            <p class="sg-hub-card__meta">ベータ版 · PC推奨 →</p>
-        </a>
-        <a href="video-frame.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 動画コマ抜き</h3>
-            <p class="text-xs text-slate-500 mt-2">操作動画から説明用PNGを1枚。再生UIが映り込まず、端末内だけで処理。</p>
-            <p class="sg-hub-card__meta">アルファ版 · MP4/WebM →</p>
-        </a>
-        <a href="mask.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU マスク</h3>
-            <p class="text-xs text-slate-500 mt-2">スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。</p>
-            <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
-        </a>
-        <a href="image-trim.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">SNS · 資料 · 非送信 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 画像切り出し</h3>
-            <p class="text-xs text-slate-500 mt-2">カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。</p>
-            <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
-        </a>
-        <a href="watermark.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow"><span data-sg-privacy-badge data-subject="画像" data-extra="NEW"></span></p>
-            <h3 class="sg-hub-card__title">SUGUDASU 透かし</h3>
-            <p class="text-xs text-slate-500 mt-2">文字またはロゴを9点に焼き込み。透過3段階。複数枚はZIPで一括。PDF・動画は対象外。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 最大20枚 →</p>
-        </a>
-        <a href="pdf-images.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow"><span data-sg-privacy-badge data-subject="PDF" data-extra="NEW"></span></p>
-            <h3 class="sg-hub-card__title">SUGUDASU PDF画像抽出</h3>
-            <p class="text-xs text-slate-500 mt-2">仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。ZIP保存。</p>
-            <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
-        </a>
-        <a href="test-data.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">労務 · 給与 · 非送信 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU テストデータ</h3>
-            <p class="text-xs text-slate-500 mt-2">社員マスタ風ダミーCSV。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 最大5,000件 →</p>
-        </a>
-        <a href="group-split.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">研修 · ハッカソン · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 班分け</h3>
-            <p class="text-xs text-slate-500 mt-2">グループ分け · TSV/Slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。</p>
-            <p class="sg-hub-card__meta">ベータ版 · 制約対応（固定班等）→</p>
-        </a>
-        <a href="match-board.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">配属 · ゼミ · 棚割 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU ドラフト会議</h3>
-            <p class="text-xs text-slate-500 mt-2">第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。Undo/Redo · JSON再開対応。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 長時間合意形成ボード →</p>
-        </a>
-        <a href="slot-board.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow"><span data-sg-privacy-badge data-subject="名簿" data-extra="NEW"></span></p>
-            <h3 class="sg-hub-card__title">SUGUDASU 枠取りパレット</h3>
-            <p class="text-xs text-slate-500 mt-2">定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · TSV。自動配置はしません。</p>
-            <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
-        </a>
-        <a href="planning-poker.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">開発 · 見積 · 合意形成 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 見積会議</h3>
-            <p class="text-xs text-slate-500 mt-2">見積会議（Planning Poker）を1画面化。同時Revealで認識差を可視化し、再投票と合意を短時間で進めます。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
-        </a>
-        <a href="timeline.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">当日進行 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU イベント進行</h3>
-            <p class="text-xs text-slate-500 mt-2">進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · TSVコピー。非送信。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 幹事イベント束 →</p>
-        </a>
-        <a href="warikan.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU 割り勘</h3>
-            <p class="text-xs text-slate-500 mt-2">傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。</p>
-        </a>
-        <a href="sns.html" class="sg-hub-card sg-card p-5">
-            <h3 class="sg-hub-card__title">SUGUDASU SNS</h3>
-            <p class="text-xs text-slate-500 mt-2">SNSデコ文字 · 特殊フォント変換。Instagram · X向けに縦書き · 装飾文字へ一括変換。</p>
-        </a>
-        <a href="link-qr.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">登壇者 · 懇親会 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU リンク集QR</h3>
-            <p class="text-xs text-slate-500 mt-2">X · GitHub · Zenn をまとめて QR。登録不要 · サーバー保存なし（URLの#にだけ載る）。</p>
-            <p class="sg-hub-card__meta">アルファ版 · SNSプロフィールと登壇者セット →</p>
-        </a>
-        <a href="qr-reader.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">読み取り · 画面共有 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU QR読取</h3>
-            <p class="text-xs text-slate-500 mt-2">カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集QRの形式はカードで表示。</p>
-            <p class="sg-hub-card__meta">アルファ版 · リンク集QRと相互導線 →</p>
-        </a>
-        <a href="diff.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">AI文書監査 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 差分チェック</h3>
-            <p class="text-xs text-slate-500 mt-2">AIに書き直させた文で、数字・日付・URLなど見逃すとまずい変更から確認。データは送りません。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 非送信・保存なし →</p>
-        </a>
-        <a href="time-calc.html" class="sg-hub-card sg-card p-5">
-            <p class="sg-hub-card__eyebrow">単機能 · NEW</p>
-            <h3 class="sg-hub-card__title">SUGUDASU 時給計算</h3>
-            <p class="text-xs text-slate-500 mt-2">勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。</p>
-            <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
-        </a>
+    <div id="sg-hub-chips" class="sg-hub-chips" role="tablist" aria-label="カテゴリ"></div>
+    <div id="sg-hub-more-wrap" class="hidden">
+        <button type="button" id="sg-hub-more-btn" class="sg-hub-more-btn">その他のカテゴリ</button>
+        <div id="sg-hub-more-panel" class="sg-hub-more-panel hidden" hidden></div>
+    </div>
+
+    <section id="sg-hub-favorites" class="sg-hub-rail hidden" hidden aria-label="お気に入り">
+        <h2 class="sg-hub-rail__title">お気に入り</h2>
+        <div id="sg-hub-favorites-list" class="sg-hub-rail__list"></div>
     </section>
+    <section id="sg-hub-recent" class="sg-hub-rail hidden" hidden aria-label="最近使った">
+        <h2 class="sg-hub-rail__title">最近使った</h2>
+        <div id="sg-hub-recent-list" class="sg-hub-rail__list"></div>
+    </section>
+
+    <p id="sg-hub-empty" class="hidden text-sm text-slate-500" hidden>該当するツールがありません。別の言葉で検索してみてください。</p>
+
+        <!-- hub-cards:start -->
+        <section id="sg-hub-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="ツール一覧">
+        <a href="invoice.html" class="sg-hub-card sg-card p-5" data-tool-id="invoice" data-category-id="docs" data-search="請求書 請求書 sugudasu 請求書 見積・納品・請求書 見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。pdf保存・印刷までブラウザで完結。 実務で人気 請求 インボイス 見積書 納品書">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="invoice" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">実務で人気</p>
+        <h3 class="sg-hub-card__title">請求書</h3>
+        <p class="text-xs text-slate-500 mt-2">見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。PDF保存・印刷までブラウザで完結。</p>
+        </a>
+        <a href="stamp.html" class="sg-hub-card sg-card p-5" data-tool-id="stamp" data-category-id="docs" data-search="電子印鑑 印鑑 sugudasu 電子印鑑 電子印鑑（請求書用） 認印（丸）の透過pngをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。 new · 請求書連携 印鑑 認印 角印">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="stamp" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">NEW · 請求書連携</p>
+        <h3 class="sg-hub-card__title">電子印鑑</h3>
+        <p class="text-xs text-slate-500 mt-2">認印（丸）の透過PNGをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。</p>
+        </a>
+        <a href="receipt.html" class="sg-hub-card sg-card p-5" data-tool-id="receipt" data-category-id="docs" data-search="領収書 領収書 sugudasu 領収書 手取り逆引き・領収書 手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応pdfの印刷・保存までブラウザで完結。 new 領収証 領収">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="receipt" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">NEW</p>
+        <h3 class="sg-hub-card__title">領収書</h3>
+        <p class="text-xs text-slate-500 mt-2">手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応PDFの印刷・保存までブラウザで完結。</p>
+        </a>
+        <a href="label.html" class="sg-hub-card sg-card p-5" data-tool-id="label" data-category-id="docs" data-search="宛名ラベル ラベル sugudasu ラベル 宛名ラベル 宛名ラベル · シールを一括印刷。主要メーカー型番検索 · excel/csv取込 · コピペ対応。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="label" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">宛名ラベル</h3>
+        <p class="text-xs text-slate-500 mt-2">宛名ラベル · シールを一括印刷。主要メーカー型番検索 · Excel/CSV取込 · コピペ対応。</p>
+        </a>
+        <a href="report.html" class="sg-hub-card sg-card p-5" data-tool-id="report" data-category-id="text" data-search="議事録 議事録 sugudasu 議事録 議事録・報告書 議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。gemini下書きにも対応。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="report" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">議事録</h3>
+        <p class="text-xs text-slate-500 mt-2">議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。Gemini下書きにも対応。</p>
+        </a>
+        <a href="shift.html" class="sg-hub-card sg-card p-5" data-tool-id="shift" data-category-id="staffing" data-search="シフト表 シフト sugudasu シフト シフト表 シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。 シフト表 勤務表">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="shift" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">シフト表</h3>
+        <p class="text-xs text-slate-500 mt-2">シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。</p>
+        </a>
+        <a href="present.html" class="sg-hub-card sg-card p-5" data-tool-id="present" data-category-id="ops" data-search="ギフト提案 ギフト sugudasu ギフト ギフトサジェスター aiギフト提案 · 贈り物選び。ngな品（地雷）を回避。amazon導線で候補確認。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="present" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">ギフト提案</h3>
+        <p class="text-xs text-slate-500 mt-2">AIギフト提案 · 贈り物選び。NGな品（地雷）を回避。Amazon導線で候補確認。</p>
+        </a>
+        <a href="fair-draw.html?tab=check" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。 キャンペーン企画 · 景品チェック 景表法 景品 抽選 公平抽選">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="fair-draw" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">キャンペーン企画 · 景品チェック</p>
+        <h3 class="sg-hub-card__title">公平抽選</h3>
+        <p class="text-xs text-slate-500 mt-2">景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。</p>
+        <p class="sg-hub-card__meta">ベータ版 · 抽選タブと証跡PDFは一体 →</p>
+        </a>
+        <a href="fair-draw.html?tab=draw" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 公平抽選 · 名簿抽選。web crypto で抽選。シード · 名簿指紋付き監査pdf/jsonを出力。 名簿抽選 · 公平抽選 景表法 景品 抽選 公平抽選">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="fair-draw" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">名簿抽選 · 公平抽選</p>
+        <h3 class="sg-hub-card__title">公平抽選</h3>
+        <p class="text-xs text-slate-500 mt-2">公平抽選 · 名簿抽選。Web Crypto で抽選。シード · 名簿指紋付き監査PDF/JSONを出力。</p>
+        <p class="sg-hub-card__meta">ベータ版 · 景品チェックと同一ツール →</p>
+        </a>
+        <a href="reverse.html" class="sg-hub-card sg-card p-5" data-tool-id="reverse" data-category-id="text" data-search="逆引き辞典 逆引き sugudasu 逆引き 逆引き辞典 逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="reverse" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">逆引き辞典</h3>
+        <p class="text-xs text-slate-500 mt-2">逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。</p>
+        </a>
+        <a href="normalize.html" class="sg-hub-card sg-card p-5" data-tool-id="normalize" data-category-id="text" data-search="テキスト整え 全角半角 sugudasu 全角半角整え 全角半角・テキスト整え excelやecのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。 全角 半角 名簿整え">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="normalize" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">テキスト整え</h3>
+        <p class="text-xs text-slate-500 mt-2">ExcelやECのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。</p>
+        <p class="sg-hub-card__meta">ベータ版 · 500行まで →</p>
+        </a>
+        <a href="search-query.html" class="sg-hub-card sg-card p-5" data-tool-id="search-query" data-category-id="text" data-search="検索式 検索式 sugudasu 検索式ビルダー 検索式ビルダー（filetype / site） filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。 調べもの · 非送信 · new">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="search-query" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">調べもの · 非送信 · NEW</p>
+        <h3 class="sg-hub-card__title">検索式</h3>
+        <p class="text-xs text-slate-500 mt-2">filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。</p>
+        <p class="sg-hub-card__meta">アルファ版 · Googleで開く可 →</p>
+        </a>
+        <a href="table-conv.html" class="sg-hub-card sg-card p-5" data-tool-id="table-conv" data-category-id="text" data-search="表データ変換 表変換 sugudasu 表変換 表データ相互コンバータ excelの複数列コピー・csvを送信せず markdown 表 · json · tsv に。shift-jis 対応。1列だけなら全角半角整えへ。 markdown csv tsv 表">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="table-conv" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">表データ変換</h3>
+        <p class="text-xs text-slate-500 mt-2">Excelの複数列コピー・CSVを送信せず Markdown 表 · JSON · TSV に。Shift-JIS 対応。1列だけなら全角半角整えへ。</p>
+        <p class="sg-hub-card__meta">ベータ版 · 5,000行まで →</p>
+        </a>
+        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5" data-tool-id="webp-to-jpg" data-category-id="media" data-search="webp変換 webp→jpg sugudasu webp変換 webp→jpg/png webp→jpg/png（アップロード不要）。運営サーバーへ送らず端末内変換。 webp→jpg/png · 非送信 png jpg jpeg webp 画像変換">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="webp-to-jpg" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">WebP→JPG/PNG · 非送信</p>
+        <h3 class="sg-hub-card__title">WebP変換</h3>
+        <p class="text-xs text-slate-500 mt-2">WebP→JPG/PNG（アップロード不要）。運営サーバーへ送らず端末内変換。</p>
+        <p class="sg-hub-card__meta">ベータ版 · PC推奨 →</p>
+        </a>
+        <a href="video-frame.html" class="sg-hub-card sg-card p-5" data-tool-id="video-frame" data-category-id="media" data-search="動画コマ抜き 動画コマ抜き sugudasu 動画コマ抜き 動画から静止画png（コマ抜き） 操作動画から説明用pngを1枚。再生uiが映り込まず、端末内だけで処理。 マニュアル · 非送信 · new">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="video-frame" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
+        <h3 class="sg-hub-card__title">動画コマ抜き</h3>
+        <p class="text-xs text-slate-500 mt-2">操作動画から説明用PNGを1枚。再生UIが映り込まず、端末内だけで処理。</p>
+        <p class="sg-hub-card__meta">アルファ版 · MP4/WebM →</p>
+        </a>
+        <a href="mask.html" class="sg-hub-card sg-card p-5" data-tool-id="mask" data-category-id="media" data-search="スクショ消し マスク sugudasu マスク スクショ機密消し スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。 マニュアル · 非送信 · new ぼかし 黒塗り 機密 マスキング">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="mask" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
+        <h3 class="sg-hub-card__title">スクショ消し</h3>
+        <p class="text-xs text-slate-500 mt-2">スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。</p>
+        <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
+        </a>
+        <a href="image-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="image-trim" data-category-id="media" data-search="画像切り出し 画像切り出し sugudasu 画像切り出し 指定サイズ画像切出し カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。 sns · 資料 · 非送信 · new 切り抜き クロップ トリミング snsカバー">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="image-trim" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">SNS · 資料 · 非送信 · NEW</p>
+        <h3 class="sg-hub-card__title">画像切り出し</h3>
+        <p class="text-xs text-slate-500 mt-2">カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。</p>
+        <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
+        </a>
+        <a href="watermark.html" class="sg-hub-card sg-card p-5" data-tool-id="watermark" data-category-id="media" data-search="透かし 透かし sugudasu 透かし 画像透かし一括 文字またはロゴを9点に焼き込み。透過3段階。複数枚はzipで一括。pdf・動画は対象外。 透かし ウォーターマーク">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="watermark" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">透かし</h3>
+        <p class="text-xs text-slate-500 mt-2">文字またはロゴを9点に焼き込み。透過3段階。複数枚はZIPで一括。PDF・動画は対象外。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 最大20枚 →</p>
+        </a>
+        <a href="pdf-images.html" class="sg-hub-card sg-card p-5" data-tool-id="pdf-images" data-category-id="media" data-search="pdf画像抽出 pdf画像 sugudasu pdf画像抽出 pdf埋め込み画像抽出 仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。zip保存。 pdf 埋め込み画像">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="pdf-images" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">PDF画像抽出</h3>
+        <p class="text-xs text-slate-500 mt-2">仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。ZIP保存。</p>
+        <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
+        </a>
+        <a href="test-data.html" class="sg-hub-card sg-card p-5" data-tool-id="test-data" data-category-id="devtest" data-search="テストデータ テストデータ sugudasu テストデータ テスト用ダミーデータ生成 社員マスタ風ダミーcsv。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。 労務 · 給与 · 非送信 · new">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="test-data" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">労務 · 給与 · 非送信 · NEW</p>
+        <h3 class="sg-hub-card__title">テストデータ</h3>
+        <p class="text-xs text-slate-500 mt-2">社員マスタ風ダミーCSV。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 最大5,000件 →</p>
+        </a>
+        <a href="group-split.html" class="sg-hub-card sg-card p-5" data-tool-id="group-split" data-category-id="people" data-search="班分け 班分け sugudasu 班分け グループ分け グループ分け · tsv/slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。 研修 · ハッカソン · new 班分け グループ分け">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="group-split" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">研修 · ハッカソン · NEW</p>
+        <h3 class="sg-hub-card__title">班分け</h3>
+        <p class="text-xs text-slate-500 mt-2">グループ分け · TSV/Slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。</p>
+        <p class="sg-hub-card__meta">ベータ版 · 制約対応（固定班等）→</p>
+        </a>
+        <a href="match-board.html" class="sg-hub-card sg-card p-5" data-tool-id="match-board" data-category-id="people" data-search="ドラフト会議 ドラフト sugudasu ドラフト会議 希望順位割当ボード 第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。undo/redo · json再開対応。 配属 · ゼミ · 棚割 · new">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="match-board" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">配属 · ゼミ · 棚割 · NEW</p>
+        <h3 class="sg-hub-card__title">ドラフト会議</h3>
+        <p class="text-xs text-slate-500 mt-2">第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。Undo/Redo · JSON再開対応。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 長時間合意形成ボード →</p>
+        </a>
+        <a href="slot-board.html" class="sg-hub-card sg-card p-5" data-tool-id="slot-board" data-category-id="people" data-search="枠取り 枠取り sugudasu 枠取りパレット 定員付き枠取りカンバン 定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · tsv。自動配置はしません。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="slot-board" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">枠取り</h3>
+        <p class="text-xs text-slate-500 mt-2">定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · TSV。自動配置はしません。</p>
+        <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
+        </a>
+        <a href="planning-poker.html" class="sg-hub-card sg-card p-5" data-tool-id="planning-poker" data-category-id="people" data-search="見積会議 見積会議 sugudasu 見積会議 見積会議（planning poker） 見積会議（planning poker）を1画面化。同時revealで認識差を可視化し、再投票と合意を短時間で進めます。 開発 · 見積 · 合意形成 · new planning poker プランニングポーカー 見積もり">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="planning-poker" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">開発 · 見積 · 合意形成 · NEW</p>
+        <h3 class="sg-hub-card__title">見積会議</h3>
+        <p class="text-xs text-slate-500 mt-2">見積会議（Planning Poker）を1画面化。同時Revealで認識差を可視化し、再投票と合意を短時間で進めます。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
+        </a>
+        <a href="timeline.html" class="sg-hub-card sg-card p-5" data-tool-id="timeline" data-category-id="ops" data-search="進行タイムライン 進行 sugudasu イベント進行 イベント進行タイムライン 進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · tsvコピー。非送信。 当日進行 · new">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="timeline" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">当日進行 · NEW</p>
+        <h3 class="sg-hub-card__title">進行タイムライン</h3>
+        <p class="text-xs text-slate-500 mt-2">進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · TSVコピー。非送信。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 幹事イベント束 →</p>
+        </a>
+        <a href="warikan.html" class="sg-hub-card sg-card p-5" data-tool-id="warikan" data-category-id="ops" data-search="割り勘 割り勘 sugudasu 割り勘 傾斜割り勘 傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。 割り勘 精算">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="warikan" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">割り勘</h3>
+        <p class="text-xs text-slate-500 mt-2">傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。</p>
+        </a>
+        <a href="sns.html" class="sg-hub-card sg-card p-5" data-tool-id="sns" data-category-id="creative" data-search="snsデコ文字 sns sugudasu sns snsデコ文字 snsデコ文字 · 特殊フォント変換。instagram · x向けに縦書き · 装飾文字へ一括変換。">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="sns" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <h3 class="sg-hub-card__title">SNSデコ文字</h3>
+        <p class="text-xs text-slate-500 mt-2">SNSデコ文字 · 特殊フォント変換。Instagram · X向けに縦書き · 装飾文字へ一括変換。</p>
+        </a>
+        <a href="link-qr.html" class="sg-hub-card sg-card p-5" data-tool-id="link-qr" data-category-id="ops" data-search="リンク集qr リンクqr sugudasu リンク集qr リンク集qr（即席プロフィール） x · github · zenn をまとめて qr。登録不要 · サーバー保存なし（urlの#にだけ載る）。 登壇者 · 懇親会 · new qr 二次元コード">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="link-qr" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">登壇者 · 懇親会 · NEW</p>
+        <h3 class="sg-hub-card__title">リンク集QR</h3>
+        <p class="text-xs text-slate-500 mt-2">X · GitHub · Zenn をまとめて QR。登録不要 · サーバー保存なし（URLの#にだけ載る）。</p>
+        <p class="sg-hub-card__meta">アルファ版 · SNSプロフィールと登壇者セット →</p>
+        </a>
+        <a href="qr-reader.html" class="sg-hub-card sg-card p-5" data-tool-id="qr-reader" data-category-id="ops" data-search="qr読み取り qr読取 sugudasu qr読取 qr読取（カメラ・貼り付け・画面共有） カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集qrの形式はカードで表示。 読み取り · 画面共有 · new qr 二次元コード">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="qr-reader" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">読み取り · 画面共有 · NEW</p>
+        <h3 class="sg-hub-card__title">QR読み取り</h3>
+        <p class="text-xs text-slate-500 mt-2">カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集QRの形式はカードで表示。</p>
+        <p class="sg-hub-card__meta">アルファ版 · リンク集QRと相互導線 →</p>
+        </a>
+        <a href="diff.html" class="sg-hub-card sg-card p-5" data-tool-id="diff" data-category-id="text" data-search="差分チェック 差分 sugudasu 差分チェック 差分チェック aiに書き直させた文で、数字・日付・urlなど見逃すとまずい変更から確認。データは送りません。 ai文書監査 · new 差分 diff ai書き換え">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="diff" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">AI文書監査 · NEW</p>
+        <h3 class="sg-hub-card__title">差分チェック</h3>
+        <p class="text-xs text-slate-500 mt-2">AIに書き直させた文で、数字・日付・URLなど見逃すとまずい変更から確認。データは送りません。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 非送信・保存なし →</p>
+        </a>
+        <a href="time-calc.html" class="sg-hub-card sg-card p-5" data-tool-id="time-calc" data-category-id="staffing" data-search="時給計算 時給計算 sugudasu 時給計算 時給計算（勤務時間合計 + 時給換算） 勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。 単機能 · new 時給 勤務時間">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="time-calc" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <p class="sg-hub-card__eyebrow">単機能 · NEW</p>
+        <h3 class="sg-hub-card__title">時給計算</h3>
+        <p class="text-xs text-slate-500 mt-2">勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。</p>
+        <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
+        </a>
+        </section>
+        <!-- hub-cards:end -->
 
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
+<script src="../assets/hub-ia.js"></script>
 <script>
 (function () {
     if (!localStorage.getItem('sg-homonym-dismiss')) {

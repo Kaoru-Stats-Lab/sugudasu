@@ -3,7 +3,7 @@
   "private": true,
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
-    "build:pages": "node scripts/verify-tool-naming.mjs && node scripts/verify-changelog.mjs && node scripts/verify-statements-product.mjs && node scripts/sync-readme-tools-table.mjs --check && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "build:pages": "node scripts/render-hub-cards.mjs && node scripts/verify-hub-ia.mjs && node scripts/verify-tool-naming.mjs && node scripts/verify-changelog.mjs && node scripts/verify-statements-product.mjs && node scripts/sync-readme-tools-table.mjs --check && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
     "build:pages:sync": "node scripts/build-pages.mjs --target=sync && node scripts/verify-pages-free-plan.mjs",
     "deploy:pages:sync": "npm run release:pages:sync && npx wrangler pages deploy dist-sync --project-name=sugudasu-sync --branch=main",
     "deploy:gate": "node scripts/check-deploy-gate.mjs",
@@ -21,6 +21,7 @@
     "validate:changelog": "node scripts/verify-changelog.mjs",
     "validate:ogp": "node scripts/verify-ogp.mjs",
     "validate:statements-product": "node scripts/verify-statements-product.mjs",
+    "validate:hub-ia": "node scripts/render-hub-cards.mjs && node scripts/verify-hub-ia.mjs",
     "sync:statements-product-date": "node scripts/verify-statements-product.mjs --sync-date",
     "sync:statements-product-names": "node scripts/sync-statements-product-names.mjs",
     "validate:adsense": "node scripts/verify-adsense-pages.mjs",

@@ -1,8 +1,9 @@
 # 開発透明性 — 更新履歴 · 予定 · 対象外（粒度 SSOT）
 
 **更新:** 2026-07-17  
-**正本データ:** `data/changelog.json` · `data/roadmap.json` · **`data/statements-product.json`**  
-**画面:** [`/updates`](../../tools/updates.html) · [`/roadmap`](../../tools/roadmap.html) · [`/statements`](../../tools/statements.html)（他サービスとの違い · ツールと約束）
+**正本データ:** `data/changelog.json` · `data/roadmap.json` · **`data/categories.json`**（カテゴリ SSOT）· **`data/statements-product.json`**（tools · categoryCompare）  
+**画面:** [`/updates`](../../tools/updates.html) · [`/roadmap`](../../tools/roadmap.html) · [`/statements`](../../tools/statements.html)（他サービスとの違い · ツールと約束）  
+**Hub IA:** [`HUB_IA_REFRESH_V2.md`](HUB_IA_REFRESH_V2.md) · [`ADR-0003`](../decisions/ADR-0003-hub-product-independence.md)
 
 ---
 
@@ -28,7 +29,7 @@
 
 **対ナビ:** updates / roadmap は `.sg-dev-transparency-nav`（過去 | これから）。statements は約束ページ本体。
 
-**製品カテゴリ（MECE）:** `data/statements-product.json` — 1ツール1カテゴリ。registry の `inNav` 製品と検証で同期（`npm run validate:statements-product` · `build:pages` に含む）。roadmap や新ツールと同じタイミングで更新する。
+**製品カテゴリ（MECE）:** `data/categories.json`（唯一のカテゴリ SSOT）· ツール割当は `statements-product.json` と `tool-registry.json` の `categoryId`。Hub 表示は `hub-config.json`。検証: `npm run validate:statements-product` · `npm run validate:hub-ia` · `build:pages` に含む。roadmap や新ツールと同じタイミングで更新する。
 
 **載せないもの（別台帳）:** 個別 FB の却下理由 · スプシ生データ → `FEEDBACK_TRIAGE.md` のみ。
 

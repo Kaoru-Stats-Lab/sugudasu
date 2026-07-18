@@ -1,175 +1,7 @@
 {
   "updatedAt": "2026-07-18",
-  "disclaimer": "カテゴリは相互排他です。1ツールは1カテゴリのみ。新ツール追加・roadmap 更新と同じ PR で本ファイルも更新してください。",
-  "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md §1b · scripts/verify-statements-product.mjs",
-  "categories": [
-    {
-      "id": "docs",
-      "label": "帳票 · 印刷",
-      "order": 1,
-      "blurb": "見積・請求・領収・宛名・印影。下書きは端末内。クラウド請求の代替ではありません。",
-      "compare": {
-        "altLabel": "クラウド請求 SaaS",
-        "oursLabel": "SUGUDASU 帳票",
-        "rows": [
-          {
-            "aspect": "データ",
-            "alt": "クラウド · チーム共有",
-            "ours": "下書き JSON · ブラウザ内"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "継続請求 · 経理連携",
-            "ours": "フリーランス · 単発の印刷 PDF"
-          }
-        ]
-      }
-    },
-    {
-      "id": "staffing",
-      "label": "シフト · 時給",
-      "order": 2,
-      "blurb": "小規模店のシフト表と勤務時間の足し算。勤怠打刻・労基自動判定の SaaS ではありません。",
-      "compare": {
-        "altLabel": "勤怠 · シフト SaaS",
-        "oursLabel": "SUGUDASU シフト / 時給計算",
-        "rows": [
-          {
-            "aspect": "主目的",
-            "alt": "打刻 · 申請 · 給与連携",
-            "ours": "表の作成 · 印刷 · 時間の合計"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "多店舗 · 人事労務",
-            "ours": "店長 · 単店の週次シフト"
-          }
-        ]
-      }
-    },
-    {
-      "id": "text",
-      "label": "テキスト · 表 · 検索",
-      "order": 3,
-      "blurb": "全角半角・表変換・差分・検索式・逆引き・議事録。貼った文字列を整形してコピーする系。",
-      "compare": {
-        "altLabel": "オンライン整形 · 変換サイト",
-        "oursLabel": "SUGUDASU テキスト系",
-        "rows": [
-          {
-            "aspect": "データ",
-            "alt": "サーバーへ送信されがち",
-            "ours": "ブラウザ内で整形 · コピー"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "巨大バッチ · API 連携",
-            "ours": "社外秘テキストを貼りたくない現場"
-          }
-        ]
-      }
-    },
-    {
-      "id": "media",
-      "label": "画像 · 動画",
-      "order": 4,
-      "blurb": "WebP変換・マスク・切り出し・動画コマ抜き。マニュアル用の素材処理。動画編集・GIF 化はしません。",
-      "compare": {
-        "altLabel": "アップロード型変換",
-        "oursLabel": "SUGUDASU メディア系",
-        "rows": [
-          {
-            "aspect": "データ",
-            "alt": "運営サーバーへ送信",
-            "ours": "Canvas / 端末内のみ"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "大量バッチ · ZIP",
-            "ours": "社内スクショ · 操作動画の1コマ"
-          }
-        ]
-      }
-    },
-    {
-      "id": "people",
-      "label": "配属 · 合意 · 抽選",
-      "order": 5,
-      "blurb": "班分け・ドラフト会議・見積会議・公平抽選。名簿や希望を端末内で扱い、結果をコピー・印刷します。",
-      "compare": {
-        "altLabel": "投影ルーレット / 班分けSaaS / 統制型懸賞",
-        "oursLabel": "SUGUDASU 配属 · 抽選",
-        "rows": [
-          {
-            "aspect": "主目的",
-            "alt": "演出 · 組織連携 · 監査ログ",
-            "ours": "事務 · 共有 · 説明できる結果"
-          },
-          {
-            "aspect": "名簿",
-            "alt": "送信 · サーバー保存がありうる",
-            "ours": "ブラウザ内を設計中心"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "MC · IT部門 · 法務監査",
-            "ours": "研修幹事 · キャンペーン担当"
-          }
-        ]
-      }
-    },
-    {
-      "id": "ops",
-      "label": "当日運営 · 連絡",
-      "order": 6,
-      "blurb": "イベント進行・割り勘・ギフト・リンク集QR・QR読取。その場で共有・清算・フォロー交換する系。",
-      "compare": {
-        "altLabel": "専用進行アプリ · 会計アプリ",
-        "oursLabel": "SUGUDASU 当日運営",
-        "rows": [
-          {
-            "aspect": "導入",
-            "alt": "アカウント · 端末配布",
-            "ours": "URL を開いてすぐ"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "常設オペレーション",
-            "ours": "単発イベント · 懇親会"
-          }
-        ]
-      }
-    },
-    {
-      "id": "devtest",
-      "label": "テストデータ",
-      "order": 7,
-      "blurb": "架空の社員マスタ風 CSV 生成。本番の匿名化・マスキング・TDM の代替ではありません。",
-      "compare": {
-        "altLabel": "エンタープライズ TDM",
-        "oursLabel": "SUGUDASU テストデータ",
-        "rows": [
-          {
-            "aspect": "対象",
-            "alt": "本番マスキング · SQL シード",
-            "ours": "架空データの生成のみ"
-          },
-          {
-            "aspect": "向く人",
-            "alt": "基盤・セキュリティ部門",
-            "ours": "閉域でダミー CSV が欲しい開発・検証"
-          }
-        ]
-      }
-    },
-    {
-      "id": "creative",
-      "label": "SNS · 文字装飾",
-      "order": 8,
-      "blurb": "デコ文字・見た目の装飾。業務データの保管場所ではありません。",
-      "compare": null
-    }
-  ],
+  "disclaimer": "カテゴリ定義の正本は data/categories.json。本ファイルは tools[] · categoryCompare（statements 比較表）のみ。",
+  "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md · data/categories.json · scripts/verify-statements-product.mjs",
   "tools": [
     {
       "toolId": "invoice",
@@ -411,5 +243,124 @@
       "inputHandling": "文字列 · 端末内",
       "promiseNote": "デコ文字 · 業務保管ではない"
     }
-  ]
+  ],
+  "categoryCompare": {
+    "docs": {
+      "altLabel": "クラウド請求 SaaS",
+      "oursLabel": "SUGUDASU 帳票",
+      "rows": [
+        {
+          "aspect": "データ",
+          "alt": "クラウド · チーム共有",
+          "ours": "下書き JSON · ブラウザ内"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "継続請求 · 経理連携",
+          "ours": "フリーランス · 単発の印刷 PDF"
+        }
+      ]
+    },
+    "staffing": {
+      "altLabel": "勤怠 · シフト SaaS",
+      "oursLabel": "SUGUDASU シフト / 時給計算",
+      "rows": [
+        {
+          "aspect": "主目的",
+          "alt": "打刻 · 申請 · 給与連携",
+          "ours": "表の作成 · 印刷 · 時間の合計"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "多店舗 · 人事労務",
+          "ours": "店長 · 単店の週次シフト"
+        }
+      ]
+    },
+    "text": {
+      "altLabel": "オンライン整形 · 変換サイト",
+      "oursLabel": "SUGUDASU テキスト系",
+      "rows": [
+        {
+          "aspect": "データ",
+          "alt": "サーバーへ送信されがち",
+          "ours": "ブラウザ内で整形 · コピー"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "巨大バッチ · API 連携",
+          "ours": "社外秘テキストを貼りたくない現場"
+        }
+      ]
+    },
+    "media": {
+      "altLabel": "アップロード型変換",
+      "oursLabel": "SUGUDASU メディア系",
+      "rows": [
+        {
+          "aspect": "データ",
+          "alt": "運営サーバーへ送信",
+          "ours": "Canvas / 端末内のみ"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "大量バッチ · ZIP",
+          "ours": "社内スクショ · 操作動画の1コマ"
+        }
+      ]
+    },
+    "people": {
+      "altLabel": "投影ルーレット / 班分けSaaS / 統制型懸賞",
+      "oursLabel": "SUGUDASU 配属 · 抽選",
+      "rows": [
+        {
+          "aspect": "主目的",
+          "alt": "演出 · 組織連携 · 監査ログ",
+          "ours": "事務 · 共有 · 説明できる結果"
+        },
+        {
+          "aspect": "名簿",
+          "alt": "送信 · サーバー保存がありうる",
+          "ours": "ブラウザ内を設計中心"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "MC · IT部門 · 法務監査",
+          "ours": "研修幹事 · キャンペーン担当"
+        }
+      ]
+    },
+    "ops": {
+      "altLabel": "専用進行アプリ · 会計アプリ",
+      "oursLabel": "SUGUDASU 当日運営",
+      "rows": [
+        {
+          "aspect": "導入",
+          "alt": "アカウント · 端末配布",
+          "ours": "URL を開いてすぐ"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "常設オペレーション",
+          "ours": "単発イベント · 懇親会"
+        }
+      ]
+    },
+    "devtest": {
+      "altLabel": "エンタープライズ TDM",
+      "oursLabel": "SUGUDASU テストデータ",
+      "rows": [
+        {
+          "aspect": "対象",
+          "alt": "本番マスキング · SQL シード",
+          "ours": "架空データの生成のみ"
+        },
+        {
+          "aspect": "向く人",
+          "alt": "基盤・セキュリティ部門",
+          "ours": "閉域でダミー CSV が欲しい開発・検証"
+        }
+      ]
+    }
+  }
 }

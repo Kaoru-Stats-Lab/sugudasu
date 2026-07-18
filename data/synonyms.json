@@ -1,0 +1,25 @@
+{
+  "updatedAt": "2026-07-18",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
+  "disclaimer": "検索同義語のみ。UI タグではない。自由入力の検索キーワードは Analytics に送らない。",
+  "entries": [
+    { "terms": ["領収証", "領収"], "toolIds": ["receipt"] },
+    { "terms": ["請求", "インボイス", "見積書", "納品書"], "toolIds": ["invoice"] },
+    { "terms": ["印鑑", "認印", "角印"], "toolIds": ["stamp"] },
+    { "terms": ["PNG", "JPG", "JPEG", "WebP", "画像変換"], "toolIds": ["webp-to-jpg"] },
+    { "terms": ["切り抜き", "クロップ", "トリミング", "SNSカバー"], "toolIds": ["image-trim"] },
+    { "terms": ["ぼかし", "黒塗り", "機密", "マスキング"], "toolIds": ["mask"] },
+    { "terms": ["透かし", "ウォーターマーク"], "toolIds": ["watermark"] },
+    { "terms": ["PDF", "埋め込み画像"], "toolIds": ["pdf-images"] },
+    { "terms": ["全角", "半角", "名簿整え"], "toolIds": ["normalize"] },
+    { "terms": ["Markdown", "CSV", "TSV", "表"], "toolIds": ["table-conv"] },
+    { "terms": ["景表法", "景品", "抽選", "公平抽選"], "toolIds": ["fair-draw"] },
+    { "terms": ["班分け", "グループ分け"], "toolIds": ["group-split"] },
+    { "terms": ["Planning Poker", "プランニングポーカー", "見積もり"], "toolIds": ["planning-poker"] },
+    { "terms": ["割り勘", "精算"], "toolIds": ["warikan"] },
+    { "terms": ["QR", "二次元コード"], "toolIds": ["link-qr", "qr-reader"] },
+    { "terms": ["差分", "Diff", "AI書き換え"], "toolIds": ["diff"] },
+    { "terms": ["シフト表", "勤務表"], "toolIds": ["shift"] },
+    { "terms": ["時給", "勤務時間"], "toolIds": ["time-calc"] }
+  ]
+}
