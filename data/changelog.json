@@ -11,6 +11,25 @@
   },
   "entries": [
     {
+      "id": "slot-board-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "public",
+      "title": "枠取りパレット — 定員付きカンバンで人数と超過を見える化",
+      "body": "Excelから貼ってレーンに並べ、上限超過を赤く表示します。復元コードとTSVで持ち運び。自動配置はしません。",
+      "tools": ["slot-board"]
+    },
+    {
+      "id": "slot-board-impl-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "internal",
+      "title": "slot-board α — 制限付きカンバン · SUGUDASU-SLOT- Base64 · confirm削除",
+      "body": "tools/slot-board.html · slot-board-engine/app · 専用CSS · test:slot-board",
+      "tools": ["slot-board"],
+      "rollup": "slot-board-20260718"
+    },
+    {
       "id": "pdf-images-20260718",
       "date": "2026-07-18",
       "type": "feature",

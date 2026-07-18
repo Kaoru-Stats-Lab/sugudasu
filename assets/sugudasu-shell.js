@@ -27,6 +27,7 @@
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'match-board', file: 'match-board.html', label: 'ドラフト', icon: '🧩' },
+    { id: 'slot-board', file: 'slot-board.html', label: '枠取り', icon: '📦' },
     { id: 'planning-poker', file: 'planning-poker.html', label: '見積会議', icon: '🃏' },
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },

@@ -275,6 +275,19 @@
       "stage": "alpha",
       "statusNote": "第1〜3希望×定員の長時間調整 · Undo/Redo · JSON再開 · 非送信"
     },
+    "slot-board": {
+      "file": "slot-board.html",
+      "conceptName": "枠取り",
+      "productName": "SUGUDASU 枠取りパレット",
+      "navLabel": "枠取り",
+      "navIcon": "📦",
+      "inNav": true,
+      "navOrder": 11.3,
+      "name": "定員付き枠取りカンバン",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "制限付きカンバン · 超過赤表示 · 復元コード · TSV · 非送信"
+    },
     "planning-poker": {
       "file": "planning-poker.html",
       "conceptName": "見積会議",

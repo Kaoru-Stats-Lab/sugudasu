@@ -332,6 +332,14 @@
       "promiseNote": "ドラフト会議 · JSON再開 · 非送信"
     },
     {
+      "toolId": "slot-board",
+      "categoryId": "people",
+      "productName": "SUGUDASU 枠取りパレット",
+      "file": "slot-board.html",
+      "inputHandling": "名簿 · 端末内",
+      "promiseNote": "定員カンバン · 復元コード · TSV · 自動配置なし"
+    },
+    {
       "toolId": "planning-poker",
       "categoryId": "people",
       "productName": "SUGUDASU 見積会議",

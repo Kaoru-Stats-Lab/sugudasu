@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="評価枠・定員付きカンバン。Excelから貼って人数を数え、上限超過を赤くする。非送信・復元コード・TSV。">
+    <title>枠取りパレット（定員カンバン · 非送信） | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="枠取りパレット — 定員超過を赤くする">
+    <meta property="og:description" content="Excel貼付・DnD・上限超過の赤表示。復元コードとTSV。サーバーに送りません。">
+    <meta property="og:url" content="https://sugudasu.com/slot-board">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 枠取りパレット">
+    <meta name="twitter:description" content="定員付きカンバン · 非送信 · 復元コード">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <link rel="stylesheet" href="../assets/slot-board.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 枠取りパレット" data-sg-subtitle="定員カンバン · 非送信" data-sg-tool-id="slot-board"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <div class="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note">
+        <strong class="font-bold">PC推奨</strong> — 会議用の縦スクロール画面です。スマホ最適化はしていません。
+    </div>
+
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="名簿" data-extra="制限付きカンバン" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>人数を数え、上限超過を赤くする</strong>ための制限付きカンバンです。誰をどこへ置くかは人間が決めます。
+            </p>
+            <p class="sg-tool-lead">
+                Excelから貼り付け → 枠を調整 → 復元コードまたはTSVで持ち帰る。サーバーには送りません。
+            </p>
+        </div>
+    </header>
+
+    <div id="sb-summary" class="sb-summary" aria-live="polite">
+        <span>現在の合計: <strong id="sb-total">0</strong>人</span>
+        <span id="sb-summary-badge" class="sb-summary__badge"></span>
+    </div>
+
+    <section class="sg-card p-5 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">Excelからコピペ、または復元コードを貼り付け</h2>
+        <label for="sb-import" class="block text-xs font-semibold text-slate-600">名前と初期レーン（タブ区切り）／ SUGUDASU-SLOT-…</label>
+        <textarea id="sb-import" rows="8" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="佐藤 一郎&#9;S&#10;鈴木 太郎&#9;A&#10;または SUGUDASU-SLOT-…"></textarea>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" id="sb-import-btn" class="sg-btn-primary text-sm">インポート実行</button>
+            <button type="button" id="sb-add-lane" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">レーンを追加</button>
+        </div>
+        <p id="sb-import-msg" class="text-[11px] text-slate-500"></p>
+    </section>
+
+    <section class="space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">枠取りワークスペース</h2>
+        <div id="sb-lanes" class="sb-lanes"></div>
+    </section>
+
+    <section class="flex flex-wrap gap-2">
+        <button type="button" id="sb-copy-code" class="sg-btn-primary text-sm">下書きコードをコピー</button>
+        <button type="button" id="sb-copy-tsv" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">TSVをコピー（Excelへ）</button>
+        <button type="button" id="sb-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
+    </section>
+    <p id="sb-action-msg" class="text-[11px] text-slate-500" aria-live="polite"></p>
+</main>
+
+<section class="sg-faq-section no-print" aria-label="よくある質問">
+    <div class="sg-faq-inner space-y-2">
+        <h2 class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
+        <details class="sg-faq" open>
+            <summary>データはサーバーに送信されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ。処理はブラウザ内だけです。タブを閉じると消えます。持ち運ぶときは下書きコードまたはTSVをコピーしてください。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>自動で配置してくれますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>しません。人数の集計と上限超過の表示だけです。配置はドラッグで人間が決めます。</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/slot-board-app.js"></script>
+</body>
+</html>

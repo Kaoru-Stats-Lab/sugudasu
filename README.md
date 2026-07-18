@@ -43,6 +43,7 @@ python -m http.server 8080
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
 | [match-board.html](tools/match-board.html) | /match-board | SUGUDASU ドラフト会議 | ドラフト | alpha |
+| [slot-board.html](tools/slot-board.html) | /slot-board | SUGUDASU 枠取りパレット | 枠取り | alpha |
 | [planning-poker.html](tools/planning-poker.html) | /planning-poker | SUGUDASU 見積会議 | 見積会議 | alpha |
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
 | [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |
