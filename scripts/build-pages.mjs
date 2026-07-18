@@ -430,6 +430,26 @@ function applySeoCanonical(html, file, opts = {}) {
 }
 
 /**
+ * 相対 *.html をクリーン URL（/slug）へ。
+ * DECISION: /guides/ や誤パス配下で相対 invoice.html → /guides/invoice.html になり、
+ * 未知URLが index に落ちると「トップから遷移しない」ように見える（再発防止）。
+ */
+function rewriteInternalHtmlHrefs(html) {
+  return html.replace(
+    /href=(["'])(?!https?:|\/\/|mailto:|tel:|#|\/)([^"']+?\.html)(\?[^"']*)?\1/gi,
+    (match, quote, path, qs = '') => {
+      const clean = String(path).replace(/^\.\//, '');
+      if (clean.includes('..')) return match;
+      const noExt = clean.replace(/\.html$/i, '');
+      if (!noExt || noExt === 'hub' || noExt === 'index') {
+        return `href=${quote}/${qs || ''}${quote}`;
+      }
+      return `href=${quote}/${noExt}${qs || ''}${quote}`;
+    }
+  );
+}
+
+/**
  * @param {string} html
  * @param {string} [file] tools 相対ファイル名（SEO 注入用）
  * @param {{ guide?: boolean }} [opts]
@@ -443,6 +463,7 @@ function rewriteHtml(html, file = '', opts = {}) {
     .replace(/href="assets\//g, 'href="/assets/')
     .replace(/src="assets\//g, 'src="/assets/');
 
+  out = rewriteInternalHtmlHrefs(out);
   out = out.replace(
     /<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@tailwindcss\/browser@4"><\/script>\s*/g,
     ''

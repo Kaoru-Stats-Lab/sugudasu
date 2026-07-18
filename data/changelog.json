@@ -11,6 +11,15 @@
   },
   "entries": [
     {
+      "id": "fix-root-absolute-internal-links-20260718",
+      "date": "2026-07-18",
+      "type": "fix",
+      "audience": "public",
+      "title": "トップからの遷移不良を修正 — リンクをルート絶対パスに統一",
+      "body": "相対リンクが /guides/ 配下などで誤解決し、トップに戻って見えていた問題を修正。ナビ・カードは /請求書などクリーンURLへ。",
+      "tools": ["hub"]
+    },
+    {
       "id": "guide-planning-poker-estimation-rewrite-20260718",
       "date": "2026-07-18",
       "type": "improve",

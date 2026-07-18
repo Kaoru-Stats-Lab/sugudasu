@@ -40,6 +40,36 @@
     { id: 'time-calc', file: 'time-calc.html', label: '時給計算', icon: '⏳' }
   ];
 
+  /** 本番 dist は CSS が /assets/…（クリーン URL 配下でもルート絶対パスが必須） */
+  function isProdSite() {
+    const link = document.querySelector('link[href*="sugudasu.css"]');
+    const href = link && link.getAttribute('href');
+    if (href && href.startsWith('/')) return true;
+    const host = String(global.location && global.location.hostname || '');
+    return host === 'sugudasu.com' || host.endsWith('.pages.dev');
+  }
+
+  /**
+   * 内部ページ URL。本番は必ず /slug（相対 .html 禁止）。
+   * DECISION: clean URL の /guides/ や誤パス配下だと相対 invoice.html が
+   * /guides/invoice.html になり、CF の未知URL→index フォールバックで「遷移しない」罠になる。
+   * @param {string} fileOrPath hub.html | invoice.html | fair-draw.html?tab=check | /invoice
+   */
+  function pageHref(fileOrPath) {
+    if (!fileOrPath) return isProdSite() ? '/' : 'hub.html';
+    if (/^(https?:|mailto:|tel:|#)/i.test(fileOrPath)) return fileOrPath;
+    const qIdx = fileOrPath.indexOf('?');
+    const rawPath = qIdx >= 0 ? fileOrPath.slice(0, qIdx) : fileOrPath;
+    const qs = qIdx >= 0 ? fileOrPath.slice(qIdx) : '';
+    let slug = rawPath.replace(/^\.\//, '').replace(/^\//, '').replace(/\.html$/i, '');
+    if (!slug || slug === 'hub' || slug === 'index') {
+      return (isProdSite() ? '/' : 'hub.html') + qs;
+    }
+    if (isProdSite()) return `/${slug}${qs}`;
+    const local = rawPath.endsWith('.html') ? rawPath.replace(/^\//, '') : `${slug}.html`;
+    return local + qs;
+  }
+
   /** 開発(tools/) と本番(dist/) 両対応 */
   function assetUrl(path) {
     const link = document.querySelector('link[href*="sugudasu.css"]');
@@ -71,10 +101,7 @@
   }
 
   function homeHref() {
-    const link = document.querySelector('link[href*="sugudasu.css"]');
-    const href = link && link.getAttribute('href');
-    if (href && href.startsWith('/')) return 'index.html';
-    return 'hub.html';
+    return pageHref('hub.html');
   }
 
   function currentFile() {
@@ -106,7 +133,7 @@
           ${items.map(t => {
             const active = t.file === activeFile;
             const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-            return `<li class="sg-nav-item"><a href="${t.file}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+            return `<li class="sg-nav-item"><a href="${pageHref(t.file)}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
               active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
           }).join('')}
@@ -196,7 +223,7 @@
       <div class="sg-section-shell text-center text-[11px] text-slate-400 space-x-2">
         <a href="${homeHref()}" class="text-slate-500 hover:underline">ツール一覧</a>
         <span aria-hidden="true">·</span>
-        <a href="privacy.html" class="hover:underline">プライバシー</a>
+        <a href="${pageHref('privacy.html')}" class="hover:underline">プライバシー</a>
         <span aria-hidden="true">·</span>
         <span>ブラウザ内完結</span>
       </div>
@@ -212,21 +239,21 @@
       <div class="sg-section-shell text-center space-y-2">
         <p class="text-xs text-slate-500">ブラウザ内完結 · 名簿を預けない設計を中心に</p>
         <p class="text-[11px] text-slate-500">
-          <a href="guides.html" class="text-blue-600 hover:underline">実務ガイド</a>
+          <a href="${pageHref('guides.html')}" class="text-blue-600 hover:underline">実務ガイド</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="contact.html" class="text-blue-600 hover:underline">問い合わせ</a>
+          <a href="${pageHref('contact.html')}" class="text-blue-600 hover:underline">問い合わせ</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="updates.html" class="text-blue-600 hover:underline">更新履歴</a>
+          <a href="${pageHref('updates.html')}" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="roadmap.html" class="text-blue-600 hover:underline">開発ロードマップ</a>
+          <a href="${pageHref('roadmap.html')}" class="text-blue-600 hover:underline">開発ロードマップ</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="statements.html" class="text-blue-600 hover:underline">SUGUDASU の約束</a>
+          <a href="${pageHref('statements.html')}" class="text-blue-600 hover:underline">SUGUDASU の約束</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="privacy.html" class="text-blue-600 hover:underline">プライバシーポリシー</a>
+          <a href="${pageHref('privacy.html')}" class="text-blue-600 hover:underline">プライバシーポリシー</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="terms.html" class="text-blue-600 hover:underline">利用規約</a>
+          <a href="${pageHref('terms.html')}" class="text-blue-600 hover:underline">利用規約</a>
           <span class="text-slate-300 mx-1">|</span>
-          <a href="disclaimer.html" class="text-blue-600 hover:underline">免責事項</a>
+          <a href="${pageHref('disclaimer.html')}" class="text-blue-600 hover:underline">免責事項</a>
         </p>
         <p>
           <a href="https://x.com/sugudasu" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-800 transition-colors" aria-label="SUGUDASU公式X（@sugudasu）">
@@ -236,7 +263,7 @@
         </p>
         <p class="text-[10px] text-slate-400">
           SUGUDASUはビジネスツールです。
-          <a href="not-a-car.html" class="underline hover:text-slate-600">SUBARUの中古車「SUGDAS」とは別サービス</a>
+          <a href="${pageHref('not-a-car.html')}" class="underline hover:text-slate-600">SUBARUの中古車「SUGDAS」とは別サービス</a>
         </p>
         <p class="text-[10px] text-slate-400">&copy; SUGUDASU（すぐだす）</p>
       </div>
@@ -461,7 +488,7 @@
       nav.innerHTML = navItems.map(t => {
         const active = t.file === file;
         const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-        return `<li class="sg-nav-item"><a href="${t.file}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
+        return `<li class="sg-nav-item"><a href="${pageHref(t.file)}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
           active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
         }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
       }).join('');
