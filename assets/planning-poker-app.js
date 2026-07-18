@@ -27,6 +27,13 @@ export function mountPlanningPoker(root) {
     error: root.querySelector('#pp-error'),
     workspace: root.querySelector('#pp-workspace'),
     empty: root.querySelector('#pp-empty'),
+    setup: root.querySelector('#pp-setup'),
+    setupToggle: root.querySelector('#pp-setup-toggle'),
+    setupToggleLabel: root.querySelector('#pp-setup-toggle-label'),
+    setupChevron: root.querySelector('#pp-setup-chevron'),
+    storyBlock: root.querySelector('#pp-story-block'),
+    storyToggle: root.querySelector('#pp-story-toggle'),
+    storyChevron: root.querySelector('#pp-story-chevron'),
     storyList: root.querySelector('#pp-story-list'),
     participantList: root.querySelector('#pp-participant-list'),
     currentStory: root.querySelector('#pp-current-story'),
@@ -42,6 +49,7 @@ export function mountPlanningPoker(root) {
     statMedian: root.querySelector('#pp-stat-median'),
     statMin: root.querySelector('#pp-stat-min'),
     statMax: root.querySelector('#pp-stat-max'),
+    revealWaiting: root.querySelector('#pp-reveal-waiting'),
     revealPanel: root.querySelector('#pp-reveal-panel'),
     discussionPanel: root.querySelector('#pp-discussion-panel'),
     adoptSelect: root.querySelector('#pp-adopt-point'),
@@ -57,6 +65,25 @@ export function mountPlanningPoker(root) {
   let activeVoterId = '';
   let timerId = 0;
   let timerLeftSec = 0;
+  /** Reveal直後の理由欄フォーカスを1回だけ当てる */
+  let focusReasonAfterReveal = false;
+
+  function setSetupCollapsed(collapsed) {
+    if (!els.setup) return;
+    els.setup.classList.toggle('is-collapsed', collapsed);
+    if (els.setupToggle) els.setupToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    if (els.setupChevron) els.setupChevron.textContent = collapsed ? '▸' : '▾';
+    if (els.setupToggleLabel) {
+      els.setupToggleLabel.textContent = collapsed ? '開始セットアップ（再編集）' : '開始セットアップ';
+    }
+  }
+
+  function setStoryListCollapsed(collapsed) {
+    if (!els.storyBlock) return;
+    els.storyBlock.classList.toggle('is-collapsed', collapsed);
+    if (els.storyToggle) els.storyToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    if (els.storyChevron) els.storyChevron.textContent = collapsed ? '▸' : '▾';
+  }
 
   function setError(msg) {
     if (!els.error) return;
@@ -87,6 +114,8 @@ export function mountPlanningPoker(root) {
     activeVoterId = me.id;
     els.empty?.classList.add('hidden');
     els.workspace?.classList.remove('hidden');
+    setSetupCollapsed(true);
+    setStoryListCollapsed(true);
     render();
   }
 
@@ -95,6 +124,7 @@ export function mountPlanningPoker(root) {
     if (!state.participants.some((p) => p.id === activeVoterId)) {
       activeVoterId = myParticipantId || state.participants[0]?.id || '';
     }
+    root.classList.toggle('pp-revealed', !!state.reveal);
     renderStories();
     renderParticipants();
     renderCurrentStory();
@@ -105,6 +135,13 @@ export function mountPlanningPoker(root) {
     renderDiscussion();
     syncAdoptOptions();
     els.nextStoryBtn.disabled = state.currentStoryIndex >= state.stories.length - 1;
+    if (focusReasonAfterReveal) {
+      focusReasonAfterReveal = false;
+      const firstReason = els.discussionPanel?.querySelector('[data-reason-for]');
+      if (firstReason instanceof HTMLInputElement) {
+        queueMicrotask(() => firstReason.focus());
+      }
+    }
   }
 
   function renderStories() {
@@ -130,10 +167,22 @@ export function mountPlanningPoker(root) {
     els.participantList.innerHTML = state.participants
       .map((p) => {
         const vote = state.votes.get(p.id);
-        const mask = state.reveal ? esc(vote || '-') : vote ? '投票済み' : '未投票';
+        const hasVote = !!vote;
+        const mask = state.reveal ? esc(vote || '-') : hasVote ? '投票済み' : '未投票';
         const me = p.id === myParticipantId ? '（あなた）' : '';
         const active = p.id === activeVoterId ? 'pp-participant--active' : '';
-        return `<li><button type="button" class="pp-participant ${active}" data-voter-id="${escAttr(p.id)}"><span>${esc(p.name)} ${me}</span><strong>${mask}</strong></button></li>`;
+        // Reveal前は未入力を薄く、入力済みを通常濃さで区別（色は増やさない）
+        const voteState = state.reveal
+          ? ''
+          : hasVote
+            ? 'pp-participant--voted'
+            : 'pp-participant--pending';
+        // ●/○ で色以外でも入力状況が分かる（投影・色覚配慮）
+        const mark = state.reveal ? '' : hasVote ? '●' : '○';
+        const markHtml = mark
+          ? `<span class="pp-participant__mark" aria-hidden="true">${mark}</span>`
+          : '';
+        return `<li><button type="button" class="pp-participant ${active} ${voteState}" data-voter-id="${escAttr(p.id)}"><span class="inline-flex items-center gap-1.5 min-w-0">${markHtml}<span class="truncate">${esc(p.name)} ${me}</span></span><strong>${mask}</strong></button></li>`;
       })
       .join('');
     els.participantList.querySelectorAll('[data-voter-id]').forEach((btn) => {
@@ -199,24 +248,36 @@ export function mountPlanningPoker(root) {
     const voted = state.votes.size;
     const total = state.participants.length;
     els.revealBtn.disabled = voted === 0 || state.reveal;
-    els.revealPanel.innerHTML = state.reveal
-      ? state.participants
-        .map((p) => `<li class="pp-reveal-item"><span>${esc(p.name)}</span><strong>${esc(state.votes.get(p.id) || '-')}</strong></li>`)
-        .join('')
-      : `<li class="text-slate-500 text-xs">Revealで同時公開します（${voted}/${total} 投票済み）</li>`;
+    if (els.revealWaiting) {
+      els.revealWaiting.textContent = `Revealすると結果がここに表示されます（${voted}/${total} 投票済み）`;
+    }
+    if (!state.reveal) {
+      els.revealPanel.innerHTML = '';
+      return;
+    }
+    els.revealPanel.innerHTML = state.participants
+      .map((p) => `<li class="pp-reveal-item"><span>${esc(p.name)}</span><strong>${esc(state.votes.get(p.id) || '-')}</strong></li>`)
+      .join('');
   }
 
   function renderStats() {
+    if (!state.reveal) {
+      els.statAvg.textContent = '―';
+      els.statMedian.textContent = '―';
+      els.statMin.textContent = '―';
+      els.statMax.textContent = '―';
+      return;
+    }
     const st = voteStats(state);
-    els.statAvg.textContent = st.avg == null ? '-' : String(st.avg);
-    els.statMedian.textContent = st.median == null ? '-' : String(st.median);
-    els.statMin.textContent = st.min == null ? '-' : String(st.min);
-    els.statMax.textContent = st.max == null ? '-' : String(st.max);
+    els.statAvg.textContent = st.avg == null ? '―' : String(st.avg);
+    els.statMedian.textContent = st.median == null ? '―' : String(st.median);
+    els.statMin.textContent = st.min == null ? '―' : String(st.min);
+    els.statMax.textContent = st.max == null ? '―' : String(st.max);
   }
 
   function renderDiscussion() {
     if (!state.reveal) {
-      els.discussionPanel.innerHTML = '<p class="text-xs text-slate-500">Reveal後に最大値・最小値の理由欄を表示します。</p>';
+      els.discussionPanel.innerHTML = '';
       return;
     }
     const targets = getDiscussionTargets(state);
@@ -224,14 +285,19 @@ export function mountPlanningPoker(root) {
       els.discussionPanel.innerHTML = '<p class="text-xs text-slate-500">数値投票がないため理由欄は表示されません。</p>';
       return;
     }
+    const st = voteStats(state);
     els.discussionPanel.innerHTML = targets
       .map((id) => {
         const p = state.participants.find((x) => x.id === id);
         const vote = state.votes.get(id) || '-';
         const reason = state.reasons.get(id) || '';
+        const n = Number(vote);
+        let tag = '';
+        if (Number.isFinite(n) && st.min != null && n === st.min) tag = ' ▼最小';
+        if (Number.isFinite(n) && st.max != null && n === st.max) tag = tag ? ' ▲最大/▼最小' : ' ▲最大';
         return `
           <label class="pp-reason">
-            <span>${esc(p?.name || '')}（${esc(vote)}）の理由</span>
+            <span>${esc(p?.name || '')}（${esc(vote)}${tag}）の理由</span>
             <input type="text" data-reason-for="${escAttr(id)}" class="sg-input text-sm" value="${escAttr(reason)}" placeholder="例: API境界の未知要素が多い">
           </label>
         `;
@@ -257,6 +323,7 @@ export function mountPlanningPoker(root) {
   function revealAll() {
     if (!state || state.reveal) return;
     revealVotes(state);
+    focusReasonAfterReveal = true;
     render();
   }
 
@@ -307,8 +374,12 @@ export function mountPlanningPoker(root) {
     }
     if (e.code === 'Space') {
       e.preventDefault();
-      state.reveal ? resetRound(state) : revealAll();
-      render();
+      if (state.reveal) {
+        resetRound(state);
+        render();
+      } else {
+        revealAll();
+      }
     }
   }
 
@@ -351,6 +422,14 @@ export function mountPlanningPoker(root) {
   els.timerStart?.addEventListener('click', startTimer);
   els.timerStop?.addEventListener('click', stopTimer);
   els.darkToggle?.addEventListener('click', toggleDark);
+  els.setupToggle?.addEventListener('click', () => {
+    const collapsed = !els.setup?.classList.contains('is-collapsed');
+    setSetupCollapsed(collapsed);
+  });
+  els.storyToggle?.addEventListener('click', () => {
+    const collapsed = !els.storyBlock?.classList.contains('is-collapsed');
+    setStoryListCollapsed(collapsed);
+  });
   window.addEventListener('keydown', onKeydown);
 
   root.querySelector('#pp-copy-template')?.addEventListener('click', async (e) => {

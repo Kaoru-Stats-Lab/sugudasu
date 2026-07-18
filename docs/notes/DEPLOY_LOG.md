@@ -1076,10 +1076,33 @@
 | **cf_deployment_id** | `30e4adf`（`af6441d..30e4adf` · git push origin main） |
 | **smoke** | pending — `/slot-board` サブコピー · 用途 · FAQ7 · 空プレースホルダ |
 
+---
+
+## DEPLOY-20260718-007
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 見積会議 — プロジェクター投影向け Reveal前後視線誘導 · 視認性二重化（提督 Commit&Push · 同日 core 7回目 · P7 override） |
+| **change_summary** | `tools/planning-poker.html` · `assets/planning-poker-app.js` · changelog |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Push」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 007 approved（planning-poker 投影UX · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 006 executed（slot-board FV · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 005 executed（66cc1ef · Playbook §1.5 MECE · P7 override · local release skip） |
 | 2026-07-18 | 005 approved（Playbook §1.5 MECE · P7 override） |

@@ -28,16 +28,33 @@
         .pp-story:hover{background:rgba(99,102,241,.08)}
         .pp-story--active{background:rgba(79,70,229,.16);color:var(--pp-text);font-weight:700}
         .pp-story-point{font-weight:700;color:var(--pp-ok)}
-        .pp-participant{display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%;padding:8px 10px;margin:0;border:0;border-radius:8px;font-size:12px;background:transparent;color:inherit;text-align:left;cursor:pointer;border-bottom:1px dashed var(--pp-border)}
+        .pp-participant{display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%;padding:8px 10px;margin:0;border:0;border-radius:8px;font-size:13px;background:transparent;color:inherit;text-align:left;cursor:pointer;border-bottom:1px dashed var(--pp-border)}
         .pp-participant:hover{background:rgba(99,102,241,.08)}
         .pp-participant--active{background:rgba(79,70,229,.16);font-weight:700}
-        .pp-card{height:56px;border-radius:10px;border:1px solid var(--pp-border);font-size:20px;font-weight:800;background:var(--pp-panel)}
+        .pp-participant--pending{opacity:.55;font-weight:400}
+        .pp-participant--voted{opacity:1;font-weight:700}
+        .pp-participant__mark{display:inline-block;width:1.1em;flex-shrink:0;font-weight:700;text-align:center}
+        .pp-card{height:56px;border-radius:10px;border:2px solid var(--pp-border);font-size:20px;font-weight:700;background:var(--pp-panel)}
         .pp-card:hover{border-color:var(--pp-accent)}
-        .pp-card--selected{background:var(--pp-accent);color:#fff;border-color:var(--pp-accent)}
+        .pp-card--selected{background:var(--pp-accent);color:#fff;border:3px solid var(--pp-text);font-weight:900;box-shadow:inset 0 0 0 1px var(--pp-panel)}
         .pp-card:disabled{opacity:.45;cursor:not-allowed}
-        .pp-reveal-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--pp-border);font-size:13px}
-        .pp-reason{display:block;font-size:12px;color:var(--pp-sub);margin-bottom:8px}
+        .pp-reveal-item{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--pp-border);font-size:15px}
+        .pp-reveal-item strong{font-size:22px;font-weight:800;letter-spacing:.02em}
+        .pp-reason{display:block;font-size:13px;color:var(--pp-sub);margin-bottom:8px}
         .pp-reason span{display:block;margin-bottom:4px}
+        .pp-current-story{font-size:1.35rem;line-height:1.35;font-weight:800}
+        .pp-stat{padding:10px 12px}
+        .pp-stat__label{display:block;font-size:12px;color:var(--pp-sub);margin-bottom:2px}
+        .pp-stat__value{font-size:1.35rem;font-weight:700;letter-spacing:.02em}
+        .pp-stat--median .pp-stat__value{font-size:1.75rem;font-weight:800}
+        .pp-fold-btn{display:inline-flex;align-items:center;gap:4px;margin:0;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:700;cursor:pointer}
+        .pp-fold-btn:hover{opacity:.8}
+        .pp-setup.is-collapsed .pp-setup-body{display:none}
+        .pp-story-block.is-collapsed #pp-story-list{display:none}
+        .pp-waiting{font-size:13px;color:var(--pp-sub);line-height:1.5;padding:8px 0}
+        .pp-post-reveal{display:none}
+        .pp-root.pp-revealed .pp-post-reveal{display:block}
+        .pp-root.pp-revealed .pp-pre-reveal{display:none}
     </style>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased">
@@ -49,9 +66,15 @@
             <p class="text-sm text-slate-700">数字を当てる道具ではなく、<strong>認識差を最短で見つける</strong>ための見積会議です。いまは<strong>1画面</strong>で司会が各人の点数を伏せて入力し、Reveal で同時公開します（多人の別端末同期は検討中）。</p>
         </header>
 
-        <section class="pp-panel p-4 space-y-3">
-            <h2 class="text-sm font-bold">開始セットアップ（3秒）</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <section id="pp-setup" class="pp-panel pp-setup p-4 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <button type="button" id="pp-setup-toggle" class="pp-fold-btn text-sm" aria-expanded="true" aria-controls="pp-setup-body">
+                    <span id="pp-setup-toggle-label">開始セットアップ</span>
+                    <span id="pp-setup-chevron" aria-hidden="true">▾</span>
+                </button>
+                <button id="pp-dark-toggle" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">Dark</button>
+            </div>
+            <div id="pp-setup-body" class="pp-setup-body grid grid-cols-1 lg:grid-cols-3 gap-3">
                 <label class="block text-xs">
                     Story一覧（1行1件）
                     <textarea id="pp-stories-input" rows="6" class="sg-input font-mono text-sm mt-1" placeholder="Login画面改善&#10;請求書PDF余白調整"></textarea>
@@ -67,7 +90,6 @@
                     <div class="flex flex-wrap gap-2">
                         <button id="pp-start" type="button" class="sg-btn-primary">開始</button>
                         <button id="pp-copy-template" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">Story雛形コピー</button>
-                        <button id="pp-dark-toggle" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">Dark</button>
                     </div>
                     <p id="pp-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded px-2 py-1"></p>
                 </div>
@@ -79,17 +101,22 @@
         <section id="pp-workspace" class="hidden">
             <div class="grid grid-cols-1 xl:grid-cols-[280px_1fr_320px] gap-4 items-start">
                 <aside class="pp-panel p-3 space-y-3 xl:sticky xl:top-24">
-                    <h3 class="text-sm font-bold">Story一覧</h3>
-                    <div id="pp-story-list" class="space-y-1"></div>
+                    <div class="pp-story-block is-collapsed" id="pp-story-block">
+                        <button type="button" id="pp-story-toggle" class="pp-fold-btn text-sm w-full justify-between" aria-expanded="false" aria-controls="pp-story-list">
+                            <span>Story一覧</span>
+                            <span id="pp-story-chevron" aria-hidden="true">▸</span>
+                        </button>
+                        <div id="pp-story-list" class="space-y-1 mt-2"></div>
+                    </div>
                     <h4 class="text-xs font-bold pt-2 border-t border-slate-200">参加者（タップで入力先）</h4>
                     <ul id="pp-participant-list"></ul>
                     <button id="pp-export-csv" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2 w-full">CSV出力（Story,Point）</button>
                 </aside>
 
                 <section class="pp-panel p-4 space-y-4">
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="space-y-1">
                         <p class="text-xs text-slate-500">現在Story</p>
-                        <p id="pp-current-story" class="text-base font-bold"></p>
+                        <p id="pp-current-story" class="pp-current-story"></p>
                     </div>
                     <p id="pp-active-voter" class="text-xs font-semibold text-indigo-800 bg-indigo-50 border border-indigo-200 rounded-lg px-3 py-2"></p>
                     <div id="pp-card-grid" class="grid grid-cols-4 sm:grid-cols-7 gap-2"></div>
@@ -98,11 +125,23 @@
                         <button id="pp-reset-round" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">再投票</button>
                         <button id="pp-next-story" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">次Story</button>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                        <div class="pp-panel p-2">平均 <strong id="pp-stat-avg">-</strong></div>
-                        <div class="pp-panel p-2">中央値 <strong id="pp-stat-median">-</strong></div>
-                        <div class="pp-panel p-2">最小 <strong id="pp-stat-min">-</strong></div>
-                        <div class="pp-panel p-2">最大 <strong id="pp-stat-max">-</strong></div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div class="pp-panel pp-stat">
+                            <span class="pp-stat__label">平均</span>
+                            <strong id="pp-stat-avg" class="pp-stat__value">―</strong>
+                        </div>
+                        <div class="pp-panel pp-stat pp-stat--median">
+                            <span class="pp-stat__label">中央値</span>
+                            <strong id="pp-stat-median" class="pp-stat__value">―</strong>
+                        </div>
+                        <div class="pp-panel pp-stat">
+                            <span class="pp-stat__label">最小 ▼</span>
+                            <strong id="pp-stat-min" class="pp-stat__value">―</strong>
+                        </div>
+                        <div class="pp-panel pp-stat">
+                            <span class="pp-stat__label">最大 ▲</span>
+                            <strong id="pp-stat-max" class="pp-stat__value">―</strong>
+                        </div>
                     </div>
                     <div class="pp-panel p-3">
                         <p class="text-xs font-bold mb-2">議論タイマー</p>
@@ -114,20 +153,24 @@
                             </select>
                             <button id="pp-timer-start" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">開始</button>
                             <button id="pp-timer-stop" type="button" class="text-xs font-semibold border border-slate-300 rounded-lg px-3 py-2">停止</button>
-                            <strong id="pp-timer-view" class="text-base tracking-widest">01:00</strong>
+                            <strong id="pp-timer-view" class="text-lg tracking-widest">01:00</strong>
                         </div>
                     </div>
-                    <p class="text-[11px] text-slate-500">使い方: 左の参加者を選び → カード（または `1-9`）→ 全員そろったら Reveal。`Enter` Reveal / `Space` Reveal⇔再投票</p>
+                    <details class="text-[11px] text-slate-500">
+                        <summary class="cursor-pointer font-semibold">使い方（キーボード）</summary>
+                        <p class="mt-2 leading-relaxed">左の参加者を選び → カード（または `1-9`）→ 全員そろったら Reveal。`Enter` Reveal / `Space` Reveal⇔再投票</p>
+                    </details>
                 </section>
 
                 <aside class="pp-panel p-3 space-y-3">
                     <h3 class="text-sm font-bold">Reveal結果</h3>
-                    <ul id="pp-reveal-panel" class="space-y-1"></ul>
-                    <div class="border-t border-slate-200 pt-2">
+                    <p id="pp-reveal-waiting" class="pp-waiting pp-pre-reveal">Revealすると結果がここに表示されます</p>
+                    <ul id="pp-reveal-panel" class="space-y-1 pp-post-reveal"></ul>
+                    <div class="border-t border-slate-200 pt-2 pp-post-reveal">
                         <h4 class="text-xs font-bold mb-1">最大/最小の理由</h4>
                         <div id="pp-discussion-panel"></div>
                     </div>
-                    <div class="border-t border-slate-200 pt-2 space-y-2">
+                    <div class="border-t border-slate-200 pt-2 space-y-2 pp-post-reveal">
                         <h4 class="text-xs font-bold">採用ポイント</h4>
                         <div class="flex gap-2">
                             <select id="pp-adopt-point" class="sg-input text-sm flex-1"></select>

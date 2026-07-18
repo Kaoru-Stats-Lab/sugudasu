@@ -11,6 +11,15 @@
   },
   "entries": [
     {
+      "id": "planning-poker-projector-ux-20260718",
+      "date": "2026-07-18",
+      "type": "improve",
+      "audience": "public",
+      "title": "見積会議 — 投影向けにReveal前後の画面重心を整理",
+      "body": "Reveal前はカード入力を主役に、結果欄は待機表示に。Reveal後は中央値を強調し理由入力へフォーカス。参加者の投票状況は●/○と太さで判別しやすくしました。",
+      "tools": ["planning-poker"]
+    },
+    {
       "id": "slot-board-20260718",
       "date": "2026-07-18",
       "type": "feature",
