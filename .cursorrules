@@ -9,7 +9,7 @@
 | **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` · Auth `SYNC_AUTH_POLICY.md` · 思想 `SYNC_S1_REMAINING_TASKS.md` |
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
-| **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` + `data/tool-registry.json` |
+| **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`（**§1.5 新規公開 MECE**）+ `data/tool-registry.json` |
 | **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 | `docs/DESIGN_GUIDELINE.md` |

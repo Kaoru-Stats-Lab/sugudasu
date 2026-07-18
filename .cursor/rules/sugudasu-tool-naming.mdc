@@ -25,6 +25,9 @@ alwaysApply: true
 4. `assets/sugudasu-shell.js` — `TOOLS[].label` = navLabel
 5. `npm run validate:tool-naming` → `npm run build:pages`
 
+**新規ツール公開（hub · statements · changelog · README · deploy）:**  
+`docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5 MECE チェックリスト** を上から YES/NA。再発明しない。
+
 ## 3層
 
 | 層 | 例 | 場所 |

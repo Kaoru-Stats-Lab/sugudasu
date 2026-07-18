@@ -1,9 +1,11 @@
 # ツール命名 — Agent 実行手順（Playbook）
 
-**更新:** 2026-06-20  
+**更新:** 2026-07-18  
 **リポジトリ:** `C:\asl_dev\sugudasu`（asl-dashboard ではない）  
 **読者:** Cursor / Claude 等の別 Agent  
 **規範:** `docs/DESIGN_GUIDELINE.md` §1.3（思想） · **本ファイル（手順）** · `data/tool-registry.json`（値の SSOT）
+
+**新規ツールを本番に出すとき:** §1（手順A）のあと **必ず §1.5 MECE チェックリスト** を埋める。毎回ゼロから洗い直さない。
 
 ---
 
@@ -105,19 +107,75 @@ HTML と **同名 id**。registry キー · ファイル名 · `data-sg-tool-id`
 - コメント: `registry navLabel と同期（validate:tool-naming で検証）`
 - 読込後は registry からナビを上書きするが、**初回描画フォールバック**のため必須
 
-### Step 6 — `data/changelog.json`
+### Step 6 — `data/changelog.json` · `data/statements-product.json` · README
 
-先頭に 1 エントリ（`tools` 配列に `{id}.html`）。
+1. **`data/changelog.json`** — 先頭に public（＋必要なら internal rollup）エントリ。`tools` に id。
+2. **`data/statements-product.json`** — `inNav: true` なら **必須**（`validate:statements-product` が registry と突合）。`categoryId` は既存カテゴリのみ。
+3. **`README.md` ツール表** — `npm run sync:readme-tools`（手書き禁止）。
 
 ### Step 7 — 検証（必須）
 
 ```bash
 cd C:\asl_dev\sugudasu
 npm run validate:tool-naming
+npm run validate:ogp
+npm run validate:statements-product
 npm run build:pages
 ```
 
-両方 **exit 0** まで直す。
+すべて **exit 0** まで直す。本番反映は `docs/notes/DEPLOY_LOG.md` + `npm run release:pages:free` → `git push origin main`（`DEPLOY_CLOUDFLARE_PAGES.md`）。
+
+---
+
+## 1.5 新規ツール公開 — MECE チェックリスト（Agent 必読 · 再発明禁止）
+
+**目的:** 毎回「何を触るべきか」を考えない。下表を **上から順に YES/NA** するだけで完了判定する。  
+**正本:** 本節。命名手順は §1 · デプロイ手順は `DEPLOY_LOG.md` / `DEPLOY_CLOUDFLARE_PAGES.md`。
+
+### A. 必須（欠けたら公開禁止）
+
+| # | 箇所 | 確認内容 | 機械ゲート |
+|---|------|----------|------------|
+| A1 | `data/tool-registry.json` | id · file · conceptName · productName · navLabel · inNav · navOrder · stage | `validate:tool-naming` |
+| A2 | `tools/{id}.html` | `data-sg-tool-id` = id · `data-sg-title` = productName · `og:url` = `https://sugudasu.com/{id}`（`.html` なし）· FAQ は main 外 | naming · ogp |
+| A3 | `assets/{id}-*.js` / 専用 CSS | ロジックがあるなら同 id プレフィックス。**既存 `sugudasu.css` 構造を壊さない**（専用 CSS 追加は可） | （目視 · build） |
+| A4 | `tools/hub.html` | カード1枚 · `<h3>` = productName · `href="{id}.html"`（**トップページ = hub**） | naming |
+| A5 | `assets/sugudasu-shell.js` `TOOLS[]` | id · file · label=navLabel · icon · **navOrder 順** | naming |
+| A6 | `data/statements-product.json` | inNav ツールは1行必須 · productName 一致 · categoryId 既存のみ | `validate:statements-product` |
+| A7 | `data/changelog.json` | public エントリ · `tools: ["{id}"]` | `verify-changelog`（build 内） |
+| A8 | `README.md` | ツール表が registry と一致 | `sync:readme-tools --check` |
+| A9 | `package.json` | 単体テストがあるなら `test:{id}`（任意だが追加したら `test:all` にも） | （任意） |
+| A10 | 仕様 SSOT | **`docs/notes/` 配下**（例: `SLOT_BOARD_SPEC.md`）。リポジトリ直下のメモは正本にしない | （目視） |
+
+### B. 本番反映（必須 · core）
+
+| # | 箇所 | 確認内容 |
+|---|------|----------|
+| B1 | `docs/notes/DEPLOY_LOG.md` | `target=core` · `status=approved` · 同一日2回目以降は **P7 override** 明示 |
+| B2 | `npm run release:pages:free` | exit 0（gate + build + budget） |
+| B3 | `git push origin main` | CF Pages 自動ビルド |
+| B4 | smoke | `https://sugudasu.com/` にカード · `https://sugudasu.com/{id}` が 200 · hub HTML に `{id}.html` |
+
+### C. 対象外（触らない · 「足りない」と勘違いしない）
+
+| 項目 | 理由 |
+|------|------|
+| `data/roadmap.json` に「完了」行を追加 | shipped は **JSON から削除**が正（`DEV_TRANSPARENCY_RULES.md`） |
+| `sitemap` / `robots` / `_redirects` / canonical 手書き | `build:pages` が生成 |
+| guides / LP / `lp-marketing-matrix` | マーケ別タスク。ツールα公開の必須ではない |
+| 他ツールからの相互リンク | 仕様に書いてあるときだけ |
+| Sync / Supabase / `deploy:pages:sync` | core と別経路 |
+| 無関係ファイルの整形 · 共通化 · リファクタ | 禁止 |
+
+### D. Agent 完了報告（コピペ）
+
+```text
+MECE 新規ツール公開: {id}
+A1–A10: OK / NA（欠番があれば列挙）
+B1–B4: OK · smoke: / と /{id}
+C: 触っていない（roadmap追加なし · guidesなし）
+validate:tool-naming · statements · ogp · build:pages: exit 0
+```
 
 ---
 
@@ -182,6 +240,7 @@ npm run validate:tool-naming
 
 | ドキュメント | 用途 |
 |-------------|------|
+| `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` §1.5 | **新規ツール公開 MECE**（再発明禁止） |
 | `docs/DESIGN_GUIDELINE.md` §1.3 | 命名思想 · 全ツール対応表 |
 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` | `data-sg-title` · shell 読込 |
 | `docs/BACKLOG.md` §8-11-4 | 新規ツール追加チェックリスト（SEO · hub） |
@@ -197,3 +256,5 @@ npm run validate:tool-naming
 変更 id: invoice, …
 触った従量: なし（静的のみ）
 ```
+
+**新規公開時は §1.5 D を優先**（MECE A/B/C）。
