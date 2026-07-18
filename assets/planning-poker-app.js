@@ -119,12 +119,24 @@ export function mountPlanningPoker(root) {
     render();
   }
 
+  function syncRevealVisibility() {
+    const revealed = !!(state && state.reveal);
+    root.classList.toggle('pp-revealed', revealed);
+    // DECISION: CSS class 切替だけだと投影環境・キャッシュ混在で結果欄が隠れたままになるため、hidden 属性で明示制御する。
+    root.querySelectorAll('[data-pp-reveal-slot="pre"]').forEach((el) => {
+      el.hidden = revealed;
+    });
+    root.querySelectorAll('[data-pp-reveal-slot="post"]').forEach((el) => {
+      el.hidden = !revealed;
+    });
+  }
+
   function render() {
     if (!state) return;
     if (!state.participants.some((p) => p.id === activeVoterId)) {
       activeVoterId = myParticipantId || state.participants[0]?.id || '';
     }
-    root.classList.toggle('pp-revealed', !!state.reveal);
+    syncRevealVisibility();
     renderStories();
     renderParticipants();
     renderCurrentStory();

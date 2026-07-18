@@ -1,6 +1,6 @@
 # SEO · GSC · ビルドパイプライン（SSOT）
 
-**更新:** 2026-07-10  
+**更新:** 2026-07-18  
 **対象:** `sugudasu.com`（core · Cloudflare Pages）  
 **正本コード:** `scripts/build-pages.mjs` · `scripts/verify-ogp.mjs`
 
@@ -17,11 +17,12 @@ Search Console の警告を「ゼロにする」ことではない。
 
 | 報告例 | 原因 | 対応 |
 |--------|------|------|
-| http / www / `index.html` | ホスト・正規化の **正常な 301** | **触らない**（エラーではない） |
-| `/{slug}.html` | `_redirects` の clean path 301 | **リダイレクトは維持** |
-| `fair-draw?tab=*` | 同一 HTML · UI 状態クエリ | **canonical = `/fair-draw`**（ビルド注入） |
-| `/data/*.json` | 内部データ · 検索不要 | **robots Disallow + X-Robots-Tag noindex** |
-| www 重複 | apex 正本 | canonical は apex · www→apex は CF |
+| `http://sugudasu.com/` · `http://www…` | http→https（CF / ホスト）の **正常な 301** | **触らない**（エラーではない · ゼロ化しない） |
+| `https://www.sugudasu.com/` | www→apex（意図） | **コード不要** · apex canonical で補強済み · www→apex は CF |
+| `…/index.html` | `/` への clean URL | **触らない** · sitemap は `/` のみ |
+| `/{slug}.html`（report · fair-draw 等） | `_redirects` の clean path 301 | **リダイレクトは維持** · `og:url` / canonical は clean path |
+| `fair-draw?tab=*` · `fair-draw.html?tab=*` | 同一 HTML · UI 状態クエリ | **canonical = `/fair-draw`**（ビルド注入 · クエリなし） |
+| `/data/*.json` | 内部データ · 検索不要 | **robots `Disallow: /data/` + `_headers` `X-Robots-Tag: noindex, nofollow`** |
 
 ### やらないこと
 
@@ -30,6 +31,7 @@ Search Console の警告を「ゼロにする」ことではない。
 - `?tab=` の廃止（ディープリンク用途）
 - ツール HTML への広範 noindex
 - ツールごとに個別 robots ルールを増やす
+- sitemap から公開ツール（`report` / `not-a-car` / `webp-to-jpg` 等）を外す
 
 ---
 
@@ -48,6 +50,8 @@ Search Console の警告を「ゼロにする」ことではない。
 **Agent が手書きしない:** `<link rel="canonical">` · sitemap · robots · `_redirects` の個別追記。
 
 **Agent がソースに書く:** `og:url` = `https://sugudasu.com/{id}`（**`.html` 禁止** · `validate:ogp` が FAIL）。
+
+ビルド末尾で機械検査: `robots.txt` の `Disallow: /data/` · `_headers` の `X-Robots-Tag: noindex`。
 
 ---
 

@@ -11,6 +11,15 @@
   },
   "entries": [
     {
+      "id": "planning-poker-reveal-panel-fix-20260718",
+      "date": "2026-07-18",
+      "type": "fix",
+      "audience": "public",
+      "title": "見積会議 — Reveal後に結果欄が表示されない不具合を修正",
+      "body": "同時公開後、右のReveal結果・理由入力・採用ポイントが隠れたままになる問題を直しました。",
+      "tools": ["planning-poker"]
+    },
+    {
       "id": "planning-poker-projector-ux-20260718",
       "date": "2026-07-18",
       "type": "improve",
