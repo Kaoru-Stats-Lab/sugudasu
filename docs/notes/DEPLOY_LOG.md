@@ -1082,19 +1082,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 見積会議 — プロジェクター投影向け Reveal前後視線誘導 · 視認性二重化（提督 Commit&Push · 同日 core 7回目 · P7 override） |
 | **change_summary** | `tools/planning-poker.html` · `assets/planning-poker-app.js` · changelog |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 43/450） |
 | **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 43/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Push」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `f4fea1d`（`105f357..f4fea1d` · git push origin main） |
+| **smoke** | pass — `/planning-poker`「開始セットアップ」（3秒なし）·「最小 ▼」· Reveal待機文 |
 
 ---
 
@@ -1102,7 +1102,7 @@
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-18 | 007 approved（planning-poker 投影UX · P7 override · 提督 Commit&Push） |
+| 2026-07-18 | 007 executed（f4fea1d · planning-poker 投影UX · P7 override） |
 | 2026-07-18 | 006 executed（slot-board FV · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 005 executed（66cc1ef · Playbook §1.5 MECE · P7 override · local release skip） |
 | 2026-07-18 | 005 approved（Playbook §1.5 MECE · P7 override） |
