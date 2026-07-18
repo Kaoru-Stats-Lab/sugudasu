@@ -996,10 +996,31 @@
 | **cf_deployment_id** | `dd14049`（`6acf9c0..dd14049` · git push origin main） |
 | **smoke** | pending — `/` hub に透かし・PDF画像抽出 · `/watermark` · `/pdf-images` |
 
+---
+
+## DEPLOY-20260718-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | pdf-images 範囲選択 · 開始ページ検証 · ZIP衝突回避 · FAQ（提督 Commit&Push） |
+| **change_summary** | `PDF_IMAGE_EXTRACT_SPEC/TECH` · `pdf-images-engine/app` · `tools/pdf-images.html` FAQ · tests |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 3（**P7 override** · 提督指示「Commit&Push」· 同一日3回目） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8（core）確認予定 · P7 override 明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | — |
+| **smoke** | — |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 003 approved（pdf-images 範囲選択 · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 002 executed（dd14049 · watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 002 approved（watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 001 executed（c290f81 · 非送信主張是正 · privacy-badge · telemetry 開示） |

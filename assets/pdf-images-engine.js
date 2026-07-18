@@ -59,13 +59,65 @@ export function formatPagesLabel(pages) {
 
 /**
  * @param {number} fileSize
- * @param {number} pageCount
- * @returns {{ ok: true } | { ok: false, reason: 'file_size'|'page_count' }}
+ * @returns {{ ok: true } | { ok: false, reason: 'file_size' }}
  */
-export function checkLimits(fileSize, pageCount) {
+export function checkLimits(fileSize) {
   if (fileSize > MAX_FILE_BYTES) return { ok: false, reason: 'file_size' };
-  if (pageCount > MAX_PAGES) return { ok: false, reason: 'page_count' };
   return { ok: true };
+}
+
+/**
+ * 開始ページのみ指定。終了は min(start + MAX_PAGES - 1, totalPages)。
+ * 開始が不正なときは ok:false（クランプしない）。
+ * @param {number|string} startPage
+ * @param {number} totalPages
+ * @param {number} [maxPages]
+ * @returns {{ ok: true, start: number, end: number, count: number } | { ok: false, reason: 'start_page' }}
+ */
+export function computePageRange(startPage, totalPages, maxPages = MAX_PAGES) {
+  const total = Math.max(0, Math.floor(Number(totalPages)) || 0);
+  const width = Math.max(1, Math.floor(Number(maxPages)) || MAX_PAGES);
+  if (total < 1) return { ok: false, reason: 'start_page' };
+
+  const raw = typeof startPage === 'string' ? startPage.trim() : startPage;
+  if (raw === '' || raw == null) return { ok: false, reason: 'start_page' };
+  const startNum = Number(raw);
+  if (!Number.isFinite(startNum) || !Number.isInteger(startNum)) {
+    return { ok: false, reason: 'start_page' };
+  }
+  if (startNum < 1 || startNum > total) return { ok: false, reason: 'start_page' };
+
+  const end = Math.min(startNum + width - 1, total);
+  return { ok: true, start: startNum, end, count: end - startNum + 1 };
+}
+
+/**
+ * @param {number} start
+ * @param {number} end
+ * @returns {string} 例: "1〜50"
+ */
+export function formatPageRangeLabel(start, end) {
+  return `${Math.floor(start)}〜${Math.floor(end)}`;
+}
+
+/**
+ * @param {string} sourceName
+ * @param {number} start
+ * @param {number} end
+ * @param {number} imageCount
+ * @param {Date} [when]
+ * @returns {string} 例: sample_p040-089_7img_095012.zip
+ */
+export function buildZipRangeFileName(sourceName, start, end, imageCount, when = new Date()) {
+  const base = sanitizeBaseName(sourceName);
+  const a = String(Math.max(1, Math.floor(start) || 1)).padStart(3, '0');
+  const b = String(Math.max(1, Math.floor(end) || 1)).padStart(3, '0');
+  const n = Math.max(0, Math.floor(Number(imageCount)) || 0);
+  const d = when instanceof Date ? when : new Date();
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  const ss = String(d.getSeconds()).padStart(2, '0');
+  return `${base}_p${a}-${b}_${n}img_${hh}${mm}${ss}.zip`;
 }
 
 /**
@@ -229,24 +281,51 @@ export function contentFingerprint(key, width, height, byteLength) {
  *   sourceName: string,
  *   workerSrc: string,
  *   wasmUrl?: string,
+ *   pageFrom?: number,
+ *   pdf?: any,
  * }} opts
- * @returns {Promise<{ images: ExtractedImage[], skippedSmall: number, pageCount: number }>}
+ * @returns {Promise<{ images: ExtractedImage[], skippedSmall: number, pageCount: number, range: { start: number, end: number, count: number } }>}
  */
 export async function extractEmbeddedImages(pdfjsLib, data, opts) {
-  if (!pdfjsLib?.getDocument) throw new Error('no-pdfjs');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = opts.workerSrc;
+  if (!pdfjsLib?.OPS) throw new Error('no-pdfjs');
+  if (pdfjsLib.GlobalWorkerOptions && opts.workerSrc) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = opts.workerSrc;
+  }
 
-  const loadingTask = pdfjsLib.getDocument({
-    data: new Uint8Array(data),
-    wasmUrl: opts.wasmUrl,
-  });
-  const pdf = await loadingTask.promise;
-  const pageCount = pdf.numPages | 0;
-  const limit = checkLimits(data.byteLength, pageCount);
+  const limit = checkLimits(data.byteLength);
   if (!limit.ok) {
     const err = new Error(limit.reason);
     err.code = limit.reason;
     throw err;
+  }
+
+  let pdf = opts.pdf;
+  if (!pdf) {
+    if (typeof pdfjsLib.getDocument !== 'function') throw new Error('no-pdfjs');
+    const loadingTask = pdfjsLib.getDocument({
+      data: new Uint8Array(data),
+      wasmUrl: opts.wasmUrl,
+    });
+    pdf = await loadingTask.promise;
+  }
+  const pageCount = pdf.numPages | 0;
+  const rangeResult = computePageRange(
+    opts.pageFrom != null ? opts.pageFrom : 1,
+    pageCount,
+    MAX_PAGES
+  );
+  if (!rangeResult.ok) {
+    const err = new Error('start_page');
+    err.code = 'start_page';
+    throw err;
+  }
+  const range = {
+    start: rangeResult.start,
+    end: rangeResult.end,
+    count: rangeResult.count,
+  };
+  if (range.count < 1) {
+    return { images: [], skippedSmall: 0, pageCount, range };
   }
 
   const OPS = pdfjsLib.OPS;
@@ -260,7 +339,7 @@ export async function extractEmbeddedImages(pdfjsLib, data, opts) {
   const byFp = new Map();
   let skippedSmall = 0;
 
-  for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
+  for (let pageNum = range.start; pageNum <= range.end; pageNum++) {
     const page = await pdf.getPage(pageNum);
     const ops = await page.getOperatorList();
     const { fnArray, argsArray } = ops;
@@ -334,5 +413,5 @@ export async function extractEmbeddedImages(pdfjsLib, data, opts) {
     });
   }
 
-  return { images, skippedSmall, pageCount };
+  return { images, skippedSmall, pageCount, range };
 }

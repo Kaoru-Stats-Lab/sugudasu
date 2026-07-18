@@ -17,16 +17,29 @@
 
 ---
 
-## 2. 運用定数（目安 · ハード拒否）
+## 2. 運用定数（目安）
 
-SSOT: 超過は **拒否**（先頭だけ処理しない）。数値はここに置く。
+数値はここに置く。SSOT: **自動で部分処理はしない**。ユーザー指定範囲のみ。
 
 | 定数 | v0.1 初期値 | 意味 |
 |------|-------------|------|
 | `MAX_FILE_BYTES` | 40 × 1024 × 1024 | **初期値（運用で変更可）** · ファイルサイズ目安。超過 → 拒否 |
-| `MAX_PAGES` | 50 | **初期値（運用で変更可）** · ページ数目安。超過 → 拒否 |
+| `MAX_PAGES` | 50 | **初期値（運用で変更可）** · **一度に選択できるページ幅**。総ページがこれ以下なら全ページ処理。超過時は開始ページUIで幅内の範囲を指定 |
 | `MIN_SHORT_EDGE_PX` | 16 | 短辺がこれ未満 **かつ** 面積が `MIN_AREA_PX` 未満 → 除外 |
 | `MIN_AREA_PX` | 256 | 面積（幅×高さ）の下限。ロゴ細長は短辺単独では落とさない |
+
+終了ページ（実装 · 開始が有効なときのみ）:
+
+```text
+end = min(start + MAX_PAGES - 1, totalPages)
+```
+
+開始ページの検証（SSOT）:
+
+```text
+start ∈ {1, 2, …, totalPages} の整数
+それ以外 → エラー · 抽出不可（クランプしない）
+```
 
 メモリはファイルサイズと独立に膨らむ。定数を満たしても落ちうる → SSOT §4 のメモリ文言。
 
@@ -37,7 +50,12 @@ SSOT: 超過は **拒否**（先頭だけ処理しない）。数値はここに
 ```text
 ArrayBuffer
   → getDocument (+ worker)
-  → for pageIndex in 1..numPages
+  → pageCount = numPages
+  → 総ページ ≤ MAX_PAGES:
+       pageFrom=1, pageTo=pageCount（即抽出）
+  → 総ページ > MAX_PAGES:
+       UIで開始ページ決定 → pageFrom/pageTo を渡して抽出
+  → for pageIndex in pageFrom..pageTo
        getOperatorList
        detect image paint ops
        resolve image object (page objs / commonObjs)
@@ -89,6 +107,17 @@ SSOT必須形:
 - `NN` は 01 始まりゼロ埋め2桁  
 - `img` 連番は **DL用ユニーク画像** の通し（ページ内連番ではない）  
 
+### 3.6 ZIP名
+
+```text
+{sanitize(base)}_p{AAA}-{BBB}_{N}img_{HHmmss}.zip
+```
+
+- `AAA` / `BBB` は処理範囲の開始・終了（1始まり · ゼロ埋め3桁）  
+- `N` は ZIP に入れる抽出件数  
+- `HHmmss` はダウンロード時のローカル時刻（同一範囲の再抽出でも衝突しにくくする）  
+- 例: `sample_p040-089_7img_095012.zip` · `sample_p170-186_3img_101544.zip`  
+
 ---
 
 ## 4. 参考実装の問題点（そのままコピーしない）
@@ -109,7 +138,7 @@ SSOT必須形:
 
 | ファイル | 内容 |
 |----------|------|
-| `assets/pdf-images-engine.js` | 抽出・変換・dedupe・フィルタ（テスト対象） |
+| `assets/pdf-images-engine.js` | 抽出・変換・dedupe・フィルタ・範囲計算（テスト対象） |
 | `assets/pdf-images-app.js` | UI |
 | `tools/pdf-images.html` | ページ |
 | `assets/vendor/pdfjs-…` 等 | ピン留め build + worker |
@@ -121,10 +150,13 @@ ZIP: `watermark-engine.js` の store ZIP を import または共通化。
 
 ## 6. 実装時チェックリスト
 
-- [ ] `MAX_*` 超過で拒否メッセージ（部分成功なし）  
+- [ ] `MAX_FILE_BYTES` 超過で拒否（部分成功なし）  
+- [ ] `MAX_PAGES` 超過時は範囲UI · 指定範囲のみ処理（自動先頭切りはしない）  
+- [ ] 開始ページ不正はエラー · 抽出不可（クランプしない）  
+- [ ] ZIP名に範囲・件数・HHmmss  
 - [ ] 件数表示 = 一覧件数  
 - [ ] 複数ページ出現の併記  
-- [ ] ファイル名規則  
+- [ ] ファイル名規則 · ZIP範囲名  
 - [ ] JPEG維持は「可能なときだけ」  
 - [ ] 動的読込（他ページに pdf.js を載せない）  
 - [ ] Desktop バナー · privacy-badge · FAQ  

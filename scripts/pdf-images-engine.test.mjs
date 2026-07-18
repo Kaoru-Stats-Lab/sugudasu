@@ -7,7 +7,10 @@ import assert from 'node:assert/strict';
 import {
   shouldSkipSmallImage,
   buildOutputFileName,
+  buildZipRangeFileName,
   formatPagesLabel,
+  formatPageRangeLabel,
+  computePageRange,
   checkLimits,
   contentFingerprint,
   sanitizeBaseName,
@@ -37,10 +40,30 @@ import {
 }
 
 {
-  assert.equal(checkLimits(100, 10).ok, true);
-  assert.equal(checkLimits(MAX_FILE_BYTES + 1, 1).ok, false);
-  assert.equal(checkLimits(MAX_FILE_BYTES + 1, 1).reason, 'file_size');
-  assert.equal(checkLimits(10, MAX_PAGES + 1).reason, 'page_count');
+  assert.equal(checkLimits(100).ok, true);
+  assert.equal(checkLimits(MAX_FILE_BYTES + 1).ok, false);
+  assert.equal(checkLimits(MAX_FILE_BYTES + 1).reason, 'file_size');
+  assert.equal(checkLimits(10).ok, true);
+}
+
+{
+  assert.deepEqual(computePageRange(1, 50), { ok: true, start: 1, end: 50, count: 50 });
+  assert.deepEqual(computePageRange(1, 186), { ok: true, start: 1, end: 50, count: 50 });
+  assert.deepEqual(computePageRange(40, 186), { ok: true, start: 40, end: 89, count: 50 });
+  assert.deepEqual(computePageRange(170, 186), { ok: true, start: 170, end: 186, count: 17 });
+  assert.equal(computePageRange(200, 186).ok, false);
+  assert.equal(computePageRange(0, 186).ok, false);
+  assert.equal(computePageRange(-1, 186).ok, false);
+  assert.equal(computePageRange('abc', 186).ok, false);
+  assert.equal(computePageRange('', 186).ok, false);
+  assert.equal(computePageRange(1.5, 186).ok, false);
+  assert.equal(formatPageRangeLabel(40, 89), '40〜89');
+  const when = new Date(2026, 6, 18, 9, 50, 12);
+  assert.equal(
+    buildZipRangeFileName('sample.pdf', 40, 89, 7, when),
+    'sample_p040-089_7img_095012.zip'
+  );
+  assert.equal(MAX_PAGES, 50);
 }
 
 {

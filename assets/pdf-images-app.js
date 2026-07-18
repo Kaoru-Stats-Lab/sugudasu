@@ -5,7 +5,10 @@
 import {
   extractEmbeddedImages,
   formatPagesLabel,
+  formatPageRangeLabel,
   buildStoreZip,
+  buildZipRangeFileName,
+  computePageRange,
   MAX_FILE_BYTES,
   MAX_PAGES,
 } from './pdf-images-engine.js';
@@ -15,6 +18,15 @@ const $ = (id) => document.getElementById(id);
 /** @type {import('./pdf-images-engine.js').ExtractedImage[]} */
 let images = [];
 let sourceName = 'document.pdf';
+/** @type {ArrayBuffer|null} */
+let pendingData = null;
+/** @type {any} */
+let pendingPdf = null;
+/** @type {any} */
+let pendingPdfjs = null;
+let pendingPageCount = 0;
+/** @type {{ start: number, end: number, count: number }|null} */
+let lastRange = null;
 
 function vendorUrl(rel) {
   return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
@@ -22,6 +34,18 @@ function vendorUrl(rel) {
 
 function setError(msg) {
   const el = $('pdfi-error');
+  if (!el) return;
+  if (!msg) {
+    el.classList.add('hidden');
+    el.textContent = '';
+    return;
+  }
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+function setStartError(msg) {
+  const el = $('pdfi-start-error');
   if (!el) return;
   if (!msg) {
     el.classList.add('hidden');
@@ -51,6 +75,15 @@ function revokeThumbs() {
   images = [];
 }
 
+function clearPending() {
+  pendingData = null;
+  pendingPdf = null;
+  pendingPdfjs = null;
+  pendingPageCount = 0;
+  $('pdfi-range')?.classList.add('hidden');
+  setStartError('');
+}
+
 function downloadBlob(blob, filename) {
   const a = document.createElement('a');
   const url = URL.createObjectURL(blob);
@@ -58,6 +91,41 @@ function downloadBlob(blob, filename) {
   a.download = filename;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+/**
+ * @returns {{ ok: true, start: number, end: number, count: number } | { ok: false }}
+ */
+function syncRangeUi() {
+  const startEl = $('pdfi-start');
+  const raw = startEl ? startEl.value : '1';
+  const range = computePageRange(raw, pendingPageCount, MAX_PAGES);
+  const rangeLabel = $('pdfi-range-label');
+  const extractBtn = $('pdfi-extract');
+  const totalEl = $('pdfi-total-pages');
+  if (totalEl) totalEl.textContent = `全${pendingPageCount}ページ`;
+  if (startEl) startEl.max = String(Math.max(1, pendingPageCount));
+
+  if (!range.ok) {
+    setStartError(`開始ページは 1〜${pendingPageCount} の整数で指定してください。`);
+    if (rangeLabel) rangeLabel.textContent = '—';
+    if (extractBtn) {
+      extractBtn.disabled = true;
+      extractBtn.textContent = '抽出不可';
+      extractBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    }
+    return { ok: false };
+  }
+
+  setStartError('');
+  const label = formatPageRangeLabel(range.start, range.end);
+  if (rangeLabel) rangeLabel.textContent = `${label}（${range.count}ページ）`;
+  if (extractBtn) {
+    extractBtn.disabled = false;
+    extractBtn.textContent = `${label}を抽出`;
+    extractBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+  }
+  return range;
 }
 
 function renderList() {
@@ -108,6 +176,65 @@ async function loadPdfjs() {
 }
 
 /**
+ * @param {number} pageFrom
+ */
+async function runExtract(pageFrom) {
+  if (!pendingData || !pendingPdfjs) return;
+  const gate = computePageRange(pageFrom, pendingPageCount, MAX_PAGES);
+  if (!gate.ok) {
+    syncRangeUi();
+    return;
+  }
+
+  setError('');
+  revokeThumbs();
+  renderList();
+  $('pdfi-results')?.classList.add('hidden');
+  setStatus('抽出中…');
+  $('pdfi-busy')?.classList.remove('hidden');
+
+  try {
+    const result = await extractEmbeddedImages(pendingPdfjs, pendingData, {
+      sourceName,
+      workerSrc: vendorUrl('pdf.worker.mjs'),
+      wasmUrl: vendorUrl('wasm/'),
+      pageFrom: gate.start,
+      pdf: pendingPdf || undefined,
+    });
+    images = result.images;
+    lastRange = result.range;
+    $('pdfi-results')?.classList.remove('hidden');
+    renderList();
+
+    const rangeLabel = formatPageRangeLabel(result.range.start, result.range.end);
+    if (!images.length) {
+      setStatus(
+        result.skippedSmall
+          ? `抽出範囲 ${rangeLabel}：埋め込み画像は見つかりませんでした（ごく小さいものは除外）。`
+          : `抽出範囲 ${rangeLabel}：埋め込み画像は見つかりませんでした。ページに図が見えても、図形として描かれている場合があります。`
+      );
+    } else {
+      let msg = `抽出範囲 ${rangeLabel}（全${result.pageCount}ページ中）から ${images.length}件`;
+      if (result.skippedSmall) msg += `（小さい画像 ${result.skippedSmall}件は除外）`;
+      setStatus(msg);
+    }
+  } catch (err) {
+    console.error(err);
+    const code = err?.code || err?.message;
+    if (code === 'file_size') {
+      setError('このPDFは目安の上限を超えているため処理できません。（部分的な抽出はしません）');
+    } else if (code === 'start_page') {
+      setStartError(`開始ページは 1〜${pendingPageCount} の整数で指定してください。`);
+    } else {
+      setError('このPDFは開けませんでした（暗号化・破損の可能性）。');
+    }
+    setStatus('');
+  } finally {
+    $('pdfi-busy')?.classList.add('hidden');
+  }
+}
+
+/**
  * @param {File} file
  */
 async function processFile(file) {
@@ -115,6 +242,8 @@ async function processFile(file) {
   revokeThumbs();
   renderList();
   $('pdfi-results')?.classList.add('hidden');
+  clearPending();
+  lastRange = null;
 
   if (!file || file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) {
     setError('PDFファイルを選んでください。');
@@ -132,40 +261,35 @@ async function processFile(file) {
   try {
     const buf = await file.arrayBuffer();
     const pdfjsLib = await loadPdfjs();
-    const result = await extractEmbeddedImages(pdfjsLib, buf, {
-      sourceName,
-      workerSrc: vendorUrl('pdf.worker.mjs'),
+    pdfjsLib.GlobalWorkerOptions.workerSrc = vendorUrl('pdf.worker.mjs');
+    const loadingTask = pdfjsLib.getDocument({
+      data: new Uint8Array(buf),
       wasmUrl: vendorUrl('wasm/'),
     });
-    images = result.images;
-    $('pdfi-results')?.classList.remove('hidden');
-    renderList();
+    const pdf = await loadingTask.promise;
+    const pageCount = pdf.numPages | 0;
 
-    if (!images.length) {
-      setStatus(
-        result.skippedSmall
-          ? '埋め込み画像は見つかりませんでした（ごく小さいものは除外）。ページの図が図形描画だけの場合は抽出できません。'
-          : '埋め込み画像は見つかりませんでした。ページに図が見えても、図形として描かれている場合があります。'
-      );
-    } else {
-      let msg = `${result.pageCount}ページから ${images.length}件`;
-      if (result.skippedSmall) msg += `（小さい画像 ${result.skippedSmall}件は除外）`;
-      setStatus(msg);
+    pendingData = buf;
+    pendingPdf = pdf;
+    pendingPdfjs = pdfjsLib;
+    pendingPageCount = pageCount;
+
+    if (pageCount > MAX_PAGES) {
+      $('pdfi-busy')?.classList.add('hidden');
+      const startEl = $('pdfi-start');
+      if (startEl) startEl.value = '1';
+      $('pdfi-range')?.classList.remove('hidden');
+      syncRangeUi();
+      setStatus(`全${pageCount}ページです。一度に処理できる幅は${MAX_PAGES}ページです。開始ページを指定して抽出してください。`);
+      return;
     }
+
+    await runExtract(1);
   } catch (err) {
     console.error(err);
-    const code = err?.code || err?.message;
-    if (code === 'file_size' || code === 'page_count') {
-      setError(
-        code === 'page_count'
-          ? `ページ数が目安の上限（${MAX_PAGES}）を超えているため処理できません。（部分的な抽出はしません）`
-          : 'このPDFは目安の上限を超えているため処理できません。（部分的な抽出はしません）'
-      );
-    } else {
-      setError('このPDFは開けませんでした（暗号化・破損の可能性）。');
-    }
+    clearPending();
+    setError('このPDFは開けませんでした（暗号化・破損の可能性）。');
     setStatus('');
-  } finally {
     $('pdfi-busy')?.classList.add('hidden');
   }
 }
@@ -201,27 +325,39 @@ function bindDrop() {
 
 function init() {
   bindDrop();
+  $('pdfi-start')?.addEventListener('input', () => syncRangeUi());
+  $('pdfi-start')?.addEventListener('change', () => syncRangeUi());
+  $('pdfi-extract')?.addEventListener('click', () => {
+    const range = syncRangeUi();
+    if (!range.ok) return;
+    runExtract(range.start);
+  });
   $('pdfi-zip')?.addEventListener('click', async () => {
-    if (!images.length) return;
+    if (!images.length || !lastRange) return;
     const files = [];
     for (const img of images) {
       const data = new Uint8Array(await img.blob.arrayBuffer());
       files.push({ name: img.fileName, data });
     }
     const zip = buildStoreZip(files);
-    downloadBlob(new Blob([zip], { type: 'application/zip' }), `${sanitizeZipBase(sourceName)}_images.zip`);
+    const zipName = buildZipRangeFileName(
+      sourceName,
+      lastRange.start,
+      lastRange.end,
+      images.length,
+      new Date()
+    );
+    downloadBlob(new Blob([zip], { type: 'application/zip' }), zipName);
   });
   $('pdfi-clear')?.addEventListener('click', () => {
     revokeThumbs();
     renderList();
+    clearPending();
+    lastRange = null;
     $('pdfi-results')?.classList.add('hidden');
     setStatus('');
     setError('');
   });
-}
-
-function sanitizeZipBase(name) {
-  return String(name || 'document').replace(/\.pdf$/i, '').replace(/[\\/:*?"<>|]+/g, '_') || 'document';
 }
 
 if (typeof document !== 'undefined') init();
