@@ -1203,25 +1203,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Hub/category のクリーンURL hotfix · `/hub.html` すり抜け修正 · 提督 Commit&Push · 同日 core 2回目 · P7 override |
 | **change_summary** | `build-pages.mjs` rewrite 強化 · category パンくず `/` · hub-ia `pageHref` · SEOメモ |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free` · budget consume 49/450） |
 | **deploy_count_today** | 2（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 時） |
+| **pages_build_budget_after** | `49/450`（2026-07 · core git push · P7 override） |
 | **gates** | P1–P6 · P7 override · 提督 Commit&Push |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 時） |
-| **smoke** | （executed 時） |
+| **cf_deployment_id** | `7817638`（`89034ad..7817638` · git push origin main） |
+| **smoke** | `pass` — `/category/docs` パンくず `/` · カード `/invoice` · `/hub.html` なし |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-19 | 002 executed（7817638 · クリーンURL hotfix · P7 override） |
 | 2026-07-19 | 002 approved（クリーンURL hotfix · P7 override · 提督 Commit&Push） |
 | 2026-07-19 | 001 executed（26ec789 · Hub IA Phase 1） |
 | 2026-07-19 | 001 approved（Hub IA Phase 1 · 提督 Commit&Push） |
