@@ -13,7 +13,7 @@
       "slug": "planning-poker-estimation",
       "pillar": "team",
       "title": "業務の「無茶振り」と「納期遅れ」を暴く：はじめての見積もりすり合わせ会議",
-      "description": "幹事・人事・総務・マーケ・営業向け。開発以外でも使える見積もりすり合わせ（プランニングポーカー）のシーン・ものさし・鉄則。",
+      "description": "見積もりは外れて当たり前（計画の錯誤）。開発以外のシーン・ものさし・鉄則と、Cohn / McConnell の名著案内。",
       "tools": ["planning-poker", "timeline"],
       "published": "2026-07-15",
       "updated": "2026-07-18"

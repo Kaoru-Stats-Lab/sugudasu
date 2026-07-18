@@ -61,7 +61,7 @@
             <input type="checkbox" id="diff-cleanse-ws" class="rounded border-slate-300">
             <span>全角・行末スペースを無視して比較</span>
         </label>
-        <span class="text-[11px] text-slate-500">入力欄の文字は変わりません</span>
+        <span class="text-[11px] text-slate-500">入力欄は変わらない · <a href="#faq-diff-cleanse" class="text-blue-600 hover:underline">詳細</a></span>
         <button id="diff-copy" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">結果をコピー</button>
         <button id="diff-print" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">印刷 / PDF</button>
         <button id="diff-layout-side" type="button" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">左右</button>
@@ -112,6 +112,12 @@
                     <p>いいえ。差分チェックはブラウザ内で完結し、入力内容は外部へ送信・保存しません。</p>
                 </div>
             </details>
+            <details class="sg-faq" id="faq-diff-cleanse" open>
+                <summary>「全角・行末スペースを無視」すると何が消えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>比較のときだけ、全角スペース・一部の特殊空白・タブ・行末の余分な半角スペースの違いを揃えます。<strong>入力欄の文字は変わりません。</strong> 数字・日付・文言の違いは残ります。名簿の全角半角整形とは別機能です。貼り戻す前に本文自体を整えたい場合は <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> を使ってください。</p>
+                </div>
+            </details>
             <details class="sg-faq">
                 <summary>長い文章を貼り付けると重くなりますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
@@ -140,12 +146,6 @@
                 <summary>入力中に自動で解析されないのはなぜですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>長い文章で負荷が高くなるため、入力のたびに動かさず「危険な変更を確認」ボタンで明示実行する設計です。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
-                <summary>「全角・行末スペースを無視」すると何が消えますか？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>比較のときだけ、全角スペース・一部の特殊空白・タブ・行末の余分な半角スペースの違いを揃えます。<strong>入力欄の文字は変わりません。</strong> 数字・日付・文言の違いは残ります。貼り戻す前に本文自体を整えたい場合は <a href="normalize.html" class="text-blue-600 hover:underline">全角半角整え</a> を使ってください。</p>
                 </div>
             </details>
         </div>

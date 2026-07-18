@@ -145,7 +145,7 @@
 | X04 | 議事録からTODO行だけ抽出 | ◎ | △ | **HOLD** | B | 「要約AI」ではなく行フィルタ。軽い・信頼できる |
 | X05 | ローカル抽選＋シャッフル履歴表示 | ◎ | ◎ | **GO** | — | **`lottery.html` に統合**（店長選択） |
 | X06 | 名札用CSV→印刷プレビュー | ◎ | ○ | **HOLD** | B | 既存 `label.html` 拡張が筋良い（新規より） |
-| X07 | ブラウザ内PDFページ抽出 | ○ | ○ | **HOLD** | B | 有用だがPDF.js重量・F4。デスクトップ向け |
+| X07 | ブラウザ内PDF画像抽出（埋め込み画像） | ◎ | ○ | **GO** | A | **SSOT:** [`PDF_IMAGE_EXTRACT_SPEC.md`](PDF_IMAGE_EXTRACT_SPEC.md) · **TECH:** [`PDF_IMAGE_EXTRACT_TECH.md`](PDF_IMAGE_EXTRACT_TECH.md)。GPT/Claude反映: SSOTとTECH分離 · 上限超過は拒否 · UIは出現ページ併記 · 短辺16px · ファイル名 `*_pNN_imgNN`。ページ全体PNGは v0.2。圧縮は oos |
 | X08 | シード固定シャッフル（再現可能） | ◎ | ○ | **GO** | — | lottery・T11席替えの**共通エンジン**候補 |
 | X09 | リッカート5段階の手元集計 | ◎ | △ | **HOLD** | B | サーバーなしアンケートの穴。ニッチ |
 | X10 | TSV→折り返し済みテキスト表 | ◎ | △ | **HOLD** | B | 総務向け。SEO弱め |

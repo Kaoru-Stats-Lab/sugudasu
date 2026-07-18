@@ -1138,10 +1138,31 @@
 
 ---
 
+## DEPLOY-20260718-010
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 見積ガイドに計画の錯誤・名著案内 · Diff FAQ · 台帳更新（提督「未コミットすべて Commit&Push」· 同日 core 10回目 · P7 override） |
+| **change_summary** | `planning-poker-estimation` · guides · changelog · `diff.html` · DIFF_PRECOMPARE · PRODUCT_IDEA · DEPLOY_LOG |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 10（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「未コミットのすべてをCommit&Push」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 010 approved（見積ガイド名著 · Diff FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 009 executed（3cb6813 · 見積ガイド · 開発以外 · FAQ · P7 override） |
 | 2026-07-18 | 009 approved（見積ガイド · 開発以外 · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 008 executed（53cad7e · Reveal結果表示バグ · P7 override） |

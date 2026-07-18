@@ -1,9 +1,9 @@
 # Diff 比較前クレンジング（任意）— 仕様 SSOT（v0.1）
 
-**更新:** 2026-07-17  
-**ステータス:** **v0.1 実装済**  
+**更新:** 2026-07-18  
+**ステータス:** **v0.1 公開済**（アルゴリズム深統合はしない · 既定ONは FB 後の仕様改訂時のみ）  
 **対象:** 既存 `tools/diff.html` · `assets/diff-app.js`（id `diff` · URL `/diff`）  
-**ロードマップ:** `data/roadmap.json` · `diff-normalize-option`  
+**ロードマップ:** `data/roadmap.json` · `diff-normalize-option`（scheduled · 残タスクは既定ON判断のみ）  
 **レビュー:** Grok / GPT / Claude / Gemini（同一仕様 · 2026-07-17）  
 **関連:** `PRODUCT_IDEA_JUDGMENT_LEDGER.md` T22 · `NORMALIZE_TEXT_TOOL_SPEC.md`（境界のみ · 同居しない）
 
