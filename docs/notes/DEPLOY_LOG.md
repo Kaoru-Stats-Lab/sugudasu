@@ -1102,19 +1102,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 見積会議 — Reveal後に結果欄が出ないバグ修正（提督 Commit&Push · 同日 core 8回目 · P7 override） |
 | **change_summary** | `tools/planning-poker.html` · `assets/planning-poker-app.js` · `SEO_GSC_AND_BUILD_PIPELINE.md` |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 44/450） |
 | **deploy_count_today** | 8（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 44/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「そのままCommit&Pushして」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `53cad7e`（`37bf0f6..53cad7e` · git push origin main） |
+| **smoke** | pass — `/planning-poker` に `data-pp-reveal-slot` · JS `syncRevealVisibility` |
 
 ---
 
@@ -1122,7 +1122,7 @@
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-18 | 008 approved（planning-poker Reveal結果表示バグ · P7 override） |
+| 2026-07-18 | 008 executed（53cad7e · Reveal結果表示バグ · P7 override） |
 | 2026-07-18 | 007 executed（f4fea1d · planning-poker 投影UX · P7 override） |
 | 2026-07-18 | 006 executed（slot-board FV · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 005 executed（66cc1ef · Playbook §1.5 MECE · P7 override · local release skip） |
