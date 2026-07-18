@@ -1002,24 +1002,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | pdf-images 範囲選択 · 開始ページ検証 · ZIP衝突回避 · FAQ（提督 Commit&Push） |
 | **change_summary** | `PDF_IMAGE_EXTRACT_SPEC/TECH` · `pdf-images-engine/app` · `tools/pdf-images.html` FAQ · tests |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 40/450） |
 | **deploy_count_today** | 3（**P7 override** · 提督指示「Commit&Push」· 同一日3回目） |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P8（core）確認予定 · P7 override 明示 |
+| **pages_build_budget_after** | 40/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P8（core）確認済み · P7 override 明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | — |
-| **smoke** | — |
+| **cf_deployment_id** | `22e1f0f`（`5a057b9..22e1f0f` · git push origin main） |
+| **smoke** | pending — `/pdf-images` 範囲UI · FAQ · ZIP名 |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 003 executed（22e1f0f · pdf-images 範囲選択 · FAQ · P7 override） |
 | 2026-07-18 | 003 approved（pdf-images 範囲選択 · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 002 executed（dd14049 · watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
 | 2026-07-18 | 002 approved（watermark · pdf-images · hub リンク · ガイド表/リード · P7 override） |
