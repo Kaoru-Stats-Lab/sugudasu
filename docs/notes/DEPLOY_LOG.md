@@ -1073,7 +1073,7 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後 · slot-board FV） |
+| **cf_deployment_id** | `30e4adf`（`af6441d..30e4adf` · git push origin main） |
 | **smoke** | pending — `/slot-board` サブコピー · 用途 · FAQ7 · 空プレースホルダ |
 
 ## 変更履歴
