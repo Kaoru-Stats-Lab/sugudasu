@@ -1183,25 +1183,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Hub IA Refresh Phase 1 · カテゴリ SSOT 昇格 · 提督 Commit&Push |
 | **change_summary** | categories/hub-config/synonyms · hub-ia.js · /category/{id} · image-trim Ctrl+V 文言 · ADR-0003 · Tsukutta 事実ブロック · 画像系判定台帳 |
-| **local_build** | `pending`（release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 48/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 時） |
+| **pages_build_budget_after** | `48/450`（2026-07 · core git push） |
 | **gates** | P1–P8（本エントリ承認後に gate） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 時） |
-| **smoke** | （executed 時） |
+| **cf_deployment_id** | `26ec789`（`5e648fe..26ec789` · git push origin main） |
+| **smoke** | `pass` — `/` Hub 検索 · `/category/docs` · `/image-trim` |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-19 | 001 executed（26ec789 · Hub IA Phase 1） |
 | 2026-07-19 | 001 approved（Hub IA Phase 1 · 提督 Commit&Push） |
 | 2026-07-18 | 011 executed（737332a · 相対リンク罠修正 · P7 override） |
 | 2026-07-18 | 011 approved（相対リンク罠修正 · P7 override · 提督 Commit&Push） |
