@@ -1122,19 +1122,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 見積もりすり合わせガイド書き換え · 開発以外シーン · ハイブリッドSEO FAQ（提督 Commit&Push · 同日 core 9回目 · P7 override） |
 | **change_summary** | `tools/guides/planning-poker-estimation.html` · `tools/planning-poker.html` · `tools/guides.html` · `data/guides.json` · `data/changelog.json` |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 45/450） |
 | **deploy_count_today** | 9（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 45/450（2026-07 · core git push · 要 Dashboard 照合） |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Pushして」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `3cb6813`（`d819d94..3cb6813` · git push origin main） |
+| **smoke** | pass — `/guides/planning-poker-estimation`「開発以外でも使える」· フィボナッチFAQ · TシャツFAQなし |
 
 ---
 
@@ -1142,6 +1142,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 009 executed（3cb6813 · 見積ガイド · 開発以外 · FAQ · P7 override） |
 | 2026-07-18 | 009 approved（見積ガイド · 開発以外 · FAQ · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 008 executed（53cad7e · Reveal結果表示バグ · P7 override） |
 | 2026-07-18 | 007 executed（f4fea1d · planning-poker 投影UX · P7 override） |
