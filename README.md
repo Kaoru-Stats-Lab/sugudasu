@@ -38,6 +38,8 @@ python -m http.server 8080
 | [video-frame.html](tools/video-frame.html) | /video-frame | SUGUDASU 動画コマ抜き | 動画コマ抜き | alpha |
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
 | [image-trim.html](tools/image-trim.html) | /image-trim | SUGUDASU 画像切り出し | 画像切り出し | alpha |
+| [watermark.html](tools/watermark.html) | /watermark | SUGUDASU 透かし | 透かし | alpha |
+| [pdf-images.html](tools/pdf-images.html) | /pdf-images | SUGUDASU PDF画像抽出 | PDF画像 | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
 | [match-board.html](tools/match-board.html) | /match-board | SUGUDASU ドラフト会議 | ドラフト | alpha |

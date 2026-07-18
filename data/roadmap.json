@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-18",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
@@ -24,6 +24,30 @@
       "title": "時間帯 × ポジション × 複数名",
       "summary": "同じランチ帯にキッチン・ホール・レジを並べられる表。飲食・小規模店舗向けの v2 中核。",
       "askFeedback": "業態名・1日の時間帯の切り方・各帯の必要人数をフォームで歓迎します。"
+    },
+    {
+      "id": "watermark-v01",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 4,
+      "toolId": "watermark",
+      "toolLabel": "透かし",
+      "toolHref": "watermark.html",
+      "title": "画像透かし一括（文字/ロゴ · 9点 · ZIP）",
+      "summary": "v0.1 実装。Canvas焼き込み · 透過3段階 · 最大20枚。PDF・タイル・ドラッグ配置はOUT。仕様: docs/notes/WATERMARK_TOOL_SPEC.md",
+      "askFeedback": "社外秘表示でよく使うのは文字ですか、ロゴですか？"
+    },
+    {
+      "id": "pdf-page-png-extract",
+      "lane": "core",
+      "status": "scheduled",
+      "priority": 6,
+      "toolId": "pdf-images",
+      "toolLabel": "PDF画像",
+      "toolHref": "pdf-images.html",
+      "title": "PDF埋め込み画像の抽出（Image XObject）",
+      "summary": "v0.1 実装。SSOT/TECH確定どおり。pdfjs-dist 5.4.296 · 上限超過は拒否 · ZIP · 透かしへ誘導。ページ全体化は別ツール候補。",
+      "askFeedback": "仕様書から図を抜くとき、埋め込み画像だけで足りますか？"
     },
     {
       "id": "shift-v2-peak",
@@ -178,14 +202,14 @@
     {
       "id": "diff-normalize-option",
       "lane": "core",
-      "status": "considering",
+      "status": "scheduled",
       "priority": 23,
       "toolId": "diff",
       "toolLabel": "差分",
       "toolHref": "diff.html",
       "title": "比較前の全角・空白クレンジング（任意）",
-      "summary": "v0.1 実装済（全角・行末スペース無視チェック）。仕様: docs/notes/DIFF_PRECOMPARE_CLEANSE_SPEC.md。入力欄非改変 · 既定OFF · ON時注記 · FAQ。",
-      "askFeedback": "全角スペースや行末スペースで、差分がうるさく感じることはありますか？"
+      "summary": "v0.1 公開済（全角・NBSP・行末無視 · 入力欄非改変 · 既定OFF）。normalize ツールのルール移植はしない。残りは既定ONの是非のみ（仕様改訂が必要）。仕様: docs/notes/DIFF_PRECOMPARE_CLEANSE_SPEC.md。",
+      "askFeedback": "既定で「全角・行末スペースを無視」をONにしてほしいですか？（今はOFF · 変更するなら仕様を先に改訂します）"
     },
     {
       "id": "search-query-builder",
@@ -555,7 +579,7 @@
       "toolLabel": "共通",
       "toolHref": null,
       "title": "総合 PDF スイート（分割結合圧縮 OCR を一式）",
-      "summary": "ilovepdf 型の総合スイートは競合が巨大でハブ肥大化します。帳票 PDF 出力や将来の軽い結合は個別判断とし、総合スイート化はしません。",
+      "summary": "ilovepdf 型の総合スイートは競合が巨大でハブ肥大化します。帳票 PDF 出力や将来の軽い結合は個別判断とし、総合スイート化はしません。**PDF圧縮の単体ツールも当面作らない**（クライアント圧縮率でブランド毀損リスク）。",
       "alternative": "ilovepdf · デスクトップ PDF ソフト · 帳票は請求書等"
     },
     {

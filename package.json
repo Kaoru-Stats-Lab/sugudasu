@@ -33,7 +33,7 @@
     "generate:font-styles-math": "node scripts/generate-font-styles-math.mjs",
     "preview:pages": "npm run build:pages && npx --yes serve dist -l 8080",
     "export:x-posts-tsv": "node scripts/export-x-posts-calendar-tsv.mjs",
-    "test:all": "npm run test:prize-law && npm run test:normalize && npm run test:webp-to-jpg && npm run test:video-frame && npm run test:mask && npm run test:test-data && npm run test:group-split && npm run test:timeline && npm run test:linkify && npm run test:link-qr && npm run test:csv-import && npm run test:table-conv && npm run test:invoice-finance && npm run test:sticky-room",
+    "test:all": "npm run test:prize-law && npm run test:normalize && npm run test:webp-to-jpg && npm run test:video-frame && npm run test:mask && npm run test:watermark && npm run test:pdf-images && npm run test:test-data && npm run test:group-split && npm run test:timeline && npm run test:linkify && npm run test:link-qr && npm run test:csv-import && npm run test:table-conv && npm run test:invoice-finance && npm run test:sticky-room",
     "test:link-qr": "node scripts/link-qr-engine.test.mjs",
     "test:csv-import": "node scripts/sg-csv-import.test.mjs",
     "test:table-conv": "node scripts/table-conv.test.mjs",
@@ -44,6 +44,8 @@
     "test:webp-to-jpg": "node scripts/webp-to-jpg.test.mjs",
     "test:video-frame": "node scripts/video-frame.test.mjs",
     "test:mask": "node scripts/mask-engine.test.mjs",
+    "test:watermark": "node scripts/watermark-engine.test.mjs",
+    "test:pdf-images": "node scripts/pdf-images-engine.test.mjs",
     "test:test-data": "node scripts/test-data-engine.test.mjs",
     "test:group-split": "node scripts/group-split.test.mjs",
     "test:group-split-assign": "node scripts/group-split-assign.test.mjs",
@@ -69,5 +71,8 @@
     "playwright": "^1.49.1",
     "sharp": "^0.35.1",
     "tailwindcss": "^4.3.1"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^5.4.296"
   }
 }

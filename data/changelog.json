@@ -11,6 +11,44 @@
   },
   "entries": [
     {
+      "id": "pdf-images-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "public",
+      "title": "PDF画像抽出 — 仕様書から埋め込み画像だけを端末内で取り出す",
+      "body": "PDFに埋め込まれた図や写真を抜き出し、ZIPで保存します。ページ全体の画像化・圧縮・OCRはしません。パソコン向けです。",
+      "tools": ["pdf-images"]
+    },
+    {
+      "id": "pdf-images-impl-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "internal",
+      "title": "pdf-images α — pdfjs-dist 5.4.296 vendor · engine/app · SSOT/TECH",
+      "body": "tools/pdf-images.html · assets/vendor/pdfjs · PDF_IMAGE_EXTRACT_SPEC/TECH · test:pdf-images",
+      "tools": ["pdf-images"],
+      "rollup": "pdf-images-20260718"
+    },
+    {
+      "id": "watermark-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "public",
+      "title": "透かし — 文字またはロゴを焼き込み、複数枚をZIPで保存",
+      "body": "PNG/JPEG/WebPに文字またはロゴを9点のいずれかへ。透過は20%/40%/60%。画像は端末内だけ。PDF・動画は対象外です。",
+      "tools": ["watermark"]
+    },
+    {
+      "id": "watermark-impl-20260718",
+      "date": "2026-07-18",
+      "type": "feature",
+      "audience": "internal",
+      "title": "watermark α — Canvas焼き込み · store ZIP · registry/hub/statements",
+      "body": "tools/watermark.html · watermark-engine.js · WATERMARK_TOOL_SPEC.md · test:watermark",
+      "tools": ["watermark"],
+      "rollup": "watermark-20260718"
+    },
+    {
       "id": "privacy-claim-align-20260718",
       "date": "2026-07-18",
       "type": "fix",

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="資料・スクショに文字またはロゴの透かしを焼き込み。複数枚をZIPで一括。サーバーに送信しません。">
+    <title>画像に透かしを一括挿入 | SUGUDASU 透かし</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="画像に透かしを一括挿入">
+    <meta property="og:description" content="文字またはロゴ・9点配置・透過3段階。複数ドロップでZIP。非送信。">
+    <meta property="og:url" content="https://sugudasu.com/watermark">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 透かし">
+    <meta name="twitter:description" content="文字/ロゴ · 9点 · 透過3段階 · ZIP一括 · 非送信">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込みから透かし焼き込み・ZIP保存までブラウザ内だけで処理します。"}},{"@type":"Question","name":"PDFや動画にも透かしを入れられますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。v0.1はPNG・JPEG・WebPの静止画のみです。"}},{"@type":"Question","name":"配置は自由にドラッグできますか？","acceptedAnswer":{"@type":"Answer","text":"できません。9点（左上〜右下）に固定しています。最速で揃えるための引き算です。"}},{"@type":"Question","name":"マスクや画像切り出しとの違いは？","acceptedAnswer":{"@type":"Answer","text":"マスクは機密消し、切り出しはサイズ合わせ、透かしは所有・社外秘の表示です。スクショを隠してから切り出し、最後に透かし、という流れで併用できます。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 透かし" data-sg-subtitle="文字 · ロゴ · ZIP一括" data-sg-tool-id="watermark"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="画像" data-extra="資料 · 社外秘表示" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>文字またはロゴ</strong>を9点のいずれかに焼き込みます。透過は3段階。複数枚は ZIP で一括保存。
+            </p>
+            <p class="sg-tool-lead">
+                先に隠すなら <a href="mask.html" class="text-violet-800 underline font-semibold">マスク</a>、サイズ合わせは <a href="image-trim.html" class="text-violet-800 underline font-semibold">画像切り出し</a>。
+            </p>
+        </div>
+    </header>
+
+    <section id="wm-drop"
+             class="sg-card p-5 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-12 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/40 transition-colors"
+             tabindex="0" role="button" aria-label="画像を選択またはドロップ">
+        <p class="text-sm font-semibold text-slate-700">PNG / JPEG / WebP をドロップ · クリック（複数可）</p>
+        <p class="text-[11px] text-slate-500 mt-2">最大 20 枚 · 長辺 4096px 超は縮小して処理 · PDF・動画は対象外</p>
+        <input type="file" class="sr-only" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple>
+    </section>
+
+    <p id="wm-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
+    <p id="wm-status" class="text-[11px] text-slate-500"></p>
+
+    <section id="wm-editor" class="hidden space-y-4">
+        <section class="sg-card p-4 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900">透かしの種類</h2>
+            <div class="flex flex-wrap gap-4 text-xs">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                    <input type="radio" name="wm-mode" value="text" checked class="rounded-full border-slate-300">
+                    文字
+                </label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                    <input type="radio" name="wm-mode" value="logo" class="rounded-full border-slate-300">
+                    ロゴ（1枚）
+                </label>
+            </div>
+            <div id="wm-text-wrap">
+                <label for="wm-text" class="block text-[11px] font-semibold text-slate-600 mb-1">表示する文字</label>
+                <input type="text" id="wm-text" class="sg-input text-sm" value="CONFIDENTIAL" maxlength="80">
+            </div>
+            <div id="wm-logo-wrap" class="hidden space-y-2">
+                <label class="block text-[11px] font-semibold text-slate-600">ロゴ画像</label>
+                <input type="file" id="wm-logo-input" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" class="text-xs">
+                <p id="wm-logo-name" class="text-[11px] text-slate-500">未選択</p>
+            </div>
+        </section>
+
+        <section class="sg-card p-4 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900">配置（9点）</h2>
+            <div class="grid grid-cols-3 gap-2 max-w-xs" role="radiogroup" aria-label="透かしの位置">
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="tl" class="sr-only">左上</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="tc" class="sr-only">上</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="tr" class="sr-only">右上</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="ml" class="sr-only">左</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="mc" class="sr-only">中央</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="mr" class="sr-only">右</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="bl" class="sr-only">左下</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="bc" class="sr-only">下</label>
+                <label class="text-center text-[11px] border border-slate-200 rounded-lg py-2 cursor-pointer has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50"><input type="radio" name="wm-position" value="br" class="sr-only" checked>右下</label>
+            </div>
+        </section>
+
+        <section class="sg-card p-4 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900">透過（3段階）</h2>
+            <div class="flex flex-wrap gap-4 text-xs">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.2" class="rounded-full border-slate-300">20%</label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.4" class="rounded-full border-slate-300" checked>40%</label>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.6" class="rounded-full border-slate-300">60%</label>
+            </div>
+        </section>
+
+        <section class="sg-card p-4 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900">読み込んだ画像</h2>
+            <div id="wm-list" class="space-y-2"></div>
+            <div class="flex flex-wrap gap-2 pt-1">
+                <button type="button" id="wm-zip" class="sg-btn-primary text-sm">ZIPで一括保存</button>
+                <button type="button" id="wm-each" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">1枚ずつPNG</button>
+                <button type="button" id="wm-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-rose-700">クリア</button>
+            </div>
+        </section>
+    </section>
+</main>
+
+<section class="sg-faq-section no-print" aria-label="よくある質問">
+    <div class="sg-faq-inner space-y-2">
+        <h2 class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
+        <details class="sg-faq">
+            <summary>画像はサーバーに送信されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ。読み込みから透かし焼き込み・ZIP保存までブラウザ内だけです。タブを閉じると消えます。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>PDFや動画にも透かしを入れられますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ。v0.1 は PNG · JPEG · WebP の静止画のみです。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>配置は自由にドラッグできますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>できません。9点固定です。最速で揃えるための引き算です。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>マスクや画像切り出しとの違いは？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>マスクは機密消し、切り出しはサイズ合わせ、透かしは所有・社外秘の表示です。隠す → 切る → 透かし、の順で併用できます。</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/watermark-app.js"></script>
+</body>
+</html>

@@ -210,6 +210,32 @@
       "stage": "alpha",
       "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V"
     },
+    "watermark": {
+      "file": "watermark.html",
+      "conceptName": "透かし",
+      "productName": "SUGUDASU 透かし",
+      "navLabel": "透かし",
+      "navIcon": "💧",
+      "inNav": true,
+      "navOrder": 10.7,
+      "name": "画像透かし一括",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "文字/ロゴ · 9点 · 透過3段階 · ZIP · 非送信 · WATERMARK_TOOL_SPEC.md"
+    },
+    "pdf-images": {
+      "file": "pdf-images.html",
+      "conceptName": "PDF画像抽出",
+      "productName": "SUGUDASU PDF画像抽出",
+      "navLabel": "PDF画像",
+      "navIcon": "📄",
+      "inNav": true,
+      "navOrder": 10.75,
+      "name": "PDF埋め込み画像抽出",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "埋め込み画像のみ · ZIP · pdfjs 5.4.296 · PDF_IMAGE_EXTRACT_SPEC.md"
+    },
     "test-data": {
       "file": "test-data.html",
       "conceptName": "テストデータ",
@@ -217,7 +243,7 @@
       "navLabel": "テストデータ",
       "navIcon": "🧪",
       "inNav": true,
-      "navOrder": 10.6,
+      "navOrder": 10.8,
       "name": "テスト用ダミーデータ生成",
       "version": "0.5.0",
       "stage": "alpha",

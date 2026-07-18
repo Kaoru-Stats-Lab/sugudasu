@@ -22,6 +22,8 @@
     { id: 'video-frame', file: 'video-frame.html', label: '動画コマ抜き', icon: '🎬' },
     { id: 'mask', file: 'mask.html', label: 'マスク', icon: '🛡️' },
     { id: 'image-trim', file: 'image-trim.html', label: '画像切り出し', icon: '✂️' },
+    { id: 'watermark', file: 'watermark.html', label: '透かし', icon: '💧' },
+    { id: 'pdf-images', file: 'pdf-images.html', label: 'PDF画像', icon: '📄' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'match-board', file: 'match-board.html', label: 'ドラフト', icon: '🧩' },

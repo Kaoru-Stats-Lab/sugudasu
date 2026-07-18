@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-18",
   "disclaimer": "カテゴリは相互排他です。1ツールは1カテゴリのみ。新ツール追加・roadmap 更新と同じ PR で本ファイルも更新してください。",
   "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md §1b · scripts/verify-statements-product.mjs",
   "categories": [
@@ -298,6 +298,22 @@
       "file": "image-trim.html",
       "inputHandling": "画像 · 端末内",
       "promiseNote": "指定サイズちょうどへ切り出し"
+    },
+    {
+      "toolId": "watermark",
+      "categoryId": "media",
+      "productName": "SUGUDASU 透かし",
+      "file": "watermark.html",
+      "inputHandling": "画像 · Canvas 端末内",
+      "promiseNote": "文字/ロゴ焼き込み · ZIP一括 · PDF対象外"
+    },
+    {
+      "toolId": "pdf-images",
+      "categoryId": "media",
+      "productName": "SUGUDASU PDF画像抽出",
+      "file": "pdf-images.html",
+      "inputHandling": "PDF · 端末内（pdf.js）",
+      "promiseNote": "埋め込み画像のみ · ページ全体化ではない"
     },
     {
       "toolId": "group-split",
