@@ -1022,24 +1022,25 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | slot-board（枠取りパレット）α 本番公開 · hub/ナビ · 提督 Commit&Push |
 | **change_summary** | `tools/slot-board.html` · engine/app/css · registry/hub/shell · statements · changelog · SLOT_BOARD_SPEC · tests |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 41/450） |
 | **deploy_count_today** | 4（**P7 override** · 提督指示「Commit&Push」· 同一日4回目） |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P8（core）確認予定 · P7 override 明示 |
+| **pages_build_budget_after** | 41/450（2026-07 · core git push · 要 Dashboard 照合） |
+| **gates** | P1–P8（core）確認済み · P7 override 明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | — |
-| **smoke** | — |
+| **cf_deployment_id** | `4e678b0`（`71fd6b1..4e678b0` · git push origin main） |
+| **smoke** | pending — `/` hub 枠取り · `/slot-board` |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-18 | 004 executed（4e678b0 · slot-board α · hub · P7 override） |
 | 2026-07-18 | 004 approved（slot-board α · hub · P7 override · 提督 Commit&Push） |
 | 2026-07-18 | 003 executed（22e1f0f · pdf-images 範囲選択 · FAQ · P7 override） |
 | 2026-07-18 | 003 approved（pdf-images 範囲選択 · FAQ · P7 override · 提督 Commit&Push） |
