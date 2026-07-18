@@ -250,7 +250,7 @@ function writeCategoryPages() {
 <div id="sg-chrome-top" data-sg-title="${esc(cat.label)}" data-sg-tool-id="hub"></div>
 <main class="sg-main-shell sg-main-shell--wide flex-1 space-y-6">
     <nav class="text-xs text-slate-500" aria-label="パンくず">
-        <a href="/hub.html" class="text-blue-600 hover:underline">一覧</a>
+        <a href="/" class="text-blue-600 hover:underline">一覧</a>
         <span class="mx-1">/</span>
         <span>${esc(cat.label)}</span>
     </nav>
@@ -534,23 +534,26 @@ function applySeoCanonical(html, file, opts = {}) {
 }
 
 /**
- * 相対 *.html をクリーン URL（/slug）へ。
- * DECISION: /guides/ や誤パス配下で相対 invoice.html → /guides/invoice.html になり、
+ * 相対 *.html およびルート絶対 /foo.html をクリーン URL（/slug）へ。
+ * DECISION: /guides/ や /category/ 配下で相対 invoice.html → 誤パスになり、
  * 未知URLが index に落ちると「トップから遷移しない」ように見える（再発防止）。
+ * ルート絶対の /hub.html も rewrite 対象（既に / 始まりでも .html が残るケース）。
  */
 function rewriteInternalHtmlHrefs(html) {
-  return html.replace(
-    /href=(["'])(?!https?:|\/\/|mailto:|tel:|#|\/)([^"']+?\.html)(\?[^"']*)?\1/gi,
-    (match, quote, path, qs = '') => {
-      const clean = String(path).replace(/^\.\//, '');
-      if (clean.includes('..')) return match;
-      const noExt = clean.replace(/\.html$/i, '');
-      if (!noExt || noExt === 'hub' || noExt === 'index') {
-        return `href=${quote}/${qs || ''}${quote}`;
+  return html
+    .replace(
+      /href=(["'])(?!https?:|\/\/|mailto:|tel:|#)(\/?(?!\.\.)[^"']+?\.html)(\?[^"']*)?\1/gi,
+      (match, quote, path, qs = '') => {
+        const clean = String(path).replace(/^\.\//, '');
+        if (clean.includes('..')) return match;
+        const noSlash = clean.replace(/^\//, '');
+        const noExt = noSlash.replace(/\.html$/i, '');
+        if (!noExt || noExt === 'hub' || noExt === 'index') {
+          return `href=${quote}/${qs || ''}${quote}`;
+        }
+        return `href=${quote}/${noExt}${qs || ''}${quote}`;
       }
-      return `href=${quote}/${noExt}${qs || ''}${quote}`;
-    }
-  );
+    );
 }
 
 /**

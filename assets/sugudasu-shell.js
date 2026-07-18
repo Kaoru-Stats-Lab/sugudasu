@@ -632,6 +632,7 @@
     navItemsFromRegistry,
     assetUrl,
     dataUrl,
+    pageHref,
     logoHtml,
     trackGaEvent,
     getToolMeta,

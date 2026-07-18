@@ -28,7 +28,7 @@ Search Console の警告を「ゼロにする」ことではない。
 
 | 事象 | 原因 | 対策 |
 |------|------|------|
-| トップ／ツールから「どこにも遷移しない」 | 相対 `href="invoice.html"` が `/guides/` 等の配下で `/guides/invoice.html` に解決 → 未知URLが **index（トップ）に落ちる** | **本番リンクはルート絶対のクリーン URL**（`/invoice`）。`build-pages` が `*.html` を置換 · `sugudasu-shell.js` のナビ／フッタも同様 |
+| トップ／ツールから「どこにも遷移しない」 | 相対 `href="invoice.html"` が `/guides/` 等の配下で `/guides/invoice.html` に解決 → 未知URLが **index（トップ）に落ちる** | **本番リンクはルート絶対のクリーン URL**（`/invoice`）。`build-pages` が相対 `*.html` **および** `/foo.html`（例: `/hub.html`→`/`）を置換 · `sugudasu-shell.js` の `pageHref` もクエリ付き対応 |
 | `/guides/slot-board.html` がトップに見える | 枠取りは `/slot-board`（ガイドではない）· 上記フォールバック | 正しい URL は [`/slot-board`](https://sugudasu.com/slot-board) |
 
 **禁止:** hub・ナビ・フッタで本番向けに相対 `*.html` を残すこと（`tools/` 直開き用ソースは可 · dist で必ず書き換え）。

@@ -25,14 +25,20 @@
   }
 
   function pageHref(file) {
-    if (global.SUGUDASU_SHELL && typeof global.SUGUDASU_SHELL.assetUrl === 'function') {
-      /* use shell page pattern via TOOLS if available */
+    if (global.SUGUDASU_SHELL && typeof global.SUGUDASU_SHELL.pageHref === 'function') {
+      return global.SUGUDASU_SHELL.pageHref(file);
     }
+    // shell 未読込時のフォールバック（クエリ付き .html 対応）
+    if (!file) return 'hub.html';
+    var qIdx = String(file).indexOf('?');
+    var rawPath = qIdx >= 0 ? String(file).slice(0, qIdx) : String(file);
+    var qs = qIdx >= 0 ? String(file).slice(qIdx) : '';
+    var slug = rawPath.replace(/^\.\//, '').replace(/^\//, '').replace(/\.html$/i, '');
     var host = String(global.location && global.location.hostname || '');
-    var isLocal = host === 'localhost' || host === '127.0.0.1' || /\.html$/i.test(global.location.pathname || '');
-    if (isLocal) return file;
-    var slug = String(file || '').replace(/\.html$/, '');
-    return slug === 'hub' ? '/' : '/' + slug;
+    var prod = host === 'sugudasu.com' || /\.pages\.dev$/i.test(host);
+    if (!slug || slug === 'hub' || slug === 'index') return (prod ? '/' : 'hub.html') + qs;
+    if (prod) return '/' + slug + qs;
+    return (rawPath.endsWith('.html') ? rawPath.replace(/^\//, '') : slug + '.html') + qs;
   }
 
   function readJsonArr(key) {

@@ -1198,10 +1198,31 @@
 | **smoke** | `pass` — `/` Hub 検索 · `/category/docs` · `/image-trim` |
 
 ---
+
+## DEPLOY-20260719-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | Hub/category のクリーンURL hotfix · `/hub.html` すり抜け修正 · 提督 Commit&Push · 同日 core 2回目 · P7 override |
+| **change_summary** | `build-pages.mjs` rewrite 強化 · category パンくず `/` · hub-ia `pageHref` · SEOメモ |
+| **local_build** | `pending` |
+| **deploy_count_today** | 2（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 時） |
+| **gates** | P1–P6 · P7 override · 提督 Commit&Push |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 時） |
+| **smoke** | （executed 時） |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-19 | 002 approved（クリーンURL hotfix · P7 override · 提督 Commit&Push） |
 | 2026-07-19 | 001 executed（26ec789 · Hub IA Phase 1） |
 | 2026-07-19 | 001 approved（Hub IA Phase 1 · 提督 Commit&Push） |
 | 2026-07-18 | 011 executed（737332a · 相対リンク罠修正 · P7 override） |
