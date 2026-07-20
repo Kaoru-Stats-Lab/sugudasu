@@ -1223,25 +1223,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | Hub IA Phase2 Header · カード JTBD 文言 · 検索辞書 · budget-trim 等未反映分の本番反映 · 提督 Commit&Push |
 | **change_summary** | `sugudasu-shell` サイトナビ · hub-cards JTBD · hub-search · `#hash` 付き内部リンク rewrite · TOOL_CARD_WRITING_GUIDELINE · budget-trim 他 |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` + path-verify · budget consume 50/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P8（該当）· path-verify（updates/roadmap/statements） |
+| **pages_build_budget_after** | `50/450`（2026-07 · core git push） |
+| **gates** | P1–P8 · path-verify（updates/roadmap/statements · `.html#` rewrite） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `db205b7`（`282098d..db205b7` · git push origin main） |
+| **smoke** | `pass` — `/updates` → `/statements#copy-first-tech` · `/roadmap`·`/statements` に相対 `*.html` なし · shell `resolveNavMode` |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 001 executed（db205b7 · Hub IA Phase2 · カード文言 · `#hash` rewrite · budget-trim 他） |
 | 2026-07-20 | 001 approved（Hub IA Phase2 · カード文言 · budget-trim 他 · 提督 Commit&Push） |
 | 2026-07-19 | 002 executed（7817638 · クリーンURL hotfix · P7 override） |
 | 2026-07-19 | 002 approved（クリーンURL hotfix · P7 override · 提督 Commit&Push） |
