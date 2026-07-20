@@ -7,6 +7,10 @@ export const HASH_PREFIX = 'bt1.';
 export const SCHEMA_VERSION = 1;
 export const STEP_ARROW = 10000;
 export const STEP_SHIFT = 100000;
+/** 実務レンジのソフト上限（10桁）。兆円超はエラーなしで受け付けない */
+export const AMOUNT_SOFT_MAX = 9_999_999_999;
+/** 入力桁のソフト上限（符号・カンマ除く） */
+export const AMOUNT_SOFT_DIGITS = 10;
 
 /**
  * @returns {string}
@@ -36,7 +40,7 @@ export function detoxLabel(s) {
 export function parseYenAmount(raw) {
   if (typeof raw === 'number') {
     if (!Number.isFinite(raw)) return null;
-    return Math.trunc(raw);
+    return clampYenAmount(Math.trunc(raw));
   }
   let s = String(raw ?? '')
     .normalize('NFKC')
@@ -61,7 +65,20 @@ export function parseYenAmount(raw) {
   // 小数がある場合は切り捨て（円未満は扱わない）
   const n = Number(s);
   if (!Number.isFinite(n)) return null;
-  return Math.trunc(n);
+  return clampYenAmount(Math.trunc(n));
+}
+
+/**
+ * ソフト上限へ静かに丸める（エラーUIなし）
+ * DECISION: 兆円超は会議ツールの実務外。弾くのではなく上限に寄せる。
+ * @param {number} n
+ * @returns {number}
+ */
+export function clampYenAmount(n) {
+  const v = Math.trunc(Number(n) || 0);
+  if (v > AMOUNT_SOFT_MAX) return AMOUNT_SOFT_MAX;
+  if (v < -AMOUNT_SOFT_MAX) return -AMOUNT_SOFT_MAX;
+  return v;
 }
 
 /**
@@ -142,7 +159,7 @@ export function budgetStatus(total, cap) {
  * @returns {number}
  */
 export function applyAmountDelta(amount, delta) {
-  return Math.trunc(Number(amount) || 0) + Math.trunc(Number(delta) || 0);
+  return clampYenAmount(Math.trunc(Number(amount) || 0) + Math.trunc(Number(delta) || 0));
 }
 
 /**
@@ -186,7 +203,7 @@ export function encodeHashState(state) {
     c: state.cap == null || state.cap === '' ? null : Math.trunc(Number(state.cap)),
     i: (state.items || []).map((it) => [
       String(it.name || ''),
-      Math.trunc(Number(it.amount) || 0),
+      clampYenAmount(Math.trunc(Number(it.amount) || 0)),
       it.locked ? 1 : 0,
     ]),
   };
@@ -210,7 +227,7 @@ export function decodeHashState(hashRaw) {
     const cap = data.c == null || data.c === '' ? null : Math.trunc(Number(data.c));
     const items = data.i.map((row) => {
       const name = detoxLabel(Array.isArray(row) ? row[0] : row?.n);
-      const amount = Math.trunc(Number(Array.isArray(row) ? row[1] : row?.a) || 0);
+      const amount = clampYenAmount(Math.trunc(Number(Array.isArray(row) ? row[1] : row?.a) || 0));
       const locked = !!(Array.isArray(row) ? row[2] : row?.l);
       return { id: newId(), name: name || '(無題)', amount, locked };
     });

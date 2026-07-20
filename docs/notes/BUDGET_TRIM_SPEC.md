@@ -76,7 +76,15 @@
 
 ### ④ 南京錠
 
-視覚マーカーのみ。計算は制限しない。
+視覚マーカーのみ。**合計計算は制限しない**（ロック中も合計に含める）。
+
+UI（引き算ワークスペース · 2026-07 合意）:
+
+* 1行横並び: `🔒/🔓` · 項目名 · 金額（カンマ · tabular-nums） · 円 · ボタン
+* ロック視認は **多重化**（背景グレー · 極薄ハッチ · 左端帯 · 入口アイコン · 入力後退 · ボタン格下げ）。単独の色差に依存しない
+* 共通クラス: `assets/sugudasu.css` の `.sg-lock-row*`（他ツール再利用想定）
+* ロック中の金額欄は `readonly`（編集は解除してから）。計算ロジック自体はロックを見ない
+* 金額はソフト上限 10 桁（`AMOUNT_SOFT_MAX`）。エラー表示なし
 
 ### ⑤ Hash URL
 
@@ -92,8 +100,9 @@
 
 | ファイル | 責務 |
 |----------|------|
-| `assets/budget-trim-engine.js` | パース · 合計 · hash · TSV |
+| `assets/budget-trim-engine.js` | パース · 合計 · hash · TSV · ソフト桁上限 |
 | `assets/budget-trim-app.js` | UI |
-| `assets/budget-trim.css` | 専用スタイル |
+| `assets/budget-trim.css` | 行レイアウト · ロックボタン色 |
+| `assets/sugudasu.css` | `.sg-lock-row*` 共通視覚言語 |
 | `tools/budget-trim.html` | 骨格 · FAQ |
 | `scripts/budget-trim-engine.test.mjs` | 単体テスト |

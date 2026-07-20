@@ -14,9 +14,12 @@ import {
   decodeHashState,
   buildCleanTsv,
   applyAmountDelta,
+  formatYen,
+  clampYenAmount,
   HASH_PREFIX,
   STEP_ARROW,
   STEP_SHIFT,
+  AMOUNT_SOFT_MAX,
 } from '../assets/budget-trim-engine.js';
 
 {
@@ -24,6 +27,9 @@ import {
   assert.equal(parseYenAmount('1,500,000 円 (暫定)'), 1500000);
   assert.equal(parseYenAmount('１２３４'), 1234);
   assert.equal(parseYenAmount(''), null);
+  assert.equal(formatYen(1000000), '1,000,000');
+  assert.equal(parseYenAmount('99999999999'), AMOUNT_SOFT_MAX);
+  assert.equal(clampYenAmount(AMOUNT_SOFT_MAX + 1), AMOUNT_SOFT_MAX);
 }
 
 {
@@ -46,6 +52,7 @@ import {
   assert.equal(arrowKeyDelta({ key: 'ArrowDown', shiftKey: true }), -STEP_SHIFT);
   assert.equal(arrowKeyDelta({ key: 'a' }), null);
   assert.equal(applyAmountDelta(100000, -10000), 90000);
+  assert.equal(applyAmountDelta(AMOUNT_SOFT_MAX, STEP_ARROW), AMOUNT_SOFT_MAX);
 }
 
 {

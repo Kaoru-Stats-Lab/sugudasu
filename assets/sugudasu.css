@@ -33,6 +33,14 @@
   --sg-text-body: 0.875rem;
   --sg-text-caption: 0.75rem;
   --sg-text-micro: 0.6875rem;
+  /* ロック行の視覚言語（budget-trim 正本 · 枠取り等へ再利用可） */
+  --sg-lock-bg: #f1f5f9;
+  --sg-lock-rail: #94a3b8;
+  --sg-lock-rail-width: 4px;
+  --sg-lock-hatch: rgb(15 23 42 / 0.05);
+  --sg-lock-input-bg: #e2e8f0;
+  --sg-lock-input-fg: #94a3b8;
+  --sg-lock-open-accent: var(--sg-brand-orange);
 }
 
 /* —— Base —— */
@@ -4028,4 +4036,49 @@ body.sg-copy-flash {
   width: 100%;
   padding-left: 12px;
   padding-right: 16px;
+}
+
+/* —— Lock row visual language（B-3 · ツール横断再利用）——
+   背景グレー · 極薄ハッチ · 左端帯 · 入口アイコン · 入力後退 · cursor
+   正本適用: budget-trim · 将来 slot-board 等も同一クラス */
+.sg-lock-row {
+  position: relative;
+  background: var(--sg-surface);
+  border-left: var(--sg-lock-rail-width) solid transparent;
+}
+.sg-lock-row--on {
+  background-color: var(--sg-lock-bg);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 5px,
+    var(--sg-lock-hatch) 5px,
+    var(--sg-lock-hatch) 6px
+  );
+  border-left-color: var(--sg-lock-rail);
+}
+.sg-lock-row__mark {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1;
+  user-select: none;
+}
+.sg-lock-row--on .sg-lock-row__mark {
+  opacity: 0.9;
+}
+.sg-lock-row:not(.sg-lock-row--on) .sg-lock-row__mark {
+  opacity: 0.35;
+}
+.sg-lock-row--on .sg-input,
+.sg-lock-row--on input[type='text'] {
+  background: var(--sg-lock-input-bg) !important;
+  color: var(--sg-lock-input-fg) !important;
+  border-color: #cbd5e1 !important;
+  cursor: not-allowed;
+}
+.sg-lock-row--on .sg-input:hover,
+.sg-lock-row--on input[type='text']:hover {
+  cursor: not-allowed;
 }

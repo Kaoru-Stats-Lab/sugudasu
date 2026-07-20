@@ -1319,10 +1319,31 @@
 | **smoke** | `/` 200 · `hub-search-engine.js` `normalizeKeyword`+`hiddenKeyword` · bundle `group-split`/`グループ` hiddenKeyword×2 |
 
 ---
+
+## DEPLOY-20260720-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 引き算パレット UI（提督 Commit&Push）— 1行横並び · ロック多重表現 · 金額カンマ/桁上限 |
+| **change_summary** | `budget-trim-app/css/engine` · `sugudasu.css` `.sg-lock-row*` · BUDGET_TRIM_SPEC |
+| **local_build** | `pass`（`release:pages:free` · budget consume 53/450） |
+| **deploy_count_today** | 4（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · test:budget-trim |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`/budget-trim` |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 004 approved（budget-trim ロックUI · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 003 executed（d46c208 · e2bfb40e · 検索 Phase1 · hiddenKeywords） |
 | 2026-07-20 | 003 approved（検索 Phase1 · hiddenKeywords · P7 override · 提督本番反映） |
 | 2026-07-20 | 002 executed（7505f01 · 302e41d2 · cache bust · 検索3層 · ADR/Design） |

@@ -14,6 +14,8 @@ import {
   applyAmountDelta,
   formatYen,
   newId,
+  AMOUNT_SOFT_DIGITS,
+  clampYenAmount,
 } from './budget-trim-engine.js';
 
 const $ = (id) => document.getElementById(id);
@@ -39,20 +41,21 @@ function readCapFromUi() {
   if (!el) return cap;
   const raw = el.value.trim();
   if (raw === '') return null;
-  const n = parseYenAmount(raw);
-  return n;
+  return parseYenAmount(raw);
 }
 
-function syncHash() {
-  if (suppressHash) return;
-  if (hashTimer) clearTimeout(hashTimer);
-  hashTimer = setTimeout(() => {
-    const hash = encodeHashState({ cap, items });
-    const url = `${location.pathname}${location.search}#${hash}`;
-    history.replaceState(null, '', url);
-    const share = $('bt-share-url');
-    if (share) share.value = location.href;
-  }, 120);
+/**
+ * 桁数ソフト上限（エラーなし）。超過分は先頭桁を残して切り詰め。
+ * @param {HTMLInputElement} inp
+ */
+function softTrimAmountInput(inp) {
+  const raw = String(inp.value || '');
+  const sign = raw.trim().startsWith('-') ? '-' : '';
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length <= AMOUNT_SOFT_DIGITS) return;
+  // DECISION: エラーバナーを出さず、入力そのものを実務桁に戻す
+  const clipped = Number(sign + digits.slice(0, AMOUNT_SOFT_DIGITS));
+  inp.value = formatYen(clampYenAmount(clipped));
 }
 
 function renderCounter() {
@@ -64,7 +67,7 @@ function renderCounter() {
   const capEl = $('bt-cap');
   if (totalEl) totalEl.textContent = formatYen(total);
   if (capEl && document.activeElement !== capEl) {
-    capEl.value = cap == null ? '' : String(cap);
+    capEl.value = cap == null ? '' : formatYen(cap);
   }
   if (!box || !statusEl) return;
 
@@ -97,13 +100,16 @@ function renderList() {
 
   root.innerHTML = items
     .map((it, idx) => {
-      return `<article class="bt-item${it.locked ? ' bt-item--locked' : ''}" data-id="${it.id}">
-        <p class="bt-item__name">${idx + 1}. ${escapeHtml(it.name)}</p>
+      const locked = !!it.locked;
+      // B-1/B-2: 1行 · 入口に鍵 · 金額カンマ · ロック多重表現は .sg-lock-row--on
+      return `<article class="bt-item sg-lock-row${locked ? ' sg-lock-row--on bt-item--locked' : ''}" data-id="${it.id}">
         <div class="bt-item__row">
-          <input type="text" inputmode="numeric" class="sg-input bt-item__amount" data-amount="${it.id}" value="${it.amount}" aria-label="${escapeHtml(it.name)}の金額">
+          <span class="sg-lock-row__mark" aria-hidden="true">${locked ? '🔒' : '🔓'}</span>
+          <p class="bt-item__name"><span class="bt-item__idx">${idx + 1}.</span>${escapeHtml(it.name)}</p>
+          <input type="text" inputmode="numeric" class="sg-input bt-item__amount" data-amount="${it.id}" value="${formatYen(it.amount)}" ${locked ? 'readonly' : ''} aria-label="${escapeHtml(it.name)}の金額" aria-readonly="${locked ? 'true' : 'false'}">
           <span class="bt-item__yen">円</span>
-          <button type="button" class="bt-lock" data-lock="${it.id}" aria-pressed="${it.locked ? 'true' : 'false'}" title="確定枠の目印（計算は制限しません）">
-            ${it.locked ? '🔒 ロック' : '🔓 アンロック'}
+          <button type="button" class="bt-lock ${locked ? 'bt-lock--closed' : 'bt-lock--open'}" data-lock="${it.id}" aria-pressed="${locked ? 'true' : 'false'}" title="確定枠の目印（合計計算は制限しません）">
+            ${locked ? '🔒 ロック中' : '🔓 未ロック'}
           </button>
         </div>
       </article>`;
@@ -115,6 +121,18 @@ function render() {
   renderCounter();
   renderList();
   syncHash();
+}
+
+function syncHash() {
+  if (suppressHash) return;
+  if (hashTimer) clearTimeout(hashTimer);
+  hashTimer = setTimeout(() => {
+    const hash = encodeHashState({ cap, items });
+    const url = `${location.pathname}${location.search}#${hash}`;
+    history.replaceState(null, '', url);
+    const share = $('bt-share-url');
+    if (share) share.value = location.href;
+  }, 120);
 }
 
 function parseImport() {
@@ -150,7 +168,20 @@ function init() {
     syncHash();
   });
   $('bt-cap')?.addEventListener('input', () => {
+    softTrimAmountInput(/** @type {HTMLInputElement} */ ($('bt-cap')));
     cap = readCapFromUi();
+    renderCounter();
+    syncHash();
+  });
+  $('bt-cap')?.addEventListener('blur', () => {
+    const el = /** @type {HTMLInputElement|null} */ ($('bt-cap'));
+    if (!el) return;
+    if (el.value.trim() === '') {
+      cap = null;
+    } else {
+      cap = parseYenAmount(el.value);
+      el.value = cap == null ? '' : formatYen(cap);
+    }
     renderCounter();
     syncHash();
   });
@@ -163,9 +194,18 @@ function init() {
     render();
   });
 
+  $('bt-list')?.addEventListener('input', (e) => {
+    const inp = /** @type {HTMLInputElement|null} */ (
+      /** @type {HTMLElement} */ (e.target).closest('[data-amount]')
+    );
+    if (!inp || inp.readOnly) return;
+    softTrimAmountInput(inp);
+  });
+
   $('bt-list')?.addEventListener('change', (e) => {
     const inp = /** @type {HTMLElement} */ (e.target).closest('[data-amount]');
     if (!inp) return;
+    if (/** @type {HTMLInputElement} */ (inp).readOnly) return;
     const id = inp.getAttribute('data-amount');
     const n = parseYenAmount(/** @type {HTMLInputElement} */ (inp).value);
     if (n == null) {
@@ -178,8 +218,10 @@ function init() {
   });
 
   $('bt-list')?.addEventListener('keydown', (e) => {
-    const inp = /** @type {HTMLElement} */ (e.target).closest('[data-amount]');
-    if (!inp) return;
+    const inp = /** @type {HTMLInputElement|null} */ (
+      /** @type {HTMLElement} */ (e.target).closest('[data-amount]')
+    );
+    if (!inp || inp.readOnly) return;
     const delta = arrowKeyDelta(e);
     if (delta == null) return;
     e.preventDefault();
