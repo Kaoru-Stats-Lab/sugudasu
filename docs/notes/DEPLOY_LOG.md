@@ -1324,26 +1324,27 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 引き算パレット UI + Hub 検索後の全件復帰（bfcache/hidden） |
 | **change_summary** | `budget-trim-*` 1行·ロック多重表現 · `hub-ia` `sg-is-filtered` / pageshow カタログ復帰 · `sugudasu.css` |
 | **local_build** | `pass`（`release:pages:free` · budget consume 54/450） |
 | **deploy_count_today** | 4（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 54/450 |
 | **gates** | P1–P6 · P7 override · test:budget-trim · hub-ia 構文 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`/budget-trim` · `/` 検索→戻るで全件 |
+| **cf_deployment_id** | `6deff099`（`579f81d` · git push origin main · https://dash.cloudflare.com/adbc084a711933271252e34fab58a209/pages/view/sugudasu/6deff099-d459-488f-8e3a-bf68c8005746） |
+| **smoke** | `/budget-trim` 200 · `/` `hub-ia.js?v=77e1c8ce` `sg-is-filtered`+`pageshow` · CSS `sg-lock-row` |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
-| 2026-07-20 | 004 approved（budget-trim ロックUI · P7 override · 提督 Commit&Push） |
+| 2026-07-20 | 004 executed（579f81d · 6deff099 · budget-trim UI · Hub catalog restore） |
+| 2026-07-20 | 004 approved（budget-trim ロックUI · Hub 全件復帰 · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 003 executed（d46c208 · e2bfb40e · 検索 Phase1 · hiddenKeywords） |
 | 2026-07-20 | 003 approved（検索 Phase1 · hiddenKeywords · P7 override · 提督本番反映） |
 | 2026-07-20 | 002 executed（7505f01 · 302e41d2 · cache bust · 検索3層 · ADR/Design） |
