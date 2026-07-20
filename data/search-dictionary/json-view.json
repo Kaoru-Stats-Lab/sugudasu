@@ -1,0 +1,121 @@
+{
+  "toolId": "json-view",
+  "source": "manual",
+  "reviewedAt": "2026-07-20",
+  "aliases": [
+    "JSON構造",
+    "JSON見る",
+    "JSONビューア",
+    "JSONツリー",
+    "JSON確認",
+    "APIレスポンス確認",
+    "JSONパース",
+    "json viewer",
+    "json tree",
+    "json pretty",
+    "レスポンス JSON",
+    "ログ JSON"
+  ],
+  "jobsShort": [
+    "JSONの構造を見る",
+    "APIの返り値を確認する",
+    "JSONのキーを探す",
+    "JSONの値を探す",
+    "場所をコピーする",
+    "値をコピーする",
+    "JSONをツリー表示する",
+    "登録なしでJSONを見る"
+  ],
+  "jobsLong": [
+    "APIのレスポンスJSONを貼り付けて中身の構造をすぐ確認したい",
+    "ログに出たJSONから特定のキーや値を探してコピーしたい",
+    "サーバーにデータを送らずブラウザだけでJSONを見たい",
+    "JSONの場所の文字列をチームに共有したい",
+    "巨大なJSONでも折りたたみながら中身を辿りたい"
+  ],
+  "keywords": [
+    "JSON",
+    "構造",
+    "ツリー",
+    "API",
+    "レスポンス",
+    "ログ",
+    "キー",
+    "値",
+    "コピー",
+    "場所",
+    "非送信",
+    "保存なし"
+  ],
+  "commonMistakes": [
+    {
+      "query": "JSON 編集 整形",
+      "meant": "SUGUDASU JSON構造",
+      "note": "本ツールは編集・整形ではなく構造の閲覧とコピー専用であるため"
+    },
+    {
+      "query": "JSON Schema 検証",
+      "meant": "SUGUDASU JSON構造",
+      "note": "Schema検証機能は持たないため"
+    },
+    {
+      "query": "JSONPath クエリ",
+      "meant": "SUGUDASU JSON構造",
+      "note": "JSONPathエディタではなくキー・値の簡易検索であるため"
+    }
+  ],
+  "relatedProducts": [
+    {
+      "toolId": "diff",
+      "conceptName": "差分チェック",
+      "reason": "JSON文字列の修正前後を比較したいため"
+    },
+    {
+      "toolId": "table-conv",
+      "conceptName": "表変換",
+      "reason": "JSONを表形式に変換したいため"
+    },
+    {
+      "toolId": "test-data",
+      "conceptName": "テストデータ",
+      "reason": "テスト用のJSONサンプルを先に用意したいため"
+    }
+  ],
+  "priority": {
+    "high": [
+      "JSONの構造を見る",
+      "APIの返り値を確認する",
+      "JSONのキーを探す",
+      "値をコピーする"
+    ],
+    "medium": [
+      "場所をコピーする",
+      "JSONをツリー表示する"
+    ],
+    "low": [
+      "登録なしでJSONを見る"
+    ]
+  },
+  "reviewNotes": [
+    "V1は貼付·Tree·キー/値検索·場所/値コピーのみ",
+    "JSONPath/Schema/編集/保存はスコープ外"
+  ],
+  "hiddenKeywords": [
+    "JSONビューア",
+    "JSONツリー",
+    "json viewer",
+    "json tree",
+    "json pretty",
+    "JSONパース",
+    "パースツール",
+    "レスポンス JSON",
+    "API JSON",
+    "ログ JSON",
+    "開発者ツール JSON",
+    "JSON構造確認",
+    "JSON 閲覧",
+    "JSON コピー",
+    "JSON キー検索",
+    "JSON 値検索"
+  ]
+}

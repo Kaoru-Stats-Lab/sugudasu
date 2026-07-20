@@ -11,6 +11,40 @@
   },
   "entries": [
     {
+      "id": "sns-script-holes-redeploy-20260720",
+      "date": "2026-07-20",
+      "type": "fix",
+      "audience": "public",
+      "title": "SNSデコ文字 — スクリプト体の欠け文字を修正",
+      "body": "筆記体・太字筆記体で一部の英字が□になっていた問題を修正しました（Unicode の穴を正しい字形に割り当て）。",
+      "tools": [
+        "sns",
+        "font-converter"
+      ]
+    },
+    {
+      "id": "ai-cleaner-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "public",
+      "title": "AIコピペ整形 — 次のツールへ渡す前に整える",
+      "body": "Markdownの余分な空行・一部タグ・水平線の除去、コード抽出、JSON整形。要約や定型文削除はしません。データは送りません。",
+      "tools": [
+        "ai-cleaner"
+      ]
+    },
+    {
+      "id": "json-view-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "public",
+      "title": "JSON構造 — 貼って見て探してコピー",
+      "body": "JSONを貼ってツリー表示。キー・値の検索、場所と値のコピーに対応。編集・保存・Schema検証なし。データは送りません。",
+      "tools": [
+        "json-view"
+      ]
+    },
+    {
       "id": "clipboard-trim-20260720",
       "date": "2026-07-20",
       "type": "feature",

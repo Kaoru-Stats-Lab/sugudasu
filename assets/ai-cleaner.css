@@ -1,0 +1,31 @@
+.ac-textarea {
+  min-height: 12rem;
+  line-height: 1.5;
+}
+
+.ac-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(0.5rem);
+  z-index: 50;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.ac-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ac-toast--error {
+  background: #9f1239;
+}

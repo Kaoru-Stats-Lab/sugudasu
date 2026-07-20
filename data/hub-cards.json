@@ -391,6 +391,30 @@
       }
     },
     {
+      "toolId": "json-view",
+      "href": "json-view.html",
+      "blurb": "APIの返り値やログのJSONを確認したい時に。キーや値を探して場所や値をコピーします。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
+      "toolId": "ai-cleaner",
+      "href": "ai-cleaner.html",
+      "blurb": "AI出力をNotionやCursorへ移す前に整えたい時に。Markdown・コード・JSONを整えてコピーします。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "time-calc",
       "href": "time-calc.html",
       "blurb": "勤務時間から給料の目安を計算したい時に。コロンなしの時間入力をまとめて合計します。",

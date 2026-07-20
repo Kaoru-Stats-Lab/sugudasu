@@ -463,6 +463,34 @@
       "statusNote": "危険な変更の優先表示 · 非送信 · 保存なし · コピー/印刷",
       "categoryId": "text"
     },
+    "json-view": {
+      "file": "json-view.html",
+      "conceptName": "JSON構造",
+      "productName": "SUGUDASU JSON構造",
+      "navLabel": "JSON見る",
+      "navIcon": "🌲",
+      "inNav": true,
+      "navOrder": 16.75,
+      "name": "JSON構造ビューア",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "貼る·見る·探す·コピー · 非送信 · 保存なし · Tree · 場所/値コピー",
+      "categoryId": "text"
+    },
+    "ai-cleaner": {
+      "file": "ai-cleaner.html",
+      "conceptName": "AIコピペ整形",
+      "productName": "SUGUDASU AIコピペ整形",
+      "navLabel": "AIコピペ整形",
+      "navIcon": "🧹",
+      "inNav": true,
+      "navOrder": 16.76,
+      "name": "AIコピペ整形",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "Markdown汚れ·コード抽出·JSON整形 · 意味理解なし · 非送信 · AI_CLEANER_SPEC.md",
+      "categoryId": "text"
+    },
     "time-calc": {
       "file": "time-calc.html",
       "conceptName": "時給計算",

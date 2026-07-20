@@ -39,6 +39,8 @@
     { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' },
     { id: 'qr-reader', file: 'qr-reader.html', label: 'QR読取', icon: '📷' },
     { id: 'diff', file: 'diff.html', label: '差分', icon: '🔎' },
+    { id: 'json-view', file: 'json-view.html', label: 'JSON見る', icon: '🌲' },
+    { id: 'ai-cleaner', file: 'ai-cleaner.html', label: 'AIコピペ整形', icon: '🧹' },
     { id: 'time-calc', file: 'time-calc.html', label: '時給計算', icon: '⏳' }
   ];
 

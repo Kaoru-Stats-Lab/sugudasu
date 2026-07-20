@@ -84,6 +84,22 @@
       "promiseNote": "差分表示 · 保存なし · 非送信"
     },
     {
+      "toolId": "json-view",
+      "categoryId": "text",
+      "productName": "SUGUDASU JSON構造",
+      "file": "json-view.html",
+      "inputHandling": "JSON貼付 · 端末内",
+      "promiseNote": "Tree表示 · 場所/値コピー · 保存なし · 非送信"
+    },
+    {
+      "toolId": "ai-cleaner",
+      "categoryId": "text",
+      "productName": "SUGUDASU AIコピペ整形",
+      "file": "ai-cleaner.html",
+      "inputHandling": "文章・コード貼付 · 端末内",
+      "promiseNote": "Markdown/コード/JSON · 意味理解なし · 非送信"
+    },
+    {
       "toolId": "reverse",
       "categoryId": "text",
       "productName": "SUGUDASU 逆引き",

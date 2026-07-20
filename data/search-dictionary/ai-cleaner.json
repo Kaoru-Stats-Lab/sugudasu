@@ -1,0 +1,111 @@
+{
+  "toolId": "ai-cleaner",
+  "source": "manual",
+  "reviewedAt": "2026-07-20",
+  "aliases": [
+    "AIコピペ整形",
+    "コピペ整形",
+    "AI受け渡し整形",
+    "AIコピペ掃除",
+    "コピペ汚れ落とし",
+    "汚れ落とし",
+    "AIコピペクリーナー",
+    "Markdownクリーナー",
+    "コード抽出",
+    "JSON整形",
+    "AI出力 整形",
+    "paste cleaner"
+  ],
+  "jobsShort": [
+    "AI出力を整形する",
+    "Markdownの空行を減らす",
+    "コードブロックだけ取る",
+    "JSONを整形する",
+    "次のツールへ貼る前に整える"
+  ],
+  "jobsLong": [
+    "ChatGPTの出力からコードだけ取り出してCursorに貼りたい",
+    "ClaudeのMarkdownをNotionに貼る前に空行と水平線を整えたい",
+    "AIが生成したJSONを整形してAPIテストに使いたい",
+    "サーバーに送らずブラウザだけでコピペを整えたい"
+  ],
+  "keywords": [
+    "コピペ",
+    "整形",
+    "Markdown",
+    "コード",
+    "JSON",
+    "AI出力",
+    "受け渡し",
+    "非送信",
+    "中継"
+  ],
+  "commonMistakes": [
+    {
+      "query": "全角半角 名簿",
+      "meant": "SUGUDASU 全角半角整え",
+      "note": "文字種の整形は全角半角整えの担当であるため"
+    },
+    {
+      "query": "JSON ツリー 検索",
+      "meant": "SUGUDASU JSON構造",
+      "note": "構造の探索はJSON構造の担当であるため"
+    },
+    {
+      "query": "AI 要約 整理",
+      "meant": "SUGUDASU AIコピペ整形",
+      "note": "本ツールは要約せず文字列の整形のみであるため"
+    }
+  ],
+  "relatedProducts": [
+    {
+      "toolId": "normalize",
+      "conceptName": "テキスト整え",
+      "reason": "文字種や名簿の整形が必要なため"
+    },
+    {
+      "toolId": "json-view",
+      "conceptName": "JSON構造",
+      "reason": "整形後のJSONをツリーで追いたいため"
+    },
+    {
+      "toolId": "diff",
+      "conceptName": "差分チェック",
+      "reason": "整形前後の差分を見たいため"
+    }
+  ],
+  "priority": {
+    "high": [
+      "AI出力を整形する",
+      "コードブロックだけ取る",
+      "JSONを整形する"
+    ],
+    "medium": [
+      "Markdownの空行を減らす",
+      "次のツールへ貼る前に整える"
+    ],
+    "low": [
+      "登録なしでコピペ整形"
+    ]
+  },
+  "reviewNotes": [
+    "表示名は AIコピペ整形 · id は ai-cleaner のまま",
+    "V1はMarkdown/コード抽出/JSONのみ。定型文削除・要約は禁止"
+  ],
+  "hiddenKeywords": [
+    "コピペ汚れ落とし",
+    "汚れ落とし",
+    "AIコピペクリーナー",
+    "AIクリーナー",
+    "AIコピペ掃除",
+    "AI受け渡し整形",
+    "paste cleaner",
+    "markdown cleaner",
+    "code extract",
+    "json pretty",
+    "コピペ掃除",
+    "AI出力 クリーニング",
+    "フェンスコード 抽出",
+    "水平線 除去"
+  ]
+}
