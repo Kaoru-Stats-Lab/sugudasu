@@ -113,6 +113,19 @@
     else el.removeAttribute('hidden');
   }
 
+  /**
+   * Hub カード専用の表示制御。
+   * DECISION: Tailwind `.hidden` と `.sg-hub-card { display:flex }` の詳細度競合を避ける。
+   * 汎用 `.hidden` ではなく `sg-is-filtered` + [hidden] で確実に出し入れする。
+   */
+  function setCardFiltered(card, filtered) {
+    if (!card) return;
+    card.classList.remove('hidden');
+    card.classList.toggle('sg-is-filtered', !!filtered);
+    if (filtered) card.setAttribute('hidden', '');
+    else card.removeAttribute('hidden');
+  }
+
   function init(categories, hubConfig, registry, searchBundle) {
     var catById = {};
     (categories.categories || []).forEach(function (c) {
@@ -143,7 +156,16 @@
     var cards = Array.prototype.slice.call(document.querySelectorAll('#sg-hub-grid .sg-hub-card'));
 
     var selected = localStorage.getItem(LS_CAT) || 'all';
+    if (selected !== 'all' && !catById[selected]) {
+      selected = 'all';
+      try {
+        localStorage.setItem(LS_CAT, 'all');
+      } catch (_) {}
+    }
     var query = '';
+    // DECISION: ブラウザのフォーム復元で検索語が残ると「リロードしても絞り込みのまま」になる。
+    // Hub はカタログが正なので、起動時は検索を捨てて全件表示から始める。
+    if (searchEl) searchEl.value = '';
     var popularIds = hubConfig.popularToolIds || [];
     // DECISION: 辞書検索は hub-search-bundle + SUGUDASU_HUB_SEARCH。未読込時は data-search 部分一致にフォールバック。
     var dictIndex =
@@ -387,7 +409,7 @@
       cards.forEach(function (card, idx) {
         var toolId = card.getAttribute('data-tool-id') || '';
         var ok = cardMatchesCategory(card) && cardMatchesSearch(card, scoreMap);
-        setHidden(card, !ok);
+        setCardFiltered(card, !ok);
         if (searching && ok && rankMap[toolId]) {
           card.style.order = String(rankMap[toolId]);
         } else {
@@ -408,7 +430,16 @@
       if (!searching) {
         setHidden(allSection, false);
         setHidden(gridEl, false);
+        // 検索解除時はカードの filtered を必ず剥がす（bfcache / 途中失敗の保険）
+        cards.forEach(function (card, idx) {
+          if (!cardMatchesCategory(card)) return;
+          setCardFiltered(card, false);
+          card.style.order = String(1000 + idx);
+        });
         renderPopularClones();
+        if (popularSection) {
+          setHidden(popularSection, !(popularGrid && popularGrid.children.length));
+        }
       }
 
       syncFavButtons();
@@ -523,7 +554,34 @@
       paint();
     });
 
+    // bfcache（戻る）で「検索中に付いた hidden」が残ったDOMが復元されるのを防ぐ
+    global.addEventListener('pageshow', function (ev) {
+      // DECISION: Hub に戻ったらカタログ全件。検索セッションは履歴に持ち込まない。
+      query = '';
+      if (searchEl) searchEl.value = '';
+      paint();
+      // Chrome のフォーム復元が pageshow 直後に走る場合への再ガード
+      if (ev && ev.persisted) {
+        global.setTimeout(function () {
+          query = '';
+          if (searchEl) searchEl.value = '';
+          paint();
+        }, 0);
+      }
+    });
+
     paint();
+    // 初回ロード後の autofill / フォーム復元で検索語が戻るのを打ち消す
+    global.setTimeout(function () {
+      if (searchEl && searchEl.value && !(query && String(query).trim())) {
+        searchEl.value = '';
+      }
+      if (!(query && String(query).trim())) {
+        query = '';
+        if (searchEl) searchEl.value = '';
+        paint();
+      }
+    }, 0);
   }
 
   function waitHubSearch(ms) {

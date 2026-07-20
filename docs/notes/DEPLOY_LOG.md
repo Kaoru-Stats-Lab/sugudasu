@@ -1326,17 +1326,17 @@
 |------|-----|
 | **status** | `approved` |
 | **target** | `core` |
-| **reason** | 引き算パレット UI（提督 Commit&Push）— 1行横並び · ロック多重表現 · 金額カンマ/桁上限 |
-| **change_summary** | `budget-trim-app/css/engine` · `sugudasu.css` `.sg-lock-row*` · BUDGET_TRIM_SPEC |
-| **local_build** | `pass`（`release:pages:free` · budget consume 53/450） |
+| **reason** | 提督 Commit&Push — 引き算パレット UI + Hub 検索後の全件復帰（bfcache/hidden） |
+| **change_summary** | `budget-trim-*` 1行·ロック多重表現 · `hub-ia` `sg-is-filtered` / pageshow カタログ復帰 · `sugudasu.css` |
+| **local_build** | `pass`（`release:pages:free` · budget consume 54/450） |
 | **deploy_count_today** | 4（**P7 override** · 提督 Commit&Push） |
 | **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P6 · P7 override · test:budget-trim |
+| **gates** | P1–P6 · P7 override · test:budget-trim · hub-ia 構文 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
 | **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`/budget-trim` |
+| **smoke** | （executed 後）`/budget-trim` · `/` 検索→戻るで全件 |
 
 ---
 ## 変更履歴

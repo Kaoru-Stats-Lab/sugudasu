@@ -573,6 +573,11 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   min-height: 10.75rem;
   height: 100%;
 }
+/* 検索非ヒット — Tailwind .hidden との display 競合を避ける（!important 必須） */
+.sg-hub-card.sg-is-filtered,
+.sg-hub-card[hidden] {
+  display: none !important;
+}
 .sg-hub-card:hover {
   border-color: #93c5fd;
 }
