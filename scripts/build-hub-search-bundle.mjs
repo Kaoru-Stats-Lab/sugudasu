@@ -21,6 +21,7 @@ function main() {
   const thesaurus = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/search-thesaurus.json'), 'utf8'));
   const intentMap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-intent-map.json'), 'utf8'));
   const hubCards = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
+  const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/categories.json'), 'utf8'));
 
   const docs = fs
     .readdirSync(DICT)
@@ -34,6 +35,7 @@ function main() {
         jobsShort: doc.jobsShort || [],
         jobsLong: doc.jobsLong || [],
         keywords: doc.keywords || [],
+        hiddenKeywords: doc.hiddenKeywords || [],
         commonMistakes: (doc.commonMistakes || []).map((m) => ({
           query: m.query,
           meant: m.meant,
@@ -61,7 +63,13 @@ function main() {
       conceptName: t.conceptName,
       navLabel: t.navLabel,
       name: t.name,
+      categoryId: t.categoryId,
     }));
+
+  const categoryLabels = (categories.categories || []).map((c) => ({
+    id: c.id,
+    label: c.label,
+  }));
 
   const hubBlurbs = [];
   const seenBlurb = new Set();
@@ -78,6 +86,7 @@ function main() {
     brandNormalizeEntries: brandNormalize.entries || [],
     thesaurusEntries: thesaurus.entries || [],
     intentEntries: intentMap.entries || [],
+    categoryLabels,
   });
 
   const bundle = {

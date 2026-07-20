@@ -1299,10 +1299,31 @@
 | **smoke** | `/watermark` · `/pdf-images` · `/` · `/font-converter` · `/sns` 200 · `watermark-app.js` → `watermark-engine.js?v=95d8960f` · `hub-ia.js` `brandRules=YES` |
 
 ---
+
+## DEPLOY-20260720-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | Hub 検索 Phase1（提督指示）— hiddenKeywords · 検索順位 · normalizeKeyword · description フォールバック |
+| **change_summary** | `hub-search-engine` 順位ティア · `search-dictionary/*/hiddenKeywords` · bundle/render/verify · 「グループ」→班分け |
+| **local_build** | `pass`（`release:pages:free` · budget consume 52/450） |
+| **deploy_count_today** | 3（**P7 override** · 提督「本番環境に反映」） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · validate:hub-ia · test:hub-search |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`/` 検索「グループ」· hub-search-bundle |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 003 approved（検索 Phase1 · hiddenKeywords · P7 override · 提督本番反映） |
 | 2026-07-20 | 002 executed（7505f01 · 302e41d2 · cache bust · 検索3層 · ADR/Design） |
 | 2026-07-20 | 002 approved（cache bust · 検索3層 · ADR/Design · P7 override · 提督本番反映） |
 | 2026-07-20 | 002 planned（watermark engine cache bust 事故 · 再発禁止台帳 · build-pages 全 engine バスト） |

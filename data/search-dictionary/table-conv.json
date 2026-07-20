@@ -133,24 +133,88 @@
     "タブ区切り"
   ],
   "commonMistakes": [
-    { "query": "Markdown表 逆変換", "meant": "SUGUDASU 表変換", "note": "本ツールは片道の変換のみ対応しており、Markdown表からExcelへの逆変換はv1では非対応のため" },
-    { "query": "TableConvert", "meant": "SUGUDASU 表変換", "note": "有名な海外サイトの全フォーマット網羅ではないが、実務で多用するMarkdownやJSONへの変換をサーバー非送信で安全に行えるため" },
-    { "query": "PDF 表 抽出", "meant": "SUGUDASU 表変換", "note": "PDF内の表を自動解析して抽出する機能は無いが、ExcelからコピペしたデータやCSVの変換には対応しているため" },
-    { "query": "XML 変換", "meant": "SUGUDASU 表変換", "note": "XMLやHTMLなどの形式への出力は対応しておらず、Markdown・JSON・CSV・TSVの4種類に特化しているため" },
-    { "query": "LaTeX 数式 表", "meant": "SUGUDASU 表変換", "note": "LaTeX用のテーブルコード出力機能は無いが、NotionやGitHubで使えるMarkdown表の生成に対応しているため" },
-    { "query": "スプレッドシート フルエディタ", "meant": "SUGUDASU 表変換", "note": "画面上でのセル編集や計算機能を持ったエディタではなく、貼り付けたデータの形式変換に特化しているため" },
-    { "query": "表変換 API 連携", "meant": "SUGUDASU 表変換", "note": "外部システムと自動連携するAPIは提供しておらず、情報漏洩を防ぐためローカルのブラウザ内処理に徹しているため" },
-    { "query": "1列 リスト 整形", "meant": "SUGUDASU 全角半角整え", "note": "1列だけの空白削除や全角半角のノーマライズは別ツール（normalize）が適しており、本ツールは複数列の表変換であるため" },
-    { "query": "請求書 内税 分離", "meant": "SUGUDASU 請求書", "note": "金額や税率の自動計算機能は無いが、計算済みのエクセル売上表などをMarkdownやJSONに変える用途に使えるため" },
-    { "query": "文字起こし 表 自動化", "meant": "SUGUDASU 表変換", "note": "画像や音声からの自動表起こし機能は無く、テキストデータとしてのCSVやエクセルコピーの構造変換を行うため" }
+    {
+      "query": "Markdown表 逆変換",
+      "meant": "SUGUDASU 表変換",
+      "note": "本ツールは片道の変換のみ対応しており、Markdown表からExcelへの逆変換はv1では非対応のため"
+    },
+    {
+      "query": "TableConvert",
+      "meant": "SUGUDASU 表変換",
+      "note": "有名な海外サイトの全フォーマット網羅ではないが、実務で多用するMarkdownやJSONへの変換をサーバー非送信で安全に行えるため"
+    },
+    {
+      "query": "PDF 表 抽出",
+      "meant": "SUGUDASU 表変換",
+      "note": "PDF内の表を自動解析して抽出する機能は無いが、ExcelからコピペしたデータやCSVの変換には対応しているため"
+    },
+    {
+      "query": "XML 変換",
+      "meant": "SUGUDASU 表変換",
+      "note": "XMLやHTMLなどの形式への出力は対応しておらず、Markdown・JSON・CSV・TSVの4種類に特化しているため"
+    },
+    {
+      "query": "LaTeX 数式 表",
+      "meant": "SUGUDASU 表変換",
+      "note": "LaTeX用のテーブルコード出力機能は無いが、NotionやGitHubで使えるMarkdown表の生成に対応しているため"
+    },
+    {
+      "query": "スプレッドシート フルエディタ",
+      "meant": "SUGUDASU 表変換",
+      "note": "画面上でのセル編集や計算機能を持ったエディタではなく、貼り付けたデータの形式変換に特化しているため"
+    },
+    {
+      "query": "表変換 API 連携",
+      "meant": "SUGUDASU 表変換",
+      "note": "外部システムと自動連携するAPIは提供しておらず、情報漏洩を防ぐためローカルのブラウザ内処理に徹しているため"
+    },
+    {
+      "query": "1列 リスト 整形",
+      "meant": "SUGUDASU 全角半角整え",
+      "note": "1列だけの空白削除や全角半角のノーマライズは別ツール（normalize）が適しており、本ツールは複数列の表変換であるため"
+    },
+    {
+      "query": "請求書 内税 分離",
+      "meant": "SUGUDASU 請求書",
+      "note": "金額や税率の自動計算機能は無いが、計算済みのエクセル売上表などをMarkdownやJSONに変える用途に使えるため"
+    },
+    {
+      "query": "文字起こし 表 自動化",
+      "meant": "SUGUDASU 表変換",
+      "note": "画像や音声からの自動表起こし機能は無く、テキストデータとしてのCSVやエクセルコピーの構造変換を行うため"
+    }
   ],
   "relatedProducts": [
-    { "toolId": "normalize", "conceptName": "テキスト整え", "reason": "表データに変換する前、または変換した後の特定の列データに含まれる不要な空白や表記ゆれを綺麗に整えたくなるため" },
-    { "toolId": "diff", "conceptName": "差分比較", "reason": "変換前後のデータの並びや、別の出力設定で書き出したJSONとTSVのテキスト上の構造変化を厳密に比較したいため" },
-    { "toolId": "test-data", "conceptName": "テストデータ", "reason": "開発中のインポート機能テストのため、本ツールで生成するJSONやCSVの構造に合わせたダミーの表データを用意したいため" },
-    { "toolId": "report", "conceptName": "議事録", "reason": "会議の議事録や週報の本文中に、エクセルから変換した綺麗なMarkdownの表データを貼り付けて資料を完成させたいため" },
-    { "toolId": "label", "conceptName": "ラベル", "reason": "顧客管理のCSV表を本ツールで成形した後、配送用の宛名シールを一括印刷するための名簿データとして流用したいため" },
-    { "toolId": "invoice", "conceptName": "請求書", "reason": "エクセルで管理している請求明細のテーブルデータを成形し、SUGUDASU請求書ツールの品目行に入力する際の前処理として使えるため" }
+    {
+      "toolId": "normalize",
+      "conceptName": "テキスト整え",
+      "reason": "表データに変換する前、または変換した後の特定の列データに含まれる不要な空白や表記ゆれを綺麗に整えたくなるため"
+    },
+    {
+      "toolId": "diff",
+      "conceptName": "差分比較",
+      "reason": "変換前後のデータの並びや、別の出力設定で書き出したJSONとTSVのテキスト上の構造変化を厳密に比較したいため"
+    },
+    {
+      "toolId": "test-data",
+      "conceptName": "テストデータ",
+      "reason": "開発中のインポート機能テストのため、本ツールで生成するJSONやCSVの構造に合わせたダミーの表データを用意したいため"
+    },
+    {
+      "toolId": "report",
+      "conceptName": "議事録",
+      "reason": "会議の議事録や週報の本文中に、エクセルから変換した綺麗なMarkdownの表データを貼り付けて資料を完成させたいため"
+    },
+    {
+      "toolId": "label",
+      "conceptName": "ラベル",
+      "reason": "顧客管理のCSV表を本ツールで成形した後、配送用の宛名シールを一括印刷するための名簿データとして流用したいため"
+    },
+    {
+      "toolId": "invoice",
+      "conceptName": "請求書",
+      "reason": "エクセルで管理している請求明細のテーブルデータを成形し、SUGUDASU請求書ツールの品目行に入力する際の前処理として使えるため"
+    }
   ],
   "priority": {
     "high": [
@@ -178,5 +242,19 @@
   "reviewNotes": [
     "片道変換・normalize/invoiceルーティングが正確",
     "「tsvをcsv」は同一入力からの出力切替の口語として許容（厳密な相互変換ではない）"
+  ],
+  "hiddenKeywords": [
+    "表変換",
+    "excel csv 変換",
+    "csv json 変換",
+    "tsv csv 変換",
+    "csv tsv 変換",
+    "スプシ json 変換",
+    "マークダウン表 変換",
+    "マクロなし 表変換",
+    "表コピペ 変換",
+    "マトリクス変換",
+    "複数列変換",
+    "テーブル変換"
   ]
 }

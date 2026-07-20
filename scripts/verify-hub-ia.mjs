@@ -209,6 +209,17 @@ function main() {
       : [];
     for (const id of cardToolIds) {
       if (!dictFiles.includes(id)) fail(`search-dictionary 欠落: ${id}`);
+      const doc = JSON.parse(fs.readFileSync(path.join(dictDir, `${id}.json`), 'utf8'));
+      if (!Array.isArray(doc.hiddenKeywords) || !doc.hiddenKeywords.length) {
+        fail(`search-dictionary/${id}: hiddenKeywords 必須（検索専用・画面非表示）`);
+      }
+    }
+    // Phase1: 「グループ」→ 班分けは hiddenKeywords で担保（中央巨大JSONに都度追記しない）
+    {
+      const gs = JSON.parse(fs.readFileSync(path.join(dictDir, 'group-split.json'), 'utf8'));
+      if (!(gs.hiddenKeywords || []).includes('グループ')) {
+        fail('group-split.hiddenKeywords に「グループ」が無い');
+      }
     }
   }
 

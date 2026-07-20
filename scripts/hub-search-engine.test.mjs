@@ -9,6 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   normalizeText,
+  normalizeKeyword,
   tokenizeQuery,
   buildIndex,
   search,
@@ -16,6 +17,7 @@ import {
   buildLabelToToolId,
   prepareSearchQuery,
   buildBrandNormalizeRules,
+  MATCH_TIER,
 } from '../assets/hub-search-engine.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -26,6 +28,7 @@ const brandNormalize = JSON.parse(fs.readFileSync(path.join(root, 'data', 'brand
 const thesaurus = JSON.parse(fs.readFileSync(path.join(root, 'data', 'search-thesaurus.json'), 'utf8'));
 const intentMap = JSON.parse(fs.readFileSync(path.join(root, 'data', 'tool-intent-map.json'), 'utf8'));
 const hubCards = JSON.parse(fs.readFileSync(path.join(root, 'data', 'hub-cards.json'), 'utf8'));
+const categories = JSON.parse(fs.readFileSync(path.join(root, 'data', 'categories.json'), 'utf8'));
 
 const docs = fs
   .readdirSync(dictDir)
@@ -38,7 +41,10 @@ const identities = Object.entries(registry.tools || {}).map(([toolId, t]) => ({
   conceptName: t.conceptName,
   navLabel: t.navLabel,
   name: t.name,
+  categoryId: t.categoryId,
 }));
+
+const categoryLabels = (categories.categories || []).map((c) => ({ id: c.id, label: c.label }));
 
 const hubBlurbs = [];
 const seenBlurb = new Set();
@@ -55,6 +61,7 @@ const index = buildIndex(docs, {
   brandNormalizeEntries: brandNormalize.entries || [],
   thesaurusEntries: thesaurus.entries || [],
   intentEntries: intentMap.entries || [],
+  categoryLabels,
 });
 
 {
@@ -129,6 +136,18 @@ assertIncludes('スクショ', 'mask');
 assertIncludes('トリミング', 'image-trim');
 assertIncludes('ウォーターマーク', 'watermark');
 assertTop('透かし', 'watermark');
+
+// Phase1: hiddenKeywords · 順位（グループ → 班分け）
+{
+  const gs = docs.find((d) => d.toolId === 'group-split');
+  assert.ok(Array.isArray(gs.hiddenKeywords) && gs.hiddenKeywords.includes('グループ'));
+  assertTop('グループ', 'group-split');
+  const hits = search(index, 'グループ', { limit: 5 });
+  assert.ok(hits[0].matchKinds.includes('hiddenKeyword') || hits[0].tier <= MATCH_TIER.hiddenKeyword);
+}
+
+// normalizeKeyword フック（辞書なしは NFKC のみ）
+assert.equal(normalizeKeyword('  班分け  '), normalizeText('班分け'));
 
 // 誤検索 → meant リダイレクト（ギャル文字は font-converter）
 {

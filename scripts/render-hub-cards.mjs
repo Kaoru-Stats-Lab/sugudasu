@@ -50,6 +50,14 @@ function renderCards() {
   const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-registry.json'), 'utf8'));
   const { cards } = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
   const synonyms = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/synonyms.json'), 'utf8'));
+  const dictDir = path.join(ROOT, 'data', 'search-dictionary');
+  const hiddenByTool = new Map();
+  for (const f of fs.readdirSync(dictDir).filter((x) => x.endsWith('.json'))) {
+    const doc = JSON.parse(fs.readFileSync(path.join(dictDir, f), 'utf8'));
+    if (doc.toolId && Array.isArray(doc.hiddenKeywords)) {
+      hiddenByTool.set(doc.toolId, doc.hiddenKeywords);
+    }
+  }
   const synByTool = new Map();
   for (const e of synonyms.entries || []) {
     for (const tid of e.toolIds || []) {
@@ -79,6 +87,7 @@ function renderCards() {
       card.blurb,
       ...badgeBits,
       ...(synByTool.get(card.toolId) || []),
+      ...(hiddenByTool.get(card.toolId) || []),
     ]
       .filter(Boolean)
       .join(' ')

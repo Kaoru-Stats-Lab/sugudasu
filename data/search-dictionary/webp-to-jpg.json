@@ -133,27 +133,103 @@
     "開けない"
   ],
   "commonMistakes": [
-    { "query": "jpg webp 変換", "meant": "SUGUDASU WebP変換", "note": "JPEGやPNGからWebPへの逆変換機能はv1では非対応であり、WebPから通常画像への変換のみであるため" },
-    { "query": "png webp 変換", "meant": "SUGUDASU WebP変換", "note": "PNGからWebPへの逆変換はできないが、WebPをPNGに戻して背景透過を維持することは可能であるため" },
-    { "query": "heic jpg 変換", "meant": "SUGUDASU WebP変換", "note": "iPhoneのHEIC形式には対応しておらず、WebP形式のみをJPG/PNGに変換するツールであるため" },
-    { "query": "avif jpg 変換", "meant": "SUGUDASU WebP変換", "note": "次世代形式AVIFの読み込みには対応しておらず、WebP画像専用のデコーダーであるため" },
-    { "query": "webp 画質調整 スタジオ", "meant": "SUGUDASU WebP変換", "note": "高度な圧縮率調整や画質コントロール機能は無いが、標準的な画質で即座に再エンコードできるため" },
-    { "query": "webp トリミング", "meant": "SUGUDASU 画像トリム", "note": "本ツールに切り抜き機能は無いが、JPG/PNG変換後に別ツール（image-trim）で切り出しができるため" },
-    { "query": "webp 黒塗り", "meant": "SUGUDASU マスク", "note": "画像の一部を隠す機能は無いが、通常画像に変換した後に別ツール（mask）で黒塗りできるため" },
-    { "query": "webp 透かし", "meant": "SUGUDASU 透かし", "note": "コピー防止の透かしを入れる機能は無いが、通常画像への変換後に別ツール（watermark）で対応できるため" },
-    { "query": "iLoveIMG", "meant": "SUGUDASU WebP変換", "note": "画像を運営サーバーにアップロードする形式ではなく、完全にブラウザのローカル処理で安全に変換するため" },
-    { "query": "Convertio", "meant": "SUGUDASU WebP変換", "note": "あらゆるファイルを扱うクラウド型総合ハブではないが、WebPの変換を登録不要かつ無料で3分で終わらせられるため" },
-    { "query": "webp 大量 バッチ 変換", "meant": "SUGUDASU WebP変換", "note": "何百枚ものクラウド一括処理はできないが、手元の実務画像であれば最大20枚まで同時に一括処理できるため" },
-    { "query": "webp pdf 変換", "meant": "SUGUDASU WebP変換", "note": "WebPからPDFファイルへ直接変換する機能は無く、JPGまたはPNGの画像ファイルとして書き出すため" }
+    {
+      "query": "jpg webp 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "JPEGやPNGからWebPへの逆変換機能はv1では非対応であり、WebPから通常画像への変換のみであるため"
+    },
+    {
+      "query": "png webp 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "PNGからWebPへの逆変換はできないが、WebPをPNGに戻して背景透過を維持することは可能であるため"
+    },
+    {
+      "query": "heic jpg 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "iPhoneのHEIC形式には対応しておらず、WebP形式のみをJPG/PNGに変換するツールであるため"
+    },
+    {
+      "query": "avif jpg 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "次世代形式AVIFの読み込みには対応しておらず、WebP画像専用のデコーダーであるため"
+    },
+    {
+      "query": "webp 画質調整 スタジオ",
+      "meant": "SUGUDASU WebP変換",
+      "note": "高度な圧縮率調整や画質コントロール機能は無いが、標準的な画質で即座に再エンコードできるため"
+    },
+    {
+      "query": "webp トリミング",
+      "meant": "SUGUDASU 画像トリム",
+      "note": "本ツールに切り抜き機能は無いが、JPG/PNG変換後に別ツール（image-trim）で切り出しができるため"
+    },
+    {
+      "query": "webp 黒塗り",
+      "meant": "SUGUDASU マスク",
+      "note": "画像の一部を隠す機能は無いが、通常画像に変換した後に別ツール（mask）で黒塗りできるため"
+    },
+    {
+      "query": "webp 透かし",
+      "meant": "SUGUDASU 透かし",
+      "note": "コピー防止の透かしを入れる機能は無いが、通常画像への変換後に別ツール（watermark）で対応できるため"
+    },
+    {
+      "query": "iLoveIMG",
+      "meant": "SUGUDASU WebP変換",
+      "note": "画像を運営サーバーにアップロードする形式ではなく、完全にブラウザのローカル処理で安全に変換するため"
+    },
+    {
+      "query": "Convertio",
+      "meant": "SUGUDASU WebP変換",
+      "note": "あらゆるファイルを扱うクラウド型総合ハブではないが、WebPの変換を登録不要かつ無料で3分で終わらせられるため"
+    },
+    {
+      "query": "webp 大量 バッチ 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "何百枚ものクラウド一括処理はできないが、手元の実務画像であれば最大20枚まで同時に一括処理できるため"
+    },
+    {
+      "query": "webp pdf 変換",
+      "meant": "SUGUDASU WebP変換",
+      "note": "WebPからPDFファイルへ直接変換する機能は無く、JPGまたはPNGの画像ファイルとして書き出すため"
+    }
   ],
   "relatedProducts": [
-    { "toolId": "image-trim", "conceptName": "画像トリム", "reason": "WebPからJPGやPNGに変換した画像の後処理として、必要な部分だけを綺麗に切り出したくなるため" },
-    { "toolId": "mask", "conceptName": "マスク", "reason": "WebP形式で保存された社外秘のスクリーンショットを通常画像にした後、個人情報や機密部分を黒塗りして隠したいため" },
-    { "toolId": "watermark", "conceptName": "透かし", "reason": "通常画像に変換したWebPのイラストや図面データに対して、社外流出やコピーを防止する透かし文字を重ねたいため" },
-    { "toolId": "pdf-images", "conceptName": "PDF画像", "reason": "PDFから抽出した構成画像がWebPであったり、あるいは本ツールで変換した通常画像をPDF関連資料と併用したりするため" },
-    { "toolId": "video-frame", "conceptName": "動画フレーム", "reason": "動画から切り出したコマ画像がWebP形式で保存されてしまう場合に、本ツールで汎用的な画像に直したくなるため" },
-    { "toolId": "sns", "conceptName": "SNS", "reason": "WebPから変換した綺麗なJPG/PNG画像を添付して、SNSやビジネスチャットへ投稿するための告知文を書き上げたくなるため" },
-    { "toolId": "stamp", "conceptName": "電子印鑑", "reason": "変換した画像資料やスクショに対して、確認済みの印影（透過PNGスタンプ）を重ねて配置する事務作業が発生するため" }
+    {
+      "toolId": "image-trim",
+      "conceptName": "画像トリム",
+      "reason": "WebPからJPGやPNGに変換した画像の後処理として、必要な部分だけを綺麗に切り出したくなるため"
+    },
+    {
+      "toolId": "mask",
+      "conceptName": "マスク",
+      "reason": "WebP形式で保存された社外秘のスクリーンショットを通常画像にした後、個人情報や機密部分を黒塗りして隠したいため"
+    },
+    {
+      "toolId": "watermark",
+      "conceptName": "透かし",
+      "reason": "通常画像に変換したWebPのイラストや図面データに対して、社外流出やコピーを防止する透かし文字を重ねたいため"
+    },
+    {
+      "toolId": "pdf-images",
+      "conceptName": "PDF画像",
+      "reason": "PDFから抽出した構成画像がWebPであったり、あるいは本ツールで変換した通常画像をPDF関連資料と併用したりするため"
+    },
+    {
+      "toolId": "video-frame",
+      "conceptName": "動画フレーム",
+      "reason": "動画から切り出したコマ画像がWebP形式で保存されてしまう場合に、本ツールで汎用的な画像に直したくなるため"
+    },
+    {
+      "toolId": "sns",
+      "conceptName": "SNS",
+      "reason": "WebPから変換した綺麗なJPG/PNG画像を添付して、SNSやビジネスチャットへ投稿するための告知文を書き上げたくなるため"
+    },
+    {
+      "toolId": "stamp",
+      "conceptName": "電子印鑑",
+      "reason": "変換した画像資料やスクショに対して、確認済みの印影（透過PNGスタンプ）を重ねて配置する事務作業が発生するため"
+    }
   ],
   "priority": {
     "high": [
@@ -181,5 +257,19 @@
   "reviewNotes": [
     "逆変換なし・HEIC/AVIF切り分け・メディア系ルーティングが強い",
     "priority に aliases 寄り語が混ざるが辞書運用上は許容"
+  ],
+  "hiddenKeywords": [
+    "webp jpg 変換",
+    "webp png 変換",
+    "webp 変換",
+    "ウェブピー 変換",
+    "webpをjpgにする",
+    "webpをpngにする",
+    "webpファイル変換",
+    "webpデコード",
+    "webp画像変換",
+    "webp一括変換",
+    "webp jpeg 変換",
+    "ウェブピー jpg"
   ]
 }
