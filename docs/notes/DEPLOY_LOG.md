@@ -1344,25 +1344,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 余白トリム（clipboard-trim）新規公開 · Hub 検索復帰強化 · watermark プレビュー · FAQ 文言 |
 | **change_summary** | `clipboard-trim` 新規 · `hub-ia` userSearchActive · 検索辞書 · リレーリンク · `watermark` プレビュー · FAQ PNGコピー文言 |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`release:pages:free` · budget consume 55/450） |
 | **deploy_count_today** | 5（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 55/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/` 全件 · `/clipboard-trim` 200 · `/watermark` DnD） |
+| **cf_deployment_id** | `11f35b82`（`2cfb167` · git push origin main · https://dash.cloudflare.com/adbc084a711933271252e34fab58a209/pages/view/sugudasu/11f35b82-e0a5-4c96-81fb-e6f5a425e16b） |
+| **smoke** | `/` 200 · `/clipboard-trim` 200 · FAQ「PNGをコピーボタンを押したら」反映 · `/watermark` 200 · `/hub` 301 |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 005 executed（2cfb167 · 11f35b82 · clipboard-trim 公開 · Hub 検索復帰 · FAQ 文言） |
 | 2026-07-20 | 005 approved（clipboard-trim 公開 · Hub 検索復帰 · watermark · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 004 executed（579f81d · 6deff099 · budget-trim UI · Hub catalog restore） |
 | 2026-07-20 | 004 approved（budget-trim ロックUI · Hub 全件復帰 · P7 override · 提督 Commit&Push） |
