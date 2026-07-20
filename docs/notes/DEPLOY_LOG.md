@@ -1364,19 +1364,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — json-view / ai-cleaner 公開 · SNS スクリプト体 MATH_HOLES 再デプロイ（cache bust） |
 | **change_summary** | `json-view` · `ai-cleaner` 新規 · 命名 AIコピペ整形 · SPEC · 検索辞書 · Hub/registry · SNS 筆記体穴埋めは既存 `unicode-math-alpha.js` を本番キャッシュ更新で反映 |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 56/450） |
 | **deploy_count_today** | 6（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 56/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/sns` スクリプト体 · `/json-view` · `/ai-cleaner`） |
+| **cf_deployment_id** | `bf5020c`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` 200 · `/sns` 200 · `/json-view` 200 · `/ai-cleaner` 200 · Hub に JSON構造・AIコピペ整形 |
 
 ---
 
@@ -1384,6 +1384,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 006 executed（bf5020c · json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ） |
 | 2026-07-20 | 006 approved（json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 005 executed（2cfb167 · 11f35b82 · clipboard-trim 公開 · Hub 検索復帰 · FAQ 文言） |
 | 2026-07-20 | 005 approved（clipboard-trim 公開 · Hub 検索復帰 · watermark · P7 override · 提督 Commit&Push） |
