@@ -281,6 +281,20 @@
       "statusNote": "社員マスタ25万一括CSV · IDオフセット · 日付統一 · T10",
       "categoryId": "devtest"
     },
+    "broken-input": {
+      "file": "broken-input.html",
+      "conceptName": "壊れ入力",
+      "productName": "SUGUDASU 壊れ入力",
+      "navLabel": "壊れ入力",
+      "navIcon": "💥",
+      "inNav": true,
+      "navOrder": 10.85,
+      "name": "異常系テスト用コピペデータ",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "異常系テスト用コピペ · 長さ・多言語・絵文字・見えない文字 · 非送信 · BROKEN_INPUT_SPEC.md",
+      "categoryId": "devtest"
+    },
     "group-split": {
       "file": "group-split.html",
       "conceptName": "班分け",

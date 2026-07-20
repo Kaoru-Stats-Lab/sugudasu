@@ -268,6 +268,14 @@
       "promiseNote": "本番投入非対応 · マイナンバー/実口座なし"
     },
     {
+      "toolId": "broken-input",
+      "categoryId": "devtest",
+      "productName": "SUGUDASU 壊れ入力",
+      "file": "broken-input.html",
+      "inputHandling": "プリセットコピー · 端末内",
+      "promiseNote": "異常系テスト用コピペデータ · 非送信 · ランダムなし"
+    },
+    {
       "toolId": "sns",
       "categoryId": "creative",
       "productName": "SUGUDASU SNS",

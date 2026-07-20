@@ -42,6 +42,7 @@ python -m http.server 8080
 | [watermark.html](tools/watermark.html) | /watermark | SUGUDASU 透かし | 透かし | alpha |
 | [pdf-images.html](tools/pdf-images.html) | /pdf-images | SUGUDASU PDF画像抽出 | PDF画像 | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
+| [broken-input.html](tools/broken-input.html) | /broken-input | SUGUDASU 壊れ入力 | 壊れ入力 | alpha |
 | [group-split.html](tools/group-split.html) | /group-split | SUGUDASU 班分け | 班分け | beta |
 | [match-board.html](tools/match-board.html) | /match-board | SUGUDASU ドラフト会議 | ドラフト | alpha |
 | [slot-board.html](tools/slot-board.html) | /slot-board | SUGUDASU 枠取りパレット | 枠取り | alpha |

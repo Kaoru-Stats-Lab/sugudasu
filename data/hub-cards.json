@@ -258,6 +258,18 @@
       }
     },
     {
+      "toolId": "broken-input",
+      "href": "broken-input.html",
+      "blurb": "異常系テスト用のコピペデータが欲しい時に。長さ・絵文字・見えない文字をすぐコピーします。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "group-split",
       "href": "group-split.html",
       "blurb": "研修やイベントの参加者を条件に合わせて班分けしたい時に。参加者をグループへ振り分けます。",

@@ -26,6 +26,7 @@
     { id: 'watermark', file: 'watermark.html', label: '透かし', icon: '💧' },
     { id: 'pdf-images', file: 'pdf-images.html', label: 'PDF画像', icon: '📄' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
+    { id: 'broken-input', file: 'broken-input.html', label: '壊れ入力', icon: '💥' },
     { id: 'group-split', file: 'group-split.html', label: '班分け', icon: '👥' },
     { id: 'match-board', file: 'match-board.html', label: 'ドラフト', icon: '🧩' },
     { id: 'slot-board', file: 'slot-board.html', label: '枠取り', icon: '📦' },

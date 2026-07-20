@@ -565,6 +565,76 @@
         "clipboard-trim"
       ],
       "weight": 88
+    },
+    {
+      "keyword": "AIのコピペを綺麗にしたい",
+      "toolIds": [
+        "ai-cleaner"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ChatGPTの出力を整形",
+      "toolIds": [
+        "ai-cleaner"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "マークダウンからコードだけ抜く",
+      "toolIds": [
+        "ai-cleaner"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "バリデーションエラーのテスト",
+      "toolIds": [
+        "broken-input"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "文字数制限の境界値データ",
+      "toolIds": [
+        "broken-input"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "システムが落ちる文字",
+      "toolIds": [
+        "broken-input"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "JSONをパースして見やすくする",
+      "toolIds": [
+        "json-view"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "巨大なJSONのキーを探す",
+      "toolIds": [
+        "json-view"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "謎の記号の読み方を知りたい",
+      "toolIds": [
+        "reverse"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "この特殊文字の意味",
+      "toolIds": [
+        "reverse"
+      ],
+      "weight": 90
     }
   ]
 }
