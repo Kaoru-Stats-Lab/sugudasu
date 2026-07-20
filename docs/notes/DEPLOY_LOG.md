@@ -1384,19 +1384,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — `/sns` スクリプト体□ hotfix（インライン mapMathAlpha が styleKey 未渡し） |
 | **change_summary** | `tools/sns.html` を `unicode-math-alpha` の `mapMathAlpha`/`mapCircled` に統一 · script/fraktur/double に styleKey · `font-styles-validate` に mapMathAlpha 回帰テスト |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 57/450） |
 | **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push · 本番□未解消 hotfix） |
-| **pages_build_budget_after** | （consume 後記入） |
+| **pages_build_budget_after** | 57/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | （push 後） |
+| **cf_deployment_id** | `e370e70`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` 200 · `/sns` 200（HTML に `mapMathAlpha(..., 'script')` · `unicode-math-alpha.js?v=`） |
 
 ---
 
@@ -1404,6 +1404,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 007 executed（e370e70 · /sns インライン mapMathAlpha styleKey hotfix） |
 | 2026-07-20 | 007 approved（/sns インライン mapMathAlpha styleKey hotfix · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 006 executed（bf5020c · json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ） |
 | 2026-07-20 | 006 approved（json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ · P7 override · 提督 Commit&Push） |
