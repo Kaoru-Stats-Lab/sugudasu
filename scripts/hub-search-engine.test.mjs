@@ -14,12 +14,17 @@ import {
   search,
   resolveMeantToolId,
   buildLabelToToolId,
+  prepareSearchQuery,
+  buildBrandNormalizeRules,
 } from '../assets/hub-search-engine.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dictDir = path.join(root, 'data', 'search-dictionary');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'data', 'tool-registry.json'), 'utf8'));
 const synonyms = JSON.parse(fs.readFileSync(path.join(root, 'data', 'synonyms.json'), 'utf8'));
+const brandNormalize = JSON.parse(fs.readFileSync(path.join(root, 'data', 'brand-normalize.json'), 'utf8'));
+const thesaurus = JSON.parse(fs.readFileSync(path.join(root, 'data', 'search-thesaurus.json'), 'utf8'));
+const intentMap = JSON.parse(fs.readFileSync(path.join(root, 'data', 'tool-intent-map.json'), 'utf8'));
 const hubCards = JSON.parse(fs.readFileSync(path.join(root, 'data', 'hub-cards.json'), 'utf8'));
 
 const docs = fs
@@ -47,11 +52,29 @@ const index = buildIndex(docs, {
   identities,
   synonymEntries: synonyms.entries || [],
   hubBlurbs,
+  brandNormalizeEntries: brandNormalize.entries || [],
+  thesaurusEntries: thesaurus.entries || [],
+  intentEntries: intentMap.entries || [],
 });
 
 {
   assert.equal(normalizeText('ＳＵＧＵＤＡＳＵ　請求書'), 'sugudasu 請求書');
   assert.deepEqual(tokenizeQuery('予算 削り'), ['予算', '削り']);
+}
+
+{
+  const prepared = prepareSearchQuery('スクショ ぼかし', {
+    brandRules: index.brandRules,
+    thesaurusRules: index.thesaurusRules,
+  });
+  assert.ok(prepared.includes('画像'), `スクショ should normalize toward 画像; got ${prepared}`);
+  assert.ok(prepared.includes('マスク'), `ぼかし should thesaurus toward マスク; got ${prepared}`);
+}
+
+{
+  const rules = buildBrandNormalizeRules(brandNormalize.entries || []);
+  const q = prepareSearchQuery('HP', { brandRules: rules, thesaurusRules: [] });
+  assert.equal(q, normalizeText('Webサイト'));
 }
 
 {
@@ -100,6 +123,12 @@ assertIncludes('黒塗り', 'mask');
 // synonyms.json 経由
 assertIncludes('インボイス', 'invoice');
 assertIncludes('ウォーターマーク', 'watermark');
+assertIncludes('ハンコ', 'stamp');
+assertIncludes('OCR', 'qr-reader');
+assertIncludes('スクショ', 'mask');
+assertIncludes('トリミング', 'image-trim');
+assertIncludes('ウォーターマーク', 'watermark');
+assertTop('透かし', 'watermark');
 
 // 誤検索 → meant リダイレクト（ギャル文字は font-converter）
 {
@@ -116,5 +145,5 @@ assert.deepEqual(search(index, '   '), []);
 assert.deepEqual(search(index, ''), []);
 
 console.log(
-  `[hub-search-engine] OK: docs=${docs.length} terms=${index.terms.length} sample=${topIds('QR', 3).join(',')}`
+  `[hub-search-engine] OK: docs=${docs.length} terms=${index.terms.length} brand=${(index.brandRules || []).length} intent=${(index.intentRules || []).length} sample=${topIds('QR', 3).join(',')}`
 );

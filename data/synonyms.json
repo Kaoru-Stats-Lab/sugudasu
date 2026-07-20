@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-07-18",
-  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
-  "disclaimer": "検索同義語のみ。UI タグではない。自由入力の検索キーワードは Analytics に送らない。",
+  "updatedAt": "2026-07-20",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/BRAND_NORMALIZE.md",
+  "disclaimer": "検索同義語（toolId ルーティング補助）。UI 表示名・conceptName は変えない。ブランド語正規化は brand-normalize.json / search-thesaurus.json。意図マップは tool-intent-map.json。自由入力の検索キーワードは Analytics に送らない。",
   "entries": [
     { "terms": ["領収証", "領収"], "toolIds": ["receipt"] },
     { "terms": ["請求", "インボイス", "見積書", "納品書"], "toolIds": ["invoice"] },
-    { "terms": ["印鑑", "認印", "角印"], "toolIds": ["stamp"] },
+    { "terms": ["印鑑", "認印", "角印", "ハンコ", "はんこ", "スタンプ"], "toolIds": ["stamp"] },
     { "terms": ["PNG", "JPG", "JPEG", "WebP", "画像変換"], "toolIds": ["webp-to-jpg"] },
-    { "terms": ["切り抜き", "クロップ", "トリミング", "SNSカバー"], "toolIds": ["image-trim"] },
-    { "terms": ["ぼかし", "黒塗り", "機密", "マスキング"], "toolIds": ["mask"] },
+    { "terms": ["切り抜き", "クロップ", "トリミング", "トリム", "SNSカバー"], "toolIds": ["image-trim"] },
+    { "terms": ["ぼかし", "黒塗り", "機密", "マスキング", "スクショ", "スクリーンショット"], "toolIds": ["mask"] },
     { "terms": ["透かし", "ウォーターマーク"], "toolIds": ["watermark"] },
     { "terms": ["PDF", "埋め込み画像"], "toolIds": ["pdf-images"] },
     { "terms": ["全角", "半角", "名簿整え"], "toolIds": ["normalize"] },
@@ -19,10 +19,12 @@
     { "terms": ["割り勘", "精算"], "toolIds": ["warikan"] },
     { "terms": ["予算", "引き算", "コストカット", "予算会議", "超過"], "toolIds": ["budget-trim"] },
     { "terms": ["QR", "二次元コード"], "toolIds": ["link-qr", "qr-reader"] },
+    { "terms": ["OCR", "読み取り", "スキャン"], "toolIds": ["qr-reader"] },
     { "terms": ["差分", "Diff", "AI書き換え"], "toolIds": ["diff"] },
     { "terms": ["シフト表", "勤務表"], "toolIds": ["shift"] },
     { "terms": ["時給", "勤務時間", "バイト代", "パート給料"], "toolIds": ["time-calc"] },
     { "terms": ["コピペ", "貼り付け", "CSV", "TSV"], "toolIds": ["table-conv", "normalize"] },
-    { "terms": ["デコ文字", "特殊フォント", "バイオ"], "toolIds": ["sns"] }
+    { "terms": ["デコ文字", "特殊フォント", "バイオ"], "toolIds": ["sns"] },
+    { "terms": ["写真", "画像"], "toolIds": ["webp-to-jpg", "image-trim", "mask", "watermark", "pdf-images", "video-frame"] }
   ]
 }

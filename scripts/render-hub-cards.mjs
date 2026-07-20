@@ -29,20 +29,18 @@ function badgesHtml(badges) {
   const bits = [];
   const st = badges.status;
   if (st && STATUS_LABEL[st]) {
-    // status + 値 modifier（意味別クラス。同色混在させない）
+    // DECISION: status のみ強調。popular バッジは一覧で押し売りしない（data-popular は残す）。
     bits.push(
       `<span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--${esc(st)}">${STATUS_LABEL[st]}</span>`
     );
   }
   for (const sp of badges.spec || []) {
     if (SPEC_LABEL[sp]) {
+      // 仕様は弱表示（階層を落とす）。カードサイズは変えない。
       bits.push(
         `<span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--${esc(sp)}">${SPEC_LABEL[sp]}</span>`
       );
     }
-  }
-  if (badges.popular) {
-    bits.push('<span class="sg-hub-badge sg-hub-badge--popular">人気</span>');
   }
   if (!bits.length) return '';
   return `<div class="sg-hub-card__badges">${bits.join('')}</div>`;

@@ -1,0 +1,726 @@
+{
+  "version": 2,
+  "updatedAt": "2026-07-20",
+  "ssot": "docs/notes/BRAND_NORMALIZE.md",
+  "purpose": "Layer1: ユーザー語 → ブランド語彙。表示名・conceptNameは変えない。",
+  "layer": 1,
+  "brandTerms": [
+    "画像",
+    "PDF",
+    "テキスト",
+    "表データ",
+    "QRコード",
+    "印鑑",
+    "CSV",
+    "JSON",
+    "Markdown",
+    "Webサイト",
+    "動画",
+    "フォント",
+    "議事録",
+    "請求書",
+    "領収書",
+    "シフト",
+    "タイムライン",
+    "班分け",
+    "割り勘",
+    "ギフト",
+    "企画書",
+    "検索",
+    "Word",
+    "Excel",
+    "PowerPoint",
+    "画像切り出し",
+    "透かし",
+    "マスク",
+    "時給計算",
+    "差分チェック"
+  ],
+  "entries": [
+    {
+      "from": "写真",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スクショ",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スクリーンショット",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "静止画",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ピクチャ",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "フォト",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "画像ファイル",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "画像データ",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "jpeg",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "png",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "jpg",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "webp",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "gif",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "bmp",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "イラスト",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "デジカメ写真",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スキャン画像",
+      "to": "画像",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "pdf",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ＰＤＦ",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "pdfファイル",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "pdfデータ",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "PDFドキュメント",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "pdf形式",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "文章",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "文書",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "文字列",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "文章データ",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "テキストデータ",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "テキストファイル",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "txt",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "txtファイル",
+      "to": "テキスト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "表",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "テーブル",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "エクセル表",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スプレッドシート",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "集計表",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "一覧表",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "管理表",
+      "to": "表データ",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "qr",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "QR",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ｑｒ",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "qrコード",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "二次元コード",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "2次元コード",
+      "to": "QRコード",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ハンコ",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "はんこ",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "判子",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "シャチハタ",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "シヤチハタ",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スタンプ",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "認め印",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "認印",
+      "to": "印鑑",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "csv",
+      "to": "CSV",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ｃｓｖ",
+      "to": "CSV",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "csvファイル",
+      "to": "CSV",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "csvデータ",
+      "to": "CSV",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "カンマ区切りファイル",
+      "to": "CSV",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "json",
+      "to": "JSON",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ｊｓｏｎ",
+      "to": "JSON",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "jsonファイル",
+      "to": "JSON",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "jsonデータ",
+      "to": "JSON",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "markdown",
+      "to": "Markdown",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "マークダウン",
+      "to": "Markdown",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "md",
+      "to": "Markdown",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "mdファイル",
+      "to": "Markdown",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "mdデータ",
+      "to": "Markdown",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ホームページ",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ウェブサイト",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "webサイト",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "hp",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "HP",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ネットショップ",
+      "to": "Webサイト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ムービー",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ビデオ",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "動画ファイル",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "動画データ",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "mp4",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "mov",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "avi",
+      "to": "動画",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "書体",
+      "to": "フォント",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "字体",
+      "to": "フォント",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "font",
+      "to": "フォント",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "会議録",
+      "to": "議事録",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ミーティングノート",
+      "to": "議事録",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "会議メモ",
+      "to": "議事録",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "打ち合わせメモ",
+      "to": "議事録",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "打合せ記録",
+      "to": "議事録",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "インボイス",
+      "to": "請求書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "請求明細",
+      "to": "請求書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "invoice",
+      "to": "請求書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "請求データ",
+      "to": "請求書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "御請求書",
+      "to": "請求書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "レシート",
+      "to": "領収書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "領収証",
+      "to": "領収書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "領収データ",
+      "to": "領収書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "御領収書",
+      "to": "領収書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "勤務表",
+      "to": "シフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "シフト表",
+      "to": "シフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "当番表",
+      "to": "シフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "勤務表データ",
+      "to": "シフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "勤務スケジュール",
+      "to": "シフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "年表",
+      "to": "タイムライン",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ガントチャート",
+      "to": "タイムライン",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スケジュール",
+      "to": "タイムライン",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "スケジュール表",
+      "to": "タイムライン",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "工程表",
+      "to": "タイムライン",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "グループ分け",
+      "to": "班分け",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "チーム分け",
+      "to": "班分け",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "部屋割り",
+      "to": "班分け",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "メンバー分け",
+      "to": "班分け",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "クラス分け",
+      "to": "班分け",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "わりかん",
+      "to": "割り勘",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ワリカン",
+      "to": "割り勘",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "割勘",
+      "to": "割り勘",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "割り勘計算",
+      "to": "割り勘",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "プレゼント",
+      "to": "ギフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "贈り物",
+      "to": "ギフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "景品",
+      "to": "ギフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "贈答品",
+      "to": "ギフト",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "提案書",
+      "to": "企画書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "事業計画書",
+      "to": "企画書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "企画案",
+      "to": "企画書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "企画提案書",
+      "to": "企画書",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ググる",
+      "to": "検索",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "探す",
+      "to": "検索",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "サーチ",
+      "to": "検索",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "キーワード検索",
+      "to": "検索",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "word",
+      "to": "Word",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "excel",
+      "to": "Excel",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "powerpoint",
+      "to": "PowerPoint",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ワープロ文書",
+      "to": "Word",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "表計算データ",
+      "to": "Excel",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "プレゼン資料",
+      "to": "PowerPoint",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "エクセル",
+      "to": "Excel",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "ワード",
+      "to": "Word",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "パワポ",
+      "to": "PowerPoint",
+      "category": "ブランド正規化"
+    },
+    {
+      "from": "PDFファイル",
+      "to": "PDF",
+      "category": "ブランド正規化"
+    }
+  ]
+}

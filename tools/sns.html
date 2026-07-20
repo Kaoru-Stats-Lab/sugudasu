@@ -604,6 +604,24 @@ function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function renderSampleTexts() {
+    const root = document.getElementById('sns-sample-texts');
+    if (!root) return;
+    root.innerHTML = SAMPLE_TEXTS.map((s, i) =>
+        `<button type="button" class="fc-sample-chip" data-sample-idx="${i}">${esc(s.label)}</button>`
+    ).join('');
+    root.querySelectorAll('.fc-sample-chip').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const sample = SAMPLE_TEXTS[Number(btn.getAttribute('data-sample-idx'))];
+            if (!sample) return;
+            document.getElementById('input-text').value = sample.text;
+            render();
+        });
+    });
+}
+
+renderSampleTexts();
+
 function evaluateTransform(t, raw) {
     if (t.combining && hasJapanese(raw)) {
         return { kind: 'unsupported', message: '※ひらがな・カタカナ・漢字には対応していません' };
@@ -673,22 +691,6 @@ function render() {
     });
 }
 
-function renderSampleTexts() {
-    const root = document.getElementById('sns-sample-texts');
-    if (!root) return;
-    root.innerHTML = SAMPLE_TEXTS.map((s, i) =>
-        `<button type="button" class="fc-sample-chip" data-sample-idx="${i}">${esc(s.label)}</button>`
-    ).join('');
-    root.querySelectorAll('.fc-sample-chip').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const sample = SAMPLE_TEXTS[Number(btn.getAttribute('data-sample-idx'))];
-            if (!sample) return;
-            document.getElementById('input-text').value = sample.text;
-            render();
-        });
-    });
-}
-
 document.getElementById('btn-generate').addEventListener('click', render);
 document.getElementById('btn-clear').addEventListener('click', () => {
     document.getElementById('input-text').value = '';
@@ -699,7 +701,6 @@ document.getElementById('pv-tab-insta').addEventListener('click', () => setPrevi
 document.getElementById('pv-tab-x').addEventListener('click', () => setPreviewMode('x'));
 
 renderDecoParts();
-renderSampleTexts();
 render();
 </script>
 </body>

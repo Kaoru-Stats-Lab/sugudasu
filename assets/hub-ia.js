@@ -11,13 +11,35 @@
   var LS_CAT = 'selectedCategory';
   var RECENT_MAX = 8;
 
-  var EMPTY_TIPS = [
+  // Fallback（hub-config 未読込時）。正本は hub-config.json の *Chips。
+  var FALLBACK_SEARCH_CHIPS = [
+    { label: '請求書', q: '請求書' },
+    { label: 'PDF', q: 'PDF' },
+    { label: '画像', q: '画像' },
+    { label: 'QR', q: 'QR' },
+    { label: 'シフト', q: 'シフト' },
+  ];
+  var FALLBACK_EMPTY_RECOMMEND = [
+    { label: '請求書', q: '請求書' },
+    { label: '画像切り出し', q: '画像切り出し' },
+    { label: 'テキスト整え', q: 'テキスト整え' },
+  ];
+  var FALLBACK_EMPTY_POPULAR = [
+    { label: 'インボイス', q: 'インボイス' },
+    { label: '透かし', q: '透かし' },
+    { label: '割り勘', q: '割り勘' },
+  ];
+  var FALLBACK_EMPTY_EXAMPLES = [
     { label: 'コピペ', q: 'コピペ' },
     { label: '表 / CSV', q: '表 CSV' },
-    { label: '画像', q: '画像' },
-    { label: '透かし', q: '透かし' },
     { label: 'PDF 抽出', q: 'PDF 画像' },
+    { label: 'ハンコ', q: 'ハンコ' },
   ];
+
+  // TODO(Phase2 · 保留): カテゴリをマルチタグ化する可能性。
+  // 現状 tool-registry.categoryId は 1 値。100 ツール超で QR読取=画像+QR+OCR 等が必要になったら
+  // categoryIds: string[] へ拡張し、chip 交差を OR/AND で再設計する。今回は実装しない。
+  // SSOT 候補: data/categories.json · tool-registry · hub-ia cardMatchesCategory。
 
   function dataUrl(file) {
     if (global.SUGUDASU_SHELL && typeof global.SUGUDASU_SHELL.dataUrl === 'function') {
@@ -103,7 +125,9 @@
     var moreBtn = document.getElementById('sg-hub-more-btn');
     var morePanel = document.getElementById('sg-hub-more-panel');
     var emptyEl = document.getElementById('sg-hub-empty');
-    var emptyTips = document.getElementById('sg-hub-empty-tips');
+    var emptyRecommend = document.getElementById('sg-hub-empty-recommend');
+    var emptyPopular = document.getElementById('sg-hub-empty-popular');
+    var emptyExamples = document.getElementById('sg-hub-empty-examples');
     var searchPanel = document.getElementById('sg-hub-search-panel');
     var resultCountEl = document.getElementById('sg-hub-result-count');
     var clearBtn = document.getElementById('sg-hub-clear-search');
@@ -114,6 +138,7 @@
     var allSection = document.getElementById('sg-hub-all-section');
     var allTitle = document.getElementById('sg-hub-all-title');
     var searchExamples = document.getElementById('sg-hub-search-examples');
+    var searchExampleChips = document.getElementById('sg-hub-search-example-chips');
     var gridEl = document.getElementById('sg-hub-grid');
     var cards = Array.prototype.slice.call(document.querySelectorAll('#sg-hub-grid .sg-hub-card'));
 
@@ -123,7 +148,13 @@
     // DECISION: 辞書検索は hub-search-bundle + SUGUDASU_HUB_SEARCH。未読込時は data-search 部分一致にフォールバック。
     var dictIndex =
       searchBundle && Array.isArray(searchBundle.terms)
-        ? { terms: searchBundle.terms, toolIds: searchBundle.toolIds || [] }
+        ? {
+            terms: searchBundle.terms,
+            toolIds: searchBundle.toolIds || [],
+            brandRules: searchBundle.brandRules || [],
+            thesaurusRules: searchBundle.thesaurusRules || [],
+            intentRules: searchBundle.intentRules || [],
+          }
         : null;
 
     function chipLabel(id) {
@@ -134,11 +165,76 @@
       return !!(query && String(query).trim());
     }
 
-    function clearSearch() {
-      query = '';
-      if (searchEl) searchEl.value = '';
+    function runSearchQuery(q, opts) {
+      query = String(q || '');
+      if (searchEl) searchEl.value = query;
+      if (opts && opts.track && query.trim()) {
+        track('search_used', { has_query: true });
+      }
       paint();
-      if (searchEl) searchEl.focus();
+      if (searchEl && opts && opts.focus) searchEl.focus();
+    }
+
+    function clearSearch() {
+      runSearchQuery('', { focus: true });
+    }
+
+    function tipChipHtml(t) {
+      var q = String((t && t.q) || '').replace(/"/g, '');
+      var label = String((t && t.label) || q);
+      return (
+        '<button type="button" class="sg-hub-empty__chip" data-tip-q="' +
+        q +
+        '">' +
+        label +
+        '</button>'
+      );
+    }
+
+    function bindTipChips(container) {
+      if (!container) return;
+      container.querySelectorAll('[data-tip-q]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          runSearchQuery(btn.getAttribute('data-tip-q') || '', { track: true });
+        });
+      });
+    }
+
+    function renderSearchExampleChips() {
+      if (!searchExampleChips) return;
+      var list = hubConfig.searchExampleChips || FALLBACK_SEARCH_CHIPS;
+      searchExampleChips.innerHTML = list
+        .map(function (t) {
+          var q = String((t && t.q) || '').replace(/"/g, '');
+          var label = String((t && t.label) || q);
+          return (
+            '<button type="button" class="sg-hub-search-exchip" data-tip-q="' +
+            q +
+            '">' +
+            label +
+            '</button>'
+          );
+        })
+        .join('');
+      bindTipChips(searchExampleChips);
+    }
+
+    function renderEmptyTips() {
+      var rec = hubConfig.emptyRecommendChips || FALLBACK_EMPTY_RECOMMEND;
+      var pop = hubConfig.emptyPopularSearchChips || FALLBACK_EMPTY_POPULAR;
+      var ex = hubConfig.emptyExampleChips || FALLBACK_EMPTY_EXAMPLES;
+      if (emptyRecommend) {
+        emptyRecommend.innerHTML = rec.map(tipChipHtml).join('');
+        bindTipChips(emptyRecommend);
+      }
+      if (emptyPopular) {
+        emptyPopular.innerHTML = pop.map(tipChipHtml).join('');
+        bindTipChips(emptyPopular);
+      }
+      if (emptyExamples) {
+        emptyExamples.innerHTML = ex.map(tipChipHtml).join('');
+        bindTipChips(emptyExamples);
+      }
     }
 
     function renderChips() {
@@ -238,6 +334,7 @@
     }
 
     function cardMatchesCategory(card) {
+      // TODO(Phase2 · 保留): multi-tag — data-category-ids 交差に拡張する可能性。現状は単一 categoryId。
       var cat = card.getAttribute('data-category-id') || '';
       if (selected === 'all') return true;
       return cat === selected;
@@ -260,28 +357,6 @@
         popularGrid.appendChild(clone);
       });
       setHidden(popularSection, !popularGrid.children.length);
-    }
-
-    function renderEmptyTips() {
-      if (!emptyTips) return;
-      emptyTips.innerHTML = EMPTY_TIPS.map(function (t) {
-        return (
-          '<button type="button" class="sg-hub-empty__chip" data-tip-q="' +
-          t.q.replace(/"/g, '') +
-          '">' +
-          t.label +
-          '</button>'
-        );
-      }).join('');
-      emptyTips.querySelectorAll('[data-tip-q]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var q = btn.getAttribute('data-tip-q') || '';
-          query = q;
-          if (searchEl) searchEl.value = q;
-          track('search_used', { has_query: true });
-          paint();
-        });
-      });
     }
 
     function paint() {
@@ -441,6 +516,7 @@
     if (clearBtn) clearBtn.addEventListener('click', clearSearch);
     if (emptyClearBtn) emptyClearBtn.addEventListener('click', clearSearch);
 
+    renderSearchExampleChips();
     renderEmptyTips();
 
     global.addEventListener('resize', function () {

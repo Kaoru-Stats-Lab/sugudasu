@@ -632,28 +632,34 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   color: #065f46;
   background: #ecfdf5;
   border-color: #a7f3d0;
+  font-weight: 700;
 }
 .sg-hub-badge--status.sg-hub-badge--beta {
   color: #92400e;
   background: #fffbeb;
   border-color: #fde68a;
+  font-weight: 700;
 }
 .sg-hub-badge--status.sg-hub-badge--ga {
   color: #334155;
   background: #f8fafc;
   border-color: #e2e8f0;
+  font-weight: 700;
 }
+/* 仕様バッジは弱く（情報階層 · カードサイズは変えない） */
 .sg-hub-badge--spec,
 .sg-hub-badge--spec.sg-hub-badge--local,
 .sg-hub-badge--spec.sg-hub-badge--pc {
-  color: #475569;
-  background: #fff;
-  border-color: #cbd5e1;
+  color: #94a3b8;
+  background: transparent;
+  border-color: #e2e8f0;
+  font-weight: 500;
+  font-size: 9px;
+  padding: 0.2rem 0.35rem;
 }
+/* 人気バッジは一覧に出さない（押し売り禁止）。クラスは互換のため残す */
 .sg-hub-badge--popular {
-  color: #9a3412;
-  background: #fff7ed;
-  border-color: #fed7aa;
+  display: none;
 }
 .sg-hub-section-title {
   font-size: 0.8125rem;
@@ -702,11 +708,22 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   color: #64748b;
   margin-top: 0.35rem;
 }
+.sg-hub-empty__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+.sg-hub-empty__block-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+  margin: 0 0 0.35rem;
+}
 .sg-hub-empty__tips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.75rem;
 }
 .sg-hub-empty__chip {
   font-size: 0.6875rem;
@@ -723,6 +740,34 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 }
 .sg-hub-search-examples {
   margin-top: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+.sg-hub-search-examples__label {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.sg-hub-search-examples__chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.sg-hub-search-exchip {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #334155;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.sg-hub-search-exchip:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
 }
 .sg-hub-search-label {
   display: block;

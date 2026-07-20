@@ -10,7 +10,7 @@
 
 ## Agent 着手前（必須 · 違反＝deploy 禁止）
 
-1. 本ファイル **ゲート P1–P8** + **直近エントリ（同一 `target`）**を読む。
+1. 本ファイル **ゲート P1–P8** + **「事故防止 · ES module cache bust」** + **直近エントリ（同一 `target`）**を読む。
 2. **本番反映の前に** 下記 **「新規エントリを追記」**（`status: approved` · `approver: 提督`）。
 3. 機械ゲート: `npm run deploy:gate`（`--target=core` / `--target=sync`）。
 4. **完了後** 同一エントリを **`executed`** に更新（`cf_deployment_id` · smoke · 月次ビルド残数）。
@@ -49,6 +49,46 @@
 - `dist/` / `dist-sync/` の Git コミット
 - Sync の **git push だけ**で本番反映しようとすること（自動デプロイ OFF が正）
 - 月 450 回（ソフト）超過後の consume
+
+---
+
+## 事故防止 · ES module cache bust（必読 · 再発禁止）
+
+**発生:** 2026-07-20 · `/watermark`（id `watermark` · **SUGUDASU 透かし**）で DnD クリックしてもファイル選択が開かない。  
+**根因:** `_headers` で `/assets/*` が **immutable 1年**なのに、`watermark-app.js` だけ `?v=` 更新され、相対 import の **`watermark-engine.js` が古いキャッシュのまま**。Console: `does not provide an export named 'decodeImageFile'` → **モジュール全体が評価されず `bindDrop` 未登録**。  
+**同型リスク:** `*-app.js` が `*-engine.js`（や共有 engine）を import する全プロダクト。**app だけバストして engine を忘れるな。**
+
+**正本コード:** `scripts/build-pages.mjs` — `listBustAssetNames()`（全 `*-app.js` / `*-engine.js` をハッシュ）+ `bustJsImports()`（相対 `.js` import **すべて**に `?v=`）。新規 engine を足すときも **手動リスト追加は不要**（ディレクトリ自動拾い）。ただし **handoff / 共有ユーティリティ** は `BUST_ASSET_NAMES_EXPLICIT` に残す。
+
+**デプロイ前セルフチェック（該当ツール改修時）**
+
+1. `dist/assets/*-app.js` の `from './…-engine.js?v=…'` に **クエリが付いている**こと  
+2. 共有依存（例: `pdf-images-engine` → `watermark-engine`）も `?v=` 付きであること  
+3. 本番/プレビューで Console に `does not provide an export named` が無いこと · DnD ゾーンクリックで file chooser が開くこと
+
+### エンジン付きプロダクト（注意喚起 · id / productName / ファイル）
+
+| id | productName | app | engine（依存） |
+|----|-------------|-----|----------------|
+| **`watermark`** | **SUGUDASU 透かし** | `watermark-app.js` | **`watermark-engine.js`** ← **本事故の直接原因** |
+| **`pdf-images`** | **SUGUDASU PDF画像抽出** | `pdf-images-app.js` | `pdf-images-engine.js` → **`watermark-engine.js`（共有）** |
+| `mask` | SUGUDASU マスク | `mask-app.js` | `mask-engine.js` |
+| `stamp` | SUGUDASU 電子印鑑 | `stamp-app.js` | `stamp-engine.js` |
+| `test-data` | SUGUDASU テストデータ | `test-data-app.js` | `test-data-engine.js` |
+| `planning-poker` | SUGUDASU 見積会議 | `planning-poker-app.js` | `planning-poker-engine.js` |
+| `slot-board` | SUGUDASU 枠取りパレット | `slot-board-app.js` | `slot-board-engine.js` |
+| `timeline` | SUGUDASU イベント進行 | `timeline-app.js` / `sync-timeline-s1-app.js` | `timeline-engine.js` |
+| `budget-trim` | SUGUDASU 引き算パレット | `budget-trim-app.js` | `budget-trim-engine.js` |
+| `group-split` | SUGUDASU 班分け | `group-split-assign-app.js` | `group-split-assign-engine.js` |
+| `link-qr` | SUGUDASU リンク集QR | （ページ側） | `link-qr-engine.js` |
+| `qr-reader` | SUGUDASU QR読取 | （ページ側） | `qr-reader-engine.js` |
+| `sns` | SUGUDASU SNS | inline + `sns-app.js` | `sns-font-engine.js` |
+| `font-converter` | SUGUDASU フォント変換 | `font-converter-app.js` | `sns-app.js` → `sns-font-engine.js` |
+| （hub 検索） | — | `hub-search-boot.js` | `hub-search-engine.js` |
+
+**補足:** `image-trim`（SUGUDASU 画像切り出し）は現状 `image-trim-app.js` 単体（engine なし）だが、将来 engine 分割したら **上表に追記必須**。`fair-draw` も同様に engine 分割時は追記。
+
+**過去の同族事故（参照）:** DEPLOY-20260703-007（mask cache bust）· DEPLOY-20260703-013（link-qr module import cache bust）· **本節 + DEPLOY-20260720-002**。
 
 ---
 
@@ -1238,10 +1278,33 @@
 | **smoke** | `pass` — `/updates` → `/statements#copy-first-tech` · `/roadmap`·`/statements` に相対 `*.html` なし · shell `resolveNavMode` |
 
 ---
+
+## DEPLOY-20260720-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 本番一括反映（提督指示）— watermark engine cache bust 再発防止 · Hub 検索 3 層辞書 · Top IA / レイアウト ADR·Design 凍結 · サンプル早期描画 |
+| **change_summary** | `build-pages` 全 `*-app`/`*-engine` bust · `brand-normalize` / `search-thesaurus` / `tool-intent-map` · hub-search-engine Layer1–3 · ADR-001〜005 · design/cursor/decision-log · hub-layout 左寄せ・4列凍結 · font-converter/sns サンプル · DEPLOY_LOG 事故防止節 |
+| **incident** | `/watermark` DnD 不能（古い `watermark-engine.js`）· 同型 engine 付きプロダクトを台帳化 |
+| **local_build** | `pass`（`validate:hub-ia` · `release:pages:free` · budget consume 51/450） |
+| **deploy_count_today** | 2（**P7 override** · 提督「すべて本番反映」） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 事故防止 cache bust 確認 · validate:hub-ia |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`/watermark` · `/pdf-images` · `/` 検索 · `/font-converter` · `/sns` |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 002 approved（cache bust · 検索3層 · ADR/Design · P7 override · 提督本番反映） |
+| 2026-07-20 | 002 planned（watermark engine cache bust 事故 · 再発禁止台帳 · build-pages 全 engine バスト） |
 | 2026-07-20 | 001 executed（db205b7 · Hub IA Phase2 · カード文言 · `#hash` rewrite · budget-trim 他） |
 | 2026-07-20 | 001 approved（Hub IA Phase2 · カード文言 · budget-trim 他 · 提督 Commit&Push） |
 | 2026-07-19 | 002 executed（7817638 · クリーンURL hotfix · P7 override） |

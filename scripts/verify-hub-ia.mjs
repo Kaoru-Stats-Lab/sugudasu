@@ -37,6 +37,7 @@ function main() {
   const catDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/categories.json'), 'utf8'));
   const hubConfig = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-config.json'), 'utf8'));
   const synonyms = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/synonyms.json'), 'utf8'));
+  const brandNormalize = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/brand-normalize.json'), 'utf8'));
   const hubCards = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
   const relations = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/relations.json'), 'utf8'));
   const bundlePath = path.join(ROOT, 'data/hub-search-bundle.json');
@@ -76,6 +77,65 @@ function main() {
       if (!registry.tools[tid]) fail(`synonyms: 未知の toolId=${tid}`);
     }
     if (!entry.terms || !entry.terms.length) fail('synonyms: terms が空のエントリ');
+  }
+
+  {
+    const brandPath = path.join(ROOT, 'data/brand-normalize.json');
+    const thesaurusPath = path.join(ROOT, 'data/search-thesaurus.json');
+    const intentPath = path.join(ROOT, 'data/tool-intent-map.json');
+    if (!fs.existsSync(brandPath)) fail('brand-normalize.json が無い');
+    if (!fs.existsSync(thesaurusPath)) fail('search-thesaurus.json が無い');
+    if (!fs.existsSync(intentPath)) fail('tool-intent-map.json が無い');
+
+    const thesaurus = JSON.parse(fs.readFileSync(thesaurusPath, 'utf8'));
+    const intentMap = JSON.parse(fs.readFileSync(intentPath, 'utf8'));
+    const brandSet = new Set(brandNormalize.brandTerms || []);
+    if (brandSet.size < 10) fail('brand-normalize.brandTerms が少なすぎる');
+
+    const seenFrom = new Set();
+    for (const e of brandNormalize.entries || []) {
+      if (!e.from || !e.to) fail('brand-normalize: from/to 必須');
+      if (seenFrom.has(e.from)) fail(`brand-normalize: from 重複 ${e.from}`);
+      seenFrom.add(e.from);
+      if (e.from === e.to) fail(`brand-normalize: from===to 禁止 (${e.from})`);
+      if (!brandSet.has(e.to)) fail(`brand-normalize: to が brandTerms 外 (${e.from}→${e.to})`);
+    }
+    if ((brandNormalize.entries || []).length < 80) {
+      fail(`brand-normalize: エントリ不足 (${(brandNormalize.entries || []).length})`);
+    }
+
+    const mustBrand = [
+      ['スクショ', '画像'],
+      ['写真', '画像'],
+      ['ハンコ', '印鑑'],
+      ['PDFファイル', 'PDF'],
+      ['文章', 'テキスト'],
+      ['二次元コード', 'QRコード'],
+      ['ホームページ', 'Webサイト'],
+      ['エクセル', 'Excel'],
+    ];
+    const brandMap = new Map((brandNormalize.entries || []).map((e) => [e.from, e.to]));
+    for (const [from, to] of mustBrand) {
+      if (brandMap.get(from) !== to) fail(`brand-normalize: 必須 ${from}→${to}（got ${brandMap.get(from)}）`);
+    }
+
+    for (const e of thesaurus.entries || []) {
+      if (!e.from || !e.to) fail('search-thesaurus: from/to 必須');
+      if (seenFrom.has(e.from)) fail(`search-thesaurus: brand と from 重複 ${e.from}`);
+    }
+    if ((thesaurus.entries || []).length < 80) {
+      fail(`search-thesaurus: エントリ不足 (${(thesaurus.entries || []).length})`);
+    }
+
+    for (const e of intentMap.entries || []) {
+      if (!e.keyword || !e.toolIds || !e.toolIds.length) fail('tool-intent-map: keyword/toolIds 必須');
+      for (const tid of e.toolIds) {
+        if (!registry.tools[tid]) fail(`tool-intent-map: 未知 toolId=${tid} (keyword=${e.keyword})`);
+      }
+    }
+    if ((intentMap.entries || []).length < 30) {
+      fail(`tool-intent-map: エントリ不足 (${(intentMap.entries || []).length})`);
+    }
   }
 
   const cardToolIds = new Set();
@@ -124,12 +184,26 @@ function main() {
   }
   if (!hubHtml.includes('sg-hub-search-panel')) fail('hub.html: 検索結果パネルが無い');
   if (!hubHtml.includes('sg-hub-popular-grid')) fail('hub.html: 人気グリッドが無い');
+  if (!hubHtml.includes('sg-hub-search-example-chips')) fail('hub.html: 検索例チップ容器が無い');
+  if (!hubHtml.includes('sg-hub-empty-recommend')) fail('hub.html: 0件おすすめ容器が無い');
+  if (!Array.isArray(hubConfig.searchExampleChips) || !hubConfig.searchExampleChips.length) {
+    fail('hub-config.searchExampleChips が空');
+  }
 
   if (!fs.existsSync(bundlePath)) {
     fail('hub-search-bundle.json が無い（npm run build:hub-search を先に実行）');
   } else {
     const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
     if (!bundle.terms || !bundle.terms.length) fail('hub-search-bundle.terms が空');
+    if (!Array.isArray(bundle.brandRules) || bundle.brandRules.length < 50) {
+      fail('hub-search-bundle.brandRules 不足（build:hub-search を再実行）');
+    }
+    if (!Array.isArray(bundle.thesaurusRules) || bundle.thesaurusRules.length < 50) {
+      fail('hub-search-bundle.thesaurusRules 不足');
+    }
+    if (!Array.isArray(bundle.intentRules) || bundle.intentRules.length < 20) {
+      fail('hub-search-bundle.intentRules 不足');
+    }
     const dictFiles = fs.existsSync(dictDir)
       ? fs.readdirSync(dictDir).filter((f) => f.endsWith('.json')).map((f) => f.replace(/\.json$/, ''))
       : [];
@@ -143,7 +217,7 @@ function main() {
     process.exit(1);
   }
   console.log(
-    `[hub-ia] OK: categories=${catIds.size} · cards=${(hubCards.cards || []).length} · synonyms=${(synonyms.entries || []).length}`
+    `[hub-ia] OK: categories=${catIds.size} · cards=${(hubCards.cards || []).length} · synonyms=${(synonyms.entries || []).length} · brand=${(brandNormalize.entries || []).length}`
   );
 }
 

@@ -428,32 +428,31 @@ function copyDir(src, dest) {
   }
 }
 
-/** ?v= バスター対象（_headers で /assets/* は immutable 1年） */
-const BUST_ASSET_NAMES = [
+/**
+ * ?v= バスター対象（_headers で /assets/* は immutable 1年）
+ *
+ * 事故防止（2026-07-20）: app だけバストして engine を忘れると、本番で
+ * 「The requested module './X-engine.js' does not provide an export named …」
+ * → DnD クリック不能など。詳細は DEPLOY_LOG「事故防止 · ES module cache bust」。
+ *
+ * - 明示リスト + assets 内の全 *-app.js / *-engine.js をハッシュに含める（漏れ禁止）
+ * - bustJsImports は相対 import の .js すべてに ?v= を付与（ホワイトリスト除外しない）
+ */
+const BUST_ASSET_NAMES_EXPLICIT = [
   'sugudasu-shell.js',
   'hub-ia.js',
-  'hub-search-engine.js',
   'hub-search-boot.js',
   'sugudasu.css',
   'sugudasu-segment.js',
   'tw-build.css',
   'sns-app.js',
-  'sns-font-engine.js',
-  'font-converter-app.js',
-  'stamp-app.js',
-  'stamp-engine.js',
   'stamp-handoff.js',
   'test-data-handoff.js',
-  'mask-app.js',
-  'mask-engine.js',
-  'test-data-app.js',
-  'test-data-engine.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
   'sg-copy-disclosure.js',
   'sg-paste-scan.js',
   'sg-form-validate.js',
-  'link-qr-engine.js',
   'text-normalize.js',
   'webp-to-jpg.js',
   'group-split.js',
@@ -462,10 +461,17 @@ const BUST_ASSET_NAMES = [
   'prize-law-eval.js',
 ];
 
+function listBustAssetNames() {
+  const fromDir = fs.existsSync(ASSETS)
+    ? fs.readdirSync(ASSETS).filter((n) => n.endsWith('-app.js') || n.endsWith('-engine.js'))
+    : [];
+  return [...new Set([...BUST_ASSET_NAMES_EXPLICIT, ...fromDir])].sort();
+}
+
 function computeAssetVersion() {
   if (process.env.SG_ASSET_V) return process.env.SG_ASSET_V;
   const hash = crypto.createHash('sha256');
-  for (const name of BUST_ASSET_NAMES) {
+  for (const name of listBustAssetNames()) {
     const p = path.join(ASSETS, name);
     if (fs.existsSync(p)) hash.update(fs.readFileSync(p));
   }
@@ -655,15 +661,15 @@ function writeGuidePages() {
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
   const moduleFiles = fs.readdirSync(distAssets).filter(
-    (name) => name.endsWith('-app.js') || name === 'hub-search-boot.js'
+    (name) => name.endsWith('-app.js') || name.endsWith('-engine.js') || name === 'hub-search-boot.js' || name === 'sns-app.js'
   );
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);
     if (!fs.existsSync(p)) continue;
     let src = fs.readFileSync(p, 'utf8');
-    src = src.replace(/from '\.\/([^']+\.js)'/g, (match, dep) => {
-      if (BUST_ASSET_NAMES.includes(dep)) return `from './${dep}?v=${ASSET_V}'`;
-      return match;
+    // 相対 .js はすべて ?v=（ホワイトリスト漏れで engine が immutable 固定になるのを防ぐ）
+    src = src.replace(/from (['"])\.\/([^'"]+\.js)(?:\?v=[^'"]*)?\1/g, (_m, q, dep) => {
+      return `from ${q}./${dep}?v=${ASSET_V}${q}`;
     });
     fs.writeFileSync(p, src, 'utf8');
   }

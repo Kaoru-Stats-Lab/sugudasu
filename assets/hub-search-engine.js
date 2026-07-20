@@ -1,8 +1,11 @@
 /**
  * Hub 辞書ベース検索エンジン（Embedding / AI なし）
- * SSOT: data/search-dictionary/{toolId}.json · 任意で data/synonyms.json
+ * SSOT: data/search-dictionary/{toolId}.json · data/synonyms.json · data/brand-normalize.json
  *
  * UI 非依存。ブラウザ / Node 両方で使える ESM。
+ *
+ * パイプライン Layer:
+ * 1 brand-normalize → 2 synonyms → 3 JTBD dict → 4 zero-hit UI → 5 ranking（本ファイル）
  */
 
 /** @typedef {{ toolId: string, aliases?: string[], jobsShort?: string[], jobsLong?: string[], keywords?: string[], commonMistakes?: { query?: string, meant?: string, note?: string }[], priority?: { high?: string[], medium?: string[], low?: string[] }, relatedProducts?: { toolId?: string, conceptName?: string, reason?: string }[] }} SearchDictDoc */
@@ -10,6 +13,8 @@
 /** @typedef {{ toolId: string, productName?: string, conceptName?: string, navLabel?: string, name?: string }} ToolIdentity */
 
 /** @typedef {{ terms: string[], toolIds: string[] }} SynonymEntry */
+
+/** @typedef {{ from: string, to: string, category?: string }} BrandNormalizeEntry */
 
 /**
  * @typedef {Object} ScoredHit
@@ -56,6 +61,99 @@ export function normalizeText(s) {
     .replace(/[、。，．・…‥:/／\\|＿_]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+/**
+ * brand-normalize.json の entries → 最長一致用リスト
+ * @param {BrandNormalizeEntry[]} entries
+ * @returns {{ fromNorm: string, toNorm: string, toRaw: string }[]}
+ */
+export function buildBrandNormalizeRules(entries) {
+  /** @type {Map<string, { fromNorm: string, toNorm: string, toRaw: string, len: number }>} */
+  const byFrom = new Map();
+  (entries || []).forEach(function (e) {
+    if (!e || !e.from || !e.to) return;
+    const fromNorm = normalizeText(e.from);
+    const toRaw = String(e.to).trim();
+    if (!fromNorm || fromNorm.length < 2 || !toRaw) return;
+    if (fromNorm === normalizeText(toRaw)) return;
+    // 先勝ち（同一 fromNorm）
+    if (byFrom.has(fromNorm)) return;
+    byFrom.set(fromNorm, {
+      fromNorm: fromNorm,
+      toNorm: normalizeText(toRaw),
+      toRaw: toRaw,
+      len: fromNorm.length,
+    });
+  });
+  return Array.from(byFrom.values())
+    .sort(function (a, b) {
+      return b.len - a.len;
+    })
+    .map(function (r) {
+      return { fromNorm: r.fromNorm, toNorm: r.toNorm, toRaw: r.toRaw };
+    });
+}
+
+/**
+ * クエリをブランド語彙へ正規化（表示名は変えない · 検索マッチ用）
+ * DECISION: Layer1/2 の from→to 置換。toolId ルーティングは Layer3（tool-intent-map）。
+ * @param {string} query
+ * @param {{ fromNorm: string, toNorm: string, toRaw?: string }[]|null|undefined} rules
+ * @returns {string} normalizeText 済みの正規化クエリ
+ */
+export function applyBrandNormalize(query, rules) {
+  let q = normalizeText(query);
+  if (!q || !rules || !rules.length) return q;
+  for (let i = 0; i < rules.length; i++) {
+    const rule = rules[i];
+    if (!rule || !rule.fromNorm || !rule.toNorm) continue;
+    if (rule.fromNorm.length < 2) continue;
+    if (q.indexOf(rule.fromNorm) === -1) continue;
+    q = q.split(rule.fromNorm).join(rule.toNorm);
+  }
+  return normalizeText(q);
+}
+
+/**
+ * Layer1 → Layer2 を順に適用
+ * @param {string} query
+ * @param {{ brandRules?: { fromNorm: string, toNorm: string }[], thesaurusRules?: { fromNorm: string, toNorm: string }[] }} layers
+ * @returns {string}
+ */
+export function prepareSearchQuery(query, layers) {
+  layers = layers || {};
+  let q = applyBrandNormalize(query, layers.brandRules);
+  q = applyBrandNormalize(q, layers.thesaurusRules);
+  return q;
+}
+
+/**
+ * @typedef {{ keyword: string, toolIds: string[], weight?: number }} IntentEntry
+ */
+
+/**
+ * @param {IntentEntry[]} entries
+ * @returns {{ keywordNorm: string, toolIds: string[], weight: number }[]}
+ */
+export function buildIntentRules(entries) {
+  /** @type {Map<string, { keywordNorm: string, toolIds: string[], weight: number }>} */
+  const byKey = new Map();
+  (entries || []).forEach(function (e) {
+    if (!e || !e.keyword || !e.toolIds || !e.toolIds.length) return;
+    const keywordNorm = normalizeText(e.keyword);
+    if (!keywordNorm || keywordNorm.length < 2) return;
+    if (byKey.has(keywordNorm)) return;
+    const weight = typeof e.weight === 'number' ? e.weight : 80;
+    byKey.set(keywordNorm, {
+      keywordNorm: keywordNorm,
+      toolIds: e.toolIds.slice(),
+      weight: weight,
+    });
+  });
+  return Array.from(byKey.values()).sort(function (a, b) {
+    return b.keywordNorm.length - a.keywordNorm.length;
+  });
 }
 
 /**
@@ -134,11 +232,14 @@ export function buildLabelToToolId(identities) {
  * @property {IndexTerm[]} terms
  * @property {string[]} toolIds
  * @property {Map<string, string>} labelToId
+ * @property {{ fromNorm: string, toNorm: string, toRaw: string }[]} [brandRules]
+ * @property {{ fromNorm: string, toNorm: string, toRaw: string }[]} [thesaurusRules]
+ * @property {{ keywordNorm: string, toolIds: string[], weight: number }[]} [intentRules]
  */
 
 /**
  * @param {SearchDictDoc[]} docs
- * @param {{ identities?: ToolIdentity[], synonymEntries?: SynonymEntry[], hubBlurbs?: { toolId: string, blurb: string }[] }} [opts]
+ * @param {{ identities?: ToolIdentity[], synonymEntries?: SynonymEntry[], hubBlurbs?: { toolId: string, blurb: string }[], brandNormalizeEntries?: BrandNormalizeEntry[], thesaurusEntries?: BrandNormalizeEntry[], intentEntries?: IntentEntry[] }} [opts]
  * @returns {SearchIndex}
  */
 export function buildIndex(docs, opts) {
@@ -148,6 +249,9 @@ export function buildIndex(docs, opts) {
   const terms = [];
   /** @type {Set<string>} */
   const toolIds = new Set();
+  const brandRules = buildBrandNormalizeRules(opts.brandNormalizeEntries || []);
+  const thesaurusRules = buildBrandNormalizeRules(opts.thesaurusEntries || []);
+  const intentRules = buildIntentRules(opts.intentEntries || []);
 
   function addTerm(toolId, raw, kind, weight) {
     const norm = normalizeText(raw);
@@ -229,23 +333,33 @@ export function buildIndex(docs, opts) {
     terms: terms,
     toolIds: Array.from(toolIds),
     labelToId: labelToId,
+    brandRules: brandRules,
+    thesaurusRules: thesaurusRules,
+    intentRules: intentRules,
   };
 }
 
 /**
  * @param {SearchIndex} index
  * @param {string} query
- * @param {{ limit?: number, minScore?: number }} [opts]
+ * @param {{ limit?: number, minScore?: number, skipBrandNormalize?: boolean }} [opts]
  * @returns {ScoredHit[]}
  */
 export function search(index, query, opts) {
   opts = opts || {};
   const limit = opts.limit == null ? 20 : opts.limit;
   const minScore = opts.minScore == null ? 1 : opts.minScore;
-  const tokens = tokenizeQuery(query);
+  // DECISION: Layer1 brand → Layer2 thesaurus。表示文言は変更しない。
+  const prepared = opts.skipBrandNormalize
+    ? normalizeText(query)
+    : prepareSearchQuery(query, {
+        brandRules: index && index.brandRules,
+        thesaurusRules: index && index.thesaurusRules,
+      });
+  const tokens = tokenizeQuery(prepared);
   if (!tokens.length || !index || !index.terms) return [];
 
-  const full = normalizeText(query);
+  const full = prepared;
   /** @type {Map<string, { score: number, matched: Set<string>, kinds: Set<string>, tokenHits: Set<number> }>} */
   const byId = new Map();
 
@@ -274,6 +388,22 @@ export function search(index, query, opts) {
       if (includesNorm(term.norm, tok) || (tok.length >= 3 && includesNorm(tok, term.norm))) {
         bump(term.toolId, term.weight, tok, term.kind, ti);
       }
+    });
+  });
+
+  // Layer3: tool-intent-map — ブランド語彙キーワード → toolId ブースト
+  (index.intentRules || []).forEach(function (rule) {
+    if (!rule || !rule.keywordNorm) return;
+    const hit =
+      includesNorm(full, rule.keywordNorm) ||
+      tokens.some(function (tok) {
+        return tok === rule.keywordNorm || includesNorm(tok, rule.keywordNorm) || includesNorm(rule.keywordNorm, tok);
+      });
+    if (!hit) return;
+    // DECISION: weight は 0–100 想定。辞書ヒットと合成しやすいよう 0.55 倍。
+    const points = Math.max(8, Math.round((rule.weight || 80) * 0.55));
+    (rule.toolIds || []).forEach(function (tid) {
+      bump(tid, points, rule.keywordNorm, 'intent', null);
     });
   });
 
@@ -326,6 +456,10 @@ if (typeof globalThis !== 'undefined') {
     FIELD_WEIGHTS: FIELD_WEIGHTS,
     normalizeText: normalizeText,
     tokenizeQuery: tokenizeQuery,
+    buildBrandNormalizeRules: buildBrandNormalizeRules,
+    applyBrandNormalize: applyBrandNormalize,
+    prepareSearchQuery: prepareSearchQuery,
+    buildIntentRules: buildIntentRules,
     buildLabelToToolId: buildLabelToToolId,
     resolveMeantToolId: resolveMeantToolId,
     buildIndex: buildIndex,

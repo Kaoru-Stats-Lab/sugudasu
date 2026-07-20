@@ -17,7 +17,7 @@
 | # | 系統 | `main` クラス | 最大幅 | いつ使う |
 |---|------|---------------|--------|----------|
 | A | **実務ツール（標準）** | `sg-main-shell` | 76rem | 入力フォーム · プレビュー · 使い方 · FAQ が主役の `tools/{id}.html` |
-| B | **実務ツール（ワイド）** | `sg-main-shell sg-main-shell--wide` | 92rem | 横長プレビュー・多列 UI（hub · warikan · timeline 等） |
+| B | **実務ツール（ワイド）** | `sg-main-shell sg-main-shell--wide` | 92rem | 横長プレビュー・多列 UI（**hub** · warikan · timeline 等）。**Hub は左寄せ · カード Desktop 4 列固定**（[ADR-005](../adr/ADR-005-hub-layout-alignment.md) · [`hub-layout.md`](../design/hub-layout.md)）。5〜6 列・センター寄せは禁止 |
 | C | **実務ツール（印刷作業）** | `sg-main-shell sg-main-shell--print` | 120rem | 用紙プレビュー・印刷レイアウトが画面の主役（shift · label · receipt） |
 | D | **情報ページ（法務・約束）** | `sg-info-page` | 48rem | privacy · terms · disclaimer · statements · updates · **roadmap** · not-a-car · **guides 索引** |
 | E | **実務ガイド記事** | `sg-guide-page` | 52rem | `tools/guides/{slug}.html` — 長文・比較表・柱カラー・関連ツール CTA |

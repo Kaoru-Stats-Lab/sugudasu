@@ -1,0 +1,493 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-20",
+  "ssot": "docs/notes/BRAND_NORMALIZE.md",
+  "purpose": "Layer3: ブランド語彙・キーワード → 実 toolId（registry）。架空IDは写像済み。",
+  "layer": 3,
+  "entries": [
+    {
+      "keyword": "画像",
+      "toolIds": [
+        "watermark",
+        "image-trim",
+        "mask",
+        "pdf-images"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "透かし",
+      "toolIds": [
+        "watermark"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "切り出し",
+      "toolIds": [
+        "image-trim"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "画像切り出し",
+      "toolIds": [
+        "image-trim"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "マスク",
+      "toolIds": [
+        "mask"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ぼかし",
+      "toolIds": [
+        "mask"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "モザイク",
+      "toolIds": [
+        "mask"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "トリミング",
+      "toolIds": [
+        "image-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "ウォーターマーク",
+      "toolIds": [
+        "watermark"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "写真",
+      "toolIds": [
+        "watermark",
+        "image-trim",
+        "mask",
+        "webp-to-jpg"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "スクショ",
+      "toolIds": [
+        "mask",
+        "image-trim"
+      ],
+      "weight": 85
+    },
+    {
+      "keyword": "PDF",
+      "toolIds": [
+        "pdf-images"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "請求書",
+      "toolIds": [
+        "invoice"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "インボイス",
+      "toolIds": [
+        "invoice"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "領収書",
+      "toolIds": [
+        "receipt"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "レシート",
+      "toolIds": [
+        "receipt"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "議事録",
+      "toolIds": [
+        "report"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "会議録",
+      "toolIds": [
+        "report"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "QRコード",
+      "toolIds": [
+        "qr-reader",
+        "link-qr"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "バーコード",
+      "toolIds": [
+        "qr-reader"
+      ],
+      "weight": 80
+    },
+    {
+      "keyword": "印鑑",
+      "toolIds": [
+        "stamp"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ハンコ",
+      "toolIds": [
+        "stamp"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "シャチハタ",
+      "toolIds": [
+        "stamp"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "CSV",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "JSON",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "Markdown",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "マークダウン",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "Webサイト",
+      "toolIds": [
+        "link-qr"
+      ],
+      "weight": 70
+    },
+    {
+      "keyword": "URL",
+      "toolIds": [
+        "link-qr",
+        "search-query"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "動画",
+      "toolIds": [
+        "video-frame"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "コマ抜き",
+      "toolIds": [
+        "video-frame"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "フォント",
+      "toolIds": [
+        "sns",
+        "font-converter"
+      ],
+      "weight": 80
+    },
+    {
+      "keyword": "シフト",
+      "toolIds": [
+        "shift"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "当番表",
+      "toolIds": [
+        "shift"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "タイムライン",
+      "toolIds": [
+        "timeline"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ガントチャート",
+      "toolIds": [
+        "timeline"
+      ],
+      "weight": 85
+    },
+    {
+      "keyword": "班分け",
+      "toolIds": [
+        "group-split"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "チーム分け",
+      "toolIds": [
+        "group-split"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "席替え",
+      "toolIds": [
+        "group-split"
+      ],
+      "weight": 85
+    },
+    {
+      "keyword": "割り勘",
+      "toolIds": [
+        "warikan"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "精算",
+      "toolIds": [
+        "warikan"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "ギフト",
+      "toolIds": [
+        "present"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "プレゼント",
+      "toolIds": [
+        "present"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "景品",
+      "toolIds": [
+        "fair-draw",
+        "present"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "時給計算",
+      "toolIds": [
+        "time-calc"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "タイムカード",
+      "toolIds": [
+        "time-calc"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "残業計算",
+      "toolIds": [
+        "time-calc"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "差分チェック",
+      "toolIds": [
+        "diff"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "差分",
+      "toolIds": [
+        "diff"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "テキスト",
+      "toolIds": [
+        "normalize",
+        "table-conv",
+        "diff"
+      ],
+      "weight": 80
+    },
+    {
+      "keyword": "Excel",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 80
+    },
+    {
+      "keyword": "表データ",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "テーブル",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "名簿",
+      "toolIds": [
+        "group-split",
+        "normalize",
+        "table-conv"
+      ],
+      "weight": 85
+    },
+    {
+      "keyword": "台帳",
+      "toolIds": [
+        "table-conv"
+      ],
+      "weight": 80
+    },
+    {
+      "keyword": "抽選",
+      "toolIds": [
+        "fair-draw"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "景表法",
+      "toolIds": [
+        "fair-draw"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "予算",
+      "toolIds": [
+        "budget-trim"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "引き算",
+      "toolIds": [
+        "budget-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "見積会議",
+      "toolIds": [
+        "planning-poker"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "枠取り",
+      "toolIds": [
+        "slot-board"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "マッチングボード",
+      "toolIds": [
+        "match-board"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "全角半角",
+      "toolIds": [
+        "normalize"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "WebP",
+      "toolIds": [
+        "webp-to-jpg"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "テストデータ",
+      "toolIds": [
+        "test-data"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ラベル",
+      "toolIds": [
+        "label"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "検索クエリ",
+      "toolIds": [
+        "search-query"
+      ],
+      "weight": 100
+    }
+  ]
+}

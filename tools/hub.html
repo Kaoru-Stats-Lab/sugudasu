@@ -40,7 +40,8 @@
             <input type="search" id="sg-hub-search" class="sg-hub-search" placeholder="何をしたいですか？" autocomplete="off" enterkeyhint="search">
         </label>
         <p class="sg-hub-search-examples text-[11px] text-slate-500" id="sg-hub-search-examples">
-            例: 請求書を作りたい · PDFから画像を取り出したい · 画像を軽くしたい · コピペを直したい
+            <span class="sg-hub-search-examples__label">例</span>
+            <span id="sg-hub-search-example-chips" class="sg-hub-search-examples__chips" role="group" aria-label="検索例"></span>
         </p>
         <p class="sg-tool-lead sg-tool-lead--meta">
             各ツールページに用途別の説明と FAQ があります。手順は<a href="guides.html">実務ガイド</a>、データの扱いは<a href="statements.html">SUGUDASUの約束</a>をご覧ください。
@@ -83,16 +84,29 @@
             <button type="button" id="sg-hub-clear-search" class="sg-hub-clear-search">× 検索解除</button>
         </div>
         <div id="sg-hub-empty" class="sg-hub-empty hidden" hidden>
-            <p class="sg-hub-empty__title">該当するツールは見つかりませんでした。</p>
-            <p class="sg-hub-empty__lead">別の言葉も試してみてください。</p>
-            <div id="sg-hub-empty-tips" class="sg-hub-empty__tips"></div>
+            <p class="sg-hub-empty__title">見つかりませんでした</p>
+            <p class="sg-hub-empty__lead">別の言葉を試すか、下の例から選んでください。</p>
+            <div id="sg-hub-empty-blocks" class="sg-hub-empty__blocks">
+                <div class="sg-hub-empty__block">
+                    <p class="sg-hub-empty__block-title">おすすめ</p>
+                    <div id="sg-hub-empty-recommend" class="sg-hub-empty__tips"></div>
+                </div>
+                <div class="sg-hub-empty__block">
+                    <p class="sg-hub-empty__block-title">人気検索</p>
+                    <div id="sg-hub-empty-popular" class="sg-hub-empty__tips"></div>
+                </div>
+                <div class="sg-hub-empty__block">
+                    <p class="sg-hub-empty__block-title">検索例</p>
+                    <div id="sg-hub-empty-examples" class="sg-hub-empty__tips"></div>
+                </div>
+            </div>
             <button type="button" id="sg-hub-empty-clear" class="sg-hub-clear-search sg-hub-clear-search--block">すべてのツールを見る</button>
         </div>
     </section>
 
     <section id="sg-hub-popular-section" class="sg-hub-section space-y-3">
-        <h2 class="sg-hub-section-title">実務で人気</h2>
-        <div id="sg-hub-popular-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="実務で人気"></div>
+        <h2 class="sg-hub-section-title">よく使うツール</h2>
+        <div id="sg-hub-popular-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="よく使うツール"></div>
     </section>
 
     <section id="sg-hub-all-section" class="sg-hub-section space-y-3">
@@ -101,11 +115,11 @@
         <section id="sg-hub-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="すべてのツール">
         <a href="invoice.html" class="sg-hub-card sg-card p-5" data-tool-id="invoice" data-category-id="docs" data-search="請求書 請求書 sugudasu 請求書 見積・納品・請求書 インボイス（適格請求書）をpdfで発行したい時に。内訳や消費税・源泉税を計算します。 ga local 人気 請求 インボイス 見積書 納品書" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="invoice" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">請求書</h3>
         <p class="sg-hub-card__blurb">インボイス（適格請求書）をPDFで発行したい時に。内訳や消費税・源泉税を計算します。</p>
         </a>
-        <a href="stamp.html" class="sg-hub-card sg-card p-5" data-tool-id="stamp" data-category-id="docs" data-search="印鑑・認印 印鑑 sugudasu 電子印鑑 電子印鑑（請求書用） pdfや書類に使う電子印鑑や認印画像を作りたい時に。苗字や日付入りのスタンプを作成します。 new local 印鑑 認印 角印" data-popular="0">
+        <a href="stamp.html" class="sg-hub-card sg-card p-5" data-tool-id="stamp" data-category-id="docs" data-search="印鑑・認印 印鑑 sugudasu 電子印鑑 電子印鑑（請求書用） pdfや書類に使う電子印鑑や認印画像を作りたい時に。苗字や日付入りのスタンプを作成します。 new local 印鑑 認印 角印 ハンコ はんこ スタンプ" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="stamp" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">印鑑・認印</h3>
@@ -113,7 +127,7 @@
         </a>
         <a href="receipt.html" class="sg-hub-card sg-card p-5" data-tool-id="receipt" data-category-id="docs" data-search="領収書 領収書 sugudasu 領収書 手取り逆引き・領収書 領収書をpdfで作成したい時に。但し書きや金額を入力して作成します。 new local 人気 領収証 領収" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="receipt" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">領収書</h3>
         <p class="sg-hub-card__blurb">領収書をPDFで作成したい時に。但し書きや金額を入力して作成します。</p>
         </a>
@@ -131,7 +145,7 @@
         </a>
         <a href="shift.html" class="sg-hub-card sg-card p-5" data-tool-id="shift" data-category-id="staffing" data-search="シフト表 シフト sugudasu シフト シフト表 スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。 ga local 人気 シフト表 勤務表" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="shift" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">シフト表</h3>
         <p class="sg-hub-card__blurb">スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。</p>
         </a>
@@ -177,37 +191,37 @@
         <h3 class="sg-hub-card__title">表データ変換</h3>
         <p class="sg-hub-card__blurb">ExcelやCSVの表を別形式へ変換したい時に。MarkdownやJSONへ変換します。</p>
         </a>
-        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5" data-tool-id="webp-to-jpg" data-category-id="media" data-search="webp変換 webp→jpg sugudasu webp変換 webp→jpg/png webサイト用の画像形式を変更したい時に。webpをjpgやpngへ一括変換します。 beta local pc png jpg jpeg webp 画像変換" data-popular="0">
+        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5" data-tool-id="webp-to-jpg" data-category-id="media" data-search="webp変換 webp→jpg sugudasu webp変換 webp→jpg/png webサイト用の画像形式を変更したい時に。webpをjpgやpngへ一括変換します。 beta local pc png jpg jpeg webp 画像変換 写真 画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="webp-to-jpg" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--pc">PC推奨</span></div>
         <h3 class="sg-hub-card__title">WebP変換</h3>
         <p class="sg-hub-card__blurb">Webサイト用の画像形式を変更したい時に。WebPをJPGやPNGへ一括変換します。</p>
         </a>
-        <a href="video-frame.html" class="sg-hub-card sg-card p-5" data-tool-id="video-frame" data-category-id="media" data-search="動画コマ抜き 動画コマ抜き sugudasu 動画コマ抜き 動画から静止画png（コマ抜き） 動画の特定の瞬間を画像として切り出したい時に。mp4などの動画から静止画を抽出します。 new local" data-popular="0">
+        <a href="video-frame.html" class="sg-hub-card sg-card p-5" data-tool-id="video-frame" data-category-id="media" data-search="動画コマ抜き 動画コマ抜き sugudasu 動画コマ抜き 動画から静止画png（コマ抜き） 動画の特定の瞬間を画像として切り出したい時に。mp4などの動画から静止画を抽出します。 new local 写真 画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="video-frame" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">動画コマ抜き</h3>
         <p class="sg-hub-card__blurb">動画の特定の瞬間を画像として切り出したい時に。mp4などの動画から静止画を抽出します。</p>
         </a>
-        <a href="mask.html" class="sg-hub-card sg-card p-5" data-tool-id="mask" data-category-id="media" data-search="画像マスク マスク sugudasu マスク スクショ機密消し 画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。 new local ぼかし 黒塗り 機密 マスキング" data-popular="0">
+        <a href="mask.html" class="sg-hub-card sg-card p-5" data-tool-id="mask" data-category-id="media" data-search="画像マスク マスク sugudasu マスク スクショ機密消し 画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。 new local ぼかし 黒塗り 機密 マスキング スクショ スクリーンショット 写真 画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="mask" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">画像マスク</h3>
         <p class="sg-hub-card__blurb">画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。</p>
         </a>
-        <a href="image-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="image-trim" data-category-id="media" data-search="画像切り出し 画像切り出し sugudasu 画像切り出し 指定サイズ画像切出し 画像のサイズ変更や縦横比のトリミングをしたい時に。必要な部分だけを切り出します。 new local 人気 切り抜き クロップ トリミング snsカバー" data-popular="1">
+        <a href="image-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="image-trim" data-category-id="media" data-search="画像切り出し 画像切り出し sugudasu 画像切り出し 指定サイズ画像切出し 画像のサイズ変更や縦横比のトリミングをしたい時に。必要な部分だけを切り出します。 new local 人気 切り抜き クロップ トリミング トリム snsカバー 写真 画像" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="image-trim" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">画像切り出し</h3>
         <p class="sg-hub-card__blurb">画像のサイズ変更や縦横比のトリミングをしたい時に。必要な部分だけを切り出します。</p>
         </a>
-        <a href="watermark.html" class="sg-hub-card sg-card p-5" data-tool-id="watermark" data-category-id="media" data-search="画像透かし 透かし sugudasu 透かし 画像透かし一括 画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。 new local 透かし ウォーターマーク" data-popular="0">
+        <a href="watermark.html" class="sg-hub-card sg-card p-5" data-tool-id="watermark" data-category-id="media" data-search="画像透かし 透かし sugudasu 透かし 画像透かし一括 画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。 new local 透かし ウォーターマーク 写真 画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="watermark" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">画像透かし</h3>
         <p class="sg-hub-card__blurb">画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。</p>
         </a>
-        <a href="pdf-images.html" class="sg-hub-card sg-card p-5" data-tool-id="pdf-images" data-category-id="media" data-search="pdf画像抽出 pdf画像 sugudasu pdf画像抽出 pdf埋め込み画像抽出 pdfの中から埋め込まれた画像だけを取り出したい時に。画質を落とさず画像として抽出します。 new local pc pdf 埋め込み画像" data-popular="0">
+        <a href="pdf-images.html" class="sg-hub-card sg-card p-5" data-tool-id="pdf-images" data-category-id="media" data-search="pdf画像抽出 pdf画像 sugudasu pdf画像抽出 pdf埋め込み画像抽出 pdfの中から埋め込まれた画像だけを取り出したい時に。画質を落とさず画像として抽出します。 new local pc pdf 埋め込み画像 写真 画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="pdf-images" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--pc">PC推奨</span></div>
         <h3 class="sg-hub-card__title">PDF画像抽出</h3>
@@ -273,7 +287,7 @@
         <h3 class="sg-hub-card__title">リンク集QR</h3>
         <p class="sg-hub-card__blurb">複数のURLを1つのQRコードにまとめたい時に。リンク集QRコードを作成します。</p>
         </a>
-        <a href="qr-reader.html" class="sg-hub-card sg-card p-5" data-tool-id="qr-reader" data-category-id="ops" data-search="qr読取 qr読取 sugudasu qr読取 qr読取（カメラ・貼り付け・画面共有） 画像や画面に表示されたqrコードを読み取りたい時に。urlやデータを解析します。 new local qr 二次元コード" data-popular="0">
+        <a href="qr-reader.html" class="sg-hub-card sg-card p-5" data-tool-id="qr-reader" data-category-id="ops" data-search="qr読取 qr読取 sugudasu qr読取 qr読取（カメラ・貼り付け・画面共有） 画像や画面に表示されたqrコードを読み取りたい時に。urlやデータを解析します。 new local qr 二次元コード ocr 読み取り スキャン" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="qr-reader" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">QR読取</h3>

@@ -158,6 +158,8 @@ function renderFonts() {
 }
 
 async function init() {
+  renderSampleTexts();
+
   try {
     [fontStyles, symbolCatalog, hiraganaDecor] = await Promise.all([
       loadFontStyles(),
@@ -171,7 +173,6 @@ async function init() {
   }
 
   renderFilters();
-  renderSampleTexts();
   renderMiniSymbols();
   renderSymbolCatalog();
   renderHiraganaGrid();

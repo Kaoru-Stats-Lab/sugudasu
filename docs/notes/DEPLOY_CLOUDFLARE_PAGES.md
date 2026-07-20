@@ -69,6 +69,7 @@
 | D2 | 新規 HTML に **OGP 必須タグ**がある | `npm run validate:ogp` |
 | D3 | 命名 3 層が registry と一致 | `npm run validate:tool-naming` |
 | D4 | **本番相当ビルド成功** | `npm run build:pages` → exit 0 |
+| D4b | **ES module cache bust**（`*-app` / `*-engine` 改修時） | `dist/assets/*-app.js` の相対 import に `?v=` · Console に `does not provide an export named` なし · 詳細 [`DEPLOY_LOG.md`](DEPLOY_LOG.md)「事故防止 · ES module cache bust」 |
 | D5 | **月次ビルド予算 OK** + **deploy:gate**（提督端末） | `npm run release:pages:free`（= gate + build + budget consume） |
 | D6 | `data/changelog.json` にユーザー向け変更を追記（該当時） | 手動 |
 | D7 | **コミット → push**（Agent は提督依頼時のみ commit） | `git push origin main` |

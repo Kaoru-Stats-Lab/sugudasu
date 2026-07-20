@@ -17,6 +17,9 @@ const DICT = path.join(ROOT, 'data', 'search-dictionary');
 function main() {
   const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-registry.json'), 'utf8'));
   const synonyms = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/synonyms.json'), 'utf8'));
+  const brandNormalize = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/brand-normalize.json'), 'utf8'));
+  const thesaurus = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/search-thesaurus.json'), 'utf8'));
+  const intentMap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-intent-map.json'), 'utf8'));
   const hubCards = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
 
   const docs = fs
@@ -72,19 +75,28 @@ function main() {
     identities,
     synonymEntries: synonyms.entries || [],
     hubBlurbs,
+    brandNormalizeEntries: brandNormalize.entries || [],
+    thesaurusEntries: thesaurus.entries || [],
+    intentEntries: intentMap.entries || [],
   });
 
   const bundle = {
-    version: 1,
+    version: 3,
     generatedAt: new Date().toISOString(),
     termCount: index.terms.length,
+    brandRuleCount: (index.brandRules || []).length,
+    thesaurusRuleCount: (index.thesaurusRules || []).length,
+    intentRuleCount: (index.intentRules || []).length,
     toolIds: index.toolIds.filter((id) => hubIds.has(id) || id === 'font-converter'),
     terms: index.terms,
+    brandRules: index.brandRules || [],
+    thesaurusRules: index.thesaurusRules || [],
+    intentRules: index.intentRules || [],
   };
 
   fs.writeFileSync(OUT, JSON.stringify(bundle), 'utf8');
   console.log(
-    `[hub-search-bundle] OK: tools=${bundle.toolIds.length} terms=${bundle.termCount} → data/hub-search-bundle.json`
+    `[hub-search-bundle] OK: tools=${bundle.toolIds.length} terms=${bundle.termCount} brand=${bundle.brandRuleCount} thesaurus=${bundle.thesaurusRuleCount} intent=${bundle.intentRuleCount} → data/hub-search-bundle.json`
   );
 }
 

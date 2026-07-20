@@ -71,6 +71,17 @@ Hub は「探す場所」、Product は「作業する場所」。データ（SS
 - カード説明は CSS 2 行固定（`line-clamp` + 固定 height）· タイトルは 1 行 ellipsis
 - 誇張 · UI操作説明 · SEO羅列 · 保証できない「AI/自動/高速」は禁止（正本のチェック表）
 
+### 検索 UX（2026-07 Top IA）
+
+正本: [`docs/decision-log/2026-07-top-page-ux-review.md`](../decision-log/2026-07-top-page-ux-review.md)
+
+- Hero 下の検索例は **クリック可能 Chip**（`hub-config.searchExampleChips`）
+- 0件: おすすめ · 人気検索 · 検索例 + 検索解除
+- バッジ: status 強調 · spec 弱 · カード上の「人気」バッジは出さない
+- 同義語は `synonyms.json` のみ（表示名不変）※語彙 3 層は [`BRAND_NORMALIZE.md`](BRAND_NORMALIZE.md)
+- **禁止:** 人気カード大型化 · ランキング · Hero カード · Discover 化
+- **レイアウト:** 左寄せ · Desktop **4 列**維持 · 5〜6 列・センター寄せ禁止 → [`ADR-005`](../adr/ADR-005-hub-layout-alignment.md) · [`hub-layout.md`](../design/hub-layout.md)
+
 ### バッジ（再掲）
 
 | 種類 | 値 | 表示 |

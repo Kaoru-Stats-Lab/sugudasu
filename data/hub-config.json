@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-07-20",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
-  "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。",
+  "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。検索例チップは表示文言であり Analytics にキーワード本文は送らない。",
   "chipOrder": [
     "docs",
     "staffing",
@@ -35,5 +35,29 @@
     "receipt",
     "shift",
     "image-trim"
+  ],
+  "searchExampleChips": [
+    { "label": "請求書", "q": "請求書" },
+    { "label": "PDF", "q": "PDF" },
+    { "label": "画像", "q": "画像" },
+    { "label": "QR", "q": "QR" },
+    { "label": "シフト", "q": "シフト" }
+  ],
+  "emptyRecommendChips": [
+    { "label": "請求書", "q": "請求書" },
+    { "label": "画像切り出し", "q": "画像切り出し" },
+    { "label": "テキスト整え", "q": "テキスト整え" }
+  ],
+  "emptyPopularSearchChips": [
+    { "label": "インボイス", "q": "インボイス" },
+    { "label": "透かし", "q": "透かし" },
+    { "label": "割り勘", "q": "割り勘" },
+    { "label": "班分け", "q": "班分け" }
+  ],
+  "emptyExampleChips": [
+    { "label": "コピペ", "q": "コピペ" },
+    { "label": "表 / CSV", "q": "表 CSV" },
+    { "label": "PDF 抽出", "q": "PDF 画像" },
+    { "label": "ハンコ", "q": "ハンコ" }
   ]
 }
