@@ -1339,10 +1339,31 @@
 | **smoke** | `/budget-trim` 200 · `/` `hub-ia.js?v=77e1c8ce` `sg-is-filtered`+`pageshow` · CSS `sg-lock-row` |
 
 ---
+
+## DEPLOY-20260720-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 余白トリム（clipboard-trim）新規公開 · Hub 検索復帰強化 · watermark プレビュー · FAQ 文言 |
+| **change_summary** | `clipboard-trim` 新規 · `hub-ia` userSearchActive · 検索辞書 · リレーリンク · `watermark` プレビュー · FAQ PNGコピー文言 |
+| **local_build** | `pending` |
+| **deploy_count_today** | 5（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/` 全件 · `/clipboard-trim` 200 · `/watermark` DnD） |
+
+---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 005 approved（clipboard-trim 公開 · Hub 検索復帰 · watermark · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 004 executed（579f81d · 6deff099 · budget-trim UI · Hub catalog restore） |
 | 2026-07-20 | 004 approved（budget-trim ロックUI · Hub 全件復帰 · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 003 executed（d46c208 · e2bfb40e · 検索 Phase1 · hiddenKeywords） |

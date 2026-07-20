@@ -225,6 +225,20 @@
       "statusNote": "枠固定 · cover-fit · SNS/資料プリセット · 非送信 · Ctrl+V",
       "categoryId": "media"
     },
+    "clipboard-trim": {
+      "file": "clipboard-trim.html",
+      "conceptName": "余白トリム",
+      "productName": "SUGUDASU 余白トリム",
+      "navLabel": "余白トリム",
+      "navIcon": "📐",
+      "inNav": true,
+      "navOrder": 10.65,
+      "name": "クリップボード余白自動除去",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "Ctrl+V → 余白自動除去 → PNGコピー · 非送信 · CLIPBOARD_TRIM_SPEC.md",
+      "categoryId": "media"
+    },
     "watermark": {
       "file": "watermark.html",
       "conceptName": "画像透かし",

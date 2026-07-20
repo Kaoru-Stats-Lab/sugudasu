@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ウェブ画像の右クリックコピーやスクショをCtrl+Vで貼ると余白を自動除去し、PNGをクリップボードへ。保存なし・非送信。PowerPoint貼付向け。">
+    <title>スクショの余白を落としてPNGコピー | SUGUDASU 余白トリム</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="スクショの余白を落としてPNGコピー">
+    <meta property="og:description" content="Ctrl+V → 余白自動除去 → PNGコピー。保存・アップロードなし。">
+    <meta property="og:url" content="https://sugudasu.com/clipboard-trim">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 余白トリム">
+    <meta name="twitter:description" content="Ctrl+Vで余白除去 → PNGコピー。非送信。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。貼り付けから余白除去・PNGコピーまでブラウザ内だけで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"画像切り出しとの違いは？","acceptedAnswer":{"@type":"Answer","text":"画像切り出しは指定サイズ（枠）に収めるツールです。余白トリムは周囲の不要な余白を自動で限界まで削り落とす専用ツールです。"}},{"@type":"Question","name":"ファイルの保存やダウンロードはできますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールはクリップボードへのPNGコピー専用です。PNGをコピーボタンを押したら、そのままPowerPoint等へ貼り付けてください。"}},{"@type":"Question","name":"うまく余白が削られない画像はありますか？","acceptedAnswer":{"@type":"Answer","text":"外周が完全な単一色（まっ白など）ではない画像は削れません。外枠に1ピクセルの影やノイズがあるスクショ、グラデーション、写真は対象外です。"}},{"@type":"Question","name":"2枚以上の画像を一括処理できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ、1枚ずつの処理専用です。続けてCtrl+Vを押せば上書きされるため、資料に貼り付けながら連続で作業できます。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 余白トリム" data-sg-subtitle="Ctrl+V → 余白除去 → PNGコピー" data-sg-tool-id="clipboard-trim"></div>
+
+<main class="sg-main-shell flex-1 space-y-8">
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="画像" data-extra="スクショ · 資料貼付" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                ウェブ右クリックコピーやスクショの<strong>周囲余白</strong>を自動で落とし、PNGをクリップボードへ。保存せずそのまま資料へ貼り付けます。
+            </p>
+            <p class="sg-tool-lead">
+                機密が写っている場合は先に <a href="mask.html" class="text-violet-800 underline font-semibold">マスク</a>。指定サイズの枠に合わせる場合は <a href="image-trim.html" class="text-violet-800 underline font-semibold">画像切り出し</a> へ。
+            </p>
+        </div>
+        <p class="sg-tool-lead sg-tool-lead--meta">
+            社外配布用の透かしは <a href="watermark.html">透かし</a> · 貼れない WebP は <a href="webp-to-jpg.html">WebP変換</a> から。
+        </p>
+    </header>
+
+    <div id="ct-drop" class="sg-file-drop" tabindex="0" role="button" aria-label="画像を選択または貼り付け">
+        <p class="sg-file-drop__title">ドロップ / クリック · Ctrl+V で貼付け</p>
+        <p class="sg-file-drop__hint">ウェブ画像を右クリックコピー、またはスクショを撮ったら、ここで貼り付け（Ctrl+V）</p>
+        <p class="sg-file-drop__hint">PNG / JPEG / WebP / GIF · 1枚 · 余白を自動除去</p>
+    </div>
+    <input type="file" id="ct-file" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif">
+
+    <canvas id="ct-preview" class="hidden max-w-full h-auto border border-slate-200 bg-white" aria-label="余白除去後のプレビュー"></canvas>
+
+    <div class="space-y-2">
+        <button type="button" id="ct-copy" class="sg-btn-primary text-sm">PNGをコピー</button>
+        <p id="ct-msg" class="text-sm text-slate-600 min-h-[1.25rem]" role="status" aria-live="polite"></p>
+    </div>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="sg-faq-section" aria-labelledby="ct-faq-heading">
+    <div class="sg-faq-inner">
+        <h2 id="ct-faq-heading" class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
+        <details class="sg-faq">
+            <summary>画像はサーバーに送信されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ。貼り付けから余白除去・PNGコピーまでブラウザ内だけで処理します。タブを閉じるとデータは消えます。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>画像切り出しとの違いは？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>画像切り出しは指定サイズ（枠）に収めるツールです。余白トリムは周囲の不要な余白を自動で限界まで削り落とす専用ツールです。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>ファイルの保存やダウンロードはできますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ。本ツールはクリップボードへのPNGコピー専用です。PNGをコピーボタンを押したら、そのままPowerPoint等へ貼り付けてください。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>うまく余白が削られない画像はありますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>外周が完全な単一色（まっ白など）ではない画像は削れません。外枠に1ピクセルの影やノイズがあるスクショ、グラデーション、写真は対象外です。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>2枚以上の画像を一括処理できますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>いいえ、1枚ずつの処理専用です。続けて「Ctrl+V」を押せば上書きされるため、資料に貼り付けながら連続で作業できます。</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/clipboard-trim-app.js"></script>
+</body>
+</html>

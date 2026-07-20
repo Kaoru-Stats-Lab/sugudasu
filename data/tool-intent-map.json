@@ -488,6 +488,83 @@
         "search-query"
       ],
       "weight": 100
+    },
+    {
+      "keyword": "余白トリム",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "余白除去",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 98
+    },
+    {
+      "keyword": "ウェブ画像",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "右クリックコピー",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "ウェブ画像 コピペ",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "ネットの画像 保存しない",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "右クリックコピー トリミング",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "ダウンロードフォルダ 汚さない",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 92
+    },
+    {
+      "keyword": "画像を保存せずにパワポ",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 92
+    },
+    {
+      "keyword": "スクショ ファイル作らない",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 90
+    },
+    {
+      "keyword": "クリップボード PNG",
+      "toolIds": [
+        "clipboard-trim"
+      ],
+      "weight": 88
     }
   ]
 }

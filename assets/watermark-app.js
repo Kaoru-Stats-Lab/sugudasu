@@ -5,6 +5,7 @@
 import {
   MAX_FILES,
   MAX_EDGE,
+  PREVIEW_MAX_EDGE,
   OPACITY_STEPS,
   POSITIONS,
   isAcceptedImageFile,
@@ -27,6 +28,14 @@ let logoUrl = '';
 let logoNaturalW = 0;
 /** @type {number} */
 let logoNaturalH = 0;
+/** プレビュー対象の一覧 index */
+let previewIndex = 0;
+/** @type {string} */
+let previewObjectUrl = '';
+/** @type {number} */
+let previewTimer = 0;
+/** @type {number} */
+let previewSeq = 0;
 
 const $ = (id) => document.getElementById(id);
 
@@ -69,16 +78,108 @@ function syncModeUi() {
   const logoWrap = $('wm-logo-wrap');
   if (textWrap) textWrap.classList.toggle('hidden', mode !== 'text');
   if (logoWrap) logoWrap.classList.toggle('hidden', mode !== 'logo');
+  schedulePreview();
+}
+
+function revokePreview() {
+  if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+  previewObjectUrl = '';
+  const img = /** @type {HTMLImageElement|null} */ ($('wm-preview'));
+  const empty = $('wm-preview-empty');
+  if (img) {
+    img.removeAttribute('src');
+    img.classList.add('hidden');
+  }
+  if (empty) empty.classList.remove('hidden');
 }
 
 function revokeAll() {
   for (const it of items) URL.revokeObjectURL(it.url);
   items = [];
+  previewIndex = 0;
+  revokePreview();
   if (logoUrl) URL.revokeObjectURL(logoUrl);
   logoUrl = '';
   logoFile = null;
   logoNaturalW = 0;
   logoNaturalH = 0;
+}
+
+/**
+ * 透かし適用後のプレビュー（先頭 or 選択行 · 長辺 PREVIEW_MAX_EDGE）
+ * DECISION: 全枚プレビューしない。会議ツールと同様「1枚見て設定を決める」。
+ */
+function schedulePreview() {
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = window.setTimeout(() => {
+    refreshPreview().catch((err) => {
+      console.error(err);
+    });
+  }, 180);
+}
+
+async function refreshPreview() {
+  const img = /** @type {HTMLImageElement|null} */ ($('wm-preview'));
+  const empty = $('wm-preview-empty');
+  const caption = $('wm-preview-caption');
+  if (!img || !empty) return;
+
+  if (!items.length) {
+    revokePreview();
+    if (caption) caption.textContent = '先頭の画像 · 一覧から切替可';
+    return;
+  }
+
+  if (previewIndex < 0 || previewIndex >= items.length) previewIndex = 0;
+  const it = items[previewIndex];
+  const opts = currentOpts();
+
+  if (opts.mode === 'logo' && !opts.logoFile) {
+    revokePreview();
+    empty.textContent = 'ロゴを選ぶとプレビューが表示されます。';
+    empty.classList.remove('hidden');
+    if (caption) caption.textContent = it.file.name;
+    return;
+  }
+
+  empty.textContent = 'プレビューを更新中…';
+  empty.classList.remove('hidden');
+  img.classList.add('hidden');
+
+  const seq = ++previewSeq;
+  let logoDecoded = null;
+  try {
+    if (opts.mode === 'logo' && opts.logoFile) {
+      logoDecoded = await decodeImageFile(opts.logoFile);
+    }
+    const result = await renderOneToPngBlob(it.file, {
+      mode: opts.mode,
+      text: opts.text,
+      logoBitmap: logoDecoded?.bitmap || null,
+      logoNaturalW: logoDecoded?.width || opts.logoNaturalW,
+      logoNaturalH: logoDecoded?.height || opts.logoNaturalH,
+      position: opts.position,
+      opacity: opts.opacity,
+      maxEdge: PREVIEW_MAX_EDGE,
+    });
+    if (seq !== previewSeq) return;
+    if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = URL.createObjectURL(result.blob);
+    img.src = previewObjectUrl;
+    img.classList.remove('hidden');
+    empty.classList.add('hidden');
+    if (caption) {
+      caption.textContent = `${it.file.name} · ${result.width}×${result.height}`;
+    }
+  } catch (err) {
+    if (seq !== previewSeq) return;
+    console.error(err);
+    revokePreview();
+    empty.textContent = 'プレビューを作れませんでした。設定を見直してください。';
+    empty.classList.remove('hidden');
+  } finally {
+    if (logoDecoded) logoDecoded.close();
+  }
 }
 
 /**
@@ -123,6 +224,8 @@ async function addFiles(files) {
   }
   renderList();
   $('wm-editor')?.classList.remove('hidden');
+  if (previewIndex >= items.length) previewIndex = Math.max(0, items.length - 1);
+  schedulePreview();
   const scaledN = items.filter((x) => x.scaled).length;
   if (scaledN) {
     setStatus(`長辺 ${MAX_EDGE}px 超の画像を ${scaledN} 枚、縮小して処理します。`);
@@ -136,29 +239,50 @@ function renderList() {
   if (!list) return;
   list.innerHTML = '';
   items.forEach((it, idx) => {
-    const row = document.createElement('div');
-    row.className = 'flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2';
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className =
+      'w-full text-left flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors ' +
+      (idx === previewIndex
+        ? 'border-violet-400 bg-violet-50'
+        : 'border-slate-200 bg-white hover:bg-slate-50');
+    row.setAttribute('data-preview-idx', String(idx));
     row.innerHTML = `
-      <img src="${it.url}" alt="" class="h-12 w-12 object-cover rounded border border-slate-100">
-      <div class="min-w-0 flex-1">
+      <img src="${it.url}" alt="" class="h-12 w-12 object-cover rounded border border-slate-100 pointer-events-none">
+      <div class="min-w-0 flex-1 pointer-events-none">
         <p class="text-xs font-semibold text-slate-800 truncate">${escapeHtml(it.file.name)}</p>
-        <p class="text-[10px] text-slate-500">${it.width}×${it.height}${it.scaled ? ' · 縮小予定' : ''}</p>
+        <p class="text-[10px] text-slate-500">${it.width}×${it.height}${it.scaled ? ' · 縮小予定' : ''}${idx === previewIndex ? ' · プレビュー中' : ''}</p>
       </div>
-      <button type="button" class="text-[11px] font-semibold text-rose-700 hover:underline" data-remove="${idx}">外す</button>
+      <span class="text-[11px] font-semibold text-rose-700 hover:underline" data-remove="${idx}" role="button" tabindex="0">外す</span>
     `;
     list.appendChild(row);
   });
+  list.querySelectorAll('[data-preview-idx]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const t = /** @type {HTMLElement} */ (e.target);
+      if (t.closest('[data-remove]')) return;
+      previewIndex = Number(btn.getAttribute('data-preview-idx'));
+      renderList();
+      schedulePreview();
+    });
+  });
   list.querySelectorAll('[data-remove]').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const i = Number(btn.getAttribute('data-remove'));
       const [removed] = items.splice(i, 1);
       if (removed) URL.revokeObjectURL(removed.url);
+      if (previewIndex >= items.length) previewIndex = Math.max(0, items.length - 1);
+      else if (previewIndex > i) previewIndex -= 1;
       renderList();
       if (!items.length) {
         $('wm-editor')?.classList.add('hidden');
+        revokePreview();
         setStatus('');
       } else {
         setStatus(`${items.length} 枚`);
+        schedulePreview();
       }
     });
   });
@@ -331,11 +455,13 @@ function init() {
       const label = $('wm-logo-name');
       if (label) label.textContent = file.name;
       setError('');
+      schedulePreview();
     } catch {
       setError('ロゴの読み込みに失敗しました。');
       logoFile = null;
       logoNaturalW = 0;
       logoNaturalH = 0;
+      schedulePreview();
     } finally {
       if (decoded) decoded.close();
     }
@@ -356,6 +482,11 @@ function init() {
   });
   $('wm-each')?.addEventListener('click', () => {
     onDownloadEach();
+  });
+
+  $('wm-text')?.addEventListener('input', schedulePreview);
+  document.querySelectorAll('input[name="wm-position"], input[name="wm-opacity"]').forEach((el) => {
+    el.addEventListener('change', schedulePreview);
   });
 }
 

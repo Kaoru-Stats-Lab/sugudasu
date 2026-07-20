@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "clipboard-trim-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "public",
+      "title": "余白トリム — Ctrl+Vで余白を落としてPNGコピー",
+      "body": "スクリーンショットを貼ると余白を自動除去し、PNGをクリップボードへコピー。保存・ダウンロードなし。画像は送りません。",
+      "tools": [
+        "clipboard-trim"
+      ]
+    },
+    {
       "id": "hub-ia-header-cards-20260720",
       "date": "2026-07-20",
       "type": "feature",

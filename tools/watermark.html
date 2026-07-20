@@ -32,7 +32,7 @@
                 <strong>文字またはロゴ</strong>を9点のいずれかに焼き込みます。透過は3段階。複数枚は ZIP で一括保存。
             </p>
             <p class="sg-tool-lead">
-                先に隠すなら <a href="mask.html" class="text-violet-800 underline font-semibold">マスク</a>、サイズ合わせは <a href="image-trim.html" class="text-violet-800 underline font-semibold">画像切り出し</a>。
+                先に隠すなら <a href="mask.html" class="text-violet-800 underline font-semibold">マスク</a>、余白除去は <a href="clipboard-trim.html" class="text-violet-800 underline font-semibold">余白トリム</a>、枠サイズは <a href="image-trim.html" class="text-violet-800 underline font-semibold">画像切り出し</a>。
             </p>
         </div>
     </header>
@@ -96,6 +96,17 @@
                 <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.2" class="rounded-full border-slate-300">20%</label>
                 <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.4" class="rounded-full border-slate-300" checked>40%</label>
                 <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="radio" name="wm-opacity" value="0.6" class="rounded-full border-slate-300">60%</label>
+            </div>
+        </section>
+
+        <section class="sg-card p-4 space-y-3">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h2 class="text-sm font-bold text-slate-900">プレビュー</h2>
+                <p id="wm-preview-caption" class="text-[11px] text-slate-500">先頭の画像 · 一覧から切替可</p>
+            </div>
+            <div id="wm-preview-frame" class="rounded-lg border border-slate-200 bg-slate-50 p-3 min-h-[10rem] flex items-center justify-center">
+                <p id="wm-preview-empty" class="text-xs text-slate-500">画像を追加すると、透かし後の見た目がここに出ます。</p>
+                <img id="wm-preview" alt="透かしプレビュー" class="hidden max-w-full max-h-[min(70vh,28rem)] object-contain rounded border border-slate-100 bg-white">
             </div>
         </section>
 

@@ -132,6 +132,14 @@
       "promiseNote": "指定サイズちょうどへ切り出し"
     },
     {
+      "toolId": "clipboard-trim",
+      "categoryId": "media",
+      "productName": "SUGUDASU 余白トリム",
+      "file": "clipboard-trim.html",
+      "inputHandling": "クリップボード画像 · 端末内",
+      "promiseNote": "余白自動除去 · PNGコピーのみ · 保存なし"
+    },
+    {
       "toolId": "watermark",
       "categoryId": "media",
       "productName": "SUGUDASU 透かし",

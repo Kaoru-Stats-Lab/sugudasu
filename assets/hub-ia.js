@@ -163,6 +163,7 @@
       } catch (_) {}
     }
     var query = '';
+    var userSearchActive = false;
     // DECISION: ブラウザのフォーム復元で検索語が残ると「リロードしても絞り込みのまま」になる。
     // Hub はカタログが正なので、起動時は検索を捨てて全件表示から始める。
     if (searchEl) searchEl.value = '';
@@ -184,11 +185,32 @@
     }
 
     function isSearching() {
-      return !!(query && String(query).trim());
+      return userSearchActive && !!(query && String(query).trim());
+    }
+
+    /** 検索セッションを捨て、カタログ全件表示へ戻す（bfcache / フォーム復元対策） */
+    function resetCatalogView() {
+      userSearchActive = false;
+      query = '';
+      if (searchEl) {
+        searchEl.value = '';
+        try {
+          searchEl.defaultValue = '';
+        } catch (_) {
+          /* ignore */
+        }
+      }
+      cards.forEach(function (card) {
+        card.classList.remove('hidden', 'sg-is-filtered');
+        card.removeAttribute('hidden');
+      });
+      paint();
     }
 
     function runSearchQuery(q, opts) {
-      query = String(q || '');
+      var next = String(q || '');
+      userSearchActive = !!next.trim();
+      query = next;
       if (searchEl) searchEl.value = query;
       if (opts && opts.track && query.trim()) {
         track('search_used', { has_query: true });
@@ -198,7 +220,8 @@
     }
 
     function clearSearch() {
-      runSearchQuery('', { focus: true });
+      resetCatalogView();
+      if (searchEl) searchEl.focus();
     }
 
     function tipChipHtml(t) {
@@ -430,10 +453,10 @@
       if (!searching) {
         setHidden(allSection, false);
         setHidden(gridEl, false);
-        // 検索解除時はカードの filtered を必ず剥がす（bfcache / 途中失敗の保険）
+        setHidden(searchPanel, true);
+        // 検索解除時はカードの filtered / legacy hidden を必ず剥がす
         cards.forEach(function (card, idx) {
-          if (!cardMatchesCategory(card)) return;
-          setCardFiltered(card, false);
+          setCardFiltered(card, !cardMatchesCategory(card));
           card.style.order = String(1000 + idx);
         });
         renderPopularClones();
@@ -535,6 +558,7 @@
     if (searchEl) {
       var searchTracked = false;
       searchEl.addEventListener('input', function () {
+        userSearchActive = true;
         query = searchEl.value || '';
         if (!searchTracked && query.trim()) {
           searchTracked = true;
@@ -556,32 +580,25 @@
 
     // bfcache（戻る）で「検索中に付いた hidden」が残ったDOMが復元されるのを防ぐ
     global.addEventListener('pageshow', function (ev) {
-      // DECISION: Hub に戻ったらカタログ全件。検索セッションは履歴に持ち込まない。
-      query = '';
-      if (searchEl) searchEl.value = '';
-      paint();
+      resetCatalogView();
       // Chrome のフォーム復元が pageshow 直後に走る場合への再ガード
       if (ev && ev.persisted) {
-        global.setTimeout(function () {
-          query = '';
-          if (searchEl) searchEl.value = '';
-          paint();
-        }, 0);
+        global.setTimeout(resetCatalogView, 0);
       }
     });
 
-    paint();
+    global.addEventListener('load', function () {
+      if (!userSearchActive) resetCatalogView();
+    });
+
+    resetCatalogView();
     // 初回ロード後の autofill / フォーム復元で検索語が戻るのを打ち消す
-    global.setTimeout(function () {
-      if (searchEl && searchEl.value && !(query && String(query).trim())) {
-        searchEl.value = '';
-      }
-      if (!(query && String(query).trim())) {
-        query = '';
-        if (searchEl) searchEl.value = '';
-        paint();
-      }
-    }, 0);
+    [0, 50, 200].forEach(function (ms) {
+      global.setTimeout(function () {
+        if (userSearchActive) return;
+        if (searchEl && searchEl.value) resetCatalogView();
+      }, ms);
+    });
   }
 
   function waitHubSearch(ms) {

@@ -8,6 +8,10 @@
     { "terms": ["印鑑", "認印", "角印", "ハンコ", "はんこ", "スタンプ"], "toolIds": ["stamp"] },
     { "terms": ["PNG", "JPG", "JPEG", "WebP", "画像変換"], "toolIds": ["webp-to-jpg"] },
     { "terms": ["切り抜き", "クロップ", "トリミング", "トリム", "SNSカバー"], "toolIds": ["image-trim"] },
+    { "terms": ["余白トリム", "余白除去", "余白カット", "クリップボード余白", "margin trim", "clipboard trim"], "toolIds": ["clipboard-trim"] },
+    { "terms": ["ウェブ画像", "ネットの画像", "ブラウザの画像", "サイト上の画像", "ホームページの画像"], "toolIds": ["clipboard-trim"] },
+    { "terms": ["右クリックコピー", "直コピー", "保存せずコピー", "保存なしコピー"], "toolIds": ["clipboard-trim"] },
+    { "terms": ["ダウンロードフォルダ", "PC汚したくない", "ファイル保存しない"], "toolIds": ["clipboard-trim"] },
     { "terms": ["ぼかし", "黒塗り", "機密", "マスキング", "スクショ", "スクリーンショット"], "toolIds": ["mask"] },
     { "terms": ["透かし", "ウォーターマーク"], "toolIds": ["watermark"] },
     { "terms": ["PDF", "埋め込み画像"], "toolIds": ["pdf-images"] },
@@ -25,6 +29,6 @@
     { "terms": ["時給", "勤務時間", "バイト代", "パート給料"], "toolIds": ["time-calc"] },
     { "terms": ["コピペ", "貼り付け", "CSV", "TSV"], "toolIds": ["table-conv", "normalize"] },
     { "terms": ["デコ文字", "特殊フォント", "バイオ"], "toolIds": ["sns"] },
-    { "terms": ["写真", "画像"], "toolIds": ["webp-to-jpg", "image-trim", "mask", "watermark", "pdf-images", "video-frame"] }
+    { "terms": ["写真", "画像"], "toolIds": ["webp-to-jpg", "image-trim", "clipboard-trim", "mask", "watermark", "pdf-images", "video-frame"] }
   ]
 }

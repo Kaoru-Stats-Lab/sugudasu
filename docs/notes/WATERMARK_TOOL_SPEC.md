@@ -59,7 +59,7 @@ File
 | 層 | 責務 | 禁止 |
 |----|------|------|
 | `watermark-engine.js` | 純関数 · Canvas/ZIP/ファイル名 | DOM イベント · alert · UI |
-| `watermark-app.js` | 入力 · プレビュー · DL トリガ | 画像アルゴリズム本体 |
+| `watermark-app.js` | 入力 · **透かし後プレビュー（1枚）** · DL トリガ | 画像アルゴリズム本体 |
 
 ### ③ モジュール
 
@@ -72,6 +72,7 @@ File
 
 - 処理中は **1 枚分**の bitmap + shared canvas を保持
 - プレビュー用 ObjectURL は追加時に作り、外す・クリアで必ず revoke
+- **透かし後プレビュー**は選択中の 1 枚のみ（長辺 `PREVIEW_MAX_EDGE`）。全枚は ZIP/単枚書き出し時に処理
 - ZIP は STORE（無圧縮）· PNG は既圧縮のため Deflate しない
 
 ### ⑥ Worker

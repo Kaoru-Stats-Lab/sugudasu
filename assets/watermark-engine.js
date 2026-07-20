@@ -18,6 +18,8 @@
 
 export const MAX_FILES = 20;
 export const MAX_EDGE = 4096;
+/** 画面プレビュー用の長辺上限（本番書き出しは MAX_EDGE） */
+export const PREVIEW_MAX_EDGE = 960;
 export const SUFFIX_MAX_LEN = 30;
 export const TEXT_RATIO_LONG = 0.045;
 export const TEXT_RATIO_SHORT = 0.12;
@@ -523,6 +525,7 @@ export function canvasToBlob(canvas, mime = 'image/png', quality) {
  *   logoNaturalH?: number,
  *   position: string,
  *   opacity: number,
+ *   maxEdge?: number,
  * }} opts
  * @returns {Promise<{ blob: Blob, width: number, height: number, scaled: boolean }>}
  */
@@ -535,10 +538,12 @@ export async function renderOneToPngBlob(file, opts) {
   let decoded = null;
   let logoDecoded = null;
   let logoTrimmed = null;
+  // DECISION: プレビューは maxEdge を下げてメインスレッド負荷を抑える。書き出しは既定 MAX_EDGE。
+  const edge = typeof opts.maxEdge === 'number' && opts.maxEdge > 0 ? opts.maxEdge : MAX_EDGE;
 
   try {
     decoded = await decodeImageFile(file);
-    const fitted = fitWithinMaxEdge(decoded.width, decoded.height, MAX_EDGE);
+    const fitted = fitWithinMaxEdge(decoded.width, decoded.height, edge);
     canvas.width = fitted.w;
     canvas.height = fitted.h;
     const ctx = canvas.getContext('2d');

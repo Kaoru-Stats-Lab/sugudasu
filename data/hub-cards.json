@@ -209,6 +209,18 @@
       }
     },
     {
+      "toolId": "clipboard-trim",
+      "href": "clipboard-trim.html",
+      "blurb": "ウェブ右クリックコピーやスクショの余白を消して資料に貼りたい時に。Ctrl+Vで貼ってPNGをコピーするだけです。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "watermark",
       "href": "watermark.html",
       "blurb": "画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。",

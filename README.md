@@ -38,6 +38,7 @@ python -m http.server 8080
 | [video-frame.html](tools/video-frame.html) | /video-frame | SUGUDASU 動画コマ抜き | 動画コマ抜き | alpha |
 | [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
 | [image-trim.html](tools/image-trim.html) | /image-trim | SUGUDASU 画像切り出し | 画像切り出し | alpha |
+| [clipboard-trim.html](tools/clipboard-trim.html) | /clipboard-trim | SUGUDASU 余白トリム | 余白トリム | alpha |
 | [watermark.html](tools/watermark.html) | /watermark | SUGUDASU 透かし | 透かし | alpha |
 | [pdf-images.html](tools/pdf-images.html) | /pdf-images | SUGUDASU PDF画像抽出 | PDF画像 | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
