@@ -180,34 +180,12 @@ SLOW COFFEE, SLOW LIFE.</textarea>
 <script src="../assets/sugudasu-shell.js"></script>
 <script type="module">
 import { sgCopy, SAMPLE_TEXTS, SNS_DEFAULT_TEXT, SNS_DEFAULT_LINES } from '../assets/sns-app.js';
+import { mapMathAlpha, mapCircled } from '../assets/unicode-math-alpha.js';
 
 const JA_RE = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uFF66-\uFF9D]/;
 
 function hasJapanese(s) {
     return JA_RE.test(s);
-}
-
-function mapMathAlpha(s, upperBase, lowerBase, digitBase) {
-    return [...s].map(c => {
-        const n = c.codePointAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCodePoint(upperBase + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCodePoint(lowerBase + (n - 0x61));
-        if (digitBase != null && n >= 0x30 && n <= 0x39) return String.fromCodePoint(digitBase + (n - 0x30));
-        return c;
-    }).join('');
-}
-
-function mapCircled(s) {
-    return [...s].map(c => {
-        const n = c.codePointAt(0);
-        if (n >= 0x41 && n <= 0x5A) return String.fromCodePoint(0x24B6 + (n - 0x41));
-        if (n >= 0x61 && n <= 0x7A) return String.fromCodePoint(0x24D0 + (n - 0x61));
-        if (n >= 0x30 && n <= 0x39) {
-            if (n === 0x30) return '\u24EA';
-            return String.fromCodePoint(0x2460 + (n - 0x31));
-        }
-        return c;
-    }).join('');
 }
 
 function applyCombining(s, mark) {
@@ -217,11 +195,12 @@ function applyCombining(s, mark) {
 const TRANSFORMS = [
     { id: 'sans', label: 'サンセリフ（細）', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D5A0, 0x1D5BA, 0x1D7E2) },
     { id: 'bold-sans', label: '太字サンセリフ', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D5D4, 0x1D5EE, 0x1D7EC) },
-    { id: 'script', label: 'スクリプト体', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D49C, 0x1D4B6, null) },
-    { id: 'fraktur', label: 'フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D504, 0x1D51E, null) },
-    { id: 'bold-fraktur', label: 'ボールド・フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D56C, 0x1D586, null) },
+    // DECISION: styleKey 必須 — Mathematical Alphanumeric の intentional holes を Letterlike に置換（□防止）
+    { id: 'script', label: 'スクリプト体', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D49C, 0x1D4B6, null, 'script') },
+    { id: 'fraktur', label: 'フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D504, 0x1D51E, null, 'fraktur') },
+    { id: 'bold-fraktur', label: 'ボールド・フラクトゥール', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D56C, 0x1D586, null, 'boldFraktur') },
     { id: 'monospace', label: '等幅', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D670, 0x1D68A, 0x1D7F6) },
-    { id: 'double-struck', label: '二重線', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8) },
+    { id: 'double-struck', label: '二重線', latinOnly: true, fn: s => mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8, 'double') },
     { id: 'fullwidth', label: '全角英数', latinOnly: true, fn: s => s.replace(/[A-Za-z0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 0xFEE0)) },
     { id: 'circled', label: '丸囲み（大小）', latinOnly: true, fn: mapCircled },
     { id: 'circled-lower', label: '小文字丸囲み', latinOnly: true, fn: s => [...s.toLowerCase()].map(c => {
@@ -254,8 +233,8 @@ const TRANSFORMS = [
 function boldSans(s) { return mapMathAlpha(s, 0x1D5D4, 0x1D5EE, 0x1D7EC); }
 function thinSans(s) { return mapMathAlpha(s, 0x1D5A0, 0x1D5BA, 0x1D7E2); }
 function mono(s) { return mapMathAlpha(s, 0x1D670, 0x1D68A, 0x1D7F6); }
-function boldFraktur(s) { return mapMathAlpha(s, 0x1D56C, 0x1D586, null); }
-function doubleStruck(s) { return mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8); }
+function boldFraktur(s) { return mapMathAlpha(s, 0x1D56C, 0x1D586, null, 'boldFraktur'); }
+function doubleStruck(s) { return mapMathAlpha(s, 0x1D538, 0x1D552, 0x1D7D8, 'double'); }
 
 const PROFILE_LIMITS = { insta: 150, x: 160 };
 

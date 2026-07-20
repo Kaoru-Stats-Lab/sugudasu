@@ -13,6 +13,7 @@ import {
   buildFilledSquaredDest,
   buildMathDest,
   MATH_BANDS,
+  mapMathAlpha,
 } from '../assets/unicode-math-alpha.js';
 import { convertString } from '../assets/sns-font-engine.js';
 
@@ -125,6 +126,25 @@ assert(
   'minimal/archive italic includes Planck h (U+210E)'
 );
 console.log('spot: serifItalic "minimal / archive" →', italicOut);
+
+// /sns インライン変換と同じ mapMathAlpha(styleKey) 経路 — holes 再発防止
+const snsScriptProbe = 'MY ROOM SLOW COFFEE, SLOW LIFE.';
+const snsScriptOut = mapMathAlpha(snsScriptProbe, 0x1d49c, 0x1d4b6, null, 'script');
+assert(
+  [...snsScriptOut].every((ch) => /\p{Assigned}/u.test(ch)),
+  'mapMathAlpha(script) must not emit unassigned CPs'
+);
+assert(snsScriptOut.includes(String.fromCodePoint(0x2133)), 'script M → U+2133');
+assert(snsScriptOut.includes(String.fromCodePoint(0x211b)), 'script R → U+211B');
+assert(
+  mapMathAlpha('ego', 0x1d49c, 0x1d4b6, null, 'script').includes(String.fromCodePoint(0x212f)),
+  'script e → U+212F'
+);
+assert(
+  !mapMathAlpha(snsScriptProbe, 0x1d49c, 0x1d4b6, null).includes(String.fromCodePoint(0x2133)),
+  'mapMathAlpha without styleKey must NOT fill holes (guards the regression)'
+);
+console.log('spot: mapMathAlpha script →', snsScriptOut.replace(/\n/g, ' / '));
 
 // buildMathDest 一致（再発防止）
 for (const [key, bands] of Object.entries(MATH_BANDS)) {

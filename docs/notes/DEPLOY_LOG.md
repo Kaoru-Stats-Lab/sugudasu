@@ -1380,10 +1380,31 @@
 
 ---
 
+## DEPLOY-20260720-007
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — `/sns` スクリプト体□ hotfix（インライン mapMathAlpha が styleKey 未渡し） |
+| **change_summary** | `tools/sns.html` を `unicode-math-alpha` の `mapMathAlpha`/`mapCircled` に統一 · script/fraktur/double に styleKey · `font-styles-validate` に mapMathAlpha 回帰テスト |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push · 本番□未解消 hotfix） |
+| **pages_build_budget_after** | （consume 後記入） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （push 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 007 approved（/sns インライン mapMathAlpha styleKey hotfix · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 006 executed（bf5020c · json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ） |
 | 2026-07-20 | 006 approved（json-view · ai-cleaner · SNS MATH_HOLES 再デプロイ · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 005 executed（2cfb167 · 11f35b82 · clipboard-trim 公開 · Hub 検索復帰 · FAQ 文言） |
