@@ -1283,26 +1283,27 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 本番一括反映（提督指示）— watermark engine cache bust 再発防止 · Hub 検索 3 層辞書 · Top IA / レイアウト ADR·Design 凍結 · サンプル早期描画 |
 | **change_summary** | `build-pages` 全 `*-app`/`*-engine` bust · `brand-normalize` / `search-thesaurus` / `tool-intent-map` · hub-search-engine Layer1–3 · ADR-001〜005 · design/cursor/decision-log · hub-layout 左寄せ・4列凍結 · font-converter/sns サンプル · DEPLOY_LOG 事故防止節 |
 | **incident** | `/watermark` DnD 不能（古い `watermark-engine.js`）· 同型 engine 付きプロダクトを台帳化 |
 | **local_build** | `pass`（`validate:hub-ia` · `release:pages:free` · budget consume 51/450） |
 | **deploy_count_today** | 2（**P7 override** · 提督「すべて本番反映」） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 51/450 |
 | **gates** | P1–P6 · P7 override · 事故防止 cache bust 確認 · validate:hub-ia |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`/watermark` · `/pdf-images` · `/` 検索 · `/font-converter` · `/sns` |
+| **cf_deployment_id** | `302e41d2`（`7505f01` · git push origin main · https://dash.cloudflare.com/adbc084a711933271252e34fab58a209/pages/view/sugudasu/302e41d2-934b-49cb-9fee-6c4c200b558e） |
+| **smoke** | `/watermark` · `/pdf-images` · `/` · `/font-converter` · `/sns` 200 · `watermark-app.js` → `watermark-engine.js?v=95d8960f` · `hub-ia.js` `brandRules=YES` |
 
 ---
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 002 executed（7505f01 · 302e41d2 · cache bust · 検索3層 · ADR/Design） |
 | 2026-07-20 | 002 approved（cache bust · 検索3層 · ADR/Design · P7 override · 提督本番反映） |
 | 2026-07-20 | 002 planned（watermark engine cache bust 事故 · 再発禁止台帳 · build-pages 全 engine バスト） |
 | 2026-07-20 | 001 executed（db205b7 · Hub IA Phase2 · カード文言 · `#hash` rewrite · budget-trim 他） |
