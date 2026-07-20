@@ -11,16 +11,22 @@ import {
   snapOpacity,
   normalizePosition,
   fitWithinMaxEdge,
-  renderWatermarkedCanvas,
+  renderOneToPngBlob,
   buildOutputFileName,
   buildStoreZip,
+  decodeImageFile,
 } from './watermark-engine.js';
 
-/** @type {{ file: File, url: string, img: HTMLImageElement, scaled: boolean }[]} */
+/** @type {{ file: File, url: string, width: number, height: number, scaled: boolean }[]} */
 let items = [];
-/** @type {HTMLImageElement|null} */
-let logoImg = null;
+/** @type {File|null} */
+let logoFile = null;
+/** @type {string} */
 let logoUrl = '';
+/** @type {number} */
+let logoNaturalW = 0;
+/** @type {number} */
+let logoNaturalH = 0;
 
 const $ = (id) => document.getElementById(id);
 
@@ -48,11 +54,12 @@ function currentOpts() {
   return {
     mode,
     text: String($('wm-text')?.value || '').trim() || 'CONFIDENTIAL',
-    logo: logoImg || undefined,
-    logoNaturalW: logoImg?.naturalWidth,
-    logoNaturalH: logoImg?.naturalHeight,
+    logoFile,
+    logoNaturalW,
+    logoNaturalH,
     position,
     opacity,
+    appendWatermarkToName: Boolean($('wm-name-suffix')?.checked),
   };
 }
 
@@ -69,7 +76,9 @@ function revokeAll() {
   items = [];
   if (logoUrl) URL.revokeObjectURL(logoUrl);
   logoUrl = '';
-  logoImg = null;
+  logoFile = null;
+  logoNaturalW = 0;
+  logoNaturalH = 0;
 }
 
 /**
@@ -92,11 +101,25 @@ async function addFiles(files) {
     setError(`${MAX_FILES} 枚を超えた分は追加しませんでした。`);
   }
 
+  // 逐次 decode（Promise.all 禁止）
   for (const file of slice) {
-    const url = URL.createObjectURL(file);
-    const img = await loadImage(url);
-    const fitted = fitWithinMaxEdge(img.naturalWidth, img.naturalHeight, MAX_EDGE);
-    items.push({ file, url, img, scaled: fitted.scaled });
+    let decoded = null;
+    try {
+      decoded = await decodeImageFile(file);
+      const fitted = fitWithinMaxEdge(decoded.width, decoded.height, MAX_EDGE);
+      const url = URL.createObjectURL(file);
+      items.push({
+        file,
+        url,
+        width: decoded.width,
+        height: decoded.height,
+        scaled: fitted.scaled,
+      });
+    } catch {
+      setError('画像の読み込みに失敗したものがあります。');
+    } finally {
+      if (decoded) decoded.close();
+    }
   }
   renderList();
   $('wm-editor')?.classList.remove('hidden');
@@ -106,19 +129,6 @@ async function addFiles(files) {
   } else {
     setStatus(`${items.length} 枚読み込み済み`);
   }
-}
-
-/**
- * @param {string} url
- * @returns {Promise<HTMLImageElement>}
- */
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('load-failed'));
-    img.src = url;
-  });
 }
 
 function renderList() {
@@ -132,7 +142,7 @@ function renderList() {
       <img src="${it.url}" alt="" class="h-12 w-12 object-cover rounded border border-slate-100">
       <div class="min-w-0 flex-1">
         <p class="text-xs font-semibold text-slate-800 truncate">${escapeHtml(it.file.name)}</p>
-        <p class="text-[10px] text-slate-500">${it.img.naturalWidth}×${it.img.naturalHeight}${it.scaled ? ' · 縮小予定' : ''}</p>
+        <p class="text-[10px] text-slate-500">${it.width}×${it.height}${it.scaled ? ' · 縮小予定' : ''}</p>
       </div>
       <button type="button" class="text-[11px] font-semibold text-rose-700 hover:underline" data-remove="${idx}">外す</button>
     `;
@@ -176,37 +186,56 @@ function downloadBlob(blob, filename) {
 }
 
 /**
- * @param {HTMLCanvasElement} canvas
- * @returns {Promise<Blob>}
+ * @returns {Promise<{ name: string, data: Uint8Array, blob: Blob }[]|null>}
  */
-function canvasToPngBlob(canvas) {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob'))), 'image/png');
-  });
-}
-
 async function processAll() {
   if (!items.length) {
     setError('画像を追加してください。');
-    return;
+    return null;
   }
   const opts = currentOpts();
-  if (opts.mode === 'logo' && !opts.logo) {
+  if (opts.mode === 'logo' && !opts.logoFile) {
     setError('ロゴ画像を選んでください。');
-    return;
+    return null;
   }
   setError('');
   setStatus('処理中…');
+
+  /** ロゴは1回 decode して使い回す（本体画像は逐次） */
+  let logoDecoded = null;
+  const usedNames = new Set();
   const outFiles = [];
-  for (let i = 0; i < items.length; i++) {
-    const it = items[i];
-    const canvas = renderWatermarkedCanvas(it.img, opts);
-    const blob = await canvasToPngBlob(canvas);
-    const buf = new Uint8Array(await blob.arrayBuffer());
-    const name = buildOutputFileName(it.file.name, i + 1);
-    outFiles.push({ name, data: buf, blob });
+
+  try {
+    if (opts.mode === 'logo' && opts.logoFile) {
+      logoDecoded = await decodeImageFile(opts.logoFile);
+    }
+
+    for (const it of items) {
+      const result = await renderOneToPngBlob(it.file, {
+        mode: opts.mode,
+        text: opts.text,
+        logoBitmap: logoDecoded?.bitmap || null,
+        logoNaturalW: logoDecoded?.width || opts.logoNaturalW,
+        logoNaturalH: logoDecoded?.height || opts.logoNaturalH,
+        position: opts.position,
+        opacity: opts.opacity,
+      });
+      const name = buildOutputFileName({
+        sourceName: it.file.name,
+        appendWatermarkToName: opts.appendWatermarkToName,
+        mode: opts.mode,
+        text: opts.text,
+        logoFileName: logoFile?.name || '',
+        usedNames,
+      });
+      const data = new Uint8Array(await result.blob.arrayBuffer());
+      outFiles.push({ name, data, blob: result.blob });
+    }
+    return outFiles;
+  } finally {
+    if (logoDecoded) logoDecoded.close();
   }
-  return outFiles;
 }
 
 async function onDownloadZip() {
@@ -239,9 +268,14 @@ async function onDownloadEach() {
   }
 }
 
-function bindDrop(zone, onFiles) {
+/**
+ * @param {HTMLElement|null} zone
+ * @param {(files: File[]) => void} onFiles
+ * @param {HTMLInputElement|null} [externalInput]
+ */
+function bindDrop(zone, onFiles, externalInput) {
   if (!zone) return;
-  const input = zone.querySelector('input[type="file"]');
+  const input = externalInput || zone.querySelector('input[type="file"]');
   zone.addEventListener('click', () => input?.click());
   zone.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -251,12 +285,12 @@ function bindDrop(zone, onFiles) {
   });
   zone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    zone.classList.add('ring-2', 'ring-violet-400');
+    zone.classList.add('is-dragover');
   });
-  zone.addEventListener('dragleave', () => zone.classList.remove('ring-2', 'ring-violet-400'));
+  zone.addEventListener('dragleave', () => zone.classList.remove('is-dragover'));
   zone.addEventListener('drop', (e) => {
     e.preventDefault();
-    zone.classList.remove('ring-2', 'ring-violet-400');
+    zone.classList.remove('is-dragover');
     const list = [...(e.dataTransfer?.files || [])];
     onFiles(list);
   });
@@ -275,7 +309,7 @@ function init() {
 
   bindDrop($('wm-drop'), (files) => {
     addFiles(files).catch(() => setError('画像の読み込みに失敗しました。'));
-  });
+  }, /** @type {HTMLInputElement|null} */ ($('wm-file')));
 
   const logoInput = $('wm-logo-input');
   logoInput?.addEventListener('change', async () => {
@@ -287,15 +321,23 @@ function init() {
       return;
     }
     if (logoUrl) URL.revokeObjectURL(logoUrl);
+    logoFile = file;
     logoUrl = URL.createObjectURL(file);
+    let decoded = null;
     try {
-      logoImg = await loadImage(logoUrl);
+      decoded = await decodeImageFile(file);
+      logoNaturalW = decoded.width;
+      logoNaturalH = decoded.height;
       const label = $('wm-logo-name');
       if (label) label.textContent = file.name;
       setError('');
     } catch {
       setError('ロゴの読み込みに失敗しました。');
-      logoImg = null;
+      logoFile = null;
+      logoNaturalW = 0;
+      logoNaturalH = 0;
+    } finally {
+      if (decoded) decoded.close();
     }
   });
 

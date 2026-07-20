@@ -89,10 +89,13 @@
         </div>
     </section>
 
-    <section id="drop-zone" class="sg-card p-5 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-12 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/40 transition-colors" tabindex="0" role="button" aria-label="画像を選択または貼り付け">
-        <p class="text-sm font-semibold text-slate-700">スクショをドロップ · クリック · <kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">Ctrl</kbd>+<kbd class="px-1 py-0.5 bg-slate-100 rounded text-[10px]">V</kbd></p>
-        <p class="text-[11px] text-slate-500 mt-2">PNG / JPEG / WebP / GIF · 25MBまで · 1枚ずつ編集</p>
-        <input type="file" id="file-input" class="sr-only" accept="image/png,image/jpeg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif">
+    <section id="drop-panel" class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+        <div id="drop-zone" class="sg-file-drop" tabindex="0" role="button" aria-label="画像を選択または貼り付け">
+            <p class="sg-file-drop__title">スクショをドロップ / クリック · Ctrl+V</p>
+            <p class="sg-file-drop__hint">PNG / JPEG / WebP / GIF · 25MBまで · 1枚ずつ編集</p>
+        </div>
+        <input type="file" id="file-input" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif">
     </section>
 
     <section id="editor-panel" class="sg-card p-5 space-y-4 hidden">

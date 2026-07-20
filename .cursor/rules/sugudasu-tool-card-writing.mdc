@@ -1,0 +1,37 @@
+---
+description: Hubカード文言（JTBD blurb · conceptName）を書く・直すとき必読
+globs:
+  - data/hub-cards.json
+  - data/tool-registry.json
+  - tools/hub.html
+  - scripts/render-hub-cards.mjs
+alwaysApply: false
+---
+
+# SUGUDASU Hub カード文言（Agent 必読）
+
+**正本:** `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md`
+
+## いつ読む
+
+- 新規ツールの Hub カード文案
+- `hub-cards.json` の blurb 変更
+- `conceptName` の命名・改名（Hub 表示名）
+
+## 必須ルール（要約 · 詳細は正本）
+
+- 出力は `toolId` · `conceptName` · `description`（= blurb）のみ
+- description は **2文固定**: `○○したい時に。` + `○○します。`
+- 機能自慢・SEO羅列・UI操作説明・誇張（高速/簡単/AI…）禁止
+- Hub `<h3>` = **conceptName**（productName は出さない）
+- 書いたら品質チェック表を全部通す
+
+## 実装順
+
+1. 正本に従って文案を確定
+2. `data/tool-registry.json` の `conceptName`
+3. `data/hub-cards.json` の `blurb`
+4. `npm run validate:hub-ia`（カード再生成 · 検索バンドル）
+5. `npm run validate:tool-naming`
+
+命名3層の全体手順は `TOOL_NAMING_AGENT_PLAYBOOK.md`。公開 MECE は **§1.5**。

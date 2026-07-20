@@ -1,7 +1,12 @@
 /**
  * SNS / フォント変換エンジン（ブラウザ完結）
  */
-import { MATH_BANDS, buildMathDest, isCorruptMathDest } from './unicode-math-alpha.js';
+import {
+  MATH_BANDS,
+  MATH_SRC,
+  buildMathDest,
+  buildFilledSquaredDest,
+} from './unicode-math-alpha.js';
 
 export const STYLE_BADGES = {
   double: '定番',
@@ -98,13 +103,21 @@ let stylesCache = null;
 
 function normalizeFontStyles(styles) {
   return styles.map((style) => {
+    if (style.key === 'filledSquared') {
+      return {
+        ...style,
+        map: { src: MATH_SRC, dest: buildFilledSquaredDest() },
+      };
+    }
     const bands = MATH_BANDS[style.key];
-    if (!bands || !style.map?.src) return style;
-    if (!isCorruptMathDest(style.map)) return style;
+    if (!bands) return style;
     const [upper, lower, digit] = bands;
     return {
       ...style,
-      map: { src: style.map.src, dest: buildMathDest(upper, lower, digit) },
+      map: {
+        src: MATH_SRC,
+        dest: buildMathDest(upper, lower, digit, style.key),
+      },
     };
   });
 }

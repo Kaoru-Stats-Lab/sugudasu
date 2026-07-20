@@ -39,6 +39,8 @@ function main() {
   const synonyms = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/synonyms.json'), 'utf8'));
   const hubCards = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-cards.json'), 'utf8'));
   const relations = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/relations.json'), 'utf8'));
+  const bundlePath = path.join(ROOT, 'data/hub-search-bundle.json');
+  const dictDir = path.join(ROOT, 'data/search-dictionary');
 
   const catIds = new Set((catDoc.categories || []).map((c) => c.id));
   for (const c of catDoc.categories || []) {
@@ -91,6 +93,48 @@ function main() {
     if (!registry.tools[from]) fail(`relations: 未知 from=${from}`);
     for (const to of tos) {
       if (!registry.tools[to]) fail(`relations: 未知 to=${to} (from ${from})`);
+    }
+  }
+
+  for (const id of hubConfig.popularToolIds || []) {
+    if (!registry.tools[id]) fail(`hub-config.popularToolIds 未知: ${id}`);
+    if (!cardToolIds.has(id)) fail(`hub-config.popularToolIds が hub-cards に無い: ${id}`);
+  }
+
+  const STATUS = new Set(['new', 'beta', 'ga', null]);
+  const SPEC = new Set(['local', 'pc']);
+  for (const card of hubCards.cards || []) {
+    if (card.eyebrow) fail(`hub-cards: eyebrow 廃止 (${card.toolId})`);
+    if (card.meta) fail(`hub-cards: meta 廃止・内部文言禁止 (${card.toolId})`);
+    const b = card.badges;
+    if (!b || typeof b !== 'object') fail(`hub-cards: badges 必須 (${card.toolId})`);
+    if (b.status != null && !STATUS.has(b.status)) fail(`hub-cards badges.status 不正: ${card.toolId}=${b.status}`);
+    for (const sp of b.spec || []) {
+      if (!SPEC.has(sp)) fail(`hub-cards badges.spec 不正: ${card.toolId}=${sp}`);
+    }
+  }
+
+  const hubHtml = fs.readFileSync(path.join(ROOT, 'tools/hub.html'), 'utf8');
+  if (!hubHtml.includes('data-sg-nav="hub"')) fail('hub.html: data-sg-nav="hub" が無い');
+  const shellSrc = fs.readFileSync(path.join(ROOT, 'assets/sugudasu-shell.js'), 'utf8');
+  if (!shellSrc.includes('resolveNavMode')) fail('sugudasu-shell.js: resolveNavMode が無い');
+  if (!shellSrc.includes('navLinksForMode')) fail('sugudasu-shell.js: navLinksForMode が無い');
+  if (!shellSrc.includes('ツール横並びナビは廃止')) {
+    fail('sugudasu-shell.js: ツール横並びナビ廃止の痕跡が無い');
+  }
+  if (!hubHtml.includes('sg-hub-search-panel')) fail('hub.html: 検索結果パネルが無い');
+  if (!hubHtml.includes('sg-hub-popular-grid')) fail('hub.html: 人気グリッドが無い');
+
+  if (!fs.existsSync(bundlePath)) {
+    fail('hub-search-bundle.json が無い（npm run build:hub-search を先に実行）');
+  } else {
+    const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
+    if (!bundle.terms || !bundle.terms.length) fail('hub-search-bundle.terms が空');
+    const dictFiles = fs.existsSync(dictDir)
+      ? fs.readdirSync(dictDir).filter((f) => f.endsWith('.json')).map((f) => f.replace(/\.json$/, ''))
+      : [];
+    for (const id of cardToolIds) {
+      if (!dictFiles.includes(id)) fail(`search-dictionary 欠落: ${id}`);
     }
   }
 

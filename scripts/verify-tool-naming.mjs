@@ -152,7 +152,8 @@ function verifyHubCards(tools) {
       continue;
     }
     const idx = hub.indexOf(hrefNeedle);
-    const slice = hub.slice(idx, idx + 600);
+    const end = hub.indexOf('</a>', idx);
+    const slice = end > idx ? hub.slice(idx, end + 4) : hub.slice(idx, idx + 2000);
     // Hub カード h3 = conceptName（SUGUDASU 接頭辞なし）。Product ヘッダーは productName のまま。
     if (!slice.includes(tool.conceptName)) {
       fail(

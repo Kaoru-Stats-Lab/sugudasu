@@ -37,12 +37,15 @@
         </div>
     </header>
 
-    <section id="wm-drop"
-             class="sg-card p-5 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50/80 px-4 py-12 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/40 transition-colors"
+    <section class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+        <div id="wm-drop"
+             class="sg-file-drop"
              tabindex="0" role="button" aria-label="画像を選択またはドロップ">
-        <p class="text-sm font-semibold text-slate-700">PNG / JPEG / WebP をドロップ · クリック（複数可）</p>
-        <p class="text-[11px] text-slate-500 mt-2">最大 20 枚 · 長辺 4096px 超は縮小して処理 · PDF・動画は対象外</p>
-        <input type="file" class="sr-only" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple>
+            <p class="sg-file-drop__title">PNG / JPEG / WebP をドロップ / クリック（複数可）</p>
+            <p class="sg-file-drop__hint">最大 20 枚 · 長辺 4096px 超は縮小して処理 · PDF・動画は対象外</p>
+        </div>
+        <input type="file" id="wm-file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" class="hidden" multiple>
     </section>
 
     <p id="wm-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
@@ -99,6 +102,10 @@
         <section class="sg-card p-4 space-y-3">
             <h2 class="text-sm font-bold text-slate-900">読み込んだ画像</h2>
             <div id="wm-list" class="space-y-2"></div>
+            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-slate-700">
+                <input type="checkbox" id="wm-name-suffix" class="rounded border-slate-300">
+                透かし情報をファイル名へ追加
+            </label>
             <div class="flex flex-wrap gap-2 pt-1">
                 <button type="button" id="wm-zip" class="sg-btn-primary text-sm">ZIPで一括保存</button>
                 <button type="button" id="wm-each" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">1枚ずつPNG</button>

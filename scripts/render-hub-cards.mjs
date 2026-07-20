@@ -13,12 +13,39 @@ const HUB = path.join(ROOT, 'tools', 'hub.html');
 const START = '<!-- hub-cards:start -->';
 const END = '<!-- hub-cards:end -->';
 
+const STATUS_LABEL = { new: 'NEW', beta: 'Beta', ga: '正式' };
+const SPEC_LABEL = { local: '完全ローカル', pc: 'PC推奨' };
+
 function esc(s) {
   return String(s || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function badgesHtml(badges) {
+  if (!badges || typeof badges !== 'object') return '';
+  const bits = [];
+  const st = badges.status;
+  if (st && STATUS_LABEL[st]) {
+    // status + 値 modifier（意味別クラス。同色混在させない）
+    bits.push(
+      `<span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--${esc(st)}">${STATUS_LABEL[st]}</span>`
+    );
+  }
+  for (const sp of badges.spec || []) {
+    if (SPEC_LABEL[sp]) {
+      bits.push(
+        `<span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--${esc(sp)}">${SPEC_LABEL[sp]}</span>`
+      );
+    }
+  }
+  if (badges.popular) {
+    bits.push('<span class="sg-hub-badge sg-hub-badge--popular">人気</span>');
+  }
+  if (!bits.length) return '';
+  return `<div class="sg-hub-card__badges">${bits.join('')}</div>`;
 }
 
 function renderCards() {
@@ -34,37 +61,39 @@ function renderCards() {
     }
   }
 
-  const parts = ['<section id="sg-hub-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="ツール一覧">'];
+  const parts = [
+    '<section id="sg-hub-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="すべてのツール">',
+  ];
   for (const card of cards) {
     const tool = registry.tools[card.toolId];
     if (!tool) continue;
     const title = tool.conceptName || tool.navLabel || card.toolId;
+    const badgeBits = [];
+    const b = card.badges || {};
+    if (b.status) badgeBits.push(b.status);
+    if (Array.isArray(b.spec)) badgeBits.push(...b.spec);
+    if (b.popular) badgeBits.push('人気');
     const searchBits = [
       tool.conceptName,
       tool.navLabel,
       tool.productName,
       tool.name,
       card.blurb,
-      card.eyebrow,
+      ...badgeBits,
       ...(synByTool.get(card.toolId) || []),
     ]
       .filter(Boolean)
       .join(' ')
       .toLowerCase();
     parts.push(
-      `<a href="${esc(card.href)}" class="sg-hub-card sg-card p-5" data-tool-id="${esc(card.toolId)}" data-category-id="${esc(tool.categoryId || '')}" data-search="${esc(searchBits)}">`
+      `<a href="${esc(card.href)}" class="sg-hub-card sg-card p-5" data-tool-id="${esc(card.toolId)}" data-category-id="${esc(tool.categoryId || '')}" data-search="${esc(searchBits)}" data-popular="${b.popular ? '1' : '0'}">`
     );
     parts.push(
       `<button type="button" class="sg-hub-fav" data-fav-toggle="${esc(card.toolId)}" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>`
     );
-    if (card.eyebrow) {
-      parts.push(`<p class="sg-hub-card__eyebrow">${esc(card.eyebrow)}</p>`);
-    }
+    parts.push(badgesHtml(card.badges));
     parts.push(`<h3 class="sg-hub-card__title">${esc(title)}</h3>`);
-    parts.push(`<p class="text-xs text-slate-500 mt-2">${esc(card.blurb)}</p>`);
-    if (card.meta) {
-      parts.push(`<p class="sg-hub-card__meta">${esc(card.meta)}</p>`);
-    }
+    parts.push(`<p class="sg-hub-card__blurb">${esc(card.blurb)}</p>`);
     parts.push('</a>');
   }
   parts.push('</section>');

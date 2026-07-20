@@ -17,9 +17,12 @@
     { "terms": ["班分け", "グループ分け"], "toolIds": ["group-split"] },
     { "terms": ["Planning Poker", "プランニングポーカー", "見積もり"], "toolIds": ["planning-poker"] },
     { "terms": ["割り勘", "精算"], "toolIds": ["warikan"] },
+    { "terms": ["予算", "引き算", "コストカット", "予算会議", "超過"], "toolIds": ["budget-trim"] },
     { "terms": ["QR", "二次元コード"], "toolIds": ["link-qr", "qr-reader"] },
     { "terms": ["差分", "Diff", "AI書き換え"], "toolIds": ["diff"] },
     { "terms": ["シフト表", "勤務表"], "toolIds": ["shift"] },
-    { "terms": ["時給", "勤務時間"], "toolIds": ["time-calc"] }
+    { "terms": ["時給", "勤務時間", "バイト代", "パート給料"], "toolIds": ["time-calc"] },
+    { "terms": ["コピペ", "貼り付け", "CSV", "TSV"], "toolIds": ["table-conv", "normalize"] },
+    { "terms": ["デコ文字", "特殊フォント", "バイオ"], "toolIds": ["sns"] }
   ]
 }

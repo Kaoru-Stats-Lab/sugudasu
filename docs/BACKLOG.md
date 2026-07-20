@@ -1472,20 +1472,32 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 #### 8-11-4. Agent チェックリスト — 新規ツール追加時
 
-**命名 3 層の詳細手順:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` §1（**この節より先に registry**）
+**命名 3 層の詳細手順:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` §1（**この節より先に registry**）  
+**Hub カード文言（必読）:** [`docs/notes/TOOL_CARD_WRITING_GUIDELINE.md`](notes/TOOL_CARD_WRITING_GUIDELINE.md)（JTBD · 2文固定。カード文案はこの正本以外で新造しない）
 
 1. [ ] `data/tool-registry.json` — `conceptName` · `productName` · `navLabel` · `inNav` · `navOrder` · `stage` · `statusNote`
 2. [ ] `tools/{slug}.html` 作成（**slug = id = registry キー**。略称のみの `imgconv` 型は禁止）
 3. [ ] `data-sg-title` = **productName** · `data-sg-tool-id` = id（`CHROME_HEADER_GUARDRAILS.md`）
 4. [ ] `assets/{slug}.js`（ロジックがある場合 · HTML と **同名**）
-5. [ ] `tools/hub.html` カード `<h3>` = productName · `assets/sugudasu-shell.js` `TOOLS[].label` = navLabel
-6. [ ] 当該 HTML の **title / meta description / OGP / FAQ JSON-LD**（**このツールの検索意図**）
+5. [ ] **カード文案** — `TOOL_CARD_WRITING_GUIDELINE.md` に従い `conceptName` + `description`（2文）を確定 → `data/hub-cards.json` の `blurb` · Hub `<h3>` = **conceptName**（productName 禁止）
+6. [ ] `assets/sugudasu-shell.js` `TOOLS[].label` = navLabel（`inNav` 時）
+7. [ ] 当該 HTML の **title / meta description / OGP / FAQ JSON-LD**（**このツールの検索意図**）
    - `og:url` = `https://sugudasu.com/{id}`（**`.html` 禁止**）
    - **canonical タグは書かない**（`build-pages` が注入 · [`SEO_GSC_AND_BUILD_PIPELINE.md`](notes/SEO_GSC_AND_BUILD_PIPELINE.md)）
-7. [ ] `data/changelog.json` 追記
-8. [ ] **`npm run validate:tool-naming`** → **`npm run validate:ogp`** → **`npm run build:pages`**（sitemap · `_redirects` · canonical · `/data/` noindex 自動）
-9. [ ] **hub の title に件数を書かない** · **「全Nツール」リンク文言を増やさない**
-10. [ ] sitemap / robots / `_redirects` を **手編集しない**
+8. [ ] `data/changelog.json` 追記
+9. [ ] **`npm run validate:hub-ia`** → **`npm run validate:tool-naming`** → **`npm run validate:ogp`** → **`npm run build:pages`**
+10. [ ] **hub の title に件数を書かない** · **「全Nツール」リンク文言を増やさない**
+11. [ ] sitemap / robots / `_redirects` を **手編集しない**
+
+#### 8-11-4b. Hub カード文言だけの改訂
+
+カードの `blurb` / `conceptName` だけ触るときも、正本は同じ。
+
+1. [ ] [`TOOL_CARD_WRITING_GUIDELINE.md`](notes/TOOL_CARD_WRITING_GUIDELINE.md) の品質チェック表を通す
+2. [ ] `data/tool-registry.json`（conceptName 変更時）· `data/hub-cards.json`（blurb）
+3. [ ] `npm run validate:hub-ia` · `npm run validate:tool-naming`
+
+**やらない:** Hero / Header / Product 本文 / SEO metadata / GA4 / 検索ロジック変更（一覧性と JTBD カードのみ）
 
 #### 8-11-5. 任意（P2 · 未採用）
 

@@ -11,13 +11,49 @@
   },
   "entries": [
     {
+      "id": "hub-ia-header-cards-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "public",
+      "title": "ツール一覧 — 探しやすいサイトナビとカード説明",
+      "body": "ヘッダーはサイト導線のみに整理。カード説明を「〜したい時に」の利用シーンに統一し、検索でも同じ文言を使います。",
+      "tools": [
+        "hub"
+      ]
+    },
+    {
+      "id": "budget-trim-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "public",
+      "title": "予算の引き算パレット — 合計と超過だけを数える",
+      "body": "Excelから貼って上限との差を巨大表示。矢印キーで±1万/±10万。共有はURLハッシュのみ。グラフ・自動配分なし。",
+      "tools": [
+        "budget-trim"
+      ]
+    },
+    {
+      "id": "budget-trim-impl-20260720",
+      "date": "2026-07-20",
+      "type": "feature",
+      "audience": "internal",
+      "title": "budget-trim α — BUDGET_TRIM_SPEC · hash · integer yen",
+      "body": "tools/budget-trim.html · budget-trim-engine/app · test:budget-trim",
+      "tools": [
+        "budget-trim"
+      ],
+      "rollup": "budget-trim-20260720"
+    },
+    {
       "id": "fix-root-absolute-internal-links-20260718",
       "date": "2026-07-18",
       "type": "fix",
       "audience": "public",
       "title": "トップからの遷移不良を修正 — リンクをルート絶対パスに統一",
       "body": "相対リンクが /guides/ 配下などで誤解決し、トップに戻って見えていた問題を修正。ナビ・カードは /請求書などクリーンURLへ。",
-      "tools": ["hub"]
+      "tools": [
+        "hub"
+      ]
     },
     {
       "id": "guide-planning-poker-estimation-rewrite-20260718",
@@ -26,7 +62,9 @@
       "audience": "public",
       "title": "実務ガイド — 見積もりすり合わせを「はじめての人」向けに書き換え",
       "body": "計画の錯誤への共感、開発以外のシーン、ものさし・鉄則、Cohn / McConnell 名著案内（Amazon アソシエイト）を追加。FAQは実務語＋検索語のハイブリッド。",
-      "tools": ["planning-poker"]
+      "tools": [
+        "planning-poker"
+      ]
     },
     {
       "id": "planning-poker-reveal-panel-fix-20260718",
@@ -35,7 +73,9 @@
       "audience": "public",
       "title": "見積会議 — Reveal後に結果欄が表示されない不具合を修正",
       "body": "同時公開後、右のReveal結果・理由入力・採用ポイントが隠れたままになる問題を直しました。",
-      "tools": ["planning-poker"]
+      "tools": [
+        "planning-poker"
+      ]
     },
     {
       "id": "planning-poker-projector-ux-20260718",
@@ -44,7 +84,9 @@
       "audience": "public",
       "title": "見積会議 — 投影向けにReveal前後の画面重心を整理",
       "body": "Reveal前はカード入力を主役に、結果欄は待機表示に。Reveal後は中央値を強調し理由入力へフォーカス。参加者の投票状況は●/○と太さで判別しやすくしました。",
-      "tools": ["planning-poker"]
+      "tools": [
+        "planning-poker"
+      ]
     },
     {
       "id": "slot-board-20260718",
@@ -53,7 +95,9 @@
       "audience": "public",
       "title": "枠取りパレット — 定員付きカンバンで人数と超過を見える化",
       "body": "Excelから貼ってレーンに並べ、上限超過を赤く表示します。復元コードとTSVで持ち運び。自動配置はしません。",
-      "tools": ["slot-board"]
+      "tools": [
+        "slot-board"
+      ]
     },
     {
       "id": "slot-board-impl-20260718",
@@ -62,7 +106,9 @@
       "audience": "internal",
       "title": "slot-board α — 制限付きカンバン · SUGUDASU-SLOT- Base64 · confirm削除",
       "body": "tools/slot-board.html · slot-board-engine/app · 専用CSS · test:slot-board",
-      "tools": ["slot-board"],
+      "tools": [
+        "slot-board"
+      ],
       "rollup": "slot-board-20260718"
     },
     {
@@ -72,7 +118,9 @@
       "audience": "public",
       "title": "PDF画像抽出 — 仕様書から埋め込み画像だけを端末内で取り出す",
       "body": "PDFに埋め込まれた図や写真を抜き出し、ZIPで保存します。ページ全体の画像化・圧縮・OCRはしません。パソコン向けです。",
-      "tools": ["pdf-images"]
+      "tools": [
+        "pdf-images"
+      ]
     },
     {
       "id": "pdf-images-impl-20260718",
@@ -81,7 +129,9 @@
       "audience": "internal",
       "title": "pdf-images α — pdfjs-dist 5.4.296 vendor · engine/app · SSOT/TECH",
       "body": "tools/pdf-images.html · assets/vendor/pdfjs · PDF_IMAGE_EXTRACT_SPEC/TECH · test:pdf-images",
-      "tools": ["pdf-images"],
+      "tools": [
+        "pdf-images"
+      ],
       "rollup": "pdf-images-20260718"
     },
     {
@@ -91,7 +141,9 @@
       "audience": "public",
       "title": "透かし — 文字またはロゴを焼き込み、複数枚をZIPで保存",
       "body": "PNG/JPEG/WebPに文字またはロゴを9点のいずれかへ。透過は20%/40%/60%。画像は端末内だけ。PDF・動画は対象外です。",
-      "tools": ["watermark"]
+      "tools": [
+        "watermark"
+      ]
     },
     {
       "id": "watermark-impl-20260718",
@@ -100,7 +152,9 @@
       "audience": "internal",
       "title": "watermark α — Canvas焼き込み · store ZIP · registry/hub/statements",
       "body": "tools/watermark.html · watermark-engine.js · WATERMARK_TOOL_SPEC.md · test:watermark",
-      "tools": ["watermark"],
+      "tools": [
+        "watermark"
+      ],
       "rollup": "watermark-20260718"
     },
     {
@@ -110,7 +164,9 @@
       "audience": "public",
       "title": "データの扱いの説明を明確化 — 入力は送らない · ページ読込・解析は別",
       "body": "各ツールの表示を「入力内容はサーバーに送信しません」に揃えました。約束ページに、アクセス解析（GA4）・フォント・広告（予定）など入力以外の通信の説明を追加しています。",
-      "tools": ["statements"]
+      "tools": [
+        "statements"
+      ]
     },
     {
       "id": "privacy-claim-impl-20260718",
@@ -119,7 +175,9 @@
       "audience": "internal",
       "title": "非送信主張是正 — privacy-badge · telemetry 開示 · 通信ゼロ/外部送信ゼロ除去",
       "body": "data-sg-privacy-badge（shell）· statements #telemetry-disclosure · #verify-devtools 必須一文 · DATA_PRIVACY_CLAIM_POLICY · DESIGN_GUIDELINE §3.6b · 各 tools/guides 表記統一 · normalize dialog 廃止",
-      "tools": ["statements"],
+      "tools": [
+        "statements"
+      ],
       "rollup": "privacy-claim-align-20260718"
     },
     {
@@ -129,7 +187,9 @@
       "audience": "public",
       "title": "差分チェック — 全角・行末スペースを無視して比較（任意）",
       "body": "比較時だけ空白の見え方を揃えるチェックを追加しました。入力欄の原文は変わりません。",
-      "tools": ["diff"]
+      "tools": [
+        "diff"
+      ]
     },
     {
       "id": "statements-productname-hotfix-20260717",
@@ -138,7 +198,9 @@
       "audience": "internal",
       "title": "statements — ツール対応表で productName を JSON 埋め込み（slug 表示禁止）",
       "body": "registry キャッシュずれで video-frame 等が slug 表示されていた。statements-product.json に productName/file を必須化。",
-      "tools": ["statements"]
+      "tools": [
+        "statements"
+      ]
     },
     {
       "id": "statements-product-mece-20260717",
@@ -147,7 +209,9 @@
       "audience": "public",
       "title": "SUGUDASUの約束 — 製品カテゴリを整理し全ツール対応表を最新化",
       "body": "他サービスとの違いとツール対応表を、帳票・シフト・テキスト・画像・配属・当日運営などに相互排他で分け、ナビにあるツールをすべて掲載するようにしました。",
-      "tools": ["statements"]
+      "tools": [
+        "statements"
+      ]
     },
     {
       "id": "statements-product-impl-20260717",
@@ -156,7 +220,9 @@
       "audience": "internal",
       "title": "statements-product.json SSOT · validate を build:pages に追加 · roadmap 同タイミング更新",
       "body": "data/statements-product.json · scripts/verify-statements-product.mjs · DEV_TRANSPARENCY_RULES · tools/statements.html 動的描画",
-      "tools": ["statements"],
+      "tools": [
+        "statements"
+      ],
       "rollup": "statements-product-mece-20260717"
     },
     {
@@ -166,7 +232,9 @@
       "audience": "public",
       "title": "動画コマ抜き — 操作動画からマニュアル用PNGを非送信で保存",
       "body": "手元の MP4/WebM を開き、シークとコマ送りで止めて PNG 保存。再生UIは映り込まず、動画は端末内だけ。GIF化はしません。",
-      "tools": ["video-frame"]
+      "tools": [
+        "video-frame"
+      ]
     },
     {
       "id": "video-frame-impl-20260717",
@@ -175,7 +243,9 @@
       "audience": "internal",
       "title": "video-frame α — registry · hub · ファイル名ゼロ埋め · VIDEO_FRAME_PNG_SPEC",
       "body": "tools/video-frame.html · assets/video-frame.js · 前後フレーム相当 · キーボード矢印 · Blobのみ",
-      "tools": ["video-frame"],
+      "tools": [
+        "video-frame"
+      ],
       "rollup": "video-frame-20260717"
     },
     {
@@ -185,7 +255,9 @@
       "audience": "public",
       "title": "検索式ビルダー — filetype 付き Google 検索式を非送信で作成",
       "body": "用途を選んでキーワードを入れるだけで filetype:pdf や site: の検索式をコピーできます。検索結果は表示せず、キーワードは SUGUDASU に送りません。",
-      "tools": ["search-query"]
+      "tools": [
+        "search-query"
+      ]
     },
     {
       "id": "search-query-impl-20260717",
@@ -194,7 +266,9 @@
       "audience": "internal",
       "title": "search-query α — registry · hub · ホスト正規化 · LocalStorage除外",
       "body": "tools/search-query.html · assets/search-query.js · SEARCH_QUERY_BUILDER_SPEC.md v0.1",
-      "tools": ["search-query"],
+      "tools": [
+        "search-query"
+      ],
       "rollup": "search-query-20260717"
     },
     {
@@ -204,7 +278,12 @@
       "audience": "public",
       "title": "実務ガイドを5本追加（非送信検証・見積会議・マスク・当日進行・追加請求）",
       "body": "AdSense「有用性」改善の一環として、ブラウザ完結の検証手順、見積会議の回し方、安全な黒塗り、当日進行の遅れ補正、仕様変更の請求合意フローを公開しました。",
-      "tools": ["invoice", "mask", "planning-poker", "timeline"]
+      "tools": [
+        "invoice",
+        "mask",
+        "planning-poker",
+        "timeline"
+      ]
     },
     {
       "id": "contact-page-adsense-20260715",

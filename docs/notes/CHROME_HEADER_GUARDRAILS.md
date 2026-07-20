@@ -45,16 +45,18 @@
 | `data-sg-tool-id` | registry キー（開発バッジ · 命名検証用） |
 | `data-sg-print="true"` | 印刷/PDF ボタン表示 |
 | `data-sg-landscape="true"` | A4 横（シフトのみ） |
-| `data-sg-chrome-mode="focus"` | **コンパクトヘッダ** — ロゴ帯+16本ナビを出さない（**Sync `timeline-sync` 専用** · `TIMELINE_TOOL_SPEC.md` §7-1） |
+| `data-sg-chrome-mode="focus"` | **コンパクトヘッダ** — サイトナビを出さない（**Sync `timeline-sync` 専用** · `TIMELINE_TOOL_SPEC.md` §7-1） |
+| `data-sg-nav` | `hub` / `product` / `site`（省略時はパスから自動判定）。**Header = サイトナビ**（ツール横並びは出さない · `HUB_IA_REFRESH_V2.md` Phase 2） |
 
 **インライン `SUGUDASU_SHELL.mount()` は使わない。** `shell.js` 読込時に `bootstrapChromeFromDom()` が自動実行。
 
-### 3.1 情報量増加時のナビ規律（2026-07）
+### 3.1 サイトナビ規律（2026-07 Phase 2）
 
-- モバイルは `.sg-nav-list` を横スクロール（`overflow-x: auto`）で運用し、固定5列化しない。
-- ナビラベルは `11px` 下限、タップ高は `40px` 以上を維持する。
+- Header はサイト導線のみ（Hub / 実務ガイド / 更新履歴 / ロードマップ 等）。個別ツールリンクは出さない。
+- Hub: `data-sg-nav="hub"` — 探索 UI は Hero 検索・カテゴリのみ。
+- Product: 「← ツール一覧」で Hub へ戻る導線を保証。
+- モバイルは ☰ drawer（Desktop 項目 + 約束）。横スクロールのツール並びは廃止。
 - アクティブリンクは `aria-current="page"` を付与する。
-- 幅は `sg-section-shell`（本文と同じ左右余白）に合わせる。
 
 ### ビルドゲート
 

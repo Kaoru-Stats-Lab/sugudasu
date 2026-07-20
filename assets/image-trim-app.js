@@ -23,6 +23,7 @@ const PRESETS = {
 
 const els = {
   dropZone: document.getElementById('drop-zone'),
+  dropPanel: document.getElementById('drop-panel'),
   fileInput: document.getElementById('file-input'),
   error: document.getElementById('trim-error'),
   editor: document.getElementById('editor-panel'),
@@ -333,6 +334,7 @@ async function loadFile(file) {
     imgH = bitmap.height;
     sourceName = file.name || 'pasted-image.png';
     els.dropZone.classList.add('hidden');
+    if (els.dropPanel) els.dropPanel.classList.add('hidden');
     els.editor.classList.remove('hidden');
     coverFitCenter();
     updateActionButtons();
@@ -352,6 +354,7 @@ function clearImage() {
   imgH = 0;
   els.editor.classList.add('hidden');
   els.dropZone.classList.remove('hidden');
+  if (els.dropPanel) els.dropPanel.classList.remove('hidden');
   updateActionButtons();
   clearError();
   updateUpscaleWarning();
@@ -474,14 +477,14 @@ els.fileInput.addEventListener('change', () => {
 });
 els.dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
-  els.dropZone.classList.add('border-violet-400', 'bg-violet-50/40');
+  els.dropZone.classList.add('is-dragover');
 });
 els.dropZone.addEventListener('dragleave', () => {
-  els.dropZone.classList.remove('border-violet-400', 'bg-violet-50/40');
+  els.dropZone.classList.remove('is-dragover');
 });
 els.dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
-  els.dropZone.classList.remove('border-violet-400', 'bg-violet-50/40');
+  els.dropZone.classList.remove('is-dragover');
   const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
   if (f) loadFile(f);
 });

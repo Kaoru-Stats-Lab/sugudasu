@@ -23,6 +23,7 @@ import {
 
 const els = {
   dropZone: document.getElementById('drop-zone'),
+  dropPanel: document.getElementById('drop-panel'),
   fileInput: document.getElementById('file-input'),
   editor: document.getElementById('editor-panel'),
   canvas: document.getElementById('mask-canvas'),
@@ -391,6 +392,7 @@ function attachAnnotateDrag() {
 function showEditor(show) {
   els.editor.classList.toggle('hidden', !show);
   els.dropZone.classList.toggle('hidden', show);
+  if (els.dropPanel) els.dropPanel.classList.toggle('hidden', show);
 }
 
 async function loadFile(file) {
@@ -539,14 +541,14 @@ els.fileInput.addEventListener('change', () => {
 
 els.dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
-  els.dropZone.classList.add('border-sky-400', 'bg-sky-50/50');
+  els.dropZone.classList.add('is-dragover');
 });
 els.dropZone.addEventListener('dragleave', () => {
-  els.dropZone.classList.remove('border-sky-400', 'bg-sky-50/50');
+  els.dropZone.classList.remove('is-dragover');
 });
 els.dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
-  els.dropZone.classList.remove('border-sky-400', 'bg-sky-50/50');
+  els.dropZone.classList.remove('is-dragover');
   const f = e.dataTransfer?.files?.[0];
   if (f) loadFile(f);
 });

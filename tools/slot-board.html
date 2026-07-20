@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="評価ランクの人数枠を調整。Excelから貼って枠超過を赤く表示。非送信・復元コード・TSV。">
+    <meta name="description" content="評価・考課の人数枠を調整。枠超過を赤表示。IndexedDB・復元コード・JSON・TSV。非送信。">
     <title>評価ランクの人数枠を調整する | SUGUDASU 枠取りパレット</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
     <meta property="og:title" content="評価ランクの人数枠を調整する — 枠取りパレット">
-    <meta property="og:description" content="評価会議・昇格候補などの人数枠。Excel貼付で超過を赤表示。復元コード・TSV。サーバーに送りません。">
+    <meta property="og:description" content="枠と人数を数えるだけの送信しないカンバン。配置は人の手で。">
     <meta property="og:url" content="https://sugudasu.com/slot-board">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
@@ -16,13 +16,14 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="SUGUDASU 枠取りパレット">
-    <meta name="twitter:description" content="評価ランクの人数枠を調整 · 非送信 · 復元コード">
+    <meta name="twitter:description" content="枠と人数を数えるだけの送信しないカンバン">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <link rel="stylesheet" href="../assets/slot-board.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"どんな場面で使いますか？","acceptedAnswer":{"@type":"Answer","text":"評価会議・昇格候補・受賞候補など、人数の上限が決まっている会議向けです。"}},{"@type":"Question","name":"人事考課の相対評価にも使えますか？","acceptedAnswer":{"@type":"Answer","text":"使えます。S評価は3人までのように人数上限がある評価であれば、部署別・等級別など枠を分けて配置状況を確認できます。"}},{"@type":"Question","name":"データは送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。処理はブラウザ内だけです。持ち運ぶときは復元コードまたはTSV・JSONを使います。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 枠取りパレット" data-sg-subtitle="評価ランクの人数枠を調整するツール" data-sg-tool-id="slot-board"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 枠取りパレット" data-sg-subtitle="枠と人数を数えるだけのカンバン" data-sg-tool-id="slot-board"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
     <div class="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note">
@@ -30,13 +31,13 @@
     </div>
 
     <header class="sg-tool-intro space-y-2">
-        <p data-sg-privacy-badge data-subject="名簿" data-extra="人数枠" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <p data-sg-privacy-badge data-subject="名簿" data-extra="人数枠 · 端末内保存" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
-                <strong>人数を数え、上限超過を赤くする</strong>ための制限付きカンバンです。誰をどこへ置くかは人間が決めます。
+                枠と人数を数えるだけの、送信しないカンバン。配置は人の手で。持ち帰りは復元コードかTSVで。
             </p>
             <p class="sg-tool-lead">
-                Excelから貼り付け → 枠を調整 → 復元コードまたはTSVで持ち帰る。サーバーには送りません。
+                人数の枠に対して、超過を赤く知らせるだけのカンバンです。誰をどこに置くかは、最後まで人間が決めます。枠を貼り付けて候補を置き、調整して持ち帰る。データはサーバーに送信しません（この端末の IndexedDB にだけ残ります）。
             </p>
         </div>
     </header>
@@ -44,22 +45,52 @@
     <section class="sg-usecase" aria-label="用途">
         <h2 class="text-sm font-bold text-slate-900">こんな会議で使います</h2>
         <ul class="mt-2 space-y-1.5 text-xs leading-relaxed text-slate-600 list-disc pl-5">
-            <li>S評価は3人まで、A評価は8人まで、のように人数の上限が決まっている評価会議</li>
+            <li>S評価は3人まで、A評価は8人まで、のように人数の上限が決まっている評価会議 · 人事考課</li>
             <li>昇格候補・受賞候補など、部門ごとの推薦人数枠がある場面</li>
         </ul>
-        <p class="mt-3 text-xs leading-relaxed text-slate-600">Excelの評価案をそのまま貼り付けると、枠を超えた評価ランクが赤く表示されます。</p>
     </section>
 
     <div id="sb-summary" class="sb-summary hidden" aria-live="polite">
         <span id="sb-summary-badge" class="sb-summary__badge"></span>
     </div>
 
+    <div id="sb-toolbar" class="sb-toolbar flex flex-wrap gap-2 items-center">
+        <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
+            <input type="checkbox" id="sb-readonly" class="rounded border-slate-300">
+            読み取り専用
+        </label>
+        <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
+            <input type="checkbox" id="sb-hide-evidence" class="rounded border-slate-300">
+            目隠し（本文を隠す）
+        </label>
+        <button type="button" id="sb-undo" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">Undo</button>
+        <span id="sb-actor-wrap" class="inline-flex items-center gap-1 text-xs text-slate-600">
+            <label for="sb-actor">操作者</label>
+            <input type="text" id="sb-actor" class="sg-input text-xs py-1 px-2 w-28" placeholder="任意" maxlength="40">
+        </span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+        <section class="sg-card p-5 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Box1 · 枠ルール</h2>
+            <label for="sb-box1" class="block text-xs font-semibold text-slate-600">例: 最優秀賞=1 / 優秀賞=3 / S=3</label>
+            <textarea id="sb-box1" rows="5" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="最優秀賞=1&#10;優秀賞=3&#10;S=3"></textarea>
+            <button type="button" id="sb-apply-box1" class="sg-btn-primary text-sm">枠を反映</button>
+        </section>
+        <section class="sg-card p-5 space-y-3">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Box2 · 候補者リスト</h2>
+            <label for="sb-box2" class="block text-xs font-semibold text-slate-600">1行1人（タブ以降は本文として保持）</label>
+            <textarea id="sb-box2" rows="5" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="佐藤 一郎&#10;鈴木 太郎&#9;推薦理由…"></textarea>
+            <button type="button" id="sb-apply-box2" class="sg-btn-primary text-sm">候補を未配置へ追加</button>
+        </section>
+    </div>
+
     <section class="sg-card p-5 space-y-3">
-        <h2 class="text-sm font-bold text-slate-900">Excelからコピペ、または復元コードを貼り付け</h2>
+        <h2 class="text-sm font-bold text-slate-900">互換 · 一括貼付（旧Excel / 復元コード）</h2>
         <label for="sb-import" class="block text-xs font-semibold text-slate-600">名前と評価ランク（タブ区切り）／ SUGUDASU-SLOT-…</label>
-        <textarea id="sb-import" rows="8" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="佐藤 一郎&#9;S&#10;鈴木 太郎&#9;A&#10;または SUGUDASU-SLOT-…"></textarea>
+        <textarea id="sb-import" rows="4" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="佐藤 一郎&#9;S&#10;または SUGUDASU-SLOT-…"></textarea>
         <div class="flex flex-wrap gap-2">
-            <button type="button" id="sb-import-btn" class="sg-btn-primary text-sm">インポート実行</button>
+            <button type="button" id="sb-import-btn" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">インポート実行</button>
             <button type="button" id="sb-add-lane" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">レーンを追加</button>
         </div>
         <p id="sb-import-msg" class="text-[11px] text-slate-500"></p>
@@ -69,18 +100,32 @@
         <h2 class="text-sm font-bold text-slate-900">枠取りワークスペース</h2>
         <p id="sb-empty" class="sb-empty text-xs leading-relaxed text-slate-500">
             まだデータがありません。<br>
-            上のテキストエリアに貼り付けて「インポート実行」を押すと、<br>
-            ここに評価ランクごとのレーンが並びます。
+            Box1 で枠を、Box2 で候補を入れてください。
         </p>
+        <div id="sb-pools" class="sb-pools"></div>
         <div id="sb-lanes" class="sb-lanes"></div>
     </section>
 
-    <section class="flex flex-wrap gap-2">
-        <button type="button" id="sb-copy-code" class="sg-btn-primary text-sm">下書きコードをコピー</button>
-        <button type="button" id="sb-copy-tsv" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">TSVをコピー（Excelへ）</button>
-        <button type="button" id="sb-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
+    <section class="sg-card p-4 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">持ち帰り</h2>
+        <div class="flex flex-wrap gap-3 text-xs">
+            <label class="inline-flex items-center gap-1.5"><input type="checkbox" id="sb-out-assigned" checked class="rounded border-slate-300">配置済</label>
+            <label class="inline-flex items-center gap-1.5"><input type="checkbox" id="sb-out-pool" class="rounded border-slate-300">未配置</label>
+            <label class="inline-flex items-center gap-1.5"><input type="checkbox" id="sb-out-pending" class="rounded border-slate-300">保留</label>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" id="sb-copy-code" class="sg-btn-primary text-sm">復元コードをコピー</button>
+            <button type="button" id="sb-copy-tsv" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">TSVをコピー</button>
+            <button type="button" id="sb-copy-ppt" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">パワポ用テキスト</button>
+            <button type="button" id="sb-export-json" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">JSONダウンロード</button>
+            <label class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                JSONインポート
+                <input type="file" id="sb-import-json" accept="application/json,.json" class="hidden">
+            </label>
+            <button type="button" id="sb-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-rose-700">クリア</button>
+        </div>
+        <p id="sb-action-msg" class="text-[11px] text-slate-500" aria-live="polite"></p>
     </section>
-    <p id="sb-action-msg" class="text-[11px] text-slate-500" aria-live="polite"></p>
 </main>
 
 <section class="sg-faq-section no-print" aria-label="よくある質問">
@@ -93,27 +138,33 @@
             </div>
         </details>
         <details class="sg-faq" open>
+            <summary>人事考課の相対評価にも使えますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>使えます。「S評価は3人まで」のように人数上限がある評価であれば、部署別・等級別など枠を分けて配置状況を確認できます。</p>
+            </div>
+        </details>
+        <details class="sg-faq" open>
             <summary>Excelはそのまま貼れますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p>名前と評価ランクをコピーするだけです。多少の空白や余分な文字は自動整理します。</p>
+                <p>名前と評価ランクをコピーするだけです（互換の一括貼付）。枠だけ先に決めるときは Box1、候補だけは Box2 を使います。多少の空白や余分な文字は自動整理します。</p>
             </div>
         </details>
         <details class="sg-faq" open>
             <summary>データは送信されますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p>送信されません。処理はブラウザ内だけです。タブを閉じると消えます。持ち運ぶときは下書きコードまたはTSVをコピーしてください。</p>
+                <p>送信されません。処理はブラウザ内だけです。同じ端末では IndexedDB に残ります。別PCへ持ち運ぶときは復元コードまたは JSON / TSV をコピーしてください。</p>
             </div>
         </details>
         <details class="sg-faq">
             <summary>自動で配置してくれますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p>しません。人数の集計と上限超過の表示だけです。配置はドラッグで人間が決めます。</p>
+                <p>しません。人数の集計と上限超過の表示だけです。配置はドラッグ（またはタップ）で人間が決めます。</p>
             </div>
         </details>
         <details class="sg-faq">
             <summary>うまく読み取れない行があったらどうなりますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p>読み取れなかった行は、削除せずに「不明」として画面に残します。人数が合わない場合は、貼り付けた元データを確認してください。</p>
+                <p>読み取れなかった行は、削除せずに「不明」として残します（一括貼付時）。人数が合わない場合は、貼り付けた元データを確認してください。</p>
             </div>
         </details>
         <details class="sg-faq">
@@ -123,9 +174,9 @@
             </div>
         </details>
         <details class="sg-faq">
-            <summary>「下書きコードをコピー」は何のためのものですか？</summary>
+            <summary>「復元コードをコピー」は何のためのものですか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p>現在の配置状態を1つの文字列に変換してコピーする機能です。SUGUDASU側に保存されるわけではなく、メールやチャットの下書きに貼り付けて、あなた自身が持ち運ぶためのものです。同じ文字列を貼り付ければ元の配置に戻せます。</p>
+                <p>現在の配置状態を1つの文字列に変換してコピーする機能です。SUGUDASU側にクラウド保存されるわけではなく、メールやチャットの下書きに貼り付けて、あなた自身が持ち運ぶためのものです。同じ文字列を貼り付ければ元の配置に戻せます。日をまたぐ・別PCでは JSON ダウンロードも使えます。</p>
             </div>
         </details>
     </div>

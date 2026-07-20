@@ -45,7 +45,7 @@
     },
     "stamp": {
       "file": "stamp.html",
-      "conceptName": "電子印鑑",
+      "conceptName": "印鑑・認印",
       "productName": "SUGUDASU 電子印鑑",
       "navLabel": "印鑑",
       "navIcon": "🔴",
@@ -101,7 +101,7 @@
     },
     "report": {
       "file": "report.html",
-      "conceptName": "議事録",
+      "conceptName": "議事録整形",
       "productName": "SUGUDASU 議事録",
       "navLabel": "議事録",
       "navIcon": "📝",
@@ -143,7 +143,7 @@
     },
     "search-query": {
       "file": "search-query.html",
-      "conceptName": "検索式",
+      "conceptName": "Google検索式",
       "productName": "SUGUDASU 検索式ビルダー",
       "navLabel": "検索式",
       "navIcon": "🔍",
@@ -199,7 +199,7 @@
     },
     "mask": {
       "file": "mask.html",
-      "conceptName": "スクショ消し",
+      "conceptName": "画像マスク",
       "productName": "SUGUDASU マスク",
       "navLabel": "マスク",
       "navIcon": "🛡️",
@@ -227,7 +227,7 @@
     },
     "watermark": {
       "file": "watermark.html",
-      "conceptName": "透かし",
+      "conceptName": "画像透かし",
       "productName": "SUGUDASU 透かし",
       "navLabel": "透かし",
       "navIcon": "💧",
@@ -297,7 +297,7 @@
     },
     "slot-board": {
       "file": "slot-board.html",
-      "conceptName": "枠取り",
+      "conceptName": "枠取りパレット",
       "productName": "SUGUDASU 枠取りパレット",
       "navLabel": "枠取り",
       "navIcon": "📦",
@@ -325,7 +325,7 @@
     },
     "timeline": {
       "file": "timeline.html",
-      "conceptName": "進行タイムライン",
+      "conceptName": "イベント進行",
       "productName": "SUGUDASU イベント進行",
       "navLabel": "進行",
       "navIcon": "⏱️",
@@ -339,7 +339,7 @@
     },
     "present": {
       "file": "present.html",
-      "conceptName": "ギフト提案",
+      "conceptName": "ギフト",
       "productName": "SUGUDASU ギフト",
       "navLabel": "ギフト",
       "navIcon": "🎁",
@@ -379,6 +379,20 @@
       "statusNote": "端数過不足ヒーロー表示 · sg-copy-feedback · Xシェア導線済",
       "categoryId": "ops"
     },
+    "budget-trim": {
+      "file": "budget-trim.html",
+      "conceptName": "引き算パレット",
+      "productName": "SUGUDASU 引き算パレット",
+      "navLabel": "予算引き算",
+      "navIcon": "✂️",
+      "inNav": true,
+      "navOrder": 13.9,
+      "name": "予算引き算パレット",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "合計/上限の超過表示 · ±1万/10万キー · ハッシュ共有 · TSV · グラフなし · BUDGET_TRIM_SPEC.md",
+      "categoryId": "ops"
+    },
     "sns": {
       "file": "sns.html",
       "conceptName": "SNSデコ文字",
@@ -409,7 +423,7 @@
     },
     "qr-reader": {
       "file": "qr-reader.html",
-      "conceptName": "QR読み取り",
+      "conceptName": "QR読取",
       "productName": "SUGUDASU QR読取",
       "navLabel": "QR読取",
       "navIcon": "📷",

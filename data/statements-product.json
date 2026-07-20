@@ -204,6 +204,14 @@
       "promiseNote": "清算文コピー · 履歴のサーバー保存なし"
     },
     {
+      "toolId": "budget-trim",
+      "categoryId": "ops",
+      "productName": "SUGUDASU 引き算パレット",
+      "file": "budget-trim.html",
+      "inputHandling": "予算表 · 端末内（URLハッシュ）",
+      "promiseNote": "超過表示 · TSV · 非送信 · 自動配分なし"
+    },
+    {
       "toolId": "present",
       "categoryId": "ops",
       "productName": "SUGUDASU ギフト",

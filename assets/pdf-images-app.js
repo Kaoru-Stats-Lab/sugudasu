@@ -297,7 +297,7 @@ async function processFile(file) {
 function bindDrop() {
   const zone = $('pdfi-drop');
   if (!zone) return;
-  const input = zone.querySelector('input[type="file"]');
+  const input = /** @type {HTMLInputElement|null} */ ($('pdfi-file') || zone.querySelector('input[type="file"]'));
   zone.addEventListener('click', () => input?.click());
   zone.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -307,12 +307,12 @@ function bindDrop() {
   });
   zone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    zone.classList.add('ring-2', 'ring-violet-400');
+    zone.classList.add('is-dragover');
   });
-  zone.addEventListener('dragleave', () => zone.classList.remove('ring-2', 'ring-violet-400'));
+  zone.addEventListener('dragleave', () => zone.classList.remove('is-dragover'));
   zone.addEventListener('drop', (e) => {
     e.preventDefault();
-    zone.classList.remove('ring-2', 'ring-violet-400');
+    zone.classList.remove('is-dragover');
     const file = e.dataTransfer?.files?.[0];
     if (file) processFile(file);
   });

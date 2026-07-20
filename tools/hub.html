@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../assets/sugudasu.css">
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="ツール一覧" data-sg-tool-id="hub"></div>
+<div id="sg-chrome-top" data-sg-title="ツール一覧" data-sg-tool-id="hub" data-sg-nav="hub"></div>
 
 <main class="sg-main-shell sg-main-shell--wide flex-1 space-y-8">
     <section class="sg-hub-hero space-y-3 sg-info-prose">
@@ -39,6 +39,9 @@
             <span class="sr-only">ツールを検索</span>
             <input type="search" id="sg-hub-search" class="sg-hub-search" placeholder="何をしたいですか？" autocomplete="off" enterkeyhint="search">
         </label>
+        <p class="sg-hub-search-examples text-[11px] text-slate-500" id="sg-hub-search-examples">
+            例: 請求書を作りたい · PDFから画像を取り出したい · 画像を軽くしたい · コピペを直したい
+        </p>
         <p class="sg-tool-lead sg-tool-lead--meta">
             各ツールページに用途別の説明と FAQ があります。手順は<a href="guides.html">実務ガイド</a>、データの扱いは<a href="statements.html">SUGUDASUの約束</a>をご覧ください。
         </p>
@@ -56,238 +59,248 @@
         </div>
     </section>
 
-    <section class="sg-hub-hero">
-        <p class="text-xs text-slate-500">
-            <a href="updates.html" class="text-blue-600 hover:underline font-semibold">更新履歴</a>
-            <span class="text-slate-400 mx-2">·</span>
-            <a href="roadmap.html" class="text-blue-600 hover:underline font-semibold">開発ロードマップ</a>
-            <span class="text-slate-400 mx-2">·</span>
-            不具合報告・要望も受け付けています
-        </p>
-    </section>
-
     <div id="sg-hub-chips" class="sg-hub-chips" role="tablist" aria-label="カテゴリ"></div>
     <div id="sg-hub-more-wrap" class="hidden">
         <button type="button" id="sg-hub-more-btn" class="sg-hub-more-btn">その他のカテゴリ</button>
         <div id="sg-hub-more-panel" class="sg-hub-more-panel hidden" hidden></div>
     </div>
 
-    <section id="sg-hub-favorites" class="sg-hub-rail hidden" hidden aria-label="お気に入り">
-        <h2 class="sg-hub-rail__title">お気に入り</h2>
-        <div id="sg-hub-favorites-list" class="sg-hub-rail__list"></div>
-    </section>
-    <section id="sg-hub-recent" class="sg-hub-rail hidden" hidden aria-label="最近使った">
-        <h2 class="sg-hub-rail__title">最近使った</h2>
-        <div id="sg-hub-recent-list" class="sg-hub-rail__list"></div>
+    <div id="sg-hub-browse-rails" class="space-y-6">
+        <section id="sg-hub-favorites" class="sg-hub-rail hidden" hidden aria-label="お気に入り">
+            <h2 class="sg-hub-rail__title">お気に入り</h2>
+            <div id="sg-hub-favorites-list" class="sg-hub-rail__list"></div>
+        </section>
+        <section id="sg-hub-recent" class="sg-hub-rail hidden" hidden aria-label="最近使った">
+            <h2 class="sg-hub-rail__title">最近使った</h2>
+            <div id="sg-hub-recent-list" class="sg-hub-rail__list"></div>
+        </section>
+    </div>
+
+    <section id="sg-hub-search-panel" class="sg-hub-search-panel hidden" hidden aria-live="polite">
+        <div class="sg-hub-search-panel__head">
+            <h2 class="sg-hub-section-title">検索結果</h2>
+            <p id="sg-hub-result-count" class="sg-hub-result-count">0件見つかりました</p>
+            <button type="button" id="sg-hub-clear-search" class="sg-hub-clear-search">× 検索解除</button>
+        </div>
+        <div id="sg-hub-empty" class="sg-hub-empty hidden" hidden>
+            <p class="sg-hub-empty__title">該当するツールは見つかりませんでした。</p>
+            <p class="sg-hub-empty__lead">別の言葉も試してみてください。</p>
+            <div id="sg-hub-empty-tips" class="sg-hub-empty__tips"></div>
+            <button type="button" id="sg-hub-empty-clear" class="sg-hub-clear-search sg-hub-clear-search--block">すべてのツールを見る</button>
+        </div>
     </section>
 
-    <p id="sg-hub-empty" class="hidden text-sm text-slate-500" hidden>該当するツールがありません。別の言葉で検索してみてください。</p>
+    <section id="sg-hub-popular-section" class="sg-hub-section space-y-3">
+        <h2 class="sg-hub-section-title">実務で人気</h2>
+        <div id="sg-hub-popular-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="実務で人気"></div>
+    </section>
 
+    <section id="sg-hub-all-section" class="sg-hub-section space-y-3">
+        <h2 class="sg-hub-section-title" id="sg-hub-all-title">すべてのツール</h2>
         <!-- hub-cards:start -->
-        <section id="sg-hub-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="ツール一覧">
-        <a href="invoice.html" class="sg-hub-card sg-card p-5" data-tool-id="invoice" data-category-id="docs" data-search="請求書 請求書 sugudasu 請求書 見積・納品・請求書 見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。pdf保存・印刷までブラウザで完結。 実務で人気 請求 インボイス 見積書 納品書">
+        <section id="sg-hub-grid" class="sg-hub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" aria-label="すべてのツール">
+        <a href="invoice.html" class="sg-hub-card sg-card p-5" data-tool-id="invoice" data-category-id="docs" data-search="請求書 請求書 sugudasu 請求書 見積・納品・請求書 インボイス（適格請求書）をpdfで発行したい時に。内訳や消費税・源泉税を計算します。 ga local 人気 請求 インボイス 見積書 納品書" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="invoice" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">実務で人気</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
         <h3 class="sg-hub-card__title">請求書</h3>
-        <p class="text-xs text-slate-500 mt-2">見積 · 納品 · 請求を一括作成。適格請求書（インボイス）対応。PDF保存・印刷までブラウザで完結。</p>
+        <p class="sg-hub-card__blurb">インボイス（適格請求書）をPDFで発行したい時に。内訳や消費税・源泉税を計算します。</p>
         </a>
-        <a href="stamp.html" class="sg-hub-card sg-card p-5" data-tool-id="stamp" data-category-id="docs" data-search="電子印鑑 印鑑 sugudasu 電子印鑑 電子印鑑（請求書用） 認印（丸）の透過pngをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。 new · 請求書連携 印鑑 認印 角印">
+        <a href="stamp.html" class="sg-hub-card sg-card p-5" data-tool-id="stamp" data-category-id="docs" data-search="印鑑・認印 印鑑 sugudasu 電子印鑑 電子印鑑（請求書用） pdfや書類に使う電子印鑑や認印画像を作りたい時に。苗字や日付入りのスタンプを作成します。 new local 印鑑 認印 角印" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="stamp" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">NEW · 請求書連携</p>
-        <h3 class="sg-hub-card__title">電子印鑑</h3>
-        <p class="text-xs text-slate-500 mt-2">認印（丸）の透過PNGをブラウザ内で作成。作った印影を請求書の担当者印へ1クリックで渡せます。角印は画像アップロード。</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">印鑑・認印</h3>
+        <p class="sg-hub-card__blurb">PDFや書類に使う電子印鑑や認印画像を作りたい時に。苗字や日付入りのスタンプを作成します。</p>
         </a>
-        <a href="receipt.html" class="sg-hub-card sg-card p-5" data-tool-id="receipt" data-category-id="docs" data-search="領収書 領収書 sugudasu 領収書 手取り逆引き・領収書 手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応pdfの印刷・保存までブラウザで完結。 new 領収証 領収">
+        <a href="receipt.html" class="sg-hub-card sg-card p-5" data-tool-id="receipt" data-category-id="docs" data-search="領収書 領収書 sugudasu 領収書 手取り逆引き・領収書 領収書をpdfで作成したい時に。但し書きや金額を入力して作成します。 new local 人気 領収証 領収" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="receipt" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
         <h3 class="sg-hub-card__title">領収書</h3>
-        <p class="text-xs text-slate-500 mt-2">手取り逆引き · 源泉徴収 · 消費税を自動逆算。インボイス対応PDFの印刷・保存までブラウザで完結。</p>
+        <p class="sg-hub-card__blurb">領収書をPDFで作成したい時に。但し書きや金額を入力して作成します。</p>
         </a>
-        <a href="label.html" class="sg-hub-card sg-card p-5" data-tool-id="label" data-category-id="docs" data-search="宛名ラベル ラベル sugudasu ラベル 宛名ラベル 宛名ラベル · シールを一括印刷。主要メーカー型番検索 · excel/csv取込 · コピペ対応。">
+        <a href="label.html" class="sg-hub-card sg-card p-5" data-tool-id="label" data-category-id="docs" data-search="宛名ラベル ラベル sugudasu ラベル 宛名ラベル 大量の封筒発送や名刺印刷で宛名ラベルを作りたい時に。住所リストを規定のラベル枠へ配置します。 ga local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="label" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">宛名ラベル</h3>
-        <p class="text-xs text-slate-500 mt-2">宛名ラベル · シールを一括印刷。主要メーカー型番検索 · Excel/CSV取込 · コピペ対応。</p>
+        <p class="sg-hub-card__blurb">大量の封筒発送や名刺印刷で宛名ラベルを作りたい時に。住所リストを規定のラベル枠へ配置します。</p>
         </a>
-        <a href="report.html" class="sg-hub-card sg-card p-5" data-tool-id="report" data-category-id="text" data-search="議事録 議事録 sugudasu 議事録 議事録・報告書 議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。gemini下書きにも対応。">
+        <a href="report.html" class="sg-hub-card sg-card p-5" data-tool-id="report" data-category-id="text" data-search="議事録整形 議事録 sugudasu 議事録 議事録・報告書 会議のメモから議事録を作成したい時に。決定事項や次のタスクを整理します。 ga local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="report" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <h3 class="sg-hub-card__title">議事録</h3>
-        <p class="text-xs text-slate-500 mt-2">議事録 · 業務報告書を自動整形。箇条書きメモをビジネス文面にコピー。Gemini下書きにも対応。</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">議事録整形</h3>
+        <p class="sg-hub-card__blurb">会議のメモから議事録を作成したい時に。決定事項や次のタスクを整理します。</p>
         </a>
-        <a href="shift.html" class="sg-hub-card sg-card p-5" data-tool-id="shift" data-category-id="staffing" data-search="シフト表 シフト sugudasu シフト シフト表 シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。 シフト表 勤務表">
+        <a href="shift.html" class="sg-hub-card sg-card p-5" data-tool-id="shift" data-category-id="staffing" data-search="シフト表 シフト sugudasu シフト シフト表 スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。 ga local 人気 シフト表 勤務表" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="shift" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
         <h3 class="sg-hub-card__title">シフト表</h3>
-        <p class="text-xs text-slate-500 mt-2">シフト表 · 勤務予定を自動生成。2ヶ月先まで。希望休や偏りを考慮した公平配置。</p>
+        <p class="sg-hub-card__blurb">スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。</p>
         </a>
-        <a href="present.html" class="sg-hub-card sg-card p-5" data-tool-id="present" data-category-id="ops" data-search="ギフト提案 ギフト sugudasu ギフト ギフトサジェスター aiギフト提案 · 贈り物選び。ngな品（地雷）を回避。amazon導線で候補確認。">
+        <a href="present.html" class="sg-hub-card sg-card p-5" data-tool-id="present" data-category-id="ops" data-search="ギフト ギフト sugudasu ギフト ギフトサジェスター 景品やプレゼント選びに迷った時に。条件に合わせたギフトをリスト化します。 ga local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="present" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <h3 class="sg-hub-card__title">ギフト提案</h3>
-        <p class="text-xs text-slate-500 mt-2">AIギフト提案 · 贈り物選び。NGな品（地雷）を回避。Amazon導線で候補確認。</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">ギフト</h3>
+        <p class="sg-hub-card__blurb">景品やプレゼント選びに迷った時に。条件に合わせたギフトをリスト化します。</p>
         </a>
-        <a href="fair-draw.html?tab=check" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。 キャンペーン企画 · 景品チェック 景表法 景品 抽選 公平抽選">
+        <a href="fair-draw.html?tab=check" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 景品表示法のリスクを一次チェック。キャンペーン · 懸賞向け。 beta local 景表法 景品 抽選 公平抽選" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="fair-draw" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">キャンペーン企画 · 景品チェック</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">公平抽選</h3>
-        <p class="text-xs text-slate-500 mt-2">景品表示法リスク判定（キャンペーン · 懸賞用）。告示ベースの一次チェック（断定はしません）。</p>
-        <p class="sg-hub-card__meta">ベータ版 · 抽選タブと証跡PDFは一体 →</p>
+        <p class="sg-hub-card__blurb">景品表示法のリスクを一次チェック。キャンペーン · 懸賞向け。</p>
         </a>
-        <a href="fair-draw.html?tab=draw" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 公平抽選 · 名簿抽選。web crypto で抽選。シード · 名簿指紋付き監査pdf/jsonを出力。 名簿抽選 · 公平抽選 景表法 景品 抽選 公平抽選">
+        <a href="fair-draw.html?tab=draw" class="sg-hub-card sg-card p-5" data-tool-id="fair-draw" data-category-id="people" data-search="公平抽選 抽選 sugudasu 抽選 公平抽選・景品チェック（証跡pdf） 名簿から公平抽選。シード付きの監査 pdf / json を出力。 beta local 景表法 景品 抽選 公平抽選" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="fair-draw" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">名簿抽選 · 公平抽選</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">公平抽選</h3>
-        <p class="text-xs text-slate-500 mt-2">公平抽選 · 名簿抽選。Web Crypto で抽選。シード · 名簿指紋付き監査PDF/JSONを出力。</p>
-        <p class="sg-hub-card__meta">ベータ版 · 景品チェックと同一ツール →</p>
+        <p class="sg-hub-card__blurb">名簿から公平抽選。シード付きの監査 PDF / JSON を出力。</p>
         </a>
-        <a href="reverse.html" class="sg-hub-card sg-card p-5" data-tool-id="reverse" data-category-id="text" data-search="逆引き辞典 逆引き sugudasu 逆引き 逆引き辞典 逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。">
+        <a href="reverse.html" class="sg-hub-card sg-card p-5" data-tool-id="reverse" data-category-id="text" data-search="逆引き辞典 逆引き sugudasu 逆引き 逆引き辞典 逆引き類語 · 言い換え検索。ニュアンス別に表現を探す。 ga local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="reverse" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">逆引き辞典</h3>
-        <p class="text-xs text-slate-500 mt-2">逆引き類語辞典 · 言い換え検索。ニュアンス別で表現を素早く探す。</p>
+        <p class="sg-hub-card__blurb">逆引き類語 · 言い換え検索。ニュアンス別に表現を探す。</p>
         </a>
-        <a href="normalize.html" class="sg-hub-card sg-card p-5" data-tool-id="normalize" data-category-id="text" data-search="テキスト整え 全角半角 sugudasu 全角半角整え 全角半角・テキスト整え excelやecのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。 全角 半角 名簿整え">
+        <a href="normalize.html" class="sg-hub-card sg-card p-5" data-tool-id="normalize" data-category-id="text" data-search="テキスト整え 全角半角 sugudasu 全角半角整え 全角半角・テキスト整え コピペしたテキストの余計な改行や全角半角の混ざりを直したい時に。スペースや文字の表記ゆれを統一します。 beta local 全角 半角 名簿整え コピペ 貼り付け csv tsv" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="normalize" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">テキスト整え</h3>
-        <p class="text-xs text-slate-500 mt-2">ExcelやECのテキストエラーを1秒解決！名簿や商品データの全角半角・空白・改行を、ローカルで安全に整えます。</p>
-        <p class="sg-hub-card__meta">ベータ版 · 500行まで →</p>
+        <p class="sg-hub-card__blurb">コピペしたテキストの余計な改行や全角半角の混ざりを直したい時に。スペースや文字の表記ゆれを統一します。</p>
         </a>
-        <a href="search-query.html" class="sg-hub-card sg-card p-5" data-tool-id="search-query" data-category-id="text" data-search="検索式 検索式 sugudasu 検索式ビルダー 検索式ビルダー（filetype / site） filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。 調べもの · 非送信 · new">
+        <a href="search-query.html" class="sg-hub-card sg-card p-5" data-tool-id="search-query" data-category-id="text" data-search="google検索式 検索式 sugudasu 検索式ビルダー 検索式ビルダー（filetype / site） google検索で狙った情報を見つけたい時に。andやor、除外などの検索式を作成します。 new local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="search-query" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">調べもの · 非送信 · NEW</p>
-        <h3 class="sg-hub-card__title">検索式</h3>
-        <p class="text-xs text-slate-500 mt-2">filetype:pdf や site: をフォームから組み立ててコピー。演算子を覚えず、キーワードは送りません。</p>
-        <p class="sg-hub-card__meta">アルファ版 · Googleで開く可 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">Google検索式</h3>
+        <p class="sg-hub-card__blurb">Google検索で狙った情報を見つけたい時に。ANDやOR、除外などの検索式を作成します。</p>
         </a>
-        <a href="table-conv.html" class="sg-hub-card sg-card p-5" data-tool-id="table-conv" data-category-id="text" data-search="表データ変換 表変換 sugudasu 表変換 表データ相互コンバータ excelの複数列コピー・csvを送信せず markdown 表 · json · tsv に。shift-jis 対応。1列だけなら全角半角整えへ。 markdown csv tsv 表">
+        <a href="table-conv.html" class="sg-hub-card sg-card p-5" data-tool-id="table-conv" data-category-id="text" data-search="表データ変換 表変換 sugudasu 表変換 表データ相互コンバータ excelやcsvの表を別形式へ変換したい時に。markdownやjsonへ変換します。 beta local markdown csv tsv 表 コピペ 貼り付け csv tsv" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="table-conv" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">表データ変換</h3>
-        <p class="text-xs text-slate-500 mt-2">Excelの複数列コピー・CSVを送信せず Markdown 表 · JSON · TSV に。Shift-JIS 対応。1列だけなら全角半角整えへ。</p>
-        <p class="sg-hub-card__meta">ベータ版 · 5,000行まで →</p>
+        <p class="sg-hub-card__blurb">ExcelやCSVの表を別形式へ変換したい時に。MarkdownやJSONへ変換します。</p>
         </a>
-        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5" data-tool-id="webp-to-jpg" data-category-id="media" data-search="webp変換 webp→jpg sugudasu webp変換 webp→jpg/png webp→jpg/png（アップロード不要）。運営サーバーへ送らず端末内変換。 webp→jpg/png · 非送信 png jpg jpeg webp 画像変換">
+        <a href="webp-to-jpg.html" class="sg-hub-card sg-card p-5" data-tool-id="webp-to-jpg" data-category-id="media" data-search="webp変換 webp→jpg sugudasu webp変換 webp→jpg/png webサイト用の画像形式を変更したい時に。webpをjpgやpngへ一括変換します。 beta local pc png jpg jpeg webp 画像変換" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="webp-to-jpg" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">WebP→JPG/PNG · 非送信</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--pc">PC推奨</span></div>
         <h3 class="sg-hub-card__title">WebP変換</h3>
-        <p class="text-xs text-slate-500 mt-2">WebP→JPG/PNG（アップロード不要）。運営サーバーへ送らず端末内変換。</p>
-        <p class="sg-hub-card__meta">ベータ版 · PC推奨 →</p>
+        <p class="sg-hub-card__blurb">Webサイト用の画像形式を変更したい時に。WebPをJPGやPNGへ一括変換します。</p>
         </a>
-        <a href="video-frame.html" class="sg-hub-card sg-card p-5" data-tool-id="video-frame" data-category-id="media" data-search="動画コマ抜き 動画コマ抜き sugudasu 動画コマ抜き 動画から静止画png（コマ抜き） 操作動画から説明用pngを1枚。再生uiが映り込まず、端末内だけで処理。 マニュアル · 非送信 · new">
+        <a href="video-frame.html" class="sg-hub-card sg-card p-5" data-tool-id="video-frame" data-category-id="media" data-search="動画コマ抜き 動画コマ抜き sugudasu 動画コマ抜き 動画から静止画png（コマ抜き） 動画の特定の瞬間を画像として切り出したい時に。mp4などの動画から静止画を抽出します。 new local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="video-frame" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">動画コマ抜き</h3>
-        <p class="text-xs text-slate-500 mt-2">操作動画から説明用PNGを1枚。再生UIが映り込まず、端末内だけで処理。</p>
-        <p class="sg-hub-card__meta">アルファ版 · MP4/WebM →</p>
+        <p class="sg-hub-card__blurb">動画の特定の瞬間を画像として切り出したい時に。mp4などの動画から静止画を抽出します。</p>
         </a>
-        <a href="mask.html" class="sg-hub-card sg-card p-5" data-tool-id="mask" data-category-id="media" data-search="スクショ消し マスク sugudasu マスク スクショ機密消し スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。 マニュアル · 非送信 · new ぼかし 黒塗り 機密 マスキング">
+        <a href="mask.html" class="sg-hub-card sg-card p-5" data-tool-id="mask" data-category-id="media" data-search="画像マスク マスク sugudasu マスク スクショ機密消し 画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。 new local ぼかし 黒塗り 機密 マスキング" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="mask" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">マニュアル · 非送信 · NEW</p>
-        <h3 class="sg-hub-card__title">スクショ消し</h3>
-        <p class="text-xs text-slate-500 mt-2">スクショの機密をぼかし・黒塗り。サンプル/ダミースタンプ付き。画像はブラウザ内だけ。</p>
-        <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">画像マスク</h3>
+        <p class="sg-hub-card__blurb">画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。</p>
         </a>
-        <a href="image-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="image-trim" data-category-id="media" data-search="画像切り出し 画像切り出し sugudasu 画像切り出し 指定サイズ画像切出し カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。 sns · 資料 · 非送信 · new 切り抜き クロップ トリミング snsカバー">
+        <a href="image-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="image-trim" data-category-id="media" data-search="画像切り出し 画像切り出し sugudasu 画像切り出し 指定サイズ画像切出し 画像のサイズ変更や縦横比のトリミングをしたい時に。必要な部分だけを切り出します。 new local 人気 切り抜き クロップ トリミング snsカバー" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="image-trim" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">SNS · 資料 · 非送信 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--popular">人気</span></div>
         <h3 class="sg-hub-card__title">画像切り出し</h3>
-        <p class="text-xs text-slate-500 mt-2">カバーや資料用に、指定サイズちょうどへ切り出し。枠は固定、画像を動かして合わせます。</p>
-        <p class="sg-hub-card__meta">アルファ版 · Ctrl+V対応 →</p>
+        <p class="sg-hub-card__blurb">画像のサイズ変更や縦横比のトリミングをしたい時に。必要な部分だけを切り出します。</p>
         </a>
-        <a href="watermark.html" class="sg-hub-card sg-card p-5" data-tool-id="watermark" data-category-id="media" data-search="透かし 透かし sugudasu 透かし 画像透かし一括 文字またはロゴを9点に焼き込み。透過3段階。複数枚はzipで一括。pdf・動画は対象外。 透かし ウォーターマーク">
+        <a href="watermark.html" class="sg-hub-card sg-card p-5" data-tool-id="watermark" data-category-id="media" data-search="画像透かし 透かし sugudasu 透かし 画像透かし一括 画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。 new local 透かし ウォーターマーク" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="watermark" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <h3 class="sg-hub-card__title">透かし</h3>
-        <p class="text-xs text-slate-500 mt-2">文字またはロゴを9点に焼き込み。透過3段階。複数枚はZIPで一括。PDF・動画は対象外。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 最大20枚 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">画像透かし</h3>
+        <p class="sg-hub-card__blurb">画像へ文字やロゴの透かしを入れたい時に。画像の無断転載や不正利用を防ぎます。</p>
         </a>
-        <a href="pdf-images.html" class="sg-hub-card sg-card p-5" data-tool-id="pdf-images" data-category-id="media" data-search="pdf画像抽出 pdf画像 sugudasu pdf画像抽出 pdf埋め込み画像抽出 仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。zip保存。 pdf 埋め込み画像">
+        <a href="pdf-images.html" class="sg-hub-card sg-card p-5" data-tool-id="pdf-images" data-category-id="media" data-search="pdf画像抽出 pdf画像 sugudasu pdf画像抽出 pdf埋め込み画像抽出 pdfの中から埋め込まれた画像だけを取り出したい時に。画質を落とさず画像として抽出します。 new local pc pdf 埋め込み画像" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="pdf-images" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--pc">PC推奨</span></div>
         <h3 class="sg-hub-card__title">PDF画像抽出</h3>
-        <p class="text-xs text-slate-500 mt-2">仕様書から埋め込み画像だけ抜く。ページ全体の画像化ではありません。ZIP保存。</p>
-        <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
+        <p class="sg-hub-card__blurb">PDFの中から埋め込まれた画像だけを取り出したい時に。画質を落とさず画像として抽出します。</p>
         </a>
-        <a href="test-data.html" class="sg-hub-card sg-card p-5" data-tool-id="test-data" data-category-id="devtest" data-search="テストデータ テストデータ sugudasu テストデータ テスト用ダミーデータ生成 社員マスタ風ダミーcsv。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。 労務 · 給与 · 非送信 · new">
+        <a href="test-data.html" class="sg-hub-card sg-card p-5" data-tool-id="test-data" data-category-id="devtest" data-search="テストデータ テストデータ sugudasu テストデータ テスト用ダミーデータ生成 開発やシステムテストでダミーデータが必要な時に。テスト用の個人情報やcsv、jsonを作成します。 new local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="test-data" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">労務 · 給与 · 非送信 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">テストデータ</h3>
-        <p class="text-xs text-slate-500 mt-2">社員マスタ風ダミーCSV。フリガナ · 給与 · 住所整合。シード再現 · 地雷データ混入。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 最大5,000件 →</p>
+        <p class="sg-hub-card__blurb">開発やシステムテストでダミーデータが必要な時に。テスト用の個人情報やCSV、JSONを作成します。</p>
         </a>
-        <a href="group-split.html" class="sg-hub-card sg-card p-5" data-tool-id="group-split" data-category-id="people" data-search="班分け 班分け sugudasu 班分け グループ分け グループ分け · tsv/slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。 研修 · ハッカソン · new 班分け グループ分け">
+        <a href="group-split.html" class="sg-hub-card sg-card p-5" data-tool-id="group-split" data-category-id="people" data-search="班分け 班分け sugudasu 班分け グループ分け 研修やイベントの参加者を条件に合わせて班分けしたい時に。参加者をグループへ振り分けます。 new local 班分け グループ分け" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="group-split" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">研修 · ハッカソン · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">班分け</h3>
-        <p class="text-xs text-slate-500 mt-2">グループ分け · TSV/Slack出力 · 非送信。名簿を貼って公平に班分け。シードで再現可能。</p>
-        <p class="sg-hub-card__meta">ベータ版 · 制約対応（固定班等）→</p>
+        <p class="sg-hub-card__blurb">研修やイベントの参加者を条件に合わせて班分けしたい時に。参加者をグループへ振り分けます。</p>
         </a>
-        <a href="match-board.html" class="sg-hub-card sg-card p-5" data-tool-id="match-board" data-category-id="people" data-search="ドラフト会議 ドラフト sugudasu ドラフト会議 希望順位割当ボード 第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。undo/redo · json再開対応。 配属 · ゼミ · 棚割 · new">
+        <a href="match-board.html" class="sg-hub-card sg-card p-5" data-tool-id="match-board" data-category-id="people" data-search="ドラフト会議 ドラフト sugudasu ドラフト会議 希望順位割当ボード 部署配属や委員会の希望調査を割り当てたい時に。希望順をもとにメンバーを決定します。 new local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="match-board" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">配属 · ゼミ · 棚割 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">ドラフト会議</h3>
-        <p class="text-xs text-slate-500 mt-2">第1〜3希望×定員からたたき台を生成し、ドラッグで会議調整。Undo/Redo · JSON再開対応。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 長時間合意形成ボード →</p>
+        <p class="sg-hub-card__blurb">部署配属や委員会の希望調査を割り当てたい時に。希望順をもとにメンバーを決定します。</p>
         </a>
-        <a href="slot-board.html" class="sg-hub-card sg-card p-5" data-tool-id="slot-board" data-category-id="people" data-search="枠取り 枠取り sugudasu 枠取りパレット 定員付き枠取りカンバン 定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · tsv。自動配置はしません。">
+        <a href="slot-board.html" class="sg-hub-card sg-card p-5" data-tool-id="slot-board" data-category-id="people" data-search="枠取りパレット 枠取り sugudasu 枠取りパレット 定員付き枠取りカンバン 人員配置や仕事の割り振りを管理したい時に。枠へドラッグしながら配置できます。 new local pc" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="slot-board" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <h3 class="sg-hub-card__title">枠取り</h3>
-        <p class="text-xs text-slate-500 mt-2">定員付きカンバン。人数を数え、上限超過を赤くする。復元コード · TSV。自動配置はしません。</p>
-        <p class="sg-hub-card__meta">アルファ版 · PC推奨 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--pc">PC推奨</span></div>
+        <h3 class="sg-hub-card__title">枠取りパレット</h3>
+        <p class="sg-hub-card__blurb">人員配置や仕事の割り振りを管理したい時に。枠へドラッグしながら配置できます。</p>
         </a>
-        <a href="planning-poker.html" class="sg-hub-card sg-card p-5" data-tool-id="planning-poker" data-category-id="people" data-search="見積会議 見積会議 sugudasu 見積会議 見積会議（planning poker） 見積会議（planning poker）を1画面化。同時revealで認識差を可視化し、再投票と合意を短時間で進めます。 開発 · 見積 · 合意形成 · new planning poker プランニングポーカー 見積もり">
+        <a href="planning-poker.html" class="sg-hub-card sg-card p-5" data-tool-id="planning-poker" data-category-id="people" data-search="見積会議 見積会議 sugudasu 見積会議 見積会議（planning poker） システム開発の見積もりで認識のズレを減らしたい時に。プランニングポーカーを実施します。 new local planning poker プランニングポーカー 見積もり" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="planning-poker" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">開発 · 見積 · 合意形成 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">見積会議</h3>
-        <p class="text-xs text-slate-500 mt-2">見積会議（Planning Poker）を1画面化。同時Revealで認識差を可視化し、再投票と合意を短時間で進めます。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
+        <p class="sg-hub-card__blurb">システム開発の見積もりで認識のズレを減らしたい時に。プランニングポーカーを実施します。</p>
         </a>
-        <a href="timeline.html" class="sg-hub-card sg-card p-5" data-tool-id="timeline" data-category-id="ops" data-search="進行タイムライン 進行 sugudasu イベント進行 イベント進行タイムライン 進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · tsvコピー。非送信。 当日進行 · new">
+        <a href="timeline.html" class="sg-hub-card sg-card p-5" data-tool-id="timeline" data-category-id="ops" data-search="イベント進行 進行 sugudasu イベント進行 イベント進行タイムライン イベントのタイムスケジュールを作りたい時に。時間変更に合わせて予定を再計算します。 new local" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="timeline" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">当日進行 · NEW</p>
-        <h3 class="sg-hub-card__title">進行タイムライン</h3>
-        <p class="text-xs text-slate-500 mt-2">進行表の1コマ変更で後続時刻が連動。±5分 · 差し込み · TSVコピー。非送信。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 幹事イベント束 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">イベント進行</h3>
+        <p class="sg-hub-card__blurb">イベントのタイムスケジュールを作りたい時に。時間変更に合わせて予定を再計算します。</p>
         </a>
-        <a href="warikan.html" class="sg-hub-card sg-card p-5" data-tool-id="warikan" data-category-id="ops" data-search="割り勘 割り勘 sugudasu 割り勘 傾斜割り勘 傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。 割り勘 精算">
+        <a href="warikan.html" class="sg-hub-card sg-card p-5" data-tool-id="warikan" data-category-id="ops" data-search="割り勘 割り勘 sugudasu 割り勘 傾斜割り勘 飲み会の集金で傾斜をつけて割り勘したい時に。端数を揃えた精算用テキストを出力します。 ga local 割り勘 精算" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="warikan" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">割り勘</h3>
-        <p class="text-xs text-slate-500 mt-2">傾斜割り勘 · イベント精算。上司/後輩 · 遅刻 · 飲まない人の比率調整。</p>
+        <p class="sg-hub-card__blurb">飲み会の集金で傾斜をつけて割り勘したい時に。端数を揃えた精算用テキストを出力します。</p>
         </a>
-        <a href="sns.html" class="sg-hub-card sg-card p-5" data-tool-id="sns" data-category-id="creative" data-search="snsデコ文字 sns sugudasu sns snsデコ文字 snsデコ文字 · 特殊フォント変換。instagram · x向けに縦書き · 装飾文字へ一括変換。">
+        <a href="budget-trim.html" class="sg-hub-card sg-card p-5" data-tool-id="budget-trim" data-category-id="ops" data-search="引き算パレット 予算引き算 sugudasu 引き算パレット 予算引き算パレット 決まった予算内で残高を管理したい時に。上限に収まるように金額を調整します。 new local 予算 引き算 コストカット 予算会議 超過" data-popular="0">
+        <button type="button" class="sg-hub-fav" data-fav-toggle="budget-trim" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">引き算パレット</h3>
+        <p class="sg-hub-card__blurb">決まった予算内で残高を管理したい時に。上限に収まるように金額を調整します。</p>
+        </a>
+        <a href="sns.html" class="sg-hub-card sg-card p-5" data-tool-id="sns" data-category-id="creative" data-search="snsデコ文字 sns sugudasu sns snsデコ文字 snsのプロフィールや投稿で装飾文字を使いたい時に。特殊文字や花文字へ変換します。 ga local デコ文字 特殊フォント バイオ" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="sns" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">SNSデコ文字</h3>
-        <p class="text-xs text-slate-500 mt-2">SNSデコ文字 · 特殊フォント変換。Instagram · X向けに縦書き · 装飾文字へ一括変換。</p>
+        <p class="sg-hub-card__blurb">SNSのプロフィールや投稿で装飾文字を使いたい時に。特殊文字や花文字へ変換します。</p>
         </a>
-        <a href="link-qr.html" class="sg-hub-card sg-card p-5" data-tool-id="link-qr" data-category-id="ops" data-search="リンク集qr リンクqr sugudasu リンク集qr リンク集qr（即席プロフィール） x · github · zenn をまとめて qr。登録不要 · サーバー保存なし（urlの#にだけ載る）。 登壇者 · 懇親会 · new qr 二次元コード">
+        <a href="link-qr.html" class="sg-hub-card sg-card p-5" data-tool-id="link-qr" data-category-id="ops" data-search="リンク集qr リンクqr sugudasu リンク集qr リンク集qr（即席プロフィール） 複数のurlを1つのqrコードにまとめたい時に。リンク集qrコードを作成します。 new local qr 二次元コード" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="link-qr" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">登壇者 · 懇親会 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">リンク集QR</h3>
-        <p class="text-xs text-slate-500 mt-2">X · GitHub · Zenn をまとめて QR。登録不要 · サーバー保存なし（URLの#にだけ載る）。</p>
-        <p class="sg-hub-card__meta">アルファ版 · SNSプロフィールと登壇者セット →</p>
+        <p class="sg-hub-card__blurb">複数のURLを1つのQRコードにまとめたい時に。リンク集QRコードを作成します。</p>
         </a>
-        <a href="qr-reader.html" class="sg-hub-card sg-card p-5" data-tool-id="qr-reader" data-category-id="ops" data-search="qr読み取り qr読取 sugudasu qr読取 qr読取（カメラ・貼り付け・画面共有） カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集qrの形式はカードで表示。 読み取り · 画面共有 · new qr 二次元コード">
+        <a href="qr-reader.html" class="sg-hub-card sg-card p-5" data-tool-id="qr-reader" data-category-id="ops" data-search="qr読取 qr読取 sugudasu qr読取 qr読取（カメラ・貼り付け・画面共有） 画像や画面に表示されたqrコードを読み取りたい時に。urlやデータを解析します。 new local qr 二次元コード" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="qr-reader" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">読み取り · 画面共有 · NEW</p>
-        <h3 class="sg-hub-card__title">QR読み取り</h3>
-        <p class="text-xs text-slate-500 mt-2">カメラ・貼り付け・ファイル・画面共有で非送信読み取り。リンク集QRの形式はカードで表示。</p>
-        <p class="sg-hub-card__meta">アルファ版 · リンク集QRと相互導線 →</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
+        <h3 class="sg-hub-card__title">QR読取</h3>
+        <p class="sg-hub-card__blurb">画像や画面に表示されたQRコードを読み取りたい時に。URLやデータを解析します。</p>
         </a>
-        <a href="diff.html" class="sg-hub-card sg-card p-5" data-tool-id="diff" data-category-id="text" data-search="差分チェック 差分 sugudasu 差分チェック 差分チェック aiに書き直させた文で、数字・日付・urlなど見逃すとまずい変更から確認。データは送りません。 ai文書監査 · new 差分 diff ai書き換え">
+        <a href="diff.html" class="sg-hub-card sg-card p-5" data-tool-id="diff" data-category-id="text" data-search="差分チェック 差分 sugudasu 差分チェック 差分チェック テキストの修正前後や契約書の新旧対照表を比較したい時に。数字や日付の変更点を色分け表示します。 new local 差分 diff ai書き換え" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="diff" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">AI文書監査 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">差分チェック</h3>
-        <p class="text-xs text-slate-500 mt-2">AIに書き直させた文で、数字・日付・URLなど見逃すとまずい変更から確認。データは送りません。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 非送信・保存なし →</p>
+        <p class="sg-hub-card__blurb">テキストの修正前後や契約書の新旧対照表を比較したい時に。数字や日付の変更点を色分け表示します。</p>
         </a>
-        <a href="time-calc.html" class="sg-hub-card sg-card p-5" data-tool-id="time-calc" data-category-id="staffing" data-search="時給計算 時給計算 sugudasu 時給計算 時給計算（勤務時間合計 + 時給換算） 勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。 単機能 · new 時給 勤務時間">
+        <a href="time-calc.html" class="sg-hub-card sg-card p-5" data-tool-id="time-calc" data-category-id="staffing" data-search="時給計算 時給計算 sugudasu 時給計算 時給計算（勤務時間合計 + 時給換算） 勤務時間から給料の目安を計算したい時に。コロンなしの時間入力をまとめて合計します。 new local 時給 勤務時間 バイト代 パート給料" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="time-calc" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <p class="sg-hub-card__eyebrow">単機能 · NEW</p>
+        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--new">NEW</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">時給計算</h3>
-        <p class="text-xs text-slate-500 mt-2">勤務時間をh:mmで合計し、時給から概算支給額を計算。入力エラー行は警告表示。</p>
-        <p class="sg-hub-card__meta">アルファ版 · 非送信・登録不要 →</p>
+        <p class="sg-hub-card__blurb">勤務時間から給料の目安を計算したい時に。コロンなしの時間入力をまとめて合計します。</p>
         </a>
         </section>
         <!-- hub-cards:end -->
+    </section>
 
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/hub-search-boot.js"></script>
 <script src="../assets/hub-ia.js"></script>
 <script>
 (function () {

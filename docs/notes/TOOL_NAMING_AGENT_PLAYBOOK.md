@@ -94,6 +94,7 @@ HTML と **同名 id**。registry キー · ファイル名 · `data-sg-tool-id`
 ```
 
 - `<h3>` = **`conceptName`**（Hub。productName は Product ヘッダー専用）
+- **文案正本:** [`TOOL_CARD_WRITING_GUIDELINE.md`](TOOL_CARD_WRITING_GUIDELINE.md)（JTBD · 2文固定 · 禁止語）。勝手なキャッチコピーを書かない
 - 実運用は `data/hub-cards.json` + `npm run validate:hub-ia` で生成（手メンテ禁止）
 - hub title / OG に **ツール件数（N選）を書かない**（`BACKLOG.md` §8-11）
 
@@ -141,7 +142,7 @@ npm run build:pages
 | A1 | `data/tool-registry.json` | id · file · conceptName · productName · navLabel · inNav · navOrder · stage | `validate:tool-naming` |
 | A2 | `tools/{id}.html` | `data-sg-tool-id` = id · `data-sg-title` = productName · `og:url` = `https://sugudasu.com/{id}`（`.html` なし）· FAQ は main 外 | naming · ogp |
 | A3 | `assets/{id}-*.js` / 専用 CSS | ロジックがあるなら同 id プレフィックス。**既存 `sugudasu.css` 構造を壊さない**（専用 CSS 追加は可） | （目視 · build） |
-| A4 | `tools/hub.html` + `data/hub-cards.json` | カード · `<h3>` = **conceptName** | naming · hub-ia |
+| A4 | `tools/hub.html` + `data/hub-cards.json` | カード · `<h3>` = **conceptName** · blurb = [`TOOL_CARD_WRITING_GUIDELINE.md`](TOOL_CARD_WRITING_GUIDELINE.md) | naming · hub-ia |
 | A5 | `assets/sugudasu-shell.js` `TOOLS[]` | id · file · label=navLabel · icon · **navOrder 順** | naming |
 | A6 | `data/statements-product.json` · `categories.json` | inNav 1行 · productName 一致 · categoryId | statements · hub-ia |
 | A7 | `data/changelog.json` | public エントリ · `tools: ["{id}"]` | `verify-changelog`（build 内） |

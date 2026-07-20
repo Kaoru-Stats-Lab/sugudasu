@@ -432,6 +432,8 @@ function copyDir(src, dest) {
 const BUST_ASSET_NAMES = [
   'sugudasu-shell.js',
   'hub-ia.js',
+  'hub-search-engine.js',
+  'hub-search-boot.js',
   'sugudasu.css',
   'sugudasu-segment.js',
   'tw-build.css',
@@ -542,25 +544,22 @@ function applySeoCanonical(html, file, opts = {}) {
 function rewriteInternalHtmlHrefs(html) {
   return html
     .replace(
-      /href=(["'])(?!https?:|\/\/|mailto:|tel:|#)(\/?(?!\.\.)[^"']+?\.html)(\?[^"']*)?\1/gi,
-      (match, quote, path, qs = '') => {
+      // DECISION: .html のあとに ?query と #hash の両方を許容（statements.html#section 等）
+      /href=(["'])(?!https?:|\/\/|mailto:|tel:|#)(\/?(?!\.\.)[^"']+?\.html)((?:\?[^"'#]*)?(?:#[^"']*)?)?\1/gi,
+      (match, quote, path, suffix = '') => {
         const clean = String(path).replace(/^\.\//, '');
         if (clean.includes('..')) return match;
         const noSlash = clean.replace(/^\//, '');
         const noExt = noSlash.replace(/\.html$/i, '');
         if (!noExt || noExt === 'hub' || noExt === 'index') {
-          return `href=${quote}/${qs || ''}${quote}`;
+          return `href=${quote}/${suffix || ''}${quote}`;
         }
-        return `href=${quote}/${noExt}${qs || ''}${quote}`;
+        return `href=${quote}/${noExt}${suffix || ''}${quote}`;
       }
     );
 }
 
-/**
- * @param {string} html
- * @param {string} [file] tools 相対ファイル名（SEO 注入用）
- * @param {{ guide?: boolean }} [opts]
- */
+
 function rewriteHtml(html, file = '', opts = {}) {
   let out = html
     .replace(/\.\.\/\.\.\/assets\//g, '/assets/')
@@ -655,7 +654,9 @@ function writeGuidePages() {
 
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
-  const moduleFiles = fs.readdirSync(distAssets).filter((name) => name.endsWith('-app.js'));
+  const moduleFiles = fs.readdirSync(distAssets).filter(
+    (name) => name.endsWith('-app.js') || name === 'hub-search-boot.js'
+  );
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);
     if (!fs.existsSync(p)) continue;

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-20",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
   "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。",
   "chipOrder": [
@@ -29,5 +29,11 @@
     "ops"
   ],
   "maxVisibleChipsDesktop": 8,
-  "maxVisibleChipsMobile": 4
+  "maxVisibleChipsMobile": 4,
+  "popularToolIds": [
+    "invoice",
+    "receipt",
+    "shift",
+    "image-trim"
+  ]
 }

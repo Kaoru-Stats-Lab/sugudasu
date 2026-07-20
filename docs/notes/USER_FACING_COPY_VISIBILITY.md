@@ -3,7 +3,7 @@
 **更新:** 2026-07-16  
 **目的:** 本番 HTML に「リポジトリ内のメモ」「開発者パス」「Agent 向け注記」が漏れるのを止める。一方で **検索意図に必要な語彙は残す**  
 **読者:** Agent · 提督 · 外部 AI（Zenn / note 下書き）  
-**関連:** [`DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) §1.1–1.3 · [`DEV_TRANSPARENCY_RULES.md`](DEV_TRANSPARENCY_RULES.md) · [`TOOL_NAMING_AGENT_PLAYBOOK.md`](TOOL_NAMING_AGENT_PLAYBOOK.md)
+**関連:** [`DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) §1.1–1.3 · [`DEV_TRANSPARENCY_RULES.md`](DEV_TRANSPARENCY_RULES.md) · [`TOOL_NAMING_AGENT_PLAYBOOK.md`](TOOL_NAMING_AGENT_PLAYBOOK.md) · Hub カード文案 [`TOOL_CARD_WRITING_GUIDELINE.md`](TOOL_CARD_WRITING_GUIDELINE.md)
 
 ---
 

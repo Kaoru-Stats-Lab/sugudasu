@@ -48,6 +48,7 @@ python -m http.server 8080
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
 | [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |
 | [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
+| [budget-trim.html](tools/budget-trim.html) | /budget-trim | SUGUDASU 引き算パレット | 予算引き算 | alpha |
 | [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
 | [sns.html](tools/sns.html) | /sns | SUGUDASU SNS | SNS | gamma |
 | [link-qr.html](tools/link-qr.html) | /link-qr | SUGUDASU リンク集QR | リンクQR | alpha |

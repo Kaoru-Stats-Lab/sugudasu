@@ -6,13 +6,15 @@ alwaysApply: false
 
 # 新規ツール公開 MECE（Token 節約）
 
-**正本:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5**
+**正本:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5**  
+**カード文言:** `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md`（Hub blurb / conceptName）
 
-新規ツールを hub / 本番に出すとき:
+新規ツールを hub / 本番に出すときは:
 
-1. §1 手順 A（registry → html → hub → shell → changelog/statements/README）
-2. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）
-3. 表 C は触らない（roadmap 完了行追加・guides 必須化など）
-4. 報告は §1.5 D のテンプレ
+1. §1 手順A（registry → html → hub → shell → changelog/statements/README）
+2. **カード文案を `TOOL_CARD_WRITING_GUIDELINE.md` で確定**してから `hub-cards.json` を書く
+3. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）
+4. 表 C は触らない（roadmap 完了行追加・guides 必須化など）
+5. 報告は §1.5 D のテンプレ
 
 デプロイは `DEPLOY_LOG.md` + `release:pages:free` + `push origin main`。

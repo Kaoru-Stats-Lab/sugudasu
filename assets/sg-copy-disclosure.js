@@ -11,6 +11,19 @@ export function mountCopyDisclosure(parent, tool = 'generic') {
   parent.appendChild(wrap);
 }
 
+function statementsTechHref() {
+  const hash = '#copy-first-tech';
+  const shell = typeof globalThis !== 'undefined' && globalThis.SUGUDASU_SHELL;
+  if (shell && typeof shell.pageHref === 'function') {
+    return shell.pageHref(`statements.html${hash}`);
+  }
+  const host = typeof location !== 'undefined' ? String(location.hostname || '') : '';
+  if (host === 'sugudasu.com' || host.endsWith('.pages.dev')) {
+    return `/statements${hash}`;
+  }
+  return `statements.html${hash}`;
+}
+
 function buildCopyDisclosureHtml(tool) {
   const toolNote =
     tool === 'fair-draw'
@@ -22,7 +35,7 @@ function buildCopyDisclosureHtml(tool) {
   return `
 <p class="sg-copy-disclosure-inline text-[10px] text-slate-500 leading-relaxed">
   コピーした内容は Slack · Microsoft Teams · Google Chat · Chatwork · LINE WORKS 等へ<strong>手動で貼り付け</strong>できます。自動投稿・公式連携ではありません。
-  <a href="statements.html#copy-first-tech" class="text-blue-600 hover:underline font-semibold">Copy-first の技術選定</a>
+  <a href="${statementsTechHref()}" class="text-blue-600 hover:underline font-semibold">Copy-first の技術選定</a>
 </p>
 <details class="sg-copy-disclosure">
   <summary class="text-[10px] font-semibold text-slate-600 cursor-pointer select-none">TSV / JSON · 貼り付け先について</summary>

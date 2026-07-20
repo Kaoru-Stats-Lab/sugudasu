@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="予算の削り合い会議向け。Excelから貼って合計と超過を円単位で明示。矢印キーで±1万/±10万。URLハッシュで共有。非送信。">
+    <title>予算の削り合いを超過額で進める | SUGUDASU 引き算パレット</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="予算の削り合いを超過額で進める — 引き算パレット">
+    <meta property="og:description" content="合計と上限の差だけを巨大表示。グラフなし・自動配分なし・非送信。">
+    <meta property="og:url" content="https://sugudasu.com/budget-trim">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 引き算パレット">
+    <meta name="twitter:description" content="予算の削り合い · 超過カウンター · 非送信">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <link rel="stylesheet" href="../assets/budget-trim.css">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"データは送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。計算はブラウザ内だけです。下書きはURLのハッシュに載せ、サーバーには保存しません。"}},{"@type":"Question","name":"自動で予算を配分しますか？","acceptedAnswer":{"@type":"Answer","text":"しません。合計と超過（または残高）を表示するだけです。どこを削るかは人間が決めます。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 引き算パレット" data-sg-subtitle="合計と超過だけを数える" data-sg-tool-id="budget-trim"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="金額" data-extra="予算会議" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                <strong>合計と上限の差</strong>だけを大きく見せる、予算の引き算パレットです。配分は自動化しません。
+            </p>
+            <p class="sg-tool-lead">
+                Excelから貼り付け → 数字を削る → TSVで持ち帰る。下書きは URL の <code class="text-[11px]">#</code> にだけ載せます（サーバー非保存）。
+            </p>
+        </div>
+    </header>
+
+    <div id="bt-counter" class="bt-counter bt-counter--neutral" aria-live="polite">
+        <div class="bt-counter__row">
+            <span>現在合計: <span id="bt-total">0</span></span>
+            <span>/</span>
+            <label class="inline-flex items-baseline gap-1">
+                上限
+                <input type="text" id="bt-cap" class="bt-counter__cap-input" inputmode="numeric" placeholder="例 3000000" aria-label="上限金額（円）">
+            </label>
+        </div>
+        <p id="bt-status" class="bt-counter__status">上限を入力すると超過 / 残高を表示します</p>
+    </div>
+
+    <section class="sg-card p-5 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">Excelからコピペ</h2>
+        <label for="bt-import" class="block text-xs font-semibold text-slate-600">項目名と金額（タブ区切り）</label>
+        <textarea id="bt-import" rows="7" class="sg-input font-mono text-sm leading-relaxed resize-y" placeholder="広告費&#9;1,200,000円&#10;展示会費&#9;800,000&#10;印刷代&#9;250,000"></textarea>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" id="bt-parse" class="sg-btn-primary text-sm">パース実行</button>
+            <button type="button" id="bt-add-row" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">行を追加</button>
+        </div>
+        <p class="bt-hint">金額フォーカス中: ↑↓ で ±1万 · Shift+↑↓ で ±10万</p>
+    </section>
+
+    <section class="space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">引き算ワークスペース</h2>
+        <p id="bt-empty" class="bt-empty">まだ項目がありません。上に Excel の表を貼って「パース実行」してください。</p>
+        <div id="bt-list" class="bt-list"></div>
+    </section>
+
+    <section class="sg-card p-4 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900">持ち帰り</h2>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" id="bt-copy-tsv" class="sg-btn-primary text-sm">格闘結果をTSVコピー（Excelへ）</button>
+            <button type="button" id="bt-copy-url" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">共有URLをコピー</button>
+            <button type="button" id="bt-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-rose-700">クリア</button>
+        </div>
+        <label for="bt-share-url" class="block text-[11px] font-semibold text-slate-600">現在の共有URL（ハッシュ）</label>
+        <input type="text" id="bt-share-url" class="sg-input text-[11px] font-mono" readonly aria-label="共有URL">
+        <p id="bt-msg" class="text-[11px] text-slate-500" aria-live="polite"></p>
+    </section>
+</main>
+
+<section class="sg-faq-section no-print" aria-label="よくある質問">
+    <div class="sg-faq-inner space-y-2">
+        <h2 class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
+        <details class="sg-faq" open>
+            <summary>どんな場面で使いますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>予算会議で「合計が上限を何円オーバーしているか」を追いながら、項目を手で削る場面向けです。グラフや自動配分はありません。</p>
+            </div>
+        </details>
+        <details class="sg-faq" open>
+            <summary>自動で予算を配分しますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>しません。合計と超過（または残高）を表示するだけです。どこを削るかは人間が決めます。</p>
+            </div>
+        </details>
+        <details class="sg-faq" open>
+            <summary>データは送信されますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>送信されません。計算はブラウザ内だけです。下書きは URL のハッシュに載せ、サーバーには保存しません。タブを閉じると画面上の状態は消えます。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>ロックは何をしますか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>「これ以上削らない」という会議中の目印です。計算自体はロックしても変わりません。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
+            <summary>キーボード操作は？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>金額欄にフォーカスした状態で、矢印↑↓が ±10,000 円、Shift+矢印が ±100,000 円です。</p>
+            </div>
+        </details>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/budget-trim-app.js"></script>
+</body>
+</html>

@@ -32,6 +32,7 @@
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
     { id: 'present', file: 'present.html', label: 'ギフト', icon: '🎁' },
     { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
+    { id: 'budget-trim', file: 'budget-trim.html', label: '予算引き算', icon: '✂️' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },
     { id: 'sns', file: 'sns.html', label: 'SNS', icon: '✨' },
     { id: 'link-qr', file: 'link-qr.html', label: 'リンクQR', icon: '📇' },
@@ -58,9 +59,10 @@
   function pageHref(fileOrPath) {
     if (!fileOrPath) return isProdSite() ? '/' : 'hub.html';
     if (/^(https?:|mailto:|tel:|#)/i.test(fileOrPath)) return fileOrPath;
-    const qIdx = fileOrPath.indexOf('?');
-    const rawPath = qIdx >= 0 ? fileOrPath.slice(0, qIdx) : fileOrPath;
-    const qs = qIdx >= 0 ? fileOrPath.slice(qIdx) : '';
+    // DECISION: ?query と #hash を両方残す（statements.html#copy-first-tech 等）
+    const m = String(fileOrPath).match(/^([^?#]*)(\?[^#]*)?(#.*)?$/);
+    const rawPath = (m && m[1]) || String(fileOrPath);
+    const qs = `${(m && m[2]) || ''}${(m && m[3]) || ''}`;
     let slug = rawPath.replace(/^\.\//, '').replace(/^\//, '').replace(/\.html$/i, '');
     if (!slug || slug === 'hub' || slug === 'index') {
       return (isProdSite() ? '/' : 'hub.html') + qs;
@@ -126,20 +128,157 @@
   }
 
   function navHtml(activeFile, navItems) {
-    const items = navItems || TOOLS;
-    return `<nav class="no-print bg-slate-800 border-b border-slate-700" aria-label="SUGUDASU ツール">
-      <div class="sg-section-shell">
-        <ul class="sg-nav-list py-1.5 text-[11px] font-semibold">
-          ${items.map(t => {
-            const active = t.file === activeFile;
-            const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-            return `<li class="sg-nav-item"><a href="${pageHref(t.file)}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
-              active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-            }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
-          }).join('')}
-        </ul>
-      </div>
-    </nav>`;
+    // Phase2: ツール横並びナビは廃止。互換のため空。
+    void activeFile;
+    void navItems;
+    return '';
+  }
+
+  const SITE_PAGE_IDS = {
+    hub: 1,
+    index: 1,
+    updates: 1,
+    roadmap: 1,
+    statements: 1,
+    privacy: 1,
+    terms: 1,
+    disclaimer: 1,
+    'not-a-car': 1,
+    guides: 1,
+    contact: 1,
+    'brand-logo-preview': 1,
+  };
+
+  /** @returns {'hub'|'product'|'site'} */
+  function resolveNavMode(opts, file) {
+    const explicit = opts && opts.navMode;
+    if (explicit === 'hub' || explicit === 'product' || explicit === 'site') return explicit;
+    const slug = String(file || '')
+      .replace(/\\/g, '/')
+      .replace(/^.*\//, '')
+      .replace(/\.html$/i, '')
+      .replace(/\?.*$/, '');
+    if (!slug || slug === 'hub' || slug === 'index') return 'hub';
+    if (SITE_PAGE_IDS[slug] || slug.indexOf('category') === 0) return 'site';
+    return 'product';
+  }
+
+  function navLinksForMode(mode, activeFile) {
+    if (mode === 'hub') {
+      return [
+        { file: 'guides.html', label: '実務ガイド' },
+        { file: 'updates.html', label: '更新履歴' },
+        { file: 'roadmap.html', label: 'ロードマップ' },
+      ];
+    }
+    if (mode === 'product') {
+      return [
+        { file: 'hub.html', label: '← ツール一覧', isBack: true },
+        { file: 'guides.html', label: '実務ガイド' },
+      ];
+    }
+    // site（更新履歴・ガイド・約束など）
+    return [
+      { file: 'hub.html', label: 'ツール一覧' },
+      { file: 'guides.html', label: '実務ガイド' },
+      { file: 'updates.html', label: '更新履歴' },
+      { file: 'roadmap.html', label: 'ロードマップ' },
+    ];
+  }
+
+  function drawerLinksForMode(mode) {
+    const base = navLinksForMode(mode, '');
+    // モバイルdrawerに約束を追加（Desktopヘッダーは項目を増やさない）
+    return base.concat([{ file: 'statements.html', label: '約束' }]);
+  }
+
+  function isNavActive(file, activeFile) {
+    if (file === 'hub.html') {
+      return activeFile === 'hub.html' || activeFile === 'index.html' || !activeFile;
+    }
+    return file === activeFile;
+  }
+
+  function siteNavLinksHtml(links, activeFile, opts) {
+    const linkClass = (opts && opts.drawer) ? 'sg-site-nav__drawer-link' : 'sg-site-nav__link';
+    return links
+      .map((t) => {
+        const active = isNavActive(t.file, activeFile);
+        const extra = t.isBack ? ' sg-site-nav__link--back' : '';
+        return `<a href="${pageHref(t.file)}" ${active ? 'aria-current="page"' : ''} class="${linkClass}${extra}${
+          active ? ' is-active' : ''
+        }">${escapeHtml(t.label)}</a>`;
+      })
+      .join('');
+  }
+
+  /**
+   * Phase2: Header = サイトナビ（白1段）。ツール一覧横スクロールは出さない。
+   * DECISION: Hub/Product/Site でリンク集合だけ変え、見た目の骨は共通。
+   */
+  function siteChromeHtml(mode, title, showPrint, activeFile, subtitle) {
+    const desktopLinks = navLinksForMode(mode, activeFile);
+    const drawerLinks = drawerLinksForMode(mode);
+    const printBtn = showPrint
+      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="sg-site-nav__print shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">印刷 / PDF</button>`
+      : '';
+    // Hub はタイトル帯を出さず探索UIに集中。Product は productName を淡く表示。
+    const pageTitleBlock =
+      mode === 'product' && title && title !== 'SUGUDASU'
+        ? `<div class="sg-site-header__pagetitle-wrap min-w-0 border-l border-slate-200 pl-3">
+            <p class="sg-site-header__pagetitle">${escapeHtml(title)}</p>
+            ${subtitle ? `<p class="sg-site-header__pagesub">${escapeHtml(subtitle)}</p>` : ''}
+          </div>`
+        : '';
+
+    return `<div class="sg-chrome sg-chrome--site no-print sticky top-0 z-50 w-full bg-white" data-sg-nav-kind="${mode}">
+      <header class="sg-site-header">
+        <div class="sg-site-header__brand">
+          <div class="sg-site-header__inner">
+            <div class="sg-site-header__left">
+              ${logoHtml()}
+              ${pageTitleBlock}
+            </div>
+            <nav class="sg-site-nav sg-site-nav--desktop" aria-label="SUGUDASU サイト">
+              ${siteNavLinksHtml(desktopLinks, activeFile, {})}
+            </nav>
+            <div class="sg-site-header__right">
+              ${printBtn}
+              <button type="button" class="sg-site-nav__menu-btn" id="sg-site-nav-menu-btn" aria-expanded="false" aria-controls="sg-site-nav-drawer" aria-label="メニューを開く">☰</button>
+            </div>
+          </div>
+          <div id="sg-site-nav-drawer" class="sg-site-nav__drawer" hidden>
+            <nav class="sg-site-nav__drawer-nav" aria-label="サイトメニュー">
+              ${siteNavLinksHtml(drawerLinks, activeFile, { drawer: true })}
+            </nav>
+          </div>
+        </div>
+      </header>
+    </div>`;
+  }
+
+  function bindSiteNavDrawer() {
+    const btn = document.getElementById('sg-site-nav-menu-btn');
+    const drawer = document.getElementById('sg-site-nav-drawer');
+    if (!btn || !drawer || btn.dataset.sgBound) return;
+    btn.dataset.sgBound = '1';
+    btn.addEventListener('click', function () {
+      const open = drawer.hasAttribute('hidden');
+      if (open) {
+        drawer.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'メニューを閉じる');
+      } else {
+        drawer.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'メニューを開く');
+      }
+    });
+  }
+
+  /** @deprecated Phase2 · siteChromeHtml を使う */
+  function siteNavHtml(activeFile) {
+    return siteChromeHtml('site', 'SUGUDASU', false, activeFile, '');
   }
 
   function logoHtml() {
@@ -171,30 +310,11 @@
   }
 
   function headerHtml(title, showPrint, subtitle) {
-    const printBtn = showPrint
-      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">印刷 / PDF</button>`
-      : '';
-    const pageTitleBlock = title && title !== 'SUGUDASU'
-      ? `<div class="sg-site-header__pagetitle-wrap min-w-0 border-l border-slate-200 pl-3">
-            <p class="sg-site-header__pagetitle">${escapeHtml(title)}</p>
-            ${subtitle ? `<p class="sg-site-header__pagesub">${escapeHtml(subtitle)}</p>` : ''}
-          </div>`
-      : '';
-    return `<header class="sg-site-header">
-      <div class="sg-site-header__brand bg-white border-b border-slate-200">
-        <div class="sg-site-header__inner flex min-h-14 max-w-7xl mx-auto px-4 items-center justify-between gap-3">
-          <div class="sg-site-header__left flex items-center gap-3 min-w-0 flex-1">
-            ${logoHtml()}
-            ${pageTitleBlock}
-          </div>
-          ${printBtn}
-        </div>
-      </div>
-    </header>`;
+    return siteChromeHtml('site', title, showPrint, currentFile(), subtitle);
   }
 
   function focusHeaderHtml(title, subtitle, showPrint) {
-    // 当日進行はナビ16本より「今の表」が主役 — 提督判断 · timeline focus モード（§ TIMELINE_TOOL_SPEC §7-1）
+    // 当日進行はナビより「今の表」が主役 — timeline focus モード（TIMELINE_TOOL_SPEC §7-1）
     const printBtn = showPrint
       ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-semibold px-3 py-1.5 rounded-md transition-colors">印刷</button>`
       : '';
@@ -202,7 +322,7 @@
     return `<header class="sg-site-header sg-site-header--focus">
       <div class="sg-site-header__inner flex min-h-11 max-w-7xl mx-auto px-3 sm:px-4 items-center justify-between gap-2">
         <div class="flex items-center gap-2 min-w-0 flex-1">
-          <a href="${homeHref()}" class="shrink-0 text-[11px] font-bold text-slate-500 hover:text-slate-800 no-underline" aria-label="ツール一覧へ">一覧</a>
+          <a href="${homeHref()}" class="shrink-0 text-[11px] font-bold text-slate-500 hover:text-slate-800 no-underline" aria-label="ツール一覧へ">← ツール一覧</a>
           <span class="text-slate-300" aria-hidden="true">/</span>
           <p class="text-sm font-bold text-slate-900 truncate">${escapeHtml(shortTitle)}</p>
           <span data-sg-focus-badge class="shrink-0"></span>
@@ -230,8 +350,10 @@
     </footer>`;
   }
 
-  function chromeHtml(title, showPrint, activeFile, subtitle, navItems) {
-    return `<div class="sg-chrome no-print sticky top-0 z-50 w-full bg-white">${headerHtml(title, showPrint, subtitle)}${navHtml(activeFile, navItems)}</div>`;
+  function chromeHtml(title, showPrint, activeFile, subtitle, navItems, navMode) {
+    void navItems;
+    const mode = navMode === 'hub' || navMode === 'product' || navMode === 'site' ? navMode : resolveNavMode({ navMode }, activeFile);
+    return siteChromeHtml(mode, title, showPrint, activeFile, subtitle);
   }
 
   function footerHtml() {
@@ -283,6 +405,7 @@
     const subtitle = (opts && opts.subtitle) || '';
     const chromeMode = (opts && opts.chromeMode) || 'default';
     const file = currentFile();
+    const navMode = resolveNavMode(opts || {}, file);
     const top = document.getElementById('sg-chrome-top');
     const bottom = document.getElementById('sg-chrome-bottom');
 
@@ -301,7 +424,8 @@
       if (chromeMode === 'focus') {
         top.innerHTML = focusChromeHtml(title, showPrint, subtitle);
       } else {
-        top.innerHTML = chromeHtml(title, showPrint, file, subtitle);
+        top.innerHTML = chromeHtml(title, showPrint, file, subtitle, null, navMode);
+        bindSiteNavDrawer();
       }
     }
     if (bottom && !bottom.innerHTML.trim()) {
@@ -370,6 +494,11 @@
       print: top.getAttribute('data-sg-print') === 'true',
       landscape: top.getAttribute('data-sg-landscape') === 'true',
       chromeMode: top.getAttribute('data-sg-chrome-mode') === 'focus' ? 'focus' : 'default',
+      navMode: (function () {
+        const n = top.getAttribute('data-sg-nav');
+        if (n === 'hub' || n === 'product' || n === 'site') return n;
+        return undefined;
+      })(),
     };
   }
 
@@ -465,10 +594,23 @@
   let toolRegistryCache = null;
 
   const DEV_STAGES = {
-    alpha: { label: 'アルファ版', cssClass: 'sg-dev-stage--alpha', hint: '骨格確認中。欠落・不具合があり得ます。' },
-    beta: { label: 'ベータ版', cssClass: 'sg-dev-stage--beta', hint: '主要機能は動作。品質担保・仕様変更が残ります。' },
-    gamma: { label: 'ガンマ版', cssClass: 'sg-dev-stage--gamma', hint: 'リリース候補。細部調整が残る場合あり。' },
-    stable: { label: '安定版', cssClass: 'sg-dev-stage--stable', hint: '安定運用。大きな変更は changelog で告知。' },
+    // Phase2: 一般向け文言のみ（版数・Backlog・内部ステージ名は出さない）
+    alpha: {
+      label: '新しい機能を試験公開しています',
+      cssClass: 'sg-dev-stage--alpha',
+      hint: '試験公開中の機能です。フィードバックを歓迎します。',
+    },
+    beta: {
+      label: '試験公開中です',
+      cssClass: 'sg-dev-stage--beta',
+      hint: '主要機能は使えます。仕様が変わる場合があります。',
+    },
+    gamma: {
+      label: '新しい機能を試験公開しています',
+      cssClass: 'sg-dev-stage--gamma',
+      hint: '試験公開中の機能です。',
+    },
+    stable: { label: '', cssClass: 'sg-dev-stage--stable', hint: '' },
   };
 
   function escapeHtml(text) {
@@ -480,17 +622,18 @@
   }
 
   function formatDevStageBadgeHtml(stage, opts) {
+    void opts;
     const meta = DEV_STAGES[stage] || DEV_STAGES.stable;
     if (!meta.label) return '';
-    const ver = opts.version ? ` v${opts.version}` : '';
-    const title = opts.title ? `${opts.title} — ` : '';
-    const note = opts.statusNote ? ` · ${opts.statusNote}` : '';
-    return `<span class="sg-dev-stage ${meta.cssClass}" title="${title}${meta.hint}${note}">${meta.label}${ver}</span>`;
+    // DECISION: version / statusNote（Backlog等）は一般UIに出さない
+    return `<span class="sg-dev-stage ${meta.cssClass}" title="${escapeHtml(meta.hint)}">${escapeHtml(meta.label)}</span>`;
   }
 
   function formatToolVersionLabel(stage, version) {
+    void version;
+    // DECISION: 一般UIに版数・内部ステージ名を出さない
     const meta = DEV_STAGES[stage] || DEV_STAGES.stable;
-    return `${meta.label} v${version}`;
+    return meta.label || '公開中';
   }
 
   async function loadToolRegistry() {
@@ -524,24 +667,13 @@
     if (!registry) return;
     const toolId = toolIdFromDom();
     const tool = getToolMeta(toolId);
-    const file = currentFile();
-
-    const navItems = navItemsFromRegistry(registry);
-    const nav = document.querySelector('.sg-nav-list');
-    if (nav) {
-      nav.innerHTML = navItems.map(t => {
-        const active = t.file === file;
-        const icon = t.icon ? `<span class="sg-nav-icon" aria-hidden="true">${t.icon}</span>` : '';
-        return `<li class="sg-nav-item"><a href="${pageHref(t.file)}" ${active ? 'aria-current="page"' : ''} class="sg-nav-link block px-2 py-1.5 rounded-md whitespace-nowrap transition-colors ${
-          active ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-        }">${icon}<span class="sg-nav-label">${escapeHtml(t.label)}</span></a></li>`;
-      }).join('');
-    }
+    // Phase2: ヘッダーはサイトナビ固定。ツール横並びを registry から再注入しない。
 
     if (tool && tool.productName) {
       const titleEl = document.querySelector('.sg-site-header__pagetitle');
       const top = document.getElementById('sg-chrome-top');
-      if (titleEl && top && top.getAttribute('data-sg-tool-id')) {
+      // Hub はページタイトル帯なし。Product のみ productName を淡く表示。
+      if (titleEl && top && top.getAttribute('data-sg-tool-id') && toolId !== 'hub') {
         titleEl.textContent = tool.productName;
       }
     }
@@ -550,6 +682,9 @@
   async function applyDevStageBadge() {
     const top = document.getElementById('sg-chrome-top');
     if (!top) return;
+    // Hub 公開 UI から開発ステージ帯を外す
+    const navAttr = top.getAttribute('data-sg-nav');
+    if (navAttr === 'hub' || navAttr === 'site' || toolIdFromDom() === 'hub') return;
     const registry = await loadToolRegistry();
     if (!registry) return;
     const toolId = toolIdFromDom();
@@ -579,10 +714,7 @@
       top.insertAdjacentElement('afterend', bar);
     }
 
-    const note = tool.statusNote
-      ? `<span class="sg-dev-badge-note">${escapeHtml(tool.statusNote)}</span>`
-      : '';
-    bar.innerHTML = badge + note;
+    bar.innerHTML = badge;
     bar.hidden = !badge;
   }
 
