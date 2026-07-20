@@ -1404,19 +1404,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 壊れ入力（broken-input）公開 · Hub 検索 synonyms/intent 欠落埋め |
 | **change_summary** | `broken-input` 新規 · 異常系コピペカタログ · registry/hub/shell/statements/changelog · synonyms+intent-map 12+4 · Gemini プロンプト |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 58/450） |
 | **deploy_count_today** | 8（**P7 override** · 提督 Commit&Push · 本日終了） |
-| **pages_build_budget_after** | （consume 後記入） |
+| **pages_build_budget_after** | 58/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | （push 後） |
+| **cf_deployment_id** | `3fc911d`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` 200 · `/broken-input` 200 · `/sns` 200 |
 
 ---
 
@@ -1424,6 +1424,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-20 | 008 executed（3fc911d · 壊れ入力公開 · Hub 検索欠落埋め） |
 | 2026-07-20 | 008 approved（壊れ入力公開 · Hub 検索欠落埋め · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 007 executed（e370e70 · /sns インライン mapMathAlpha styleKey hotfix） |
 | 2026-07-20 | 007 approved（/sns インライン mapMathAlpha styleKey hotfix · P7 override · 提督 Commit&Push） |
