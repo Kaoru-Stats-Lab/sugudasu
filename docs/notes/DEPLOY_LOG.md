@@ -1445,19 +1445,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — ブランド憲法5SSOT · Brand Project管理 · ツールカタログ（docs/Agentのみ） |
 | **change_summary** | `docs/brand/` · `docs/product/PRODUCT_CONSTITUTION.md` · `docs/brand-project/` · `docs/prompts/BRAND_AUDIT_PROMPT.md` · `docs/notes/SUGUDASU_TOOL_CATALOG.md` · Cursor rules · Ledger/参照更新 |
-| **local_build** | （`release:pages:free` 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 60/450） |
 | **deploy_count_today** | 2（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 60/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | （executed 後 · 本番変更なし想定） |
+| **cf_deployment_id** | `1c64995`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` 200 · 本番ツール変更なし（docs/Agentのみ） |
 
 ---
 
@@ -1465,6 +1465,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-21 | 002 executed（1c64995 · ブランド憲法 · Brand Project · ツールカタログ） |
 | 2026-07-21 | 002 approved（ブランド憲法 · Brand Project · ツールカタログ · P7 override · 提督 Commit&Push） |
 | 2026-07-21 | 001 executed（2bca941 · json-view UX 1.1） |
 | 2026-07-21 | 001 approved（json-view UX 1.1 · 提督 Commit&Push） |
