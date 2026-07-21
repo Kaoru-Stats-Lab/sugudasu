@@ -2,7 +2,7 @@
 
 **用途:** 5ドメイン分類の **深掘り表のみ**（実装仕様・記事本文・コード禁止）  
 **更新:** 2026-07-03  
-**突合先:** `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2（F1–F7）· `docs/BACKLOG.md` §1-15
+**突合先:** `docs/product/PRODUCT_CONSTITUTION.md`（F1〜F7）· `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2（市場）· `docs/BACKLOG.md` §1-15
 
 **使い方**
 
@@ -105,7 +105,7 @@ SUGUDASU が最も薄いと判断した **上位2ドメイン** について、
 ## Cursor 側の深掘り手順（提督・Agent用）
 
 1. **マップ** — Gemini 依頼3の表を `tool-registry.json` と突合
-2. **判定** — 各行を `PRODUCT_IDEA_JUDGMENT_LEDGER` §2 で F1–F7 · M1–M3
+2. **判定** — 各行を `PRODUCT_CONSTITUTION.md` でF1〜F7、`PRODUCT_IDEA_JUDGMENT_LEDGER` §2-2でM1〜M3
 3. **収束** — GO拡張は `BACKLOG.md` §1-15 に「新規HTMLなし」で追記（例: §1-15-7 normalize）
 4. **記事** — Trust/非送信は Zenn #6 系。ドメイン別に **1記事1Pain** まで
 5. **やらない** — MECE 全埋め。薄い＋红海＋AI代替高 = PARK

@@ -19,7 +19,7 @@
 **関連 SSOT**
 
 - `docs/BACKLOG.md` §2-5（AdSense 逆算 · GTM MECE）· §14（ゼロイチ認知）
-- `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2（SUGUDASU適合 vs 市場）
+- `docs/product/PRODUCT_CONSTITUTION.md`（F1〜F7・採用基準）· `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2（市場）
 - `docs/DESIGN_GUIDELINE.md` §1（登録不要 · ローカル完結）
 
 ---
@@ -244,7 +244,7 @@ IF 収益が AdSense のみ
 **新機能提案時（30秒）**
 
 1. §2-4 の優先度ルールに抵触しないか
-2. `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7
+2. `docs/product/PRODUCT_CONSTITUTION.md` F1〜F7
 3. §2-5 ツール別「やらないこと」
 
 **GTM / 記事執筆時**

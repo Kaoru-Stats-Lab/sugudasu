@@ -2,7 +2,7 @@
 
 **更新:** 2026-07-04  
 **用途:** 海外マイクロSaaS比較の「Mass上澄み」を避け、既存アセット×摩擦×相互作用の積から案を出す。  
-**採点正本:** `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2 · §12  
+**採点正本:** `docs/product/PRODUCT_CONSTITUTION.md`（F1〜F7）· `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2 · §12  
 **Sync 正本:** `docs/notes/SUGUDASU_SYNC_LINE.md`
 
 変数は **3つ固定でなくてよい**（2〜4軸）。重要なのは「海外ツール名」を軸にしないこと。
@@ -97,6 +97,6 @@ Part1の各案に付ける:
 ## 返ってきたらやること
 
 1. Part2 で「既存カテゴリ名で説明しきれる = Y」が残っていないか確認。
-2. Part3 を `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2 で本採点。
+2. Part3 を `PRODUCT_CONSTITUTION.md` と `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2で本採点。
 3. 跳ね度高かつ GO 候補だけ §12-3 または新節に追記（ユーザー承認後）。
 4. 実装・デプロイはしない。

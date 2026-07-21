@@ -38,7 +38,7 @@ SUGUDASU はリソース有限の個人開発ポータルです。
 - Sync（sync.sugudasu.com · 有料 · 登録あり）は **別プロダクト** として触らない前提でよいか？
 
 【SUGUDASU 憲法 — 破る案は OUT 列へ】
-- F1 登録不要（コア）· F2 データ非送信 · F3 静的配信（DB/WSなし）
+- 憲法: `docs/product/PRODUCT_CONSTITUTION.md` のF1〜F7を正本とする
 - F5 実務3分課題 · F7 税務法務の断定禁止
 - 新規 HTML 乱立禁止 — **既存 id 拡張・プリセット優先**
 - 「監視回避」「コンプラ突破」コピー禁止 → 「ブラウザ内完結・当社サーバーへPOSTしない」
@@ -145,6 +145,6 @@ Finance軸: 同
 ## Cursor 側の反映手順
 
 1. 依頼1・3を `tool-registry.json` と突合
-2. 判定列を `PRODUCT_IDEA_JUDGMENT_LEDGER` §2（F1–F7）で再チェック
+2. 判定列を `docs/product/PRODUCT_CONSTITUTION.md`（F1〜F7）と `PRODUCT_IDEA_JUDGMENT_LEDGER` §2-2（市場）で再チェック
 3. 依頼5を `data/roadmap.json` の core レーン候補に
 4. 依頼8の質問は提督回答後に `BACKLOG.md` §1-15-x 追記

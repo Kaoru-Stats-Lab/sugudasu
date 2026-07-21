@@ -2,7 +2,7 @@
 
 **更新:** 2026-06-20  
 **用途:** 企画表・比較表・優先度付け **のみ**（実装仕様・記事本文は書かない）  
-**前提添付:** `docs/GEMINI_SESSION_SNAPSHOT.md`（必須）· 任意で `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2–§3
+**前提添付:** `docs/GEMINI_SESSION_SNAPSHOT.md`（必須）· `docs/product/PRODUCT_CONSTITUTION.md` · 任意で `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2〜§3
 
 ---
 
@@ -112,7 +112,7 @@ E. 実装コスト感（小/中/大 — 具体日数は捏造しない）
 
 ## 出力後の Cursor 側手順
 
-1. §2 の ◎/× が `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2 と矛盾しないか突合
+1. §2 の ◎/× が `PRODUCT_CONSTITUTION.md` と `PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-2に矛盾しないか突合
 2. Tier S 案があれば `docs/notes/<TOOL>_TOOL_SPEC.md` 骨子を新規 or Backlog §1 に追記
 3. 「既存拡張」は新規 HTML より **fair-draw / warikan / group-split のモバイル UX** タスク化を優先検討
 4. Gemini 出力は **そのまま公開しない**

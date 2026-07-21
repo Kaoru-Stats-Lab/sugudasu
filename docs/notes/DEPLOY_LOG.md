@@ -1441,10 +1441,31 @@
 
 ---
 
+## DEPLOY-20260721-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — ブランド憲法5SSOT · Brand Project管理 · ツールカタログ（docs/Agentのみ） |
+| **change_summary** | `docs/brand/` · `docs/product/PRODUCT_CONSTITUTION.md` · `docs/brand-project/` · `docs/prompts/BRAND_AUDIT_PROMPT.md` · `docs/notes/SUGUDASU_TOOL_CATALOG.md` · Cursor rules · Ledger/参照更新 |
+| **local_build** | （`release:pages:free` 前） |
+| **deploy_count_today** | 2（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （executed 後 · 本番変更なし想定） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-21 | 002 approved（ブランド憲法 · Brand Project · ツールカタログ · P7 override · 提督 Commit&Push） |
 | 2026-07-21 | 001 executed（2bca941 · json-view UX 1.1） |
 | 2026-07-21 | 001 approved（json-view UX 1.1 · 提督 Commit&Push） |
 | 2026-07-20 | 008 executed（3fc911d · 壊れ入力公開 · Hub 検索欠落埋め） |

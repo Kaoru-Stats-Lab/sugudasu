@@ -20,7 +20,8 @@
 | `docs/notes/SUGUDASU_SYNC_LINE.md` | Sync ブランド · コアとの線引き · 課金は上乗せ |
 | `docs/notes/SYNC_AUTH_POLICY.md` | Auth 正本 |
 | `docs/notes/SYNC_S1_ARCHITECTURE.md` / `SYNC_S1_REMAINING_TASKS.md` | S1 現状（インフラ Done · **製品 E2E 未完了**） |
-| `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` | F1–F7 · Tier · OUT 理由 |
+| `docs/product/PRODUCT_CONSTITUTION.md` | F1〜F7 · Core/Sync分岐 |
+| `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` | Tier · 市場性 · OUT判例 |
 | `docs/notes/SYNC_SCHEDULE_PRODUCT_DECISION.md` | Schedule が旗艦 IA |
 
 **現状の事実（2026-07 時点）:**

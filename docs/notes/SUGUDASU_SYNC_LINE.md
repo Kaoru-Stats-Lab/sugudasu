@@ -4,7 +4,7 @@
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **ステータス**: 戦略確定 · **コア timeline 実装中** · **Sync 本番稼働**（`sync.sugudasu.com` · S1 **インフラ Done** · **製品 E2E 未完了**）
 
-> **別Agentへ:** コア無料ツールは `PRODUCT_IDEA_JUDGMENT_LEDGER.md` F1–F7。**Sync は別ライン** — 本ファイルが正本。初回 **インフラ実装** は T13-S 進行 Sync · **ブランド旗艦（IA）** は **Schedule**（§3-0c）· エンジン共有は `TIMELINE_TOOL_SPEC.md`。
+> **別Agentへ:** コア無料ツールのF1〜F7は `docs/product/PRODUCT_CONSTITUTION.md`。**Sync は別ライン** — 本ファイルが正本。初回 **インフラ実装** は T13-S 進行 Sync · **ブランド旗艦（IA）** は **Schedule**（§3-0c）· エンジン共有は `TIMELINE_TOOL_SPEC.md`。
 
 ---
 

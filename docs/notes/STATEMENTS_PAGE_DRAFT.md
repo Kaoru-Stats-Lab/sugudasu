@@ -289,7 +289,7 @@ A. **現時点では無料** です（広告・アフィリエイトで運営）
 | ファイル | 内容 |
 |----------|------|
 | `docs/BACKLOG.md` §1-13 | 実装タスク |
-| `docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md` §2-1 | F1–F7 |
+| `docs/product/PRODUCT_CONSTITUTION.md` | F1〜F7 |
 | `docs/GEMINI_SESSION_SNAPSHOT.md` §1 | 憲法30秒 |
 | `docs/BACKLOG.md` §14-1 | メタフック |
 | `tools/privacy.html` | 法的但し書きの正本 |

@@ -1,0 +1,31 @@
+---
+description: ブランド設計の進捗・決定・未解決事項をBrand Projectへ反映する
+alwaysApply: true
+---
+
+# SUGUDASU Brand Project運用
+
+ブランドに関する重要な議論が終わったら、次を必ず実施する。
+
+1. `docs/brand-project/BRAND_PROJECT_CHECKLIST.md` の現在地を更新する
+2. 結論だけを `docs/brand-project/DECISION_LOG.md` へ追記する
+3. `docs/brand-project/OPEN_QUESTIONS.md` を更新する
+4. 関連SSOTへのリンクを確認する
+5. 完了したPhase・項目だけをチェックする
+6. 新しい未解決事項を追加する
+
+重要な判断理由を残す場合は `docs/brand-project/ADR_TEMPLATE.md` を使う。
+
+責務を混ぜない。
+
+- `BRAND_CONSTITUTION` = 思想
+- `ANTI_PRINCIPLES` = Reject基準
+- `PRODUCT_CONSTITUTION` = 採用基準
+- `BRAND_RATIONALE` = 設計理由（判例）
+- `BRAND_AUDIT_PROMPT` = AI監査手順
+- `BRAND_PROJECT_CHECKLIST` = 現在地
+- `DECISION_LOG` = 決定事項
+- `OPEN_QUESTIONS` = 未解決事項
+- ADR = 個別決定の判断記録
+
+チャットログを転記せず、決定と未解決事項だけを残す。
