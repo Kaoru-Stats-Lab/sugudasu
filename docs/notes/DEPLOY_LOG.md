@@ -1425,19 +1425,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — JSON構造 UX 1.1（Hero圧縮 · Path主役 · FAQ/検索/列比） |
 | **change_summary** | `tools/json-view.html` · `assets/json-view-{app,css}` · `docs/notes/JSON_VIEW_SPEC.md` · hub-search-bundle 再生成 |
-| **local_build** | （`release:pages:free` 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 59/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 59/450 |
 | **gates** | P1–P7 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `2bca941`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` 200 · `/json-view` 200 |
 
 ---
 
@@ -1445,6 +1445,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-21 | 001 executed（2bca941 · json-view UX 1.1） |
 | 2026-07-21 | 001 approved（json-view UX 1.1 · 提督 Commit&Push） |
 | 2026-07-20 | 008 executed（3fc911d · 壊れ入力公開 · Hub 検索欠落埋め） |
 | 2026-07-20 | 008 approved（壊れ入力公開 · Hub 検索欠落埋め · P7 override · 提督 Commit&Push） |
