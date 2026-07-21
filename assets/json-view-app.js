@@ -99,11 +99,17 @@ function setCopyStatus(text) {
 
 /**
  * @param {string} text
+ * @param {string} [okLabel]
+ * @param {{ flashPath?: boolean }} [opts]
  */
-async function copyText(text) {
+async function copyText(text, okLabel = '✓ コピーしました', opts = {}) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('✓ コピーしました');
+    showToast(okLabel);
+    if (opts.flashPath && els.pathBar && !els.pathBar.classList.contains('jv-path--empty')) {
+      els.pathBar.classList.add('jv-path--copied');
+      window.setTimeout(() => els.pathBar?.classList.remove('jv-path--copied'), 800);
+    }
   } catch {
     showToast('コピーできませんでした', true);
   }
@@ -121,8 +127,9 @@ function setSearchMeta(text) {
 function updatePathBar() {
   if (!els.pathBar) return;
   if (!activeSegments) {
-    els.pathBar.textContent = '場所を表示 — 行にマウスを乗せるとここに出ます';
+    els.pathBar.textContent = '行にマウスを乗せると、ここに場所が出ます';
     els.pathBar.classList.add('jv-path--empty');
+    els.pathBar.classList.remove('jv-path--copied');
     els.pathBar.removeAttribute('title');
     return;
   }
@@ -231,7 +238,10 @@ function renderRow(row) {
   preview.addEventListener('dblclick', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    void copyText(valueForCopy(row.value, /** @type {import('./json-view-engine.js').JsonValueType} */ (row.type)));
+    void copyText(
+      valueForCopy(row.value, /** @type {import('./json-view-engine.js').JsonValueType} */ (row.type)),
+      '✓ 値をコピーしました'
+    );
   });
 
   const type = document.createElement('span');
@@ -354,7 +364,7 @@ function bindEvents() {
 
   els.pathBar?.addEventListener('click', () => {
     if (!activeSegments) return;
-    void copyText(toJsonPath(activeSegments));
+    void copyText(toJsonPath(activeSegments), '✓ 場所をコピーしました', { flashPath: true });
   });
 
   els.expandAll?.addEventListener('click', () => {

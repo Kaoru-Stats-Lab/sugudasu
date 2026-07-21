@@ -20,35 +20,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <link rel="stylesheet" href="../assets/json-view.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"JSONはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。貼り付けから表示・検索・コピーまでブラウザ内だけで処理します。タブを閉じると内容は消えます。"}},{"@type":"Question","name":"どうやって値や場所をコピーしますか？","acceptedAnswer":{"@type":"Answer","text":"値はダブルクリック、場所は上部のパス表示をクリックです。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"JSONPath（場所の表示）とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"JSONの中の「どこにあるか」を示す住所です。画面では data > items[0] > id のように見やすく表示し、コピーするとコードやチャットに貼れる形式になります。"}},{"@type":"Question","name":"JSONはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。貼り付けから表示・検索・コピーまでブラウザ内だけで処理します。タブを閉じると内容は消えます。"}},{"@type":"Question","name":"どうやって値や場所をコピーしますか？","acceptedAnswer":{"@type":"Answer","text":"値はダブルクリック、場所は上部のパス表示をクリックです。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU JSON構造" data-sg-subtitle="貼る · 見る · 探す · コピー" data-sg-tool-id="json-view"></div>
 
-<main class="sg-main-shell sg-main-shell--wide flex-1 space-y-5">
-    <header class="sg-tool-intro space-y-2">
+<main class="sg-main-shell sg-main-shell--wide flex-1 space-y-3">
+    <header class="sg-tool-intro space-y-1">
         <p data-sg-privacy-badge data-subject="JSON" data-extra="APIレスポンス確認" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
-        <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead">
-                JSONを貼って<strong>構造を見る</strong>だけの工具です。探して、値と場所を持ち帰ります。
-            </p>
-            <p class="sg-tool-lead">
-                値はダブルクリック · 場所は上部パスをクリック。編集・保存はしません。
-            </p>
-        </div>
+        <p class="sg-tool-lead text-sm">
+            JSONを貼るだけで構造を見ます。値はダブルクリック · 場所は下のパスをクリック。編集・保存なし。
+        </p>
     </header>
 
-    <button type="button" id="jv-path" class="jv-path jv-path--empty" aria-live="polite">
-        場所を表示 — 行にマウスを乗せるとここに出ます
-    </button>
-    <p id="jv-path-hint" class="text-[11px] text-slate-500 -mt-3">クリックで場所をコピー（コードやチャットに貼れる形式）</p>
+    <div class="jv-path-block">
+        <div class="jv-path-block__label">
+            <span class="text-[11px] font-bold text-slate-700 tracking-wide">場所（パス）</span>
+            <span id="jv-path-hint" class="text-[10px] text-slate-500">クリックでコピー</span>
+        </div>
+        <button type="button" id="jv-path" class="jv-path jv-path--empty" aria-live="polite">
+            行にマウスを乗せると、ここに場所が出ます
+        </button>
+    </div>
 
     <div class="jv-layout">
         <section class="sg-card p-4 space-y-3">
             <label for="jv-input" class="text-xs font-semibold text-slate-700">JSONを貼り付け</label>
             <textarea id="jv-input" class="sg-input jv-input resize-y" rows="12" placeholder='例: {"name":"山田","items":[1,2]}&#10;&#10;貼ると自動で読み取ります'></textarea>
             <div class="flex flex-wrap items-center gap-2">
-                <button type="button" id="jv-parse" class="sg-btn-primary text-sm">見る</button>
+                <button type="button" id="jv-parse" class="sg-btn-primary text-sm">構造を見る</button>
                 <span class="text-[11px] text-slate-500">貼り付けで自動 · Ctrl+Enter でも実行</span>
             </div>
             <p id="jv-status" class="text-xs text-slate-600 min-h-[1rem] whitespace-pre-line" aria-live="polite"></p>
@@ -59,19 +59,19 @@
                 <label class="flex-1 min-w-[12rem] space-y-1">
                     <span class="text-xs font-semibold text-slate-700">探す（キー・値）</span>
                     <div class="jv-search-inline">
-                        <input type="search" id="jv-search" class="sg-input text-sm jv-search-inline__input" placeholder="例: email" autocomplete="off">
+                        <input type="search" id="jv-search" class="sg-input text-sm jv-search-inline__input" placeholder="例: email / user_id / city" autocomplete="off">
                         <span id="jv-search-meta" class="jv-search-inline__meta hidden" aria-live="polite"></span>
                     </div>
                 </label>
                 <button type="button" id="jv-search-next" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">次へ</button>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
-                <button type="button" id="jv-collapse-all" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">すべて閉じる</button>
-                <button type="button" id="jv-expand-all" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">すべて開く</button>
+            <div class="jv-tree-toolbar">
+                <button type="button" id="jv-collapse-all" class="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">すべて閉じる</button>
+                <button type="button" id="jv-expand-all" class="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">すべて開く</button>
                 <span id="jv-copy-status" class="text-[11px] text-slate-500" aria-live="polite"></span>
             </div>
             <div id="jv-tree" class="jv-tree-wrap" aria-label="JSON構造"></div>
-            <p class="text-[11px] text-slate-500">Enter で次のヒットへ。関係ない枝は閉じたままです。</p>
+            <p class="text-[11px] text-slate-500">Enter で次のヒットへ。関係ない枝は閉じたままです。値はダブルクリックでコピー。</p>
         </section>
     </div>
 </main>
@@ -80,6 +80,13 @@
     <div class="sg-faq-inner space-y-2">
         <h2 id="jv-faq-heading" class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
         <details class="sg-faq" open>
+            <summary>JSONPath（場所の表示）とは何ですか？</summary>
+            <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                <p>JSONの中の「どこにあるか」を示す住所です。画面では <code class="text-[11px] bg-slate-100 px-1 rounded">data &gt; items[0] &gt; id</code> のように見やすく出し、コピーするとコードやチャットに貼れる形式になります。</p>
+                <p class="mt-2"><code class="text-[11px] bg-slate-100 px-1 rounded">[0]</code> は配列の先頭（0番目）を意味します。</p>
+            </div>
+        </details>
+        <details class="sg-faq">
             <summary>JSONはサーバーに送信されますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                 <p>いいえ。貼り付けから表示・検索・コピーまでブラウザ内だけで処理します。タブを閉じると内容は消えます。</p>
@@ -88,7 +95,7 @@
         <details class="sg-faq">
             <summary>どうやって値や場所をコピーしますか？</summary>
             <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                <p><strong>値</strong>はダブルクリック（文字は引用符なしの生の値）。<strong>場所</strong>は上部のパス表示をクリック（チャットやコードに貼れる形式でコピーされます）。</p>
+                <p><strong>値</strong>はダブルクリック（引用符なしの生の値）。<strong>場所</strong>は上部のパス表示をクリック（チャットやコードに貼れる形式）。</p>
             </div>
         </details>
         <details class="sg-faq">

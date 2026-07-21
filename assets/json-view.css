@@ -5,9 +5,23 @@
 
 @media (min-width: 1024px) {
   .jv-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    /* 40% / 60% — Tree 側に横幅を寄せる */
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     align-items: start;
   }
+}
+
+.jv-path-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.jv-path-block__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .jv-path {
@@ -15,24 +29,35 @@
   width: 100%;
   text-align: left;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 12px;
-  line-height: 1.4;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  background: #f8fafc;
-  color: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: 0.85rem 1rem;
+  border: 2px solid #c4b5fd;
+  border-radius: 0.65rem;
+  background: linear-gradient(180deg, #f5f3ff 0%, #eef2ff 100%);
+  color: #1e1b4b;
   cursor: pointer;
+  box-shadow: 0 1px 0 rgba(76, 29, 149, 0.06);
 }
 
 .jv-path:hover:not(.jv-path--empty) {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: linear-gradient(180deg, #ede9fe 0%, #e0e7ff 100%);
+  border-color: #8b5cf6;
 }
 
 .jv-path--empty {
+  font-weight: 500;
   color: #94a3b8;
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  box-shadow: none;
   cursor: default;
+}
+
+.jv-path--copied {
+  border-color: #34d399;
+  background: #ecfdf5;
 }
 
 .jv-input {
@@ -59,6 +84,14 @@
   color: #64748b;
   pointer-events: none;
   white-space: nowrap;
+}
+
+.jv-tree-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: -0.15rem;
 }
 
 .jv-tree-wrap {
@@ -116,15 +149,15 @@
 }
 
 .jv-row__key {
-  color: #7c3aed;
-  font-weight: 600;
+  color: #5b21b6;
+  font-weight: 700;
   flex-shrink: 0;
   cursor: pointer;
   user-select: none;
 }
 
 .jv-row__preview {
-  color: #334155;
+  color: #1e293b;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

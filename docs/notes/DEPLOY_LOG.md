@@ -84,6 +84,7 @@
 | `qr-reader` | SUGUDASU QR読取 | （ページ側） | `qr-reader-engine.js` |
 | `sns` | SUGUDASU SNS | inline + `sns-app.js` | `sns-font-engine.js` |
 | `font-converter` | SUGUDASU フォント変換 | `font-converter-app.js` | `sns-app.js` → `sns-font-engine.js` |
+| `json-view` | SUGUDASU JSON構造 | `json-view-app.js` | `json-view-engine.js` |
 | （hub 検索） | — | `hub-search-boot.js` | `hub-search-engine.js` |
 
 **補足:** `image-trim`（SUGUDASU 画像切り出し）は現状 `image-trim-app.js` 単体（engine なし）だが、将来 engine 分割したら **上表に追記必須**。`fair-draw` も同様に engine 分割時は追記。
@@ -1420,10 +1421,31 @@
 
 ---
 
+## DEPLOY-20260721-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — JSON構造 UX 1.1（Hero圧縮 · Path主役 · FAQ/検索/列比） |
+| **change_summary** | `tools/json-view.html` · `assets/json-view-{app,css}` · `docs/notes/JSON_VIEW_SPEC.md` · hub-search-bundle 再生成 |
+| **local_build** | （`release:pages:free` 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-21 | 001 approved（json-view UX 1.1 · 提督 Commit&Push） |
 | 2026-07-20 | 008 executed（3fc911d · 壊れ入力公開 · Hub 検索欠落埋め） |
 | 2026-07-20 | 008 approved（壊れ入力公開 · Hub 検索欠落埋め · P7 override · 提督 Commit&Push） |
 | 2026-07-20 | 007 executed（e370e70 · /sns インライン mapMathAlpha styleKey hotfix） |
