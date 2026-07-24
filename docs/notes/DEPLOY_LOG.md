@@ -1461,10 +1461,31 @@
 
 ---
 
+## DEPLOY-20260724-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督依頼 — 憲法義解・判例法体系 · annotate/clip-stash/Hub 仕様 · **present Reject アーカイブ** · 本番反映 |
+| **change_summary** | `docs/legal/` · Hub/annotate/clip-stash docs · `present` inNav false · hub-cards/catalog 除外 · `/present` アーカイブ案内 · CASE-2026-006 · changelog |
+| **local_build** | `pass`（`release:pages:free` · budget consume 61/450） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8（該当 target）確認予定 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/` · `/annotate` · `/present` noindex 案内） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-24 | 001 approved（憲法義解·判例 · present Reject · 提督本番反映依頼） |
 | 2026-07-21 | 002 executed（1c64995 · ブランド憲法 · Brand Project · ツールカタログ） |
 | 2026-07-21 | 002 approved（ブランド憲法 · Brand Project · ツールカタログ · P7 override · 提督 Commit&Push） |
 | 2026-07-21 | 001 executed（2bca941 · json-view UX 1.1） |

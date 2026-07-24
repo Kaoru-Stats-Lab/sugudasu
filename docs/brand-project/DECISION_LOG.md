@@ -9,6 +9,69 @@
 
 ---
 
+## 2026-07-24 — present（ギフト）を Reject · アーカイブする
+
+**決定事項**  
+`present` を Legacy から **Reject** へ昇格。Hub/ナビ/カタログ除外。URL は noindex のアーカイブ案内のみ。CASE-2026-006。  
+理由を更新履歴に公開する（誠実さ）。
+
+**理由**  
+**SUGUDASUのコンセプトに合わない。** AI ギフト提案は Domain・提案しすぎない・AI 前面と衝突。市場検証の試行は終了。
+
+**関連ドキュメント**
+
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-006)
+- [`../products/present/README.md`](../products/present/README.md)
+
+---
+
+## 2026-07-24 — PCT-6 任意性（Discretion）を Persona Trait として固定する
+
+**決定事項**  
+`docs/legal/PERSONA_CONSTITUTION_TRAITS.md` に PCT-6 を追加。「能力があること」と「振る舞うこと」は別。人格はいつ能力を使わないかで定義される。憲法本文は変更しない。
+
+**理由**  
+常時支援義務と読むと、できる機能の常時発動が正当化される。介入しない選択を合憲として明示する必要がある。
+
+**関連ドキュメント**
+
+- [`../legal/PERSONA_CONSTITUTION_TRAITS.md`](../legal/PERSONA_CONSTITUTION_TRAITS.md)
+- [`../legal/logs/2026-07-24_pct6_discretion.md`](../legal/logs/2026-07-24_pct6_discretion.md)
+
+---
+
+## 2026-07-24 — 憲法義解・判例法体系（docs/legal）を新設する
+
+**決定事項**  
+`docs/legal/` に Commentary · Case Law · Interpretation Guide · logs を置く。憲法改正ではなく立法意思と判例で運用する。Judicial Decision は ADR に書かず Case Law へ。F1〜F7 単独の合憲判定を禁止。
+
+**理由**  
+アンケート事件 · F2 字面解釈事件で、条文だけでは立法意思が再現できないことが証明された。
+
+**影響範囲**  
+全 Agent 判定 · ADR 境界 · 製品 decisions のリンク先。
+
+**関連ドキュメント**
+
+- [`../legal/README.md`](../legal/README.md)
+- [`../legal/logs/2026-07-24_constitution_review.md`](../legal/logs/2026-07-24_constitution_review.md)
+
+**未解決事項**  
+製品 decisions への Case ID バックリンクの網羅。
+
+---
+
+## 2026-07-24 — 憲法義解を法体系に追加する
+
+**決定事項**  
+（superseded in part）当初 `docs/brand/CONSTITUTIONAL_INTERPRETATION.md` に義解を置いた。同日 `docs/legal/` へ移管し、brand 側はポインタとした。
+
+**関連ドキュメント**
+
+- [`../legal/CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md)
+
+---
+
 ## 2026-07-21 — ブランド設計をプロジェクト管理する
 
 **決定事項**  

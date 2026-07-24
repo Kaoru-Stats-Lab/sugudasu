@@ -23,6 +23,7 @@ const EXTRA_TOOL_IDS = new Set([
   'privacy',
   'terms',
   'paper-schedule-research',
+  'mask', // legacy id · 2026-07-24 annotate へ rename · 履歴エントリ用
 ]);
 
 const FILE_EXT_RE = /\.(html|css|js|mjs|md|json)\b/i;

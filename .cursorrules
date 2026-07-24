@@ -6,6 +6,7 @@
 
 | タスク | SSOT |
 |--------|------|
+| **ブランド憲法 · 義解 · 判例** | `docs/brand/BRAND_CONSTITUTION.md` · **`docs/legal/`**（Commentary · Case Law · Interpretation Guide）· `ANTI_PRINCIPLES.md` · `docs/product/PRODUCT_CONSTITUTION.md` |
 | **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` · Auth `SYNC_AUTH_POLICY.md` · 思想 `SYNC_S1_REMAINING_TASKS.md` |
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |

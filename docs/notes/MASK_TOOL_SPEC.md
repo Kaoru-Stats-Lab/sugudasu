@@ -1,6 +1,8 @@
 # SUGUDASU マスク — ツール仕様（MVP）
 
-**更新:** 2026-07-02  
+> **⚠ 後継:** 2026-07-24 以降の正本は **[`docs/products/annotate/`](../products/annotate/README.md)**（id `annotate` · SUGUDASU 赤入れ）。本ファイルは `mask` 時代の参照用。
+
+**更新:** 2026-07-02（mask）· 2026-07-24（annotate へ移行）
 **id:** `mask`  
 **根拠:** [`mask-gemini-research-RESULT.md`](mask-gemini-research-RESULT.md) · [`BACKLOG.md`](../BACKLOG.md) §1-15-2
 

@@ -43,6 +43,7 @@ function stageLabel(stage) {
     gamma: 'gamma',
     beta: 'beta',
     alpha: 'alpha',
+    reject: 'reject',
   };
   return map[stage] ?? 'unknown';
 }
@@ -51,6 +52,7 @@ function classifyTool(id, tool) {
   if (CLASSIFICATION.legal.has(id)) return 'legal';
   if (CLASSIFICATION.internal.has(id)) return 'internal';
   if (CLASSIFICATION.support.has(id)) return 'support';
+  if (tool.stage === 'reject' || tool.judgment === 'Reject') return 'archive';
   if (tool.inNav) return 'product';
   if (id === 'font-converter') return 'support';
   return null;
@@ -83,6 +85,7 @@ function buildSection(toolsObj) {
     support: [],
     legal: [],
     internal: [],
+    archive: [],
   };
 
   for (const [id, tool] of Object.entries(toolsObj)) {
@@ -97,6 +100,7 @@ function buildSection(toolsObj) {
   const support = sortByNavOrder(buckets.support);
   const legal = sortByNavOrder(buckets.legal);
   const internal = sortByNavOrder(buckets.internal);
+  const archive = sortByNavOrder(buckets.archive);
 
   const lines = [];
   lines.push('## ツール一覧（`tools/`）');
@@ -127,6 +131,12 @@ function buildSection(toolsObj) {
   lines.push('| ファイル | URL | 名称 | stage |');
   lines.push('|---|---|---|---|');
   for (const entry of internal) lines.push(rowFor(entry));
+  lines.push('');
+  lines.push('### 5) アーカイブ（Reject · カタログ非掲載）');
+  lines.push('');
+  lines.push('| ファイル | URL | 名称 | stage |');
+  lines.push('|---|---|---|---|');
+  for (const entry of archive) lines.push(rowFor(entry));
   lines.push('');
   return lines.join('\n');
 }

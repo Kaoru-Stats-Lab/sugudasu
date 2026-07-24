@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="提出用PDFに文字・印鑑・黒塗りを足して完成。印刷して手書きしてスキャンし直さない。ブラウザ内・非送信。">
+    <title>提出用PDFに記入して完成させる | SUGUDASU PDF記入</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="提出用PDFに記入して完成">
+    <meta property="og:description" content="文字・印鑑・黒塗りを足して提出用PDFを完成。印刷→手書き→スキャン不要。非送信。">
+    <meta property="og:url" content="https://sugudasu.com/pdf-fill">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU PDF記入">
+    <meta name="twitter:description" content="提出用PDFをブラウザ内で完成 · 非送信">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+      .pdff-stage {
+        overflow: hidden;
+        /* Paper First: 机＝紙。高さ上限でサムネ化しすぎない */
+        height: min(84vh, calc(100vh - 200px));
+        min-height: 28rem;
+        background: #e8e8e6;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pdff-work-layout {
+        display: flex;
+        gap: 0.75rem;
+        align-items: stretch;
+      }
+      .pdff-thumbs {
+        flex: 0 0 4.5rem;
+        height: min(84vh, calc(100vh - 200px));
+        min-height: 28rem;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.35rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+      }
+      .pdff-thumb {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #334155;
+        cursor: pointer;
+      }
+      .pdff-thumb:hover { border-color: #a78bfa; }
+      .pdff-thumb--current {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+      }
+      .pdff-thumb--edited .pdff-thumb__mark {
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 0.65rem;
+        color: #2563eb;
+        line-height: 1;
+      }
+      .pdff-thumb--edited::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #2563eb;
+      }
+      .pdff-page-wrap {
+        position: relative;
+        margin: 0 auto;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+        background: #fff;
+        touch-action: none;
+      }
+      .pdff-page-wrap--enter {
+        animation: pdff-paper-place 150ms ease-out;
+      }
+      .pdff-page-wrap--flatten {
+        animation: pdff-paper-flatten 180ms ease-out;
+      }
+      @keyframes pdff-paper-place {
+        from { opacity: 0.55; transform: translateY(10px); }
+        to { opacity: 1; transform: none; }
+      }
+      @keyframes pdff-paper-flatten {
+        0% { filter: none; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12); }
+        45% { filter: contrast(1.04); box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08); }
+        100% { filter: none; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1); }
+      }
+      .pdff-trust {
+        list-style: none;
+        margin: 0.85rem auto 0;
+        padding: 0;
+        display: grid;
+        gap: 0.35rem;
+        text-align: left;
+        max-width: 18rem;
+      }
+      .pdff-trust li {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #334155;
+        line-height: 1.35;
+      }
+      .pdff-limits {
+        margin: 0.9rem 0 0;
+        font-size: 0.75rem;
+        color: #64748b;
+        line-height: 1.45;
+      }
+      .pdff-limits strong {
+        display: block;
+        font-size: 0.8125rem;
+        color: #0f172a;
+        font-weight: 700;
+      }
+      .pdff-busy {
+        display: grid;
+        gap: 0.4rem;
+        max-width: 18rem;
+        margin: 0.25rem 0;
+      }
+      .pdff-busy.hidden { display: none; }
+      .pdff-busy__track {
+        height: 6px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+      }
+      .pdff-busy__fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        background: #7c3aed;
+        transition: width 0.2s ease;
+      }
+      .pdff-busy__label {
+        margin: 0;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #5b21b6;
+      }
+      .pdff-busy__count {
+        margin: 0;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: #64748b;
+      }
+      .pdff-page-wrap canvas {
+        display: block;
+      }
+      #pdff-guide-canvas,
+      #pdff-overlay-layer,
+      .pdff-grid {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      #pdff-overlay-layer {
+        pointer-events: none;
+      }
+      .pdff-obj {
+        position: absolute;
+        box-sizing: border-box;
+        pointer-events: auto;
+        cursor: grab;
+        user-select: none;
+        border: 1px solid transparent;
+        outline: none;
+        overflow: visible;
+        transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+      }
+      .pdff-page-wrap--dragging,
+      .pdff-page-wrap--dragging .pdff-obj {
+        cursor: grabbing;
+      }
+      .pdff-obj:active { cursor: grabbing; }
+      .pdff-obj:hover:not(.pdff-obj--selected):not(.pdff-obj--editing) {
+        border-color: rgba(37, 99, 235, 0.28);
+      }
+      .pdff-obj__body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      .pdff-obj--text {
+        color: #111827;
+        line-height: 1.35;
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: transparent;
+      }
+      .pdff-obj--strip {
+        color: #111827;
+        background: transparent;
+        /* 削除ボタン・ハンドルは枠外。スロット内だけ隠す */
+        overflow: visible;
+      }
+      .pdff-obj--marker {
+        background: transparent;
+      }
+      .pdff-obj--marker canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      .pdff-strip-slot {
+        position: absolute;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        pointer-events: none;
+        border: 1px solid transparent;
+        transition: border-color 160ms ease-out;
+        overflow: hidden;
+      }
+      .pdff-obj--selected:not(.pdff-obj--editing) .pdff-strip-slot {
+        /* 本体ドラッグは親へ透過。横寄せは下端グリップのみ */
+        pointer-events: none;
+        border-color: rgba(37, 99, 235, 0.22);
+      }
+      .pdff-obj--editing .pdff-strip-slot {
+        pointer-events: auto;
+      }
+      .pdff-strip-slot--active,
+      .pdff-obj--editing .pdff-strip-slot:focus-within {
+        border-color: rgba(37, 99, 235, 0.7);
+      }
+      .pdff-strip-slot__grip {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 8px;
+        pointer-events: auto;
+        cursor: ew-resize;
+        border-radius: 0 0 2px 2px;
+        background: linear-gradient(to bottom, transparent 30%, rgba(37, 99, 235, 0.28));
+        z-index: 2;
+      }
+      .pdff-strip-slot__grip:hover,
+      .pdff-strip-slot__grip:active {
+        background: rgba(37, 99, 235, 0.4);
+      }
+      .pdff-strip-slot__label {
+        font-size: 9px;
+        line-height: 1;
+        color: #64748b;
+        margin-bottom: 1px;
+        user-select: none;
+        pointer-events: none;
+      }
+      .pdff-obj:not(.pdff-obj--selected):not(.pdff-obj--editing) .pdff-strip-slot__label {
+        opacity: 0;
+      }
+      .pdff-strip-slot__value {
+        display: block;
+        width: 100%;
+        line-height: 1.2;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .pdff-strip-slot__input {
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 1px solid rgba(37, 99, 235, 0.55);
+        outline: none;
+        background: rgba(255, 255, 255, 0.72);
+        color: inherit;
+        font: inherit;
+        line-height: 1.2;
+        padding: 0 1px;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        cursor: text;
+      }
+      .pdff-obj--image {
+        background: transparent;
+      }
+      .pdff-obj--image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+        background: transparent;
+      }
+      .pdff-obj--black {
+        background: #000;
+        border-radius: 0;
+      }
+      .pdff-obj--white {
+        background: #fff;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .pdff-obj--placed {
+        animation: pdff-place-flash 160ms ease-out;
+      }
+      @keyframes pdff-place-flash {
+        0% { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.45); }
+        100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+      }
+      .pdff-obj--ghost {
+        opacity: 1;
+        pointer-events: none;
+        border: 1px dashed rgba(37, 99, 235, 0.7);
+      }
+      .pdff-obj--ghost.pdff-obj--black {
+        background: #000;
+        opacity: 0.55;
+        border-style: solid;
+        border-color: #000;
+      }
+      /* ドラッグ中だけ見える。確定後は純白（行政書類の白地でも範囲が分かる） */
+      .pdff-obj--ghost.pdff-obj--white {
+        background: repeating-linear-gradient(
+          -45deg,
+          rgba(37, 99, 235, 0.42),
+          rgba(37, 99, 235, 0.42) 7px,
+          rgba(255, 255, 255, 0.55) 7px,
+          rgba(255, 255, 255, 0.55) 14px
+        );
+        border: 2px solid rgba(37, 99, 235, 0.95);
+        box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.15);
+      }
+      .pdff-obj--selected {
+        border-color: rgba(37, 99, 235, 0.55);
+      }
+      .pdff-obj--editing {
+        border-color: rgba(37, 99, 235, 0.45);
+        cursor: text;
+      }
+      .pdff-marker-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        align-items: center;
+        padding: 0.35rem 0.15rem 0;
+      }
+      .pdff-marker-strip.hidden { display: none; }
+      .pdff-marker-strip__btn {
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.4rem;
+        background: #fff;
+        color: #0f172a;
+        font-size: 0.95rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: border-color 160ms ease-out, background-color 160ms ease-out;
+      }
+      .pdff-marker-strip__btn:hover {
+        border-color: rgba(37, 99, 235, 0.45);
+      }
+      .pdff-marker-strip__btn[aria-pressed="true"] {
+        border-color: rgba(37, 99, 235, 0.7);
+        background: rgba(37, 99, 235, 0.08);
+      }
+      .pdff-text-editor {
+        width: 100%;
+        height: 100%;
+        min-height: 1.2em;
+        outline: none;
+        border: none;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        line-height: inherit;
+        white-space: pre-wrap;
+        word-break: break-word;
+        cursor: text;
+        padding: 0;
+        margin: 0;
+      }
+      .pdff-type-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.5rem 0.65rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.65rem;
+        background: #f8fafc;
+      }
+      .pdff-type-bar.hidden { display: none; }
+      .pdff-image-guide {
+        padding: 0.75rem 0.9rem;
+        border: 1px dashed #cbd5e1;
+        border-radius: 0.65rem;
+        background: #f8fafc;
+        text-align: center;
+      }
+      .pdff-image-guide.hidden { display: none; }
+      .pdff-image-guide__title {
+        margin: 0 0 0.45rem;
+        font-size: 0.8125rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .pdff-image-guide__steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.25rem;
+        font-size: 0.75rem;
+        color: #475569;
+        line-height: 1.4;
+      }
+      .pdff-image-guide__steps strong {
+        color: #1e3a8a;
+        font-weight: 700;
+      }
+      .pdff-image-guide__note {
+        margin: 0.55rem 0 0;
+        font-size: 0.6875rem;
+        color: #64748b;
+      }
+      .pdff-fs {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .pdff-fs button {
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 0.4rem;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        font-weight: 700;
+        font-size: 0.85rem;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .pdff-fs button:hover { background: #eff6ff; border-color: #93c5fd; }
+      .pdff-fs__val {
+        min-width: 1.75rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .pdff-obj-delete {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        color: #0f172a;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+      .pdff-obj-delete:hover { background: #fee2e2; border-color: #f87171; }
+      .pdff-handle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border: 2px solid #7c3aed;
+        border-radius: 2px;
+        z-index: 4;
+        box-sizing: border-box;
+      }
+      .pdff-handle--nw { left: -5px; top: -5px; cursor: nwse-resize; }
+      .pdff-handle--ne { right: -5px; top: -5px; cursor: nwse-resize; }
+      .pdff-handle--sw { left: -5px; bottom: -5px; cursor: nwse-resize; }
+      .pdff-handle--se { right: -5px; bottom: -5px; cursor: nwse-resize; }
+      .pdff-grid {
+        opacity: 0;
+        background-image:
+          linear-gradient(to right, rgba(148, 163, 184, 0.35) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(148, 163, 184, 0.35) 1px, transparent 1px);
+        background-size: 24px 24px;
+        transition: opacity 0.12s ease;
+      }
+      .pdff-grid--on { opacity: 1; }
+      #pdff-guide-canvas { z-index: 2; }
+      #pdff-overlay-layer { z-index: 3; }
+      .pdff-grid { z-index: 1; }
+      .pdff-dialog {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 42, 0.45);
+        padding: 1rem;
+      }
+      .pdff-dialog.hidden { display: none; }
+      .pdff-dialog__panel {
+        width: min(24rem, 100%);
+        background: #fff;
+        border-radius: 0.9rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+        padding: 1.25rem 1.35rem;
+      }
+      @media (max-width: 640px) {
+        .pdff-work-layout { flex-direction: column; }
+        .pdff-thumbs {
+          flex: none;
+          flex-direction: row;
+          max-height: none;
+          width: 100%;
+          overflow-x: auto;
+        }
+        .pdff-thumb { min-width: 2.75rem; }
+      }
+    </style>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Acrobatや専用ソフトは必要ですか？","acceptedAnswer":{"@type":"Answer","text":"不要です。ブラウザだけで利用できます。インストールや会員登録も必要ありません。"}},{"@type":"Question","name":"データは送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。すべてブラウザ内で処理します。"}},{"@type":"Question","name":"楕円で囲みたいです。","acceptedAnswer":{"@type":"Answer","text":"文字ツールの記号から「⬭」を配置してください。図形編集ではなく、紙へ記号を書く体験を優先しています。"}},{"@type":"Question","name":"PDFの文章を編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。このツールはPDF編集ソフトではなく、提出用PDFを完成させるツールです。"}},{"@type":"Question","name":"保存すると何が起きますか？","acceptedAnswer":{"@type":"Answer","text":"編集したページを見たまま固定した提出用PDFとして保存します。あとから文字だけ消したり、黒塗りだけ外したりはできません。"}},{"@type":"Question","name":"黒塗りの情報は復元できますか？","acceptedAnswer":{"@type":"Answer","text":"保存後は復元できません。"}},{"@type":"Question","name":"元のPDFは消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。提出用PDFを新しく作成します。元のPDFはそのまま残ります。"}},{"@type":"Question","name":"会員登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"必要ありません。すぐ使えます。"}},{"@type":"Question","name":"電子印鑑は使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。SUGUDASU電子印鑑からコピーして、Ctrl+Vで貼り付けできます。"}},{"@type":"Question","name":"スマートフォンでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"このツールはPCでの利用を前提に設計しています。提出書類を見やすく正確に記入できることを優先しています。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU PDF記入" data-sg-subtitle="提出用 · 文字·印·黒塗り · 非送信" data-sg-tool-id="pdf-fill"></div>
+
+<main class="sg-main-shell sg-main-shell--wide flex-1 space-y-6">
+    <div class="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note">
+        <strong class="font-bold">PC推奨</strong> — PDFの描画と焼き付けでメモリを使うため、パソコン向けです。
+    </div>
+
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="PDF" data-extra="提出用完成" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                行政・保険・契約などの<strong>提出用PDF</strong>に、文字・印鑑・黒塗りを足して完成させます。印刷して手書きしてスキャンし直す回り道を省きます。
+            </p>
+            <p class="sg-tool-lead">
+                Acrobatの代替ではありません。印影の生成は <a href="stamp.html" class="text-violet-800 underline font-semibold">電子印鑑</a>、画像の秘匿は <a href="annotate.html" class="text-violet-800 underline font-semibold">赤入れ</a>。不安があるときは下の <a href="#faq" class="text-violet-800 underline font-semibold">よくある質問</a> もどうぞ。
+            </p>
+        </div>
+    </header>
+
+    <section id="pdff-drop-section" class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">提出するPDF</h2>
+        <div id="pdff-drop" class="sg-file-drop" tabindex="0" role="button" aria-label="提出するPDFを開く">
+            <p class="sg-file-drop__title">提出するPDFを開く</p>
+            <p class="sg-file-drop__hint">ドラッグ＆ドロップ<br>またはクリック</p>
+            <ul class="pdff-trust" aria-label="安心ポイント">
+                <li>✓ このPCだけで処理します</li>
+                <li>✓ PDFは送信されません</li>
+                <li>✓ 終わったらそのまま削除できます</li>
+            </ul>
+            <p class="pdff-limits">
+                <strong>提出書類向け · 50ページ程度まで</strong>
+                <span>（40MBまで）</span>
+            </p>
+        </div>
+        <input type="file" id="pdff-file" class="hidden" accept="application/pdf,.pdf">
+    </section>
+
+    <p id="pdff-error" class="hidden text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2" role="alert"></p>
+    <div id="pdff-busy" class="pdff-busy hidden" role="status" aria-live="polite">
+        <div class="pdff-busy__track" aria-hidden="true"><div id="pdff-busy-fill" class="pdff-busy__fill"></div></div>
+        <p id="pdff-busy-label" class="pdff-busy__label">提出用紙を準備しています</p>
+        <p id="pdff-busy-count" class="pdff-busy__count"></p>
+    </div>
+    <p id="pdff-status" class="text-[11px] text-slate-500"></p>
+    <p id="pdff-done" class="hidden text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2" role="status">提出用PDFが完成しました</p>
+
+    <section id="pdff-workspace" class="hidden space-y-4">
+        <section class="sg-card p-5 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">記入ツール</h2>
+            <div class="sg-segment sg-segment--cols-5 sg-segment--notion-soft" role="tablist" aria-label="記入ツール">
+                <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="text" aria-selected="true">文字</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="datetime" aria-selected="false">日時</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="image" aria-selected="false">印・画像</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="black" aria-selected="false">黒塗り</button>
+                <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="white" aria-selected="false">白塗り</button>
+            </div>
+            <p id="pdff-mode-hint" class="text-[11px] text-slate-600" role="note"></p>
+            <div id="pdff-marker-strip" class="pdff-marker-strip" role="group" aria-label="記号">
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="circle" aria-pressed="false" title="丸">○</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="oval" aria-pressed="false" title="楕円">⬭</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="check" aria-pressed="false" title="チェック">✓</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="check-heavy" aria-pressed="false" title="チェック（太）">✔</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="cross" aria-pressed="false" title="バツ">✕</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="triangle" aria-pressed="false" title="三角">△</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="square" aria-pressed="false" title="四角">□</button>
+                <button type="button" class="pdff-marker-strip__btn" data-pdff-marker="square-fill" aria-pressed="false" title="塗り四角">■</button>
+            </div>
+            <div id="pdff-image-guide" class="pdff-image-guide hidden" role="note" aria-label="印・画像の置き方">
+                <p class="pdff-image-guide__title">印・画像を置く</p>
+                <ul class="pdff-image-guide__steps">
+                    <li><strong>Ctrl+V</strong> — 電子印鑑からコピーした画像</li>
+                    <li>ドラッグ＆ドロップ</li>
+                    <li>クリックでファイル選択</li>
+                </ul>
+                <p class="pdff-image-guide__note">縦横比は保ちます。崩すときだけ Shift を押しながら角をドラッグ</p>
+            </div>
+            <div id="pdff-type-bar" class="pdff-type-bar hidden" aria-label="文字の大きさ・書体">
+                <div class="sg-segment sg-segment--cols-2 sg-segment--notion-soft" role="group" aria-label="書体">
+                    <button type="button" class="sg-segment__btn" data-pdff-font="mincho" aria-pressed="false">明朝</button>
+                    <button type="button" class="sg-segment__btn" data-pdff-font="gothic" aria-pressed="true">ゴシック</button>
+                </div>
+                <div class="pdff-fs" role="group" aria-label="文字サイズ">
+                    <button type="button" id="pdff-fs-dec" aria-label="小さく">－</button>
+                    <span id="pdff-fs-val" class="pdff-fs__val">16</span>
+                    <button type="button" id="pdff-fs-inc" aria-label="大きく">＋</button>
+                </div>
+            </div>
+            <input type="file" id="pdff-image-input" class="hidden" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp">
+
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" id="pdff-prev" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">前のページ</button>
+                <span id="pdff-page-label" class="text-xs font-bold text-slate-700">1 / 1</span>
+                <button type="button" id="pdff-next" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">次のページ</button>
+                <button type="button" id="pdff-undo" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 ml-auto">元に戻す</button>
+                <button type="button" id="pdff-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
+            </div>
+        </section>
+
+        <div class="pdff-work-layout">
+            <nav id="pdff-thumbs" class="pdff-thumbs" aria-label="ページ一覧"></nav>
+            <div class="pdff-stage">
+                <div id="pdff-page-wrap" class="pdff-page-wrap" aria-label="PDFページ">
+                    <canvas id="pdff-page-canvas"></canvas>
+                    <div id="pdff-grid" class="pdff-grid" aria-hidden="true"></div>
+                    <canvas id="pdff-guide-canvas" aria-hidden="true"></canvas>
+                    <div id="pdff-overlay-layer"></div>
+                </div>
+            </div>
+        </div>
+
+        <section class="sg-card p-5 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">提出用PDFを完成</h2>
+            <p class="text-[11px] text-slate-600 leading-relaxed">編集したページだけ見たまま固定し、触っていないページは元のPDFのまま残します。</p>
+            <div class="grid sm:grid-cols-2 gap-3">
+                <div>
+                    <label for="pdff-doc-type" class="block text-xs font-semibold text-slate-700 mb-1">書類名</label>
+                    <input id="pdff-doc-type" class="sg-input text-sm w-full" type="text" value="" placeholder="例）〇〇申請書" autocomplete="off">
+                </div>
+                <div>
+                    <label for="pdff-person" class="block text-xs font-semibold text-slate-700 mb-1">利用者名（任意）</label>
+                    <input id="pdff-person" class="sg-input text-sm w-full" type="text" value="" placeholder="例）薫" autocomplete="off">
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">提出書類の氏名ではなく、完成PDFをあとで探しやすくするための名前です。</p>
+            <p class="text-[11px] text-slate-700">
+                <span class="font-semibold text-slate-600">完成ファイル名</span>
+                <code id="pdff-filename-preview" class="ml-1 break-all text-slate-900">2026-07-22_書類.pdf</code>
+            </p>
+            <p class="text-[11px] text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                編集したページは見た目どおりに固定して保存します。元PDFの文字は選択できなくなります。黒塗り・白塗りした部分も、のぞけない形で残ります。データはこのPCの外へ送りません。
+            </p>
+            <button type="button" id="pdff-bake" class="sg-btn-primary text-sm" disabled>保存</button>
+        </section>
+    </section>
+</main>
+
+<div id="pdff-dialog" class="pdff-dialog hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="pdff-dialog-title">
+    <div class="pdff-dialog__panel space-y-3">
+        <h2 id="pdff-dialog-title" class="text-base font-bold text-slate-900">保存の確認</h2>
+        <div class="text-sm text-slate-700 space-y-1">
+            <p class="font-semibold">編集したページ</p>
+            <p id="pdff-dialog-count" class="text-slate-900 font-bold">0ページ</p>
+            <ul id="pdff-dialog-list" class="text-sm space-y-0.5 text-slate-800"></ul>
+        </div>
+        <div class="text-xs leading-relaxed text-slate-600 space-y-1 border-t border-slate-100 pt-3">
+            <p>編集したページは見たまま固定されます。</p>
+            <p>あとから内容は変更できません。</p>
+            <p>編集していないページは元PDFを保持します。</p>
+            <p class="pt-1">ファイル名: <code id="pdff-dialog-filename" class="text-slate-800 break-all"></code></p>
+        </div>
+        <div class="flex flex-wrap gap-2 justify-end pt-1">
+            <button type="button" id="pdff-dialog-cancel" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">やめる</button>
+            <button type="button" id="pdff-dialog-confirm" class="sg-btn-primary text-sm">保存</button>
+        </div>
+    </div>
+</div>
+
+<section id="faq" class="sg-faq-section no-print" aria-label="よくある質問">
+    <div class="sg-faq-inner space-y-4">
+        <div>
+            <h2 class="text-sm font-bold text-slate-900 mb-1">よくある質問</h2>
+            <p class="text-[11px] text-slate-500 leading-relaxed">PDF編集ソフトではなく、提出用PDFを完成させるための案内です。</p>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">はじめて使う方へ</h3>
+            <details class="sg-faq">
+                <summary>Acrobatや専用ソフトは必要ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>不要です。ブラウザだけで利用できます。</p>
+                    <p>インストールや会員登録も必要ありません。すぐ書き始められるためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>データは送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>送信されません。</p>
+                    <p>すべてブラウザ内で処理します。行政書類でも安心して扱えるようにするためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>楕円で囲みたいです。</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>文字ツールの記号から「⬭」を配置してください。</p>
+                    <p>図形編集ではなく、紙へ記号を書く体験を優先しています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>何ができますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>提出前のPDFへ、文字を書く・印鑑を貼る・画像を貼る・黒塗り・白塗りができます。</p>
+                    <p>印刷して手書きしてスキャンし直さないためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>PDFの文章を編集できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>できません。</p>
+                    <p>このツールはPDF編集ソフトではなく、<strong>提出用PDFを完成させるツール</strong>です。迷わず提出を終わらせるため、編集ソフトの機能は持たせていません。</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">保存</h3>
+            <details class="sg-faq">
+                <summary>保存すると何が起きますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>編集したページを、見たまま固定した提出用PDFとして保存します。</p>
+                    <p>あとから文字だけ消したり、黒塗りだけ外したりはできません。提出物として渡せる状態にするためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>元のPDFは消えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>消えません。</p>
+                    <p>提出用PDFを新しく作成します。元のPDFはそのまま残ります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>保存したあと変更できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>できません。</p>
+                    <p>変更したい場合は、元のPDFからやり直してください。一度提出用として固めるためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>編集していないページはどうなりますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>元のページをそのまま保持します。</p>
+                    <p>編集したページだけを固定します。触っていないページまで変えなくてよいためです。</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">黒塗り・白塗り</h3>
+            <details class="sg-faq">
+                <summary>黒塗りした文字はコピーできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>できません。</p>
+                    <p>保存すると、黒塗りも見たまま固定されます。秘匿した内容を残さないためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>黒塗りの情報は復元できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>保存後は復元できません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>Adobeで開けば消せますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>できません。</p>
+                    <p>編集した内容は固定されています。提出用として扱うためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>白塗りも同じですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>はい。白塗りも見たまま固定されます。修正テープのつもりで使えます。</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">SUGUDASUならでは</h3>
+            <details class="sg-faq">
+                <summary>会員登録は必要ですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>必要ありません。すぐ使えます。提出を妨げないためです。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>インターネットへ送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>送信されません。</p>
+                    <p>行政書類や契約書なども安心して扱えるよう、ブラウザ内だけで処理します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>電子印鑑は使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>はい。<a href="stamp.html" class="text-violet-800 underline font-semibold">電子印鑑</a>からコピーして、Ctrl+Vで貼り付けできます。</p>
+                    <p>ファイル保存を挟まないため、いちばん短い導線です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>OCRや全文検索はできますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>編集したページは固定されるため、検索の対象にならない場合があります。</p>
+                    <p>保存時は分かりやすいファイル名をおすすめします。</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">制限について</h3>
+            <details class="sg-faq">
+                <summary>どれくらい大きなPDFまで使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>目安は、40MBまで・50ページまでです。</p>
+                    <p>行政書類・契約書・履歴書・申請書など、一般的な提出書類はほとんどこの範囲に収まります。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>スマートフォンでも使えますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>このツールはPCでの利用を前提に設計しています。</p>
+                    <p>提出書類を見やすく、正確に記入できることを優先しているためです。</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-700 pt-1">このツールについて</h3>
+            <details class="sg-faq">
+                <summary>なぜ機能が少ないのですか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>提出書類を、短時間で完成させるためです。</p>
+                    <p>フォントや細かい編集機能を増やすより、迷わず提出できることを大切にしています。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>どんな書類に向いていますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60 space-y-2">
+                    <p>行政申請書・履歴書・契約書・見積書・保険書類など、「印刷して手書きして提出していた書類」に向いています。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/pdf-fill-app.js"></script>
+</body>
+</html>

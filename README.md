@@ -32,14 +32,16 @@ python -m http.server 8080
 | [report.html](tools/report.html) | /report | SUGUDASU 議事録 | 議事録 | gamma |
 | [reverse.html](tools/reverse.html) | /reverse | SUGUDASU 逆引き | 逆引き | gamma |
 | [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
+| [clip-stash.html](tools/clip-stash.html) | /clip-stash | SUGUDASU 仮置き | 仮置き | beta |
 | [search-query.html](tools/search-query.html) | /search-query | SUGUDASU 検索式ビルダー | 検索式 | alpha |
 | [table-conv.html](tools/table-conv.html) | /table-conv | SUGUDASU 表変換 | 表変換 | beta |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [video-frame.html](tools/video-frame.html) | /video-frame | SUGUDASU 動画コマ抜き | 動画コマ抜き | alpha |
-| [mask.html](tools/mask.html) | /mask | SUGUDASU マスク | マスク | alpha |
+| [annotate.html](tools/annotate.html) | /annotate | SUGUDASU 赤入れ | 赤入れ | gamma |
 | [image-trim.html](tools/image-trim.html) | /image-trim | SUGUDASU 画像切り出し | 画像切り出し | alpha |
 | [clipboard-trim.html](tools/clipboard-trim.html) | /clipboard-trim | SUGUDASU 余白トリム | 余白トリム | alpha |
 | [watermark.html](tools/watermark.html) | /watermark | SUGUDASU 透かし | 透かし | alpha |
+| [pdf-fill.html](tools/pdf-fill.html) | /pdf-fill | SUGUDASU PDF記入 | PDF記入 | alpha |
 | [pdf-images.html](tools/pdf-images.html) | /pdf-images | SUGUDASU PDF画像抽出 | PDF画像 | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [broken-input.html](tools/broken-input.html) | /broken-input | SUGUDASU 壊れ入力 | 壊れ入力 | alpha |
@@ -48,7 +50,6 @@ python -m http.server 8080
 | [slot-board.html](tools/slot-board.html) | /slot-board | SUGUDASU 枠取りパレット | 枠取り | alpha |
 | [planning-poker.html](tools/planning-poker.html) | /planning-poker | SUGUDASU 見積会議 | 見積会議 | alpha |
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
-| [present.html](tools/present.html) | /present | SUGUDASU ギフト | ギフト | gamma |
 | [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
 | [budget-trim.html](tools/budget-trim.html) | /budget-trim | SUGUDASU 引き算パレット | 予算引き算 | alpha |
 | [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
@@ -84,6 +85,12 @@ python -m http.server 8080
 | ファイル | URL | 名称 | stage |
 |---|---|---|---|
 | [brand-logo-preview.html](tools/brand-logo-preview.html) | /brand-logo-preview | ロゴタイプ比較 | alpha |
+
+### 5) アーカイブ（Reject · カタログ非掲載）
+
+| ファイル | URL | 名称 | stage |
+|---|---|---|---|
+| [present.html](tools/present.html) | /present | SUGUDASU ギフト | reject |
 
 <!-- AUTO:TOOLS_END -->
 

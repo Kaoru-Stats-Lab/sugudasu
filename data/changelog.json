@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-24",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,92 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "present-reject-20260724",
+      "date": "2026-07-24",
+      "type": "improve",
+      "audience": "public",
+      "title": "ギフト提案ツールの提供終了",
+      "body": "「ギフト」はカタログ・ナビから外し、新規提供を終了しました。SUGUDASUは仕事の前工程を静かに片付ける道具であり、AIで贈り物を提案する体験はコンセプトに合いません。理由を隠さず、更新履歴にも残します。",
+      "tools": [
+        "present"
+      ]
+    },
+    {
+      "id": "clip-stash-beta-20260724",
+      "date": "2026-07-24",
+      "type": "feature",
+      "audience": "public",
+      "title": "仮置き β — コピーを一旦置く",
+      "body": "Text · Table · URL · Image · Color の5種だけ。Ctrl+Vで追加、ダブルクリックでコピー、Spaceで確認。IndexedDB · 非送信 · 編集なし。",
+      "tools": [
+        "clip-stash"
+      ]
+    },
+    {
+      "id": "legal-system-20260724",
+      "date": "2026-07-24",
+      "type": "chore",
+      "audience": "internal",
+      "title": "憲法義解・判例法体系（docs/legal）",
+      "body": "Commentary · Case Law · Interpretation Guide · PCT-6。F2字面解釈・Hubアンケート等を判例化。",
+      "tools": []
+    },
+    {
+      "id": "annotate-launch-20260724",
+      "date": "2026-07-24",
+      "type": "feature",
+      "audience": "public",
+      "title": "マスクを「赤入れ」に刷新 — /annotate",
+      "body": "提出・共有前に整える。黒塗り・ぼかし・モザイクに加え矢印・枠・楕円。自由記述テキストは非採用。旧 /mask は /annotate へ。",
+      "tools": [
+        "annotate"
+      ]
+    },
+    {
+      "id": "pdf-fill-object-ux-20260722",
+      "date": "2026-07-22",
+      "type": "fix",
+      "audience": "public",
+      "title": "PDF記入 — 置いたものをすぐ動かせる・消せる",
+      "body": "移動タブをやめ、文字や印を置いたあとすぐドラッグで移動できます。選択して削除、文字はダブルクリックで直せます。",
+      "tools": [
+        "pdf-fill"
+      ]
+    },
+    {
+      "id": "pdf-fill-selective-bake-impl-20260722",
+      "date": "2026-07-22",
+      "type": "fix",
+      "audience": "public",
+      "title": "PDF記入 — 編集したページだけ見たまま固定",
+      "body": "焼き付け保存で、触ったページだけ固定し、触っていないページは元のPDFのまま残すようにしました。確認画面で変更できないことも伝えます。",
+      "tools": [
+        "pdf-fill"
+      ]
+    },
+    {
+      "id": "pdf-fill-selective-bake-spec-20260722",
+      "date": "2026-07-22",
+      "type": "docs",
+      "audience": "internal",
+      "title": "PDF記入 — 編集ページのみ固定する仕様へ変更",
+      "body": "全ページラスタを廃止。編集ページだけ見たまま固定し未編集は元PDFコピー。CTAは焼き付け保存。設計正本: docs/products/pdf-fill/CHANGELOG.md",
+      "tools": [
+        "pdf-fill"
+      ]
+    },
+    {
+      "id": "pdf-fill-alpha-20260722",
+      "date": "2026-07-22",
+      "type": "feature",
+      "audience": "public",
+      "title": "PDF記入 — 提出用PDFをブラウザ内で完成",
+      "body": "文字追加・印鑑/画像・黒塗り/白塗りを足して焼き付けダウンロード。印刷→手書き→スキャンの代わり。データは送りません。",
+      "tools": [
+        "pdf-fill"
+      ]
+    },
     {
       "id": "sns-script-holes-redeploy-20260720",
       "date": "2026-07-20",

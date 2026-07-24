@@ -24,6 +24,7 @@ const SKIP_HTML = new Set([
   'sync-timeline-lp.html',
   'sync-room.html',
   'sync-schedule.html',
+  'mask.html', // 301 stub → /annotate
 ]);
 
 function shouldSkip(file) {

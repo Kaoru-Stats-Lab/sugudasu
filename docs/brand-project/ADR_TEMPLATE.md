@@ -32,6 +32,10 @@
 なぜその選択肢を採用したか。
 ブランド憲法、Anti Principles、プロダクト憲法との関係を必要な範囲だけ書く。
 
+**注意:** 合憲 / 違憲の **Judicial Decision は本 ADR に書かない。**  
+→ [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md) に判例を追加し、ここには Case ID のみリンクする。  
+本 ADR は **設計選択（Architecture Decision）** のみ。
+
 ## Consequences
 
 ### Positive
@@ -49,6 +53,9 @@
 ## Related Docs
 
 - `docs/brand/BRAND_CONSTITUTION.md`
+- `docs/legal/CONSTITUTION_COMMENTARY.md`
+- `docs/legal/CASE_LAW.md`
+- `docs/legal/LEGAL_INTERPRETATION_GUIDE.md`
 - `docs/brand/ANTI_PRINCIPLES.md`
 - `docs/product/PRODUCT_CONSTITUTION.md`
 - `docs/brand-project/DECISION_LOG.md`

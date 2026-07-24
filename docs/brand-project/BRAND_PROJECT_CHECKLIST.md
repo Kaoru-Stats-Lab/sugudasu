@@ -1,23 +1,24 @@
 # SUGUDASU Brand Project Checklist
 
 **役割:** ブランド設計プロジェクトの現在地を管理する正本  
-**更新:** 2026-07-21  
+**更新:** 2026-07-24  
 **運用:** 完了した項目だけをチェックし、議論の本文は各SSOT・Decision Log・ADRへ置く
 
 ## SSOT
 
 - 思想: [`../brand/BRAND_CONSTITUTION.md`](../brand/BRAND_CONSTITUTION.md)
+- **法体系（義解 · 判例 · 解釈手順）:** [`../legal/`](../legal/README.md)
 - Reject基準: [`../brand/ANTI_PRINCIPLES.md`](../brand/ANTI_PRINCIPLES.md)
 - 採用基準: [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)
 - 設計理由: [`../brand/BRAND_RATIONALE.md`](../brand/BRAND_RATIONALE.md)
 - AI監査: [`../prompts/BRAND_AUDIT_PROMPT.md`](../prompts/BRAND_AUDIT_PROMPT.md)
 - 決定事項: [`DECISION_LOG.md`](DECISION_LOG.md)
 - 未解決事項: [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md)
-- ADR雛形: [`ADR_TEMPLATE.md`](ADR_TEMPLATE.md)
+- ADR雛形: [`ADR_TEMPLATE.md`](ADR_TEMPLATE.md) — **憲法判断は ADR 禁止 · Case Law へ**
 
 ## Phase 0 — ブランド憲法
 
-**Status:** Complete
+**Status:** Complete（義解·判例法体系は 2026-07-24 · 憲法本文は不変）
 
 - [x] WHY
 - [x] Persona
@@ -27,6 +28,10 @@
 - [x] Brand Audit Prompt
 - [x] Cursor格納完了
 - [x] 相互リンク確認
+- [x] **憲法義解** — `docs/legal/CONSTITUTION_COMMENTARY.md`
+- [x] **判例集** — `docs/legal/CASE_LAW.md`（CASE-2026-001〜005）
+- [x] **解釈手順** — `docs/legal/LEGAL_INTERPRETATION_GUIDE.md`
+- [x] **PCT-6 任意性（Discretion）** — `docs/legal/PERSONA_CONSTITUTION_TRAITS.md`
 
 ## Phase 1 — ブランド監査
 

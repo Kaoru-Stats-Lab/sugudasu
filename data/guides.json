@@ -6,7 +6,7 @@
       "pillar": "docs",
       "title": "ブラウザ完結型ツールの仕組みとデータ非送信の検証手順",
       "description": "登録不要ツールが業務データをサーバへ送らない仕組みと、DevToolsで自分で検証する手順。総務・情報システム向け。",
-      "tools": ["invoice", "mask"],
+      "tools": ["invoice", "annotate"],
       "published": "2026-07-15"
     },
     {
@@ -23,7 +23,7 @@
       "pillar": "brand",
       "title": "実務での漏洩を防ぐ画像・PDF黒塗り（マスク）の正しい手順",
       "description": "見た目だけの黒塗りの危険性と、画像のピクセル上書き手順。マスクは画像専用・PDF直読みなし。",
-      "tools": ["mask"],
+      "tools": ["annotate"],
       "published": "2026-07-15"
     },
     {

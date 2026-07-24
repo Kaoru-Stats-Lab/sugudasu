@@ -10,7 +10,7 @@
       "toolIds": [
         "watermark",
         "image-trim",
-        "mask",
+        "annotate",
         "pdf-images"
       ],
       "weight": 100
@@ -39,21 +39,21 @@
     {
       "keyword": "マスク",
       "toolIds": [
-        "mask"
+        "annotate"
       ],
       "weight": 100
     },
     {
       "keyword": "ぼかし",
       "toolIds": [
-        "mask"
+        "annotate"
       ],
       "weight": 95
     },
     {
       "keyword": "モザイク",
       "toolIds": [
-        "mask"
+        "annotate"
       ],
       "weight": 90
     },
@@ -76,7 +76,7 @@
       "toolIds": [
         "watermark",
         "image-trim",
-        "mask",
+        "annotate",
         "webp-to-jpg"
       ],
       "weight": 90
@@ -84,7 +84,7 @@
     {
       "keyword": "スクショ",
       "toolIds": [
-        "mask",
+        "annotate",
         "image-trim"
       ],
       "weight": 85
@@ -303,24 +303,9 @@
       "weight": 90
     },
     {
-      "keyword": "ギフト",
-      "toolIds": [
-        "present"
-      ],
-      "weight": 100
-    },
-    {
-      "keyword": "プレゼント",
-      "toolIds": [
-        "present"
-      ],
-      "weight": 95
-    },
-    {
       "keyword": "景品",
       "toolIds": [
-        "fair-draw",
-        "present"
+        "fair-draw"
       ],
       "weight": 90
     },

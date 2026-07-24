@@ -38,7 +38,9 @@ process.env.SUGUDASU_DIST = DIST;
 
 /** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
 const SITEMAP_SKIP = new Set(
-  IS_SYNC ? ['sync-index.html', 'sync-timeline.html', 'sync-room.html'] : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html']
+  IS_SYNC
+    ? ['sync-index.html', 'sync-timeline.html', 'sync-room.html']
+    : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html', 'present.html']
 );
 
 function escapeXml(text) {
@@ -155,12 +157,14 @@ function writeRedirects(htmlFiles, guideSlugs = [], categoryIds = []) {
 
   if (!IS_SYNC) {
     for (const file of htmlFiles) {
-      if (file === 'hub.html') continue;
+      if (file === 'hub.html' || file === 'mask.html') continue;
       const slug = file.replace(/\.html$/, '');
       lines.push(`/${file} /${slug} 301`);
     }
     lines.push('/imgconv /webp-to-jpg 301');
     lines.push('/webp-to-png /webp-to-jpg 301');
+    lines.push('/mask /annotate 301');
+    lines.push('/mask.html /annotate 301');
     lines.push('/guides.html /guides 301');
     for (const slug of guideSlugs) {
       lines.push(`/guides/${slug}.html /guides/${slug} 301`);

@@ -1,11 +1,12 @@
 # プロダクトアイディア評価台帳 — ジャッジ基準SSOT
 
-**更新**: 2026-07-18  
+**更新**: 2026-07-22  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **起源**: 20〜30代・ITリテラシー高め会社員の「面倒くさい」20選ディスカッション（店長 × ディレクター）
 
 > **使い方:** 新ツール提案時は [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) の判定順・F1〜F7と、本台帳の市場性・判例を突合してから `BACKLOG.md` に載せる。  
-> 実装仕様は各ツールの SSOT（例: `LOTTERY_PRIZE_LAW_TOOL_SPEC.md`）へ。
+> 実装仕様は各ツールの SSOT（例: `LOTTERY_PRIZE_LAW_TOOL_SPEC.md`）へ。  
+> **2026-07-22:** `pdf-fill`（SUGUDASU PDF記入）を **§19 GO** として正式登録。
 
 ---
 
@@ -195,7 +196,7 @@ F1〜F7、判定順、Sync分岐、実装制約の正式版は
 | X04 | 議事録からTODO行だけ抽出 | ◎ | △ | **HOLD** | B | 「要約AI」ではなく行フィルタ。軽い・信頼できる |
 | X05 | ローカル抽選＋シャッフル履歴表示 | ◎ | ◎ | **GO** | — | **`lottery.html` に統合**（店長選択） |
 | X06 | 名札用CSV→印刷プレビュー | ◎ | ○ | **HOLD** | B | 既存 `label.html` 拡張が筋良い（新規より） |
-| X07 | ブラウザ内PDF画像抽出（埋め込み画像） | ◎ | ○ | **GO** | A | **SSOT:** [`PDF_IMAGE_EXTRACT_SPEC.md`](PDF_IMAGE_EXTRACT_SPEC.md) · **TECH:** [`PDF_IMAGE_EXTRACT_TECH.md`](PDF_IMAGE_EXTRACT_TECH.md)。GPT/Claude反映: SSOTとTECH分離 · 上限超過は拒否 · UIは出現ページ併記 · 短辺16px · ファイル名 `*_pNN_imgNN`。ページ全体PNGは v0.2。圧縮は oos |
+| X07 | ブラウザ内PDF画像抽出（埋め込み画像） | ◎ | ○ | **GO** | A | **SSOT:** [`PDF_IMAGE_EXTRACT_SPEC.md`](PDF_IMAGE_EXTRACT_SPEC.md) · **TECH:** [`PDF_IMAGE_EXTRACT_TECH.md`](PDF_IMAGE_EXTRACT_TECH.md)。GPT/Claude反映: SSOTとTECH分離 · 上限超過は拒否 · UIは出現ページ併記 · 短辺16px · ファイル名 `*_pNN_imgNN`。ページ全体PNGは v0.2。圧縮は oos。**記入・提出完成は別** — [`§19`](#19-sugudasu-pdf記入pdf-fill--2026-07-22) `pdf-fill` |
 | X08 | シード固定シャッフル（再現可能） | ◎ | ○ | **GO** | — | lottery・T11席替えの**共通エンジン**候補 |
 | X09 | リッカート5段階の手元集計 | ◎ | △ | **HOLD** | B | サーバーなしアンケートの穴。ニッチ |
 | X10 | TSV→折り返し済みテキスト表 | ◎ | △ | **HOLD** | B | 総務向け。SEO弱め |
@@ -535,10 +536,74 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 ---
 
+## 19. SUGUDASU PDF記入（`pdf-fill` · 2026-07-22）
+
+**判定:** **GO（コア採用）**  
+**Tier:** **A**  
+**仮 id:** `pdf-fill` · **productName:** SUGUDASU PDF記入  
+**設計正本:** [`../products/pdf-fill/`](../products/pdf-fill/)  
+**Backlog:** [`../BACKLOG.md`](../BACKLOG.md) §1-16
+
+憲法 [`PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) の判定順に従い採点した。
+
+### 19-1. テンプレ記入（§10）
+
+### 案名: SUGUDASU PDF記入（提出用PDF完成）
+
+- 主ペルソナ: **P-B**（実務マイクロ修正職人）— 行政・保険・契約など年数回の提出書類。副: P-C（帳票・印・黒塗り文脈）
+- SUGUDASU適合: **F1◎ F2◎ F3◎ F4◎ F5◎ F6◎ F7○**（印影・契約の法的効力は断定しない）
+- 市場: M1○〜◎（PDF記入・印鑑・黒塗り）· M2◎（非送信×提出専用×印刷WF置換）· M3○（編集ソフト土俵は红海・提出土俵は空白）· M4△〜○ · M5◎（`stamp`·`mask`·帳票）· M6○ · M7○
+- 判定: **GO**
+- Tier: **A**
+- 差別化1文: **Acrobat代替ではなく、「印刷→手書き→スキャン」をブラウザ内・非送信で終わらせる提出用ツール**
+- 縮小版（HOLDの場合）: —（GOのため不要）
+- 既存ツールとの関係: **新規**（`mask`=画像秘匿 · `stamp`=印影生成 · `pdf-images`=抽出。いずれも記入・提出完成ではない）
+
+### 19-2. Persona → Pain → 市場 → F → ラベル
+
+| 段階 | 結論 |
+|------|------|
+| **Persona** | P-B 主。年数回だけ PDF に書いて提出する人 |
+| **Pain** | 提出のために印刷・手書き・スキャン（または重い編集ソフト）が必要になる |
+| **市場** | 適合◎・市場○〜◎ → コア GO・Tier A（編集ソフト競争に乗ると埋もれるため枠を固定） |
+| **F1〜F7** | 下表。Sync 分岐不要（共有・クラウド保存が本質ではない） |
+| **ラベル** | **GO**（コア） |
+
+#### F1〜F7
+
+| # | 判定 | 根拠 |
+|---|------|------|
+| F1 登録不要 | ◎ | URL を開いて即利用 |
+| F2 データ非送信 | ◎ | pdf.js / pdf-lib / Canvas のみ・端末内 |
+| F3 静的配信 | ◎ | Pages Free 想定 |
+| F4 1ファイル完結寄り | ◎ | `tools/pdf-fill.html` + 共有アセット想定 |
+| F5 実務3分課題 | ◎ | 開く→書く→押す→塗る→提出用PDF |
+| F6 印刷/PDF価値 | ◎ | 成果物そのものが提出用PDF |
+| F7 過剰断定回避 | ○ | 印影・契約・行政の適法性は断定しない（FAQ・免責） |
+
+### 19-3. 境界（再提案防止）
+
+| やる | やらない（Reject / 別判定） |
+|------|------------------------------|
+| テキスト追加・印鑑/画像貼付・黒白塗り・焼き付けDL | Acrobat/Foxit 型の総合編集 |
+| 提出完了体験（ファイル名提案含む） | 既存文字編集・ページ結合分割・フォーム設計 |
+| OCR喪失の受け入れ | サーバー変換・クラウド下書き（Sync 候補なら別IDで再判定） |
+
+**競合定義:** Acrobat ではない。**印刷→手書き→スキャン**。
+
+### 19-4. 実装メモ（台帳上の位置）
+
+- 設計ドキュメント作成済（2026-07-22）。**コード未着手**。
+- 次: 技術スパイク（1ページ表示→オーバーレイ→ラスタ→DL）→ MVP。詳細順は [`../products/pdf-fill/README.md`](../products/pdf-fill/README.md)。
+- `png-to-webp`（§1-2 · P1）や Sync 旗艦とは別レーン。PDF/画像兄弟として `stamp`·`mask` 導線を後で足す。
+
+---
+
 ## 17. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
+| `docs/products/pdf-fill/` | **PDF記入** 設計正本（README · philosophy · specification · ui-ux · technical-design · decisions） |
 | `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |
 | `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | SOSA調査ログ + GTM/UX転用SSOT |
@@ -547,5 +612,7 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 | `docs/prompts/sync-micro-saas-dd-handoff.md` | マイクロSaaS DD 引き継ぎ · プロンプト |
 | `docs/prompts/sync-product-combo-jump-prompt.md` | 組み合わせ探索プロンプト |
 | `docs/BACKLOG.md` §15 | lottery タスク |
+| `docs/BACKLOG.md` §1-16 | pdf-fill タスク |
 | `docs/DESIGN_GUIDELINE.md` §1 | ペルソナ・トーン |
 | `docs/BACKLOG.md` §0 | SUGUDASU前提（静的・非送信） |
+| `docs/product/PRODUCT_CONSTITUTION.md` | 採用基準 F1〜F7（憲法正本） |

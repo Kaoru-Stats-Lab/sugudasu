@@ -7,7 +7,7 @@ Top Page Information Architecture
 | **Status** | Accepted · **設計凍結（Frozen）** |
 | **Date** | 2026-07-20 |
 | **Scope** | Hub（`/` · ツール一覧）の発見体験 · 情報階層 |
-| **Related** | [ADR-002](ADR-002-card-writing.md) · [ADR-003](ADR-003-search-ux.md) · [ADR-004](ADR-004-badge-system.md) · [ADR-005](ADR-005-hub-layout-alignment.md) · [`HUB_IA_REFRESH_V2.md`](../notes/HUB_IA_REFRESH_V2.md) · [`decision-log/2026-07-top-page-ux-review.md`](../decision-log/2026-07-top-page-ux-review.md) · [`decision-log/2026-07-hub-layout-alignment.md`](../decision-log/2026-07-hub-layout-alignment.md) · [`design/search-ux.md`](../design/search-ux.md) · [`design/hub-layout.md`](../design/hub-layout.md) · [`cursor/guardrail.md`](../cursor/guardrail.md) · [`docs/decisions/ADR-0003-hub-product-independence.md`](../decisions/ADR-0003-hub-product-independence.md) |
+| **Related** | [ADR-002](ADR-002-card-writing.md) · [ADR-003](ADR-003-search-ux.md) · [ADR-004](ADR-004-badge-system.md) · [ADR-005](ADR-005-hub-layout-alignment.md) · [ADR-006](ADR-006-search-ia-principles.md) · [`HUB_IA_REFRESH_V2.md`](../notes/HUB_IA_REFRESH_V2.md) · [`decision-log/2026-07-top-page-ux-review.md`](../decision-log/2026-07-top-page-ux-review.md) · [`decision-log/2026-07-hub-layout-alignment.md`](../decision-log/2026-07-hub-layout-alignment.md) · [`design/search-ux.md`](../design/search-ux.md) · [`design/hub-layout.md`](../design/hub-layout.md) · [`cursor/guardrail.md`](../cursor/guardrail.md) · [`docs/decisions/ADR-0003-hub-product-independence.md`](../decisions/ADR-0003-hub-product-independence.md) |
 
 **凍結方針:** 議論は成熟した。これ以上は好みの領域。「どちらも正しい」で覆さない。Phase1 を実装し、Phase2（100ツール超）/ Phase3（解析取得後）まで先送り項目に手を出さない。詳細は Decision Log。
 

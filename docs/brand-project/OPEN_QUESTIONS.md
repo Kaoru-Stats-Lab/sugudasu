@@ -23,15 +23,11 @@
 - 通知やメールを使わず再訪理由をどう作るか
 - Habit Formationという用語がブランド人格に適切か
 
-## Q-03 — Presentの保守境界
+## Q-03 — Presentの保守境界 — **解決 2026-07-24**
 
-**関連Phase:** 5
+`present` は Legacy ではなく **Reject**（CASE-2026-006）。Hub/ナビ/カタログ除外 · URL はアーカイブ案内のみ · 新機能停止。
 
-- Hub掲載を継続するか
-- セキュリティ・互換性以外の修正をどこまで許可するか
-- アフィリエイト導線を現状維持するか
-
-`present` をLegacyとする決定自体は解決済み。
+→ [`DECISION_LOG.md`](DECISION_LOG.md) · [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-006)
 
 ## Q-04 — Hub IAのブランド監査
 

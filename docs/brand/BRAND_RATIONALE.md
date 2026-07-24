@@ -7,8 +7,12 @@
 この文書はルールの正本ではありません。
 
 - 何者であるか: [`BRAND_CONSTITUTION.md`](BRAND_CONSTITUTION.md)
+- **立法意思（義解）:** [`../legal/CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md)
+- **判例:** [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md)
 - 何者ではないか: [`ANTI_PRINCIPLES.md`](ANTI_PRINCIPLES.md)
 - 何を作るか: [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)
+
+条文の字面と Intent が割れたときは、まず Commentary と Case Law を読む。設計「なぜそうしたか」の長文は本ファイル。
 
 ## 1. 「隣の席の同僚」という人格
 

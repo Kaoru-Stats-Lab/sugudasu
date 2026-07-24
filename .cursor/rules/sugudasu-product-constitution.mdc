@@ -8,10 +8,18 @@ alwaysApply: true
 新しいプロダクトを提案する前に、次を必ず参照する。
 
 - `docs/brand/BRAND_CONSTITUTION.md`
+- `docs/legal/CONSTITUTION_COMMENTARY.md`（立法意思 · 条文の字面だけで判定しない）
+- `docs/legal/CASE_LAW.md`（既存判例と矛盾する提案は禁止）
+- `docs/legal/LEGAL_INTERPRETATION_GUIDE.md`（判断順序）
 - `docs/brand/ANTI_PRINCIPLES.md`
 - `docs/product/PRODUCT_CONSTITUTION.md`
 
+判断順序は Interpretation Guide に従う（WHY → Persona → Anti → Constitution → Commentary → Case Law → Product → ADR → Spec → Impl）。
+**F1〜F7 だけで合憲性を判断してはならない。**
+
 ブランドコピーや「作れそう」から始めず、`PRODUCT_CONSTITUTION.md` の判定順（Persona → Pain → 市場 → F1〜F7）に従う。市場性が高くてもF1〜F7に適合しなければ、下記分類へ振り分ける。
+
+「非送信」等のブランドコピーは字面どおり「一切通信禁止」と読まず、Commentary C-05（ユーザー入力・成果物・業務データの非送信・非保存）に従う。
 
 適合しない案は、次のいずれかへ分類する。
 
@@ -26,4 +34,7 @@ F2/F3を破るが同期・共有に本質的な価値がある案だけは、`do
 
 新機能・UI・コピー・LP・アイコン・ロゴ・演出・ヘルプ・チュートリアルの提案は、最後に `docs/prompts/BRAND_AUDIT_PROMPT.md` のMeta Principle Checkを行う。SUGUDASUではなくユーザーを主役にし、技術を誇示せず、静かに仕事が終わる設計にする。
 
-判断理由が必要な時だけ `docs/brand/BRAND_RATIONALE.md` を参照する。
+**憲法判断（Judicial Decision）は ADR に書かず `docs/legal/CASE_LAW.md` へ。** ADR は設計選択（HOW）のみ。
+勝手に憲法を書き換えない。判例が無い論点は「判例候補」として `docs/legal/logs/` に残す。
+
+判断理由の長文は `docs/brand/BRAND_RATIONALE.md`。解釈が割れたときは Commentary と Case Law を参照する。

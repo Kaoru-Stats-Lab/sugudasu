@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="提出・共有前に、必要な場所だけ整える。隠す・囲む・指す。ブラウザ内・非送信・Copy First。">
+    <title>SUGUDASU 赤入れ | 提出・共有前に整える</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="SUGUDASU 赤入れ — 提出・共有前に整える">
+    <meta property="og:description" content="隠す・囲む・指す。提出前の一枚を整えてコピー。データは送りません。">
+    <meta property="og:url" content="https://sugudasu.com/annotate">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 赤入れ">
+    <meta name="twitter:description" content="提出・共有前に整える · 非送信 · Copy First">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+      .annt-work { display: none; gap: 0.75rem; align-items: stretch; }
+      .annt-work.is-open { display: flex; flex-wrap: wrap; }
+      .annt-tools, .annt-output {
+        flex: 0 0 9.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .annt-tool-btn {
+        text-align: left;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        padding: 0.55rem 0.65rem;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        color: #334155;
+      }
+      .annt-tool-btn[aria-pressed="true"] {
+        border-color: #7c3aed;
+        background: #f5f3ff;
+        color: #5b21b6;
+      }
+      .annt-stage {
+        flex: 1;
+        min-width: min(100%, 20rem);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-height: 0;
+      }
+      .annt-canvas-wrap {
+        overflow: auto;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        background: #f1f5f9;
+        padding: 0.5rem;
+        max-height: min(78vh, calc(100vh - 220px));
+      }
+      .annt-pdf-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        align-items: center;
+      }
+      .annt-page-btn {
+        min-width: 2rem;
+        height: 2rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: 0.375rem;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+      }
+      .annt-page-btn[aria-current="page"] {
+        border-color: #7c3aed;
+        background: #ede9fe;
+        color: #5b21b6;
+      }
+      .annt-page-btn.is-edited::after {
+        content: '·';
+        color: #2563eb;
+        margin-left: 1px;
+      }
+      @media (max-width: 768px) {
+        .annt-tools, .annt-output { flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; }
+        .annt-tool-btn { flex: 1 1 calc(50% - 0.25rem); }
+      }
+    </style>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PDFは編集できますか？","acceptedAnswer":{"@type":"Answer","text":"PDF全体を編集するツールではありません。ページを画像として開き、黒塗り・矢印・枠を付けます。未編集ページは元PDFのまま保持して出力します。"}},{"@type":"Question","name":"Paper First（PDF記入）との違いは？","acceptedAnswer":{"@type":"Answer","text":"PDF記入は書類を完成させるための入力・署名・保存です。赤入れは提出・共有前に、必要な場所だけ整えて共有できる状態にするための道具です。"}},{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ブラウザ内のCanvasだけで処理します。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 赤入れ" data-sg-subtitle="提出・共有前に整える · 非送信" data-sg-tool-id="annotate"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="画像" data-extra="確認依頼 · 修正依頼" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                提出 · 共有前に、必要な場所だけ整える。<strong>隠す · 囲む · 指す</strong> —
+                <strong>コピーして Slack / Teams へ</strong>。
+            </p>
+            <p class="sg-tool-lead text-[12px] text-slate-600">
+                書類を完成させる <a href="pdf-fill.html" class="text-violet-800 underline font-semibold">PDF記入</a> とは別物です（記入 = 完成 · 赤入れ = 共有できる状態へ整える）。
+            </p>
+        </div>
+    </header>
+
+    <section id="drop-panel" class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+        <div id="drop-zone" class="sg-file-drop" tabindex="0" role="button" aria-label="画像またはPDFを選択">
+            <p class="sg-file-drop__title">画像またはPDFをドロップ</p>
+            <p class="sg-file-drop__hint">または Ctrl+V · PNG / JPEG / WebP / GIF / PDF · 最大25MB</p>
+        </div>
+        <input type="file" id="file-input" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif,.png,.jpg,.jpeg,.webp,.gif,application/pdf,.pdf">
+    </section>
+
+    <section id="editor-panel" class="sg-card p-4 lg:p-5 hidden">
+        <div class="annt-work" id="annt-work">
+            <aside class="annt-tools" aria-label="ツール">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide px-1">ツール</p>
+                <button type="button" class="annt-tool-btn" data-tool="select" aria-pressed="false">選択</button>
+                <button type="button" class="annt-tool-btn" data-tool="black" aria-pressed="false">黒塗り</button>
+                <button type="button" class="annt-tool-btn" data-tool="blur" aria-pressed="false">ぼかし</button>
+                <button type="button" class="annt-tool-btn" data-tool="mosaic" aria-pressed="false">モザイク</button>
+                <button type="button" class="annt-tool-btn" data-tool="arrow" aria-pressed="false">矢印</button>
+                <button type="button" class="annt-tool-btn" data-tool="rect" aria-pressed="false">枠</button>
+                <button type="button" class="annt-tool-btn" data-tool="ellipse" aria-pressed="false">楕円</button>
+                <div class="mt-2 space-y-1">
+                    <button type="button" id="btn-undo" class="sg-btn-secondary text-xs py-2 px-2 w-full" disabled>↩ 戻す</button>
+                    <button type="button" id="btn-redo" class="sg-btn-secondary text-xs py-2 px-2 w-full" disabled>↪ やり直し</button>
+                    <button type="button" id="btn-delete-shape" class="sg-btn-secondary text-xs py-2 px-2 w-full" disabled>削除</button>
+                </div>
+            </aside>
+
+            <div class="annt-stage">
+                <div id="pdf-nav" class="annt-pdf-nav hidden"></div>
+                <p id="scaled-note" class="hidden text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">長辺が上限を超えたため、表示用に縮小して読み込みました。</p>
+                <p id="editor-status" class="text-xs text-slate-500" aria-live="polite">隠したい範囲をドラッグ</p>
+                <div id="canvas-wrap" class="annt-canvas-wrap">
+                    <div id="annt-canvas-host" class="relative inline-block mx-auto max-w-full">
+                        <canvas id="annt-canvas" class="max-w-full h-auto block cursor-crosshair touch-none bg-white shadow-sm"></canvas>
+                        <canvas id="annt-overlay" class="absolute top-0 left-0 w-full h-full max-w-full pointer-events-none touch-none" aria-hidden="true"></canvas>
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-500 leading-relaxed">
+                    <strong class="text-slate-600">塗り残しは利用者責任です。</strong> 出力前に目視確認してください。
+                    <button type="button" id="btn-reset" class="text-violet-800 underline font-semibold ml-1">別のファイル</button>
+                </p>
+            </div>
+
+            <aside class="annt-output" aria-label="出力">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide px-1">出力</p>
+                <button type="button" id="btn-copy" class="sg-btn-primary text-sm py-2.5 px-3 w-full">コピー</button>
+                <button type="button" id="btn-download-png" class="sg-btn-secondary text-xs py-2 px-3 w-full">PNG保存</button>
+                <button type="button" id="btn-download-jpeg" class="sg-btn-secondary text-xs py-2 px-3 w-full">JPEG保存</button>
+                <button type="button" id="btn-download-pdf" class="sg-btn-secondary text-xs py-2 px-3 w-full hidden">PDF保存</button>
+            </aside>
+        </div>
+    </section>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">赤入れのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>PDFは編集できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>PDF<strong>編集</strong>ツールではありません。ページを<strong>画像として開き</strong>、注釈 · 黒塗りを付けます。未編集ページは<strong>元PDFのまま</strong>保持して出力します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>PDF記入（Paper First）との違いは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><a href="pdf-fill.html" class="text-violet-800 underline">PDF記入</a>は書類を<strong>完成</strong>させる（入力 · 署名 · 保存）。赤入れは<strong>提出 · 共有前</strong>に、必要な場所だけ整えて共有できる状態にする。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>ぼかしと黒塗りはどちら？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>マニュアル向けは<strong>ぼかし</strong>。パスワード · ID · 金額は<strong>黒塗り</strong>または<strong>モザイク</strong>を推奨します。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>画像はサーバーに残りますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。<strong>ブラウザ内</strong>だけで処理します。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/annotate-app.js"></script>
+</body>
+</html>

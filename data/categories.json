@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-24",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/DEV_TRANSPARENCY_RULES.md · docs/decisions/ADR-0003-hub-product-independence.md",
   "disclaimer": "カテゴリは相互排他。1ツールは1カテゴリのみ。表示制御（チップ順・モバイル）は data/hub-config.json。検索語は data/synonyms.json。TODO(Phase2·保留): 100ツール超でマルチタグ（categoryIds[]）を再評価。今回は実装しない。",
   "categories": [
@@ -7,7 +7,7 @@
       "id": "docs",
       "label": "帳票 · 印刷",
       "order": 1,
-      "description": "見積・請求・領収・宛名・印影。下書きは端末内。クラウド請求の代替ではありません。"
+      "description": "見積・請求・領収・宛名·印影·提出用PDF記入。下書きは端末内。クラウド請求 · Acrobat代替ではありません。"
     },
     {
       "id": "staffing",
@@ -25,7 +25,7 @@
       "id": "media",
       "label": "画像 · 動画",
       "order": 4,
-      "description": "WebP変換・マスク・切り出し・動画コマ抜き。マニュアル用の素材処理。動画編集・GIF 化はしません。"
+      "description": "WebP変換·赤入れ·切り出し·透かし·PDF画像抽出·動画コマ抜き。説明用の素材処理。アップロード型編集サイト · 動画編集 · GIF化はしません。"
     },
     {
       "id": "people",

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="仕事中にコピーした文字・表・URL・画像・色を一旦置く。IndexedDB・非送信。編集しない・整理しない一時退避。">
+    <title>コピーしたものを一旦置く | SUGUDASU 仮置き</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="コピーしたものを一旦置く — SUGUDASU 仮置き">
+    <meta property="og:description" content="Ctrl+Vで置く · ダブルクリックでコピー · Spaceで確認。PureRefでもメモでもない一時退避。">
+    <meta property="og:url" content="https://sugudasu.com/clip-stash">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU 仮置き">
+    <meta name="twitter:description" content="思考を止めずにコピーを退避。ブラウザ内 · 非送信。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+    <style>
+      .cs-board {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(3, 17.5rem);
+        justify-content: center;
+      }
+      @media (min-width: 1200px) {
+        .cs-board { grid-template-columns: repeat(4, 17.5rem); }
+      }
+      @media (min-width: 1700px) {
+        .cs-board { grid-template-columns: repeat(5, 17.5rem); }
+      }
+      @media (min-width: 2200px) {
+        .cs-board { grid-template-columns: repeat(6, 17.5rem); }
+      }
+      .cs-slot {
+        width: 17.5rem;
+        height: 13.5rem;
+      }
+      .cs-slot--empty {
+        border: 2px dashed #e2e8f0;
+        border-radius: 0.75rem;
+        background: #f8fafc;
+      }
+      .cs-slot.is-drop-target {
+        box-shadow: inset 0 0 0 2px #7c3aed;
+        border-radius: 0.75rem;
+      }
+      .cs-slot--empty.is-drop-target {
+        border-color: #7c3aed;
+        background: #f5f3ff;
+      }
+      .cs-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0.65rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        cursor: default;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: border-color 0.12s ease;
+        box-sizing: border-box;
+      }
+      .cs-card.is-selected {
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 1px #7c3aed33;
+        cursor: grab;
+      }
+      .cs-card.is-selected.is-dragging { cursor: grabbing; }
+      .cs-card.is-dragging { opacity: 0.45; }
+      .cs-board.is-drag-active .cs-card:not(.is-selected) { opacity: 0.72; }
+      .cs-card__delete {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.4rem;
+        z-index: 3;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        color: #64748b;
+        font-size: 0.875rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        cursor: pointer;
+      }
+      .cs-card__delete:hover {
+        border-color: #f87171;
+        color: #dc2626;
+        background: #fff;
+      }
+      .cs-card__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 1.35rem;
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #64748b;
+      }
+      .cs-card__time { font-weight: 600; text-transform: none; letter-spacing: 0; }
+      .cs-card__body {
+        flex: 1;
+        margin: 0;
+        font-size: 0.75rem;
+        line-height: 1.35;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow: hidden;
+        color: #334155;
+      }
+      .cs-card__meta, .cs-card__url, .cs-card__hex, .cs-card__format {
+        font-size: 0.6875rem;
+        color: #64748b;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cs-card__format {
+        font-weight: 700;
+        color: #475569;
+      }
+      .cs-card__title {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cs-card__thumb {
+        flex: 1;
+        width: 100%;
+        object-fit: contain;
+        background: #f8fafc;
+        border-radius: 0.375rem;
+      }
+      .cs-card__og {
+        width: 100%;
+        height: 4.5rem;
+        object-fit: cover;
+        border-radius: 0.375rem;
+        background: #f1f5f9;
+      }
+      .cs-card__og--placeholder {
+        height: 4.5rem;
+        border-radius: 0.375rem;
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      }
+      .cs-card__swatch {
+        flex: 1;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        min-height: 5rem;
+      }
+      .cs-preview {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      .cs-preview.hidden { display: none; }
+      .cs-preview__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+      }
+      .cs-preview__panel {
+        position: relative;
+        z-index: 1;
+        width: min(42rem, 92vw);
+        max-height: min(80vh, 36rem);
+        background: #fff;
+        border-radius: 0.75rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+        padding: 1rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        overflow: hidden;
+      }
+      .cs-preview__pre {
+        flex: 1;
+        overflow: auto;
+        margin: 0;
+        font-size: 0.8125rem;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .cs-preview__img, .cs-preview__og {
+        max-width: 100%;
+        max-height: min(60vh, 28rem);
+        object-fit: contain;
+        margin: 0 auto;
+      }
+      .cs-preview__swatch {
+        width: 100%;
+        height: 8rem;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+      }
+      .cs-preview__hex, .cs-preview__url, .cs-preview__title, .cs-preview__meta {
+        font-size: 0.875rem;
+        color: #334155;
+        word-break: break-all;
+      }
+      .cs-preview__title { font-weight: 700; }
+      body.cs-preview-open { overflow: hidden; }
+    </style>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PureRefやメモアプリとの違いは？","acceptedAnswer":{"@type":"Answer","text":"PureRefは無限キャンバス、メモアプリは編集と整理が前提です。仮置きはCtrl+Vで置き、ダブルクリックでコピーするだけの一時退避です。編集・タグ・フォルダはありません。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。IndexedDBに端末内だけで保存します。SUGUDASUのサーバーへ送りません。"}},{"@type":"Question","name":"カードを編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。変更したい場合は貼り直してください。"}}]}</script>
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 仮置き" data-sg-subtitle="Ctrl+V · ダブルクリックでコピー · Spaceで確認" data-sg-tool-id="clip-stash"></div>
+
+<main class="sg-main-shell flex-1 space-y-5" tabindex="0">
+    <header class="sg-tool-intro space-y-2">
+        <p data-sg-privacy-badge data-subject="コピー内容" data-extra="IndexedDB · 端末内" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead">
+                PowerPoint · Excel · ブラウザ · PDF · Cursor を行き来する途中で、<strong>あとで使う</strong>を一旦置く。
+                整理しない · 編集しない · 考えさせない — <strong>仕事が終われば消えてよい</strong>退避です。
+            </p>
+            <p class="sg-tool-lead text-[12px] text-slate-600">
+                PureRef でもメモでもありません。<a href="normalize.html" class="text-violet-800 underline font-semibold">全角半角整え</a> のように加工するツールとも別物です。
+            </p>
+        </div>
+    </header>
+
+    <section id="cs-drop-panel" class="sg-card p-5 lg:p-6 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
+        <div id="cs-drop-zone" class="sg-file-drop" tabindex="0" role="button" aria-label="クリップボードから貼り付け">
+            <p class="sg-file-drop__title">ドロップ / クリック · Ctrl+V</p>
+            <p class="sg-file-drop__hint">コピーした文字 · 表 · URL · 画像 · 色を貼り付け</p>
+            <p class="sg-file-drop__hint">Text · Table · URL · Image · Color · IndexedDB · 非送信</p>
+        </div>
+    </section>
+
+    <div id="cs-board" class="cs-board hidden" aria-label="仮置きカード"></div>
+
+    <p id="cs-status" class="text-xs text-slate-500 min-h-[1rem]" role="status" aria-live="polite"></p>
+
+    <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+</main>
+
+<div id="cs-preview" class="cs-preview hidden" role="dialog" aria-modal="true" aria-label="プレビュー">
+    <div class="cs-preview__backdrop"></div>
+    <div class="cs-preview__panel">
+        <p id="cs-preview-type" class="text-[10px] font-bold uppercase tracking-wide text-slate-500"></p>
+        <div id="cs-preview-body"></div>
+    </div>
+</div>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">仮置きのよくある質問</h2>
+        <div class="sg-faq-list">
+            <details class="sg-faq">
+                <summary>PureRefやメモアプリとの違いは？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>PureRefは無限キャンバス、メモアプリは編集と整理が前提です。仮置きは<strong>Ctrl+V</strong>で置き、<strong>ダブルクリック</strong>でコピーするだけの一時退避です。タグ · フォルダ · 編集はありません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>データはサーバーに送信されますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>いいえ。<strong>IndexedDB</strong>に端末内だけで保存します。SUGUDASUのサーバーへ送りません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>カードを編集できますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>できません。変更したい場合は<strong>貼り直してください</strong>。それがこのツールの安心感です。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>操作一覧</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>クリックで選択 · 選択したカードをドラッグで別スロットへ · ダブルクリックでコピー · Spaceで確認 · Escで閉じる · Deleteまたは<strong>×</strong>で削除 · Ctrl+Vで追加。削除した位置は空スロットのまま残ります。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/clip-stash-app.js"></script>
+</body>
+</html>

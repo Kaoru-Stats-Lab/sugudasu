@@ -3,7 +3,7 @@
 **更新:** 2026-07-20  
 **用途:** Hub 検索の **Layer 補助**（`synonyms.json` · `tool-intent-map.json`）に、未登録ツール分を追加させる。  
 **やらない:** `search-dictionary/{id}.json` の全面作り直し · `search-thesaurus.json`（グローバル from→to）の大量追加 · 機能捏造  
-**正本:** [`docs/notes/BRAND_NORMALIZE.md`](../notes/BRAND_NORMALIZE.md) · 既存 [`search-dictionary-prompt.md`](search-dictionary-prompt.md)
+**正本:** [`docs/notes/BRAND_NORMALIZE.md`](../notes/BRAND_NORMALIZE.md) · [`search-dictionary-prompt-v2.md`](search-dictionary-prompt-v2.md)
 
 **欠落（2026-07-20 時点 · Hub カード基準）**
 

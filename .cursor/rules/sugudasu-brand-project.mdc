@@ -18,14 +18,18 @@ alwaysApply: true
 
 責務を混ぜない。
 
-- `BRAND_CONSTITUTION` = 思想
+- `BRAND_CONSTITUTION` = 思想（WHAT）
+- `docs/legal/CONSTITUTION_COMMENTARY` = 立法意思（Intent）
+- `docs/legal/CASE_LAW` = 憲法判例（Judicial Decision）
+- `docs/legal/LEGAL_INTERPRETATION_GUIDE` = 解釈手順
 - `ANTI_PRINCIPLES` = Reject基準
 - `PRODUCT_CONSTITUTION` = 採用基準
-- `BRAND_RATIONALE` = 設計理由（判例）
+- `BRAND_RATIONALE` = 設計理由の長文
 - `BRAND_AUDIT_PROMPT` = AI監査手順
 - `BRAND_PROJECT_CHECKLIST` = 現在地
 - `DECISION_LOG` = 決定事項
 - `OPEN_QUESTIONS` = 未解決事項
-- ADR = 個別決定の判断記録
+- ADR = **設計選択のみ**（憲法判断は Case Law へ）
 
 チャットログを転記せず、決定と未解決事項だけを残す。
+憲法判断が出たら `docs/legal/CASE_LAW.md` と `docs/legal/logs/YYYY-MM-DD_constitution_review.md` にも残す。

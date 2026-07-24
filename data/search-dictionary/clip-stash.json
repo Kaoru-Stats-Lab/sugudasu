@@ -1,0 +1,121 @@
+{
+  "toolId": "clip-stash",
+  "source": "manual",
+  "reviewedAt": "2026-07-24",
+  "aliases": [
+    "仮置き",
+    "コピー退避",
+    "クリップボード退避",
+    "一時退避",
+    "コピペ退避",
+    "clipboard stash",
+    "一時置き",
+    "コピー置き場"
+  ],
+  "jobsShort": [
+    "コピーを一旦置く",
+    "あとで使うを退避する",
+    "複数ツール間のコピーを保持する",
+    "テキストを仮置きする",
+    "表を仮置きする",
+    "URLを仮置きする",
+    "画像を仮置きする",
+    "色コードを仮置きする"
+  ],
+  "jobsLong": [
+    "PowerPointとExcelを行き来する途中でコピーした文字列を一旦置いておきたい",
+    "ブラウザでコピーしたURLを仕事が終わるまで忘れずに置いておきたい",
+    "Win+Vが使えない環境で複数のコピーを一時保管したい",
+    "メモ帳やExcelに貼る代わりに、整理せずコピーだけ退避したい",
+    "SlackやTeamsのマイチャットに貼る代わりにローカルだけで置きたい",
+    "スクショやHEX色コードをあとで使うまで置いておきたい",
+    "サーバーに送らずIndexedDBだけでコピーを保持したい",
+    "編集や整理なしでコピーとコピーだけしたい"
+  ],
+  "keywords": [
+    "仮置き",
+    "退避",
+    "クリップボード",
+    "コピー",
+    "一時",
+    "IndexedDB",
+    "非送信",
+    "Ctrl+V",
+    "表",
+    "URL",
+    "画像",
+    "HEX"
+  ],
+  "commonMistakes": [
+    {
+      "query": "メモ 編集 ノート",
+      "meant": "SUGUDASU 仮置き",
+      "note": "編集・Markdown・履歴は持たない一時退避のため"
+    },
+    {
+      "query": "PureRef キャンバス",
+      "meant": "SUGUDASU 仮置き",
+      "note": "無限キャンバス・レイヤー・接続線は持たないため"
+    },
+    {
+      "query": "クリップボード履歴 同期",
+      "meant": "SUGUDASU 仮置き",
+      "note": "コア版は端末内IndexedDBのみ・同期なしのため"
+    }
+  ],
+  "relatedProducts": [
+    {
+      "toolId": "normalize",
+      "conceptName": "全角半角整え",
+      "reason": "退避したテキストを整えて使いたいため"
+    },
+    {
+      "toolId": "table-conv",
+      "conceptName": "表変換",
+      "reason": "退避した表を別形式へ変換したいため"
+    },
+    {
+      "toolId": "ai-cleaner",
+      "conceptName": "AIコピペ整形",
+      "reason": "AI出力を整えてから使いたいため"
+    }
+  ],
+  "priority": {
+    "high": [
+      "コピーを一旦置く",
+      "あとで使うを退避する",
+      "複数ツール間のコピーを保持する"
+    ],
+    "medium": [
+      "URLを仮置きする",
+      "表を仮置きする",
+      "画像を仮置きする"
+    ],
+    "low": [
+      "色コードを仮置きする"
+    ]
+  },
+  "reviewNotes": [
+    "5種カード固定 · 編集なし · 操作は仕様書の閉じたリストのみ",
+    "docs/products/clip-stash/specification.md が正本"
+  ],
+  "hiddenKeywords": [
+    "コピペ退避",
+    "clipboard stash",
+    "一時置き",
+    "コピー置き場",
+    "Win+V代替",
+    "クリップボード履歴",
+    "クリップボード管理",
+    "メモ帳代わり",
+    "Excel退避",
+    "Slack退避",
+    "Teams退避",
+    "マイチャット退避",
+    "一時保管",
+    "コピーストック",
+    "clip stash",
+    "sticky clipboard",
+    "temporary clipboard"
+  ]
+}

@@ -3,409 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ギフト提案・贈り物選びをサポートするAIサジェスター。NGな品（地雷）を回避し、提案された商品をAmazon導線からすぐ確認できます。">
-    <title>AIギフト提案（地雷回避・Amazon導線） | SUGUDASU</title>
+    <meta name="description" content="このツールの新規提供は終了しました。SUGUDASUのコンセプトに合わないためです。">
+    <title>ギフト（提供終了） | SUGUDASU</title>
+    <meta name="robots" content="noindex, follow">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
-    <meta property="og:title" content="AIギフト提案（地雷回避・Amazon）">
-    <meta property="og:description" content="贈る相手やシーンに合わせて、地雷アイテムをスマートに回避。AI提案の贈り物をAmazonリンクからすぐ確認できます。">
+    <meta property="og:title" content="ギフト（提供終了）">
+    <meta property="og:description" content="SUGUDASUのコンセプトに合わないため、新規提供を終了しました。">
     <meta property="og:url" content="https://sugudasu.com/present">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
-    <meta name="twitter:title" content="マナー違反の地雷を避ける！AIギフト提案サジェスター">
-    <meta name="twitter:description" content="お祝いや記念日のプレゼント選びで失敗したくない人向け。登録不要で最適な贈り物をAI提案し、Amazon確認までスムーズ。">
+    <meta name="twitter:title" content="ギフト（提供終了）">
+    <meta name="twitter:description" content="SUGUDASUのコンセプトに合わないため、新規提供を終了しました。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。NGキーワード設定で不適切な候補を除外し、相手に合わせた提案を表示できます。","@type":"Answer"},"name":"地雷になりやすい贈り物を避けられますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。候補からAmazon導線で商品ページを確認でき、比較・購入検討がスムーズです。","@type":"Answer"},"name":"提案されたギフトをそのまま確認できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ログイン不要で、条件入力だけですぐ提案を確認できます。","@type":"Answer"},"name":"会員登録なしで使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"結果が良いと「気が利く人」という印象が残りやすいです。ツールは裏方なので、表に出るのはあなたの思いやりとして伝わります。","@type":"Answer"},"name":"AIで外さないギフトを選び続けたら、センスを疑われませんか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 antialiased min-h-screen flex flex-col">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU ギフト" data-sg-tool-id="present"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU ギフト" data-sg-subtitle="提供終了" data-sg-tool-id="present"></div>
 
 <main class="sg-main-shell flex-1 space-y-4">
-    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
-        <p data-sg-privacy-badge data-subject="条件" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
-    </p>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <section class="sg-card p-5 lg:p-6 space-y-4">
-            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">贈る相手の条件</h2>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label for="form-budget" class="block text-xs font-semibold text-slate-600 mb-1.5">予算の上限（円）</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs">¥</span>
-                        <input type="number" id="form-budget" value="12000" placeholder="空欄で上限なし"
-                            class="sg-input text-sm pl-7 font-medium">
-                    </div>
-                </div>
-                <div>
-                    <label for="form-relationship" class="block text-xs font-semibold text-slate-600 mb-1.5">関係性</label>
-                    <select id="form-relationship" class="sg-input text-sm">
-                        <option value="partner">恋人・パートナー</option>
-                        <option value="friend" selected>友人</option>
-                        <option value="colleague">会社の同僚</option>
-                        <option value="boss">上司・目上の人</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <label for="form-interests" class="block text-xs font-semibold text-slate-600 mb-1.5">趣味・好きなもの</label>
-                <input type="text" id="form-interests" class="sg-input text-sm"
-                    placeholder="例: コーヒー、サウナ、ガジェット、猫">
-            </div>
-
-            <div class="bg-rose-50 border border-rose-200 rounded-lg p-4 space-y-2">
-                <label for="form-mine-words" class="block text-xs font-semibold text-rose-900">絶対に避けたいもの（地雷）</label>
-                <input type="text" id="form-mine-words" class="sg-input text-sm bg-white"
-                    placeholder="例: 甲殻類アレルギー、甘いものNG、お酒NG">
-                <p class="text-[10px] text-rose-700">ここに書いたキーワードを含む候補は提案から除外します。</p>
-            </div>
-
-            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
-                <h3 class="text-xs font-semibold text-slate-700">前回のプレゼント（任意）</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label for="form-prev-item" class="block text-[10px] text-slate-500 mb-1">贈ったもの</label>
-                        <input type="text" id="form-prev-item" class="sg-input text-xs" placeholder="例: チョコレート">
-                    </div>
-                    <div>
-                        <label for="form-prev-reaction" class="block text-[10px] text-slate-500 mb-1">相手の反応</label>
-                        <select id="form-prev-reaction" class="sg-input text-xs">
-                            <option value="none">選択なし</option>
-                            <option value="success">大成功</option>
-                            <option value="normal">普通</option>
-                            <option value="fail">微妙だった</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label for="form-prev-reason" class="block text-[10px] text-slate-500 mb-1">理由（任意）</label>
-                    <input type="text" id="form-prev-reason" class="sg-input text-xs" placeholder="例: 甘いものが苦手だった">
-                </div>
-            </div>
-
-            <button type="button" id="btn-generate-gift" onclick="generateGiftSuggestions()"
-                class="w-full sg-btn-primary text-sm font-semibold py-3 rounded-lg">
-                提案をみる（登録不要でAI検索）
-            </button>
-        </section>
-
-        <section class="space-y-4">
-            <div class="sg-card p-4 flex justify-between items-center">
-                <h3 class="text-sm font-bold text-slate-900">提案リスト</h3>
-                <span id="match-pool-count" class="text-[10px] text-slate-500 font-mono">該当: 0件</span>
-            </div>
-
-            <div id="suggestions-deck" class="space-y-4">
-                <p class="sg-card p-8 text-center text-xs text-slate-400">
-                    左で条件を入れて「提案をみる（登録不要でAI検索）」を押してください。
-                </p>
-            </div>
-
-            <aside class="no-print ad-slot ad-slot--result">広告枠</aside>
-        </section>
-    </div>
+    <section class="sg-card p-5 lg:p-6 space-y-3 max-w-2xl" role="status">
+        <h1 class="text-base font-bold text-slate-900">このツールの新規提供は終了しました</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            理由はシンプルです。<strong>SUGUDASUのコンセプトに合わない</strong>からです。
+        </p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            SUGUDASUは、仕事へ入るための操作や段取りを静かに片付ける道具です。
+            AIで贈り物を提案する体験は、その役割から外れます。
+            カタログとナビからは外し、更新履歴にも理由を残しています。
+        </p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            ブックマーク向けにこの案内だけ残しています。機能の再開や新規開発の予定はありません。
+        </p>
+        <p class="text-sm">
+            <a href="hub.html" class="text-violet-800 underline font-semibold">ツール一覧へ戻る</a>
+        </p>
+    </section>
 </main>
 
-<section class="no-print sg-faq-section">
-    <div class="sg-faq-inner">
-        <h2 class="sg-faq-title">プレゼント選び・ギフト提案のよくある質問</h2>
-        <div class="sg-faq-list">
-            <details class="sg-faq">
-                <summary>上司や目上の人へのプレゼントで失敗しないコツは？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>関係性を「上司・目上」に設定し、予算上限と趣味を入力してください。定番の日用品・コーヒー系から、サウナ好き向けのニッチな候補まで、地雷ワードを除外して提案します。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
-                <summary>アレルギーや苦手なものを避けたい</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>「絶対に避けたいもの（地雷）」欄にキーワードを入れると、その語を含む候補は提案から除外されます。前回のプレゼントと相手の反応も次回の絞り込みに使えます。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
-                <summary>相手の趣味は外部に送信されますか？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。条件のマッチングはブラウザ内で行います。Amazon リンクを開くのはご自身の操作時のみです。</p>
-                </div>
-            </details>
-            <details class="sg-faq">
-                <summary>AIで外さないギフトを選び続けたら、センスを疑われませんか？</summary>
-                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>結果が良いと「気が利く人」という印象が残りやすいです。ツールは裏方なので、表に出るのはあなたの思いやりとして伝わります。</p>
-                </div>
-            </details>
-        </div>
-    </div>
-</section>
-
-    <!-- ================= JavaScript ビジネスロジックコア ================= -->
-    <script>
-        const AMZ_TRACKING_ID = 'sugudasu-22';
-
-        // ================= 📦 ギフトマスターデータベース (約100件内蔵) =================
-        const GIFT_MASTER_DATABASE = [
-            // 3,000円以内
-            { title: "Hitoe 高級今治ハンドタオル 2枚組", price: 2500, category: "日用品", tags: ["定番", "王道", "無難", "タオル"], keywords: "今治タオル 高級 ハンドタオル" },
-            { title: "THREE（スリー）オーガニック ハンドローション", price: 2800, category: "コスメ", tags: ["定番", "コスメ", "オーガニック", "無難"], keywords: "THREE ハンドローション ハンドケア" },
-            { title: "スターバックス プレミアムソリュブル缶ギフト", price: 2200, category: "コーヒー", tags: ["定番", "コーヒー", "スタバ", "無難"], keywords: "スターバックス プレミアム コーヒー" },
-            { title: "モロゾフ アルカディア 焼き菓子詰合せ", price: 2000, category: "スイーツ", tags: ["定番", "焼き菓子", "クッキー", "甘いもの"], keywords: "モロゾフ アルカディア クッキー" },
-            { title: "ヨックモック シガール 20本入り", price: 1600, category: "スイーツ", tags: ["定番", "王道", "シガール", "甘いもの"], keywords: "ヨックモック シガール 詰め合わせ" },
-            { title: "SHIRO サボン ルームフレグランススプレー", price: 2750, category: "フレグランス", tags: ["ニッチ", "ルームスプレー", "SHIRO", "サボン"], keywords: "SHIRO サボン ルームスプレー" },
-            { title: "BARTH（バース）高級重炭酸入浴剤 9錠パック", price: 1100, category: "バスグッズ", tags: ["ニッチ", "サウナ", "入浴剤", "お風呂", "リラックス"], keywords: "BARTH バース 入浴剤 重炭酸" },
-            { title: "キャプテンスタッグ 真空断熱アルミ缶ジャケット", price: 1800, category: "アウトドア", tags: ["ニッチ", "ビール", "お酒", "キャンプ"], keywords: "キャプテンスタッグ 保冷 缶ホルダー" },
-            { title: "高級クスノキ材 天然アロマウッドディフューザー", price: 2900, category: "インテリア", tags: ["ニッチ", "癒やし", "木製", "アロマ"], keywords: "くすのき アロマディフューザー 木製" },
-            { title: "極厚今治ポケットサウナハット", price: 2800, category: "サウナ", tags: ["ニッチ", "サウナ", "ととのう", "実用"], keywords: "サウナハット 今治タオル オーガニック" },
-            { title: "黄金に輝く「ビールが極限まで美味くなる」サーレスタンブラー", price: 2500, category: "食器", tags: ["奇をてらう", "ビール", "お酒", "タンブラー", "虎党"], keywords: "真空断熱 ゴールド タンブラー おもしろ" },
-            { title: "サウナ専用・12分計高耐熱アナログ砂時計", price: 2800, category: "サウナ", tags: ["奇をてらう", "サウナ", "ガジェット", "ととのう"], keywords: "サウナ 砂時計 耐熱" },
-            { title: "世界の面白激辛インスタントラーメン 詰め合わせ10選", price: 2300, category: "グルメ", tags: ["奇をてらう", "ラーメン", "辛いもの", "おもしろ"], keywords: "世界 ラーメン 詰め合わせ 面白" },
-            { title: "猫の肉球の香りが広がる不思議なモイスチャーハンドクリーム", price: 1900, category: "コスメ", tags: ["奇をてらう", "猫", "コスメ", "ジョーク"], keywords: "猫の肉球 ハンドクリーム おもしろ" },
-
-            // 5,000円以内
-            { title: "Aesop（イソップ）レスレクション ハンドバーム", price: 4300, category: "コスメ", tags: ["定番", "王道", "イソップ", "ハンドクリーム"], keywords: "Aesop イソップ ハンドバーム" },
-            { title: "ブルーボトルコーヒー コミューターマグ & カフェ珈琲豆セット", price: 4800, category: "コーヒー", tags: ["定番", "コーヒー", "ブルーボトル", "カフェ"], keywords: "ブルーボトルコーヒー タンブラー 珈琲豆" },
-            { title: "ピエール・エルメ・パリ 高級マカロン 6個詰合せ", price: 4200, category: "スイーツ", tags: ["定番", "マカロン", "チョコ", "甘いもの"], keywords: "ピエールエルメ マカロン 詰め合わせ" },
-            { title: "茅乃舎（かやのや）極上極みだし・調味料ギフトセット", price: 3800, category: "グルメ", tags: ["定番", "グルメ", "調味料", "和食"], keywords: "茅乃舎 だし詰め合わせ ギフトセット" },
-            { title: "ピエールマルコリーニ セレクション 8個入り", price: 4100, category: "スイーツ", tags: ["定番", "高級チョコ", "チョコレート", "甘いもの"], keywords: "ピエールマルコリーニ チョコレート" },
-            { title: "ジャン＝ポール・エヴァン ボンボンショコラ", price: 4900, category: "スイーツ", tags: ["定番", "ショコラ", "高級チョコ", "甘いもの"], keywords: "ジャンポールエヴァン チョコレート" },
-            { title: "特選・紀州南高梅 個包装和モダン御調", price: 3500, category: "グルメ", tags: ["定番", "グルメ", "梅干し", "和風"], keywords: "紀州南高梅 高級 ギフト 個包装" },
-            { title: "クレイツ イオンヘアエステブラシ（髪がまとまる艶魔法）", price: 4500, category: "美容", tags: ["ニッチ", "ヘアケア", "美容", "実用"], keywords: "クレイツ イオン ヘアブラシ" },
-            { title: "最高級 松阪牛100% 黄金のハンバーグ 4個入り", price: 4980, category: "グルメ", tags: ["ニッチ", "肉", "松阪牛", "グルメ"], keywords: "松阪牛 ハンバーグ 高級グルメ" },
-            { title: "一ノ蔵 すず音 発泡スパークリング日本酒 3本セット", price: 3500, category: "お酒", tags: ["ニッチ", "お酒", "日本酒", "スパークリング"], keywords: "すず音 日本酒 スパークリング 3本" },
-            { title: "Anker Magnetic Cable Holder（マグネット式デスクケーブル整理）", price: 3200, category: "ガジェット", tags: ["ニッチ", "ガジェット", "Anker", "デスク周り"], keywords: "Anker マグネット ケーブルホルダー" },
-            { title: "ROKUMEI COFFEE CO. 高級クラフトリキッドコーヒー 2本", price: 3900, category: "コーヒー", tags: ["ニッチ", "コーヒー", "クラフト", "高級珈琲"], keywords: "ロクメイコーヒー リキッド アイスコーヒー" },
-            { title: "きざむ 名入れ真空断熱ステンレスタンブラー", price: 4200, category: "食器", tags: ["ニッチ", "タンブラー", "名入れ", "記念品"], keywords: "名入れ 真空断熱 タンブラー" },
-            { title: "自宅を完全温浴施設にする「極上サウナ大判ポンチョ」", price: 4900, category: "サウナ", tags: ["奇をてらう", "サウナ", "サウナー", "ととのう"], keywords: "サウナポンチョ 厚手 ととのう" },
-            { title: "阪神タイガース公認「猛虎の咆哮」プレミアム大容量ビアジョッキ", price: 3800, category: "野球", tags: ["奇をてらう", "虎党", "野球", "ビール", "ジョッキ"], keywords: "阪神タイガース ビールジョッキ 応援" },
-            { title: "ストレス爆散！叩き潰せるデスクトップ巨大Enterキーガジェット", price: 3400, category: "ガジェット", tags: ["奇をてらう", "ガジェット", "おもしろ", "ストレス解消"], keywords: "巨大エンターキー パソコン おもしろ" },
-            { title: "明治創業老舗選定・極上おつまみプレミアム缶詰「缶つま」3缶重箱", price: 4500, category: "グルメ", tags: ["奇をてらう", "グルメ", "おつまみ", "高級缶詰", "甲殻類"], keywords: "缶つま プレミアム 詰め合わせ" },
-            { title: "アデリアレトロ 脚付きグラスセット（純喫茶のノスタルジー）", price: 3300, category: "食器", tags: ["奇をてらう", "レトロ", "喫茶店", "かわいい"], keywords: "アデリアレトロ グラス ペア" },
-
-            // 10,000円以内
-            { title: "Jo Malone London ウッドセージ＆シーソルト コロン", price: 9500, category: "フレグランス", tags: ["定番", "高級", "ジョーマローン", "香水"], keywords: "ジョーマローン コロン ウッドセージ" },
-            { title: "DEAN & DELUCA カタログギフト プラチナエディション", price: 8800, category: "カタログ", tags: ["定番", "カタログ", "ディーンアンドデルーカ", "無難"], keywords: "DEAN DELUCA カタログギフト" },
-            { title: "BAUM（バーム）アロマティック ルームスプレーセット", price: 7700, category: "フレグランス", tags: ["定番", "森林浴", "ルームスプレー", "資生堂"], keywords: "BAUM アロマティック ルームコロン" },
-            { title: "とらや 高級竹皮包羊羹 2本詰合せ", price: 8500, category: "スイーツ", tags: ["定番", "和菓子", "羊羹", "老舗", "甘いもの"], keywords: "とらや 羊羹 詰め合わせ 高級" },
-            { title: "マリアージュフレール マルコポーロ紅茶詰合せ", price: 6500, category: "紅茶", tags: ["定番", "紅茶", "高級ティー", "無難"], keywords: "マリアージュフレール 紅茶 ギフト" },
-            { title: "LE CREUSET（ル・クルーゼ）ショート・タンブラー ペアセット", price: 6600, category: "食器", tags: ["ニッチ", "ルクルーゼ", "食器", "インテリア"], keywords: "ルクルーゼ タンブラー ペア" },
-            { title: "デロンギ（DeLonghi）電気アクティブカフェケトル 1.0L", price: 9800, category: "家電", tags: ["ニッチ", "コーヒー", "家電", "デロンギ"], keywords: "デロンギ 電気ケトル カフェポット" },
-            { title: "おうちで本格燻製スモークインフューザー（コンパクト燻製ガジェット）", price: 7900, category: "ガジェット", tags: ["ニッチ", "お酒", "燻製", "おつまみ", "ロマン"], keywords: "フードスモーカー 燻製器 卓上" },
-            { title: "新感覚首元リラクゼーション NIPLUX NECK RELAX", price: 9600, category: "健康", tags: ["ニッチ", "健康", "マッサージ", "リフレッシュ"], keywords: "NIPLUX NECK RELAX ネックリラックス" },
-            { title: "ロクシタン ファイブハーブス リペアリングシャンプー＆コンディショナー", price: 7400, category: "美容", tags: ["ニッチ", "ヘアケア", "ロクシタン", "アロマ"], keywords: "ロクシタン ファイブハーブス セット" },
-            { title: "読売ジャイアンツ（巨人）公認・オフィシャルプレミアム高密度刺繍スタジャン", price: 9500, category: "野球", tags: ["奇をてらう", "巨人のもの", "野球", "アウター"], keywords: "読売ジャイアンツ スタジアムジャンパー" },
-            { title: "「全自動コーヒー豆グラインダー」プロ仕様高性能電動ミル", price: 9200, category: "家電", tags: ["奇をてらう", "コーヒー", "本格派", "家電", "グラインダー"], keywords: "電動コーヒーミル グラインダー プロ仕様" },
-            { title: "かに道楽 特選・特大活締めズワイガニすき焼き極上プレミアム鍋", price: 9800, category: "グルメ", tags: ["奇をてらう", "グルメ", "甲殻類", "高級", "カニ"], keywords: "ズワイガニ かにしゃぶ かに道楽" },
-            { title: "自宅LDKを完全に映画館化する「大容量超自立型ポップコーンプラントマシーン」", price: 8800, category: "家電", tags: ["奇をてらう", "家電", "パーティー", "おもしろ"], keywords: "ポップコーンメーカー 家庭用 大型" },
-            { title: "うまい棒 宴会専用600本フルスケールギガタワーアソート", price: 7500, category: "ジョーク", tags: ["奇をてらう", "お菓子", "ジョーク", "インパクト"], keywords: "うまい棒 大量 詰め合わせ" },
-
-            // 30,000円以内
-            { title: "BALMUDA（バルミューダ）The Toaster スチームオーブン", price: 27000, category: "家電", tags: ["定番", "バルミ樹", "高級家電", "王道"], keywords: "バルミューダ トースター スチーム" },
-            { title: "パナソニック 目もとエステ（最高峰スチームアイウォーマー）", price: 23000, category: "美容", tags: ["定番", "パナソニック", "アイケア", "健康", "癒やし"], keywords: "パナソニック 目もとエステ" },
-            { title: "カタログギフト リンベル プレミアム極選国産和牛「延壽」", price: 22000, category: "カタログ", tags: ["定番", "高級お肉", "国産和牛", "グルメ"], keywords: "リンベル カタログギフト 国産和牛" },
-            { title: "Baccarat（バカラ）クリスタル ベルーガ オールドファッション グラス", price: 19800, category: "食器", tags: ["定番", "バカラ", "最高級", "グラス", "お酒"], keywords: "バカラ グラス ベルーガ" },
-            { title: "SIXPAD（シックスパッド）Foot Fit Lite 脚力コンディショニング", price: 29800, category: "健康", tags: ["ニッチ", "シックスパッド", "健康", "ガジェット"], keywords: "SIXPAD フットフィット ライト" },
-            { title: "Snow Peak（スノーピーク）焚火台L スタータープロコンプリートセット", price: 28500, category: "アウトドア", tags: ["ニッチ", "スノーピーク", "キャンプ", "アウトドア"], keywords: "スノーピーク 焚火台 スターターセット" },
-            { title: "骨伝導イヤホン Shokz OpenRun Pro スポーツフラッグシップ", price: 23800, category: "ガジェット", tags: ["ニッチ", "Shokz", "ガジェット", "骨伝導", "イヤホン"], keywords: "Shokz OpenRun Pro" },
-            { title: "ソウ・エクスペリエンス 高級一流個室スパ＆ホテルエステチケット", price: 25000, category: "体験", tags: ["ニッチ", "エステ", "体験ギフト", "ご褒美"], keywords: "個室スパ エステチケット 体験ギフト" },
-            { title: "ReFa（リファ）ビューテック ドライヤープロ", price: 30000, category: "美容", tags: ["ニッチ", "美容", "リファ", "ドライヤー", "王道"], keywords: "リファ ビューテック ドライヤープロ" },
-            { title: "フィンランド発「極限ととのい」屋内外両用ポータブル高速蒸気サウナテントキット", price: 29800, category: "サウナ", tags: ["奇をてらう", "サウナ", "テントサウナ", "アウトドア"], keywords: "テントサウナ ポータブル" },
-            { title: "ドン・ペリニヨン（Dom Perignon）ヴィンテージ プレミアム公式クリア箱付", price: 28000, category: "お酒", tags: ["奇をてらう", "お酒", "シャンパン", "ドンペリ", "高級"], keywords: "ドンペリニヨン ヴィンテージ" },
-            { title: "プロ解体ショー専用・太平洋直行天然一本釣本マグロ中トロ超特大ブロック(冷凍)", price: 29500, category: "グルメ", tags: ["奇をてらう", "グルメ", "マグロ", "衝撃"], keywords: "本マグロ ブロック 特大 高級グルメ" },
-            { title: "プロ野球球団1日臨時ベンチ裏VIPオーナー特別視察模擬シミュレーションチケット", price: 25000, category: "野球", tags: ["奇をてらう", "野球", "巨人のもの", "虎党", "体験"], keywords: "プロ野球 グッズ プレミアム" }
-        ];
-
-        // ================= ⚙️ サジェスト＆地雷・フィードバックフィルタロジックコア =================
-        function generateGiftSuggestions() {
-            let budgetMax = parseInt(document.getElementById("form-budget").value, 10);
-            if (isNaN(budgetMax) || budgetMax <= 0) budgetMax = 9999999;
-
-            const relation = document.getElementById("form-relationship").value;
-            const interestsInput = document.getElementById("form-interests").value.trim().toLowerCase();
-            const mineInput = document.getElementById("form-mine-words").value.trim().toLowerCase();
-            
-            const prevItem = document.getElementById("form-prev-item").value.trim().toLowerCase();
-            const prevReaction = document.getElementById("form-prev-reaction").value;
-            const prevReason = document.getElementById("form-prev-reason").value.trim().toLowerCase();
-
-            // 地雷・過去失敗によるブラックリスト
-            let blackList = [];
-            if (mineInput) blackList = mineInput.split(/[,、\s]+/).filter(w => w.length > 0);
-            if (prevReaction === 'fail') {
-                if (prevItem) blackList.push(prevItem);
-                if (prevReason) {
-                    const tokens = prevReason.split(/[,、\s.▫️]+/);
-                    blackList = blackList.concat(tokens.filter(t => t.length >= 2));
-                }
-            }
-
-            // 趣味・過去成功による加点ホワイトリスト
-            let whiteList = [];
-            if (prevReaction === 'success') {
-                if (prevItem) whiteList.push(prevItem);
-                if (prevReason) whiteList = whiteList.concat(prevReason.split(/[,、\s]+/));
-            }
-            if (interestsInput) whiteList = whiteList.concat(interestsInput.split(/[,、\s]+/));
-
-            // 地雷完全スクリーニング審査
-            let filteredPool = GIFT_MASTER_DATABASE.filter(gift => {
-                if (gift.price > budgetMax) return false;
-
-                const giftFullString = (gift.title + " " + gift.category + " " + gift.keywords + " " + gift.tags.join(" ")).toLowerCase();
-                
-                for (let word of blackList) {
-                    if ((word.includes("甘いもの") || word.includes("糖") || word.includes("甘味")) && gift.tags.includes("甘いもの")) return false;
-                    if ((word.includes("甲殻類") || word.includes("エビ") || word.includes("カニ")) && gift.tags.includes("甲殻類")) return false;
-                    if ((word.includes("巨人") || word.includes("ジャイアンツ")) && gift.keywords.includes("読売ジャイアンツ")) return false;
-                    if ((word.includes("酒") || word.includes("アルコール")) && gift.tags.includes("お酒")) return false;
-                    if ((word.includes("コーヒー") || word.includes("カフェイン")) && gift.tags.includes("コーヒー")) return false;
-
-                    if (giftFullString.includes(word)) return false;
-                }
-                return true;
-            });
-
-            document.getElementById("match-pool-count").innerText = `該当: ${filteredPool.length}件`;
-
-            // スコアリング処理
-            let scoredPool = filteredPool.map(gift => {
-                let currentScore = 100; 
-                const giftText = (gift.title + " " + gift.category + " " + gift.keywords + " " + gift.tags.join(" ")).toLowerCase();
-
-                whiteList.forEach(word => {
-                    if (word.length >= 1 && giftText.includes(word)) currentScore += 60; 
-                    if (word.includes("サウナ") && gift.tags.includes("サウナ")) currentScore += 100;
-                    if (word.includes("コーヒー") && gift.tags.includes("コーヒー")) currentScore += 100;
-                    if ((word.includes("虎") || word.includes("タイガース")) && gift.tags.includes("虎党")) currentScore += 100;
-                    if (word.includes("ガジェット") && gift.tags.includes("ガジェット")) currentScore += 80;
-                    if (word.includes("猫") && gift.tags.includes("猫")) currentScore += 100;
-                });
-
-                if (relation === 'boss' && gift.tags.includes("定番")) currentScore += 20;
-                if (relation === 'partner' && gift.tags.includes("コスメ")) currentScore += 15;
-
-                return { ...gift, score: currentScore };
-            });
-
-            // コンセプト別属性グループに分配後、スコア降順ソート
-            const safePool = scoredPool.filter(g => g.tags.includes("定番")).sort((a,b) => b.score - a.score);
-            const nichePool = scoredPool.filter(g => g.tags.includes("ニッチ")).sort((a,b) => b.score - a.score);
-            const crazyPool = scoredPool.filter(g => g.tags.includes("奇をてらう")).sort((a,b) => b.score - a.score);
-
-            renderConceptBlocks(safePool, nichePool, crazyPool, blackList, prevReaction);
-        }
-
-        // ================= 🎨 【新機能】ブロック別TOP5＆アコーディオンレンダラー =================
-        function renderConceptBlocks(safeList, nicheList, crazyList, blackList, prevReaction) {
-            const deck = document.getElementById("suggestions-deck");
-            deck.innerHTML = "";
-
-            if (safeList.length === 0 && nicheList.length === 0 && crazyList.length === 0) {
-                deck.innerHTML = `
-                    <div class="bg-rose-50 text-rose-700 p-6 rounded-xl border border-rose-100 text-center text-xs font-medium">
-                        ご指定の「地雷条件」や予算上限に適合するアイテムがありません！<br>予算を上げるか、地雷NGキーワードを緩めて再実行してください。
-                    </div>
-                `;
-                return;
-            }
-
-            // コンセプトごとのブロック組み立てビルダー
-            function buildConceptSection(pool, title, badgeClass, blockId, emoji, parentExcuse) {
-                if (pool.length === 0) return "";
-
-                let html = `
-                    <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200 space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-                            <h4 class="text-xs font-bold tracking-wide">${title}</h4>
-                            <span class="text-[9px] ${badgeClass} px-2 py-0.5 rounded font-bold">該当 ${pool.length}件</span>
-                        </div>
-                        
-                        <!-- コンセプト全体へのAIの言い訳解説 -->
-                        <p class="text-[10px] text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed">${parentExcuse}</p>
-                        
-                        <!-- 上位5件の表示エリア -->
-                        <div class="space-y-3">
-                `;
-
-                pool.forEach((item, idx) => {
-                    const rank = idx + 1;
-                    const amazonHref = `https://www.amazon.co.jp/s?k=${encodeURIComponent(item.keywords)}&tag=${AMZ_TRACKING_ID}`;
-                    
-                    // 6件目以降は隠しコンテナ（アコーディオン）の中に格納
-                    if (rank === 6) {
-                        html += `</div><!-- /TOP5終わり -->
-                                <div id="more-container-${blockId}" class="hidden space-y-3 pt-3 border-t border-dashed border-slate-200">`;
-                    }
-
-                    html += `
-                        <div class="p-3 rounded-lg border ${rank <= 3 ? 'border-blue-200 bg-blue-50/30' : 'border-slate-100 bg-white'} flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition-all hover:border-blue-300">
-                            <div class="flex items-start gap-2 min-w-0 flex-1">
-                                <span class="text-xs font-bold px-1.5 py-0.5 rounded ${rank === 1 ? 'bg-blue-600 text-white' : (rank <= 3 ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-500')}">${rank}位</span>
-                                <div class="min-w-0 flex-1">
-                                    <h5 class="text-xs font-bold text-slate-900 truncate" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h5>
-                                    <div class="text-[9px] text-slate-400 font-mono mt-0.5">価格: ¥${item.price.toLocaleString()} / カテゴリ: ${item.category}</div>
-                                </div>
-                            </div>
-                            <a href="${amazonHref}" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg text-center whitespace-nowrap">
-                                Amazonで見る
-                            </a>
-                        </div>
-                    `;
-                });
-
-                html += `</div><!-- /隠しコンテナまたは通常コンテナ終わり -->`;
-
-                // 6件以上の場合に「もっと見る」展開用ボタンを配置
-                if (pool.length > 5) {
-                    html += `
-                        <button type="button" onclick="toggleMoreRows('${blockId}', this)" class="w-full text-center text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 py-2 rounded-lg mt-2">
-                            6位以下を表示
-                        </button>
-                    `;
-                }
-
-                html += `</div>`;
-                return html;
-            }
-
-            // ①【安全牌】の言い訳解説テキスト生成
-            let safeExcuse = `100人中99人が「間違いなくハズさない」と断言する王道・定番から高スコア順に選定。`;
-            if (blackList.length > 0) safeExcuse += ` 指定地雷（${blackList.join(", ")}）の危険因子は全品確実に排除審査済み。`;
-            if (prevReaction === 'fail') safeExcuse += ` 前回の失敗を踏まえた鉄壁の引き算防衛策です。`;
-            
-            // ②【ちょっとニッチ】の言い訳解説テキスト生成
-            let nicheExcuse = `自分では買わないけれど、日常で貰ったら一番嬉しい「生活の質(QOL)」を底上げするお洒落な実用派リスト。`;
-            
-            // ③【奇をてらう】の言い訳解説テキスト生成
-            let crazyExcuse = `地雷NGは完璧に踏まない確証があるからこそ仕掛けられる、相手の「趣味・推し」を斜め上から解釈した会話の爆発ツール。`;
-
-            const section1 = buildConceptSection(safeList, "安全牌 — 迷ったらこれ", "bg-emerald-100 text-emerald-800", "safe", "", safeExcuse);
-            const section2 = buildConceptSection(nicheList, "ちょっとニッチ — センス良く見える", "bg-blue-100 text-blue-800", "niche", "", nicheExcuse);
-            const section3 = buildConceptSection(crazyList, "攻め — 会話が弾む一品", "bg-slate-200 text-slate-700", "crazy", "", crazyExcuse);
-
-            deck.innerHTML = section1 + section2 + section3;
-        }
-
-        // アコーディオンの開閉処理ロジック
-        function toggleMoreRows(blockId, buttonEl) {
-            const container = document.getElementById(`more-container-${blockId}`);
-            if (container.classList.contains('hidden')) {
-                container.classList.remove('hidden');
-                buttonEl.textContent = "たたむ";
-            } else {
-                container.classList.add('hidden');
-                buttonEl.textContent = "6位以下を表示";
-            }
-        }
-
-        function escapeHtml(str) {
-            return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;') : '';
-        }
-    </script>
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
 </body>

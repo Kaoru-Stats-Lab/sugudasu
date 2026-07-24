@@ -7,11 +7,16 @@
 ## 添付する正本
 
 1. [`BRAND_CONSTITUTION.md`](../brand/BRAND_CONSTITUTION.md)
-2. [`ANTI_PRINCIPLES.md`](../brand/ANTI_PRINCIPLES.md)
-3. [`PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)
-4. 監査対象の仕様・画面・コピー・提案
+2. [`CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md) — 立法意思
+3. [`CASE_LAW.md`](../legal/CASE_LAW.md) — 判例（矛盾提案は禁止）
+4. [`LEGAL_INTERPRETATION_GUIDE.md`](../legal/LEGAL_INTERPRETATION_GUIDE.md) — 判断順序
+5. [`ANTI_PRINCIPLES.md`](../brand/ANTI_PRINCIPLES.md)
+6. [`PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)
+7. 監査対象の仕様・画面・コピー・提案
 
 [`BRAND_RATIONALE.md`](../brand/BRAND_RATIONALE.md) は判断が割れた時だけ追加します。
+義解と条文が衝突したら **憲法本文を優先**し、義解の修正候補として報告する。
+**F1〜F7 だけで合憲宣言しない。**
 
 ## コピペ用プロンプト
 
@@ -21,10 +26,16 @@
 添付された正本だけを基準に、監査対象がブランドを維持しているか判定してください。
 
 【正本の優先順位】
-1. BRAND_CONSTITUTION.md — WHY / Mission / Persona / Domain
-2. ANTI_PRINCIPLES.md — Reject基準
-3. PRODUCT_CONSTITUTION.md — F1〜F7 / 採用判定 / Sync分岐
-4. BRAND_RATIONALE.md — 理由の補助。上位正本を上書きしない
+1. BRAND_CONSTITUTION.md — WHY / Mission / Persona / Domain（WHAT）
+2. CONSTITUTION_COMMENTARY.md — 立法意思（Intent）。「非送信」等は字面だけで読まない
+3. CASE_LAW.md — 既存判例。矛盾する提案は禁止
+4. LEGAL_INTERPRETATION_GUIDE.md — 判断順序。F1〜F7単独判定禁止
+5. ANTI_PRINCIPLES.md — Reject基準
+6. PRODUCT_CONSTITUTION.md — F1〜F7 / 採用判定 / Sync分岐
+7. BRAND_RATIONALE.md — 理由の補助。上位正本を上書きしない
+
+義解は憲法を書き換えない。条文と義解が衝突したら憲法を優先し、義解の修正候補を報告する。
+憲法判断はADRに書かずCase Lawへ。
 
 【監査対象】
 {ここに仕様、画面、コピー、提案、差分を貼る}

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-24",
   "disclaimer": "カテゴリ定義の正本は data/categories.json。本ファイルは tools[] · categoryCompare（statements 比較表）のみ。",
   "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md · data/categories.json · scripts/verify-statements-product.mjs",
   "tools": [
@@ -18,6 +18,14 @@
       "file": "stamp.html",
       "inputHandling": "印影生成 · 端末内",
       "promiseNote": "請求書へ印影を渡す · 角印はアップロード可"
+    },
+    {
+      "toolId": "pdf-fill",
+      "categoryId": "docs",
+      "productName": "SUGUDASU PDF記入",
+      "file": "pdf-fill.html",
+      "inputHandling": "PDF · 端末内（pdf.js / pdf-lib）",
+      "promiseNote": "提出用完成 · 編集ページのみ固定 · Paper First · OCR喪失受入"
     },
     {
       "toolId": "receipt",
@@ -58,6 +66,14 @@
       "file": "normalize.html",
       "inputHandling": "テキスト · 端末内",
       "promiseNote": "500行 cap · 外部コンバータに貼らない代替"
+    },
+    {
+      "toolId": "clip-stash",
+      "categoryId": "text",
+      "productName": "SUGUDASU 仮置き",
+      "file": "clip-stash.html",
+      "inputHandling": "クリップボード · IndexedDB · 端末内",
+      "promiseNote": "編集なし · 整理なし · 一時退避のみ"
     },
     {
       "toolId": "table-conv",
@@ -132,12 +148,12 @@
       "promiseNote": "操作動画から PNG 1枚 · GIF化なし"
     },
     {
-      "toolId": "mask",
+      "toolId": "annotate",
       "categoryId": "media",
-      "productName": "SUGUDASU マスク",
-      "file": "mask.html",
-      "inputHandling": "画像 · Canvas 端末内",
-      "promiseNote": "マニュアル用黒塗り · アップロード型と差別化"
+      "productName": "SUGUDASU 赤入れ",
+      "file": "annotate.html",
+      "inputHandling": "画像 · PDF · Canvas 端末内",
+      "promiseNote": "共有できる状態へ整える · Copy First · PDF部分画像化 · /mask 後継"
     },
     {
       "toolId": "image-trim",
@@ -236,14 +252,6 @@
       "promiseNote": "超過表示 · TSV · 非送信 · 自動配分なし"
     },
     {
-      "toolId": "present",
-      "categoryId": "ops",
-      "productName": "SUGUDASU ギフト",
-      "file": "present.html",
-      "inputHandling": "条件 · 端末内",
-      "promiseNote": "ギフト候補の提案 · 購入は外部"
-    },
-    {
       "toolId": "link-qr",
       "categoryId": "ops",
       "productName": "SUGUDASU リンク集QR",
@@ -286,13 +294,18 @@
   ],
   "categoryCompare": {
     "docs": {
-      "altLabel": "クラウド請求 SaaS",
-      "oursLabel": "SUGUDASU 帳票",
+      "altLabel": "クラウド請求 · PDF編集 SaaS",
+      "oursLabel": "SUGUDASU 帳票 · PDF記入",
       "rows": [
         {
           "aspect": "データ",
           "alt": "クラウド · チーム共有",
           "ours": "下書き JSON · ブラウザ内"
+        },
+        {
+          "aspect": "PDF",
+          "alt": "Acrobat · 全ページ編集 · クラウド",
+          "ours": "提出完成（記入）— 編集ページのみ固定"
         },
         {
           "aspect": "向く人",
@@ -334,7 +347,7 @@
       ]
     },
     "media": {
-      "altLabel": "アップロード型変換",
+      "altLabel": "アップロード型 · 画像編集",
       "oursLabel": "SUGUDASU メディア系",
       "rows": [
         {
@@ -343,9 +356,19 @@
           "ours": "Canvas / 端末内のみ"
         },
         {
+          "aspect": "主目的",
+          "alt": "デザイン · バッチ変換 · クラウド共有",
+          "ours": "社内スクショの隠す·指す（赤入れ）· 1コマ抜き"
+        },
+        {
+          "aspect": "PDF",
+          "alt": "PDF編集 · 全ページ書き換え",
+          "ours": "説明用の部分画像化（赤入れ）— 提出完成は帳票のPDF記入"
+        },
+        {
           "aspect": "向く人",
-          "alt": "大量バッチ · ZIP",
-          "ours": "社内スクショ · 操作動画の1コマ"
+          "alt": "巨大バッチ · デザイナー",
+          "ours": "情シス · 開発 · 幹事 — 怪しいアップロードサイトを避けたい"
         }
       ]
     },

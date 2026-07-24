@@ -2,6 +2,8 @@
 
 **役割:** SUGUDASUが「何者ではないか」を定めるReject基準  
 **最上位原則:** ユーザーを賢く見せる。SUGUDASU自身は賢く見せない。  
+**立法意思:** [`../legal/CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md)（例: 「提案しすぎない」の範囲）  
+**判例:** [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md)  
 **Project:** [`../brand-project/BRAND_PROJECT_CHECKLIST.md`](../brand-project/BRAND_PROJECT_CHECKLIST.md)
 
 ブランド思想は [`BRAND_CONSTITUTION.md`](BRAND_CONSTITUTION.md) を正本とします。

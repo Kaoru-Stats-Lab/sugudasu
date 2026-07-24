@@ -76,18 +76,6 @@
       }
     },
     {
-      "toolId": "present",
-      "href": "present.html",
-      "blurb": "景品やプレゼント選びに迷った時に。条件に合わせたギフトをリスト化します。",
-      "badges": {
-        "status": "ga",
-        "spec": [
-          "local"
-        ],
-        "popular": false
-      }
-    },
-    {
       "toolId": "fair-draw",
       "href": "fair-draw.html?tab=check",
       "blurb": "景品表示法のリスクを一次チェック。キャンペーン · 懸賞向け。",
@@ -127,6 +115,18 @@
       "toolId": "normalize",
       "href": "normalize.html",
       "blurb": "コピペしたテキストの余計な改行や全角半角の混ざりを直したい時に。スペースや文字の表記ゆれを統一します。",
+      "badges": {
+        "status": "beta",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
+      "toolId": "clip-stash",
+      "href": "clip-stash.html",
+      "blurb": "PowerPointやExcel・ブラウザを行き来する途中で、あとで使うコピーを一旦置きたい時に。Ctrl+Vで置き、ダブルクリックで戻します。",
       "badges": {
         "status": "beta",
         "spec": [
@@ -185,9 +185,9 @@
       }
     },
     {
-      "toolId": "mask",
-      "href": "mask.html",
-      "blurb": "画像にある個人情報や機密を黒塗り・ぼかししたい時に。見せたくない部分を隠します。",
+      "toolId": "annotate",
+      "href": "annotate.html",
+      "blurb": "提出・共有前に、必要な場所だけ整える。隠す·囲む·指す。コピーして共有。",
       "badges": {
         "status": "new",
         "spec": [
@@ -228,6 +228,19 @@
         "status": "new",
         "spec": [
           "local"
+        ],
+        "popular": false
+      }
+    },
+    {
+      "toolId": "pdf-fill",
+      "href": "pdf-fill.html",
+      "blurb": "提出用のPDFに文字や印鑑・黒塗りを足して完成させたい時に。印刷して手書きしてスキャンし直す手間を省きます。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local",
+          "pc"
         ],
         "popular": false
       }

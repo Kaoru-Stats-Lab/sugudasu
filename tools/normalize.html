@@ -77,7 +77,7 @@
             <details class="border border-violet-200 rounded-lg bg-violet-50/40" id="mask-preset-panel">
                 <summary class="cursor-pointer select-none text-xs font-bold text-violet-900 px-3 py-2">伏字（メール · 電話 · 氏名）</summary>
                 <div class="px-3 pb-3 space-y-2 border-t border-violet-100 pt-2">
-                    <p class="text-[11px] text-violet-900/80 leading-relaxed">リストの個人情報を伏字にします。複数選べます（用途プリセットと併用可）。<strong>行数は変わりません。</strong> スクショの黒塗りは <a href="mask.html" class="font-semibold underline">マスク</a> を使ってください。</p>
+                    <p class="text-[11px] text-violet-900/80 leading-relaxed">リストの個人情報を伏字にします。複数選べます（用途プリセットと併用可）。<strong>行数は変わりません。</strong> スクショの黒塗りは <a href="annotate.html" class="font-semibold underline">赤入れ</a> を使ってください。</p>
                     <div class="space-y-2 rounded-lg border border-violet-100 bg-white/80 p-2 text-xs">
                         <label class="flex flex-wrap items-center gap-x-2 gap-y-1 font-semibold text-violet-950">
                             <input type="checkbox" id="mask-op-email"> メールを伏字
@@ -168,7 +168,7 @@
                 <p id="line-ops-banner" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
                 <p id="mask-banner" class="hidden text-[11px] font-semibold text-violet-900 bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
                 <p id="date-unify-banner" class="hidden text-[11px] font-semibold text-sky-900 bg-sky-50 border border-sky-200 rounded-lg px-3 py-2 leading-relaxed" role="status"></p>
-                <p id="mask-tool-link" class="hidden text-[11px] text-violet-800 leading-relaxed">画像・スクショの機密は <a href="mask.html" class="font-semibold underline">SUGUDASU マスク</a>（ぼかし · 黒塗り · 非送信）で隠せます。テキスト伏字と併用してください。</p>
+                <p id="mask-tool-link" class="hidden text-[11px] text-violet-800 leading-relaxed">画像・スクショの機密は <a href="annotate.html" class="font-semibold underline">SUGUDASU 赤入れ</a>（ぼかし · 黒塗り · 非送信）で隠せます。テキスト伏字と併用してください。</p>
                 <p id="shape-hint" class="norm-verify-panel__shape-hint hidden">縦一列→カンマ1行への<strong>形状変換</strong>です。行数の変化は正常です。変換後を確認してからコピーしてください。</p>
                 <p id="change-summary" class="norm-verify-panel__changes hidden"></p>
                 <div class="norm-verify-preview">
@@ -273,7 +273,7 @@
             <details class="sg-faq">
                 <summary>テキスト伏字と画像の黒塗りはどう使い分けますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p><strong>メール・電話・氏名のリスト</strong>は本ツールの伏字プリセット向きです。行数は変わらず、コピーしてそのまま貼れます。<strong>スクショ・マニュアル画像</strong>の機密は <a href="mask.html" class="text-blue-600 hover:underline">マスク</a>（Canvas 黒塗り · ぼかし）を使ってください。どちらもブラウザ内だけで処理し、当社サーバーへ送信しません。</p>
+                    <p><strong>メール・電話・氏名のリスト</strong>は本ツールの伏字プリセット向きです。行数は変わらず、コピーしてそのまま貼れます。<strong>スクショ・マニュアル画像</strong>の機密は <a href="annotate.html" class="text-blue-600 hover:underline">赤入れ</a>（Canvas 黒塗り · ぼかし）を使ってください。どちらもブラウザ内だけで処理し、当社サーバーへ送信しません。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -547,7 +547,7 @@ function syncShapeModeUI(preset) {
     shapeBadgeEl.textContent = '行数変化';
   }
   if (isMask) {
-    shapeHintEl.innerHTML = '伏字プリセットは<strong>行数を変えません</strong>。スクショの機密は <a href="mask.html" class="font-semibold underline">マスク</a> を使ってください。';
+    shapeHintEl.innerHTML = '伏字プリセットは<strong>行数を変えません</strong>。スクショの機密は <a href="annotate.html" class="font-semibold underline">赤入れ</a> を使ってください。';
   } else if (isShape && mode === 'sql_in') {
     shapeHintEl.innerHTML = '縦一列（またはタブ区切り）→ <strong>SQL IN 用クォート付き1行</strong>への形状変換です。行数の変化は正常です。';
   } else if (isShape && mode === 'tab_to_comma') {

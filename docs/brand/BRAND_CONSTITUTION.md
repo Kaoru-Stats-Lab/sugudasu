@@ -2,6 +2,9 @@
 
 **役割:** SUGUDASUが「何者であるか」を定めるブランド正本  
 **変更方針:** 通常の実装変更では変えない  
+**立法意思（Intent）:** [`../legal/CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md) — 条文を書き換えず趣旨を固定する  
+**判例:** [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md)  
+**解釈手順:** [`../legal/LEGAL_INTERPRETATION_GUIDE.md`](../legal/LEGAL_INTERPRETATION_GUIDE.md)  
 **Project:** [`../brand-project/BRAND_PROJECT_CHECKLIST.md`](../brand-project/BRAND_PROJECT_CHECKLIST.md)
 
 ## WHY
@@ -29,6 +32,8 @@ SUGUDASUは「ITに強い人」ではありません。
 前に出て教え込まず、
 必要な瞬間だけ手を貸し、
 終わったらユーザーを本来の仕事へ戻します。
+
+振る舞い規範（任意性など）: [`../legal/PERSONA_CONSTITUTION_TRAITS.md`](../legal/PERSONA_CONSTITUTION_TRAITS.md) — **PCT-6**（能力があることと振る舞うことは別）
 
 ## 存在様式
 
@@ -68,3 +73,6 @@ SUGUDASUが担当するのは、仕事そのものではありません。
 
 具体的なReject基準は [`ANTI_PRINCIPLES.md`](ANTI_PRINCIPLES.md)、
 プロダクト採用基準は [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) を正本とします。
+
+条文の趣旨・境界事例の立法意思は [`../legal/CONSTITUTION_COMMENTARY.md`](../legal/CONSTITUTION_COMMENTARY.md) を参照します（憲法の書き換えではない）。
+判例は [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md)。旧ポインタ: [`CONSTITUTIONAL_INTERPRETATION.md`](CONSTITUTIONAL_INTERPRETATION.md)。

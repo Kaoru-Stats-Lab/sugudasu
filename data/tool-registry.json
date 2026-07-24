@@ -141,6 +141,20 @@
       "statusNote": "500行cap · 行整理 · 伏字3種 · 日付統一 · sql_in/tab_to_comma · T03",
       "categoryId": "text"
     },
+    "clip-stash": {
+      "file": "clip-stash.html",
+      "conceptName": "仮置き",
+      "productName": "SUGUDASU 仮置き",
+      "navLabel": "仮置き",
+      "navIcon": "📋",
+      "inNav": true,
+      "navOrder": 9.05,
+      "name": "コピー一時退避",
+      "version": "0.1.0",
+      "stage": "beta",
+      "statusNote": "Text/Table/URL/Image/Color · IndexedDB · 編集なし · Ctrl+V · docs/products/clip-stash/",
+      "categoryId": "text"
+    },
     "search-query": {
       "file": "search-query.html",
       "conceptName": "Google検索式",
@@ -197,19 +211,20 @@
       "statusNote": "ローカル MP4/WebM → PNG · 非送信 · VIDEO_FRAME_PNG_SPEC.md",
       "categoryId": "media"
     },
-    "mask": {
-      "file": "mask.html",
-      "conceptName": "画像マスク",
-      "productName": "SUGUDASU マスク",
-      "navLabel": "マスク",
-      "navIcon": "🛡️",
+    "annotate": {
+      "file": "annotate.html",
+      "conceptName": "赤入れ",
+      "productName": "SUGUDASU 赤入れ",
+      "navLabel": "赤入れ",
+      "navIcon": "✏️",
       "inNav": true,
       "navOrder": 10.5,
-      "name": "スクショ機密消し",
-      "version": "0.1.0",
-      "stage": "alpha",
-      "statusNote": "ぼかし/黒塗り/同色塗り/スタンプ/注釈（矢印·枠） · Canvas非送信 · マニュアル向け · T09b",
-      "categoryId": "media"
+      "name": "画像・PDF赤入れ",
+      "version": "1.0.0",
+      "stage": "gamma",
+      "statusNote": "提出前に整える · 黒塗り/ぼかし/モザイク · 矢印/枠/楕円 · PDF部分画像化 · /mask→301",
+      "categoryId": "media",
+      "legacyIds": ["mask"]
     },
     "image-trim": {
       "file": "image-trim.html",
@@ -266,6 +281,20 @@
       "stage": "alpha",
       "statusNote": "埋め込み画像のみ · ZIP · pdfjs 5.4.296 · PDF_IMAGE_EXTRACT_SPEC.md",
       "categoryId": "media"
+    },
+    "pdf-fill": {
+      "file": "pdf-fill.html",
+      "conceptName": "PDF記入",
+      "productName": "SUGUDASU PDF記入",
+      "navLabel": "PDF記入",
+      "navIcon": "✍️",
+      "inNav": true,
+      "navOrder": 10.72,
+      "name": "提出用PDF記入",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "提出用完成 · 文字追加/印/黒白塗り · ラスタ焼き付け · 非送信 · docs/products/pdf-fill/",
+      "categoryId": "docs"
     },
     "test-data": {
       "file": "test-data.html",
@@ -369,15 +398,16 @@
       "file": "present.html",
       "conceptName": "ギフト",
       "productName": "SUGUDASU ギフト",
-      "navLabel": "ギフト",
+      "navLabel": null,
       "navIcon": "🎁",
-      "inNav": true,
+      "inNav": false,
       "navOrder": 12,
       "name": "ギフトサジェスター",
       "version": "1.0.0",
-      "stage": "gamma",
-      "statusNote": "Amazon主戦場 · アフィ最適化はP1（§2-1 · §2-3）",
-      "categoryId": "ops"
+      "stage": "reject",
+      "statusNote": "Reject 2026-07-24 · コンセプト不合 · Hub除外 · アーカイブ · CASE-2026-006",
+      "categoryId": "ops",
+      "judgment": "Reject"
     },
     "fair-draw": {
       "file": "fair-draw.html",

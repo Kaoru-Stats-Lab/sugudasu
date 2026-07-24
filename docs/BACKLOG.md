@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-06-26（§5-4 クォータ案C確定 · ENT-SCOPE）  
+更新: 2026-07-24（§8-13 Agent/MCP ライン · GSC MCP Pending）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -638,6 +638,42 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
 - [ ] `table-conv` SSOT 初稿（JSON 統合 · CP932）
 - [ ] T22 Text Diff — HOLD 理由を台帳に1行（任意）
 
+### 1-16. `pdf-fill` — SUGUDASU PDF記入（**GO · 設計済 · 未実装** · 2026-07-22）
+
+| 項目 | 内容 |
+|------|------|
+| **判定** | **GO** · Tier **A**（憲法 F1〜F7 適合 · Sync 分岐なし） |
+| **台帳** | [`PRODUCT_IDEA_JUDGMENT_LEDGER.md`](notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) **§19** |
+| **憲法** | [`PRODUCT_CONSTITUTION.md`](product/PRODUCT_CONSTITUTION.md) 判定順で採点済 |
+| **設計正本** | [`docs/products/pdf-fill/`](products/pdf-fill/) |
+| **仮 id** | `pdf-fill` · productName: SUGUDASU PDF記入 |
+| **主ペルソナ** | P-B（年数回の提出書類） |
+| **差別化** | Acrobat代替ではない。「印刷→手書き→スキャン」の置換 |
+| **優先度** | **P1**（画像/PDF兄弟レーン。`png-to-webp` や Sync 旗艦とは独立） |
+| **実装** | **α v0.1.0**（2026-07-22）· `tools/pdf-fill.html` · 本番 deploy は別ゲート |
+| **仕様更新** | **2026-07-22** 編集ページのみ固定（全ページラスタ廃止）· 正本 [`docs/products/pdf-fill/`](products/pdf-fill/) · [CHANGELOG.md](products/pdf-fill/CHANGELOG.md) |
+
+**MVP（仕様正本は specification.md）:** DnD読込 · テキスト追加のみ · 印鑑/画像貼付 · 黒白塗り · Undo（焼き付け前）· スナップ/ガイド · **編集ページのみ固定 + 未編集は元ページコピー** → DL · ファイル名提案 · 左サムネ編集印 · 確認ダイアログ
+
+**やらない:** 既存文字編集 · ページ結合分割 · 数値入力 · サーバー処理 · 「保存しました」文言 · 全ページ無差別画像化 · 派生保存メニュー
+
+#### 実装順（提案）
+
+1. [x] 技術スパイク（1ページ: 表示 → オーバーレイ → ラスタ → pdf-lib DL）
+2. [x] 読込・表示（DnD · ページ切替）
+3. [x] 配置 MVP（テキスト / 画像・印 / 黒・白 + ドラッグ + スナップ + 最小ガイド）
+4. [x] Undo（焼き付け前 · Ctrl+Z）
+5. [x] 焼き付け品質（300dpi · 複数ページ逐次 · メモリ解放の基本）— **※現行実装は全ページラスタ。仕様変更により再実装が必要**
+6. [x] ファイル名提案（日付 · 書類種別 · 氏名）
+7. [x] CTA / 確認ダイアログ（見出し「提出用PDFを完成」· ボタン「焼き付け保存」· 不可逆文言）
+8. [x] **編集ページのみ固定 + 未編集ページコピー**（pdf-lib copy）
+9. [x] 左サムネイル + 編集済み印（鉛筆 + 青い点）
+10. [x] 公開準備（registry · hub · validate · `build:pages`）— 本番 deploy は未
+11. [x] 編集0件ガード
+12. [ ] 印刷品質（DPI）の実測チューニング（仕様は固定値にしない · 実装当面300）
+
+**境界:** `mask`（画像）· `stamp`（印影生成）· `pdf-images`（抽出）とは別ジョブ。編集ツール化は台帳 §19-3 / decisions ADR で Reject。
+
 ---
 
 ## 2) 収益戦略 Backlog（AdSense + Amazon 統合）
@@ -870,7 +906,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 領域 | TODO |
 |------|------|
 | E-E-A-T | [x] 法務3ページ · [x] `updates.html` · [x] Form 窓口 |
-| 計測 | [ ] GA4（`sugudasu.com`）· [ ] SC インデックス · [ ] ツール別 PV · [x] PSI ベースライン（2026-06-17 · §13） |
+| 計測 | [ ] GA4 MCP（`analytics-mcp` · 認証 Pending）· [ ] GSC MCP（**Pending** · Gemini 助言 · §8-13）· [ ] SC インデックス · [ ] ツール別 PV · [x] PSI ベースライン（2026-06-17 · §13） |
 | 実験 | [ ] 広告位置 A/B（承認後）· [ ] シェアボタン CTR |
 | フィードバック | [x] Form + GAS + `FEEDBACK_TRIAGE.md` |
 
@@ -1183,8 +1219,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 11. **T11 `group-split.html`** — 研修 · ハッカソン向けグループ分け Phase A（SSOT: `GROUP_SPLIT_TOOL_SPEC.md` · Backlog **§1-11**）  
 12. ~~**`statements.html`** — SUGUDASU の約束（§1-13）~~ — **実装済 2026-06-20**
 13. **§1-15** `normalize` 事務OL訴求 — Seikei 再ポジション（プリセット · LP · スタンドアロンバッジ）  
-14. **§1-15** 新規 `mask` — スクショ機密消し（Canvas · 非送信）  
+14. **§1-15** 新規 `mask` — スクショ機密消し（Canvas · 非送信）
 15. **§1-14** `png-to-webp` — WebP 圧縮（T09b · 調査済）
+15b. **§1-16** `pdf-fill` — SUGUDASU PDF記入（**GO · 設計済** · 台帳 §19 · 未実装）
 
 ### P2（通常優先）
 
@@ -1197,7 +1234,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 6. `hub.html` の曜日/用途別おすすめロジック  
 7. `label.html` 文具導線追加（必要最小限）  
 8. `sns.html` / `warikan.html` などの長文・境界ケース最適化  
-9. `invoice.html` 品名の複数行入力（§4-3 · §8-8 — 要望次第）
+9. `invoice.html` 品名の複数行入力（§4-3 · §8-8 — 要望次第）  
+10. **Hub Search v2** — [`docs/backlog/Search-v2.md`](backlog/Search-v2.md)（ADR-006 · Intent辞書 · Pin）
+11. **§8-13** Agent/MCP — GA MCP 認証完了 · GSC MCP は Pending · 全ツール MCP 化は設計方針のみ（実装は後段）
 
 ---
 
@@ -1217,8 +1256,14 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **`docs/notes/ZENN_FAIR_DRAW_DRAFT_MEMO.md`** — fair-draw Zenn 記事ネタ備忘録
 - **`docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md`** — 景品チェック＋公平抽選（**実装中 · fair-draw v1.5.1** · Backlog **§1-9 · §15 · §8-10**）
 - **`docs/product/PRODUCT_CONSTITUTION.md`** — **F1〜F7・採用基準・Sync分岐の正本**
-- **`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`** — **市場性・個別アイディアの評価台帳**
+- **`docs/notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`** — **市場性・個別アイディアの評価台帳**（**§19 `pdf-fill` GO**）
+- **`docs/products/pdf-fill/`** — **SUGUDASU PDF記入** 設計正本（Backlog **§1-16**）
+- **`docs/adr/ADR-006-search-ia-principles.md`** — Hub 検索 v2 設計判断（Pin · Intent · Main Grid 固定）
+- **`docs/research/README.md`** — 検索辞書 · HCI 調査の置き場（判断 / 根拠 / TODO の分離）
+- **`docs/backlog/Search-v2.md`** — Search v2 実装チェックリストのみ
+- **Backlog §8-13** — Agent/MCP ライン（GA MCP · **GSC MCP Pending** · 全ツール MCP 化設計方針）
 - **Backlog §1-15 · §8-12** — **事務OL軸プロダクト案（Seikei/Mask/Taimu/Keep 採否FIX · 2026-07-01）**
+- **Backlog §1-16** — **`pdf-fill` GO · 設計済 · 未実装（2026-07-22）**
 - **`docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`** — **イベント束アイデアログ（未評価 · ブレストのみ · Backlog §1-12）**
 - `docs/PRODUCT_UX_AUDIT.md`
 - `docs/DESIGN_GUIDELINE.md`
@@ -1541,6 +1586,83 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 - 新規 id 提案時は **§1-15 採否表** と `docs/product/PRODUCT_CONSTITUTION.md`、`PRODUCT_IDEA_JUDGMENT_LEDGER` §2-2 を突合。
 - Keep 類似案（アクティブ偽装 · ステータス操作）は **台帳に載せず却下** でよい。
+
+### 8-13. Agent / MCP ライン — 計測 MCP と「全ツール MCP 化」（2026-07-24）
+
+**起源:** 提督方針 — ローカル AI エージェント（Claude / Cursor 等）から SUGUDASU を操作可能にする。Gemini による構造的批評・設計方針を Backlog 正本化。
+
+#### 8-13-1. 計測 MCP（着手済 · 認証 Pending）
+
+| MCP | リポジトリ | 状態 | メモ |
+|-----|-----------|------|------|
+| **GA4** | [googleanalytics/google-analytics-mcp](https://github.com/googleanalytics/google-analytics-mcp) | **設定済 · 認証 Pending** | `pipx` · `~/.cursor/mcp.json` · `gcloud auth application-default login` 待ち |
+| **GSC** | [AminForou/mcp-gsc](https://github.com/AminForou/mcp-gsc)（候補） | **Pending** | Gemini 助言により **GA MCP 運用安定後** に再評価。metehan777 版は不採用（保守性 · Cursor 非対応） |
+
+- [x] **P2-MCP-GA-1** `analytics-mcp` 0.6.0 インストール · Cursor `mcp.json` 追記
+- [ ] **P2-MCP-GA-2** Cloud SDK · ADC 認証（Analytics Admin/Data API 有効化）
+- [ ] **P2-MCP-GSC-1** **Pending** — `mcp-gsc` 導入判断（OAuth Desktop · Search Console API · `uvx`）
+- [ ] **P2-MCP-GSC-2** sugudasu.com 向け定例プロンプト（インデックス · クエリ · sitemap · 新ツール公開後監査）
+
+**GSC を Pending にした理由（Gemini 合意）:** 計測系 MCP を同時に増やすと OAuth / GCP 設定 · Cursor MCP デバッグが重なる。GA4 で PV・イベントの読み取りを先に安定させ、GSC は SEO 運用サイクル（公開後 2–4 週）に合わせて追加する。
+
+#### 8-13-2. 戦略決定 — 全プロダクト MCP 化（パラダイムシフト）
+
+**決定:** SUGUDASU を「Web 便利ツール集」から **「ローカル AI エージェント向け汎用ローカル OS（標準工具箱）」** へ昇華させる方向性を **採用（設計）** · **一括実装は未着手**。
+
+**破壊的メリット（採用理由）**
+
+1. **ツールチェーンの自動化** — 「PDF記入 → 赤入れ → PDF画像抽出」等を、画面遷移なしで Agent がパイプライン組立。
+2. **憲法との合致** — MCP Server をローカル `stdio` で起動すれば、処理データは外部に漏れない（F2/F3 · `statements` 整合）。
+3. **一元管理の脱却** — ログイン/API キー発行を強制せず、CLI 1 発で全ツールが Agent に開口。
+
+**構造的破綻リスク（必須認識）**
+
+| リスク | 内容 | 代表例 |
+|--------|------|--------|
+| **① GUI 依存** | 座標・視覚フィードバックが要るツールは MCP 単体で「暗闇手探り」 | `pdf-fill`（Paper First）· `mask` · `stamp` |
+| **② 二重実装** | DOM/Canvas 直結のまま MCP 層を足すと Web 用と MCP 用のメンテ破滅 | 旧来 `invoice.html` 等のインライン巨大 script |
+
+**推奨アーキテクチャ（引き算 · 採用方針）**
+
+```
+[ 1 コアモジュール (Pure JS / WASM) ]
+              │
+    ┌─────────┴─────────┐
+    ▼                   ▼
+ SUGUDASU Web (GUI)   SUGUDASU MCP Server
+ Canvas / 一画面操作    stdio Tool 呼び出し · パイプライン
+```
+
+1. **コアロジック完全分離** — 変換・PDF 解体・テキスト加工を DOM 非依存の Pure JS / WASM に。
+2. **マニフェスト一括生成** — `tool-registry.json`（または拡張 `tools manifest`）から Web カード UI と MCP JSON Schema を **ビルド生成**（新規ツール追加時の二重保守をゼロ化）。
+3. **GUI ツールの 2 段階 MCP 化（ハイブリッド）** — Agent が粗処理（枠付け · 黒塗り等）→ 仕上げは **ローカル Web URL を開くリンクを返す**（AI と人間の分担）。
+
+**現状スナップショット（2026-07-24 · コードベース実測）**
+
+| 指標 | 状態 |
+|------|------|
+| `tool-registry.json` 登録 | **約 47 id**（法務 · Sync · hub 含む · 実プロダクトは 40 前後） |
+| `*-engine.js` | **18 本**（pdf-fill · mask · timeline · test-data 等） |
+| `*-app.js` + engine 分離 | **一部のみ**（pdf-fill · mask · json-view · timeline 等） |
+| HTML インライン script 巨大塊 | **多数残存**（invoice · receipt · normalize · fair-draw · group-split 等） |
+| MCP 化容易（純粋関数系） | webp-to-jpg · clipboard-trim · normalize · table-conv · diff · json-view 等 |
+| MCP 化困難（GUI 主導） | pdf-fill · mask · stamp · slot-board · image-trim · watermark |
+
+**結論:** エンジン分離は **新規・リファクタ済みツールに偏在（おおよそ 1/3 未満）**。全 40 ツール MCP 化の第一歩は **マニフェスト SSOT 設計** と **純粋関数系 5–10 本のパイロット** — 一括公開は **Reject**。
+
+#### 8-13-3. Backlog タスク（MCP ライン）
+
+- [ ] **P3-MCP-0** `tools manifest` スキーマ案（入力型 · 出力型 · `mcpEligible` · `guiFinishUrl`）
+- [ ] **P3-MCP-1** パイロット 3 本 — normalize · json-view · clipboard-trim（engine 既存 · DOM 薄）
+- [ ] **P3-MCP-2** 単一 `sugudasu-mcp` サーバー骨格（stdio · engine 動的ロード）
+- [ ] **P3-MCP-3** GUI ツール hybrid 契約（`guiFinishUrl` · Paper First ツールは MCP=下書きのみ）
+- [ ] **禁止** 全 40 ツール同時 MCP 公開 · DOM コピペ二重実装 · Sync ラインの MCP 混在（core/sync MECE 維持）
+
+#### 別 Agent 向け
+
+- 計測 MCP は **§8-13-1** · 製品 MCP 化は **§8-13-2–3** を読んでから提案すること。
+- `PRODUCT_CONSTITUTION` F1–F7 · `BRAND_CONSTITUTION` — 「Agent 丸投げ」「常時サーバー保存」と矛盾する MCP 設計は Reject。
+- SEO 運用 SSOT: [`SEO_GSC_AND_BUILD_PIPELINE.md`](notes/SEO_GSC_AND_BUILD_PIPELINE.md)
 
 ---
 
