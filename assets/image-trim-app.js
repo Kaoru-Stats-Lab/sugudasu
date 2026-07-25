@@ -1,6 +1,8 @@
 /**
  * image-trim.html — 指定サイズへの画像切り出し（枠固定 · cover-fit）
  */
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
+
 const MAX_LONG_EDGE = 2048;
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
 const ZOOM_MAX_RATIO = 3;
@@ -402,7 +404,12 @@ async function copyPng() {
       out.toBlob((b) => (b ? resolve(b) : reject(new Error('blob'))), 'image/png');
     });
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-    setStatus('クリップボードにコピーしました。');
+    triggerCopyFlash();
+    markCopyButtonDone(els.btnCopy, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: 'コピー',
+    });
+    setStatus('コピーしました');
   } catch {
     showError('コピーに失敗しました。PNG保存をお試しください。');
   }

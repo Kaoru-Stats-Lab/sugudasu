@@ -1,3 +1,5 @@
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
+
 const $ = (id) => document.getElementById(id);
 
 const MAX_LINES_FOR_EXACT = 700;
@@ -373,10 +375,16 @@ function buildCopyReport(changes) {
 
 async function copyReport() {
   const status = $('diff-copy-status');
+  const btn = $('diff-copy');
   const report = buildCopyReport(latestChanges);
   try {
     await navigator.clipboard.writeText(report);
-    if (status) status.textContent = '結果をコピーしました。';
+    triggerCopyFlash();
+    markCopyButtonDone(btn, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: '結果をコピー',
+    });
+    if (status) status.textContent = 'コピーしました';
   } catch {
     if (status) status.textContent = 'コピーに失敗しました。手動で選択してコピーしてください。';
   }

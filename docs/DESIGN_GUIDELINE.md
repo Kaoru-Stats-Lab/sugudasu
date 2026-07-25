@@ -339,7 +339,7 @@ if (!validateFields([{
 |--------|--------|------|
 | **A. コピー＝最新出力** | 変換・整形・計算があるツール **必須** | 「コピー」押下時に **出力を再計算**してから `clipboard` へ。入力欄の生テキストはコピーしない |
 | **B. 行数 N → M** | 行構造を維持するツール **必須** | `入力 N 行 → 出力 M 行` を目立たせる。一致=緑 · 不一致=黄 + **コピー前チェック必須** |
-| **C. コピー成功フィードバック** | **全ツール必須**（コピーボタンがあるもの） | 緑フラッシュ · ボタン `Copied!` 2秒 · トーストに **行数 + 先頭1行プレビュー** |
+| **C. コピー成功フィードバック** | **全ツール必須**（コピーボタンがあるもの） | 緑フラッシュ（`sg-copy-flash`）· ボタン `コピーしました` 2秒（`sg-copy-btn--done` · emerald）· トーストは任意で行数+先頭プレビュー |
 | **D. フィルター注意** | 行単位データをExcelへ戻すツール | コピー成功トースト末尾に1行（非表示行・フィルター） |
 
 **実装 SSOT:** `assets/sg-copy-feedback.js`（`SG_COPY_FEEDBACK` グローバル）
@@ -397,7 +397,7 @@ await SG_COPY_FEEDBACK.copyLatestTransform({
 | label / shift / present | — | — | △（コピーUIなし） |
 
 - **禁止:** 変換と同時の自動クリップボード上書き（Before/After 確認チャンスを奪う）
-- **L2 青コピー** と **C フィードバック** は競合しない（Copied! 後にボタン文言を復元）
+- **L2 青コピー** と **C フィードバック** は競合しない（`コピーしました` 後にボタン文言を復元）
 
 ---
 
@@ -562,7 +562,7 @@ await SG_COPY_FEEDBACK.copyLatestTransform({
 |--------|------|------|
 | トークン・印刷・コンポーネント | `assets/sugudasu.css` | `:root` トークン、`sg-card` / `sg-input` / `sg-trust-badge`、`@media print`（請求・ラベル・シフト含む） |
 | クローム | `assets/sugudasu-shell.js` | ヘッダー・ナビ・フッター。`#sg-chrome-top` の `data-sg-title` 等で **読込時自動マウント**（詳細: `docs/notes/CHROME_HEADER_GUARDRAILS.md`） |
-| **コピー契約** | `assets/sg-copy-feedback.js` | §3.8 — `copyWithFeedback` · 行数チェック · `Copied!` フィードバック |
+| **コピー契約** | `assets/sg-copy-feedback.js` | §3.8 — `copyWithFeedback` · 行数チェック · `コピーしました` + 緑フラッシュ |
 | **フォーム EFO** | `assets/sg-form-validate.js` | §3.4 — 必須未入力の枠ハイライト · インラインエラー · focus |
 | 貼付スキャン | `assets/sg-paste-scan.js` | 文字化け・CRLF（normalize 等） |
 | 文字正規化 | `assets/text-normalize.js` | normalize 専用ロジック |

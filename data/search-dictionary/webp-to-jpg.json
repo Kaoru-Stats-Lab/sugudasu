@@ -201,8 +201,8 @@
       "reason": "WebPからJPGやPNGに変換した画像の後処理として、必要な部分だけを綺麗に切り出したくなるため"
     },
     {
-      "toolId": "mask",
-      "conceptName": "マスク",
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
       "reason": "WebP形式で保存された社外秘のスクリーンショットを通常画像にした後、個人情報や機密部分を黒塗りして隠したいため"
     },
     {

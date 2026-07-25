@@ -206,12 +206,13 @@
   transform: translateX(-50%) translateY(0.5rem);
   z-index: 50;
   padding: 0.55rem 0.95rem;
-  border-radius: 999px;
-  background: #0f172a;
-  color: #f8fafc;
+  border-radius: 0.5rem;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.12);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
@@ -223,5 +224,8 @@
 }
 
 .jv-toast--error {
-  background: #9f1239;
+  background: #fff1f2;
+  color: #9f1239;
+  border-color: #fecdd3;
+  box-shadow: 0 8px 24px rgba(159, 18, 57, 0.12);
 }

@@ -206,8 +206,8 @@
   ],
   "relatedProducts": [
     {
-      "toolId": "mask",
-      "conceptName": "マスク",
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
       "reason": "画像にコピー防止の透かしを入れる前後に、写り込んでしまった画面内のパスワードや機密情報を黒塗りやぼかしで消したいため"
     },
     {

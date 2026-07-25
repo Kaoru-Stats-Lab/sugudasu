@@ -6,6 +6,7 @@ import {
   decodeImage,
   trimToCanvas,
 } from './clipboard-trim-engine.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
   dropZone: document.getElementById('ct-drop'),
@@ -103,6 +104,11 @@ async function copyPng() {
     await navigator.clipboard.write([
       new ClipboardItem({ 'image/png': Promise.resolve(blob) }),
     ]);
+    triggerCopyFlash();
+    markCopyButtonDone(els.copyBtn, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: 'PNGをコピー',
+    });
     setMsg('PNGをコピーしました');
   } catch {
     setMsg('このブラウザでは画像コピーに対応していません', true);

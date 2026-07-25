@@ -82,8 +82,8 @@
       "reason": "余白を落としたあと指定サイズの枠に合わせたいため"
     },
     {
-      "toolId": "mask",
-      "conceptName": "マスク",
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
       "reason": "余白除去の前後で機密部分を黒塗り・ぼかししたいため"
     },
     {

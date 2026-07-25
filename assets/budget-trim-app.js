@@ -17,6 +17,7 @@ import {
   AMOUNT_SOFT_DIGITS,
   clampYenAmount,
 } from './budget-trim-engine.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -237,8 +238,14 @@ function init() {
   });
 
   $('bt-copy-tsv')?.addEventListener('click', async () => {
+    const btn = $('bt-copy-tsv');
     try {
       await copyText(buildCleanTsv(items));
+      triggerCopyFlash();
+      markCopyButtonDone(btn, {
+        copiedLabel: 'コピーしました',
+        fallbackLabel: 'TSVをコピー（Excelへ）',
+      });
       setMsg('TSV をコピーしました（Excel にそのまま貼れます）');
     } catch {
       setMsg('コピーに失敗しました');
@@ -246,9 +253,15 @@ function init() {
   });
 
   $('bt-copy-url')?.addEventListener('click', async () => {
+    const btn = $('bt-copy-url');
     syncHash();
     try {
       await copyText(location.href);
+      triggerCopyFlash();
+      markCopyButtonDone(btn, {
+        copiedLabel: 'コピーしました',
+        fallbackLabel: '共有URLをコピー',
+      });
       setMsg('共有用 URL をコピーしました（サーバーには送っていません）');
     } catch {
       setMsg('コピーに失敗しました');

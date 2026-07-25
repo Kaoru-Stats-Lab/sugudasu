@@ -79,7 +79,7 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
   }
 
   const lockMs = options.lockMs ?? 2000;
-  const copiedLabel = options.copiedLabel ?? 'Copied!';
+  const copiedLabel = options.copiedLabel ?? 'コピーしました';
   const prevLabel = buttonEl ? buttonEl.textContent : '';
   if (buttonEl) {
     markCopyButtonDone(buttonEl, { lockMs, copiedLabel, fallbackLabel: prevLabel || 'コピー' });
@@ -95,7 +95,7 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
     toastEl.hidden = false;
     toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
     const parts = [
-      '<strong class="text-emerald-800">クリップボードを更新しました。</strong>',
+      '<strong class="text-emerald-800">コピーしました。</strong>',
       ` ${prefix} · ${lines} 行 · 先頭: ${escapeHtml(preview)}${preview.length >= 40 ? '…' : ''}`,
     ];
     if (options.showFilterReminder) {
@@ -158,7 +158,7 @@ export function triggerCopyFlash() {
 export function markCopyButtonDone(buttonEl, options = {}) {
   if (!buttonEl) return;
   const lockMs = options.lockMs ?? 2000;
-  const copiedLabel = options.copiedLabel ?? 'Copied!';
+  const copiedLabel = options.copiedLabel ?? 'コピーしました';
   const prevLabel = buttonEl.textContent;
   buttonEl.disabled = true;
   buttonEl.classList.add('sg-copy-btn--done');

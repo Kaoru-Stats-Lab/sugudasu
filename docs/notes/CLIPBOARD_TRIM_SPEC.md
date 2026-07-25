@@ -46,7 +46,7 @@
 
 ## Non-goal
 
-指定サイズ切り出しは `/image-trim`。機密消しは `/mask`。
+指定サイズ切り出しは `/image-trim`。機密消しは `/annotate`（旧 `/mask`）。
 
 ## エラー文言（固定）
 

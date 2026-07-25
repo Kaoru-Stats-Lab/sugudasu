@@ -235,9 +235,16 @@
             document.execCommand('copy');
             document.body.removeChild(ta);
         }
-        if (btn) {
+        if (btn && window.SG_COPY_FEEDBACK) {
             const prev = btn.textContent;
-            btn.textContent = 'Copied!';
+            window.SG_COPY_FEEDBACK.triggerCopyFlash();
+            window.SG_COPY_FEEDBACK.markCopyButtonDone(btn, {
+                copiedLabel: 'コピーしました',
+                fallbackLabel: prev || 'コピー',
+            });
+        } else if (btn) {
+            const prev = btn.textContent;
+            btn.textContent = 'コピーしました';
             setTimeout(() => { btn.textContent = prev; }, 2000);
         }
         return true;

@@ -126,7 +126,7 @@ async function copyPngToClipboard(buttonEl) {
     }
     triggerCopyFlash();
     markCopyButtonDone(buttonEl, {
-      copiedLabel: 'Copied!',
+      copiedLabel: 'コピーしました',
       fallbackLabel: 'クリップボードにコピー',
     });
     showCopySuccessToast('copy');
@@ -178,7 +178,7 @@ function bindEvents() {
     downloadPngDataUrl(lastDataUrl, defaultFilename());
     triggerCopyFlash();
     markCopyButtonDone($('stamp-btn-download'), {
-      copiedLabel: 'Saved!',
+      copiedLabel: '保存しました',
       fallbackLabel: 'PNGを保存',
     });
     showSaveSuccessToast();

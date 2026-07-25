@@ -3591,6 +3591,7 @@ body.sg-copy-flash {
 .sg-copy-btn--done {
   background: #059669 !important;
   border-color: #059669 !important;
+  color: #fff !important;
 }
 
 /* —— Copy-first 免責 · TSV/JSON（statements #copy-first-tech と同期）—— */

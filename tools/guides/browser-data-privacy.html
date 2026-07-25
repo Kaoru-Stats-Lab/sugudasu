@@ -39,7 +39,7 @@
             <ul>
                 <li>クラウド型（サーバー処理）とブラウザ完結型の違い</li>
                 <li>「業務データが送られない」と「ページ表示のための通信」の切り分け</li>
-                <li>Network タブで請求書・マスク操作をセルフ監査する手順</li>
+                <li>Network タブで請求書・赤入れ操作をセルフ監査する手順</li>
                 <li>タブ閉じで消える・運営は復元できない、という運用上の注意</li>
             </ul>
         </section>
@@ -65,8 +65,8 @@ SUGUDASU:  端末 ◄──(アプリ本体)── 静的配信
             </ol>
             <h3>ステップ2 — 業務データを入力して PDF / 印刷フローを試す</h3>
             <p>テスト用の取引先名・金額を入力し、プレビューや PDF 保存（ブラウザ印刷）まで進みます。この間、Fetch/XHR に<strong>入力文字列をボディに載せた不審な POST</strong>が増えていないかを見ます。</p>
-            <h3>ステップ3 — マスクでも同様に確認</h3>
-            <p><a href="/mask">マスク</a>にダミー画像をドロップし、黒塗りして PNG 保存します。画像バイナリを SUGUDASU サーバへ送るリクエストが走らないことを確認します（処理は Canvas 上）。</p>
+            <h3>ステップ3 — 赤入れでも同様に確認</h3>
+            <p><a href="/annotate">赤入れ</a>にダミー画像をドロップし、黒塗りして PNG 保存します。画像バイナリを SUGUDASU サーバへ送るリクエストが走らないことを確認します（処理は Canvas 上）。</p>
             <p>拡張機能や社内プロキシが入っていると余分な通信が見えることがあります。検証端末は可能なら普段使いの社内標準ブラウザと、別プロファイルの両方で見ると説明しやすいです。</p>
 
             <h2>稟議・説明で使える論点（断定しすぎない）</h2>
@@ -97,7 +97,7 @@ SUGUDASU:  端末 ◄──(アプリ本体)── 静的配信
                     <tbody>
                         <tr>
                             <td>対象ツール</td>
-                            <td><a href="/invoice">請求書</a> · <a href="/mask">マスク</a></td>
+                            <td><a href="/invoice">請求書</a> · <a href="/annotate">赤入れ</a></td>
                             <td>対象URL一覧</td>
                         </tr>
                         <tr>
@@ -151,7 +151,7 @@ SUGUDASU:  端末 ◄──(アプリ本体)── 静的配信
 
         <aside class="sg-guide-related">
             <h2 class="sg-guide-related__title">関連ツール · 関連ページ</h2>
-            <p><a href="/invoice">請求書</a> · <a href="/mask">マスク</a> · <a href="/statements">SUGUDASU の約束</a> · <a href="/privacy">プライバシー</a> · <a href="/contact">問い合わせ</a></p>
+            <p><a href="/invoice">請求書</a> · <a href="/annotate">赤入れ</a> · <a href="/statements">SUGUDASU の約束</a> · <a href="/privacy">プライバシー</a> · <a href="/contact">問い合わせ</a></p>
         </aside>
 
         <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>

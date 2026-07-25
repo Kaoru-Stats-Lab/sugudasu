@@ -109,9 +109,8 @@ async function copyPreset(presetId, buttonEl) {
     await copyWithFeedback(preset.value, buttonEl, {
       toastEl: null,
       toastPrefix: '壊れ入力',
-      copiedLabel: 'コピー済み',
+      copiedLabel: 'コピーしました',
     });
-    showToast('✓ コピーしました');
   } catch {
     showToast('コピーできませんでした');
   }

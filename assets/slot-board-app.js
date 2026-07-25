@@ -25,6 +25,7 @@ import {
   newId,
   CODE_PREFIX,
 } from './slot-board-engine.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 import {
   openDb,
   loadProjectBundle,
@@ -588,8 +589,14 @@ function initControls() {
   });
 
   $('sb-copy-code')?.addEventListener('click', async () => {
+    const btn = $('sb-copy-code');
     try {
       await copyText(encodeRestoreCode(bundle()));
+      triggerCopyFlash();
+      markCopyButtonDone(btn, {
+        copiedLabel: 'コピーしました',
+        fallbackLabel: '復元コードをコピー',
+      });
       setActionMsg('復元コードをコピーしました');
     } catch {
       setActionMsg('コピーに失敗しました');
@@ -603,8 +610,14 @@ function initControls() {
   });
 
   $('sb-copy-tsv')?.addEventListener('click', async () => {
+    const btn = $('sb-copy-tsv');
     try {
       await copyText(buildOutputText(candidates, lanes, outInclude(), 'tsv'));
+      triggerCopyFlash();
+      markCopyButtonDone(btn, {
+        copiedLabel: 'コピーしました',
+        fallbackLabel: 'TSVをコピー',
+      });
       setActionMsg('TSV をコピーしました');
     } catch {
       setActionMsg('コピーに失敗しました');
@@ -612,8 +625,14 @@ function initControls() {
   });
 
   $('sb-copy-ppt')?.addEventListener('click', async () => {
+    const btn = $('sb-copy-ppt');
     try {
       await copyText(buildOutputText(candidates, lanes, outInclude(), 'ppt'));
+      triggerCopyFlash();
+      markCopyButtonDone(btn, {
+        copiedLabel: 'コピーしました',
+        fallbackLabel: 'パワポ用テキスト',
+      });
       setActionMsg('パワポ用テキストをコピーしました');
     } catch {
       setActionMsg('コピーに失敗しました');

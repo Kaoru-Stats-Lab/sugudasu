@@ -22,6 +22,7 @@ import {
   openDb,
   putCard,
 } from './clip-stash-db.js';
+import { triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
   main: document.querySelector('main.sg-main-shell'),
@@ -336,6 +337,7 @@ async function copyAndFeedback(id, closePreviewAfter = false) {
   if (!card) return;
   try {
     await copyCard(card);
+    triggerCopyFlash();
     setStatus('コピーしました');
     if (closePreviewAfter) closePreview();
   } catch {

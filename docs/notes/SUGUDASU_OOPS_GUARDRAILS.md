@@ -20,7 +20,7 @@
 
 1. **入力 N 行 → 出力 M 行** — 不一致は赤 · コピーゲート
 2. **限定差分ハイライト** — 先頭5行 + 危険パターン（先頭ゼロ・化け文字）
-3. **コピー成功の明示** — 緑フラッシュ · Copied! · 数秒ロック · 先頭プレビュー1行
+3. **コピー成功の明示** — 緑フラッシュ · `コピーしました` · 数秒ロック · 先頭プレビュー1行
 
 ---
 
@@ -34,7 +34,7 @@
 |----|------|-------------|
 | §2-3 | 行数一致 · 不一致コピーゲート | `text-normalize.js` + UI |
 | C01 | **コピー押下時に最新変換を実行してから clipboard**（変換ボタン単独コピー禁止） | normalize UI |
-| C02 | コピー成功: 緑フラッシュ + `Copied!` + 2s ロック | `assets/sg-copy-feedback.js`（共有） |
+| C02 | コピー成功: 緑フラッシュ + `コピーしました` + 2s ロック | `assets/sg-copy-feedback.js`（共有） |
 | B04 | 処理は **常に string** · `parseInt` / `Number()` 禁止 | `text-normalize.js` |
 | B01 | NFKC **全体適用禁止** · 英数帯のみ | `text-normalize.js` |
 | B02 | ハイフン統一: **直前がカタカナの `ー` は除外** | `text-normalize.js` |
@@ -121,7 +121,7 @@ normalize SSOT §9 に Q1–Q6 を実装。残りは fair-draw / hub FAQ へ分�
 copyWithFeedback(text, buttonEl, { toastEl, lineCount, previewLine, toastPrefix })
   → navigator.clipboard.writeText
   → document.body classList.add('sg-copy-flash') // 320ms
-  → button: Copied! disabled 2s
+  → button: コピーしました disabled 2s
   → toast: 「クリップボード更新 · 〇行 · 先頭: …」
 
 copyLatestTransform({ computeOutput, buttonEl, gate }) // 変換系: コピー直前に再計算

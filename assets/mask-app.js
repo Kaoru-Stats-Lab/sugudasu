@@ -20,6 +20,7 @@ import {
   snapshotState,
   validateMaskInput,
 } from './mask-engine.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
   dropZone: document.getElementById('drop-zone'),
@@ -454,7 +455,12 @@ async function copyPng() {
   try {
     paint();
     await copyCanvasPng(els.canvas);
-    setStatus('クリップボードにコピーしました。');
+    triggerCopyFlash();
+    markCopyButtonDone(els.btnCopy, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: 'コピー',
+    });
+    setStatus('コピーしました');
   } catch (e) {
     const raw = e?.message || '';
     if (raw.includes('Document is not focused') || e?.name === 'NotAllowedError') {

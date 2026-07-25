@@ -16,6 +16,7 @@ import {
   typeLabel,
   valueForCopy,
 } from './json-view-engine.js';
+import { triggerCopyFlash } from './sg-copy-feedback.js';
 
 /** @typedef {import('./json-view-engine.js').TreeRow} TreeRow */
 /** @typedef {import('./json-view-engine.js').SearchMatch} SearchMatch */
@@ -102,9 +103,10 @@ function setCopyStatus(text) {
  * @param {string} [okLabel]
  * @param {{ flashPath?: boolean }} [opts]
  */
-async function copyText(text, okLabel = '✓ コピーしました', opts = {}) {
+async function copyText(text, okLabel = 'コピーしました', opts = {}) {
   try {
     await navigator.clipboard.writeText(text);
+    triggerCopyFlash();
     showToast(okLabel);
     if (opts.flashPath && els.pathBar && !els.pathBar.classList.contains('jv-path--empty')) {
       els.pathBar.classList.add('jv-path--copied');
@@ -240,7 +242,7 @@ function renderRow(row) {
     e.stopPropagation();
     void copyText(
       valueForCopy(row.value, /** @type {import('./json-view-engine.js').JsonValueType} */ (row.type)),
-      '✓ 値をコピーしました'
+      'コピーしました'
     );
   });
 
@@ -364,7 +366,7 @@ function bindEvents() {
 
   els.pathBar?.addEventListener('click', () => {
     if (!activeSegments) return;
-    void copyText(toJsonPath(activeSegments), '✓ 場所をコピーしました', { flashPath: true });
+    void copyText(toJsonPath(activeSegments), 'コピーしました', { flashPath: true });
   });
 
   els.expandAll?.addEventListener('click', () => {

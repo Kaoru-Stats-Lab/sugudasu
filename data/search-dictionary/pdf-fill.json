@@ -76,9 +76,9 @@
       "reason": "提出用PDFに貼る認印画像を先に作りたいため"
     },
     {
-      "toolId": "mask",
-      "conceptName": "画像マスク",
-      "reason": "スクショ画像の秘匿はマスク、PDF提出物の塗りはPDF記入と役割が分かれるため"
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
+      "reason": "スクショ画像の秘匿は赤入れ、PDF提出物の記入はPDF記入と役割が分かれるため"
     },
     {
       "toolId": "pdf-images",

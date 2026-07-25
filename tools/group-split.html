@@ -1023,7 +1023,7 @@ document.getElementById('gs-session-copy').addEventListener('click', async () =>
     await window.SG_COPY_FEEDBACK.copyWithFeedback(json, document.getElementById('gs-session-copy'), {
       toastEl: copyToastEl,
       toastPrefix: 'セッションJSON',
-      copiedLabel: 'Copied!',
+      copiedLabel: 'コピーしました',
     });
     if (sessionCopyHintEl) {
       sessionCopyHintEl.textContent = 'コピーしました — Google Keep 等の同期メモに貼ってください。会場のスマホで同じメモを開き、下の欄へ貼り付け → 読み込んで再実行。';
@@ -1097,7 +1097,7 @@ copyBtn.addEventListener('click', async () => {
     await window.SG_COPY_FEEDBACK.copyWithFeedback(text, copyBtn, {
       toastEl: copyToastEl,
       toastPrefix: OUTPUT_LABELS[outFormat] || '出力',
-      copiedLabel: 'Copied!',
+      copiedLabel: 'コピーしました',
     });
   } catch {
     alert('コピーに失敗しました。');

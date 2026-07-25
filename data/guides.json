@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-25",
   "articles": [
     {
       "slug": "browser-data-privacy",
@@ -22,9 +22,10 @@
       "slug": "pdf-image-masking-security",
       "pillar": "brand",
       "title": "実務での漏洩を防ぐ画像・PDF黒塗り（マスク）の正しい手順",
-      "description": "見た目だけの黒塗りの危険性と、画像のピクセル上書き手順。マスクは画像専用・PDF直読みなし。",
+      "description": "見た目だけの黒塗りの危険性と、画像のピクセル上書き手順。赤入れは非送信・Canvas上書き。",
       "tools": ["annotate"],
-      "published": "2026-07-15"
+      "published": "2026-07-15",
+      "updated": "2026-07-25"
     },
     {
       "slug": "event-day-timeline-recovery",

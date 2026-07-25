@@ -2,6 +2,7 @@
  * ai-cleaner — 貼る · 落とす · コピー
  */
 import { runClean } from './ai-cleaner-engine.js';
+import { copyWithFeedback } from './sg-copy-feedback.js';
 
 /** @typedef {'markdown'|'code'|'json'} CleanMode */
 
@@ -84,8 +85,9 @@ async function copyResult() {
     return;
   }
   try {
-    await navigator.clipboard.writeText(text);
-    showToast('✓ コピーしました');
+    await copyWithFeedback(text, els.copy, {
+      copiedLabel: 'コピーしました',
+    });
   } catch {
     showToast('コピーできませんでした', true);
   }

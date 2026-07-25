@@ -20,6 +20,7 @@ import {
   validateGenerateOptions,
 } from './test-data-engine.js';
 import { writeTestDataHandoff } from './test-data-handoff.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const NORMALIZE_LINE_LIMIT = 500;
 
@@ -450,7 +451,12 @@ async function copyCsv() {
   try {
     const text = csvWithBom(lastResult.csv);
     await navigator.clipboard.writeText(text);
-    setStatus('CSV をクリップボードにコピーしました。');
+    triggerCopyFlash();
+    markCopyButtonDone(els.btnCopy, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: 'コピー',
+    });
+    setStatus('コピーしました');
   } catch (e) {
     const raw = e?.message || '';
     if (raw.includes('Document is not focused') || e?.name === 'NotAllowedError') {

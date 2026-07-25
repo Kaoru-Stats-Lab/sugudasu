@@ -24,6 +24,7 @@ import {
   snapshotState,
   validateAnnotateInput,
 } from './annotate-engine.js';
+import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
   dropZone: document.getElementById('drop-zone'),
@@ -617,7 +618,12 @@ async function copyOutput() {
   }
   try {
     await copyCanvasPng(compositeCanvas());
-    setStatus('クリップボードにコピーしました。');
+    triggerCopyFlash();
+    markCopyButtonDone(els.btnCopy, {
+      copiedLabel: 'コピーしました',
+      fallbackLabel: 'コピー',
+    });
+    setStatus('コピーしました');
   } catch (e) {
     setStatus(e.message || 'コピーに失敗しました。', true);
   }

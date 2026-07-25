@@ -201,8 +201,8 @@
   ],
   "relatedProducts": [
     {
-      "toolId": "mask",
-      "conceptName": "マスク",
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
       "reason": "画像を必要なサイズに切り出した後、写り込んでしまった個人情報や機密データを黒塗りやぼかしで隠したいため"
     },
     {

@@ -470,7 +470,7 @@ export function mountGroupSplitAssign(root, opts = {}) {
   els.copyTsv?.addEventListener('click', async () => {
     if (!state) return;
     try {
-      await copyWithFeedback(formatAssignTsv(state), els.copyTsv, { copiedLabel: 'TSVをコピーしました' });
+      await copyWithFeedback(formatAssignTsv(state), els.copyTsv, { copiedLabel: 'コピーしました' });
     } catch {
       setError('コピーに失敗しました');
     }
@@ -479,7 +479,7 @@ export function mountGroupSplitAssign(root, opts = {}) {
   els.copyJson?.addEventListener('click', async () => {
     if (!state) return;
     try {
-      await copyWithFeedback(JSON.stringify(exportAssignSnapshot(state), null, 2), els.copyJson, { copiedLabel: 'JSONをコピーしました' });
+      await copyWithFeedback(JSON.stringify(exportAssignSnapshot(state), null, 2), els.copyJson, { copiedLabel: 'コピーしました' });
     } catch {
       setError('コピーに失敗しました');
     }

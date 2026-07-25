@@ -125,14 +125,14 @@ assertIncludes('全角半角', 'normalize');
 
 // Hub blurb（JTBD）経由
 assertIncludes('適格請求書', 'invoice');
-assertIncludes('黒塗り', 'mask');
+assertIncludes('黒塗り', 'annotate');
 
 // synonyms.json 経由
 assertIncludes('インボイス', 'invoice');
 assertIncludes('ウォーターマーク', 'watermark');
 assertIncludes('ハンコ', 'stamp');
 assertIncludes('OCR', 'qr-reader');
-assertIncludes('スクショ', 'mask');
+assertIncludes('スクショ', 'annotate');
 assertIncludes('トリミング', 'image-trim');
 assertIncludes('ウォーターマーク', 'watermark');
 assertTop('透かし', 'watermark');

@@ -446,7 +446,7 @@ export function mountPlanningPoker(root) {
 
   root.querySelector('#pp-copy-template')?.addEventListener('click', async (e) => {
     const sample = `Login画面改善\n請求書PDF余白調整\nCSV取込のエラー表示`;
-    await copyWithFeedback(sample, e.currentTarget, { copiedLabel: 'Story雛形をコピーしました' });
+    await copyWithFeedback(sample, e.currentTarget, { copiedLabel: 'コピーしました' });
   });
 
   renderTimer();
