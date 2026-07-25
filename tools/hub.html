@@ -339,13 +339,6 @@
         <!-- hub-cards:end -->
     </section>
 
-    <section id="compare" class="sg-info-prose space-y-4 scroll-mt-24 max-w-3xl">
-        <h2 class="sg-info-section-title">他サービスとの違い — カテゴリ別</h2>
-        <p class="text-sm text-slate-600">SUGUDASU は <strong>すべての用途で最適</strong> ではありません。<strong>向く場面</strong> で選んでください。詳細は <a href="statements.html#compare">SUGUDASUの約束</a> も参照。</p>
-        <p id="hub-product-updated" class="sg-info-caption"></p>
-        <div id="hub-compare-root" class="space-y-6" aria-live="polite"></div>
-    </section>
-
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
 
@@ -353,89 +346,6 @@
 <script src="../assets/sugudasu-shell.js"></script>
 <script type="module" src="../assets/hub-search-boot.js"></script>
 <script src="../assets/hub-ia.js"></script>
-<script>
-(function () {
-    'use strict';
-    function categoriesUrl() {
-        var link = document.querySelector('link[href*="sugudasu.css"]');
-        if (link && link.getAttribute('href')) {
-            var href = link.getAttribute('href');
-            if (href.indexOf('/assets/') !== -1) return href.replace(/assets\/sugudasu\.css.*$/, 'data/categories.json');
-            return href.replace(/sugudasu\.css.*$/, '../data/categories.json');
-        }
-        return '../data/categories.json';
-    }
-    function productUrl() {
-        var link = document.querySelector('link[href*="sugudasu.css"]');
-        if (link && link.getAttribute('href')) {
-            var href = link.getAttribute('href');
-            if (href.indexOf('/assets/') !== -1) return href.replace(/assets\/sugudasu\.css.*$/, 'data/statements-product.json');
-            return href.replace(/sugudasu\.css.*$/, '../data/statements-product.json');
-        }
-        return '../data/statements-product.json';
-    }
-    function esc(s) {
-        return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-    function formatDateJa(iso) {
-        if (!iso) return '';
-        var p = iso.split('-');
-        return p[0] + '年' + Number(p[1]) + '月' + Number(p[2]) + '日';
-    }
-    function mergeCategories(catDoc, product) {
-        var compare = product.categoryCompare || {};
-        return (catDoc.categories || []).map(function (c) {
-            return Object.assign({}, c, {
-                blurb: c.description || c.blurb || '',
-                compare: compare[c.id] != null ? compare[c.id] : c.compare,
-            });
-        });
-    }
-    function renderCompare(categories) {
-        var root = document.getElementById('hub-compare-root');
-        if (!root) return;
-        var parts = [];
-        categories.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); }).forEach(function (cat) {
-            parts.push('<div class="space-y-2">');
-            parts.push('<h3 class="sg-info-subsection-title">' + esc(cat.label) + '</h3>');
-            if (cat.blurb) parts.push('<p class="text-sm text-slate-600">' + esc(cat.blurb) + '</p>');
-            if (cat.compare && cat.compare.rows && cat.compare.rows.length) {
-                parts.push('<div class="overflow-x-auto"><table class="w-full border border-slate-200 rounded-lg overflow-hidden min-w-[360px]">');
-                parts.push('<thead class="bg-slate-50"><tr class="text-left"><th class="p-2 border-b border-slate-200 w-28"></th>');
-                parts.push('<th class="p-2 border-b border-slate-200">' + esc(cat.compare.altLabel) + '</th>');
-                parts.push('<th class="p-2 border-b border-slate-200 text-violet-900">' + esc(cat.compare.oursLabel) + '</th></tr></thead><tbody class="text-slate-600">');
-                cat.compare.rows.forEach(function (row, i) {
-                    var border = i < cat.compare.rows.length - 1 ? ' border-b border-slate-100' : '';
-                    parts.push('<tr><td class="p-2' + border + ' font-semibold align-top">' + esc(row.aspect) + '</td>');
-                    parts.push('<td class="p-2' + border + ' align-top">' + esc(row.alt) + '</td>');
-                    parts.push('<td class="p-2' + border + ' align-top"><strong>' + esc(row.ours) + '</strong></td></tr>');
-                });
-                parts.push('</tbody></table></div>');
-            }
-            parts.push('</div>');
-        });
-        root.innerHTML = parts.join('');
-    }
-    Promise.all([fetch(categoriesUrl()), fetch(productUrl())])
-        .then(function (res) {
-            if (!res[0].ok || !res[1].ok) throw new Error('load');
-            return Promise.all([res[0].json(), res[1].json()]);
-        })
-        .then(function (payload) {
-            var catDoc = payload[0];
-            var product = payload[1];
-            var updated = document.getElementById('hub-product-updated');
-            if (updated && product.updatedAt) {
-                updated.textContent = '製品地図の更新日: ' + formatDateJa(product.updatedAt);
-            }
-            renderCompare(mergeCategories(catDoc, product));
-        })
-        .catch(function () {
-            var root = document.getElementById('hub-compare-root');
-            if (root) root.innerHTML = '<p class="text-sm text-rose-700">比較表を読み込めませんでした。</p>';
-        });
-})();
-</script>
 <script>
 (function () {
     if (!localStorage.getItem('sg-homonym-dismiss')) {
