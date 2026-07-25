@@ -319,7 +319,7 @@ async function moveCardToSlot(fromId, targetSlot) {
 async function addFromPaste(dt) {
   const paste = await readClipboardPaste(dt);
   if (!paste) {
-    setStatus('貼り付け内容を認識できませんでした。', true);
+    setStatus('認識できるのは Text · Table · URL · Image · Color（HEX）のみです。動画・GIFは対象外です。', true);
     return;
   }
   if (!db) return;

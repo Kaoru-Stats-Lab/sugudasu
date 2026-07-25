@@ -1501,6 +1501,26 @@
 
 ---
 
+## DEPLOY-20260725-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 仮置きサムネ中央 · 領収書レイアウト/A4マルチ · Copy-First共有UI撤去 |
+| **change_summary** | `clip-stash` Image/OGP cover+center · 認識エラー文言 · `receipt` wide+マルチ3枚/頁 · 数字フォント統一 · invoice/receipt チャネル共有撤去（CASE-2026-007）· changelog |
+| **local_build** | `pass`（`release:pages:free` · budget consume 63/450） |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | 63/450 |
+| **gates** | P1–P8 確認済み |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | `/clip-stash` · `/receipt` · `/invoice` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |

@@ -729,10 +729,10 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
   - [x] `invoice.html` に `Slack / Chatwork / Google Chat / Teams / LINE WORKS` 共有ボタンを追加
   - [x] 共有ボタン押下で「送付文面コピー + 送信先チャットURL起動」を実装
   - [x] 送信先URL設定（ローカル保存）を実装
-- [ ] チャット共有導線（Phase 2）
-  - [ ] `report.html` に同等の共有ボタンを追加
-  - [ ] `shift.html` に同等の共有ボタンを追加
-  - [ ] ボタン押下イベント計測（クリック率）を追加
+- [x] ~~チャット共有導線（Phase 2）~~ — **打ち切り（2026-07-25 · CASE-2026-007）** Copy-First によりチャネル名付き共有UIを Reject。invoice/receipt から撤去済み。report/shift 横展開しない。
+  - [x] ~~`report.html` に同等の共有ボタンを追加~~（しない）
+  - [x] ~~`shift.html` に同等の共有ボタンを追加~~（しない）
+  - [x] ~~ボタン押下イベント計測（クリック率）を追加~~（しない）
 - [ ] 各ツール結果の下に「次のすぐだす」導線を1ブロック追加
 - [ ] 曜日/用途別おすすめロジック（簡易版）を `hub.html` に追加
 - [x] 完了時CTAテンプレートを共通化（shell or CSS utility）— `data/cta.json` へ外出し済み
@@ -806,7 +806,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - [x] 初回投稿文面（既存Xアカウント用）— `updates.html` + `OPERATOR_X_POSTS.launch`
   - [x] **Zenn** #1 予約投稿済み（2026-06-18 · invoice 見積→請求 · `docs/notes/ZENN_ARTICLE_01_DRAFT.md`）
   - [ ] **Zenn** #2以降（`docs/notes/ZENN_EDITORIAL_PLAN.md`）
-- [ ] **P2** チャット共有 Phase 2（`report` · `shift`）— §2-4
+- [x] ~~**P2** チャット共有 Phase 2（`report` · `shift`）~~ — **打ち切り（CASE-2026-007）**
 - [ ] **P2** 季節・時事フック投稿（年末調整 · 確定申告 · 歓送迎会割り勘）
 
 ##### A3 紹介（Referral）— 被リンク・第三者
@@ -1212,7 +1212,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 4. ~~**§2-5 A1** ツール別ロングテール SEO（invoice / receipt / warikan 優先）~~ — title/meta/OG/Twitter 反映済  
 5. **§2-5 A2** 結果画面シェア導線（warikan · receipt · invoice）  
 6. **§2-5 B** 完了後「次のすぐだす」CTA · ツール間マップ（未実装）  
-7. チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）  
+7. ~~チャット共有 Phase 2（`report.html` / `shift.html` へ横展開）~~ — **打ち切り（CASE-2026-007 · Copy-First）**  
 8. 共有・回遊の計測追加（クリック率、スクロール到達率、直帰率）  
 9. `present.html` Amazon 導線の最適化（属性分岐 + data属性）  
 10. `shift.html` の品質担保（公平性 / 改ページ / FIXロック）  
@@ -1389,7 +1389,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
   - 補助導線として **下書きデータ保存/読み込み（JSON）** を実装し、再編集・社内保管・端末間持ち運びを可能にする。
   - **見積 → 納品・請求の転用**：下書きを読み込んだあと書類種別タブを切り替えると明細・宛先は維持（番号・期限・備考は手直し）。UI案内・FAQで明示（2026-06-17）。
   - UI 文言は「JSON」を前面に出さず、**下書きデータ**として説明して期待値を調整する。
-  - 共有は「送付文面コピー + チャット起動」を Phase 1 の正とし、Webhook 直送のような高リスク連携は後段で検討する。
+  - 共有は **Copy-First（CASE-2026-007）**。送付文面コピー + PDF。チャネル名付きボタン・送信先URL設定は撤去済み。Webhook直送は引き続き Reject。
   - 会計 SaaS への直接インポートは約束しない。訴求は「編集用データを自分で保持できる」までに留める。
   - 画面上は **PC推奨** を短く明示する（帳票品質・PDF出力の期待値調整）。 — `invoice.html` 先頭に常設バナー実装済（2026-06-17）
 

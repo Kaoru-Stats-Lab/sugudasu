@@ -9,6 +9,20 @@
 
 ---
 
+## 2026-07-25 — 帳票のチャネル名付き共有UIを撤去（Copy-First）
+
+**決定事項**  
+invoice / receipt の Slack・Teams・Chatwork 等の名前付き共有ボタンと送信先URL設定を撤去。主CTAはコピー（送付文面 / 共有用URL）と印刷・PDFに戻す。𝕏シェアも帳票主面から外す。チャット共有 Phase 2 横展開は打ち切り。CASE-2026-007。
+
+**理由**  
+SUGUDASU が準備するのは持ち帰る成果（コピー・PDF）まで。配信チャネルのサジェストは Domain・Persona（隣の同僚）・Copy-First と衝突する。F2 技術適合だけでは足りない。
+
+**関連ドキュメント**
+
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-007)
+
+---
+
 ## 2026-07-24 — present（ギフト）を Reject · アーカイブする
 
 **決定事項**  

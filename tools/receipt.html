@@ -33,13 +33,11 @@
 </nav>
 </div>
 
-<main class="sg-main-shell sg-main-shell--print grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
+<main class="sg-main-shell sg-main-shell--wide grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
     <!-- 入力パネル -->
-    <section class="no-print lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
-        <p class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
-            <p data-sg-privacy-badge data-subject="計算データ" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
-        </p>
+    <section class="no-print lg:col-span-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
+        <p data-sg-privacy-badge data-subject="計算データ" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
 
         <div>
             <label for="in-net" class="block text-xs font-bold text-slate-600 mb-1">💴 希望手取り金額（円）</label>
@@ -140,25 +138,16 @@
             <button type="button" id="btn-print" class="w-full sg-btn-secondary font-bold py-3 rounded-xl text-sm">
                 PDF保存・印刷（ヘッダーの緑ボタンでも可）
             </button>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                <button type="button" data-chat="slack" class="rcpt-chat-btn">Slackに共有</button>
-                <button type="button" data-chat="chatwork" class="rcpt-chat-btn">Chatworkに共有</button>
-                <button type="button" data-chat="googlechat" class="rcpt-chat-btn">Google Chat</button>
-                <button type="button" data-chat="teams" class="rcpt-chat-btn">Teams</button>
-                <button type="button" data-chat="lineworks" class="rcpt-chat-btn">LINE WORKS</button>
-                <button type="button" id="btn-chat-config" class="rcpt-chat-btn text-slate-500">送信先URL設定</button>
-                <button type="button" id="btn-x-share" class="sg-btn-x col-span-2 sm:col-span-1" title="ログイン中のXアカウントで投稿画面を開きます">𝕏 にシェア</button>
-            </div>
             <button type="button" id="btn-share-url" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs">
-                URLで領収書を共有
+                共有用URLをコピー
             </button>
-            <p class="text-[10px] text-slate-500">URL共有は宛名・金額がリンクに含まれます。共有前に確認ダイアログを表示します。</p>
+            <p class="text-[10px] text-slate-500">URLには宛名・金額が含まれます。コピー前に確認ダイアログを表示します。貼る先はお使いのチャットで。</p>
             <p id="copy-toast-receipt" class="sg-copy-toast hidden" role="status"></p>
         </div>
     </section>
 
-    <!-- プレビュー -->
-    <section class="print-target preview-section lg:col-span-7 flex justify-center lg:justify-start overflow-hidden">
+    <!-- プレビュー（invoice と同じ sticky・6列） -->
+    <section class="print-target preview-section invoice-preview-section lg:col-span-6 flex justify-center lg:justify-start">
         <div class="preview-scaler preview-wrapper w-full flex justify-center" id="preview-wrapper">
             <div class="preview-container sg-preview-fade" id="preview-container">
                 <div id="receipt-paper" class="a4-page rcpt-paper">
@@ -190,7 +179,7 @@
             <details class="sg-faq">
                 <summary>入力した宛名や金額は外部に送られますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>計算・プレビューはブラウザ内で完結します。「URLで共有」を使った場合のみ、URLにデータが含まれます。チャット共有は文面をコピーするだけで、当サイトサーバーへは送信しません。</p>
+                    <p>計算・プレビューはブラウザ内で完結します。「共有用URLをコピー」を使った場合のみ、URLにデータが含まれます。当サイトのサーバーへは送信しません。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -219,8 +208,6 @@
 
     const WITHHOLDING_RATE = 0.1021;
     const STAMP_THRESHOLD = 50000;
-    const CHAT_TARGETS_KEY = 'sugudasu.invoice.chat.targets';
-    const DEFAULT_CHAT_TARGETS = { slack: '', chatwork: '', googlechat: '', teams: '', lineworks: '' };
 
     let outputMode = 'single';
     let multiCount = 3;
@@ -315,29 +302,33 @@
     }
 
     function receiptCardHtml(data) {
-        const { to, issuer, desc, date, calc, showStamp, taxType, taxRatePct } = data;
+        const { to, issuer, desc, date, calc, showStamp, taxType, taxRatePct, compact } = data;
         const taxLabel = taxType === 'ext' ? '消費税（外税）' : 'うち消費税（内税）';
         const baseLabel = taxType === 'ext' ? '本体価格（税抜）' : '本体価格（税込）';
+        const descText = escapeHtml(desc || '（但し書き未入力）');
+        const bodyCopy = compact
+            ? `<p class="rcpt-desc">但し、${descText}　上記正に領収いたしました。</p>`
+            : `<p class="rcpt-desc">但し、${descText}</p>
+            <p class="rcpt-paid">上記正に領収いたしました。</p>`;
 
         return `
         <article class="rcpt-card">
             <header class="rcpt-card-head">
                 <h2 class="rcpt-title">領　収　書</h2>
-                <p class="rcpt-date">${formatDateJa(date)}</p>
+                <p class="rcpt-date font-mono">${formatDateJa(date)}</p>
             </header>
             <p class="rcpt-to">${escapeHtml(to || '（宛名未入力）')} <span class="rcpt-sama">様</span></p>
             <div class="rcpt-amount-row">
                 <span class="rcpt-amount-label">金額</span>
-                <span class="rcpt-amount mono-num">${yen(calc.net)}</span>
+                <span class="rcpt-amount font-mono">${yen(calc.net)}</span>
             </div>
-            <p class="rcpt-desc">但し、${escapeHtml(desc || '（但し書き未入力）')}</p>
-            <p class="rcpt-paid">上記正に領収いたしました。</p>
+            ${bodyCopy}
             <table class="rcpt-breakdown">
                 <tbody>
-                    <tr><th>${baseLabel}</th><td class="mono-num">${yen(taxType === 'ext' ? calc.taxExcl : calc.base)}</td></tr>
-                    <tr><th>${taxLabel} ${taxRatePct}%</th><td class="mono-num">${yen(calc.tax)}</td></tr>
-                    ${calc.withholding > 0 ? `<tr><th>源泉徴収税</th><td class="mono-num">−${(calc.withholding).toLocaleString('ja-JP')}円</td></tr>` : ''}
-                    <tr class="rcpt-breakdown-total"><th>差引支給（手取り）</th><td class="mono-num">${yen(calc.net)}</td></tr>
+                    <tr><th>${baseLabel}</th><td class="font-mono">${yen(taxType === 'ext' ? calc.taxExcl : calc.base)}</td></tr>
+                    <tr><th>${taxLabel} ${taxRatePct}%</th><td class="font-mono">${yen(calc.tax)}</td></tr>
+                    ${calc.withholding > 0 ? `<tr><th>源泉徴収税</th><td class="font-mono">−${(calc.withholding).toLocaleString('ja-JP')}円</td></tr>` : ''}
+                    <tr class="rcpt-breakdown-total"><th>差引支給（手取り）</th><td class="font-mono">${yen(calc.net)}</td></tr>
                 </tbody>
             </table>
             <footer class="rcpt-footer">
@@ -397,7 +388,7 @@
         const paper = document.getElementById('receipt-paper');
 
         if (outputMode === 'single') {
-            paper.classList.remove('rcpt-multi-sheet');
+            paper.classList.remove('rcpt-multi-sheet', 'rcpt-multi-sheet--3', 'rcpt-multi-sheet--4');
             const net = Number(document.getElementById('in-net').value) || 0;
             const calc = calcFromNet(net, opts);
             root.innerHTML = receiptCardHtml({
@@ -413,6 +404,8 @@
         }
 
         paper.classList.add('rcpt-multi-sheet');
+        paper.classList.toggle('rcpt-multi-sheet--3', multiCount === 3);
+        paper.classList.toggle('rcpt-multi-sheet--4', multiCount === 4);
         const entries = getMultiEntries();
         const parts = entries.map((e, idx) => {
             const calc = calcFromNet(e.net, opts);
@@ -421,7 +414,8 @@
                 issuer: document.getElementById('in-issuer').value.trim(),
                 desc, date, calc, showStamp,
                 taxType: opts.taxType,
-                taxRatePct
+                taxRatePct,
+                compact: true
             });
             const cut = idx < entries.length - 1 ? '<div class="rcpt-cut" aria-hidden="true"></div>' : '';
             return card + cut;
@@ -463,7 +457,7 @@
 
     const OUTPUT_MODE_HINTS = {
         single: '<strong>1枚出力：</strong>宛名・発行者を1件ずつ入力して領収書PDFを作成します。',
-        multi: '<strong >A4マルチ印刷：</strong>複数名分を1枚のA4に配置。人数と各行の手取り額を入力して一括印刷します。',
+        multi: '<strong>A4マルチ印刷：</strong>3名はA4 1枚に収まるよう配置（受領印ONでも可）。人数と各行の手取り額を入力して一括印刷します。',
     };
 
     function scalePreview() {
@@ -479,26 +473,12 @@
         wrapper.style.height = scale < 1 ? `${paper.offsetHeight * scale}px` : '';
     }
 
-    function loadChatTargets() {
-        try {
-            const raw = localStorage.getItem(CHAT_TARGETS_KEY);
-            if (!raw) return { ...DEFAULT_CHAT_TARGETS };
-            return { ...DEFAULT_CHAT_TARGETS, ...JSON.parse(raw) };
-        } catch {
-            return { ...DEFAULT_CHAT_TARGETS };
-        }
-    }
-
-    function saveChatTargets(targets) {
-        localStorage.setItem(CHAT_TARGETS_KEY, JSON.stringify({ ...DEFAULT_CHAT_TARGETS, ...targets }));
-    }
-
     async function copyText(text, btn, opts = {}) {
         if (window.SG_COPY_FEEDBACK && btn) {
             try {
                 await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
                     toastEl: document.getElementById('copy-toast-receipt'),
-                    toastPrefix: opts.toastPrefix || '共有文面',
+                    toastPrefix: opts.toastPrefix || '共有URL',
                     lineCount: window.SG_COPY_FEEDBACK.countLines(text),
                     previewLine: String(text).split('\n')[0],
                 });
@@ -519,72 +499,6 @@
             document.body.removeChild(area);
             return ok;
         }
-    }
-
-    function buildShareMessage() {
-        const opts = getOptions();
-        const net = Number(document.getElementById('in-net').value) || 0;
-        const calc = calcFromNet(net, opts);
-        const to = document.getElementById('in-to').value.trim() || '（宛名未入力）';
-        return `お疲れ様です。本日の作業代金の領収書データをお送りします。
-【内訳】
-・総額（手取り）：${yen(calc.net)}
-・本体価格：${yen(opts.taxType === 'ext' ? calc.taxExcl : calc.base)}
-・消費税：${yen(calc.tax)}
-・源泉徴収税：${yen(calc.withholding)}
-宛先：${to}
-
-ご確認のほど、よろしくお願いいたします。`;
-    }
-
-    const CHAT_LABELS = {
-        slack: 'Slack', chatwork: 'Chatwork', googlechat: 'Google Chat',
-        teams: 'Teams', lineworks: 'LINE WORKS'
-    };
-
-    async function shareToChat(tool, btn) {
-        const dest = loadChatTargets()[tool];
-        if (!dest) {
-            alert(`${CHAT_LABELS[tool] || tool} の送信先URLが未設定です。「送信先URL設定」から登録してください。`);
-            return;
-        }
-        const copied = await copyText(buildShareMessage(), btn, { toastPrefix: 'チャット用' });
-        if (!copied) {
-            alert('文面のコピーに失敗しました。');
-            return;
-        }
-        window.open(dest, '_blank', 'noopener');
-    }
-
-    function shareToX() {
-        if (!window.SUGUDASU_GROWTH) return;
-        const net = outputMode === 'single'
-            ? Number(document.getElementById('in-net').value) || 0
-            : (getMultiEntries().find((e) => e.net > 0)?.net || 0);
-        if (net <= 0) {
-            alert('先に手取り金額を入力してください。');
-            return;
-        }
-        window.SUGUDASU_GROWTH.shareXReceipt(() => ({ net: yen(net) }));
-    }
-
-    function configureChat() {
-        const t = loadChatTargets();
-        const slack = prompt('Slackの送信先URL', t.slack || '');
-        if (slack === null) return;
-        const chatwork = prompt('Chatworkの送信先URL', t.chatwork || '');
-        if (chatwork === null) return;
-        const googlechat = prompt('Google Chatの送信先URL', t.googlechat || '');
-        if (googlechat === null) return;
-        const teams = prompt('Teamsの送信先URL', t.teams || '');
-        if (teams === null) return;
-        const lineworks = prompt('LINE WORKSの送信先URL', t.lineworks || '');
-        if (lineworks === null) return;
-        saveChatTargets({
-            slack: slack.trim(), chatwork: chatwork.trim(), googlechat: googlechat.trim(),
-            teams: teams.trim(), lineworks: lineworks.trim()
-        });
-        alert('送信先URLを保存しました。');
     }
 
     function buildShareUrl() {
@@ -611,11 +525,11 @@
     }
 
     async function shareUrl(e) {
-        const msg = '共有URLには宛名・金額などが含まれます。チャットやメールで送る相手に注意して共有してください。続行しますか？';
+        const msg = '共有用URLには宛名・金額などが含まれます。貼る先の相手に注意してください。続行しますか？';
         if (!confirm(msg)) return;
         const url = buildShareUrl();
         const btn = e && e.currentTarget ? e.currentTarget : document.getElementById('btn-share-url');
-        const copied = await copyText(url, btn, { toastPrefix: '共有URL' });
+        const copied = await copyText(url, btn, { toastPrefix: '共有用URL' });
         if (!copied) alert(`コピーできませんでした。URL:\n${url}`);
     }
 
@@ -676,12 +590,6 @@
 
         document.getElementById('btn-print').addEventListener('click', () => window.print());
         document.getElementById('btn-share-url').addEventListener('click', shareUrl);
-        document.getElementById('btn-x-share').addEventListener('click', shareToX);
-        document.getElementById('btn-chat-config').addEventListener('click', configureChat);
-        document.querySelectorAll('[data-chat]').forEach((btn) => {
-            btn.addEventListener('click', () => shareToChat(btn.getAttribute('data-chat'), btn));
-        });
-
         window.addEventListener('resize', scalePreview);
     }
 

@@ -2,7 +2,7 @@
 
 > **SUGUDASU 実装時の上書きルール（正本）**
 > - 単体HTML完結ではなく、`tools/receipt.html` + `assets/sugudasu.css` + `assets/sugudasu-shell.js` で実装する（他ツールと同型）。
-> - チャット共有は `invoice.html` Phase 1 と同じ「文面コピー + 送信先URL起動」（Webhook直叩きはしない）。
+> - **共有は Copy-First（CASE-2026-007）。** チャネル名付きボタン（Slack/Teams等）・送信先URL設定・帳票主面の𝕏シェアは置かない。主CTAは PDF/印刷と「共有用URLをコピー」。
 > - URLパラメータ共有は **任意機能**。宛名・金額をURLに載せる旨をUIで明示する。
 
 ## 1. 概要・思想

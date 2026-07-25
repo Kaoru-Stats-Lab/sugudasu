@@ -1,7 +1,7 @@
 # SUGUDASU Brand Project Checklist
 
 **役割:** ブランド設計プロジェクトの現在地を管理する正本  
-**更新:** 2026-07-24  
+**更新:** 2026-07-25  
 **運用:** 完了した項目だけをチェックし、議論の本文は各SSOT・Decision Log・ADRへ置く
 
 ## SSOT
@@ -29,7 +29,7 @@
 - [x] Cursor格納完了
 - [x] 相互リンク確認
 - [x] **憲法義解** — `docs/legal/CONSTITUTION_COMMENTARY.md`
-- [x] **判例集** — `docs/legal/CASE_LAW.md`（CASE-2026-001〜005）
+- [x] **判例集** — `docs/legal/CASE_LAW.md`（CASE-2026-001〜007）
 - [x] **解釈手順** — `docs/legal/LEGAL_INTERPRETATION_GUIDE.md`
 - [x] **PCT-6 任意性（Discretion）** — `docs/legal/PERSONA_CONSTITUTION_TRAITS.md`
 

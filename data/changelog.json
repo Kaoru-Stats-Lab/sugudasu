@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-07-25",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,29 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "clip-stash-thumb-center-20260725",
+      "date": "2026-07-25",
+      "type": "improve",
+      "audience": "public",
+      "title": "仮置きの画像サムネを中央表示に",
+      "body": "カード一覧では画像の上下中央を優先して表示します（縦長スクショの把握用）。Spaceの確認ではこれまでどおり全体を表示します。動画・GIFは対象外であることも案内に明示しました。",
+      "tools": [
+        "clip-stash"
+      ]
+    },
+    {
+      "id": "copy-first-share-ui-20260725",
+      "date": "2026-07-25",
+      "type": "improve",
+      "audience": "public",
+      "title": "請求書・領収書の共有をコピー中心に整理",
+      "body": "SlackやTeamsなどチャットアプリ名の共有ボタンをやめました。送付文面のコピー、共有用URLのコピー、PDF保存・印刷までがツールの仕事です。貼る先はお使いのチャットで選んでください。",
+      "tools": [
+        "invoice",
+        "receipt"
+      ]
+    },
     {
       "id": "present-reject-20260724",
       "date": "2026-07-24",

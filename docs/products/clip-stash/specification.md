@@ -1,7 +1,7 @@
 # SUGUDASU 仮置き — 仕様（β）
 
 **id:** `clip-stash`  
-**更新:** 2026-07-24  
+**更新:** 2026-07-25  
 **stage:** beta
 
 ## WHY
@@ -56,13 +56,17 @@ Text · Table · URL · Image · Color — これ以上増やさない。
 
 ## Image
 
-PNG · JPG · WebP · SVG のみ。**GIF は非対応**（スコープ外 · 記載なし）。
+PNG · JPG · WebP · SVG のみ。**GIF · 動画は非対応**（スコープ外）。
+
+**ボード上のサムネ:** `object-fit: cover` · `object-position: center`（一覧での把握。縦長スクショは中央帯を優先）。  
+**Preview（Space）:** `contain`（全体確認。隣接カードへの巡回ナビは持たない）。
 
 ## Preview
 
 - 画面中央オーバーレイ · 背景暗転
 - コピー · URLを開く（リンククリック）のみ
 - ブラウザ全体はズームしない
+- **隣接カードへのスムーズ移動はしない**（確認は1枚単位 · 閉じてから次を選ぶ）
 
 ## レイアウト
 

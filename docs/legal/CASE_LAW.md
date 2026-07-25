@@ -2,7 +2,7 @@
 
 **役割:** 憲法上の重要判断（Judicial Decision）を蓄積する  
 **役割でないもの:** 設計選択の ADR · 実装手順 · 憲法改正案  
-**更新:** 2026-07-24  
+**更新:** 2026-07-25  
 **義解:** [`CONSTITUTION_COMMENTARY.md`](./CONSTITUTION_COMMENTARY.md)  
 **解釈手順:** [`LEGAL_INTERPRETATION_GUIDE.md`](./LEGAL_INTERPRETATION_GUIDE.md)
 
@@ -38,6 +38,7 @@
 | [CASE-2026-004](#case-2026-004) | Hub アンケート事件 | 条件付き合憲（H-UI-07） | Persona · 提案しすぎない · Pain |
 | [CASE-2026-005](#case-2026-005) | F2 非送信字面解釈事件 | 義解確定（一切通信禁止ではない） | F2 |
 | [CASE-2026-006](#case-2026-006) | Present（ギフト）Reject 事件 | **Reject** · カタログ除外 · アーカイブ | Persona · Anti · Domain |
+| [CASE-2026-007](#case-2026-007) | 帳票チャネル名付き共有UI事件 | **Reject**（UI）· Copy-First に是正 | Domain · Persona · Anti · F5/F6 |
 
 ---
 
@@ -229,6 +230,36 @@ WHY · Domain · Persona · Anti（提案しすぎない · AIらしさを出さ
 **関連ADR:** なし  
 
 **関連Product:** `present` · [`../products/present/README.md`](../products/present/README.md)
+
+---
+
+## CASE-2026-007
+
+**事件名:** 帳票チャネル名付き共有UI（Copy-First）事件  
+
+**争点:**  
+invoice / receipt で Slack・Teams・Chatwork 等の名前付きボタンにより「送る先」を SUGUDASU がサジェストしてよいか。
+
+**立法事実:**  
+Phase 1 は「送付文面コピー + ユーザー設定URL起動」でサーバー非送信（F2）を満たしていた。UI 上は5社グリッド＋送信先URL設定があり、連携機能に見える。憲法制定後の Copy-First（結果を持ち帰り元の仕事へ戻す）と衝突する。
+
+**適用条文:**  
+Domain（受け渡せる状態まで）· Persona（前に出ない同僚）· Anti §13–14（設定前提・囲い込みしない）· F5/F6（コピー/PDF）
+
+**判決:**  
+**Reject（UI）** — プラットフォーム名付き共有ボタン・送信先URL設定・帳票主面の𝕏シェアを撤去。  
+**合憲に残すもの** — 送付文面コピー、共有用URLコピー、印刷/PDF。  
+チャット共有 Phase 2 横展開は打ち切り。Webhook / OAuth 連携は引き続き Reject。
+
+**理由:**  
+技術的非送信と体験の意味は別。チャネル選択はユーザーの仕事場の話であり、隣の同僚は「Teamsで送っておいた」とは言わない。Pain は文面作成と PDF 手元化であり、チャットアプリ起動ではない。
+
+**今後への影響:**  
+共有UIは Copy-First（コピー動詞）を主CTAとする。チャネル名をブランドコピーやボタンに載せない。「詳細の奥に隠す」もサジェストの本質が残るため不可。
+
+**関連ADR:** なし  
+
+**関連Product:** `invoice` · `receipt`（`stamp` は既に PNG コピーのみで対象外）
 
 ---
 

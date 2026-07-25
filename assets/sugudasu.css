@@ -98,10 +98,12 @@ body.sg-body {
   }
 }
 
+/* 金額・型番 — invoice の Tailwind font-mono と同一スタック（Cascadia 優先禁止） */
 .sg-mono,
 .mono,
-.mono-num {
-  font-family: ui-monospace, 'Cascadia Code', 'Roboto Mono', monospace;
+.mono-num,
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2186,6 +2188,14 @@ body.sg-chrome-focus main {
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.rcpt-date,
+.rcpt-breakdown td {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .rcpt-desc,
@@ -2268,41 +2278,130 @@ body.sg-chrome-focus main {
   text-align: right;
 }
 
+/*
+ * A4マルチ: 3枚（受領印ONでも）を1ページに収める。
+ * print の .a4-page { padding:15mm } / #receipt-paper min-height より
+ * #receipt-paper.rcpt-multi-sheet で上書きする（specificity）。
+ */
 .rcpt-multi-sheet {
-  padding: 10mm 12mm !important;
+  padding: 6mm 8mm !important;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.rcpt-multi-sheet #receipt-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 .rcpt-multi-sheet .rcpt-card {
-  font-size: 10px;
+  flex: 1 1 0;
+  min-height: 0;
+  font-size: 9px;
+  line-height: 1.35;
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.rcpt-multi-sheet .rcpt-title { font-size: 1.1rem; letter-spacing: 0.25em; }
-.rcpt-multi-sheet .rcpt-amount { font-size: 1.25rem; }
-.rcpt-multi-sheet .rcpt-card-head { margin-bottom: 0.65rem; }
-.rcpt-multi-sheet .rcpt-footer { margin-top: 0.75rem; }
-.rcpt-multi-sheet .rcpt-breakdown { margin: 0.65rem 0; }
-.rcpt-multi-sheet .rcpt-stamp { width: 40px; height: 40px; font-size: 9px; }
+.rcpt-multi-sheet .rcpt-title {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+}
+.rcpt-multi-sheet .rcpt-date { font-size: 9px; }
+.rcpt-multi-sheet .rcpt-to {
+  font-size: 11px;
+  margin: 0 0 0.35rem;
+  padding-bottom: 0.2rem;
+}
+.rcpt-multi-sheet .rcpt-card-head {
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.25rem;
+}
+.rcpt-multi-sheet .rcpt-amount-row {
+  margin-bottom: 0.25rem;
+  padding: 0.15rem 0;
+}
+.rcpt-multi-sheet .rcpt-amount { font-size: 1.05rem; }
+.rcpt-multi-sheet .rcpt-amount-label { font-size: 9px; }
+.rcpt-multi-sheet .rcpt-desc,
+.rcpt-multi-sheet .rcpt-paid {
+  margin: 0.1rem 0;
+  font-size: 9px;
+}
+.rcpt-multi-sheet .rcpt-paid { margin-bottom: 0.25rem; }
+.rcpt-multi-sheet .rcpt-breakdown {
+  margin: 0.25rem 0;
+  font-size: 8.5px;
+}
+.rcpt-multi-sheet .rcpt-breakdown th,
+.rcpt-multi-sheet .rcpt-breakdown td {
+  padding: 0.15rem 0.35rem;
+}
+.rcpt-multi-sheet .rcpt-footer {
+  margin-top: 0.35rem;
+  gap: 0.2rem;
+}
+.rcpt-multi-sheet .rcpt-issuer {
+  font-size: 11px;
+  min-width: 5.5rem;
+  padding-bottom: 0.1rem;
+}
+.rcpt-multi-sheet .rcpt-stamp {
+  width: 28px;
+  height: 28px;
+  border-width: 2px;
+  font-size: 8px;
+}
+.rcpt-multi-sheet .rcpt-stamp-note { font-size: 7px; }
+
+.rcpt-multi-sheet--4 .rcpt-title { font-size: 12px; letter-spacing: 0.15em; }
+.rcpt-multi-sheet--4 .rcpt-amount { font-size: 0.95rem; }
+.rcpt-multi-sheet--4 .rcpt-stamp { width: 24px; height: 24px; font-size: 7px; }
+.rcpt-multi-sheet--4 .rcpt-breakdown { font-size: 8px; }
 
 .rcpt-cut {
   border-bottom: 1px dashed #94a3b8;
-  margin: 6mm 0;
+  margin: 2.5mm 0;
   height: 0;
+  flex: 0 0 auto;
 }
 
 @media print {
-  .rcpt-multi-sheet {
-    padding: 8mm 10mm !important;
-    min-height: auto !important;
+  /* .a4-page { padding:15mm } より勝つよう ID+クラス。カード単位 avoid は2ページ分割の原因になる */
+  #receipt-paper.a4-page.rcpt-multi-sheet {
+    padding: 5mm 7mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    height: 297mm !important;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  #receipt-paper.a4-page.rcpt-multi-sheet #receipt-root {
+    height: 100%;
+    min-height: 0;
   }
 
   .rcpt-multi-sheet .rcpt-card {
-    page-break-inside: avoid;
-    break-inside: avoid;
+    page-break-inside: auto;
+    break-inside: auto;
   }
 
   .rcpt-cut {
-    margin: 4mm 0;
+    margin: 1.8mm 0;
+  }
+
+  .rcpt-multi-sheet--4 .rcpt-cut {
+    margin: 1.2mm 0;
   }
 }
 
