@@ -1505,7 +1505,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 仮置きサムネ中央 · 領収書レイアウト/A4マルチ · Copy-First共有UI撤去 |
 | **change_summary** | `clip-stash` Image/OGP cover+center · 認識エラー文言 · `receipt` wide+マルチ3枚/頁 · 数字フォント統一 · invoice/receipt チャネル共有撤去（CASE-2026-007）· changelog |
@@ -1516,7 +1516,7 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `93055ec`（git push origin main · CF 自動ビルド） |
 | **smoke** | `/clip-stash` · `/receipt` · `/invoice` |
 
 ---
