@@ -1485,19 +1485,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — Hub から「他サービスとの違い — カテゴリ別」ブロック削除 |
 | **change_summary** | `tools/hub.html` 比較表セクション+描画JS削除 · Hub 憲法 Non Goals 追記 |
 | **local_build** | `pass`（`release:pages:free` · budget consume 62/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P8 確認予定 |
+| **pages_build_budget_after** | 62/450 |
+| **gates** | P1–P8 確認済み |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/` に比較表なし） |
+| **cf_deployment_id** | `8551ab1`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/` に比較表なし · `/statements#compare` は維持 |
 
 ---
 
@@ -1505,6 +1505,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-25 | 001 executed（8551ab1 · Hub 比較表削除） |
 | 2026-07-25 | 001 approved（Hub 比較表削除 · 提督 Commit&Push） |
 | 2026-07-24 | 001 executed（ff05c96 · 憲法義解·判例 · present Reject · annotate/clip-stash/pdf-fill） |
 | 2026-07-24 | 001 approved（憲法義解·判例 · present Reject · 提督本番反映依頼） |
