@@ -1525,18 +1525,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — コピー成功フィードバック統一 · マスク→赤入れ導線更新（同日 core 3回目 · P7 override） |
 | **change_summary** | `sg-copy-feedback`「コピーしました」+ emerald flash/done を主要ツールへ · budget-trim CTA文言 · ガイド3本 `/mask`→`/annotate` · search-dictionary related annotate · present 辞書を Reject 退避 · hub-search bundle |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 64/450） |
 | **deploy_count_today** | 3（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （release 後に記入） |
+| **pages_build_budget_after** | 64/450 |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Pushして」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `dbee6cf`（git push origin main · CF 自動ビルド · tip `3d5043d`） |
 | **smoke** | `/annotate` · `/guides/pdf-image-masking-security` · コピー成功フラッシュ |
 
 ---
@@ -1545,6 +1545,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-25 | 003 executed（dbee6cf · コピー成功フィードバック · 赤入れ導線） |
 | 2026-07-25 | 003 approved（コピー成功フィードバック統一 · 赤入れ導線 · P7 override · 提督 Commit&Push） |
 | 2026-07-25 | 002 executed（93055ec · 仮置きサムネ · 領収書 · Copy-First） |
 | 2026-07-25 | 001 executed（8551ab1 · Hub 比較表削除） |
