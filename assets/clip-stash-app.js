@@ -10,8 +10,16 @@ import {
   formatTimestamp,
   imageBlob,
   imageCardMeta,
+  classifyInputBridge,
+  inputBridgeMessage,
+  isAcceptedLocalFile,
   nextSlotIndex,
+  pdfBlob,
+  pdfPreviewBlob,
+  planMoveToSlot,
+  primaryInputBridge,
   readClipboardPaste,
+  readLocalFile,
   slotIndices,
   tablePreview,
   textPreview,
@@ -28,7 +36,11 @@ const els = {
   main: document.querySelector('main.sg-main-shell'),
   dropPanel: document.getElementById('cs-drop-panel'),
   dropZone: document.getElementById('cs-drop-zone'),
+  emptyCopy: document.getElementById('cs-empty-copy'),
+  filePick: document.getElementById('cs-file-pick'),
+  fileInput: document.getElementById('cs-file-input'),
   board: document.getElementById('cs-board'),
+  bridgeToast: document.getElementById('cs-bridge-toast'),
   preview: document.getElementById('cs-preview'),
   previewBody: document.getElementById('cs-preview-body'),
   previewType: document.getElementById('cs-preview-type'),
@@ -45,10 +57,16 @@ let db = null;
 let dragId = null;
 /** @type {number|null} */
 let dropSlot = null;
+/** @type {{ id: string, order: number }[]|null} */
+let dragPreview = null;
 /** @type {Map<string, string>} */
 const thumbUrls = new Map();
 /** @type {boolean} */
 let suppressClick = false;
+/** @type {ReturnType<typeof setTimeout>|null} */
+let bridgeToastTimer = null;
+/** @type {string|null} */
+let lastBridgeShown = null;
 
 async function init() {
   db = await openDb();
@@ -59,15 +77,207 @@ async function init() {
 }
 
 function bindDropZone() {
-  els.dropZone?.addEventListener('click', () => {
+  const zone = els.dropZone;
+  if (!zone) return;
+
+  zone.addEventListener('click', (e) => {
+    if (e.target instanceof Element && e.target.closest('#cs-file-pick')) return;
     els.main?.focus();
   });
-  els.dropZone?.addEventListener('keydown', (e) => {
+  zone.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       els.main?.focus();
     }
   });
+
+  zone.addEventListener('dragenter', (e) => {
+    if (!hasFilePayload(e.dataTransfer)) return;
+    e.preventDefault();
+    const bridge = inspectDataTransferBridge(e.dataTransfer);
+    const hasAccepted = dataTransferHasAccepted(e.dataTransfer);
+    zone.classList.toggle('is-dragover', hasAccepted || !bridge);
+    zone.classList.toggle('is-bridge', !!bridge && !hasAccepted);
+    if (bridge) showBridgeToast(bridge);
+  });
+  zone.addEventListener('dragover', (e) => {
+    if (!hasFilePayload(e.dataTransfer)) return;
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+    const bridge = inspectDataTransferBridge(e.dataTransfer);
+    const hasAccepted = dataTransferHasAccepted(e.dataTransfer);
+    zone.classList.toggle('is-dragover', hasAccepted || !bridge);
+    zone.classList.toggle('is-bridge', !!bridge && !hasAccepted);
+  });
+  zone.addEventListener('dragleave', (e) => {
+    if (e.relatedTarget instanceof Node && zone.contains(e.relatedTarget)) return;
+    zone.classList.remove('is-dragover', 'is-bridge');
+  });
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('is-dragover', 'is-bridge');
+    if (!hasFilePayload(e.dataTransfer)) return;
+    void addFromFiles(e.dataTransfer?.files, e.dataTransfer);
+  });
+
+  els.filePick?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    els.fileInput?.click();
+  });
+  els.fileInput?.addEventListener('change', () => {
+    const files = els.fileInput?.files;
+    void addFromFiles(files);
+    if (els.fileInput) els.fileInput.value = '';
+  });
+}
+
+/**
+ * @param {DataTransfer|null|undefined} dt
+ */
+function hasFilePayload(dt) {
+  if (!dt) return false;
+  if (dt.types && typeof dt.types.includes === 'function') {
+    return dt.types.includes('Files');
+  }
+  return !!(dt.files && dt.files.length);
+}
+
+/**
+ * @param {DataTransfer|null|undefined} dt
+ * @returns {import('./clip-stash-engine.js').InputBridgeKind|null}
+ */
+function inspectDataTransferBridge(dt) {
+  if (!dt) return null;
+  /** @type {(import('./clip-stash-engine.js').InputBridgeKind|null)[]} */
+  const kinds = [];
+  const items = dt.items ? Array.from(dt.items) : [];
+  if (items.length) {
+    for (const item of items) {
+      if (item.kind !== 'file') continue;
+      let isDirectory = false;
+      try {
+        if (typeof item.webkitGetAsEntry === 'function') {
+          const entry = item.webkitGetAsEntry();
+          if (entry?.isDirectory) isDirectory = true;
+        }
+      } catch {
+        /* ignore */
+      }
+      const file = typeof item.getAsFile === 'function' ? item.getAsFile() : null;
+      kinds.push(
+        classifyInputBridge({
+          name: file?.name || '',
+          type: item.type || file?.type || '',
+          isDirectory,
+        }),
+      );
+    }
+  } else if (dt.files?.length) {
+    for (const file of Array.from(dt.files)) {
+      kinds.push(classifyInputBridge({ name: file.name, type: file.type }));
+    }
+  }
+  return primaryInputBridge(kinds);
+}
+
+/**
+ * @param {DataTransfer|null|undefined} dt
+ */
+function dataTransferHasAccepted(dt) {
+  if (!dt) return false;
+  const files = dt.files ? Array.from(dt.files) : [];
+  if (files.some((f) => isAcceptedLocalFile(f))) return true;
+  const items = dt.items ? Array.from(dt.items) : [];
+  for (const item of items) {
+    if (item.kind !== 'file') continue;
+    try {
+      if (typeof item.webkitGetAsEntry === 'function') {
+        const entry = item.webkitGetAsEntry();
+        if (entry?.isDirectory) continue;
+      }
+    } catch {
+      /* ignore */
+    }
+    const file = typeof item.getAsFile === 'function' ? item.getAsFile() : null;
+    if (file && isAcceptedLocalFile(file)) return true;
+    if (!file && item.type && isAcceptedLocalFile({ name: '', type: item.type })) return true;
+  }
+  return false;
+}
+
+/**
+ * @param {import('./clip-stash-engine.js').InputBridgeKind} kind
+ */
+function showBridgeToast(kind) {
+  const msg = inputBridgeMessage(kind);
+  if (!msg || !els.bridgeToast) return;
+  if (lastBridgeShown === msg && els.bridgeToast.classList.contains('is-visible')) {
+    scheduleBridgeHide();
+    return;
+  }
+  lastBridgeShown = msg;
+  els.bridgeToast.textContent = msg;
+  els.bridgeToast.classList.remove('hidden');
+  els.bridgeToast.classList.add('is-visible');
+  scheduleBridgeHide();
+}
+
+function scheduleBridgeHide() {
+  if (bridgeToastTimer) window.clearTimeout(bridgeToastTimer);
+  bridgeToastTimer = window.setTimeout(() => {
+    hideBridgeToast();
+  }, 4000);
+}
+
+function hideBridgeToast() {
+  if (bridgeToastTimer) {
+    window.clearTimeout(bridgeToastTimer);
+    bridgeToastTimer = null;
+  }
+  lastBridgeShown = null;
+  els.bridgeToast?.classList.remove('is-visible');
+  els.bridgeToast?.classList.add('hidden');
+}
+
+function vendorPdfjs(rel) {
+  return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
+}
+
+/** @type {any} */
+let pdfjsLib = null;
+
+async function loadPdfjs() {
+  if (pdfjsLib) return pdfjsLib;
+  pdfjsLib = await import(vendorPdfjs('pdf.mjs'));
+  pdfjsLib.GlobalWorkerOptions.workerSrc = vendorPdfjs('pdf.worker.mjs');
+  return pdfjsLib;
+}
+
+/**
+ * 1ページ目の PNG プレビューのみ生成。元 PDF は変更しない。
+ * @param {ArrayBuffer} data
+ * @returns {Promise<{ preview: ArrayBuffer, pageCount: number }|null>}
+ */
+async function makePdfPreview(data) {
+  try {
+    const lib = await loadPdfjs();
+    const task = lib.getDocument({ data: data.slice(0) });
+    const pdf = await task.promise;
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 0.75 });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.ceil(viewport.width);
+    canvas.height = Math.ceil(viewport.height);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return { preview: new ArrayBuffer(0), pageCount: pdf.numPages };
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) return { preview: new ArrayBuffer(0), pageCount: pdf.numPages };
+    return { preview: await blob.arrayBuffer(), pageCount: pdf.numPages };
+  } catch {
+    return null;
+  }
 }
 
 function bindBoardDnD() {
@@ -90,14 +300,25 @@ function revokeThumbs() {
 }
 
 function imageThumbUrl(card) {
-  if (card.type !== 'image') return '';
-  const cached = thumbUrls.get(card.id);
-  if (cached) return cached;
-  const blob = imageBlob(card);
-  if (!blob) return '';
-  const url = URL.createObjectURL(blob);
-  thumbUrls.set(card.id, url);
-  return url;
+  if (card.type === 'image') {
+    const cached = thumbUrls.get(card.id);
+    if (cached) return cached;
+    const blob = imageBlob(card);
+    if (!blob) return '';
+    const url = URL.createObjectURL(blob);
+    thumbUrls.set(card.id, url);
+    return url;
+  }
+  if (card.type === 'pdf') {
+    const cached = thumbUrls.get(card.id);
+    if (cached) return cached;
+    const blob = pdfPreviewBlob(card);
+    if (!blob) return '';
+    const url = URL.createObjectURL(blob);
+    thumbUrls.set(card.id, url);
+    return url;
+  }
+  return '';
 }
 
 function esc(s) {
@@ -134,9 +355,24 @@ function cardBodyHtml(card) {
   if (card.type === 'image') {
     const src = imageThumbUrl(card);
     const { format } = imageCardMeta(card);
+    const w = card.imageWidth;
+    const h = card.imageHeight;
+    const dim =
+      Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0
+        ? `<p class="cs-card__meta">${w}×${h}</p>`
+        : '';
     return `<img src="${esc(src)}" alt="" class="cs-card__thumb">
       <p class="cs-card__format">${esc(format)}</p>
-      <p class="cs-card__meta">${card.imageWidth || '?'}×${card.imageHeight || '?'} · ${formatBytes(card.imageBytes)}</p>`;
+      ${dim}`;
+  }
+  if (card.type === 'pdf') {
+    const src = imageThumbUrl(card);
+    const thumb = src
+      ? `<img src="${esc(src)}" alt="" class="cs-card__thumb">`
+      : '<div class="cs-card__og cs-card__og--placeholder" aria-hidden="true"></div>';
+    return `${thumb}
+      <p class="cs-card__format">PDF</p>
+      <p class="cs-card__pdf-name">${esc(card.pdfName || 'PDF')}</p>`;
   }
   if (card.type === 'color') {
     const hex = card.colorHex || '#000000';
@@ -148,7 +384,9 @@ function cardBodyHtml(card) {
 
 function clearDropGuide() {
   dropSlot = null;
+  dragPreview = null;
   els.board?.classList.remove('is-drag-active');
+  clearSlidePreview();
   els.board?.querySelectorAll('.cs-slot.is-drop-target').forEach((el) => {
     el.classList.remove('is-drop-target');
   });
@@ -159,6 +397,53 @@ function applyDropGuide() {
   els.board.querySelectorAll('.cs-slot').forEach((el) => {
     el.classList.toggle('is-drop-target', dropSlot !== null && Number(el.dataset.slot) === dropSlot);
   });
+}
+
+function clearSlidePreview() {
+  if (!els.board) return;
+  els.board.querySelectorAll('.cs-card').forEach((el) => {
+    el.style.transition = '';
+    el.style.transform = '';
+    el.classList.remove('is-slide-preview');
+  });
+}
+
+/**
+ * DnD 中はドラッグ元 DOM を壊さず、入れ替え相手だけスライドプレビュー。
+ * 空白への移動では他カードは動かさない。
+ * @param {{ id: string, order: number }[]} planned
+ */
+function applySlidePreview(planned) {
+  if (!els.board || !dragId) return;
+  const fromCard = cards.find((c) => c.id === dragId);
+  if (!fromCard) return;
+  const plannedFrom = planned.find((p) => p.id === dragId);
+  if (!plannedFrom || plannedFrom.order === fromCard.order) {
+    clearSlidePreview();
+    return;
+  }
+  const swapId = planned.find((p) => p.id !== dragId && p.order === fromCard.order)?.id;
+  const swapPartner = swapId ? cards.find((c) => c.id === swapId) : null;
+  // 空白ドロップ: 他カードは動かさない
+  if (!swapPartner) {
+    clearSlidePreview();
+    return;
+  }
+
+  const slotRect = (slot) => {
+    const el = els.board.querySelector(`.cs-slot[data-slot="${slot}"]`);
+    return el ? el.getBoundingClientRect() : null;
+  };
+  const el = els.board.querySelector(`.cs-card[data-id="${swapPartner.id}"]`);
+  if (!(el instanceof HTMLElement)) return;
+  const fromRect = slotRect(swapPartner.order);
+  const toRect = slotRect(fromCard.order);
+  if (!fromRect || !toRect) return;
+  const dx = toRect.left - fromRect.left;
+  const dy = toRect.top - fromRect.top;
+  el.classList.add('is-slide-preview');
+  el.style.transition = 'transform 0.16s ease';
+  el.style.transform = dx || dy ? `translate(${dx}px, ${dy}px)` : '';
 }
 
 function renderCard(card, slotEl) {
@@ -236,7 +521,8 @@ function render() {
   if (!els.board) return;
   els.board.innerHTML = '';
   const hasCards = cards.length > 0;
-  els.dropPanel?.classList.toggle('hidden', hasCards);
+  els.dropPanel?.classList.toggle('is-empty', !hasCards);
+  els.dropPanel?.classList.remove('hidden');
   els.board.classList.toggle('hidden', !hasCards);
 
   slotIndices(cards).forEach((slot) => {
@@ -248,7 +534,7 @@ function render() {
       renderCard(card, slotEl);
     } else {
       slotEl.classList.add('cs-slot--empty');
-      slotEl.setAttribute('aria-hidden', 'true');
+      slotEl.setAttribute('aria-label', `空きスロット ${slot + 1}`);
     }
     els.board.appendChild(slotEl);
   });
@@ -276,20 +562,31 @@ function onBoardDragOver(e) {
   const slot = slotFromEvent(e);
   const fromCard = cards.find((c) => c.id === dragId);
   if (slot === null || !fromCard || fromCard.order === slot) {
-    clearDropGuide();
+    if (dropSlot !== null) {
+      dropSlot = null;
+      dragPreview = null;
+      clearSlidePreview();
+      applyDropGuide();
+    }
+    els.board.classList.add('is-drag-active');
     return;
   }
 
   if (dropSlot === slot) return;
   dropSlot = slot;
+  dragPreview = planMoveToSlot(cards, dragId, slot);
   els.board.classList.add('is-drag-active');
   applyDropGuide();
+  applySlidePreview(dragPreview);
 }
 
 function onBoardDragLeave(e) {
   if (!els.board || !dragId) return;
   if (e.relatedTarget instanceof Node && els.board.contains(e.relatedTarget)) return;
-  clearDropGuide();
+  dropSlot = null;
+  dragPreview = null;
+  clearSlidePreview();
+  applyDropGuide();
 }
 
 function onBoardDrop(e) {
@@ -304,13 +601,18 @@ function onBoardDrop(e) {
 async function moveCardToSlot(fromId, targetSlot) {
   const fromCard = cards.find((c) => c.id === fromId);
   if (!fromCard || fromCard.order === targetSlot || !db) return;
-  const other = cards.find((c) => c.order === targetSlot);
-  const fromSlot = fromCard.order;
-  fromCard.order = targetSlot;
-  await putCard(db, fromCard);
-  if (other) {
-    other.order = fromSlot;
-    await putCard(db, other);
+  const planned = planMoveToSlot(cards, fromId, targetSlot);
+  const changed = planned.filter((p) => {
+    const cur = cards.find((c) => c.id === p.id);
+    return cur && cur.order !== p.order;
+  });
+  if (!changed.length) return;
+
+  for (const p of changed) {
+    const card = cards.find((c) => c.id === p.id);
+    if (!card) continue;
+    card.order = p.order;
+    await putCard(db, card);
   }
   cards = await getAllCards(db);
   selectedId = fromId;
@@ -320,9 +622,67 @@ async function moveCardToSlot(fromId, targetSlot) {
 async function addFromPaste(dt) {
   const paste = await readClipboardPaste(dt);
   if (!paste) {
-    setStatus('認識できるのは Text · Table · URL · Image · Color（HEX）のみです。動画・GIFは対象外です。', true);
+    showBridgeToast('generic');
     return;
   }
+  await commitPaste(paste);
+}
+
+/**
+ * @param {FileList|File[]|null|undefined} fileList
+ * @param {DataTransfer|null|undefined} [dt]
+ */
+async function addFromFiles(fileList, dt) {
+  const files = fileList ? Array.from(fileList) : [];
+  const folderBridge =
+    dt && inspectDataTransferBridge(dt) === 'folder'
+      ? /** @type {const} */ ('folder')
+      : null;
+
+  if (folderBridge) {
+    showBridgeToast('folder');
+    return;
+  }
+
+  if (!files.length) {
+    const bridge = inspectDataTransferBridge(dt) || 'generic';
+    showBridgeToast(bridge);
+    return;
+  }
+
+  const bridgeKinds = files
+    .filter((f) => !isAcceptedLocalFile(f))
+    .map((f) => classifyInputBridge({ name: f.name, type: f.type }));
+  const bridge = primaryInputBridge(bridgeKinds);
+  const accepted = files.filter((f) => isAcceptedLocalFile(f));
+
+  if (!accepted.length) {
+    showBridgeToast(bridge || 'generic');
+    return;
+  }
+
+  for (const file of accepted) {
+    const paste = await readLocalFile(file);
+    if (!paste) continue;
+    if (paste.kind === 'pdf') {
+      const thumb = await makePdfPreview(paste.pdfData);
+      if (thumb?.preview?.byteLength) {
+        paste.pdfPreviewData = thumb.preview;
+        paste.pdfPageCount = thumb.pageCount;
+      }
+    }
+    await commitPaste(paste);
+  }
+
+  if (bridge) showBridgeToast(bridge);
+  else setStatus('');
+}
+
+/**
+ * Clipboard / Drag / Picker 共通のカード生成。
+ * @param {object} paste
+ */
+async function commitPaste(paste) {
   if (!db) return;
   const card = buildCardFromPaste(paste, nextSlotIndex(cards));
   await putCard(db, card);
@@ -342,9 +702,11 @@ async function copyAndFeedback(id, closePreviewAfter = false) {
     if (closePreviewAfter) closePreview();
   } catch {
     if (card.type === 'image') {
-      setStatus('このブラウザでは画像のコピーに非対応です。', true);
+      setStatus('画像のコピーができませんでした。プレビューから確認してください。');
+    } else if (card.type === 'pdf') {
+      setStatus('PDFのコピーができませんでした。プレビューから確認してください。');
     } else {
-      setStatus('コピーに失敗しました。', true);
+      setStatus('コピーできませんでした。もう一度お試しください。');
     }
   }
 }
@@ -367,9 +729,16 @@ function isPreviewOpen() {
   return els.preview && !els.preview.classList.contains('hidden');
 }
 
+/** @type {string|null} */
+let previewObjectUrl = null;
+
 function openPreview() {
   const card = cards.find((c) => c.id === selectedId);
   if (!card || !els.preview || !els.previewBody) return;
+  if (previewObjectUrl) {
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = null;
+  }
   els.previewType.textContent = TYPE_LABELS[card.type];
   if (card.type === 'text') {
     els.previewBody.innerHTML = `<pre class="cs-preview__pre">${esc(card.text || '')}</pre>`;
@@ -388,6 +757,15 @@ function openPreview() {
     const { format } = imageCardMeta(card);
     els.previewBody.innerHTML = `<img src="${esc(src)}" alt="" class="cs-preview__img">
       <p class="cs-preview__meta">${esc(format)} · ${card.imageWidth || '?'}×${card.imageHeight || '?'} · ${formatBytes(card.imageBytes)}</p>`;
+  } else if (card.type === 'pdf') {
+    const blob = pdfBlob(card);
+    if (blob) {
+      previewObjectUrl = URL.createObjectURL(blob);
+      els.previewBody.innerHTML = `<iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(previewObjectUrl)}"></iframe>
+        <p class="cs-preview__meta">PDF · ${esc(card.pdfName || '')} · ${formatBytes(card.pdfBytes)}</p>`;
+    } else {
+      els.previewBody.innerHTML = '<p class="cs-preview__meta">PDF を表示できません</p>';
+    }
   } else if (card.type === 'color') {
     els.previewBody.innerHTML = `<div class="cs-preview__swatch" style="background:${esc(card.colorHex || '#000')}"></div>
       <p class="cs-preview__hex">${esc((card.colorHex || '').toUpperCase())}</p>`;
@@ -397,6 +775,10 @@ function openPreview() {
 }
 
 function closePreview() {
+  if (previewObjectUrl) {
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = null;
+  }
   els.preview?.classList.add('hidden');
   document.body.classList.remove('cs-preview-open');
 }

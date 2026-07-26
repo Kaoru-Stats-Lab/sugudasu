@@ -38,11 +38,18 @@
       .cs-slot {
         width: 17.5rem;
         height: 13.5rem;
+        position: relative;
       }
       .cs-slot--empty {
         border: 2px dashed #e2e8f0;
         border-radius: 0.75rem;
         background: #f8fafc;
+      }
+      .cs-board.is-drag-active .cs-slot {
+        pointer-events: auto;
+      }
+      .cs-board.is-drag-active .cs-card {
+        pointer-events: none;
       }
       .cs-slot.is-drop-target {
         box-shadow: inset 0 0 0 2px #7c3aed;
@@ -63,8 +70,9 @@
         cursor: default;
         overflow: hidden;
         border: 2px solid transparent;
-        transition: border-color 0.12s ease;
+        transition: border-color 0.12s ease, transform 0.16s ease;
         box-sizing: border-box;
+        will-change: transform;
       }
       .cs-card.is-selected {
         border-color: #7c3aed;
@@ -73,7 +81,75 @@
       }
       .cs-card.is-selected.is-dragging { cursor: grabbing; }
       .cs-card.is-dragging { opacity: 0.45; }
+      .cs-card.is-slide-preview { z-index: 2; }
       .cs-board.is-drag-active .cs-card:not(.is-selected) { opacity: 0.72; }
+      .cs-board.is-drag-active .cs-card.is-slide-preview { opacity: 0.92; }
+      .sg-file-drop--strip {
+        padding: 0.85rem 1rem;
+        cursor: default;
+      }
+      .cs-input-strip__empty { display: none; }
+      .cs-input-strip.is-empty .cs-input-strip__empty { display: block; }
+      .cs-input-strip__pick-wrap {
+        margin: 0.5rem 0 0;
+      }
+      .cs-input-strip__pick {
+        border: none;
+        background: transparent;
+        color: #64748b;
+        font-size: 0.625rem;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+        padding: 0;
+      }
+      .cs-input-strip__pick:hover { color: #475569; }
+      .cs-card__pdf-name {
+        margin: 0;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: #334155;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cs-preview__pdf {
+        width: min(90vw, 48rem);
+        height: min(70vh, 36rem);
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        background: #fff;
+      }
+      .sg-file-drop--strip.is-bridge {
+        border-color: #94a3b8;
+        background: rgb(248 250 252 / 0.95);
+      }
+      .cs-bridge-toast {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(0.5rem);
+        z-index: 50;
+        max-width: min(28rem, calc(100vw - 2rem));
+        padding: 0.75rem 1.1rem;
+        border-radius: 0.75rem;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        line-height: 1.45;
+        text-align: center;
+        box-shadow: 0 10px 28px rgb(15 23 42 / 0.1);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+      }
+      .cs-bridge-toast.is-visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
       .cs-card__delete {
         position: absolute;
         top: 0.4rem;
@@ -227,31 +303,51 @@
       .cs-preview__title { font-weight: 700; }
       body.cs-preview-open { overflow: hidden; }
     </style>
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PureRefやメモアプリとの違いは？","acceptedAnswer":{"@type":"Answer","text":"PureRefは無限キャンバス、メモアプリは編集と整理が前提です。仮置きはCtrl+Vで置き、ダブルクリックでコピーするだけの一時退避です。編集・タグ・フォルダはありません。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。IndexedDBに端末内だけで保存します。SUGUDASUのサーバーへ送りません。"}},{"@type":"Question","name":"カードを編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。変更したい場合は貼り直してください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PureRefやメモアプリとの違いは？","acceptedAnswer":{"@type":"Answer","text":"PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。Ctrl+Vで置き、ダブルクリックで戻すだけ。編集・タグ・フォルダはありません。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。IndexedDBに端末内だけで保存します。SUGUDASUのサーバーへ送りません。"}},{"@type":"Question","name":"カードを編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。変更したい場合は貼り直してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 仮置き" data-sg-subtitle="Ctrl+V · ダブルクリックでコピー · Spaceで確認" data-sg-tool-id="clip-stash"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 仮置き" data-sg-subtitle="貼り付け · ドラッグ · ダブルクリックでコピー" data-sg-tool-id="clip-stash"></div>
 
 <main class="sg-main-shell flex-1 space-y-5" tabindex="0">
     <header class="sg-tool-intro space-y-2">
         <p data-sg-privacy-badge data-subject="コピー内容" data-extra="IndexedDB · 端末内" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
-                PowerPoint · Excel · ブラウザ · PDF · Cursor を行き来する途中で、<strong>あとで使う</strong>を一旦置く。
-                整理しない · 編集しない · 考えさせない — <strong>仕事が終われば消えてよい</strong>退避です。
+                PowerPoint · Excel · ブラウザ · PDF · メールを行き来する途中で、<strong>あとで使うもの</strong>を一旦置く。
+            </p>
+            <p class="sg-tool-lead">
+                整理しない。<br>
+                編集しない。<br>
+                考えさせない。
+            </p>
+            <p class="sg-tool-lead">
+                仕事が終われば消えていい退避です。
             </p>
             <p class="sg-tool-lead text-[12px] text-slate-600">
-                PureRef でもメモでもありません。<a href="normalize.html" class="text-violet-800 underline font-semibold">全角半角整え</a> のように加工するツールとも別物です。
+                PureRef でもメモでもありません。
+            </p>
+            <p class="sg-tool-lead text-[12px] text-slate-600">
+                集める場所ではなく、成果物ができるまで一時的に置く場所です。
+            </p>
+            <p class="sg-tool-lead text-[12px] text-slate-600">
+                加工するツールでもありません。
             </p>
         </div>
     </header>
 
-    <section id="cs-drop-panel" class="sg-card p-5 lg:p-6 space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">入力</h2>
-        <div id="cs-drop-zone" class="sg-file-drop" tabindex="0" role="button" aria-label="クリップボードから貼り付け">
-            <p class="sg-file-drop__title">ドロップ / クリック · Ctrl+V</p>
-            <p class="sg-file-drop__hint">コピーした文字 · 表 · URL · 画像 · 色を貼り付け</p>
-            <p class="sg-file-drop__hint">Text · Table · URL · Image · Color · IndexedDB · 非送信</p>
+    <section id="cs-drop-panel" class="cs-input-strip sg-card p-3 lg:p-4 space-y-2">
+        <div id="cs-drop-zone" class="cs-input-strip__drop sg-file-drop sg-file-drop--strip" tabindex="0" role="button" aria-label="ここへ貼り付け・ドラッグ">
+            <p class="sg-file-drop__title">ここへ貼り付け・ドラッグ</p>
+            <p class="sg-file-drop__hint">Ctrl+V · 画像 · PDF · URL · テキスト</p>
+            <div id="cs-empty-copy" class="cs-input-strip__empty space-y-1 pt-2">
+                <p class="sg-file-drop__hint">あとで使うものを一旦置いておく場所です。</p>
+                <p class="sg-file-drop__hint">整理しません。編集しません。</p>
+                <p class="sg-file-drop__hint">仕事が終わったらそのまま閉じてください。</p>
+            </div>
+            <p class="cs-input-strip__pick-wrap">
+                <button type="button" id="cs-file-pick" class="cs-input-strip__pick">ファイルを選択</button>
+            </p>
+            <input id="cs-file-input" type="file" class="hidden" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf,.png,.jpg,.jpeg,.webp,.gif,.svg,.pdf" multiple>
         </div>
     </section>
 
@@ -261,6 +357,8 @@
 
     <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
 </main>
+
+<div id="cs-bridge-toast" class="cs-bridge-toast hidden" role="status" aria-live="polite"></div>
 
 <div id="cs-preview" class="cs-preview hidden" role="dialog" aria-modal="true" aria-label="プレビュー">
     <div class="cs-preview__backdrop"></div>
@@ -277,7 +375,7 @@
             <details class="sg-faq">
                 <summary>PureRefやメモアプリとの違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>PureRefは無限キャンバス、メモアプリは編集と整理が前提です。仮置きは<strong>Ctrl+V</strong>で置き、<strong>ダブルクリック</strong>でコピーするだけの一時退避です。タグ · フォルダ · 編集はありません。</p>
+                    <p>PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。<strong>Ctrl+V</strong>で置き、<strong>ダブルクリック</strong>で戻すだけ。タグ · フォルダ · 編集はありません。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -295,7 +393,7 @@
             <details class="sg-faq">
                 <summary>操作一覧</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>クリックで選択 · 選択したカードをドラッグで別スロットへ · ダブルクリックでコピー · Spaceで確認 · Escで閉じる · Deleteまたは<strong>×</strong>で削除 · Ctrl+Vで追加。削除した位置は空スロットのまま残ります。</p>
+                    <p>クリックで選択 · 選択したカードをドラッグで別スロットへ · ダブルクリックでコピー · Spaceで確認 · Escで閉じる · Deleteまたは<strong>×</strong>で削除 · <strong>Ctrl+V</strong>または画像·PDFのドラッグで追加。削除した位置は空スロットのまま残ります。</p>
                 </div>
             </details>
         </div>

@@ -22,9 +22,12 @@
 - スマート配置 · 自動整列 · AI分類
 - OCR検索 · 履歴 · バージョン管理
 
-## カード種（5種固定）
+## カード種（6種）
 
-Text · Table · URL · Image · Color — これ以上増やさない。
+Text · Table · URL · Image · Color · PDF
+
+Image: PNG · JPG · WebP · GIF · SVG（元バイト保持 · 再エンコードしない）  
+PDF: ローカル投入 · 1ページ目プレビューのみ生成 · PDF 本体は変更しない
 
 ## 操作（以上。）
 
@@ -35,36 +38,70 @@ Text · Table · URL · Image · Color — これ以上増やさない。
 | Space | Preview（確認のみ · 編集不可） |
 | Esc | Preview 閉じる |
 | Delete | 削除 |
-| Ctrl+V | 追加 |
-| DnD | 並び替え（**選択中のカードのみ**） |
+| Ctrl+V | 追加（Clipboard） |
+| ファイル DnD / 選択 | 画像 · PDF を追加（アップロードではない · 端末内読込のみ） |
+| カード DnD | 並び替え（**選択中のカードのみ**） |
 
-**Reject:** Enter · ヒントテキスト · 編集 · 独自ズーム · **複数選択（Ctrl/Shift+Click）** · Non-Goals 一覧（上記）
+**Reject:** Enter · ヒントテキスト · 編集 · 独自ズーム · **複数選択（Ctrl/Shift+Click）** · Non-Goals 一覧（上記） · Word/Excel/PowerPoint/ZIP/動画/音声/フォルダ
 
 ## DnD
 
 1. クリックで選択
 2. 選択したカードをそのままドラッグ（専用ハンドルなし）
-3. 空スロットまたは他カードのスロットへ Drop（占有時は入れ替え）
-4. Drop 後も選択状態を維持
-5. 未選択カードはドラッグ不可
+3. **空スロット・他カードのスロット**いずれも Drop 対象（空白も通常インデックス）
+4. ドロップは **その位置へ配置**（空きなら移動のみ · 占有なら入れ替え）。**他カードの自動詰め・圧縮はしない**
+5. 途中空白の保持は許可する（ユーザーが空けた穴はそのまま）
+6. ドラッグ中はドロップ先をハイライト（占有時のみ入れ替え相手をスライドプレビュー）
+7. Drop 後も選択状態を維持
+8. 未選択カードはドラッグ不可
+
+**ADR:** 空白は自由に使えるが、システムは空白に意味を与えない（グループ · セクション · 見出し · 色分け · 自動整列などは追加しない）。
 
 ## 削除
 
 - 各カード右上 **×** · Delete キー
-- 削除後も**スロット位置は維持**（空スロットとして残る）
-- 新規貼付は空スロットを優先
+- 削除後も**スロット位置は維持**（空スロットとして残る · 次のペーストが埋める）
+- 新規貼付は空スロットを優先（先頭の空白へ。DnD とは独立）
+
+## ADR-CS-001 Input Bridge
+
+**目的:** ユーザーはファイル形式ではなく、扱っているアプリケーションで認識する。Clipboard へ橋渡しすることが目的。
+
+**原則**
+
+- エラーメッセージで拡張子を書かない
+- Excel / Word / PowerPoint などアプリ名で案内する
+- 「非対応」は使わない
+- 必ず「こうすると置けます」で終える
+- トーストは失敗通知ではなく入力誘導
+- Blocking Dialog 禁止 · 赤色エラー禁止 · 3〜5秒で自動消滅 · 操作を止めない
+
+**実装:** `classifyInputBridge` · `INPUT_BRIDGE_MESSAGES` · `#cs-bridge-toast`（dragenter / drop）
+
+| 入力 | 案内 |
+|------|------|
+| Excel | Excelはセルをコピーすると表として置けます。 |
+| Word | Wordは文章をコピーするとそのまま置けます。 |
+| PowerPoint | PowerPointは画像や文字をコピーすると置けます。 |
+| ZIP | ZIPは解凍して画像やPDFを置いてください。 |
+| フォルダ | フォルダではなく中のファイルを置いてください。 |
 
 ## Image
 
-PNG · JPG · WebP · SVG のみ。**GIF · 動画は非対応**（スコープ外）。
+PNG · JPG · WebP · GIF · SVG。**動画は非対応**。元 Blob を保持（Canvas 再エンコード · JPEG→PNG 変換なし）。
 
 **ボード上のサムネ:** `object-fit: cover` · `object-position: center`（一覧での把握。縦長スクショは中央帯を優先）。  
 **Preview（Space）:** `contain`（全体確認。隣接カードへの巡回ナビは持たない）。
+
+## PDF
+
+ローカルファイル投入のみ。プレビュー用 PNG を1ページ目から生成してよい。PDF バイト列は変更しない。ファイル管理 UI は持たない。
 
 ## Preview
 
 - 画面中央オーバーレイ · 背景暗転
 - コピー · URLを開く（リンククリック）のみ
+- PDF は iframe（blob URL）で確認
 - ブラウザ全体はズームしない
 - **隣接カードへのスムーズ移動はしない**（確認は1枚単位 · 閉じてから次を選ぶ）
 
@@ -80,12 +117,14 @@ IndexedDB `sugudasu-clip-stash` · 非送信 · 同期なし（コア）
 
 ## 入力 UI
 
-- **0枚:** `sg-file-drop` 入力パネル（[赤入れ `/annotate`](https://sugudasu.com/annotate) 同型 · 旧 `/mask`）
-- **1枚目以降:** 入力パネル非表示 · **Ctrl+V のみ**
+- **常設 Input Strip:** 「ここへ貼り付け・ドラッグ」（Ctrl+V · 画像 · PDF · URL · テキスト）
+- 目立たない「ファイルを選択」（主役は DnD）
+- **0枚時のみ** Empty コピー（整理しない / 編集しない …）を Strip 内に表示
+- ラベルに「アップロード」は使わない
 
 ## 実装
 
-- `assets/clip-stash-engine.js` — 分類 · 表示 · コピー
+- `assets/clip-stash-engine.js` — 分類 · 表示 · コピー · ローカルファイル読込
 - `assets/clip-stash-db.js` — IndexedDB
-- `assets/clip-stash-app.js` — UI
+- `assets/clip-stash-app.js` — UI · PDF プレビュー生成（pdf.js）
 - `tools/clip-stash.html`

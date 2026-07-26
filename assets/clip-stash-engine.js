@@ -3,7 +3,7 @@
  * docs/products/clip-stash/specification.md
  */
 
-/** @typedef {'text'|'table'|'url'|'image'|'color'} ClipStashType */
+/** @typedef {'text'|'table'|'url'|'image'|'color'|'pdf'} ClipStashType */
 
 /** @typedef {{
  *   id: string,
@@ -23,6 +23,11 @@
  *   imageHeight?: number,
  *   imageBytes?: number,
  *   colorHex?: string,
+ *   pdfData?: ArrayBuffer,
+ *   pdfBytes?: number,
+ *   pdfName?: string,
+ *   pdfPreviewData?: ArrayBuffer,
+ *   pdfPageCount?: number,
  * }} ClipStashCard */
 
 export const TEXT_PREVIEW_CHARS = 300;
@@ -147,12 +152,189 @@ export async function fetchUrlMeta(url) {
 }
 
 /**
- * GIF はスコープ外（貼り先で静止画になるため仮置き対象外）
+ * 画像は元 Blob を保持（再エンコードしない）。GIF 含む。
  * @param {string} mime
  */
 export function isSupportedImageMime(mime) {
   const m = String(mime || '').toLowerCase();
-  return m.startsWith('image/') && m !== 'image/gif';
+  if (!m.startsWith('image/')) return false;
+  return (
+    m === 'image/png' ||
+    m === 'image/jpeg' ||
+    m === 'image/jpg' ||
+    m === 'image/webp' ||
+    m === 'image/gif' ||
+    m === 'image/svg+xml'
+  );
+}
+
+/**
+ * @param {string} name
+ * @param {string} [mime]
+ */
+export function isPdfFile(name, mime = '') {
+  const m = String(mime || '').toLowerCase();
+  if (m === 'application/pdf') return true;
+  return /\.pdf$/i.test(String(name || ''));
+}
+
+/**
+ * ローカル投入で受け付けるか（Word/Excel/動画等は拒否）。
+ * @param {File|Blob & { name?: string }} file
+ */
+export function isAcceptedLocalFile(file) {
+  if (!file) return false;
+  const mime = String(file.type || '').toLowerCase();
+  const name = file.name || '';
+  if (isPdfFile(name, mime)) return true;
+  if (isSupportedImageMime(mime)) return true;
+  if (/\.(png|jpe?g|webp|gif|svg)$/i.test(name)) return true;
+  return false;
+}
+
+/**
+ * ADR-CS-001 Input Bridge
+ * 拡張子で落とさず、アプリ名で Clipboard へ橋渡しする。
+ * @typedef {'excel'|'word'|'powerpoint'|'zip'|'folder'|'generic'} InputBridgeKind
+ */
+
+/** @type {Record<InputBridgeKind, string>} */
+export const INPUT_BRIDGE_MESSAGES = {
+  excel: 'Excelはセルをコピーすると表として置けます。',
+  word: 'Wordは文章をコピーするとそのまま置けます。',
+  powerpoint: 'PowerPointは画像や文字をコピーすると置けます。',
+  zip: 'ZIPは解凍して画像やPDFを置いてください。',
+  folder: 'フォルダではなく中のファイルを置いてください。',
+  generic: '画像やPDFを置くか、セル・文章をコピーすると置けます。',
+};
+
+const BRIDGE_PRIORITY = /** @type {const} */ ([
+  'folder',
+  'excel',
+  'word',
+  'powerpoint',
+  'zip',
+  'generic',
+]);
+
+/**
+ * @param {{ name?: string, type?: string, isDirectory?: boolean }} file
+ * @returns {InputBridgeKind|null} 受け付け可能なら null
+ */
+export function classifyInputBridge(file) {
+  if (!file) return 'generic';
+  if (file.isDirectory) return 'folder';
+  const mime = String(file.type || '').toLowerCase();
+  const name = String(file.name || '');
+  const lower = name.toLowerCase();
+
+  if (
+    mime.includes('spreadsheet') ||
+    mime.includes('excel') ||
+    mime === 'text/csv' ||
+    /\.(xlsx?|xlsm|xlsb|csv)$/i.test(lower)
+  ) {
+    return 'excel';
+  }
+  if (
+    mime.includes('wordprocessing') ||
+    mime === 'application/msword' ||
+    /\.(docx?|rtf)$/i.test(lower)
+  ) {
+    return 'word';
+  }
+  if (
+    mime.includes('presentation') ||
+    mime.includes('powerpoint') ||
+    /\.(pptx?|ppsx?)$/i.test(lower)
+  ) {
+    return 'powerpoint';
+  }
+  if (
+    mime.includes('zip') ||
+    mime.includes('compressed') ||
+    mime === 'application/x-7z-compressed' ||
+    mime === 'application/vnd.rar' ||
+    /\.(zip|7z|rar)$/i.test(lower)
+  ) {
+    return 'zip';
+  }
+
+  if (isAcceptedLocalFile({ name, type: mime })) return null;
+  return 'generic';
+}
+
+/**
+ * @param {Iterable<InputBridgeKind|null|undefined>} kinds
+ * @returns {InputBridgeKind|null}
+ */
+export function primaryInputBridge(kinds) {
+  const set = new Set([...kinds].filter(Boolean));
+  if (!set.size) return null;
+  for (const k of BRIDGE_PRIORITY) {
+    if (set.has(k)) return k;
+  }
+  return 'generic';
+}
+
+/**
+ * @param {InputBridgeKind|null|undefined} kind
+ */
+export function inputBridgeMessage(kind) {
+  if (!kind) return '';
+  return INPUT_BRIDGE_MESSAGES[kind] || INPUT_BRIDGE_MESSAGES.generic;
+}
+
+/**
+ * File / Blob → Clipboard Paste と同型の入力。圧縮・再エンコードなし。
+ * @param {File} file
+ */
+export async function readLocalFile(file) {
+  if (!isAcceptedLocalFile(file)) return null;
+  const mime = String(file.type || '').toLowerCase();
+  const name = file.name || 'file';
+
+  if (isPdfFile(name, mime)) {
+    const ab = await file.arrayBuffer();
+    return {
+      kind: /** @type {const} */ ('pdf'),
+      pdfData: ab,
+      pdfBytes: ab.byteLength,
+      pdfName: name.replace(/\.pdf$/i, '') || 'PDF',
+    };
+  }
+
+  const imageMime =
+    isSupportedImageMime(mime)
+      ? mime === 'image/jpg'
+        ? 'image/jpeg'
+        : mime
+      : guessImageMimeFromName(name);
+  if (!imageMime) return null;
+  const ab = await file.arrayBuffer();
+  const blob = new Blob([ab], { type: imageMime });
+  const dims = await imageDimensions(blob);
+  return {
+    kind: /** @type {const} */ ('image'),
+    imageMime,
+    imageData: ab,
+    imageBytes: ab.byteLength,
+    imageWidth: dims.width,
+    imageHeight: dims.height,
+  };
+}
+
+/**
+ * @param {string} name
+ */
+function guessImageMimeFromName(name) {
+  const n = String(name || '').toLowerCase();
+  if (n.endsWith('.png')) return 'image/png';
+  if (n.endsWith('.jpg') || n.endsWith('.jpeg')) return 'image/jpeg';
+  if (n.endsWith('.webp')) return 'image/webp';
+  if (n.endsWith('.gif')) return 'image/gif';
+  if (n.endsWith('.svg')) return 'image/svg+xml';
+  return '';
 }
 
 /**
@@ -174,6 +356,32 @@ export function slotIndices(cards) {
   if (!cards.length) return [];
   const maxOrder = Math.max(...cards.map((c) => c.order));
   return Array.from({ length: maxOrder + 1 }, (_, i) => i);
+}
+
+/**
+ * 空白セルを通常インデックスとして扱い、targetSlot へそのまま置く。
+ * 空きなら移動のみ（元位置は空白のまま）。占有なら入れ替え。
+ * 他カードの自動詰め・圧縮はしない（空白に意味を与えない）。
+ * @param {import('./clip-stash-engine.js').ClipStashCard[]} cards
+ * @param {string} fromId
+ * @param {number} targetSlot
+ * @returns {{ id: string, order: number }[]}
+ */
+export function planMoveToSlot(cards, fromId, targetSlot) {
+  if (!cards.length || !Number.isFinite(targetSlot) || targetSlot < 0) {
+    return cards.map((c) => ({ id: c.id, order: c.order }));
+  }
+  const fromCard = cards.find((c) => c.id === fromId);
+  if (!fromCard || fromCard.order === targetSlot) {
+    return cards.map((c) => ({ id: c.id, order: c.order }));
+  }
+  const other = cards.find((c) => c.order === targetSlot);
+  const fromSlot = fromCard.order;
+  return cards.map((c) => {
+    if (c.id === fromId) return { id: c.id, order: targetSlot };
+    if (other && c.id === other.id) return { id: c.id, order: fromSlot };
+    return { id: c.id, order: c.order };
+  });
 }
 
 /**
@@ -258,6 +466,17 @@ export function buildCardFromPaste(paste, order) {
       imageHeight: paste.imageHeight,
     };
   }
+  if (paste.kind === 'pdf') {
+    return {
+      ...base,
+      type: 'pdf',
+      pdfData: paste.pdfData,
+      pdfBytes: paste.pdfBytes,
+      pdfName: paste.pdfName || 'PDF',
+      pdfPreviewData: paste.pdfPreviewData,
+      pdfPageCount: paste.pdfPageCount,
+    };
+  }
   if (paste.kind === 'color') {
     return { ...base, type: 'color', colorHex: paste.colorHex };
   }
@@ -301,6 +520,7 @@ export function imageFormatLabel(mime) {
   if (m === 'image/png') return 'PNG';
   if (m === 'image/jpeg' || m === 'image/jpg') return 'JPG';
   if (m === 'image/webp') return 'WebP';
+  if (m === 'image/gif') return 'GIF';
   if (m === 'image/svg+xml') return 'SVG';
   return 'Image';
 }
@@ -323,6 +543,23 @@ export function imageBlob(card) {
 /**
  * @param {ClipStashCard} card
  */
+export function pdfBlob(card) {
+  if (card.type !== 'pdf' || !card.pdfData) return null;
+  return new Blob([card.pdfData], { type: 'application/pdf' });
+}
+
+/**
+ * PDF 1ページ目プレビュー用（元 PDF は変更しない）。
+ * @param {ClipStashCard} card
+ */
+export function pdfPreviewBlob(card) {
+  if (card.type !== 'pdf' || !card.pdfPreviewData) return null;
+  return new Blob([card.pdfPreviewData], { type: 'image/png' });
+}
+
+/**
+ * @param {ClipStashCard} card
+ */
 export async function copyCard(card) {
   if (card.type === 'image') {
     const blob = imageBlob(card);
@@ -332,6 +569,19 @@ export async function copyCard(card) {
       return;
     }
     throw new Error('clipboard-image');
+  }
+  if (card.type === 'pdf') {
+    const blob = pdfBlob(card);
+    if (!blob) throw new Error('empty');
+    if (navigator.clipboard?.write) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'application/pdf': blob })]);
+        return;
+      } catch {
+        throw new Error('clipboard-pdf');
+      }
+    }
+    throw new Error('clipboard-pdf');
   }
   const text = copyPayload(card);
   if (!text) throw new Error('empty');
@@ -348,12 +598,31 @@ export function formatBytes(n) {
 }
 
 /**
+ * 相対時間（描画時算出）。履歴ツール感を弱める。
  * @param {string} iso
+ * @param {Date} [now]
  */
-export function formatTimestamp(iso) {
+export function formatTimestamp(iso, now = new Date()) {
   try {
     const d = new Date(iso);
-    return d.toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    if (Number.isNaN(d.getTime())) return '';
+    const diffMs = now.getTime() - d.getTime();
+    if (diffMs < 0) return 'たった今';
+    const sec = Math.floor(diffMs / 1000);
+    if (sec < 60) return 'たった今';
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}分前`;
+
+    const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startThat = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const dayDiff = Math.round((startToday - startThat) / 86400000);
+    if (dayDiff === 0) {
+      const hour = Math.floor(min / 60);
+      return `${Math.max(1, hour)}時間前`;
+    }
+    if (dayDiff === 1) return '昨日';
+    if (dayDiff > 1 && dayDiff < 7) return `${dayDiff}日前`;
+    return d.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
   } catch {
     return '';
   }
@@ -365,4 +634,5 @@ export const TYPE_LABELS = {
   url: 'URL',
   image: 'Image',
   color: 'Color',
+  pdf: 'PDF',
 };

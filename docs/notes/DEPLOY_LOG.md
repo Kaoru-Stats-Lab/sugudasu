@@ -1541,10 +1541,31 @@
 
 ---
 
+## DEPLOY-20260726-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 仮置き LP/DnD/ローカル投入 · ADR-CS-001 Input Bridge |
+| **change_summary** | `clip-stash` Hero·Empty·相対時間·メタ削減 · 空白セルDnD（詰めない） · 常設Input Strip · 画像/PDFローカル投入（再エンコードなし） · Input Bridgeトースト · `specification.md` |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8 確認予定 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | `/clip-stash` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 001 approved（仮置き LP · ローカル投入 · Input Bridge · 提督 Commit&Push） |
 | 2026-07-25 | 003 executed（dbee6cf · コピー成功フィードバック · 赤入れ導線） |
 | 2026-07-25 | 003 approved（コピー成功フィードバック統一 · 赤入れ導線 · P7 override · 提督 Commit&Push） |
 | 2026-07-25 | 002 executed（93055ec · 仮置きサムネ · 領収書 · Copy-First） |
