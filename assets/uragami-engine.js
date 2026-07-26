@@ -6,18 +6,19 @@
  * SessionStorage は F5 回復専用（保管ではない）。
  */
 
-export const PAPER_MM = { w: 210, h: 297 };
+export const PAPER_MM = { w: 320, h: 180 }; // 16:9 の論理 mm（方眼・PNG dpi 換算用）
+export const PAPER_ASPECT = 16 / 9;
 export const GRID_MM = 5;
 export const COLOR_BLACK = '#1D1D1D';
 export const COLOR_RED = '#B41E23';
 export const PAPER_BG = '#F8F5EC';
-export const GRID_COLOR = 'rgba(216, 221, 230, 0.28)';
+export const GRID_COLOR = 'rgba(216, 221, 230, 0.25)';
 
 export const STROKE_BASE = 2.2;
 export const STROKE_MIN = 1.9;
 export const STROKE_MAX = 2.5;
 
-export const SS_KEY = 'sugudasu-uragami-v1';
+export const SS_KEY = 'sugudasu-uragami-v2';
 
 /** @typedef {'pen'|'eraser'} UragamiTool */
 /** @typedef {{ x: number, y: number, w: number, t: number }} UragamiPoint */

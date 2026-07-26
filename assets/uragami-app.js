@@ -1,6 +1,7 @@
 /**
  * SUGUDASU 裏紙 — UI
  * Mission: explain, not create drawings.
+ * Paper Zoom/Pan: viewer scale only — sheet size never changes (ADR-007).
  * docs/products/uragami/
  */
 import {
@@ -17,8 +18,13 @@ import {
   widthFromVelocity,
 } from './uragami-engine.js';
 
+const ZOOM_MIN = 0.6;
+const ZOOM_MAX = 3;
+const ERASER_WIDTH = 2.2;
+
 const els = {
   stage: document.getElementById('ug-stage'),
+  viewport: document.getElementById('ug-viewport'),
   paper: document.getElementById('ug-paper'),
   grid: /** @type {HTMLCanvasElement|null} */ (document.getElementById('ug-grid')),
   ink: /** @type {HTMLCanvasElement|null} */ (document.getElementById('ug-ink')),
@@ -39,9 +45,21 @@ let drawing = false;
 let cssW = 0;
 let cssH = 0;
 let dpr = 1;
-const ERASER_WIDTH = 2.2;
 /** @type {ReturnType<typeof setTimeout>|null} */
 let persistTimer = null;
+
+let viewZoom = 1;
+let viewPanX = 0;
+let viewPanY = 0;
+let spaceDown = false;
+let panning = false;
+let panPointerId = /** @type {number|null} */ (null);
+let panLastX = 0;
+let panLastY = 0;
+/** @type {Map<number, { x: number, y: number }>} */
+const pinchPointers = new Map();
+let pinchStartDist = 0;
+let pinchStartZoom = 1;
 
 function setStatus(msg) {
   if (els.status) els.status.textContent = msg || '';
@@ -58,14 +76,70 @@ function schedulePersist() {
   }, 200);
 }
 
+function applyViewTransform() {
+  if (!els.viewport) return;
+  els.viewport.style.transform = `translate(${viewPanX}px, ${viewPanY}px) scale(${viewZoom})`;
+  updatePanCursor();
+}
+
+function clampZoom(z) {
+  return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z));
+}
+
+/**
+ * Zoom around a stage-local point (client coords → stage).
+ * @param {number} nextZoom
+ * @param {number} [clientX]
+ * @param {number} [clientY]
+ */
+function setZoom(nextZoom, clientX, clientY) {
+  const stage = els.stage;
+  if (!stage) {
+    viewZoom = clampZoom(nextZoom);
+    applyViewTransform();
+    return;
+  }
+  const z0 = viewZoom;
+  const z1 = clampZoom(nextZoom);
+  if (z1 === z0) return;
+
+  const rect = stage.getBoundingClientRect();
+  const cx = clientX == null ? rect.left + rect.width / 2 : clientX;
+  const cy = clientY == null ? rect.top + rect.height / 2 : clientY;
+  const sx = cx - rect.left - rect.width / 2;
+  const sy = cy - rect.top - rect.height / 2;
+  // Keep the point under cursor stable: world = (screen - pan) / zoom
+  viewPanX = sx - ((sx - viewPanX) / z0) * z1;
+  viewPanY = sy - ((sy - viewPanY) / z0) * z1;
+  viewZoom = z1;
+  applyViewTransform();
+}
+
+function resetView() {
+  viewZoom = 1;
+  viewPanX = 0;
+  viewPanY = 0;
+  applyViewTransform();
+}
+
+function updatePanCursor() {
+  const ink = els.ink;
+  if (!ink) return;
+  const wantPan = spaceDown || panning;
+  ink.classList.toggle('is-panning', wantPan);
+  ink.classList.toggle('is-pan-active', panning);
+}
+
+/**
+ * Layout size（transform 前）。描画座標の正本。
+ */
 function resizeCanvases() {
   const paper = els.paper;
   const ink = els.ink;
   const grid = els.grid;
   if (!paper || !ink || !grid) return;
-  const rect = paper.getBoundingClientRect();
-  cssW = Math.max(1, rect.width);
-  cssH = Math.max(1, rect.height);
+  cssW = Math.max(1, paper.offsetWidth);
+  cssH = Math.max(1, paper.offsetHeight);
   dpr = Math.min(2.5, window.devicePixelRatio || 1);
   for (const c of [ink, grid]) {
     c.width = Math.round(cssW * dpr);
@@ -90,14 +164,17 @@ function localPoint(e) {
   const ink = els.ink;
   if (!ink) return { x: 0, y: 0 };
   const r = ink.getBoundingClientRect();
+  const w = Math.max(1, r.width);
+  const h = Math.max(1, r.height);
   return {
-    x: ((e.clientX - r.left) / r.width) * cssW,
-    y: ((e.clientY - r.top) / r.height) * cssH,
+    x: ((e.clientX - r.left) / w) * cssW,
+    y: ((e.clientY - r.top) / h) * cssH,
   };
 }
 
 function beginStroke(e) {
   if (e.button != null && e.button !== 0) return;
+  if (spaceDown) return;
   e.preventDefault();
   els.ink?.setPointerCapture?.(e.pointerId);
   drawing = true;
@@ -132,7 +209,6 @@ function extendStroke(e) {
     live.points.push({ x: p.x, y: p.y, w, t: now });
   }
   if (ctx) {
-    // ライブは最終2点だけ足すより、ストローク全体を軽く描き足す
     const n = live.points.length;
     if (n >= 2) {
       const seg = {
@@ -150,7 +226,6 @@ function endStroke(e) {
   drawing = false;
   live.points = lightSmooth(live.points);
   undoStack.push(strokes);
-  // 上限
   if (undoStack.length > 40) undoStack.shift();
   strokes = [...strokes, live];
   live = null;
@@ -172,7 +247,6 @@ function turnPage() {
   const paper = els.paper;
   if (paper) {
     paper.classList.remove('ug-paper--flip');
-    // reflow
     void paper.offsetWidth;
     paper.classList.add('ug-paper--flip');
   }
@@ -180,6 +254,7 @@ function turnPage() {
   undoStack = [];
   live = null;
   clearSession();
+  resetView();
   const ctx = inkCtx();
   if (ctx) redrawAll(ctx, strokes, cssW, cssH, dpr);
   window.setTimeout(() => paper?.classList.remove('ug-paper--flip'), 420);
@@ -215,20 +290,141 @@ function setTool(next, nextColor) {
   });
 }
 
+function startPan(e) {
+  if (drawing) endStroke(e);
+  panning = true;
+  panPointerId = e.pointerId;
+  panLastX = e.clientX;
+  panLastY = e.clientY;
+  els.ink?.setPointerCapture?.(e.pointerId);
+  updatePanCursor();
+}
+
+function movePan(e) {
+  if (!panning || panPointerId !== e.pointerId) return;
+  viewPanX += e.clientX - panLastX;
+  viewPanY += e.clientY - panLastY;
+  panLastX = e.clientX;
+  panLastY = e.clientY;
+  applyViewTransform();
+}
+
+function endPan(e) {
+  if (!panning || (e && panPointerId !== e.pointerId)) return;
+  panning = false;
+  panPointerId = null;
+  updatePanCursor();
+}
+
+function onPointerDown(e) {
+  const isMiddle = e.button === 1;
+  const isSpacePan = spaceDown && e.button === 0;
+  if (isMiddle || isSpacePan) {
+    e.preventDefault();
+    startPan(e);
+    return;
+  }
+  if (e.pointerType === 'touch') {
+    pinchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinchPointers.size === 2) {
+      if (drawing) endStroke(e);
+      const pts = [...pinchPointers.values()];
+      pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
+      pinchStartZoom = viewZoom;
+      return;
+    }
+  }
+  beginStroke(e);
+}
+
+function onPointerMove(e) {
+  if (panning) {
+    e.preventDefault();
+    movePan(e);
+    return;
+  }
+  if (e.pointerType === 'touch' && pinchPointers.has(e.pointerId)) {
+    pinchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinchPointers.size === 2) {
+      e.preventDefault();
+      const pts = [...pinchPointers.values()];
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
+      const midX = (pts[0].x + pts[1].x) / 2;
+      const midY = (pts[0].y + pts[1].y) / 2;
+      setZoom(pinchStartZoom * (dist / pinchStartDist), midX, midY);
+      return;
+    }
+  }
+  extendStroke(e);
+}
+
+function onPointerUp(e) {
+  pinchPointers.delete(e.pointerId);
+  if (panning) {
+    endPan(e);
+    return;
+  }
+  endStroke(e);
+}
+
 function bind() {
   const ink = els.ink;
-  if (!ink) return;
+  const stage = els.stage;
+  if (!ink || !stage) return;
 
-  ink.addEventListener('pointerdown', beginStroke);
-  ink.addEventListener('pointermove', extendStroke);
-  ink.addEventListener('pointerup', endStroke);
-  ink.addEventListener('pointercancel', endStroke);
+  ink.addEventListener('pointerdown', onPointerDown);
+  ink.addEventListener('pointermove', onPointerMove);
+  ink.addEventListener('pointerup', onPointerUp);
+  ink.addEventListener('pointercancel', onPointerUp);
   ink.addEventListener('pointerleave', (e) => {
     if (drawing) endStroke(e);
   });
-
-  // スクロールやタッチのブラウザジェスチャを抑制
   ink.style.touchAction = 'none';
+
+  // Ctrl+wheel / trackpad pinch（多くの環境で ctrlKey + wheel）
+  stage.addEventListener(
+    'wheel',
+    (e) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      e.preventDefault();
+      const factor = Math.exp(-e.deltaY * 0.01);
+      setZoom(viewZoom * factor, e.clientX, e.clientY);
+    },
+    { passive: false },
+  );
+
+  // 中ボタンのオートスクロール防止
+  stage.addEventListener('auxclick', (e) => {
+    if (e.button === 1) e.preventDefault();
+  });
+  stage.addEventListener('mousedown', (e) => {
+    if (e.button === 1) e.preventDefault();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target && /** @type {HTMLElement} */ (e.target).tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.code === 'Space' && !e.repeat) {
+      e.preventDefault();
+      spaceDown = true;
+      updatePanCursor();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      undo();
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    if (e.code === 'Space') {
+      spaceDown = false;
+      if (!panning) updatePanCursor();
+    }
+  });
+  window.addEventListener('blur', () => {
+    spaceDown = false;
+    endPan();
+    updatePanCursor();
+  });
 
   document.addEventListener('click', (e) => {
     const btn = e.target instanceof Element ? e.target.closest('[data-ug-action],[data-ug-tool]') : null;
@@ -255,18 +451,6 @@ function bind() {
     if (t === 'eraser') setTool('eraser');
   });
 
-  document.addEventListener('keydown', (e) => {
-    const tag = (e.target && /** @type {HTMLElement} */ (e.target).tagName) || '';
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-      e.preventDefault();
-      undo();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-      // ブラウザ印刷に任せる
-    }
-  });
-
   window.addEventListener('resize', () => {
     resizeCanvases();
   });
@@ -285,8 +469,8 @@ function init() {
   restore();
   bind();
   setTool(tool, color);
+  applyViewTransform();
   resizeCanvases();
-  // レイアウト確定後にもう一度
   requestAnimationFrame(() => resizeCanvases());
 }
 

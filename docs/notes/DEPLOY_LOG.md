@@ -1643,10 +1643,31 @@
 
 ---
 
+## DEPLOY-20260726-006
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 裏紙 16:9 · Paper Zoom/Pan（同日 core 6回目 · P7 override） |
+| **change_summary** | ADR-007 Why One Sheet · 16:9紙 · Ctrl+wheel/ピンチ zoom · Space/中ボタン pan · Viewport UIなし · session key v2 |
+| **local_build** | `pass`（`release:pages:free` · budget consume 70/450） |
+| **deploy_count_today** | 6（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 006 approved（裏紙 16:9 · Paper Zoom/Pan · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 005 executed（7a54d95 · 裏紙 α · 台帳 file-transfer Outside Scope） |
 | 2026-07-26 | 005 approved（裏紙 α · 台帳 file-transfer Outside Scope · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 004 executed（8007a53 · PDF 入力仕様 · Data Fidelity） |

@@ -405,7 +405,7 @@
       "name": "デジタル裏紙（説明用）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "A4 · 黒赤ペン · PNG/印刷 · SessionStorage F5のみ · 永続なし · docs/products/uragami/",
+      "statusNote": "16:9一枚 · Paper Zoom/Pan · 黒赤ペン · PNG/印刷 · SessionStorage F5のみ · docs/products/uragami/",
       "categoryId": "ops"
     },
     "present": {

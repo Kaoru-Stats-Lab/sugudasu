@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "uragami-16x9-zoom-20260726",
+      "date": "2026-07-26",
+      "type": "improve",
+      "audience": "public",
+      "title": "裏紙 — 16:9と見る距離の拡大縮小",
+      "body": "紙は常に一枚のまま、画面向けの16:9にしました。Ctrl+ホイールやピンチで見る距離を変え、Space+ドラッグで位置をずらします。ズームボタンやミニマップはありません。",
+      "tools": [
+        "uragami"
+      ]
+    },
+    {
       "id": "uragami-alpha-20260726",
       "date": "2026-07-26",
       "type": "feature",

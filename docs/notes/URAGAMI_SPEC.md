@@ -14,15 +14,22 @@
 | ある | ない |
 |------|------|
 | 黒/赤ペン · 消しゴム · Undo | テキスト · 図形 · レイヤー |
-| A4 一枚 · 5mm 方眼 | Infinite Canvas · ズーム UI |
+| 16:9 一枚 · 5mm 相当方眼 | Infinite Canvas · Viewport UI（+/- · ミニマップ） |
+| Paper Zoom / Pan（ジェスチャ） | ズームボタン · % 表示 |
 | 紙をめくる | 削除/ゴミ箱 · 履歴一覧 |
 | PNG · 印刷 | ファイル読込 · IndexedDB · Auto Save |
 | SessionStorage（F5 のみ） | LocalStorage 永続 · Recent |
 
+### Paper Zoom / Pan
+
+- Ctrl + ホイール · トラックパッド ピンチ → 60%〜300%
+- Space + Drag · 中ボタン → パン
+- 紙の論理サイズは不変（見る側だけ変わる）
+
 ## 技術
 
 - `assets/uragami-engine.js` — ストローク · グリッド · session · PNG
-- `assets/uragami-app.js` — pointer · ツールバー
+- `assets/uragami-app.js` — pointer · ツールバー · zoom/pan
 - `tools/uragami.html`
 
 詳細は ADR-000〜009。

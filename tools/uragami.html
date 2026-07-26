@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>裏紙で説明を描く | SUGUDASU</title>
-    <meta name="description" content="ブラウザに一枚の裏紙。隣の人やZoomで、今の考えをサインペンで説明してPNGか印刷。保存しない・白紙から。">
+    <meta name="description" content="ブラウザに一枚の裏紙。隣の人や会議で、今の考えをサインペンで説明してPNGか印刷。保存しない・白紙から。">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
     <meta property="og:title" content="裏紙で説明を描く | SUGUDASU">
@@ -34,7 +34,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.35rem;
-        max-width: 42rem;
+        max-width: 48rem;
       }
       .ug-tool {
         border: 1px solid #cbd5e1;
@@ -57,25 +57,32 @@
         box-shadow: 0 0 0 1px #b41e23;
         color: #b41e23;
       }
-      .ug-tool--turn {
-        margin-left: 0.35rem;
-      }
+      .ug-tool--turn { margin-left: 0.35rem; }
       .ug-stage {
-        width: min(100%, 42rem);
+        width: min(100%, 56rem);
+        height: min(62vh, 28rem);
         display: flex;
+        align-items: center;
         justify-content: center;
+        overflow: hidden;
+        touch-action: none;
+        position: relative;
+      }
+      .ug-viewport {
+        position: relative;
+        transform-origin: center center;
+        will-change: transform;
       }
       .ug-paper {
         position: relative;
-        width: min(100%, calc(85vh * 210 / 297));
-        aspect-ratio: 210 / 297;
+        width: min(52rem, 88vw);
+        aspect-ratio: 16 / 9;
         background: #F8F5EC;
         border-radius: 0.15rem;
         box-shadow:
           0 1px 2px rgb(15 23 42 / 0.04),
           0 8px 24px rgb(15 23 42 / 0.06);
         overflow: hidden;
-        transform-origin: top right;
       }
       .ug-paper--flip {
         animation: ug-flip 0.4s ease;
@@ -93,6 +100,8 @@
         display: block;
       }
       #ug-ink { z-index: 2; cursor: crosshair; touch-action: none; }
+      #ug-ink.is-panning { cursor: grab; }
+      #ug-ink.is-panning.is-pan-active { cursor: grabbing; }
       #ug-grid { z-index: 1; pointer-events: none; }
       .ug-corner {
         position: absolute;
@@ -109,9 +118,7 @@
         box-shadow: -1px 1px 2px rgb(15 23 42 / 0.06);
         border-bottom-left-radius: 0.15rem;
       }
-      .ug-corner:hover {
-        filter: brightness(0.97);
-      }
+      .ug-corner:hover { filter: brightness(0.97); }
       .ug-corner span {
         position: absolute;
         width: 1px;
@@ -139,15 +146,20 @@
         }
         body, .sg-body { background: #fff !important; }
         .ug-main { padding: 0 !important; min-height: 0 !important; }
-        .ug-stage { width: 100% !important; }
+        .ug-stage {
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
+        .ug-viewport { transform: none !important; }
         .ug-paper {
-          width: 210mm !important;
-          height: 297mm !important;
-          aspect-ratio: auto !important;
+          width: 100% !important;
+          max-width: none !important;
+          aspect-ratio: 16 / 9 !important;
           box-shadow: none !important;
           border-radius: 0 !important;
         }
-        @page { size: A4; margin: 0; }
+        @page { size: landscape; margin: 0; }
       }
     </style>
 </head>
@@ -159,7 +171,7 @@
      data-sg-print="true"></div>
 
 <main class="ug-main flex-1">
-    <p class="ug-lead no-print">隣の人や Zoom で、今の考えを一枚で説明する。描くこと自体が目的ではありません。</p>
+    <p class="ug-lead no-print">隣の人や会議で、今の考えを一枚で説明する。描くこと自体が目的ではありません。</p>
 
     <div id="ug-toolbar" class="ug-toolbar no-print" role="toolbar" aria-label="裏紙ツール">
         <button type="button" class="ug-tool is-active" data-ug-tool="pen" data-ug-color="#1D1D1D" aria-pressed="true">黒</button>
@@ -171,11 +183,13 @@
         <button type="button" class="ug-tool" data-ug-action="print">印刷</button>
     </div>
 
-    <div id="ug-stage" class="ug-stage">
-        <div id="ug-paper" class="ug-paper" aria-label="A4の裏紙">
-            <canvas id="ug-grid" aria-hidden="true"></canvas>
-            <canvas id="ug-ink" aria-label="描画面"></canvas>
-            <button type="button" class="ug-corner no-print" data-ug-action="turn" title="紙をめくる" aria-label="紙をめくる"><span>紙をめくる</span></button>
+    <div id="ug-stage" class="ug-stage" aria-label="紙の表示領域">
+        <div id="ug-viewport" class="ug-viewport">
+            <div id="ug-paper" class="ug-paper" aria-label="16:9の裏紙">
+                <canvas id="ug-grid" aria-hidden="true"></canvas>
+                <canvas id="ug-ink" aria-label="描画面"></canvas>
+                <button type="button" class="ug-corner no-print" data-ug-action="turn" title="紙をめくる" aria-label="紙をめくる"><span>紙をめくる</span></button>
+            </div>
         </div>
     </div>
 
@@ -190,6 +204,12 @@
                 <summary>ホワイトボードやExcalidrawと何が違う？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
                     <p>無限キャンバスや図形・テキストはありません。コピー機の横の<strong>裏紙一枚</strong>です。説明が終わったら、PNGか印刷で持ち出し、タブを閉じれば消えます。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>拡大や移動はできる？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>紙の大きさは変わりません。Ctrl+ホイールやピンチで見る距離を変え、Space+ドラッグ（または中ボタン）で位置をずらします。ズームボタンやミニマップはありません。</p>
                 </div>
             </details>
             <details class="sg-faq">
