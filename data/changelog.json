@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "tool-catalog-uragami-20260726",
+      "date": "2026-07-26",
+      "type": "chore",
+      "audience": "internal",
+      "title": "ツールカタログに裏紙を追記（MECE突合）",
+      "body": "SUGUDASU_TOOL_CATALOG に uragami を追加。Playbook §1.5 A11 と突合ルールを明記。",
+      "tools": [
+        "uragami"
+      ]
+    },
+    {
       "id": "uragami-explain-mode-case-20260726",
       "date": "2026-07-26",
       "type": "chore",

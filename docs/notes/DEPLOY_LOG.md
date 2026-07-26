@@ -1683,10 +1683,31 @@
 
 ---
 
+## DEPLOY-20260726-008
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 — ツールカタログ MECE（uragami 欠落埋め）· 同日 core 8回目 · P7 override |
+| **change_summary** | `SUGUDASU_TOOL_CATALOG.md` に裏紙 · 38本突合 · Playbook A11 · tool-ship-mece |
+| **local_build** | `pass`（`release:pages:free` · budget consume 72/450） |
+| **deploy_count_today** | 8（**P7 override** · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （docs · catalog 突合） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 008 approved（ツールカタログ uragami · P7 override） |
 | 2026-07-26 | 007 executed（2c38ad2 · 裏紙 Fit/境界 · CASE-2026-008） |
 | 2026-07-26 | 007 approved（裏紙 Fit/境界 · CASE-2026-008 · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 006 executed（dc8171d · 裏紙 16:9 · Paper Zoom/Pan） |

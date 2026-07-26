@@ -149,6 +149,7 @@ npm run build:pages
 | A8 | `README.md` | ツール表が registry と一致 | `sync:readme-tools --check` |
 | A9 | `package.json` | 単体テストがあるなら `test:{id}`（任意だが追加したら `test:all` にも） | （任意） |
 | A10 | 仕様 SSOT | **`docs/notes/` 配下**（例: `SLOT_BOARD_SPEC.md`）。リポジトリ直下のメモは正本にしない | （目視） |
+| A11 | `docs/notes/SUGUDASU_TOOL_CATALOG.md` | inNav ツール1行（productName · id · JTBD · 工夫）。件数ヘッダを registry と一致 | （目視 · catalog 突合） |
 
 ### B. 本番反映（必須 · core）
 
