@@ -1565,18 +1565,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | hotfix — 仮置きカード DnD 即キャンセル（同日 core 2回目 · P7 override） |
 | **change_summary** | `tools/clip-stash.html` — `is-drag-active` 時の `pointer-events:none` をドラッグ中カード以外に限定（ドラッグ元を none にすると DnD が即終了する） |
-| **local_build** | （release 前） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 66/450） |
 | **deploy_count_today** | 2（**P7 override** · 本番 DnD 不能の hotfix） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 66/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
+| **cf_deployment_id** | `de12fb8`（git push origin main · CF 自動ビルド） |
 | **smoke** | `/clip-stash` 選択→ドラッグで入れ替え |
 
 ---
@@ -1585,6 +1585,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 002 executed（de12fb8 · 仮置き DnD hotfix） |
 | 2026-07-26 | 002 approved（仮置き DnD hotfix · P7 override） |
 | 2026-07-26 | 001 executed（8898a8e · 仮置き LP · ローカル投入 · Input Bridge） |
 | 2026-07-26 | 001 approved（仮置き LP · ローカル投入 · Input Bridge · 提督 Commit&Push） |
