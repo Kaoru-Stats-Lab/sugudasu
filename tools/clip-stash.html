@@ -48,7 +48,8 @@
       .cs-board.is-drag-active .cs-slot {
         pointer-events: auto;
       }
-      .cs-board.is-drag-active .cs-card {
+      /* ドラッグ中カード自身は pointer-events を残す（none にすると DnD が即キャンセルされる） */
+      .cs-board.is-drag-active .cs-card:not(.is-dragging) {
         pointer-events: none;
       }
       .cs-slot.is-drop-target {
