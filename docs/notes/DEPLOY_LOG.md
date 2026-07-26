@@ -1667,19 +1667,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 裏紙 Fit/境界 · CASE-2026-008（同日 core 7回目 · P7 override） |
 | **change_summary** | Paper Fit（既定90%）· Desk/縁/影 · 右下ハンドル · Alt+wheel · 論理1600×900 · CASE-2026-008 説明モード Reject |
 | **local_build** | `pass`（`release:pages:free` · budget consume 71/450） |
 | **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 71/450 |
 | **gates** | P1–P6 · P7 override · 提督明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `2c38ad2`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/uragami` Fit≈90% · 縁/机 · CASE-2026-008 |
 
 ---
 
@@ -1687,6 +1687,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 007 executed（2c38ad2 · 裏紙 Fit/境界 · CASE-2026-008） |
 | 2026-07-26 | 007 approved（裏紙 Fit/境界 · CASE-2026-008 · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 006 executed（dc8171d · 裏紙 16:9 · Paper Zoom/Pan） |
 | 2026-07-26 | 006 approved（裏紙 16:9 · Paper Zoom/Pan · P7 override · 提督 Commit&Push） |
