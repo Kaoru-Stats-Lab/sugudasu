@@ -18,10 +18,12 @@ import {
   PAPER_LOGICAL,
   clearSession,
   drawStroke,
+  eraserBrushWidth,
   lightSmooth,
   loadSession,
   paintGrid,
   redrawAll,
+  renderExportCanvas,
   renderExportPng,
   saveSession,
   widthFromVelocity,
@@ -40,7 +42,12 @@ const els = {
   fitHandle: document.getElementById('ug-fit-handle'),
   toolbar: document.getElementById('ug-toolbar'),
   status: document.getElementById('ug-status'),
+  printSheet: document.getElementById('ug-print-sheet'),
+  printImg: /** @type {HTMLImageElement|null} */ (document.getElementById('ug-print-img')),
 };
+
+/** @type {string|null} */
+let printObjectUrl = null;
 
 /** @type {import('./uragami-engine.js').UragamiStroke[]} */
 let strokes = [];
@@ -105,42 +112,8 @@ function applyViewTransform() {
 }
 
 /**
- * 紙の表示サイズを stage × paperFit に合わせる（論理座標は不変）。
- */
-function layoutPaper() {
-  const stage = els.stage;
-  const paper = els.paper;
-  if (!stage || !paper) return;
-  const sw = Math.max(1, stage.clientWidth);
-  const sh = Math.max(1, stage.clientHeight);
-  const fit = clampFit(paperFit);
-  let w = sw * fit;
-  let h = w / PAPER_ASPECT;
-  if (h > sh * fit) {
-    h = sh * fit;
-    w = h * PAPER_ASPECT;
-  }
-  paper.style.width = `${Math.round(w)}px`;
-  paper.style.height = `${Math.round(h)}px`;
-  syncCanvases();
-}
-
-function setPaperFit(next, opts = {}) {
-  const f0 = paperFit;
-  const f1 = clampFit(next);
-  if (Math.abs(f1 - f0) < 0.0005) return;
-  paperFit = f1;
-  layoutPaper();
-  if (!opts.silent) {
-    setStatus(`紙の大きさ ${Math.round(paperFit * 100)}%`);
-    window.clearTimeout(setPaperFit._t);
-    setPaperFit._t = window.setTimeout(() => setStatus(''), 1200);
-  }
-  schedulePersist();
-}
-
-/**
- * Zoom around a stage-local point.
+ * Ctrl+wheel は机の中心基準（紙が端へ逃げるのを防ぐ）。
+ * ピンチは二指の中点基準のまま setZoom(..., midX, midY)。
  * @param {number} nextZoom
  * @param {number} [clientX]
  * @param {number} [clientY]
@@ -172,6 +145,9 @@ function resetView() {
   viewPanX = 0;
   viewPanY = 0;
   applyViewTransform();
+  setStatus('表示を中央に戻しました');
+  window.clearTimeout(resetView._t);
+  resetView._t = window.setTimeout(() => setStatus(''), 1200);
 }
 
 function updatePanCursor() {
@@ -180,6 +156,68 @@ function updatePanCursor() {
   const wantPan = spaceDown || panning;
   ink.classList.toggle('is-panning', wantPan);
   ink.classList.toggle('is-pan-active', panning);
+  els.stage?.classList.toggle('is-pan-active', panning);
+  if (wantPan) return;
+  updateToolCursor();
+}
+
+/** ペンは色付き十字、消しゴムは実際の消し半径の円 */
+function updateToolCursor() {
+  const ink = els.ink;
+  const paper = els.paper;
+  if (!ink || !paper) return;
+  if (spaceDown || panning) return;
+
+  if (tool === 'eraser') {
+    const displayW = Math.max(1, paper.getBoundingClientRect().width);
+    const brushLogical = eraserBrushWidth(ERASER_WIDTH);
+    const r = Math.max(6, (brushLogical / 2) * (displayW / cssW));
+    const size = Math.ceil(r * 2 + 4);
+    const c = size / 2;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${c}" cy="${c}" r="${r}" fill="rgba(255,255,255,0.25)" stroke="#64748b" stroke-width="1.25"/><circle cx="${c}" cy="${c}" r="1.25" fill="#64748b"/></svg>`;
+    ink.style.cursor = `url("data:image/svg+xml,${encodeURIComponent(svg)}") ${c} ${c}, cell`;
+    return;
+  }
+
+  const stroke = color === COLOR_RED ? COLOR_RED : COLOR_BLACK;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+  ink.style.cursor = `url("data:image/svg+xml,${encodeURIComponent(svg)}") 12 12, crosshair`;
+}
+
+/**
+ * 紙の表示サイズを stage × paperFit に合わせる（論理座標は不変）。
+ */
+function layoutPaper() {
+  const stage = els.stage;
+  const paper = els.paper;
+  if (!stage || !paper) return;
+  const sw = Math.max(1, stage.clientWidth);
+  const sh = Math.max(1, stage.clientHeight);
+  const fit = clampFit(paperFit);
+  let w = sw * fit;
+  let h = w / PAPER_ASPECT;
+  if (h > sh * fit) {
+    h = sh * fit;
+    w = h * PAPER_ASPECT;
+  }
+  paper.style.width = `${Math.round(w)}px`;
+  paper.style.height = `${Math.round(h)}px`;
+  syncCanvases();
+  updateToolCursor();
+}
+
+function setPaperFit(next, opts = {}) {
+  const f0 = paperFit;
+  const f1 = clampFit(next);
+  if (Math.abs(f1 - f0) < 0.0005) return;
+  paperFit = f1;
+  layoutPaper();
+  if (!opts.silent) {
+    setStatus(`紙の大きさ ${Math.round(paperFit * 100)}%`);
+    window.clearTimeout(setPaperFit._t);
+    setPaperFit._t = window.setTimeout(() => setStatus(''), 1200);
+  }
+  schedulePersist();
 }
 
 /** 論理解像度でバッファを張り、CSS は紙いっぱいに伸ばす */
@@ -323,6 +361,62 @@ async function savePng() {
   }
 }
 
+/**
+ * Chrome は transform 付き canvas を印刷で落とすことがある。
+ * PNG と同系統の静止画シートを印刷対象にする。
+ * @param {'sync'|'hires'} [mode]
+ */
+function preparePrintSheet(mode = 'sync') {
+  const img = els.printImg;
+  if (!img) return;
+  if (mode === 'hires') {
+    /* async path via printPaper */
+    return;
+  }
+  try {
+    const canvas = renderExportCanvas(strokes, cssW, cssH, 150);
+    img.src = canvas.toDataURL('image/png');
+  } catch {
+    img.removeAttribute('src');
+  }
+}
+
+function clearPrintObjectUrl() {
+  if (printObjectUrl) {
+    URL.revokeObjectURL(printObjectUrl);
+    printObjectUrl = null;
+  }
+}
+
+async function printPaper() {
+  const img = els.printImg;
+  if (!img) {
+    window.print();
+    return;
+  }
+  try {
+    setStatus('印刷用の紙を準備しています…');
+    const blob = await renderExportPng(strokes, cssW, cssH);
+    clearPrintObjectUrl();
+    printObjectUrl = URL.createObjectURL(blob);
+    img.src = printObjectUrl;
+    if (typeof img.decode === 'function') {
+      await img.decode();
+    } else {
+      await new Promise((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error('img'));
+      });
+    }
+    setStatus('');
+    window.print();
+  } catch {
+    preparePrintSheet('sync');
+    setStatus('');
+    window.print();
+  }
+}
+
 function setTool(next, nextColor) {
   tool = next;
   if (nextColor) color = nextColor;
@@ -335,6 +429,7 @@ function setTool(next, nextColor) {
     btn.classList.toggle('is-active', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  updateToolCursor();
 }
 
 function startPan(e) {
@@ -343,7 +438,12 @@ function startPan(e) {
   panPointerId = e.pointerId;
   panLastX = e.clientX;
   panLastY = e.clientY;
-  els.ink?.setPointerCapture?.(e.pointerId);
+  const target = /** @type {Element|null} */ (e.currentTarget);
+  if (target && 'setPointerCapture' in target) {
+    /** @type {Element & { setPointerCapture: (id:number)=>void }} */ (target).setPointerCapture(e.pointerId);
+  } else {
+    els.ink?.setPointerCapture?.(e.pointerId);
+  }
   updatePanCursor();
 }
 
@@ -453,6 +553,34 @@ function bind() {
   });
   ink.style.touchAction = 'none';
 
+  // 机（紙の外）をドラッグでパン · ダブルクリックで中央復帰
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.target !== stage) return;
+    if (e.button === 1 || e.button === 0) {
+      e.preventDefault();
+      startPan(e);
+    }
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (panning) {
+      e.preventDefault();
+      movePan(e);
+    }
+  });
+  stage.addEventListener('pointerup', (e) => {
+    if (panning) endPan(e);
+  });
+  stage.addEventListener('pointercancel', (e) => {
+    if (panning) endPan(e);
+  });
+  stage.addEventListener('dblclick', (e) => {
+    if (e.target !== stage && !(e.target instanceof Element && e.target.closest('#ug-viewport'))) return;
+    // 紙上のダブルクリックは描画と競合しやすいので机のみ
+    if (e.target !== stage) return;
+    e.preventDefault();
+    resetView();
+  });
+
   els.fitHandle?.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -466,7 +594,7 @@ function bind() {
   els.fitHandle?.addEventListener('pointerup', onPointerUp);
   els.fitHandle?.addEventListener('pointercancel', onPointerUp);
 
-  // Ctrl+wheel = 見る距離（zoom） / Alt+wheel = 紙の占有率（fit）
+  // Ctrl+wheel = 見る距離（机の中心基準） / Alt+wheel = 紙の占有率
   stage.addEventListener(
     'wheel',
     (e) => {
@@ -479,7 +607,8 @@ function bind() {
       if (!(e.ctrlKey || e.metaKey)) return;
       e.preventDefault();
       const factor = Math.exp(-e.deltaY * 0.01);
-      setZoom(viewZoom * factor, e.clientX, e.clientY);
+      // カーソル基準にすると紙が端へ逃げる → 机の中心基準
+      setZoom(viewZoom * factor);
     },
     { passive: false },
   );
@@ -534,7 +663,7 @@ function bind() {
       return;
     }
     if (action === 'print') {
-      window.print();
+      void printPaper();
       return;
     }
     const t = btn.getAttribute('data-ug-tool');
@@ -544,6 +673,35 @@ function bind() {
 
   window.addEventListener('resize', () => {
     layoutPaper();
+    updateToolCursor();
+  });
+
+  // ヘッダー印刷は window.print() 直呼びなので横取りして紙を先に焼く
+  document.addEventListener(
+    'click',
+    (e) => {
+      const t = e.target;
+      if (!(t instanceof Element) || !t.closest('#sg-btn-print')) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      void printPaper();
+    },
+    true,
+  );
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'p') return;
+      const tag = (e.target && /** @type {HTMLElement} */ (e.target).tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      e.preventDefault();
+      void printPaper();
+    },
+    true,
+  );
+  window.addEventListener('afterprint', () => {
+    clearPrintObjectUrl();
+    if (els.printImg) els.printImg.removeAttribute('src');
   });
 }
 

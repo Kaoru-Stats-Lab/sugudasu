@@ -1703,10 +1703,31 @@
 
 ---
 
+## DEPLOY-20260726-009
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 — 裏紙 UX（印刷・ズーム中心・消しゴムカーソル・机上バッジ）· 同日 core 9回目 · P7 override |
+| **change_summary** | `uragami-app.js` · `uragami-engine.js` · `tools/uragami.html` · `sugudasu.css`（ug-desk バッジ）· `changelog.json` |
+| **local_build** | `pass`（`release:pages:free` · budget consume 73/450） |
+| **deploy_count_today** | 9（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 009 approved（裏紙 UX · 印刷/ズーム/消しゴム/バッジ · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 008 executed（462b9ed · ツールカタログ uragami） |
 | 2026-07-26 | 008 approved（ツールカタログ uragami · P7 override） |
 | 2026-07-26 | 007 executed（2c38ad2 · 裏紙 Fit/境界 · CASE-2026-008） |

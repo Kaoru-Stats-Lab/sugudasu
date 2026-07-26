@@ -3373,7 +3373,11 @@ body.sg-chrome-focus main {
   }
 }
 
-/* --- Tool dev stage badges (alpha / beta / gamma) --- */
+/* --- Tool dev stage badges (alpha / beta / gamma) ---
+ * Hub status バッジ（.sg-hub-badge--status）と同系色。
+ * alpha/gamma の一般文言は「新しい機能を試験公開〜」→ NEW 相当（emerald）
+ * beta は「試験公開中です」→ Beta 相当（amber）
+ */
 .sg-dev-stage {
   display: inline-flex;
   align-items: center;
@@ -3385,20 +3389,16 @@ body.sg-chrome-focus main {
   border: 1px solid transparent;
   vertical-align: middle;
 }
-.sg-dev-stage--alpha {
-  color: #9a3412;
-  background: #ffedd5;
-  border-color: #fdba74;
+.sg-dev-stage--alpha,
+.sg-dev-stage--gamma {
+  color: #065f46;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
 }
 .sg-dev-stage--beta {
-  color: #5b21b6;
-  background: #ede9fe;
-  border-color: #c4b5fd;
-}
-.sg-dev-stage--gamma {
-  color: #0f766e;
-  background: #ccfbf1;
-  border-color: #5eead4;
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #fde68a;
 }
 .sg-dev-stage--stable {
   color: #475569;
@@ -3415,6 +3415,26 @@ body.sg-chrome-focus main {
   gap: 0.5rem 0.75rem;
   border-bottom: 1px solid #e2e8f0;
   background: #f8fafc;
+}
+/* 裏紙など机メタファー: 帯の #f8fafc と紙の温色が近いと帯・ピルが浮く */
+body.ug-desk .sg-dev-badge-bar {
+  max-width: none;
+  width: 100%;
+  justify-content: center;
+  background: transparent;
+  border-bottom: none;
+  padding: 0.5rem 1rem 0;
+}
+body.ug-desk .sg-dev-stage--alpha,
+body.ug-desk .sg-dev-stage--gamma {
+  color: #065f46;
+  background: #ffffff;
+  border-color: #6ee7b7;
+}
+body.ug-desk .sg-dev-stage--beta {
+  color: #92400e;
+  background: #ffffff;
+  border-color: #fbbf24;
 }
 .sg-dev-badge-note {
   font-size: 10px;

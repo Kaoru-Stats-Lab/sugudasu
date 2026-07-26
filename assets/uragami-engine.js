@@ -22,6 +22,11 @@ export const STROKE_BASE = 2.2;
 export const STROKE_MIN = 1.9;
 export const STROKE_MAX = 2.5;
 
+/** 消しゴムの見た目の線幅（論理px）。カーソル円と一致させる。 */
+export function eraserBrushWidth(pointW = STROKE_BASE) {
+  return Math.max(12, pointW * 6);
+}
+
 export const SS_KEY = 'sugudasu-uragami-v3';
 
 export const PAPER_FIT_MIN = 0.6;
@@ -82,7 +87,7 @@ export function drawStroke(ctx, stroke) {
     ctx.lineJoin = 'round';
     if (pts.length === 1) {
       ctx.beginPath();
-      ctx.arc(pts[0].x, pts[0].y, Math.max(8, pts[0].w * 4), 0, Math.PI * 2);
+      ctx.arc(pts[0].x, pts[0].y, eraserBrushWidth(pts[0].w) / 2, 0, Math.PI * 2);
       ctx.fill();
     } else {
       ctx.beginPath();
@@ -90,7 +95,7 @@ export function drawStroke(ctx, stroke) {
       for (let i = 1; i < pts.length; i += 1) {
         const p0 = pts[i - 1];
         const p1 = pts[i];
-        ctx.lineWidth = Math.max(12, ((p0.w + p1.w) / 2) * 6);
+        ctx.lineWidth = eraserBrushWidth((p0.w + p1.w) / 2);
         const mx = (p0.x + p1.x) / 2;
         const my = (p0.y + p1.y) / 2;
         ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
@@ -212,41 +217,47 @@ export function clearSession() {
 }
 
 /**
- * 紙ごと PNG（透過なし）。おおよそ 300dpi 相当。
+ * 紙＋方眼＋インクを1枚に合成（透過なし）。
+ * 消しゴムはインク層だけで destination-out し、紙色を抜かない。
  * @param {UragamiStroke[]} strokes
  * @param {number} cssW
  * @param {number} cssH
+ * @param {number} [dpi=300]
  */
-export async function renderExportPng(strokes, cssW, cssH) {
-  const dpi = 300;
+export function renderExportCanvas(strokes, cssW, cssH, dpi = 300) {
   const w = Math.round((PAPER_MM.w / 25.4) * dpi);
   const h = Math.round((PAPER_MM.h / 25.4) * dpi);
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('no-2d');
+  const paper = document.createElement('canvas');
+  paper.width = w;
+  paper.height = h;
+  const pctx = paper.getContext('2d');
+  if (!pctx) throw new Error('no-2d');
 
-  ctx.fillStyle = PAPER_BG;
-  ctx.fillRect(0, 0, w, h);
+  pctx.fillStyle = PAPER_BG;
+  pctx.fillRect(0, 0, w, h);
+
+  const step = w * (GRID_MM / PAPER_MM.w);
+  pctx.strokeStyle = GRID_COLOR;
+  pctx.lineWidth = Math.max(1, w / 1400);
+  pctx.beginPath();
+  for (let x = step; x < w; x += step) {
+    pctx.moveTo(x, 0);
+    pctx.lineTo(x, h);
+  }
+  for (let y = step; y < h; y += step) {
+    pctx.moveTo(0, y);
+    pctx.lineTo(w, y);
+  }
+  pctx.stroke();
+
+  const ink = document.createElement('canvas');
+  ink.width = w;
+  ink.height = h;
+  const ictx = ink.getContext('2d');
+  if (!ictx) throw new Error('no-2d');
 
   const sx = w / cssW;
   const sy = h / cssH;
-
-  const step = w * (GRID_MM / PAPER_MM.w);
-  ctx.strokeStyle = GRID_COLOR;
-  ctx.lineWidth = Math.max(1, w / 1400);
-  ctx.beginPath();
-  for (let x = step; x < w; x += step) {
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, h);
-  }
-  for (let y = step; y < h; y += step) {
-    ctx.moveTo(0, y);
-    ctx.lineTo(w, y);
-  }
-  ctx.stroke();
-
   const scaled = strokes.map((s) => ({
     ...s,
     points: s.points.map((p) => ({
@@ -256,8 +267,19 @@ export async function renderExportPng(strokes, cssW, cssH) {
       t: p.t,
     })),
   }));
-  for (const s of scaled) drawStroke(ctx, s);
+  for (const s of scaled) drawStroke(ictx, s);
+  pctx.drawImage(ink, 0, 0);
+  return paper;
+}
 
+/**
+ * 紙ごと PNG（透過なし）。おおよそ 300dpi 相当。
+ * @param {UragamiStroke[]} strokes
+ * @param {number} cssW
+ * @param {number} cssH
+ */
+export async function renderExportPng(strokes, cssW, cssH) {
+  const canvas = renderExportCanvas(strokes, cssW, cssH, 300);
   return new Promise((resolve, reject) => {
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob'))), 'image/png');
   });

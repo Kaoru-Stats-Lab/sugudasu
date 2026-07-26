@@ -108,8 +108,10 @@
         display: block;
       }
       #ug-ink { z-index: 2; cursor: crosshair; touch-action: none; }
-      #ug-ink.is-panning { cursor: grab; }
-      #ug-ink.is-panning.is-pan-active { cursor: grabbing; }
+      #ug-ink.is-panning { cursor: grab !important; }
+      #ug-ink.is-panning.is-pan-active { cursor: grabbing !important; }
+      #ug-stage { cursor: grab; }
+      #ug-stage.is-pan-active { cursor: grabbing; }
       #ug-grid { z-index: 1; pointer-events: none; }
       /* 右上のめくり — 紙らしさの主アフォーダンス */
       .ug-corner {
@@ -180,29 +182,30 @@
         flex-shrink: 0;
       }
       @media print {
-        .no-print, #sg-chrome-top, #sg-chrome-bottom, .ug-toolbar, .ug-lead, .ug-status, .ug-corner, .ug-fit-handle, .sg-faq-section, .ad-slot {
+        .no-print, #sg-chrome-top, #sg-chrome-bottom, .ug-toolbar, .ug-lead, .ug-status, .ug-corner, .ug-fit-handle, .sg-faq-section, .ad-slot, .ug-stage {
           display: none !important;
         }
-        body, .sg-body, .ug-main, .ug-stage { background: #fff !important; }
-        .ug-main { padding: 0 !important; min-height: 0 !important; }
-        .ug-stage {
+        body, .sg-body, .ug-main { background: #fff !important; }
+        .ug-main { padding: 0 !important; min-height: 0 !important; display: block !important; }
+        .ug-print-sheet {
+          display: block !important;
           width: 100% !important;
-          height: auto !important;
-          overflow: visible !important;
-          flex: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
         }
-        .ug-viewport { transform: none !important; }
-        .ug-paper {
+        .ug-print-sheet img {
+          display: block !important;
           width: 100% !important;
           height: auto !important;
-          max-width: none !important;
-          aspect-ratio: 16 / 9 !important;
-          box-shadow: none !important;
-          border: none !important;
-          border-radius: 0 !important;
+          max-height: 100vh !important;
+          object-fit: contain !important;
+          margin: 0 auto !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
         }
         @page { size: landscape; margin: 0; }
       }
+      .ug-print-sheet { display: none; }
     </style>
 </head>
 <body class="sg-body ug-desk min-h-screen flex flex-col antialiased text-slate-800">
@@ -210,7 +213,8 @@
      data-sg-title="SUGUDASU 裏紙"
      data-sg-subtitle="説明のために描く · 保存しない"
      data-sg-tool-id="uragami"
-     data-sg-print="true"></div>
+     data-sg-print="true"
+     data-sg-landscape="true"></div>
 
 <main class="ug-main flex-1">
     <p class="ug-lead no-print">隣の人や会議で、今の考えを一枚で説明する。描くこと自体が目的ではありません。</p>
@@ -236,6 +240,10 @@
         </div>
     </div>
 
+    <div id="ug-print-sheet" class="ug-print-sheet" aria-hidden="true">
+        <img id="ug-print-img" alt="裏紙の印刷">
+    </div>
+
     <p id="ug-status" class="ug-status no-print" role="status" aria-live="polite"></p>
 </main>
 
@@ -258,7 +266,7 @@
             <details class="sg-faq">
                 <summary>拡大や移動はできる？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>紙の論理サイズは変わりません。Ctrl+ホイールやピンチで見る距離を変え、Space+ドラッグ（または中ボタン）で位置をずらします。ズームボタンやミニマップはありません。</p>
+                    <p>紙の論理サイズは変わりません。<strong>Ctrl+ホイール</strong>で見る距離を変えます（紙は机の中央基準で拡大縮小）。<strong>机の空いているところをドラッグ</strong>、または Space+ドラッグ / 中ボタンで位置を動かせます。机を<strong>ダブルクリック</strong>すると中央に戻ります。</p>
                 </div>
             </details>
             <details class="sg-faq">

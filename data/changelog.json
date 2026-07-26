@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "uragami-print-pan-cursor-20260726",
+      "date": "2026-07-26",
+      "type": "fix",
+      "audience": "public",
+      "title": "裏紙 — 印刷・表示位置・消しゴムの見た目",
+      "body": "印刷プレビューが白紙になる問題を修正しました。拡大縮小は机の中央基準に、机のドラッグやダブルクリックで位置を戻せます。消しゴムは実際の大きさの円カーソルにしています。",
+      "tools": [
+        "uragami"
+      ]
+    },
+    {
       "id": "tool-catalog-uragami-20260726",
       "date": "2026-07-26",
       "type": "chore",
