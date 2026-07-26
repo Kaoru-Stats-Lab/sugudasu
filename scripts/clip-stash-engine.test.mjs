@@ -13,6 +13,7 @@ import {
   isAcceptedLocalFile,
   isHexColor,
   isPdfFile,
+  resolveFileMime,
   isSingleUrl,
   isSupportedImageMime,
   isTablePaste,
@@ -75,6 +76,9 @@ assert.equal(isSupportedImageMime('image/png'), true);
 assert.equal(isSupportedImageMime('video/mp4'), false);
 assert.equal(isPdfFile('a.pdf', ''), true);
 assert.equal(isPdfFile('a.png', 'application/pdf'), true);
+assert.equal(isPdfFile('report.pdf', 'image/png'), false);
+assert.equal(resolveFileMime({ name: 'x.pdf', type: '' }, 'application/pdf'), 'application/pdf');
+assert.equal(resolveFileMime({ name: 'x.pdf', type: 'image/png' }, ''), 'image/png');
 assert.equal(isAcceptedLocalFile({ name: 'x.png', type: 'image/png' }), true);
 assert.equal(isAcceptedLocalFile({ name: 'x.pdf', type: 'application/pdf' }), true);
 assert.equal(isAcceptedLocalFile({ name: 'x.docx', type: '' }), false);

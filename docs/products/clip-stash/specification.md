@@ -95,20 +95,34 @@ PNG · JPG · WebP · GIF · SVG。**動画は非対応**。元 Blob を保持�
 
 ## PDF
 
-ローカルファイル投入のみ。プレビュー用 PNG を1ページ目から生成してよい。PDF バイト列は変更しない。ファイル管理 UI は持たない。
+**ADR-CS-002 Data Fidelity First** — 入力データの意味を保持する。PDF↔画像の自動変換はしない。  
+**ADR-CS-003 PDF Is Container** — PDF は画像でもテキストでもなく情報コンテナ。1カードとして保持し、表示はブラウザ標準ビューアへ委譲。
 
-**Space プレビュー（識別確認）**
+### 入力ケース（必ず区別）
 
-- 目的は「2秒でこのPDFだと判別」すること。読む・編集する UI ではない
-- **1ページ目 PNG を幅100%**で表示（横欠け禁止 · 縦スクロール可）
-- ネイティブ iframe は初期折りたたみ（`▸ Pages`）。`#toolbar=0&navpanes=0&view=FitH` を付与（ブラウザ依存）
-- 将来: pdf.js へ移行し Fit Width・ページ送り・UI を統一してよい（今回は iframe 維持）
+| Case | 操作 | Clipboard / 入力 | カード |
+|------|------|------------------|--------|
+| 1 | Explorer → PDF DnD | `application/pdf` File | **PDF** |
+| 2 | Explorer → PDF Ctrl+C → Ctrl+V | `application/pdf` または File | **PDF** |
+| 3 | ビューアでページコピー → Ctrl+V | 多くは `image/png` | **IMAGE** |
+| 4 | PDF内の文字コピー | `text/plain` 等 | **TEXT**（/Table/URL） |
+| 5 | PDF内画像だけコピー | `image/*` | **IMAGE** |
+
+判定順: `ClipboardItem.type` → `File.type` → 拡張子 → 推測（拡張子で MIME を上書きしない）。
+
+### 保持
+
+Blob（`pdfData`）· MIME · Name · Size。プレビュー PNG は**ボード表示専用キャッシュ**（元データは常に PDF）。
+
+### Space プレビュー
+
+Blob URL + **iframe**（ブラウザ標準ビューア）。`#toolbar=0&navpanes=0&view=FitH` を付与（ブラウザ依存）。pdf.js / Canvas で Space を描画しない。
 
 ## Preview
 
 - 画面中央オーバーレイ · 背景暗転
 - コピー · URLを開く（リンククリック）のみ
-- PDF は上記「識別確認」レイアウト
+- PDF は iframe 委譲（上記）
 - ブラウザ全体はズームしない
 - **隣接カードへのスムーズ移動はしない**（確認は1枚単位 · 閉じてから次を選ぶ）
 

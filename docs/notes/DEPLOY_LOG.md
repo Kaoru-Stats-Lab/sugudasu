@@ -1601,10 +1601,31 @@
 
 ---
 
+## DEPLOY-20260726-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 仮置き PDF 入力仕様再設計（Data Fidelity · PDF Is Container · 同日 core 4回目 · P7 override） |
+| **change_summary** | Clipboard PDF(Case2) · MIME優先 · PDF↔画像自動変換禁止 · Spaceはiframe委譲 · ボードサムネは表示キャッシュのみ · ADR-CS-002/003 · tests |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 4（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Push」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | `/clip-stash` PDF DnD/貼付 · ページコピーは IMAGE |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 004 approved（PDF 入力仕様 · Data Fidelity · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 003 executed（1b20f1d · 仮置き PDF Space 識別確認UX） |
 | 2026-07-26 | 003 approved（仮置き PDF Space 識別確認UX · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 002 executed（de12fb8 · 仮置き DnD hotfix） |

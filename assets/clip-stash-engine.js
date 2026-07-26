@@ -26,6 +26,7 @@
  *   pdfData?: ArrayBuffer,
  *   pdfBytes?: number,
  *   pdfName?: string,
+ *   pdfMime?: string,
  *   pdfPreviewData?: ArrayBuffer,
  *   pdfPageCount?: number,
  * }} ClipStashCard */
@@ -169,26 +170,46 @@ export function isSupportedImageMime(mime) {
 }
 
 /**
+ * MIME Type を最優先（ClipboardItem.type → File.type → 拡張子 → 推測）。
+ * @param {{ name?: string, type?: string }} file
+ * @param {string} [itemType] ClipboardItem.type
+ */
+export function resolveFileMime(file, itemType = '') {
+  const fromItem = String(itemType || '').toLowerCase().trim();
+  if (fromItem) return fromItem;
+  const fromFile = String(file?.type || '').toLowerCase().trim();
+  if (fromFile) return fromFile;
+  const name = file?.name || '';
+  if (/\.pdf$/i.test(name)) return 'application/pdf';
+  return guessImageMimeFromName(name);
+}
+
+/**
  * @param {string} name
  * @param {string} [mime]
  */
 export function isPdfFile(name, mime = '') {
-  const m = String(mime || '').toLowerCase();
+  const m = String(mime || '').toLowerCase().trim();
   if (m === 'application/pdf') return true;
+  // 既知の非PDF MIME があるときは拡張子で上書きしない（Data Fidelity）
+  if (m && m !== 'application/octet-stream' && m !== 'binary/octet-stream') {
+    return false;
+  }
   return /\.pdf$/i.test(String(name || ''));
 }
 
 /**
  * ローカル投入で受け付けるか（Word/Excel/動画等は拒否）。
  * @param {File|Blob & { name?: string }} file
+ * @param {string} [itemType]
  */
-export function isAcceptedLocalFile(file) {
+export function isAcceptedLocalFile(file, itemType = '') {
   if (!file) return false;
-  const mime = String(file.type || '').toLowerCase();
+  const mime = resolveFileMime(file, itemType);
   const name = file.name || '';
   if (isPdfFile(name, mime)) return true;
   if (isSupportedImageMime(mime)) return true;
-  if (/\.(png|jpe?g|webp|gif|svg)$/i.test(name)) return true;
+  if (!mime && /\.(png|jpe?g|webp|gif|svg)$/i.test(name)) return true;
   return false;
 }
 
@@ -287,11 +308,13 @@ export function inputBridgeMessage(kind) {
 
 /**
  * File / Blob → Clipboard Paste と同型の入力。圧縮・再エンコードなし。
+ * PDF はコンテナのまま保持（画像化禁止）。画像は画像のまま（PDF化禁止）。
  * @param {File} file
+ * @param {string} [itemType] ClipboardItem.type（あれば最優先）
  */
-export async function readLocalFile(file) {
-  if (!isAcceptedLocalFile(file)) return null;
-  const mime = String(file.type || '').toLowerCase();
+export async function readLocalFile(file, itemType = '') {
+  if (!file) return null;
+  const mime = resolveFileMime(file, itemType);
   const name = file.name || 'file';
 
   if (isPdfFile(name, mime)) {
@@ -301,8 +324,11 @@ export async function readLocalFile(file) {
       pdfData: ab,
       pdfBytes: ab.byteLength,
       pdfName: name.replace(/\.pdf$/i, '') || 'PDF',
+      pdfMime: 'application/pdf',
     };
   }
+
+  if (!isAcceptedLocalFile({ name, type: mime })) return null;
 
   const imageMime =
     isSupportedImageMime(mime)
@@ -385,29 +411,58 @@ export function planMoveToSlot(cards, fromId, targetSlot) {
 }
 
 /**
+ * Clipboard 入力。MIME / 実データを尊重（ADR-CS-002 Data Fidelity · ADR-CS-003 PDF Is Container）。
+ *
+ * Case: Explorer PDF コピー → application/pdf|File → PDF カード（画像化しない）
+ * Case: ビューアのページコピー → image/* → IMAGE
+ * Case: 文字コピー → text → TEXT/TABLE/URL/COLOR
+ *
  * @param {DataTransfer|null} dt
  */
 export async function readClipboardPaste(dt) {
   if (!dt) return null;
   const items = dt.items ? Array.from(dt.items) : [];
+
+  // 1) PDF ファイル（MIME / File）— 画像より先に判定
   for (const item of items) {
-    if (!isSupportedImageMime(item.type)) continue;
-    if (item.type.startsWith('image/')) {
-      const blob = item.getAsFile();
-      if (blob) {
-        const ab = await blob.arrayBuffer();
-        const dims = await imageDimensions(blob);
-        return {
-          kind: /** @type {const} */ ('image'),
-          imageMime: blob.type || 'image/png',
-          imageData: ab,
-          imageBytes: ab.byteLength,
-          imageWidth: dims.width,
-          imageHeight: dims.height,
-        };
-      }
+    if (item.kind !== 'file') continue;
+    const file = typeof item.getAsFile === 'function' ? item.getAsFile() : null;
+    if (!file) continue;
+    const mime = resolveFileMime(file, item.type);
+    if (!isPdfFile(file.name, mime)) continue;
+    return readLocalFile(file, item.type);
+  }
+  if (dt.files?.length) {
+    for (const file of Array.from(dt.files)) {
+      const mime = resolveFileMime(file);
+      if (!isPdfFile(file.name, mime)) continue;
+      return readLocalFile(file);
     }
   }
+
+  // 2) 画像（PDFページのラスタコピー含む → IMAGE。PDF にはしない）
+  for (const item of items) {
+    if (item.kind !== 'file') continue;
+    const file = typeof item.getAsFile === 'function' ? item.getAsFile() : null;
+    if (!file) continue;
+    const mime = resolveFileMime(file, item.type);
+    if (isPdfFile(file.name, mime)) continue;
+    const imageMime = isSupportedImageMime(mime) ? mime : guessImageMimeFromName(file.name);
+    if (!imageMime || !isSupportedImageMime(imageMime)) continue;
+    const ab = await file.arrayBuffer();
+    const blob = new Blob([ab], { type: imageMime });
+    const dims = await imageDimensions(blob);
+    return {
+      kind: /** @type {const} */ ('image'),
+      imageMime,
+      imageData: ab,
+      imageBytes: ab.byteLength,
+      imageWidth: dims.width,
+      imageHeight: dims.height,
+    };
+  }
+
+  // 3) テキスト系
   const text = dt.getData('text/plain') || '';
   if (!text.trim()) return null;
   if (isHexColor(text.trim())) {
@@ -473,6 +528,7 @@ export function buildCardFromPaste(paste, order) {
       pdfData: paste.pdfData,
       pdfBytes: paste.pdfBytes,
       pdfName: paste.pdfName || 'PDF',
+      pdfMime: paste.pdfMime || 'application/pdf',
       pdfPreviewData: paste.pdfPreviewData,
       pdfPageCount: paste.pdfPageCount,
     };
@@ -545,7 +601,7 @@ export function imageBlob(card) {
  */
 export function pdfBlob(card) {
   if (card.type !== 'pdf' || !card.pdfData) return null;
-  return new Blob([card.pdfData], { type: 'application/pdf' });
+  return new Blob([card.pdfData], { type: card.pdfMime || 'application/pdf' });
 }
 
 /**

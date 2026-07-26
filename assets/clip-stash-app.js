@@ -255,7 +255,8 @@ async function loadPdfjs() {
 }
 
 /**
- * 1ページ目の PNG プレビューのみ生成。元 PDF は変更しない。
+ * 1ページ目の PNG プレビューのみ生成（ボード表示キャッシュ）。元 PDF は変更しない。
+ * Space では使わない（iframe 委譲）。
  * @param {ArrayBuffer} data
  * @returns {Promise<{ preview: ArrayBuffer, pageCount: number }|null>}
  */
@@ -664,13 +665,6 @@ async function addFromFiles(fileList, dt) {
   for (const file of accepted) {
     const paste = await readLocalFile(file);
     if (!paste) continue;
-    if (paste.kind === 'pdf') {
-      const thumb = await makePdfPreview(paste.pdfData);
-      if (thumb?.preview?.byteLength) {
-        paste.pdfPreviewData = thumb.preview;
-        paste.pdfPageCount = thumb.pageCount;
-      }
-    }
     await commitPaste(paste);
   }
 
@@ -684,6 +678,14 @@ async function addFromFiles(fileList, dt) {
  */
 async function commitPaste(paste) {
   if (!db) return;
+  // ボード用サムネは表示キャッシュのみ（PDF 本体は変更しない）
+  if (paste.kind === 'pdf' && paste.pdfData && !paste.pdfPreviewData) {
+    const thumb = await makePdfPreview(paste.pdfData);
+    if (thumb?.preview?.byteLength) {
+      paste.pdfPreviewData = thumb.preview;
+      paste.pdfPageCount = thumb.pageCount;
+    }
+  }
   const card = buildCardFromPaste(paste, nextSlotIndex(cards));
   await putCard(db, card);
   cards = await getAllCards(db);
@@ -761,9 +763,6 @@ function openPreview() {
       <p class="cs-preview__meta">${esc(format)} · ${card.imageWidth || '?'}×${card.imageHeight || '?'} · ${formatBytes(card.imageBytes)}</p>`;
   } else if (card.type === 'pdf') {
     els.previewBody.innerHTML = buildPdfPreviewHtml(card);
-    if (!pdfPreviewBlob(card) && card.pdfData) {
-      void ensurePdfPagePreview(card);
-    }
   } else if (card.type === 'color') {
     els.previewBody.innerHTML = `<div class="cs-preview__swatch" style="background:${esc(card.colorHex || '#000')}"></div>
       <p class="cs-preview__hex">${esc((card.colorHex || '').toUpperCase())}</p>`;
@@ -773,66 +772,28 @@ function openPreview() {
 }
 
 /**
- * Space PDF: 「2秒でこれだと判別」が目的。Acrobat UI ではない。
+ * Space PDF: コンテナをブラウザ標準ビューアへ委譲（ADR-CS-003）。
  *
- * DECISION: 1ページ目は生成済み PNG を幅100%で見せ、横欠けを禁止する。
- * ネイティブ iframe はツールバー/サムネが幅を食うため初期非表示（▸ Pages）。
- * Chromium 系では `#toolbar=0&navpanes=0&view=FitH` を付与（効かない環境あり）。
- * 将来: pdf.js で Fit Width・ページ送り・UI統一へ移行可（今回は移行しない）。
+ * DECISION: Space では PDF→画像化・Canvas・pdf.js 描画をしない。
+ * Blob URL + iframe（`#toolbar=0&navpanes=0&view=FitH`）のみ。
+ * ボード上の1ページ目 PNG は表示専用キャッシュ（元データは常に PDF）。
  *
  * @param {import('./clip-stash-engine.js').ClipStashCard} card
  */
 function buildPdfPreviewHtml(card) {
-  const pageSrc = imageThumbUrl(card);
-  const pages = Number(card.pdfPageCount) > 0 ? Number(card.pdfPageCount) : 1;
   const blob = pdfBlob(card);
+  const pages = Number(card.pdfPageCount) > 0 ? Number(card.pdfPageCount) : 0;
   const meta = `<p class="cs-preview__meta">PDF · ${esc(card.pdfName || '')}${
     pages > 1 ? ` · ${pages}ページ` : ''
   } · ${formatBytes(card.pdfBytes)}</p>`;
 
-  let viewer = '';
-  if (blob) {
-    previewObjectUrl = URL.createObjectURL(blob);
-    // FitH = ページ幅優先。toolbar/navpanes はブラウザ依存。
-    const viewerSrc = `${previewObjectUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=page-width`;
-    const iframe = `<iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(viewerSrc)}"></iframe>`;
-    if (pageSrc) {
-      viewer = `<details class="cs-preview__pdf-more">
-        <summary>Pages${pages > 1 ? ` · ${pages}` : ''}</summary>
-        ${iframe}
-      </details>`;
-    } else {
-      viewer = iframe;
-    }
-  }
-
-  const stage = pageSrc
-    ? `<div class="cs-preview__pdf-stage">
-        <img src="${esc(pageSrc)}" alt="" class="cs-preview__pdf-page">
-      </div>`
-    : '';
-
-  if (!stage && !viewer) {
+  if (!blob) {
     return '<p class="cs-preview__meta">PDF を表示できません</p>';
   }
-  return `${stage}${meta}${viewer}`;
-}
-
-/**
- * 1ページ目 PNG が無いカード向け。Space オープン時に補完（元 PDF は変更しない）。
- * @param {import('./clip-stash-engine.js').ClipStashCard} card
- */
-async function ensurePdfPagePreview(card) {
-  if (!db || !card.pdfData || pdfPreviewBlob(card)) return;
-  const thumb = await makePdfPreview(card.pdfData);
-  if (!thumb?.preview?.byteLength) return;
-  card.pdfPreviewData = thumb.preview;
-  card.pdfPageCount = thumb.pageCount;
-  await putCard(db, card);
-  thumbUrls.delete(card.id);
-  if (selectedId === card.id && isPreviewOpen()) {
-    els.previewBody.innerHTML = buildPdfPreviewHtml(card);
-  }
+  previewObjectUrl = URL.createObjectURL(blob);
+  const viewerSrc = `${previewObjectUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=page-width`;
+  return `${meta}
+    <iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(viewerSrc)}"></iframe>`;
 }
 
 function closePreview() {
