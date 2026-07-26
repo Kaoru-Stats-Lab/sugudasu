@@ -1707,19 +1707,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 — 裏紙 UX（印刷・ズーム中心・消しゴムカーソル・机上バッジ）· 同日 core 9回目 · P7 override |
 | **change_summary** | `uragami-app.js` · `uragami-engine.js` · `tools/uragami.html` · `sugudasu.css`（ug-desk バッジ）· `changelog.json` |
 | **local_build** | `pass`（`release:pages:free` · budget consume 73/450） |
 | **deploy_count_today** | 9（**P7 override** · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 73/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `b456613`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/uragami` — 印刷プレビューに紙 · Ctrl+wheel 中央基準 · 消しゴム円カーソル · ug-desk バッジ帯透明 |
 
 ---
 
@@ -1727,6 +1727,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 009 executed（b456613 · 裏紙 UX 印刷/ズーム/消しゴム/バッジ） |
 | 2026-07-26 | 009 approved（裏紙 UX · 印刷/ズーム/消しゴム/バッジ · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 008 executed（462b9ed · ツールカタログ uragami） |
 | 2026-07-26 | 008 approved（ツールカタログ uragami · P7 override） |
