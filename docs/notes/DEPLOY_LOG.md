@@ -1627,19 +1627,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 裏紙 α（uragami）公開 · 判定台帳（file-transfer Outside Scope）· 同日 core 5回目 · P7 override |
 | **change_summary** | `uragami` MVP（A4 · 黒赤ペン · PNG/印刷 · SessionStorage F5のみ）· ADR-000〜009 · registry/hub/shell/statements/changelog · 台帳 §17 file-transfer Outside Scope · `package.json` local secret script（`secret/` は Git 外） |
 | **local_build** | `pass`（`release:pages:free` · budget consume 69/450） |
 | **deploy_count_today** | 5（**P7 override** · 提督「未commitすべて Commit&Push」） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 69/450 |
 | **gates** | P1–P6 · P7 override · 提督明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `7a54d95`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/uragami` · `/` Hub 裏紙カード |
 
 ---
 
@@ -1647,6 +1647,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 005 executed（7a54d95 · 裏紙 α · 台帳 file-transfer Outside Scope） |
 | 2026-07-26 | 005 approved（裏紙 α · 台帳 file-transfer Outside Scope · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 004 executed（8007a53 · PDF 入力仕様 · Data Fidelity） |
 | 2026-07-26 | 004 approved（PDF 入力仕様 · Data Fidelity · P7 override · 提督 Commit&Push） |
