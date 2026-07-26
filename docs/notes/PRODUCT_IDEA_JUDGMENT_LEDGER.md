@@ -599,10 +599,24 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 ---
 
-## 17. 関連ドキュメント
+## 17. file-transfer（ファイル送信）— 2026-07-25
+
+| 項目 | 内容 |
+|------|------|
+| **id** | `file-transfer` |
+| **判定** | **Outside Scope / Secret Product**（コア GO 不可 · Sync 非適合＝アカウント必須と衝突） |
+| **理由** | F3（静的Pages）を破る常時シグナリングが本質。公開カタログ・Hub 非掲載。 |
+| **置き場** | `secret/file-transfer/` · Cloudflare Workers + Durable Objects |
+| **URL** | パス型 `/s/{token}` · 使い捨て · noindex |
+| **正本** | [`secret/file-transfer/README.md`](../../secret/file-transfer/README.md) |
+
+---
+
+## 18. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
+| `secret/file-transfer/README.md` | **Secret ファイル送信** · Workers シグナリング |
 | `docs/products/pdf-fill/` | **PDF記入** 設計正本（README · philosophy · specification · ui-ux · technical-design · decisions） |
 | `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |

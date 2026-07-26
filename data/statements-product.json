@@ -236,6 +236,14 @@
       "promiseNote": "時刻連動 · TSVコピー"
     },
     {
+      "toolId": "uragami",
+      "categoryId": "ops",
+      "productName": "SUGUDASU 裏紙",
+      "file": "uragami.html",
+      "inputHandling": "手書き · SessionStorage（F5）· 端末内",
+      "promiseNote": "説明のために描く · 永続なし · PNG/印刷のみ持ち出し"
+    },
+    {
       "toolId": "warikan",
       "categoryId": "ops",
       "productName": "SUGUDASU 割り勘",

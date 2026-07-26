@@ -344,6 +344,18 @@
       }
     },
     {
+      "toolId": "uragami",
+      "href": "uragami.html",
+      "blurb": "隣の人やZoomで、今の考えを一枚で説明したい時に。サインペンで描いて、PNGか印刷で持ち出します。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "warikan",
       "href": "warikan.html",
       "blurb": "飲み会の集金で傾斜をつけて割り勘したい時に。端数を揃えた精算用テキストを出力します。",

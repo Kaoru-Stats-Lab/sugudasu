@@ -34,6 +34,7 @@
     { id: 'slot-board', file: 'slot-board.html', label: '枠取り', icon: '📦' },
     { id: 'planning-poker', file: 'planning-poker.html', label: '見積会議', icon: '🃏' },
     { id: 'timeline', file: 'timeline.html', label: '進行', icon: '⏱️' },
+    { id: 'uragami', file: 'uragami.html', label: '裏紙', icon: '📝' },
     { id: 'fair-draw', file: 'fair-draw.html', label: '抽選', icon: '🎲' },
     { id: 'budget-trim', file: 'budget-trim.html', label: '予算引き算', icon: '✂️' },
     { id: 'warikan', file: 'warikan.html', label: '割り勘', icon: '💰' },

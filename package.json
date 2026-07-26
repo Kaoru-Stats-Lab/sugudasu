@@ -73,7 +73,8 @@
     "verify:sticky-room:no-store": "node scripts/sticky-room-no-store.test.mjs",
     "stress:sticky-room": "node scripts/sticky-room-stress.mjs",
     "poc:schedule-gantt": "npx --yes serve . -l 8090",
-    "poc:schedule-split-pane": "npx --yes serve . -l 8092"
+    "poc:schedule-split-pane": "npx --yes serve . -l 8092",
+    "dev:file-transfer": "npm --prefix secret/file-transfer run dev"
   },
   "devDependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^2.0.1",

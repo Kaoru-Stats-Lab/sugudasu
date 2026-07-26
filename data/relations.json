@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-26",
   "ssot": "docs/notes/product-template.md · docs/notes/HUB_IA_REFRESH_V2.md",
   "disclaimer": "関連ツール（Product Phase 2）。Hub IA では未使用。",
   "relations": {
@@ -16,6 +16,8 @@
     "fair-draw": ["group-split"],
     "group-split": ["fair-draw", "slot-board", "match-board"],
     "link-qr": ["qr-reader", "sns"],
-    "qr-reader": ["link-qr"]
+    "qr-reader": ["link-qr"],
+    "uragami": ["annotate", "clip-stash"],
+    "timeline": ["uragami"]
   }
 }

@@ -1,0 +1,101 @@
+{
+  "toolId": "uragami",
+  "source": "manual",
+  "reviewedAt": "2026-07-26",
+  "aliases": [
+    "裏紙",
+    "デジタル裏紙",
+    "スクラップペーパー",
+    "scrap paper",
+    "説明用メモ",
+    "手書き説明",
+    "サインペン"
+  ],
+  "jobsShort": [
+    "説明のために描く",
+    "隣の人に図で説明する",
+    "Zoomで概念を描く",
+    "Slackに説明画像を貼る",
+    "白紙に手書きする"
+  ],
+  "jobsLong": [
+    "隣の同僚に今の考えを一枚で説明したい",
+    "Zoom通話中に概念図を手早く描きたい",
+    "CursorやChatGPTに貼るための説明図を描きたい",
+    "ホワイトボードやExcalidrawほど大げさでない紙が欲しい",
+    "描いたらPNGか印刷だけ残してあとは消したい"
+  ],
+  "keywords": [
+    "裏紙",
+    "手書き",
+    "A4",
+    "PNG",
+    "印刷",
+    "サインペン",
+    "説明",
+    "非保存",
+    "SessionStorage"
+  ],
+  "commonMistakes": [
+    {
+      "query": "ホワイトボード 無限キャンバス",
+      "meant": "SUGUDASU 裏紙",
+      "note": "A4一枚のみ。無限キャンバスではないため"
+    },
+    {
+      "query": "Excalidraw 図形",
+      "meant": "SUGUDASU 裏紙",
+      "note": "図形・テキストツールは持たないため"
+    },
+    {
+      "query": "赤入れ PDF注釈",
+      "meant": "SUGUDASU 赤入れ",
+      "note": "ファイルへの書き込みは赤入れへ"
+    }
+  ],
+  "relatedProducts": [
+    {
+      "toolId": "annotate",
+      "conceptName": "赤入れ",
+      "reason": "既存の画像やPDFに書き込みたい場合のため"
+    },
+    {
+      "toolId": "clip-stash",
+      "conceptName": "仮置き",
+      "reason": "説明用のPNGを一時退避したい場合のため"
+    }
+  ],
+  "priority": {
+    "high": [
+      "説明のために描く",
+      "隣の人に図で説明する",
+      "Zoomで概念を描く"
+    ],
+    "medium": [
+      "Slackに説明画像を貼る",
+      "白紙に手書きする"
+    ],
+    "low": []
+  },
+  "reviewNotes": [
+    "Mission: explain, not create drawings",
+    "docs/products/uragami/ が ADR 正本 · docs/notes/URAGAMI_SPEC.md が入口"
+  ],
+  "hiddenKeywords": [
+    "デジタル裏紙",
+    "scrap paper",
+    "スクラップペーパー",
+    "手書きボード",
+    "説明メモ",
+    "概念図 手書き",
+    "Zoom 描画",
+    "ホワイトボード代替",
+    "Excalidraw代替",
+    "簡易ホワイトボード",
+    "紙に書く",
+    "サインペン ブラウザ",
+    "一時スケッチ",
+    "説明スケッチ",
+    "uragami"
+  ]
+}

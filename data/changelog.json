@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-25",
+  "updatedAt": "2026-07-26",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,17 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "uragami-alpha-20260726",
+      "date": "2026-07-26",
+      "type": "feature",
+      "audience": "public",
+      "title": "裏紙 α — 説明のために描く",
+      "body": "ブラウザにA4一枚の裏紙。黒・赤のサインペン、消しゴム、Undo、紙をめくる。PNGと印刷だけが持ち出し。保存しない（誤リロード用のSessionStorageのみ）。ホワイトボードや図形ツールではありません。",
+      "tools": [
+        "uragami"
+      ]
+    },
     {
       "id": "clip-stash-thumb-center-20260725",
       "date": "2026-07-25",

@@ -86,6 +86,8 @@
 | `font-converter` | SUGUDASU フォント変換 | `font-converter-app.js` | `sns-app.js` → `sns-font-engine.js` |
 | `json-view` | SUGUDASU JSON構造 | `json-view-app.js` | `json-view-engine.js` |
 | （hub 検索） | — | `hub-search-boot.js` | `hub-search-engine.js` |
+| **`uragami`** | **SUGUDASU 裏紙** | `uragami-app.js` | **`uragami-engine.js`** |
+| **`clip-stash`** | **SUGUDASU 仮置き** | `clip-stash-app.js` | `clip-stash-engine.js` · `clip-stash-db.js` |
 
 **補足:** `image-trim`（SUGUDASU 画像切り出し）は現状 `image-trim-app.js` 単体（engine なし）だが、将来 engine 分割したら **上表に追記必須**。`fair-draw` も同様に engine 分割時は追記。
 
@@ -1621,10 +1623,31 @@
 
 ---
 
+## DEPLOY-20260726-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 裏紙 α（uragami）公開 · 判定台帳（file-transfer Outside Scope）· 同日 core 5回目 · P7 override |
+| **change_summary** | `uragami` MVP（A4 · 黒赤ペン · PNG/印刷 · SessionStorage F5のみ）· ADR-000〜009 · registry/hub/shell/statements/changelog · 台帳 §17 file-transfer Outside Scope · `package.json` local secret script（`secret/` は Git 外） |
+| **local_build** | `pass`（`release:pages:free` · budget consume 69/450） |
+| **deploy_count_today** | 5（**P7 override** · 提督「未commitすべて Commit&Push」） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 005 approved（裏紙 α · 台帳 file-transfer Outside Scope · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 004 executed（8007a53 · PDF 入力仕様 · Data Fidelity） |
 | 2026-07-26 | 004 approved（PDF 入力仕様 · Data Fidelity · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 003 executed（1b20f1d · 仮置き PDF Space 識別確認UX） |

@@ -394,6 +394,20 @@
       "statusNote": "T13 M01 · 連動再計算 · ±5 · 差し込み · TSVコピー · 非送信 · alpha",
       "categoryId": "ops"
     },
+    "uragami": {
+      "file": "uragami.html",
+      "conceptName": "裏紙",
+      "productName": "SUGUDASU 裏紙",
+      "navLabel": "裏紙",
+      "navIcon": "📝",
+      "inNav": true,
+      "navOrder": 11.55,
+      "name": "デジタル裏紙（説明用）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "A4 · 黒赤ペン · PNG/印刷 · SessionStorage F5のみ · 永続なし · docs/products/uragami/",
+      "categoryId": "ops"
+    },
     "present": {
       "file": "present.html",
       "conceptName": "ギフト",

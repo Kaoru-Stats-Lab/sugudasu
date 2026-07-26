@@ -50,6 +50,7 @@ python -m http.server 8080
 | [slot-board.html](tools/slot-board.html) | /slot-board | SUGUDASU 枠取りパレット | 枠取り | alpha |
 | [planning-poker.html](tools/planning-poker.html) | /planning-poker | SUGUDASU 見積会議 | 見積会議 | alpha |
 | [timeline.html](tools/timeline.html) | /timeline | SUGUDASU イベント進行 | 進行 | alpha |
+| [uragami.html](tools/uragami.html) | /uragami | SUGUDASU 裏紙 | 裏紙 | alpha |
 | [fair-draw.html](tools/fair-draw.html) | /fair-draw | SUGUDASU 抽選 | 抽選 | beta |
 | [budget-trim.html](tools/budget-trim.html) | /budget-trim | SUGUDASU 引き算パレット | 予算引き算 | alpha |
 | [warikan.html](tools/warikan.html) | /warikan | SUGUDASU 割り勘 | 割り勘 | gamma |
