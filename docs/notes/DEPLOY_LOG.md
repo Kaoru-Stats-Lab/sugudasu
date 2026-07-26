@@ -1647,19 +1647,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — 裏紙 16:9 · Paper Zoom/Pan（同日 core 6回目 · P7 override） |
 | **change_summary** | ADR-007 Why One Sheet · 16:9紙 · Ctrl+wheel/ピンチ zoom · Space/中ボタン pan · Viewport UIなし · session key v2 |
 | **local_build** | `pass`（`release:pages:free` · budget consume 70/450） |
 | **deploy_count_today** | 6（**P7 override** · 提督 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 70/450 |
 | **gates** | P1–P6 · P7 override · 提督明示 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後） |
+| **cf_deployment_id** | `dc8171d`（git push origin main · CF 自動ビルド） |
+| **smoke** | `/uragami` 16:9 · Ctrl+wheel zoom · Space pan |
 
 ---
 
@@ -1667,6 +1667,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 006 executed（dc8171d · 裏紙 16:9 · Paper Zoom/Pan） |
 | 2026-07-26 | 006 approved（裏紙 16:9 · Paper Zoom/Pan · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 005 executed（7a54d95 · 裏紙 α · 台帳 file-transfer Outside Scope） |
 | 2026-07-26 | 005 approved（裏紙 α · 台帳 file-transfer Outside Scope · P7 override · 提督 Commit&Push） |
