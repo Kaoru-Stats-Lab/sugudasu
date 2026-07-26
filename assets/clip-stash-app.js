@@ -739,6 +739,8 @@ function openPreview() {
     URL.revokeObjectURL(previewObjectUrl);
     previewObjectUrl = null;
   }
+  const panel = els.preview.querySelector('.cs-preview__panel');
+  panel?.classList.toggle('cs-preview__panel--pdf', card.type === 'pdf');
   els.previewType.textContent = TYPE_LABELS[card.type];
   if (card.type === 'text') {
     els.previewBody.innerHTML = `<pre class="cs-preview__pre">${esc(card.text || '')}</pre>`;
@@ -758,13 +760,9 @@ function openPreview() {
     els.previewBody.innerHTML = `<img src="${esc(src)}" alt="" class="cs-preview__img">
       <p class="cs-preview__meta">${esc(format)} · ${card.imageWidth || '?'}×${card.imageHeight || '?'} · ${formatBytes(card.imageBytes)}</p>`;
   } else if (card.type === 'pdf') {
-    const blob = pdfBlob(card);
-    if (blob) {
-      previewObjectUrl = URL.createObjectURL(blob);
-      els.previewBody.innerHTML = `<iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(previewObjectUrl)}"></iframe>
-        <p class="cs-preview__meta">PDF · ${esc(card.pdfName || '')} · ${formatBytes(card.pdfBytes)}</p>`;
-    } else {
-      els.previewBody.innerHTML = '<p class="cs-preview__meta">PDF を表示できません</p>';
+    els.previewBody.innerHTML = buildPdfPreviewHtml(card);
+    if (!pdfPreviewBlob(card) && card.pdfData) {
+      void ensurePdfPagePreview(card);
     }
   } else if (card.type === 'color') {
     els.previewBody.innerHTML = `<div class="cs-preview__swatch" style="background:${esc(card.colorHex || '#000')}"></div>
@@ -774,11 +772,75 @@ function openPreview() {
   document.body.classList.add('cs-preview-open');
 }
 
+/**
+ * Space PDF: 「2秒でこれだと判別」が目的。Acrobat UI ではない。
+ *
+ * DECISION: 1ページ目は生成済み PNG を幅100%で見せ、横欠けを禁止する。
+ * ネイティブ iframe はツールバー/サムネが幅を食うため初期非表示（▸ Pages）。
+ * Chromium 系では `#toolbar=0&navpanes=0&view=FitH` を付与（効かない環境あり）。
+ * 将来: pdf.js で Fit Width・ページ送り・UI統一へ移行可（今回は移行しない）。
+ *
+ * @param {import('./clip-stash-engine.js').ClipStashCard} card
+ */
+function buildPdfPreviewHtml(card) {
+  const pageSrc = imageThumbUrl(card);
+  const pages = Number(card.pdfPageCount) > 0 ? Number(card.pdfPageCount) : 1;
+  const blob = pdfBlob(card);
+  const meta = `<p class="cs-preview__meta">PDF · ${esc(card.pdfName || '')}${
+    pages > 1 ? ` · ${pages}ページ` : ''
+  } · ${formatBytes(card.pdfBytes)}</p>`;
+
+  let viewer = '';
+  if (blob) {
+    previewObjectUrl = URL.createObjectURL(blob);
+    // FitH = ページ幅優先。toolbar/navpanes はブラウザ依存。
+    const viewerSrc = `${previewObjectUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=page-width`;
+    const iframe = `<iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(viewerSrc)}"></iframe>`;
+    if (pageSrc) {
+      viewer = `<details class="cs-preview__pdf-more">
+        <summary>Pages${pages > 1 ? ` · ${pages}` : ''}</summary>
+        ${iframe}
+      </details>`;
+    } else {
+      viewer = iframe;
+    }
+  }
+
+  const stage = pageSrc
+    ? `<div class="cs-preview__pdf-stage">
+        <img src="${esc(pageSrc)}" alt="" class="cs-preview__pdf-page">
+      </div>`
+    : '';
+
+  if (!stage && !viewer) {
+    return '<p class="cs-preview__meta">PDF を表示できません</p>';
+  }
+  return `${stage}${meta}${viewer}`;
+}
+
+/**
+ * 1ページ目 PNG が無いカード向け。Space オープン時に補完（元 PDF は変更しない）。
+ * @param {import('./clip-stash-engine.js').ClipStashCard} card
+ */
+async function ensurePdfPagePreview(card) {
+  if (!db || !card.pdfData || pdfPreviewBlob(card)) return;
+  const thumb = await makePdfPreview(card.pdfData);
+  if (!thumb?.preview?.byteLength) return;
+  card.pdfPreviewData = thumb.preview;
+  card.pdfPageCount = thumb.pageCount;
+  await putCard(db, card);
+  thumbUrls.delete(card.id);
+  if (selectedId === card.id && isPreviewOpen()) {
+    els.previewBody.innerHTML = buildPdfPreviewHtml(card);
+  }
+}
+
 function closePreview() {
   if (previewObjectUrl) {
     URL.revokeObjectURL(previewObjectUrl);
     previewObjectUrl = null;
   }
+  els.preview?.querySelector('.cs-preview__panel')?.classList.remove('cs-preview__panel--pdf');
   els.preview?.classList.add('hidden');
   document.body.classList.remove('cs-preview-open');
 }

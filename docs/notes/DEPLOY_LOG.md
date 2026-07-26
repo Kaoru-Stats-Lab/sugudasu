@@ -1581,10 +1581,31 @@
 
 ---
 
+## DEPLOY-20260726-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 仮置き PDF Space を識別確認UXへ（同日 core 3回目 · P7 override） |
+| **change_summary** | Space PDF: 1ページ目PNGを幅100%表示 · ネイティブviewerは ▸ Pages 折りたたみ · `#toolbar=0&navpanes=0&view=FitH` · 将来pdf.js移行メモ · specification |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 3（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Pushして」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | `/clip-stash` Space PDF · 横欠けなし |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 003 approved（仮置き PDF Space 識別確認UX · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 002 executed（de12fb8 · 仮置き DnD hotfix） |
 | 2026-07-26 | 002 approved（仮置き DnD hotfix · P7 override） |
 | 2026-07-26 | 001 executed（8898a8e · 仮置き LP · ローカル投入 · Input Bridge） |

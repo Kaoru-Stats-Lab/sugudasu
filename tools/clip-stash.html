@@ -116,11 +116,56 @@
         white-space: nowrap;
       }
       .cs-preview__pdf {
-        width: min(90vw, 48rem);
-        height: min(70vh, 36rem);
-        border: 1px solid #e2e8f0;
+        display: block;
+        width: 100%;
+        height: min(78vh, 52rem);
+        border: 0;
         border-radius: 0.5rem;
+        background: #f8fafc;
+      }
+      .cs-preview__panel--pdf {
+        width: min(56rem, 96vw);
+        max-height: min(92vh, 56rem);
+        padding: 0.75rem 0.85rem 0.85rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+      .cs-preview__pdf-stage {
+        width: 100%;
+        background: #f1f5f9;
+        border-radius: 0.5rem;
+        overflow: auto;
+      }
+      .cs-preview__pdf-page {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        vertical-align: top;
         background: #fff;
+        box-shadow: 0 1px 0 rgb(15 23 42 / 0.06);
+      }
+      .cs-preview__pdf-more {
+        margin: 0.35rem 0 0;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 0.35rem;
+      }
+      .cs-preview__pdf-more > summary {
+        cursor: pointer;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        color: #64748b;
+        list-style: none;
+        user-select: none;
+      }
+      .cs-preview__pdf-more > summary::-webkit-details-marker { display: none; }
+      .cs-preview__pdf-more > summary::before {
+        content: '▸ ';
+        color: #94a3b8;
+      }
+      .cs-preview__pdf-more[open] > summary::before { content: '▾ '; }
+      .cs-preview__pdf-more[open] .cs-preview__pdf {
+        margin-top: 0.5rem;
       }
       .sg-file-drop--strip.is-bridge {
         border-color: #94a3b8;
