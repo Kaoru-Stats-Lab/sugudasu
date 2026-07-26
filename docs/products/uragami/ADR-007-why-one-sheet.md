@@ -33,29 +33,34 @@
 - 既定アスペクトは **16:9**（初期実装。将来 A4 対応の可能性はあるが、今は 16:9 のみ）。
 - サイズ変更 UI なし。
 
-### Paper Zoom / Pan（許可）
-
-> The sheet may be viewed at different scales.  
-> The sheet itself never changes size.  
-> Zoom changes the viewer, not the paper.
+### Paper Fit と Paper Zoom（二軸）
 
 | 許可 | 禁止 |
 |------|------|
-| Ctrl + マウスホイール | ズームボタン · % 表示 UI |
-| トラックパッド ピンチ | ミニマップ |
-| Space + Drag パン | Infinite Canvas |
-| 中ボタンドラッグ パン | Viewport Navigation UI |
+| **paperFit**（机の中の占有率 · 既定 **90%** · 60–95%） | ズームボタン · % 常時表示 UI |
+| Ctrl + マウスホイール（見る距離） | ミニマップ |
+| トラックパッド ピンチ | Infinite Canvas |
+| Space + Drag / 中ボタン パン | Viewport Navigation UI |
+| 右下ドラッグ · Alt+ホイールで Fit | |
 
-範囲の目安: **60%〜300%**。紙は広がらない。大きく見える／小さく見えるだけ。
+> The sheet may be viewed at different scales.  
+> The sheet itself never changes size.  
+> Zoom changes the viewer, not the paper.  
+> Fit changes how much of the desk the sheet occupies — not the sheet’s logical size.
 
-### 紙の視覚（採用）
+範囲の目安（Zoom）: **60%〜300%**。紙は広がらない。
+
+### 紙の視覚（採用 · Paper Affordance）
 
 | 項目 | 値 |
 |------|-----|
 | 比率 | 16:9 |
+| 机 | `#E7EBF2` |
 | 紙色 | `#F8F5EC`（純白禁止） |
+| 縁 | 1px `#DDD7CA` |
+| 影 | `0 2px 6px rgba(0,0,0,0.05)`（接地 · 浮遊禁止） |
 | 方眼 | 5mm 相当 · `#D8DDE6` · 透明度 ~25% |
-| 影 | 極めて弱い |
+| 折り返し | 右上（めくり）を紙らしさの主アフォーダンスに |
 
 PNG: 透過禁止 · 紙ごと。  
 印刷: ブラウザ印刷 · 品質維持（16:9 を崩さない）。
@@ -63,15 +68,16 @@ PNG: 透過禁止 · 紙ごと。
 ## Reason
 
 重要なのは A4 ではなく **一枚**であること。  
-説明の持ち出し先（画面 · チャット）に合わせた比率が、Mission（説明が速くなるか）に直結する。  
-Paper Zoom は物理の「顔を近づける」に対応し、Constitution「Infinite Canvas 禁止」を破らない。
+モニタや液タブごとに「紙が小さすぎる」問題は **Fit（占有率）** で解き、細部は **Zoom（見る距離）** で解く。  
+境界の明度差は色覚以前に、0.2 秒で「ここが紙」と分かる認知の問題である。
 
 ## Consequences
 
-- 座標系・エクスポートは単一シート · 16:9 前提
-- ズームは CSS / ビュー変換。論理紙サイズは不変
+- 座標系・エクスポートは単一シート · 論理解像度固定 · 16:9
+- Fit / Zoom は CSS・ビュー変換。論理紙サイズは不変
 - 「Letter にして」「無限に広げて」は Reject または将来別議論
 
 ## Follow-up
 
-- [x] 実装: 16:9 · Paper Zoom / Pan（ジェスチャのみ）
+- [x] 実装: 16:9 · Paper Fit · Paper Zoom / Pan · 境界トークン
+- [x] 憲法判断: 「説明モード」は [CASE-2026-008](../../legal/CASE_LAW.md#case-2026-008) で Reject（Fit で解く）

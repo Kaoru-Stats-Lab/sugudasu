@@ -2,7 +2,7 @@
 
 **役割:** 憲法上の重要判断（Judicial Decision）を蓄積する  
 **役割でないもの:** 設計選択の ADR · 実装手順 · 憲法改正案  
-**更新:** 2026-07-25  
+**更新:** 2026-07-26  
 **義解:** [`CONSTITUTION_COMMENTARY.md`](./CONSTITUTION_COMMENTARY.md)  
 **解釈手順:** [`LEGAL_INTERPRETATION_GUIDE.md`](./LEGAL_INTERPRETATION_GUIDE.md)
 
@@ -39,6 +39,7 @@
 | [CASE-2026-005](#case-2026-005) | F2 非送信字面解釈事件 | 義解確定（一切通信禁止ではない） | F2 |
 | [CASE-2026-006](#case-2026-006) | Present（ギフト）Reject 事件 | **Reject** · カタログ除外 · アーカイブ | Persona · Anti · Domain |
 | [CASE-2026-007](#case-2026-007) | 帳票チャネル名付き共有UI事件 | **Reject**（UI）· Copy-First に是正 | Domain · Persona · Anti · F5/F6 |
+| [CASE-2026-008](#case-2026-008) | 裏紙「説明モード」事件 | **Reject**（モード）· Fit 強化は合憲 | Persona · Domain · Anti · Mission |
 
 ---
 
@@ -260,6 +261,45 @@ Domain（受け渡せる状態まで）· Persona（前に出ない同僚）· A
 **関連ADR:** なし  
 
 **関連Product:** `invoice` · `receipt`（`stamp` は既に PNG コピーのみで対象外）
+
+---
+
+## CASE-2026-008
+
+**事件名:** 裏紙「説明モード」（画面いっぱい・モード切替）事件  
+
+**争点:**  
+`uragami`（裏紙）に、ドラフト会議の「会議モード」に類する **名前付き「説明モード」**（表示を画面いっぱい · ヘッダー/ツール退避 · モード入場）を採るか。
+
+**立法事実:**  
+- モニタ差で「紙が小さい」痛みはある。Paper Fit（占有率）と Paper Zoom（見る距離）の二軸は既に設計済み。  
+- ドラフト会議（`match-board`）の会議モードは **setup→meeting のワークフロー段階切替**（準備UIを隠しボードを広げる）であり、Fullscreen API や投影専用モードではない。  
+- 裏紙の JTBD は最初から「説明のために描く」一段階。準備フェーズが無い。  
+- 紙境界（机色 · 縁 · 接地影）を強めた直後であり、画面いっぱいで机を消す案は Paper Affordance と衝突する。
+
+**適用条文:**  
+- 製品 Mission（説明が速くなるか · `docs/products/uragami`）  
+- ADR-000（裏紙で現実にできないことは実装しない）· ADR-007（一枚 · Fit/Zoom）  
+- Persona（考えない · 教え込まない）· Anti（設定・モード増殖 · チュートリアル）· Domain（前工程のみ）
+
+**判決:**  
+**Reject** — 名前付き「説明モード」· ドラフト会議型の段階モード移植 · `requestFullscreen` による儀式的全画面。  
+**合憲に残す／採るもの** — Paper Fit（占有率）の強化（既定を大きく · ジェスチャで可変）· 机の上に大きな一枚 · 境界を残したまま大きく見せる。  
+**条件付き可（モード名なし）** — Esc 一発等で Fit を一時最大化する場合は、ラベル無し・一瞬・机/縁を消さないこと。
+
+**理由:**  
+1. モードは「今は通常か説明か」を考えさせ、開いたら紙だけ、に反する。  
+2. ドラフト会議の会議モードは setup≠meeting があるから合憲寄り。裏紙に移植する前提が無い。  
+3. Fit と「説明モード」は同じ痛みの二重解法で MECE でない。  
+4. 全面化で机を消すと、色覚以前に「ここが紙」の認知（境界）が壊れる。  
+5. Fullscreen API は権限・Esc・復帰の儀式が重く、3秒で描き始めるを壊しやすい。
+
+**今後への影響:**  
+裏紙および類似の「一枚キャンバス」系で、**画面占有の問題をモード切替で解く提案は原則 Reject**。占有率（Fit）と見る距離（Zoom）を分け、境界（Desk/Edge）を消さない。他ツールの「会議モード」を安易にコピーしない（JTBD 段階の有無を先に見る）。
+
+**関連ADR:** [`ADR-007 Why One Sheet`](../products/uragami/ADR-007-why-one-sheet.md)（Fit/Zoom の HOW）· [`ADR-000`](../products/uragami/ADR-000-constitution.md)
+
+**関連Product:** `uragami` · 対比 `match-board`（会議モードは別JTBD）
 
 ---
 

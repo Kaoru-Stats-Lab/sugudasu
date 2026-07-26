@@ -11,6 +11,28 @@
   },
   "entries": [
     {
+      "id": "uragami-explain-mode-case-20260726",
+      "date": "2026-07-26",
+      "type": "chore",
+      "audience": "internal",
+      "title": "判例 CASE-2026-008 — 裏紙「説明モード」Reject",
+      "body": "画面占有は Paper Fit で解く。名前付き説明モード・ドラフト会議型段階モード・Fullscreen 儀式は Reject。",
+      "tools": [
+        "uragami"
+      ]
+    },
+    {
+      "id": "uragami-paper-fit-affordance-20260726",
+      "date": "2026-07-26",
+      "type": "improve",
+      "audience": "public",
+      "title": "裏紙 — 紙の大きさと境界をわかりやすく",
+      "body": "机の中で紙が占める割合を変えられるようにしました（右下ドラッグ・Alt+ホイール、既定約90%）。縁と接地影で「ここが紙」とすぐ分かるようにしています。Ctrl+ホイールの見る距離とは別です。",
+      "tools": [
+        "uragami"
+      ]
+    },
+    {
       "id": "uragami-16x9-zoom-20260726",
       "date": "2026-07-26",
       "type": "improve",

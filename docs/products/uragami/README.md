@@ -38,7 +38,8 @@ Excalidraw / Miro / FigJam ではない。
 
 - 常に **一枚**（Infinite Canvas 禁止）
 - 既定 **16:9**（初期。A4 は将来検討可）
-- **Paper Zoom / Pan** 可（見る距離 · 位置）。Viewport UI（+/- · ミニマップ）禁止
+- **Paper Fit / Zoom** 可（占有率 · 見る距離）。Viewport UI（+/- · ミニマップ）禁止
+- **「説明モード」禁止** — [CASE-2026-008](../../legal/CASE_LAW.md#case-2026-008)
 
 ## ADR
 

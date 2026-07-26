@@ -1663,10 +1663,31 @@
 
 ---
 
+## DEPLOY-20260726-007
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 裏紙 Fit/境界 · CASE-2026-008（同日 core 7回目 · P7 override） |
+| **change_summary** | Paper Fit（既定90%）· Desk/縁/影 · 右下ハンドル · Alt+wheel · 論理1600×900 · CASE-2026-008 説明モード Reject |
+| **local_build** | `pass`（`release:pages:free` · budget consume 71/450） |
+| **deploy_count_today** | 7（**P7 override** · 提督 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督明示 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-26 | 007 approved（裏紙 Fit/境界 · CASE-2026-008 · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 006 executed（dc8171d · 裏紙 16:9 · Paper Zoom/Pan） |
 | 2026-07-26 | 006 approved（裏紙 16:9 · Paper Zoom/Pan · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 005 executed（7a54d95 · 裏紙 α · 台帳 file-transfer Outside Scope） |

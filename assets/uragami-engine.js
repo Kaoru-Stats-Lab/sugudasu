@@ -7,18 +7,26 @@
  */
 
 export const PAPER_MM = { w: 320, h: 180 }; // 16:9 の論理 mm（方眼・PNG dpi 換算用）
+/** 描画座標の正本。表示サイズ（紙占有率）が変わっても不変。 */
+export const PAPER_LOGICAL = { w: 1600, h: 900 };
 export const PAPER_ASPECT = 16 / 9;
 export const GRID_MM = 5;
 export const COLOR_BLACK = '#1D1D1D';
 export const COLOR_RED = '#B41E23';
 export const PAPER_BG = '#F8F5EC';
+export const DESK_BG = '#E7EBF2';
+export const PAPER_EDGE = '#DDD7CA';
 export const GRID_COLOR = 'rgba(216, 221, 230, 0.25)';
 
 export const STROKE_BASE = 2.2;
 export const STROKE_MIN = 1.9;
 export const STROKE_MAX = 2.5;
 
-export const SS_KEY = 'sugudasu-uragami-v2';
+export const SS_KEY = 'sugudasu-uragami-v3';
+
+export const PAPER_FIT_MIN = 0.6;
+export const PAPER_FIT_MAX = 0.95;
+export const PAPER_FIT_DEFAULT = 0.9;
 
 /** @typedef {'pen'|'eraser'} UragamiTool */
 /** @typedef {{ x: number, y: number, w: number, t: number }} UragamiPoint */
@@ -170,10 +178,11 @@ export function paintGrid(ctx, cssW, cssH, dpr) {
 export function saveSession(strokes, meta) {
   try {
     const payload = {
-      v: 1,
+      v: 3,
       strokes,
       tool: meta.tool,
       color: meta.color,
+      paperFit: meta.paperFit,
       savedAt: Date.now(),
     };
     sessionStorage.setItem(SS_KEY, JSON.stringify(payload));
@@ -187,7 +196,7 @@ export function loadSession() {
     const raw = sessionStorage.getItem(SS_KEY);
     if (!raw) return null;
     const data = JSON.parse(raw);
-    if (!data || data.v !== 1 || !Array.isArray(data.strokes)) return null;
+    if (!data || (data.v !== 3 && data.v !== 1) || !Array.isArray(data.strokes)) return null;
     return data;
   } catch {
     return null;
