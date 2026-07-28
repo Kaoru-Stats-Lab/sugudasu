@@ -6,7 +6,8 @@
 
 > **使い方:** 新ツール提案時は [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) の判定順・F1〜F7と、本台帳の市場性・判例を突合してから `BACKLOG.md` に載せる。  
 > 実装仕様は各ツールの SSOT（例: `LOTTERY_PRIZE_LAW_TOOL_SPEC.md`）へ。  
-> **2026-07-22:** `pdf-fill`（SUGUDASU PDF記入）を **§19 GO** として正式登録。
+> **2026-07-22:** `pdf-fill`（SUGUDASU PDF記入）を **§19 GO** として正式登録。  
+> **2026-07-27:** `mention`（SUGUDASU Mention）を **§20 条件付き GO**（Extension 先行 · LLM なし）として設計登録。
 
 ---
 
@@ -624,11 +625,53 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 ---
 
-## 19. 関連ドキュメント
+## 20. mention（SUGUDASU Mention）— 2026-07-27
+
+| 項目 | 内容 |
+|------|------|
+| **id** | `mention` |
+| **判定** | **条件付き GO**（コア思想 · Chrome Extension Side Panel 先行）· Sync 不要 |
+| **届け方** | Extension 本命 · `/mention` は LP · インストール導線のみ |
+| **Action Engine** | ルール + 編集可能テンプレ + `{{変数}}` · **LLM なし** |
+| **Mission** | Find it. Done. · Mention → Done |
+| **憲法境界** | 感情分析 Reject · 返信断定 Reject · 監視/通知/BI Reject · Webhook はユーザー明示のみ |
+| **判例候補** | [`../legal/logs/2026-07-27_mention_constitution_review.md`](../legal/logs/2026-07-27_mention_constitution_review.md)（Case Law 未昇格） |
+| **正本** | [`../products/mention/`](../products/mention/README.md) |
+| **実装** | **α v0.1.0** · `extensions/mention/` · LP `/mention` · Hub 未掲載 · BACKLOG §1-17 |
+
+### 20-1. Persona · Pain
+
+- **Persona:** 自社言及を見つけた瞬間の広報 · 店舗 · CS · 経営
+- **Pain:** 見つけたあとの往復（返信文起こし · Slack · メモ帳 · 元ページ）。分析したいのではない。終わらせたい。
+
+### 20-2. F1〜F7（要約）
+
+| # | 判定 | メモ |
+|---|------|------|
+| F1 | ◎ | 登録不要 |
+| F2 | ◎ | IndexedDB 端末内 · SUGUDASU 管理下へ業務データ非保存。Webhook はユーザー設定 URL への明示送信のみ（C-05） |
+| F3 | △→レーン分離 | 作業 UI は Extension。Pages は静的 LP |
+| F4 | △→レーン分離 | `tools/*.html` 単体ではない。`extensions/mention/` |
+| F5 | ◎ | Side Panel で Find → Action → Done |
+| F6 | △ | 帳票PDFは主価値ではない（共有テキストが成果物） |
+| F7 | ◎ | 低星の返信断定禁止 · 注意付き Action |
+
+### 20-3. 境界（再提案防止）
+
+| やる | やらない |
+|------|----------|
+| 構造シグナル → Action ボタン → 定型展開 → Done | 感情分析 · LLM 文案生成 · 監視 · 通知 · BI |
+| Current Tab / DOM の端末内読取 | サーバー収集 · 自動クロール |
+| ユーザー編集テンプレ | 「生成」「AIが書きました」 |
+
+---
+
+## 21. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
 | `secret/file-transfer/README.md` | **Secret ファイル送信** · Workers シグナリング |
+| `docs/products/mention/` | **Mention** 設計正本（README · philosophy · specification） |
 | `docs/products/pdf-fill/` | **PDF記入** 設計正本（README · philosophy · specification · ui-ux · technical-design · decisions） |
 | `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |
@@ -639,6 +682,7 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 | `docs/prompts/sync-product-combo-jump-prompt.md` | 組み合わせ探索プロンプト |
 | `docs/BACKLOG.md` §15 | lottery タスク |
 | `docs/BACKLOG.md` §1-16 | pdf-fill タスク |
+| `docs/BACKLOG.md` §1-17 | mention（Extension）タスク |
 | `docs/DESIGN_GUIDELINE.md` §1 | ペルソナ・トーン |
 | `docs/BACKLOG.md` §0 | SUGUDASU前提（静的・非送信） |
 | `docs/product/PRODUCT_CONSTITUTION.md` | 採用基準 F1〜F7（憲法正本） |

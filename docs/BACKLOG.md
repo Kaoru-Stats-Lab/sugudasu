@@ -676,6 +676,38 @@ Mask · png-to-webp · normalize 事務訴求の方が **非送信差別化と S
 
 ---
 
+### 1-17. `mention` — Mention by SUGUDASU（**条件付き GO · 設計済 · α実装** · 2026-07-28）
+
+| 項目 | 内容 |
+|------|------|
+| **判定** | **条件付き GO** · Extension Side Panel 先行 · LLM なし |
+| **台帳** | [`PRODUCT_IDEA_JUDGMENT_LEDGER.md`](notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) **§20** |
+| **憲法ログ** | [`legal/logs/2026-07-27_mention_constitution_review.md`](legal/logs/2026-07-27_mention_constitution_review.md) |
+| **設計正本** | [`docs/products/mention/`](products/mention/) |
+| **仮 id** | `mention` · productName: Mention by SUGUDASU · 思想: Mention → Done |
+| **Mission** | Find it. Done. |
+| **コア** | Action Engine（構造シグナル → Action → `{{変数}}` 定型展開） |
+| **優先度** | **P1**（設計完了後の実装レーン。コア `tools/*.html` とは別） |
+| **実装** | **α v0.1.0** · `extensions/mention/` · LP `/mention` · Hub 未掲載 |
+
+**MVP 方針:** Current Tab 自動取得 · Priority S Extractor（Google 口コミ等）· Inbox/Done/Template/Setting · IndexedDB · Webhook はユーザー明示のみ
+
+**やらない:** 感情分析 · LLM 生成 · 監視/通知 · BI/グラフ · 担当/期限 · Hub 先行公開（初回は LP + Extension 導線 · Playbook §1.5 は後続）
+
+#### 実装順（提案）
+
+1. [x] `extensions/mention/` スケルトン（MV3 · Side Panel）
+2. [x] `lib/action-engine.js` + 既定テンプレ + 純関数テスト
+3. [x] Inbox / Done / Template / Setting UI
+4. [x] Priority S: Google Business Profile / Maps 口コミ Extractor（DOM 変更に脆い · 継続改善）
+5. [x] Slack/Webhook 明示送信 · Done IndexedDB
+6. [x] `/mention` LP（インストール導線）
+7. [ ] Playbook §1.5（命名 · registry inNav · hub · changelog）合意後に公開配線
+8. [ ] Google 検索 / X Extractor の実ページ耐性向上
+9. [ ] Chrome ウェブストア公開準備
+
+---
+
 ## 2) 収益戦略 Backlog（AdSense + Amazon 統合）
 
 本会話で合意した方針を、実装可能な TODO に分解。

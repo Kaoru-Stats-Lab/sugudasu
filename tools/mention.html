@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mention by SUGUDASU — 見つけたら終わらせる。Google口コミや記事を見ながら、定型返信・Slack共有まで Side Panel で完了。監視・分析なし。">
+    <title>Mention by SUGUDASU — Find it. Done. | すぐだす</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="Mention by SUGUDASU — Find it. Done.">
+    <meta property="og:description" content="今見ている言及を、次のボタンと定型展開で終わらせる Chrome 拡張。分析・監視・LLMなし。">
+    <meta property="og:url" content="https://sugudasu.com/mention">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="Mention by SUGUDASU">
+    <meta name="twitter:description" content="Find it. Done. — 言及を終わらせる Side Panel。">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="Mention by SUGUDASU" data-sg-tool-id="mention"></div>
+
+<main class="sg-info-page">
+    <article class="sg-card p-6 lg:p-8 space-y-8 sg-info-prose">
+        <header class="border-b border-slate-200 pb-4 space-y-2">
+            <p class="text-[11px] font-bold text-violet-700 tracking-wide">Mention → Done · Chrome Extension</p>
+            <h1 class="sg-info-page__title">Mention by SUGUDASU</h1>
+            <p class="sg-info-page__subtitle">Find it. Done. — 見つけたら、1アクションで終わらせる。</p>
+        </header>
+
+        <section class="space-y-3">
+            <h2 class="sg-info-section-title">これは何か</h2>
+            <p class="text-sm leading-relaxed">
+                いま開いているページを、<strong>その場で終わらせる</strong> Action Tool です。
+                Google口コミも、記事も、SNSも、同じエンジン（Scenario → Action → Done）です。
+                分析グラフも、監視も、AIチャットもありません。
+            </p>
+            <ul class="text-sm leading-relaxed list-disc pl-5 space-y-1 text-slate-700">
+                <li>ルールと編集可能なテンプレのみ（LLMなし）</li>
+                <li>履歴は端末内の IndexedDB（クラウド保存なし）</li>
+                <li>データ取得はユーザー操作起点（通知・自動巡回なし）</li>
+            </ul>
+        </section>
+
+        <section class="space-y-3 bg-slate-50 border border-slate-200 rounded-xl p-5">
+            <h2 class="sg-info-section-title">インストール（開発者向け α）</h2>
+            <ol class="text-sm leading-relaxed list-decimal pl-5 space-y-2 text-slate-700">
+                <li>リポジトリの <code class="text-xs bg-white border px-1 rounded">extensions/mention</code> を用意する</li>
+                <li>Chrome で <code class="text-xs bg-white border px-1 rounded">chrome://extensions</code> を開く</li>
+                <li>「デベロッパーモード」をオンにする</li>
+                <li>「パッケージ化されていない拡張機能を読み込む」で上記フォルダを選ぶ</li>
+                <li>ツールバーのアイコンから Side Panel を開く</li>
+            </ol>
+            <p class="text-xs text-slate-500 leading-relaxed">
+                Chrome ウェブストア公開前の α です。Hub ナビにはまだ載せていません。詳細は
+                <a href="https://github.com/Kaoru-Stats-Lab/sugudasu/tree/main/extensions/mention">extensions/mention/README.md</a>
+                を参照してください。
+            </p>
+        </section>
+
+        <section class="space-y-3">
+            <h2 class="sg-info-section-title">使い方（3ステップ）</h2>
+            <ol class="text-sm leading-relaxed list-decimal pl-5 space-y-1 text-slate-700">
+                <li>口コミや記事のページを開く</li>
+                <li>Side Panel の Action（返信 · Slack共有 など）を押す</li>
+                <li>定型をコピーして貼る → 完了</li>
+            </ol>
+        </section>
+
+        <section class="space-y-2">
+            <h2 class="sg-info-section-title">やらないこと</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                感情分析・レポート・監視アラート・担当者管理・LLMによる文章生成は作りません。
+            </p>
+        </section>
+    </article>
+</main>
+
+<script src="../assets/sugudasu-shell.js"></script>
+</body>
+</html>

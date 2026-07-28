@@ -40,6 +40,7 @@
     "test:hub-search": "node scripts/hub-search-engine.test.mjs",
     "test:json-view": "node scripts/json-view-engine.test.mjs",
     "test:clip-stash": "node scripts/clip-stash-engine.test.mjs",
+    "test:mention": "node scripts/mention-action-engine.test.mjs",
     "test:ai-cleaner": "node scripts/ai-cleaner-engine.test.mjs",
     "test:broken-input": "node scripts/broken-input-presets.test.mjs",
     "test:link-qr": "node scripts/link-qr-engine.test.mjs",

@@ -1,12 +1,12 @@
 # SUGUDASU ツールカタログ
 
-**更新:** 2026-07-26  
-**対象:** ユーザーが利用できる実務ツール **38本**（案内・法務・内部ページは除外）  
+**更新:** 2026-07-27  
+**対象:** ユーザーが利用できる実務ツール **39本**（案内・法務・内部ページは除外）  
 **命名正本:** `data/tool-registry.json`  
 **説明文参照:** `data/hub-cards.json` · `docs/products/{id}/`  
 **突合（MECE）:**  
 1. `inNav: true` · `stage !== reject` · `id !== hub` → **必ず本表に載せる**（現在 37 · 欠番禁止）  
-2. ナビ非掲載だが公開URLのある実務ツール → 本表に残す（現在: `font-converter`）  
+2. ナビ非掲載だが公開URLのある実務ツール → 本表に残す（現在: `font-converter` · `mention`）  
 3. 上記以外（法務・案内・Reject）→「対象外」のみ
 
 > 「ツール名」は `productName`、「ID名」はURL・ファイル・コードで使う識別子です。
@@ -51,6 +51,7 @@
 | SUGUDASU AIコピペ整形 | `ai-cleaner` | AI出力をNotionやCursorへ貼る前に、Markdown、コードブロック、JSONの崩れを整える。コピペ後の掃除を減らす。 | AIで意味を解釈せず、決定的なルールだけで端末内整形するため、文章内容を勝手に書き換えない。 |
 | SUGUDASU 時給計算 | `time-calc` | 複数日の開始・終了・休憩から勤務時間を合計し、時給換算の目安を出す。電卓での日別集計を減らす。 | `1015`のようなコロンなし入力、入力候補の再利用、10進小数表示に対応し、「給与計算」とは明確に分ける。 |
 | SUGUDASU フォント変換 | `font-converter` | 入力文字をSNSなどで使えるUnicode装飾文字や記号へ変換する。好みの字体をコピーして使える。 | 23種類のフォントスタイルと444記号を収録。**ナビ非掲載**（`inNav: false`）だが `/font-converter` は公開。SNSお手本中心の`/sns`と役割分担。 |
+| Mention by SUGUDASU | `mention` | いま開いているページ上の言及（口コミ・記事・SNSなど）を見つけたその場で、次の Action と定型展開まで運び、仕事を終わらせる。監視・分析ではない。 | **Webアプリではなく Chrome Extension（Side Panel）**。Current Tab → Scenario → Action → Done。LLMなし・端末内 IndexedDB。`/mention` は LP・インストール導線のみ。**ナビ非掲載**（α · Hub未掲載）。正本 `docs/products/mention/` · 実装 `extensions/mention/`。 |
 
 ## 対象外
 
@@ -72,8 +73,9 @@
 | 集合 | 置き場 |
 |------|--------|
 | ナビ掲載ツール | 本表（registry `inNav: true`） |
-| ナビ外・公開実務 | 本表に明示（例: `font-converter`） |
+| ナビ外・公開実務 | 本表に明示（例: `font-converter` · `mention`） |
 | Hub / statements / shell | registry · hub-cards · shell · statements-product |
 | Agent 公開チェック | Playbook §1.5 A1–A11 + **本カタログ1行** |
 
-新規 `inNav: true` ツール公開時は Hub 配線と同時に本ファイルへ1行追加する。registry だけだと Agent カタログが欠ける。
+新規 `inNav: true` ツール公開時は Hub 配線と同時に本ファイルへ1行追加する。registry だけだと Agent カタログが欠ける。  
+`mention` は **Chrome Extension 本命**のため Hub 掲載前でもカタログに載せ、Web ツールと取り違えないよう形態を明記する。
