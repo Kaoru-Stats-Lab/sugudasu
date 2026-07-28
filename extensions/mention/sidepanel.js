@@ -160,15 +160,21 @@ async function sendWebhook() {
     return;
   }
   const text = $('mn-detail-text').value || '';
+  const actionId = currentActionId || 'slack_share';
   try {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({
+        text,
+        actionId,
+        sourceUrl: currentSignals?.url || '',
+        sentAt: Date.now(),
+      }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     setStatus('Webhook に送信しました。');
-    await markDone(text, currentActionId || 'slack_share');
+    await markDone(text, actionId);
   } catch (err) {
     setStatus(`Webhook 送信に失敗しました: ${err?.message || err}`);
   }
