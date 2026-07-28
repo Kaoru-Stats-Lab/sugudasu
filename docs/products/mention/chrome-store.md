@@ -110,15 +110,13 @@ Store提出フォームの該当質問への回答方針。
 
 ## 6. 審査前セルフチェック（実装との突合）
 
-| 項目 | 状態 |
-|---|---|
-| `host_permissions` が空、`optional_host_permissions`のみ | PR#2で対応済み（要: manifest再確認） |
-| content_scripts.matchesがoptional_host_permissionsと一致 | 実装済み（5ドメイン一致確認済み） |
-| Core（lib/）に`platform ===`分岐が残っていない | PR#2で対応済み（grep確認済み） |
-| Webhookペイロードが最小メタのみ | PR#3で対応済み（text/actionId/sourceUrl/sentAt） |
-| Done件数上限200 | PR#3で対応済み |
-| eval / remote code なし | 未確認（Store提出直前に再grep推奨） |
-| ストア説明文に禁止語が含まれていない | 本ドラフトで対応済み |
+- [x] `host_permissions` が空、`optional_host_permissions`のみ（PR#2で対応済み）
+- [x] content_scripts.matchesがoptional_host_permissionsと一致（5ドメイン一致確認済み）
+- [x] Core（lib/）に`platform ===`分岐が残っていない（PR#2でgrep確認済み）
+- [x] Webhookペイロードが最小メタのみ（PR#3対応: text/actionId/sourceUrl/sentAt）
+- [x] Done件数上限200（PR#3対応済み）
+- [ ] eval / remote code なし（Store提出直前に再grep推奨）
+- [x] ストア説明文に禁止語（監視/分析/収集等）が含まれていない
 
 ---
 
@@ -128,3 +126,14 @@ Store提出フォームの該当質問への回答方針。
    Store掲載用の高解像度素材・スクリーンショット撮影はこれから
 2. **サポートURL・開発者連絡先** — Store提出フォームの必須項目、まだ決めていない
 3. **カテゴリ選択** — Chrome Web Storeの「Productivity」等、どのカテゴリで申請するか
+
+---
+
+## 関連ドキュメント
+
+- 思想正本: [`philosophy.md`](./philosophy.md)
+- 仕様正本: [`specification.md`](./specification.md)
+- 競合・White Space: [`competition.md`](./competition.md)
+- GTM: [`gtm.md`](./gtm.md)
+- 実装: [`../../../extensions/mention/README.md`](../../../extensions/mention/README.md)
+- 診断ログ: [`diagnostics/2026-07-28_constitution-gap.md`](./diagnostics/2026-07-28_constitution-gap.md)
