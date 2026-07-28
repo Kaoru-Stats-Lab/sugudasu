@@ -113,6 +113,8 @@ export async function clearUserTemplates() {
   });
 }
 
+const DONE_MAX = 200;
+
 export async function addDone(record) {
   const row = {
     ...record,
@@ -121,7 +123,25 @@ export async function addDone(record) {
   await withStore('done', 'readwrite', (store) => {
     store.add(row);
   });
+  await trimDoneOverLimit(DONE_MAX);
   return row;
+}
+
+/** completedAt 昇順で古いものから、maxCount 超過分を削除（ADR-0007） */
+async function trimDoneOverLimit(maxCount) {
+  const db = await openDb();
+  const tx = db.transaction('done', 'readwrite');
+  const store = tx.objectStore('done');
+  const index = store.index('by_completedAt');
+  const rows = await reqToPromise(index.getAll());
+  const excess = (rows || []).length - maxCount;
+  if (excess > 0) {
+    for (let i = 0; i < excess; i += 1) {
+      store.delete(rows[i].id);
+    }
+  }
+  await txDone(tx);
+  db.close();
 }
 
 export async function listDone(limit = 100) {
