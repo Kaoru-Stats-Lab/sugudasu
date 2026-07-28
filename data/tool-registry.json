@@ -666,6 +666,20 @@
       "version": "0.1.0",
       "stage": "alpha",
       "statusNote": "内部プレビュー · sitemap対象外"
+    },
+    "mention": {
+      "file": "mention.html",
+      "conceptName": "メンション",
+      "productName": "Mention by SUGUDASU",
+      "navLabel": null,
+      "navIcon": "📎",
+      "inNav": false,
+      "navOrder": null,
+      "name": "Mention → Done（Chrome Extension）",
+      "version": "0.1.1",
+      "stage": "alpha",
+      "statusNote": "Extension Side Panel 先行 · LP のみ · Hub未掲載 · docs/products/mention/",
+      "categoryId": "ops"
     }
   }
 }

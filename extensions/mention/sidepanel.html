@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mention by SUGUDASU</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="mn-header">
+    <div>
+      <p class="mn-eyebrow">Mention → Done</p>
+      <h1 class="mn-title">Mention by SUGUDASU</h1>
+    </div>
+    <button type="button" id="mn-refresh" class="mn-btn mn-btn--ghost" title="いまのタブを再読取">再読取</button>
+  </header>
+
+  <nav class="mn-tabs" role="tablist" aria-label="Mention">
+    <button type="button" class="mn-tab is-active" data-tab="inbox" role="tab" aria-selected="true">Inbox</button>
+    <button type="button" class="mn-tab" data-tab="done" role="tab" aria-selected="false">Done</button>
+    <button type="button" class="mn-tab" data-tab="template" role="tab" aria-selected="false">Template</button>
+    <button type="button" class="mn-tab" data-tab="setting" role="tab" aria-selected="false">Setting</button>
+  </nav>
+
+  <main class="mn-main">
+    <section id="panel-inbox" class="mn-panel is-active" role="tabpanel">
+      <p id="mn-status" class="mn-status" aria-live="polite"></p>
+      <p id="mn-perm-box" class="mn-hint" hidden>
+        <span id="mn-perm-msg"></span>
+        <button type="button" id="mn-grant-maps" class="mn-btn mn-btn--primary" style="margin-top:0.5rem">Google Maps で使う（許可）</button>
+      </p>
+      <article id="mn-card" class="mn-card" hidden>
+        <p class="mn-card__meta" id="mn-card-meta"></p>
+        <p class="mn-card__author" id="mn-card-author"></p>
+        <p class="mn-card__body" id="mn-card-body"></p>
+        <div class="mn-actions" id="mn-actions"></div>
+      </article>
+      <div id="mn-detail" class="mn-detail" hidden>
+        <p class="mn-detail__label" id="mn-detail-label"></p>
+        <textarea id="mn-detail-text" class="mn-textarea" rows="12" readonly></textarea>
+        <div class="mn-detail__ops">
+          <button type="button" id="mn-copy" class="mn-btn mn-btn--primary">コピー</button>
+          <button type="button" id="mn-webhook" class="mn-btn mn-btn--secondary">Webhook送信</button>
+          <button type="button" id="mn-mark-done" class="mn-btn mn-btn--ghost">完了にする</button>
+        </div>
+        <p id="mn-detail-hint" class="mn-hint"></p>
+      </div>
+    </section>
+
+    <section id="panel-done" class="mn-panel" role="tabpanel" hidden>
+      <ul id="mn-done-list" class="mn-list"></ul>
+      <p id="mn-done-empty" class="mn-empty">完了した言及はまだありません。</p>
+    </section>
+
+    <section id="panel-template" class="mn-panel" role="tabpanel" hidden>
+      <p class="mn-hint">定型を編集します。「生成」ではなく変数の展開です。未定義の <code>{{変数}}</code> は空になります。</p>
+      <label class="mn-label" for="mn-template-select">テンプレ</label>
+      <select id="mn-template-select" class="mn-select"></select>
+      <textarea id="mn-template-body" class="mn-textarea" rows="14"></textarea>
+      <div class="mn-detail__ops">
+        <button type="button" id="mn-template-save" class="mn-btn mn-btn--primary">保存</button>
+        <button type="button" id="mn-template-reset" class="mn-btn mn-btn--ghost">既定に戻す</button>
+      </div>
+    </section>
+
+    <section id="panel-setting" class="mn-panel" role="tabpanel" hidden>
+      <label class="mn-label" for="mn-brands">ブランド名（改行区切り）</label>
+      <textarea id="mn-brands" class="mn-textarea" rows="3" placeholder="例: SUGUDASU"></textarea>
+      <label class="mn-label" for="mn-store">店舗名（既定）</label>
+      <input id="mn-store" class="mn-input" type="text" autocomplete="organization">
+      <label class="mn-label" for="mn-webhook-url">Webhook URL（任意 · Slack Incoming 等）</label>
+      <input id="mn-webhook-url" class="mn-input" type="url" placeholder="https://hooks.slack.com/...">
+      <p class="mn-hint">送信はボタンを押したときだけ。本文は SUGUDASU サーバーへ送りません。</p>
+      <button type="button" id="mn-settings-save" class="mn-btn mn-btn--primary">設定を保存</button>
+    </section>
+  </main>
+
+  <footer class="mn-footer">
+    <span>Find it. Done.</span>
+    <a href="https://sugudasu.com/mention" target="_blank" rel="noopener">ヘルプ</a>
+  </footer>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
