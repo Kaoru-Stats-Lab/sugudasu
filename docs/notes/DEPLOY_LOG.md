@@ -1727,19 +1727,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — pdf-fill Page unit · shared PDF（vendor/partial/limits/mask）· Tech Adoption 正本 · 同日 core 2回目 · P7 override |
 | **change_summary** | `sg-pdf-*.js` · `sg-canvas-mask.js` · pdf-fill/annotate/pdf-images/clip-stash · TECH_ADOPTION_NOTE · CAPABILITY_INVENTORY · tests |
-| **local_build** | （release 後記入） |
+| **local_build** | `pass`（`npm run release:pages:free`） |
 | **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 75/450 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/pdf-fill` · `/annotate`） |
+| **cf_deployment_id** | `fb3a6b7`（git push · CF 自動ビルド） |
+| **smoke** | （CF 反映後）`/pdf-fill` · `/annotate` |
 
 ---
 
@@ -1747,6 +1747,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-29 | 002 executed（fb3a6b7 · pdf-fill Page unit · shared PDF · Tech Adoption） |
 | 2026-07-29 | 002 approved（pdf-fill Page unit · shared PDF · Tech Adoption · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 009 executed（b456613 · 裏紙 UX 印刷/ズーム/消しゴム/バッジ） |
 | 2026-07-26 | 009 approved（裏紙 UX · 印刷/ズーム/消しゴム/バッジ · P7 override · 提督 Commit&Push） |
