@@ -1817,6 +1817,7 @@
 | 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
 | 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |
 | 2026-07-09 | 002 executed（7d547d0 · FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ） |
+| 2026-07-29 | 001 approved（pdf-fill スナップ閾値縮小・Alt 微調整ヒント追加 · 提督 push 依頼） |
 | 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
 | 2026-07-09 | 001 approved（match-board · 見積会議 · time-calc · Sync仕様移管 · 提督 push 依頼） |
 | 2026-07-04 | 001 executed（33474f2 · table-conv · invoice 源泉 · normalize · fair-draw CSV） |

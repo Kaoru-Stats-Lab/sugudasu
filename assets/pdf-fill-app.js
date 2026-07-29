@@ -402,8 +402,8 @@ function setMode(next) {
     const map = {
       text: pendingMarkerKind
         ? '記号を紙の上に置きます。空白をクリック。'
-        : '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。',
-      datetime: '日時を置きます。確定後は掴んで移動。もう一度クリックか Enter で書き直し。Ctrl+C/V・Ctrl+D で複製。',
+        : '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。位置を細かく調整したいときは Alt を押しながら動かします。',
+      datetime: '日時を置きます。確定後は掴んで移動。もう一度クリックか Enter で書き直し。Ctrl+C/V・Ctrl+D で複製。位置を細かく調整したいときは Alt を押しながら動かします。',
       image: '',
       black: 'ドラッグで墨塗り。置いたあとも角でサイズ変更できます。',
       white: 'ドラッグで白く隠します。範囲選択中だけ青く見えます。離すと白になります。',
@@ -442,7 +442,7 @@ function placeMarkerAt(kind, p) {
   flashPlaced(obj.id);
   const hint = $('pdff-mode-hint');
   if (hint && mode === 'text') {
-    hint.textContent = '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。';
+    hint.textContent = '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。位置を細かく調整したいときは Alt を押しながら動かします。';
   }
 }
 
@@ -1903,8 +1903,8 @@ function init() {
       const hint = $('pdff-mode-hint');
       if (hint) {
         hint.textContent = pendingMarkerKind
-          ? '記号を紙の上に置きます。空白をクリック。'
-          : '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。';
+          ? '記号を紙の上に置きます。空白をクリック。位置を細かく調整したいときは Alt を押しながら動かします。'
+          : '紙の上をクリックして書きます。下の記号は紙へ書くチェック等。Enterで改行、外クリックで確定。位置を細かく調整したいときは Alt を押しながら動かします。';
       }
     });
   });

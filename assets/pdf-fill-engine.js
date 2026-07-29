@@ -12,9 +12,9 @@ export const DISPLAY_SCALE = 1.25;
  */
 export const EXPORT_DPI = 300;
 export const EXPORT_SCALE = EXPORT_DPI / 72;
-export const SNAP_THRESHOLD_PX = 9;
+export const SNAP_THRESHOLD_PX = 6;
 /** 吸着開始距離（Hard Snap enter） */
-export const SNAP_ENTER_PX = 9;
+export const SNAP_ENTER_PX = 6;
 /** 吸着維持距離（exit > enter でブルブル防止） */
 export const SNAP_EXIT_PX = 15;
 /** @deprecated SNAP_ENTER_PX と同義。互換のため残す */
