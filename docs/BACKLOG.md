@@ -1281,6 +1281,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **`docs/notes/SYNC_URL_INFORMATION_ARCHITECTURE.md`** — Sync LP/App URL · SEO 方針
 - **`docs/notes/SYNC_INFRA_CLOUDFLARE.md`** — Sync インフラ · デプロイ運用 · watch paths（Backlog **§5-4**）
 - **`docs/notes/DEPLOY_CLOUDFLARE_PAGES.md`** — コア本番デプロイ Agent SSOT
+- **`docs/notes/DEV_GIT_AGENT_DELEGATION.md`** — Agent の Commit&Push 境界・PowerShell 手順（`.git/COMMIT_MSG_TMP` 運用）
 - **`docs/notes/GROUP_SPLIT_TOOL_SPEC.md`** — グループ分け T11（**企画FIX · 未実装** · 主=人事研修 · Backlog **§1-11**）
 - **`docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md`** — **RevenueCat SOSA 2024–2026 調査ログ + SUGUDASU 転用判断（GTM · 初回UX · 収益）**
 - **`docs/notes/ZENN_CRDT_SYNC_DRAFT_MEMO.md`** — Sync CRDT / 現場同期 Zenn #15 アウトライン

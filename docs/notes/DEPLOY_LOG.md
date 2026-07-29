@@ -1723,10 +1723,31 @@
 
 ---
 
+## DEPLOY-20260729-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — pdf-fill Page unit · shared PDF（vendor/partial/limits/mask）· Tech Adoption 正本 · 同日 core 2回目 · P7 override |
+| **change_summary** | `sg-pdf-*.js` · `sg-canvas-mask.js` · pdf-fill/annotate/pdf-images/clip-stash · TECH_ADOPTION_NOTE · CAPABILITY_INVENTORY · tests |
+| **local_build** | （release 後記入） |
+| **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/pdf-fill` · `/annotate`） |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-29 | 002 approved（pdf-fill Page unit · shared PDF · Tech Adoption · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 009 executed（b456613 · 裏紙 UX 印刷/ズーム/消しゴム/バッジ） |
 | 2026-07-26 | 009 approved（裏紙 UX · 印刷/ズーム/消しゴム/バッジ · P7 override · 提督 Commit&Push） |
 | 2026-07-26 | 008 executed（462b9ed · ツールカタログ uragami） |
@@ -1817,6 +1838,7 @@
 | 2026-07-10 | 001 executed（262c38c · core SEO · FAQ · 時給計算）· 002 executed（f1711774 · sync sticky-room） |
 | 2026-07-10 | 001 approved（core · SEO · FAQ · 時給計算）· 002 approved（sync · sticky-room） |
 | 2026-07-09 | 002 executed（7d547d0 · FAQ 白背景 · shift/label 設定パネル · qr-reader FAQ） |
+| 2026-07-29 | 001 executed（cd69609 · pdf-fill スナップ閾値縮小・Alt 微調整ヒント追加） |
 | 2026-07-29 | 001 approved（pdf-fill スナップ閾値縮小・Alt 微調整ヒント追加 · 提督 push 依頼） |
 | 2026-07-09 | 001 executed（d781dd4 · match-board · 見積会議 · time-calc · statements） |
 | 2026-07-09 | 001 approved（match-board · 見積会議 · time-calc · Sync仕様移管 · 提督 push 依頼） |

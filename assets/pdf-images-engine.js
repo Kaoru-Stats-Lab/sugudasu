@@ -3,9 +3,10 @@
  * docs/notes/PDF_IMAGE_EXTRACT_SPEC.md · PDF_IMAGE_EXTRACT_TECH.md
  */
 import { buildStoreZip, sanitizeBaseName as wmSanitize } from './watermark-engine.js';
+import { PDF_DOC_MAX_FILE_BYTES, PDF_DOC_MAX_PAGES } from './sg-pdf-limits.js';
 
-export const MAX_FILE_BYTES = 40 * 1024 * 1024;
-export const MAX_PAGES = 50;
+export const MAX_FILE_BYTES = PDF_DOC_MAX_FILE_BYTES;
+export const MAX_PAGES = PDF_DOC_MAX_PAGES;
 export const MIN_SHORT_EDGE_PX = 16;
 export const MIN_AREA_PX = 256;
 

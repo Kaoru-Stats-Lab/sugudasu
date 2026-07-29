@@ -161,7 +161,9 @@ Overlay Layer（DOM）で Object 描画
 
 - 仕様上の要求は **提出用途で十分な印刷品質** のみ（固定DPIは仕様に書かない）
 - 実装の現在値: `EXPORT_DPI = 300`（`pdf-fill-engine.js`）。実測で 250〜350 などへ調整可
-- 表示用スケールと書き出しスケールは分離してよい
+- **オーバーレイ正本は pdf.js `getViewport({ scale: 1 })` のページ単位**（Nutrient/pdf.js の「PDF座標を保存し、表示時に写像」と同じ）。`displayScale` は表示写像のみ。リサイズで座標がズレない
+- 焼き付けは `paintOverlaysToCanvas`（エンジン共通）でページ単位 × `EXPORT_SCALE`。結合は `sg-pdf-partial`（既定 `pageSize: 'source'` · 元ページのポイントサイズ）
+- 同一 PDF セッションでは書体・文字サイズを sticky（新規 Object に継承）
 
 ---
 

@@ -12,6 +12,7 @@ import {
   MAX_FILE_BYTES,
   MAX_PAGES,
 } from './pdf-images-engine.js';
+import { ensurePdfjs, pdfjsDocumentExtras, pdfjsVendorUrl } from './sg-pdf-vendor.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -27,10 +28,6 @@ let pendingPdfjs = null;
 let pendingPageCount = 0;
 /** @type {{ start: number, end: number, count: number }|null} */
 let lastRange = null;
-
-function vendorUrl(rel) {
-  return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
-}
 
 function setError(msg) {
   const el = $('pdfi-error');
@@ -171,8 +168,7 @@ function escapeHtml(s) {
 }
 
 async function loadPdfjs() {
-  const mod = await import(vendorUrl('pdf.mjs'));
-  return mod;
+  return ensurePdfjs();
 }
 
 /**
@@ -196,8 +192,8 @@ async function runExtract(pageFrom) {
   try {
     const result = await extractEmbeddedImages(pendingPdfjs, pendingData, {
       sourceName,
-      workerSrc: vendorUrl('pdf.worker.mjs'),
-      wasmUrl: vendorUrl('wasm/'),
+      workerSrc: pdfjsVendorUrl('pdf.worker.mjs'),
+      wasmUrl: pdfjsVendorUrl('wasm/'),
       pageFrom: gate.start,
       pdf: pendingPdf || undefined,
     });
@@ -261,10 +257,9 @@ async function processFile(file) {
   try {
     const buf = await file.arrayBuffer();
     const pdfjsLib = await loadPdfjs();
-    pdfjsLib.GlobalWorkerOptions.workerSrc = vendorUrl('pdf.worker.mjs');
     const loadingTask = pdfjsLib.getDocument({
       data: new Uint8Array(buf),
-      wasmUrl: vendorUrl('wasm/'),
+      ...pdfjsDocumentExtras(),
     });
     const pdf = await loadingTask.promise;
     const pageCount = pdf.numPages | 0;

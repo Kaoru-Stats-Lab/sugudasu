@@ -19,6 +19,8 @@
 
 **提督判断:** 真の Solution（配信・共有）が **使い続ける理由** になる。コアは F1「登録なしで完結する実務」を維持し、Sync は **上乗せ（任意）**。
 
+**Continue Later との関係:** コアの途中再開は IndexedDB + JSON（Level 1–2）。Sync は **Level 3 Continue Anywhere**（クラウド保存が目的ではなく、どこでも続きを開けることが目的）。共通思想の正本: [`CONTINUE_LATER_SPEC.md`](CONTINUE_LATER_SPEC.md)。
+
 **ペルソナ分割（2026-06-24）:**
 
 | 像 | ライン | 理由 |

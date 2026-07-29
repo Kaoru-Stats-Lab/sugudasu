@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-07-29 — 座標一意性 · sticky 書体（WYSIWYG）
+
+### 種別
+
+技術 · UX
+
+### 要約
+
+オーバーレイ正本を **ページ単位（scale=1）** に統一。表示は `displayScale` 写像のみ。焼き付けは `paintOverlaysToCanvas` 共通パス + 元ページ寸法へ JPEG 貼付（`annotate` 同型）。同一 PDF セッションで書体・サイズを sticky。
+
+### 影響
+
+- `assets/pdf-fill-engine.js` · `assets/pdf-fill-app.js` · `technical-design.md`
+
+---
+
 ## 2026-07-24 — 保存ボタン · 安心文（思想語の整理）
 
 ### 種別

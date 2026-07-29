@@ -150,6 +150,7 @@ npm run build:pages
 | A9 | `package.json` | 単体テストがあるなら `test:{id}`（任意だが追加したら `test:all` にも） | （任意） |
 | A10 | 仕様 SSOT | **`docs/notes/` 配下**（例: `SLOT_BOARD_SPEC.md`）。リポジトリ直下のメモは正本にしない | （目視） |
 | A11 | `docs/notes/SUGUDASU_TOOL_CATALOG.md` | inNav ツール1行（productName · id · JTBD · 工夫）。件数ヘッダを registry と一致 | （目視 · catalog 突合） |
+| A12 | **Tech Adoption** | [`CAPABILITY_INVENTORY.md`](CAPABILITY_INVENTORY.md) を読み、既存クラスタ（PDF · キャンバス秘匿 · Continue Later 等）に入るなら **1行追記 or NA**。許可外ライブラリなら [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md) §6。同型が3つ目なら抽出候補 | `validate:tech-adoption` |
 
 ### B. 本番反映（必須 · core）
 
@@ -169,16 +170,16 @@ npm run build:pages
 | guides / LP / `lp-marketing-matrix` | マーケ別タスク。ツールα公開の必須ではない |
 | 他ツールからの相互リンク | 仕様に書いてあるときだけ |
 | Sync / Supabase / `deploy:pages:sync` | core と別経路 |
-| 無関係ファイルの整形 · 共通化 · リファクタ | 禁止 |
+| 無関係ファイルの整形 · 共通化 · リファクタ | 禁止（ただし A12 / Inventory P1 の抽出は Tech Adoption ループの範囲） |
 
 ### D. Agent 完了報告（コピペ）
 
 ```text
 MECE 新規ツール公開: {id}
-A1–A10: OK / NA（欠番があれば列挙）
+A1–A12: OK / NA（欠番があれば列挙）
 B1–B4: OK · smoke: / と /{id}
 C: 触っていない（roadmap追加なし · guidesなし）
-validate:tool-naming · statements · ogp · build:pages: exit 0
+validate:tool-naming · validate:tech-adoption · statements · ogp · build:pages: exit 0
 ```
 
 ---

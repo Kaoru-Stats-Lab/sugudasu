@@ -3,8 +3,10 @@
  * docs/products/pdf-fill/
  */
 
-export const MAX_FILE_BYTES = 40 * 1024 * 1024;
-export const MAX_PAGES = 50;
+import { PDF_DOC_MAX_FILE_BYTES, PDF_DOC_MAX_PAGES } from './sg-pdf-limits.js';
+
+export const MAX_FILE_BYTES = PDF_DOC_MAX_FILE_BYTES;
+export const MAX_PAGES = PDF_DOC_MAX_PAGES;
 export const DISPLAY_SCALE = 1.25;
 /**
  * 編集ページ書き出しの実装値（仕様は「提出用途で十分な印刷品質」のみ。必須DPIではない）。
@@ -529,13 +531,130 @@ export function pushUndo(stack, snapshot, limit = UNDO_LIMIT) {
 }
 
 /**
- * 表示座標 → 書き出し座標
+ * 表示 CSS px → ページ単位（pdf.js viewport scale=1）
+ * オーバーレイの正本は常にページ単位。表示・焼き付けは写像のみ。
+ * @param {number} n
+ * @param {number} displayScale
+ */
+export function cssToPage(n, displayScale) {
+  const s = displayScale || 1;
+  return n / s;
+}
+
+/**
+ * ページ単位 → 表示 CSS px
+ * @param {number} n
+ * @param {number} displayScale
+ */
+export function pageToCss(n, displayScale) {
+  return n * (displayScale || 1);
+}
+
+/**
+ * 表示座標 → 書き出し座標（互換。正本はページ単位保存）
  * @param {number} n
  * @param {number} displayScale
  * @param {number} exportScale
  */
 export function mapDisplayToExport(n, displayScale, exportScale) {
-  return (n / displayScale) * exportScale;
+  return cssToPage(n, displayScale) * exportScale;
+}
+
+/**
+ * Canvas 用に折り返し（fillText の maxWidth 圧縮を使わない）
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string} text
+ * @param {number} maxWidth
+ */
+export function wrapTextLines(ctx, text, maxWidth) {
+  const paragraphs = String(text ?? '').split('\n');
+  /** @type {string[]} */
+  const lines = [];
+  const limit = Math.max(1, maxWidth);
+  for (const para of paragraphs) {
+    if (!para) {
+      lines.push('');
+      continue;
+    }
+    let cur = '';
+    for (const ch of para) {
+      const trial = cur + ch;
+      if (cur && ctx.measureText(trial).width > limit) {
+        lines.push(cur);
+        cur = ch;
+      } else {
+        cur = trial;
+      }
+    }
+    lines.push(cur);
+  }
+  return lines.length ? lines : [''];
+}
+
+/**
+ * ページ単位オーバーレイを Canvas に描く（表示プレビュー焼き付け共通）
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Array<Record<string, any>>} overlays
+ * @param {number} pageZero
+ * @param {number} scale pdf.js と同じ scale（ページ単位 × scale = canvas px）
+ * @param {{ drawMarkerFn?: typeof drawMarker, fontFamilyCssFn?: typeof fontFamilyCss }} [opts]
+ */
+export async function paintOverlaysToCanvas(ctx, overlays, pageZero, scale, opts = {}) {
+  const markerFn = opts.drawMarkerFn || drawMarker;
+  const fontCss = opts.fontFamilyCssFn || fontFamilyCss;
+  const s = scale || 1;
+
+  for (const o of overlays || []) {
+    if (o.page !== pageZero) continue;
+    const x = o.x * s;
+    const y = o.y * s;
+    const w = o.w * s;
+    const h = o.h * s;
+
+    if (o.type === 'black') {
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(x, y, w, h);
+    } else if (o.type === 'white') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(x, y, w, h);
+    } else if (o.type === 'text') {
+      ctx.fillStyle = '#111827';
+      const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT) * s;
+      ctx.font = `${fs}px ${fontCss(o.fontFamily)}`;
+      ctx.textBaseline = 'top';
+      const lines = wrapTextLines(ctx, o.text || '', Math.max(1, w));
+      const lh = fs * 1.35;
+      for (let li = 0; li < lines.length; li++) {
+        ctx.fillText(lines[li], x, y + li * lh);
+      }
+    } else if (o.type === 'input-strip') {
+      ctx.fillStyle = '#111827';
+      const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT) * s;
+      ctx.font = `${fs}px ${fontCss(o.fontFamily)}`;
+      // DOM の flex-end に合わせ、スロット下端基準
+      ctx.textBaseline = 'bottom';
+      for (const slot of o.slots || []) {
+        const sx = (o.x + slot.dx) * s;
+        const sy = (o.y + slot.dy + slot.h) * s - Math.max(1, fs * 0.12);
+        const sw = Math.max(1, slot.w * s);
+        const val = String(slot.value || '');
+        // 見切れ防止: 幅内に収まるまで末尾を落とさない（measure で縮小はしない）
+        ctx.fillText(val, sx, sy, sw);
+      }
+    } else if (o.type === 'marker') {
+      markerFn(ctx, o.marker || 'circle', x, y, w, h);
+    } else if (o.type === 'image' && o.src) {
+      await new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          ctx.drawImage(img, x, y, w, h);
+          resolve();
+        };
+        img.onerror = resolve;
+        img.src = o.src;
+      });
+    }
+  }
 }
 
 /** @typedef {{ id: string, label: string, maxLen: number, widthEm: number }} InputStripSlotDef */

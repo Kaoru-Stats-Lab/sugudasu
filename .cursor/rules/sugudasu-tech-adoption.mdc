@@ -1,0 +1,42 @@
+---
+description: >-
+  Tech Adoption / 共通化 / Dup / shared 抽出 / 棚卸し / pdf vendor / canvas mask.
+  重複能力の Inventory と機械ゲートを回すときに読む。
+globs:
+  - assets/sg-*.js
+  - assets/*-engine.js
+  - assets/*-app.js
+  - data/tech-shared-contracts.json
+  - docs/notes/CAPABILITY_INVENTORY.md
+  - docs/notes/TECH_ADOPTION_NOTE.md
+  - scripts/verify-tech-adoption.mjs
+alwaysApply: false
+---
+
+# SUGUDASU Tech Adoption（永続ループ）
+
+**正本:** `docs/notes/TECH_ADOPTION_NOTE.md` §0 · `docs/notes/CAPABILITY_INVENTORY.md`  
+**機械契約:** `data/tech-shared-contracts.json`  
+**ゲート:** `npm run validate:tech-adoption`（`build:pages` に内蔵）
+
+**目的の順:** (1) SUGUDASU 体験の共通化 → (2) 技術ゼロスクラッチ禁止 = Token 節約。技術寄せは手段。
+
+## この rule が効いたら（必須）
+
+1. Inventory でクラスタを確認（Dup / Diverge / Shared）
+2. 既存 `sg-*` があれば **再発明禁止**（pdf vendor · partial · limits · canvas-mask）
+3. 同型が **3 プロダクト目** → G1–G5 で抽出を検討（2つは観察）
+4. 座標 Page unit ↔ Canvas pixel は **統合しない**
+5. shared / 禁止パターンを増やしたら **contracts.json にルール追加** + Inventory 更新
+6. 終了前に `npm run validate:tech-adoption`（影響テストも）
+
+## トリガー（誰が引くか）
+
+| トリガー | 引く人/物 | 自動で起きること |
+|----------|-----------|------------------|
+| `build:pages` / release | CI・デプロイ手順 | verify-tech-adoption が失敗すれば止まる |
+| 新規ツール §1.5 **A12** | 公開 Agent | Inventory 追記 or NA |
+| 本 globs のファイル編集 | Cursor Agent | この rule が適用される |
+| 「共通化」「棚卸し」等 | ユーザー → Skill | `.cursor/skills/sugudasu-tech-adoption/` |
+
+製品知識の長文は `docs/notes/` のみ。learned に製品を書かない。

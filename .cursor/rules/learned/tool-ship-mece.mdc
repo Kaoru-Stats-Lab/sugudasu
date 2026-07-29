@@ -13,8 +13,9 @@ alwaysApply: false
 
 1. §1 手順A（registry → html → hub → shell → changelog/statements/README）
 2. **カード文案を `TOOL_CARD_WRITING_GUIDELINE.md` で確定**してから `hub-cards.json` を書く
-3. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）· **A11 `SUGUDASU_TOOL_CATALOG.md` 1行**
+3. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）· **A11 `SUGUDASU_TOOL_CATALOG.md` 1行** · **A12 Tech Adoption（Inventory）**
 4. 表 C は触らない（roadmap 完了行追加・guides 必須化など）
 5. 報告は §1.5 D のテンプレ
 
-デプロイは `DEPLOY_LOG.md` + `release:pages:free` + `push origin main`。
+デプロイは `DEPLOY_LOG.md` + `release:pages:free` + `push origin main`。  
+共通化・Dup 棚卸しは `.cursor/skills/sugudasu-tech-adoption/` · `validate:tech-adoption`。

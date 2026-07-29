@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "ssot": [
+    "docs/notes/CAPABILITY_INVENTORY.md",
+    "docs/notes/TECH_ADOPTION_NOTE.md"
+  ],
+  "requiredFiles": [
+    "assets/sg-pdf-vendor.js",
+    "assets/sg-pdf-partial.js",
+    "assets/sg-pdf-limits.js",
+    "assets/sg-canvas-mask.js",
+    "docs/notes/CAPABILITY_INVENTORY.md",
+    "docs/notes/TECH_ADOPTION_NOTE.md"
+  ],
+  "triggers": [
+    {
+      "id": "build-pages",
+      "when": "npm run build:pages / release:pages:free",
+      "action": "validate:tech-adoption が自動実行（回帰で exit 1）"
+    },
+    {
+      "id": "new-tool-mece",
+      "when": "新規ツール公開（Playbook §1.5 A12）",
+      "action": "Agent が Inventory を読み、能力クラスタを追記 or NA"
+    },
+    {
+      "id": "agent-touch-shared",
+      "when": "assets/sg-*.js · *-engine.js · *-app.js を編集",
+      "action": "Cursor rule sugudasu-tech-adoption が適用 → 契約を読む"
+    },
+    {
+      "id": "user-phrase",
+      "when": "共通化 · Tech Adoption · 棚卸し · Dup · shared 抽出",
+      "action": "Skill sugudasu-tech-adoption を起動"
+    },
+    {
+      "id": "third-dup",
+      "when": "同型能力が3プロダクト目に出る（Inventory の観察→抽出）",
+      "action": "G1–G5 ゲートで shared 抽出 · Inventory 更新 · 本 contracts に禁止パターン追加"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "id": "inline-pdfjs-vendor-url",
+      "severity": "assets",
+      "include": ["*-app.js", "*-engine.js"],
+      "excludeFiles": ["sg-pdf-vendor.js"],
+      "regex": "new URL\\(`\\./vendor/pdfjs/",
+      "message": "pdf.js URL は sg-pdf-vendor（pdfjsVendorUrl / ensurePdfjs）を使う"
+    },
+    {
+      "id": "local-ensurePdfjs",
+      "directories": ["assets"],
+      "include": ["*-app.js"],
+      "excludeFiles": ["sg-pdf-vendor.js"],
+      "regex": "(async )?function ensurePdfjs\\s*\\(",
+      "message": "ensurePdfjs は sg-pdf-vendor.js から import する"
+    },
+    {
+      "id": "local-vendorPdfjs-helper",
+      "directories": ["assets"],
+      "include": ["*-app.js", "*-engine.js"],
+      "excludeFiles": ["sg-pdf-vendor.js"],
+      "regex": "function vendorPdfjs\\s*\\(",
+      "message": "vendorPdfjs ヘルパを再発明しない（sg-pdf-vendor）"
+    },
+    {
+      "id": "local-applyBlackRect",
+      "directories": ["assets"],
+      "include": ["*-app.js", "*-engine.js", "sg-*.js"],
+      "excludeFiles": ["sg-canvas-mask.js"],
+      "regex": "export function applyBlackRect\\s*\\(",
+      "message": "applyBlackRect 実装は sg-canvas-mask.js のみ（他は re-export）"
+    },
+    {
+      "id": "inline-pdf-doc-40mb",
+      "directories": ["assets"],
+      "include": ["pdf-fill-engine.js", "pdf-images-engine.js"],
+      "excludeFiles": ["sg-pdf-limits.js"],
+      "regex": "MAX_FILE_BYTES\\s*=\\s*40\\s*\\*\\s*1024\\s*\\*\\s*1024",
+      "message": "Document PDF 上限は sg-pdf-limits（PDF_DOC_MAX_FILE_BYTES）から import"
+    }
+  ],
+  "mustImportWhenMatching": [
+    {
+      "id": "apps-using-getDocument-need-vendor",
+      "directories": ["assets"],
+      "include": ["*-app.js"],
+      "ifRegex": "\\.getDocument\\s*\\(",
+      "mustContain": "sg-pdf-vendor",
+      "message": "getDocument を呼ぶ app は sg-pdf-vendor を import すること"
+    }
+  ]
+}

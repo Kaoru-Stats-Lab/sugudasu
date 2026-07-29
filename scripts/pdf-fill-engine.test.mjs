@@ -38,6 +38,9 @@ import {
   SNAP_EXIT_PX,
   clampSlotDxPreserveOrder,
   normalizeEraYearInput,
+  cssToPage,
+  pageToCss,
+  mapDisplayToExport,
 } from '../assets/pdf-fill-engine.js';
 
 {
@@ -303,6 +306,16 @@ import {
   assert.equal(normalizeEraYearInput('令和7'), '令和7');
   assert.equal(normalizeEraYearInput('れいわ７年'), '令和7');
   assert.equal(normalizeEraYearInput('2026'), '2026');
+}
+
+{
+  // ページ単位 ↔ 表示 / 書き出し写像（座標一意性）
+  assert.equal(cssToPage(125, 1.25), 100);
+  assert.equal(pageToCss(100, 1.25), 125);
+  assert.equal(mapDisplayToExport(125, 1.25, 2.5), 250);
+  // displayScale が変わってもページ単位は不変 → 焼き付けはページ×export のみ
+  assert.equal(cssToPage(200, 2) * 4, 400);
+  assert.equal(cssToPage(100, 1) * 4, 400);
 }
 
 console.log('[pdf-fill-engine.test] OK');

@@ -31,6 +31,7 @@ import {
   putCard,
 } from './clip-stash-db.js';
 import { triggerCopyFlash } from './sg-copy-feedback.js';
+import { ensurePdfjs } from './sg-pdf-vendor.js';
 
 const els = {
   main: document.querySelector('main.sg-main-shell'),
@@ -240,18 +241,8 @@ function hideBridgeToast() {
   els.bridgeToast?.classList.add('hidden');
 }
 
-function vendorPdfjs(rel) {
-  return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
-}
-
-/** @type {any} */
-let pdfjsLib = null;
-
 async function loadPdfjs() {
-  if (pdfjsLib) return pdfjsLib;
-  pdfjsLib = await import(vendorPdfjs('pdf.mjs'));
-  pdfjsLib.GlobalWorkerOptions.workerSrc = vendorPdfjs('pdf.worker.mjs');
-  return pdfjsLib;
+  return ensurePdfjs();
 }
 
 /**

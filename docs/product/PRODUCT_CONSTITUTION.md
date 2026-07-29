@@ -92,6 +92,7 @@ Syncではアカウント・クラウド保存・同期サーバーを許可で�
 - 専門判断は注意点と確認材料までに留める
 - 既定値で主要タスクが終わるようにし、設定を価値の前提にしない
 - 成果物へPowered byやブランド露出を強制しない
+- **途中再開が必要な Document 型ツール**は「保存」ではなく **Continue Later（続きを開く）** を共通 UX とする。正本: [`../notes/CONTINUE_LATER_SPEC.md`](../notes/CONTINUE_LATER_SPEC.md)。Level 3（どこでも続き）だけ Sync
 
 ## Legacy
 

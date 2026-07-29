@@ -24,6 +24,7 @@ import {
   snapshotState,
   validateAnnotateInput,
 } from './annotate-engine.js';
+import { ensurePdfjs, pdfjsDocumentExtras } from './sg-pdf-vendor.js';
 import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
@@ -94,23 +95,6 @@ let pageCount = 0;
 let pageIndex = 0;
 /** @type {Map<number, { shapesJson: string, basePng: string, edited: boolean }>} */
 const pdfPageStore = new Map();
-
-/** @type {import('../vendor/pdfjs/pdf.mjs')|null} */
-let pdfjsLib = null;
-
-function vendorPdfjs(rel) {
-  return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
-}
-function vendorPdflib() {
-  return new URL('./vendor/pdf-lib/pdf-lib.esm.min.js', import.meta.url).href;
-}
-
-async function ensurePdfjs() {
-  if (pdfjsLib) return pdfjsLib;
-  pdfjsLib = await import(vendorPdfjs('pdf.mjs'));
-  pdfjsLib.GlobalWorkerOptions.workerSrc = vendorPdfjs('pdf.worker.mjs');
-  return pdfjsLib;
-}
 
 let editUndoPushed = false;
 
@@ -553,7 +537,7 @@ async function loadPdfFile(file) {
   const buf = await file.arrayBuffer();
   const bytes = new Uint8Array(buf);
   const lib = await ensurePdfjs();
-  const doc = await lib.getDocument({ data: bytes.slice(0), wasmUrl: vendorPdfjs('wasm/') }).promise;
+  const doc = await lib.getDocument({ data: bytes.slice(0), ...pdfjsDocumentExtras() }).promise;
   if (doc.numPages > MAX_PDF_PAGES) {
     await doc.destroy();
     throw new Error(`PDF は ${MAX_PDF_PAGES} ページまでです。`);
@@ -658,7 +642,7 @@ async function downloadPdf() {
       sourcePdfBytes,
       pageCount,
       (i) => rasterizePageForExport(i),
-      () => import(vendorPdflib()),
+      { pageSize: 'source' },
     );
     const stem = (sourceName || 'document').replace(/\.[^.]+$/, '');
     const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));

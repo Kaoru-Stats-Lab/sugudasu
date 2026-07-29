@@ -9,6 +9,7 @@ import {
   MARKER_SIZE_DEFAULT,
   MAX_FILE_BYTES,
   MAX_PAGES,
+  SNAP_ENTER_PX,
   applyDatetimeToSlots,
   buildInputStrip,
   buildMarker,
@@ -22,6 +23,8 @@ import {
   isPageEdited,
   looksLikeDatetimeBundle,
   parseDatetimeInput,
+  paintOverlaysToCanvas,
+  pageToCss,
   pushUndo,
   reflowInputStripX,
   clampSlotDxPreserveOrder,
@@ -34,6 +37,8 @@ import {
   snapBox,
   snapStrengthForSpeed,
 } from './pdf-fill-engine.js';
+import { ensurePdfjs, pdfjsDocumentExtras } from './sg-pdf-vendor.js';
+import { buildPartialAnnotatedPdf } from './sg-pdf-partial.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -52,6 +57,7 @@ const $ = (id) => document.getElementById(id);
  *   text?: string,
  *   fontSize?: number,
  *   fontFamily?: 'gothic'|'mincho',
+ *   （x/y/w/h/fontSize/slot寸法は pdf.js viewport scale=1 のページ単位）
  *   src?: string,
  *   template?: string,
  *   slots?: Array<{ id: string, label: string, value: string, dx: number, dy: number, w: number, h: number, maxLen?: number }>,
@@ -80,8 +86,6 @@ const $ = (id) => document.getElementById(id);
 /** @typedef {{ id: string, isNew: boolean, before: string }} TextEditSession */
 /** @typedef {{ id: string, isNew: boolean, slotIndex: number, composing?: boolean, beforeSlots: Array<{ id: string, value: string }> }} StripEditSession */
 
-/** @type {import('./vendor/pdfjs/pdf.mjs')|null} */
-let pdfjsLib = null;
 /** @type {any} */
 let pdfDoc = null;
 /** @type {Uint8Array|null} */
@@ -95,6 +99,13 @@ let redoStack = [];
 let pageIndex = 0;
 let pageCount = 0;
 let displayScale = DISPLAY_SCALE;
+/** pdf.js getViewport({ scale: 1 }) の幅・高さ（オーバーレイ正本の空間） */
+let pageUnitW = 0;
+let pageUnitH = 0;
+/** 同一 PDF セッション中の書体・サイズ（ユーザーが変えるまで新規 Object に継承） */
+let sessionFontSize = FONT_SIZE_DEFAULT;
+/** @type {'gothic'|'mincho'} */
+let sessionFontFamily = 'gothic';
 /** @type {ToolMode} */
 let mode = 'text';
 let sourceName = 'document.pdf';
@@ -133,14 +144,6 @@ let pendingMarkerKind = null;
 /** Object コピペ用（同一書類内の複製） */
 /** @type {PaperObject|null} */
 let objectClipboard = null;
-
-function vendorPdfjs(rel) {
-  return new URL(`./vendor/pdfjs/${rel}`, import.meta.url).href;
-}
-
-function vendorPdflib() {
-  return new URL('./vendor/pdf-lib/pdf-lib.esm.min.js', import.meta.url).href;
-}
 
 function uid() {
   return `o_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
@@ -183,7 +186,7 @@ function measureTextBox(text, fontSize, maxWidth = null) {
     };
   }
   const maxLen = Math.max(1, ...lines.map((l) => l.length));
-  const w = Math.max(48, Math.min(pageCssW, maxLen * fs * 0.92 + 10));
+  const w = Math.max(48, Math.min(pageUnitW || pageCssW, maxLen * fs * 0.92 + 10));
   const h = Math.max(fs * 1.45, lines.length * fs * 1.35 + 6);
   return { w, h };
 }
@@ -225,19 +228,21 @@ function bumpFontSize(delta) {
     const cy = o.y + o.h / 2;
     o.w = next;
     o.h = next;
-    o.x = Math.min(pageCssW - o.w, Math.max(0, cx - next / 2));
-    o.y = Math.min(pageCssH - o.h, Math.max(0, cy - next / 2));
+    o.x = Math.min(pageW() - o.w, Math.max(0, cx - next / 2));
+    o.y = Math.min(pageH() - o.h, Math.max(0, cy - next / 2));
   } else if (o.type === 'input-strip') {
     const next = clampFontSize((o.fontSize || FONT_SIZE_DEFAULT) + delta);
     if (next === clampFontSize(o.fontSize || FONT_SIZE_DEFAULT)) return;
     applyInputStripFontSize(o, next);
-    clampStripToPage(o, pageCssW, pageCssH);
+    clampStripToPage(o, pageW(), pageH());
+    sessionFontSize = next;
   } else {
     const next = clampFontSize((o.fontSize || FONT_SIZE_DEFAULT) + delta);
     if (next === clampFontSize(o.fontSize || FONT_SIZE_DEFAULT)) return;
     o.fontSize = next;
+    sessionFontSize = next;
     const box = measureTextBox(o.text || 'あ', next);
-    o.w = Math.min(pageCssW - o.x, Math.max(o.w, box.w));
+    o.w = Math.min(pageW() - o.x, Math.max(o.w, box.w));
     o.h = Math.max(o.h, box.h);
   }
   afterOverlayChange();
@@ -250,7 +255,23 @@ function setFontFamily(id) {
   if (o.fontFamily === next) return;
   if (!textEditSession && !stripEditSession) commitUndo();
   o.fontFamily = next;
+  sessionFontFamily = next;
   afterOverlayChange();
+}
+
+/** オーバーレイ空間のページ幅（scale=1） */
+function pageW() {
+  return pageUnitW || (displayScale ? pageCssW / displayScale : pageCssW);
+}
+
+/** オーバーレイ空間のページ高さ（scale=1） */
+function pageH() {
+  return pageUnitH || (displayScale ? pageCssH / displayScale : pageCssH);
+}
+
+/** 画面上 roughly SNAP_ENTER_PX CSS px になるようページ単位に換算 */
+function snapThresholdPage() {
+  return SNAP_ENTER_PX / (displayScale || 1);
 }
 
 function setError(msg) {
@@ -363,13 +384,6 @@ function updateUndoUi() {
   if (btn) btn.disabled = undoStack.length === 0 || busy;
 }
 
-async function ensurePdfjs() {
-  if (pdfjsLib) return pdfjsLib;
-  pdfjsLib = await import(vendorPdfjs('pdf.mjs'));
-  pdfjsLib.GlobalWorkerOptions.workerSrc = vendorPdfjs('pdf.worker.mjs');
-  return pdfjsLib;
-}
-
 function pageOverlays() {
   return overlays.filter((o) => o.page === pageIndex);
 }
@@ -429,8 +443,8 @@ function placeMarkerAt(kind, p) {
   const size = MARKER_SIZE_DEFAULT;
   const built = buildMarker(kind, {
     page: pageIndex,
-    x: Math.min(Math.max(0, p.x - size / 2), Math.max(0, pageCssW - size)),
-    y: Math.min(Math.max(0, p.y - size / 2), Math.max(0, pageCssH - size)),
+    x: Math.min(Math.max(0, p.x - size / 2), Math.max(0, pageW() - size)),
+    y: Math.min(Math.max(0, p.y - size / 2), Math.max(0, pageH() - size)),
     size,
   });
   const obj = /** @type {PaperObject} */ ({ id: uid(), ...built });
@@ -486,7 +500,7 @@ async function loadPdfFile(file) {
     const lib = await ensurePdfjs();
     const task = lib.getDocument({
       data: bytes.slice(0),
-      wasmUrl: vendorPdfjs('wasm/'),
+      ...pdfjsDocumentExtras(),
     });
     task.onProgress = (p) => {
       if (p && p.total > 0) {
@@ -515,6 +529,8 @@ async function loadPdfFile(file) {
     undoStack = [];
     redoStack = [];
     selectedId = null;
+    sessionFontSize = FONT_SIZE_DEFAULT;
+    sessionFontFamily = 'gothic';
     textEditSession = null;
     stripEditSession = null;
     sourceName = file.name || 'document.pdf';
@@ -587,6 +603,8 @@ async function renderPage() {
   if (!pdfDoc) return;
   const page = await pdfDoc.getPage(pageIndex + 1);
   const base = page.getViewport({ scale: 1 });
+  pageUnitW = base.width;
+  pageUnitH = base.height;
   const stage = document.querySelector('.pdff-stage');
   const pad = 16;
   const availW = Math.max(160, (stage?.clientWidth || 640) - pad);
@@ -625,22 +643,23 @@ function paintOverlayDom() {
   layer.innerHTML = '';
   layer.style.width = `${pageCssW}px`;
   layer.style.height = `${pageCssH}px`;
+  const ds = displayScale || 1;
 
   for (const o of pageOverlays()) {
     const el = document.createElement('div');
     el.className = 'pdff-obj';
     el.dataset.id = o.id;
-    el.style.left = `${o.x}px`;
-    el.style.top = `${o.y}px`;
-    el.style.width = `${o.w}px`;
-    el.style.height = `${o.h}px`;
+    el.style.left = `${pageToCss(o.x, ds)}px`;
+    el.style.top = `${pageToCss(o.y, ds)}px`;
+    el.style.width = `${pageToCss(o.w, ds)}px`;
+    el.style.height = `${pageToCss(o.h, ds)}px`;
     if (o.id === selectedId) el.classList.add('pdff-obj--selected');
     if (o.id === placeFlashId) el.classList.add('pdff-obj--placed');
 
     if (o.type === 'text') {
       el.classList.add('pdff-obj--text');
       const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT);
-      el.style.fontSize = `${fs}px`;
+      el.style.fontSize = `${pageToCss(fs, ds)}px`;
       el.style.fontFamily = fontFamilyCss(o.fontFamily);
       const body = document.createElement('div');
       body.className = 'pdff-obj__body';
@@ -660,7 +679,7 @@ function paintOverlayDom() {
           o.text = ed.innerText.replace(/\u00a0/g, ' ');
           const box = measureTextBox(o.text || ' ', fs, o.w);
           o.h = Math.max(o.h, box.h);
-          el.style.height = `${o.h}px`;
+          el.style.height = `${pageToCss(o.h, ds)}px`;
         });
         body.appendChild(ed);
       } else {
@@ -675,7 +694,7 @@ function paintOverlayDom() {
     } else if (o.type === 'input-strip') {
       el.classList.add('pdff-obj--strip');
       const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT);
-      el.style.fontSize = `${fs}px`;
+      el.style.fontSize = `${pageToCss(fs, ds)}px`;
       el.style.fontFamily = fontFamilyCss(o.fontFamily);
       const editing = stripEditSession?.id === o.id;
       if (editing) el.classList.add('pdff-obj--editing');
@@ -683,10 +702,11 @@ function paintOverlayDom() {
         const cell = document.createElement('div');
         cell.className = 'pdff-strip-slot';
         // 横寄せドラッグ中のみ _paintDx（負 dx の見た目補正）。確定値は常に slot.dx
-        cell.style.left = `${slot._paintDx != null ? slot._paintDx : slot.dx}px`;
-        cell.style.top = `${slot.dy}px`;
-        cell.style.width = `${slot.w}px`;
-        cell.style.height = `${slot.h}px`;
+        const paintDx = slot._paintDx != null ? slot._paintDx : slot.dx;
+        cell.style.left = `${pageToCss(paintDx, ds)}px`;
+        cell.style.top = `${pageToCss(slot.dy, ds)}px`;
+        cell.style.width = `${pageToCss(slot.w, ds)}px`;
+        cell.style.height = `${pageToCss(slot.h, ds)}px`;
         if (editing && stripEditSession && (o.slots || [])[stripEditSession.slotIndex]?.id === slot.id) {
           cell.classList.add('pdff-strip-slot--active');
         }
@@ -792,16 +812,18 @@ function paintOverlayDom() {
       el.classList.add('pdff-obj--marker');
       const cv = document.createElement('canvas');
       const dpr = Math.min(2, window.devicePixelRatio || 1);
-      cv.width = Math.max(1, Math.round(o.w * dpr));
-      cv.height = Math.max(1, Math.round(o.h * dpr));
+      const cssW = pageToCss(o.w, ds);
+      const cssH = pageToCss(o.h, ds);
+      cv.width = Math.max(1, Math.round(cssW * dpr));
+      cv.height = Math.max(1, Math.round(cssH * dpr));
       cv.style.width = '100%';
       cv.style.height = '100%';
       cv.setAttribute('aria-hidden', 'true');
       const cctx = cv.getContext('2d');
       if (cctx) {
         cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        cctx.clearRect(0, 0, o.w, o.h);
-        drawMarker(cctx, o.marker || 'circle', 0, 0, o.w, o.h);
+        cctx.clearRect(0, 0, cssW, cssH);
+        drawMarker(cctx, o.marker || 'circle', 0, 0, cssW, cssH);
       }
       el.appendChild(cv);
     } else if (o.type === 'image' && o.src) {
@@ -860,10 +882,10 @@ function paintOverlayDom() {
     const y = Math.min(dragDraw.startY, dragDraw.curY);
     const w = Math.abs(dragDraw.curX - dragDraw.startX);
     const h = Math.abs(dragDraw.curY - dragDraw.startY);
-    ghost.style.left = `${x}px`;
-    ghost.style.top = `${y}px`;
-    ghost.style.width = `${w}px`;
-    ghost.style.height = `${h}px`;
+    ghost.style.left = `${pageToCss(x, ds)}px`;
+    ghost.style.top = `${pageToCss(y, ds)}px`;
+    ghost.style.width = `${pageToCss(w, ds)}px`;
+    ghost.style.height = `${pageToCss(h, ds)}px`;
     if (mode === 'black') ghost.classList.add('pdff-obj--black');
     if (mode === 'white') ghost.classList.add('pdff-obj--white');
     layer.appendChild(ghost);
@@ -916,25 +938,31 @@ function drawGuideOverlay() {
 
   ctx.strokeStyle = 'rgba(37, 99, 235, 0.22)';
   ctx.lineWidth = 1;
+  const ds = displayScale || 1;
   for (const x of activeGuides.guidesX) {
+    const gx = pageToCss(x, ds);
     ctx.beginPath();
-    ctx.moveTo(x + 0.5, 0);
-    ctx.lineTo(x + 0.5, g.height);
+    ctx.moveTo(gx + 0.5, 0);
+    ctx.lineTo(gx + 0.5, g.height);
     ctx.stroke();
   }
   for (const y of activeGuides.guidesY) {
+    const gy = pageToCss(y, ds);
     ctx.beginPath();
-    ctx.moveTo(0, y + 0.5);
-    ctx.lineTo(g.width, y + 0.5);
+    ctx.moveTo(0, gy + 0.5);
+    ctx.lineTo(g.width, gy + 0.5);
     ctx.stroke();
   }
 }
 
 function localPoint(ev, el) {
   const r = el.getBoundingClientRect();
+  const cssX = Math.min(pageCssW, Math.max(0, ev.clientX - r.left));
+  const cssY = Math.min(pageCssH, Math.max(0, ev.clientY - r.top));
+  const ds = displayScale || 1;
   return {
-    x: Math.min(pageCssW, Math.max(0, ev.clientX - r.left)),
-    y: Math.min(pageCssH, Math.max(0, ev.clientY - r.top)),
+    x: Math.min(pageW(), Math.max(0, cssX / ds)),
+    y: Math.min(pageH(), Math.max(0, cssY / ds)),
   };
 }
 
@@ -1013,18 +1041,18 @@ function beginNewTextAt(p) {
   if (textEditSession) commitTextEdit();
   if (stripEditSession) commitStripEdit();
   commitUndo();
-  const fontSize = FONT_SIZE_DEFAULT;
+  const fontSize = clampFontSize(sessionFontSize);
   const obj = {
     id: uid(),
     type: /** @type {const} */ ('text'),
     page: pageIndex,
     x: p.x,
     y: p.y,
-    w: Math.min(180, pageCssW - p.x),
+    w: Math.min(180, pageW() - p.x),
     h: fontSize * 1.6,
     text: '',
     fontSize,
-    fontFamily: /** @type {const} */ ('gothic'),
+    fontFamily: sessionFontFamily === 'mincho' ? /** @type {const} */ ('mincho') : /** @type {const} */ ('gothic'),
   };
   overlays.push(obj);
   selectedId = obj.id;
@@ -1038,13 +1066,13 @@ function beginNewDatetimeAt(p) {
   commitUndo();
   const built = buildInputStrip('datetime', {
     page: pageIndex,
-    x: Math.min(p.x, Math.max(0, pageCssW - 200)),
+    x: Math.min(p.x, Math.max(0, pageW() - 200)),
     y: p.y,
-    fontSize: FONT_SIZE_DEFAULT,
-    fontFamily: 'gothic',
+    fontSize: clampFontSize(sessionFontSize),
+    fontFamily: sessionFontFamily === 'mincho' ? 'mincho' : 'gothic',
   });
   const obj = /** @type {PaperObject} */ ({ id: uid(), ...built });
-  clampStripToPage(obj, pageCssW, pageCssH);
+  clampStripToPage(obj, pageW(), pageH());
   overlays.push(obj);
   selectedId = obj.id;
   beginEditStrip(obj, true);
@@ -1079,7 +1107,7 @@ function commitTextEdit() {
   if (o) {
     o.text = text;
     const box = measureTextBox(text, o.fontSize || FONT_SIZE_DEFAULT, o.w);
-    o.w = Math.min(pageCssW - o.x, Math.max(48, o.w));
+    o.w = Math.min(pageW() - o.x, Math.max(48, o.w));
     o.h = Math.max(box.h, clampFontSize(o.fontSize || FONT_SIZE_DEFAULT) * 1.45);
     selectedId = o.id;
   }
@@ -1244,9 +1272,9 @@ function pasteObjectClipboard(at = null) {
   });
   const ox = at ? at.x : src.x + 14;
   const oy = at ? at.y : src.y + 14;
-  copy.x = Math.min(pageCssW - copy.w, Math.max(0, ox));
-  copy.y = Math.min(pageCssH - copy.h, Math.max(0, oy));
-  if (copy.type === 'input-strip') clampStripToPage(copy, pageCssW, pageCssH);
+  copy.x = Math.min(pageW() - copy.w, Math.max(0, ox));
+  copy.y = Math.min(pageH() - copy.h, Math.max(0, oy));
+  if (copy.type === 'input-strip') clampStripToPage(copy, pageW(), pageH());
   overlays.push(copy);
   selectedId = copy.id;
   afterOverlayChange();
@@ -1270,16 +1298,16 @@ async function placeImageFromSrc(src, at = null) {
   if (stripEditSession) commitStripEdit();
   const normalized = await normalizePlacedImageSrc(src);
   const size = await imageNaturalSize(normalized);
-  const maxW = Math.min(160, pageCssW * 0.35);
+  const maxW = Math.min(160, pageW() * 0.35);
   const scale = Math.min(1, maxW / (size.w || 1));
   const w = Math.max(24, size.w * scale);
   const h = Math.max(24, size.h * scale);
   const x = at
-    ? Math.min(Math.max(0, at.x), Math.max(0, pageCssW - w))
-    : Math.max(0, (pageCssW - w) / 2);
+    ? Math.min(Math.max(0, at.x), Math.max(0, pageW() - w))
+    : Math.max(0, (pageW() - w) / 2);
   const y = at
-    ? Math.min(Math.max(0, at.y), Math.max(0, pageCssH - h))
-    : Math.max(0, (pageCssH - h) / 2);
+    ? Math.min(Math.max(0, at.y), Math.max(0, pageH() - h))
+    : Math.max(0, (pageH() - h) / 2);
   commitUndo();
   const obj = {
     id: uid(),
@@ -1351,7 +1379,7 @@ function onWrapPointerMove(ev) {
     const o = findOverlay(dragResize.id);
     if (!o) return;
     const orig = dragResize.orig;
-    const limits = { min: 8, maxW: pageCssW, maxH: pageCssH };
+    const limits = { min: Math.max(4, 8 / (displayScale || 1)), maxW: pageW(), maxH: pageH() };
     const free = !!(ev.shiftKey) || (o.type !== 'image' && o.type !== 'marker');
     // 文字・黒・白は自由矩形。画像・記号はデフォルト縦横比固定（Shiftで自由）
     const next = free
@@ -1371,8 +1399,8 @@ function onWrapPointerMove(ev) {
     if (!o) return;
     let x = p.x - dragMove.ox;
     let y = p.y - dragMove.oy;
-    x = Math.min(pageCssW - o.w, Math.max(0, x));
-    y = Math.min(pageCssH - o.h, Math.max(0, y));
+    x = Math.min(pageW() - o.w, Math.max(0, x));
+    y = Math.min(pageH() - o.h, Math.max(0, y));
     const now = performance.now();
     if (dragMove.lastT != null && dragMove.lastX != null && dragMove.lastY != null) {
       const dt = Math.max(1, now - dragMove.lastT);
@@ -1394,12 +1422,12 @@ function onWrapPointerMove(ev) {
       o.y = y;
       activeGuides = { guidesX: [], guidesY: [] };
     } else {
-      const guides = collectGuideLines({ width: pageCssW, height: pageCssH }, pageOverlays(), o.id);
+      const guides = collectGuideLines({ width: pageW(), height: pageH() }, pageOverlays(), o.id);
       const strength = snapStrengthForSpeed(dragMove.speed || 0);
       const snapped = snapBox(
         { x, y, w: o.w, h: o.h },
         guides,
-        undefined,
+        snapThresholdPage(),
         strength,
         { x: dragMove.heldX ?? null, y: dragMove.heldY ?? null }
       );
@@ -1466,7 +1494,7 @@ function onWrapPointerUp() {
     if (strip?.type === 'input-strip') {
       for (const s of strip.slots || []) delete s._paintDx;
       reflowInputStripX(strip);
-      clampStripToPage(strip, pageCssW, pageCssH);
+      clampStripToPage(strip, pageW(), pageH());
     }
     afterOverlayChange();
     if (did) flashPlaced(id);
@@ -1606,52 +1634,11 @@ async function rasterizePage(pageZero, scale) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   await page.render({ canvasContext: ctx, viewport }).promise;
 
-  const ratio = scale / displayScale;
-  for (const o of overlays.filter((x) => x.page === pageZero)) {
-    const x = o.x * ratio;
-    const y = o.y * ratio;
-    const w = o.w * ratio;
-    const h = o.h * ratio;
-    if (o.type === 'black') {
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(x, y, w, h);
-    } else if (o.type === 'white') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(x, y, w, h);
-    } else if (o.type === 'text') {
-      ctx.fillStyle = '#111827';
-      const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT) * ratio;
-      ctx.font = `${fs}px ${fontFamilyCss(o.fontFamily)}`;
-      ctx.textBaseline = 'top';
-      const lines = String(o.text || '').split('\n');
-      for (let li = 0; li < lines.length; li++) {
-        ctx.fillText(lines[li], x, y + li * fs * 1.35, w);
-      }
-    } else if (o.type === 'input-strip') {
-      ctx.fillStyle = '#111827';
-      const fs = clampFontSize(o.fontSize || FONT_SIZE_DEFAULT) * ratio;
-      ctx.font = `${fs}px ${fontFamilyCss(o.fontFamily)}`;
-      ctx.textBaseline = 'middle';
-      for (const slot of o.slots || []) {
-        const sx = (o.x + slot.dx) * ratio;
-        const sy = (o.y + slot.dy + slot.h / 2) * ratio;
-        const sw = slot.w * ratio;
-        ctx.fillText(slot.value || '', sx, sy, sw);
-      }
-    } else if (o.type === 'marker') {
-      drawMarker(ctx, o.marker || 'circle', x, y, w, h);
-    } else if (o.type === 'image' && o.src) {
-      await new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          ctx.drawImage(img, x, y, w, h);
-          resolve();
-        };
-        img.onerror = resolve;
-        img.src = o.src;
-      });
-    }
-  }
+  // オーバーレイはページ単位（scale=1）正本。書き出しは scale のみ写像（displayScale 非依存）
+  await paintOverlaysToCanvas(ctx, overlays, pageZero, scale, {
+    drawMarkerFn: drawMarker,
+    fontFamilyCssFn: fontFamilyCss,
+  });
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.92));
   canvas.width = 0;
@@ -1721,28 +1708,24 @@ async function bakeAndDownload() {
   setBusy(true, '提出用PDFを仕上げています', { current: 0, total: pageCount });
   await playPaperFlatten();
   try {
-    const { PDFDocument } = await import(vendorPdflib());
-    const srcDoc = await PDFDocument.load(sourcePdfBytes.slice(0));
-    const out = await PDFDocument.create();
-
-    for (let i = 0; i < pageCount; i++) {
-      if (edited.has(i)) {
-        setBusy(true, '提出用PDFを仕上げています', { current: i + 1, total: pageCount });
+    const pdfBytes = await buildPartialAnnotatedPdf(
+      sourcePdfBytes,
+      pageCount,
+      async (i) => {
+        if (!edited.has(i)) return null;
         const { blob, width, height } = await rasterizePage(i, EXPORT_SCALE);
         if (!blob) throw new Error('raster failed');
         const bytes = new Uint8Array(await blob.arrayBuffer());
-        const jpg = await out.embedJpg(bytes);
-        const page = out.addPage([width, height]);
-        page.drawImage(jpg, { x: 0, y: 0, width, height });
-      } else {
-        setBusy(true, '提出用PDFを仕上げています', { current: i + 1, total: pageCount });
-        const [copied] = await out.copyPages(srcDoc, [i]);
-        out.addPage(copied);
-      }
-      await new Promise((r) => setTimeout(r, 0));
-    }
-
-    const pdfBytes = await out.save();
+        return { bytes, width, height, mime: /** @type {const} */ ('image/jpeg') };
+      },
+      {
+        pageSize: 'source',
+        yieldToMain: true,
+        onProgress: (i, total) => {
+          setBusy(true, '提出用PDFを仕上げています', { current: i + 1, total });
+        },
+      },
+    );
     const name = currentSuggestedFileName();
     const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
     const a = document.createElement('a');
@@ -1772,6 +1755,10 @@ function clearAll() {
   undoStack = [];
   redoStack = [];
   selectedId = null;
+  sessionFontSize = FONT_SIZE_DEFAULT;
+  sessionFontFamily = 'gothic';
+  pageUnitW = 0;
+  pageUnitH = 0;
   sourcePdfBytes = null;
   if (pdfDoc) {
     try { pdfDoc.destroy(); } catch { /* ignore */ }

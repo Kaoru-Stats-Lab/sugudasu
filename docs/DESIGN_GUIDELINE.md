@@ -222,6 +222,21 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 - **「PRO」バッジは付けない**（有料感・チープ感が出る）。
 - モバイルナビは横スクロール前提（固定5列グリッドは禁止）。
 
+### 3.1b Continue Later（続きを開く · 共通）
+
+途中再開が必要な **Document 型**ツール（PDF Fill · 工程表 · ドラフト会議 · 班分け等）の共通 UX。  
+**正本（思想 · 3層 · JSON · 適用範囲）:** [`notes/CONTINUE_LATER_SPEC.md`](notes/CONTINUE_LATER_SPEC.md)
+
+| 採る | 採らない |
+|------|----------|
+| ユーザー向け主役: **「続きを開く」** | 「保存」を主 CTA にすること（実装用語） |
+| Level 1 自動（IndexedDB）+ Level 2 JSON | 全ツール一律（QR · WebP 等の一発変換は不要） |
+| Hub / ツールへの JSON Drop（`productId` で遷移） | プロダクトごとに独自の保存ダイアログを発明 |
+
+**共通パネル（要約）:** 続きを開く → 最近使用したファイル（仕事名）→ 保存ファイルを開く / DnD。  
+明示エクスポート時の副ボタンだけ「保存」（`*_sugudasu.json`）。  
+Level 3（どこでも続き）は Sync — [`notes/SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md)。
+
 ### 3.2 ボタン（3層アクション）
 
 | 層 | 種別 | クラス | 用途 |

@@ -1,0 +1,16 @@
+---
+description: 共通化・Tech Adoption・Dup 棚卸し時は Inventory + validate:tech-adoption
+globs:
+alwaysApply: false
+---
+
+# Tech Adoption（Token 節約）
+
+**正本:** `docs/notes/TECH_ADOPTION_NOTE.md` §0  
+**契約:** `data/tech-shared-contracts.json`  
+**Rule:** `.cursor/rules/sugudasu-tech-adoption.mdc` · **Skill:** `.cursor/skills/sugudasu-tech-adoption/`
+
+1. Inventory を見てから書く（再発明しない）
+2. 3つ目の同型で抽出 · 抽出したら **contracts に禁止ルール追加**
+3. `npm run validate:tech-adoption`（build:pages にも入っている）
+4. 新規公開は Playbook §1.5 **A12**
