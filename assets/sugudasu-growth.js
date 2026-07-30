@@ -112,10 +112,8 @@
 
   function shareXWarikan(getSummary) {
     const summary = typeof getSummary === 'function' ? getSummary() : null;
-    if (!summary) {
-      alert('先に割り勘を計算してください。');
-      return;
-    }
+    // DECISION: 呼び出し側（warikan）が非blocking toast で案内済み。ここは silent return。
+    if (!summary) return;
     const raw = String(summary.total || '').trim();
     const totalLabel = raw ? (raw.startsWith('¥') ? raw : '¥' + raw) : '';
     const text = `飲み会${totalLabel}の割り勘を透明精算。${summary.hint || '幹事の味方'}`;

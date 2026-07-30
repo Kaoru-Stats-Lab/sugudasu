@@ -57,10 +57,15 @@
 <body class="sg-body min-h-screen flex flex-col antialiased">
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 見積会議" data-sg-subtitle="見積会議（Planning Poker）で認識差を可視化" data-sg-tool-id="planning-poker"></div>
 <main class="sg-main-shell sg-main-shell--wide flex-1">
+    <header class="sg-tool-intro space-y-2 no-print">
+      <div class="sg-tool-lead-deck">
+        <p class="sg-tool-lead"><strong>見積会議で数字を同時公開する</strong> — Planning Poker。Revealで認識のズレを見える化します。登録不要・端末内です。</p>
+        <p class="sg-tool-lead">Jiraや専用ポーカーSaaSの代替ではありません。結果の恒久保存はしません。</p>
+      </div>
+    </header>
     <div id="pp-root" class="pp-root pp-wrap rounded-xl p-4 md:p-6 space-y-4">
         <header class="space-y-2">
             <p class="text-[11px] font-bold inline-block px-3 py-1 rounded-full border border-indigo-200 bg-indigo-50 text-indigo-700">登録不要 · 非送信 · 会議を短く</p>
-            <p class="text-sm text-slate-700">数字を当てる道具ではなく、<strong>認識差を最短で見つける</strong>ための見積会議です。いまは<strong>1画面</strong>で司会が各人の点数を伏せて入力し、Reveal で同時公開します（多人の別端末同期は検討中）。</p>
         </header>
 
         <section id="pp-setup" class="pp-panel pp-setup p-4 space-y-3">

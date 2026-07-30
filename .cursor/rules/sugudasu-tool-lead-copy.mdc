@@ -1,0 +1,37 @@
+---
+description: ツールページ sg-tool-lead（リード文）を書く・直すとき必読。light/heavy · What必須 · How禁止
+globs:
+  - tools/**/*.html
+  - data/tool-lead-profiles.json
+  - docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md
+  - docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md
+  - docs/notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md
+alwaysApply: false
+---
+
+# SUGUDASU ツールリード文（Agent 必須）
+
+**正本:** `docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`  
+**契約:** `docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` §4.1  
+**分類:** `data/tool-lead-profiles.json`
+
+## いつ読む
+
+- `tools/{id}.html` の `sg-tool-lead` / `sg-tool-intro` を追加・変更するとき
+- 新規ツール公開（Playbook §1.5 と併用）
+- FAQ だけ厚くしてリードを省略したくなったとき（禁止）
+
+## 必須（要約）
+
+- **What は全ツール必須**（1〜2文）
+- **How はリード禁止**（UI 直下 or FAQ）
+- `lead_profile: light|heavy` — 第一軸は複雑度（完了系統は CTA 軸）
+- Hub カード文案は **別**（`TOOL_CARD_WRITING_GUIDELINE.md`）
+- チャネル名付き共有 CTA 禁止（CASE-2026-007）
+
+## 手順
+
+1. `data/tool-lead-profiles.json` を更新 / 確認
+2. 正本 Playbook の表に従って文案確定
+3. HTML の `.sg-tool-lead` を更新
+4. `UIUX_DECISION_BLOCK` に `lead_profile` を含める

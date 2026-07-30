@@ -151,6 +151,8 @@ npm run build:pages
 | A10 | 仕様 SSOT | **`docs/notes/` 配下**（例: `SLOT_BOARD_SPEC.md`）。リポジトリ直下のメモは正本にしない | （目視） |
 | A11 | `docs/notes/SUGUDASU_TOOL_CATALOG.md` | inNav ツール1行（productName · id · JTBD · 工夫）。件数ヘッダを registry と一致 | （目視 · catalog 突合） |
 | A12 | **Tech Adoption** | [`CAPABILITY_INVENTORY.md`](CAPABILITY_INVENTORY.md) を読み、既存クラスタ（PDF · キャンバス秘匿 · Continue Later 等）に入るなら **1行追記 or NA**。許可外ライブラリなら [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md) §6。同型が3つ目なら抽出候補 | `validate:tech-adoption` |
+| A13 | **UIUX 決定論契約** | [`UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) の `UIUX_DECISION_BLOCK` を埋め、`completion_model` / `product_voice` / **`lead_profile`** / `cta_order` を明記。未記入なら実装禁止 | （目視 · Review） |
+| A14 | **ツールリード文** | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · `data/tool-lead-profiles.json` · `tools/{id}.html` に `sg-tool-lead`（What必須 · How禁止 · light/heavy） | （目視） |
 
 ### B. 本番反映（必須 · core）
 
@@ -176,10 +178,11 @@ npm run build:pages
 
 ```text
 MECE 新規ツール公開: {id}
-A1–A12: OK / NA（欠番があれば列挙）
+A1–A14: OK / NA（欠番があれば列挙）
 B1–B4: OK · smoke: / と /{id}
 C: 触っていない（roadmap追加なし · guidesなし）
 validate:tool-naming · validate:tech-adoption · statements · ogp · build:pages: exit 0
+UIUX_DECISION_BLOCK: 添付済み
 ```
 
 ---
@@ -246,6 +249,7 @@ npm run validate:tool-naming
 | ドキュメント | 用途 |
 |-------------|------|
 | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` §1.5 | **新規ツール公開 MECE**（再発明禁止） |
+| `docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` | **ツールページ `sg-tool-lead`**（light/heavy · What必須） |
 | `docs/DESIGN_GUIDELINE.md` §1.3 | 命名思想 · 全ツール対応表 |
 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` | `data-sg-title` · shell 読込 |
 | `docs/BACKLOG.md` §8-11-4 | 新規ツール追加チェックリスト（SEO · hub） |

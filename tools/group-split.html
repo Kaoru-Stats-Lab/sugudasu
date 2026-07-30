@@ -30,15 +30,14 @@
         <p class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full">研修 · ブレイクアウト · 名簿非送信</p>
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead">
-                <strong>直前のドタキャンで班のバランスが崩れる</strong> — Excel で最初から組み直す手間を、<strong>名前タップ除外 · 同一シード再構成 · Slack/TSVコピー</strong>でここで終わらせます。
+                <strong>直前のドタキャンで班のバランスが崩れる</strong> — Excel で最初から組み直す手間を、<strong>名前タップ除外 · 同一シード再構成 · TSV/チャット用コピー</strong>でここで終わらせます。
             </p>
             <p class="sg-tool-lead">
-                名簿（氏名＋所属 · 性別など · 最大250名）を貼って<strong>公平に班分け</strong>。属性条件対応 · 結果は TSV や Slack 用テキストを<strong>1クリックコピー</strong>。
+                名簿（氏名＋所属 · 性別など · 最大250名）を貼って<strong>公平に班分け</strong>。属性条件対応 · 結果は TSV やチャット用テキストを<strong>1クリックコピー</strong>（自動送信しません）。
             </p>
         </div>
         <p class="sg-tool-lead sg-tool-lead--meta">
             名簿前処理は <a href="normalize.html">全角半角整え</a> · 当日の進行は <a href="timeline.html">イベント進行</a>。
-            教室投影の<strong>ルーレット演出</strong>向けではなく、研修・人事の<strong>事務作業 · 2次利用</strong>（共有 · 記録 · 再現）向けです。
         </p>
     </header>
 
@@ -194,7 +193,7 @@
                     <ol class="text-[11px] text-violet-950 list-decimal list-inside space-y-0.5 leading-relaxed">
                         <li><strong>PC</strong> —「JSONをコピー」→ 同期メモに貼る</li>
                         <li><strong>会場スマホ</strong> — メモから下の欄にコピー →「読み込んで再実行」</li>
-                        <li><strong>欠席時</strong> — 名前タップで再構成 → Slack 用テキストを再コピー</li>
+                        <li><strong>欠席時</strong> — 名前タップで再構成 → チャット用テキストを再コピー</li>
                     </ol>
                     <div class="flex flex-wrap gap-2 pt-1">
                         <button type="button" id="gs-session-copy" class="text-xs font-bold bg-violet-700 text-white px-3 py-2 rounded-lg">JSONをコピー（同期メモへ）</button>
@@ -220,8 +219,8 @@
                     <div class="sg-segment sg-segment--cols-3 sg-segment--mode-ec text-[10px] sg-segment--notion-soft" id="gs-out-segment" role="tablist" aria-label="出力形式">
                         <span class="sg-segment__pill" aria-hidden="true"></span>
                         <button type="button" role="tab" class="sg-segment__btn" data-segment-value="tsv" aria-selected="true">Excel TSV</button>
-                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="slack" aria-selected="false">Slack</button>
-                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="line" aria-selected="false">LINE</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="slack" aria-selected="false">チャット</button>
+                        <button type="button" role="tab" class="sg-segment__btn" data-segment-value="line" aria-selected="false">短文</button>
                         <button type="button" role="tab" class="sg-segment__btn" data-segment-value="announce" aria-selected="false">告知</button>
                         <button type="button" role="tab" class="sg-segment__btn" data-segment-value="json" aria-selected="false">JSON</button>
                         <button type="button" role="tab" class="sg-segment__btn" data-segment-value="wide" aria-selected="false">横並び</button>
@@ -488,6 +487,15 @@ let attrSlotCols = [-1, -1, -1];
 /** @type {{ select: (v: string, o?: { silent?: boolean }) => void } | null} */
 let modeSegmentCtrl = null;
 
+function showGroupSplitToast(message, level = 'warn') {
+  if (!copyToastEl) return;
+  copyToastEl.textContent = message;
+  copyToastEl.className = level === 'warn'
+    ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+    : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-900';
+  copyToastEl.classList.remove('hidden');
+}
+
 function escapeHtml(s) {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -622,12 +630,12 @@ function renderBundleDraft() {
 
 function applyExecutivePreset() {
   if (!currentTable) {
-    alert('複数列の名簿を貼り付けてください（所属列が必要です）。');
+    showGroupSplitToast('複数列の名簿を貼り付けてください（所属列が必要です）。', 'warn');
     return;
   }
   const deptIdx = currentTable.headers.findIndex((h) => /所属|部署|department/i.test(h));
   if (deptIdx < 0) {
-    alert('「所属」列が見つかりません。属性列で所属を選んでから、各組必須に「役員」と入力してください。');
+    showGroupSplitToast('「所属」列が見つかりません。属性列で所属を選んでから、各組必須に「役員」と入力してください。', 'warn');
     return;
   }
   let slot = attrSlotCols.findIndex((c) => c === deptIdx);
@@ -919,7 +927,7 @@ function renderGroups(result) {
     </div>`;
   }).join('');
   if (rest > 0) {
-    html += `<p class="text-[11px] text-slate-500 font-semibold px-1">他 ${rest} 組 — 全件は Excel TSV / Slack コピーで確認（画面は ${DOM_GROUP_PREVIEW_MAX} 組まで表示）</p>`;
+    html += `<p class="text-[11px] text-slate-500 font-semibold px-1">他 ${rest} 組 — 全件は Excel TSV / チャット用コピーで確認（画面は ${DOM_GROUP_PREVIEW_MAX} 組まで表示）</p>`;
   }
   groupsEl.innerHTML = html;
 }
@@ -1034,7 +1042,7 @@ document.getElementById('gs-session-copy').addEventListener('click', async () =>
       }, 8000);
     }
   } catch {
-    alert('コピーに失敗しました');
+    showGroupSplitToast('コピーに失敗しました。', 'warn');
   }
 });
 
@@ -1077,7 +1085,7 @@ document.getElementById('gs-session-load').addEventListener('click', async () =>
     sessionPasteEl.value = '';
     showResilienceToast('セッションを読み込みました — 名簿指紋を記録と照合してください');
   } catch (e) {
-    alert(e.message || 'セッションJSONを読み込めませんでした');
+    showGroupSplitToast(e.message || 'セッションJSONを読み込めませんでした。', 'warn');
   }
 });
 
@@ -1088,7 +1096,7 @@ copyBtn.addEventListener('click', async () => {
     const limits = assessOutputLimits(lastResult);
     if (limits.slackOverLimit && outFormat === 'slack') {
       const ok = window.confirm(
-        `Slack用テキストが約 ${limits.slackChars.toLocaleString()} 字で、1投稿上限（約4万字）を超える可能性があります。\nExcel TSV の利用を推奨します。このままコピーしますか？`,
+        `チャット用テキストが約 ${limits.slackChars.toLocaleString()} 字で、1投稿上限（約4万字）を超える可能性があります。\nExcel TSV の利用を推奨します。このままコピーしますか？`,
       );
       if (!ok) return;
     }
@@ -1100,7 +1108,7 @@ copyBtn.addEventListener('click', async () => {
       copiedLabel: 'コピーしました',
     });
   } catch {
-    alert('コピーに失敗しました。');
+    showGroupSplitToast('コピーに失敗しました。', 'warn');
   }
 });
 
@@ -1151,7 +1159,7 @@ document.getElementById('gs-bundle-add').addEventListener('click', () => {
 
 document.getElementById('gs-bundle-commit').addEventListener('click', () => {
   if (bundleDraftMembers.length < 2) {
-    alert('固定班は2名以上で「班を確定」してください。');
+    showGroupSplitToast('固定班は2名以上で「班を確定」してください。', 'warn');
     return;
   }
   bundlesEl.value = appendConstraintLine(bundlesEl.value, formatBundleLine(bundleDraftMembers));
@@ -1173,7 +1181,7 @@ document.getElementById('gs-pair-add').addEventListener('click', () => {
   const b = pickPairBEl.value;
   if (!a || !b) return;
   if (a === b) {
-    alert('離すペアは異なる2名を選んでください。');
+    showGroupSplitToast('離すペアは異なる2名を選んでください。', 'warn');
     return;
   }
   pairsEl.value = appendConstraintLine(pairsEl.value, formatPairLine(a, b));

@@ -99,8 +99,8 @@
             <div class="flex flex-wrap gap-2 items-center">
                 <button type="button" id="sq-copy" class="sg-btn-primary">コピー</button>
                 <a id="sq-google" class="sg-btn-secondary" href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Googleで開く</a>
-                <span id="sq-copy-toast" class="hidden text-[11px] font-bold text-emerald-800" aria-live="polite">コピーしました</span>
             </div>
+            <p id="sq-copy-toast" class="sg-copy-toast hidden" role="status"></p>
             <p class="text-[11px] text-slate-500 leading-relaxed">このツールは検索式を作成します。結果の件数・順位は検索エンジン側で決まり、網羅性は保証しません。</p>
             <p class="text-[11px] text-slate-500 leading-relaxed">「Googleで開く」を使うと、キーワードは Google に送られます。SUGUDASU のサーバーには送信しません。</p>
         </section>
@@ -148,6 +148,7 @@
 
 <div id="sg-chrome-bottom"></div>
 <script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script type="module">
 import {
   SEARCH_PRESETS,
@@ -338,7 +339,12 @@ copyBtn.addEventListener('click', async () => {
   });
   if (!built.query) return;
   try {
-    await navigator.clipboard.writeText(built.query);
+    await SG_COPY_FEEDBACK.copyWithFeedback(built.query, copyBtn, {
+      toastEl,
+      lineCount: 1,
+      previewLine: built.query,
+      toastPrefix: '検索式',
+    });
   } catch {
     return;
   }
@@ -349,12 +355,6 @@ copyBtn.addEventListener('click', async () => {
   }
   rememberExcludes(hosts);
   renderRecent();
-  toastEl.classList.remove('hidden');
-  queryEl.classList.add('ring-2', 'ring-emerald-400');
-  window.setTimeout(() => {
-    toastEl.classList.add('hidden');
-    queryEl.classList.remove('ring-2', 'ring-emerald-400');
-  }, 1200);
 });
 
 addExcludeBtn.addEventListener('click', () => {

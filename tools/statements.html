@@ -36,7 +36,7 @@
             <h2 id="statements-summary-heading" class="sg-info-section-title">30秒で読む要点</h2>
             <p class="sg-statements-summary__lead">
                 <strong>登録不要</strong>で URL を開き、<strong>名簿 · 金額 · 抽選リストはブラウザ内</strong>で処理します。
-                結果は TSV · Slack 用テキスト · PDF へ<strong>コピー</strong>する Copy-first。
+                結果は TSV · チャット用テキスト · PDF へ<strong>コピーして手で持ち帰る</strong> Copy-first（チャネルへ自動送信しません）。
                 統制システムではなく、幹事の<strong>説明責任</strong>を助ける実務ツールです。
             </p>
             <div class="sg-statements-summary__pills" aria-hidden="true">
@@ -158,8 +158,8 @@
                 <div class="sg-principle-row">
                     <img src="../assets/icons/principles/principle-05-copy-first.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
                     <div class="sg-principle-row__body">
-                        <h3>5. Copy-first — 結果は Slack · Excel · PDF へ</h3>
-                        <p class="mt-1">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします。TSV、Slack 用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。<a href="#copy-first-flow">Copy-first の流れ</a> · <a href="#copy-first-tech">技術選定</a></p>
+                        <h3>5. Copy-first — チャネル非接続 · 手動持ち帰り</h3>
+                        <p class="mt-1">画面で見せて終わりではなく、<strong>コピーして貼る · 保存する</strong> ことを正とします（自動投稿 · OAuth はしません）。TSV、チャット用テキスト、告知ブロック、監査 PDF——<strong>次の1クリック</strong> までを責務に含めます。サービス名の列挙は貼り付け先の例です。<a href="#copy-first-flow">Copy-first の流れ</a> · <a href="#copy-first-tech">技術選定</a></p>
                     </div>
                 </div>
                 <div class="sg-principle-row">
@@ -222,10 +222,10 @@
                 <div class="sg-diagram-flow__arrow" aria-hidden="true">→</div>
                 <div class="sg-diagram-flow__step">
                     <strong>3. コピー · 保存</strong>
-                    TSV · Slack · JSON · PDF へ
+                    TSV · チャット用 · JSON · PDF へ
                 </div>
             </div>
-            <p>API 自動投稿はしません。幹事が<strong>自分で貼る</strong>ことで、何がどこへ行くかを透明に保ちます。<a href="#copy-first-tech">技術選定の詳細</a></p>
+            <p>API 自動投稿はしません。幹事が<strong>自分で貼る</strong>ことで、何がどこへ行くかを透明に保ちます（Copy-first = チャネル非接続 / 手動持ち帰り）。<a href="#copy-first-tech">技術選定の詳細</a></p>
         </section>
 
         <section id="copy-first-tech" class="space-y-4 scroll-mt-24">

@@ -146,7 +146,7 @@
                 <p class="text-xs text-slate-400 text-center py-6">左のフォームを入力して「一次チェックを実行」を押してください。</p>
             </div>
             <div id="result-actions" class="hidden space-y-2">
-                <button type="button" id="btn-copy-slack" class="w-full text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg">Slack用テキストをコピー（最新の出力）</button>
+                <button type="button" id="btn-copy-slack" class="w-full text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg">共有用テキストをコピー（最新の出力）</button>
                 <p id="copy-toast-fair-draw" class="sg-copy-toast hidden" role="status"></p>
                 <div class="flex gap-2">
                     <button type="button" id="btn-dl-json" class="flex-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-lg">証跡JSON</button>
@@ -190,7 +190,7 @@
                                 <input type="checkbox" id="fd-csv-sjis" class="rounded border-slate-300">
                                 Shift-JIS で読む
                             </label>
-                            <button type="button" id="btn-fd-csv-apply" class="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-lg">名簿に反映</button>
+                            <button type="button" id="btn-fd-csv-apply" class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg">名簿に反映</button>
                         </div>
                         <p id="fd-csv-preview" class="text-[10px] text-slate-500"></p>
                     </div>
@@ -301,7 +301,7 @@
                 <div class="flex flex-wrap gap-2">
                     <button type="button" id="btn-dl-roster-snapshot" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">名簿スナップショット</button>
                     <button type="button" id="btn-copy-winners-plain" class="hidden flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">IDのみ（1行1名）</button>
-                    <button type="button" id="btn-copy-winners-slack" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">連絡文（Slack等）</button>
+                    <button type="button" id="btn-copy-winners-slack" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">連絡文をコピー</button>
                     <button type="button" id="btn-dl-draw-json" class="flex-1 min-w-[8rem] text-xs font-bold bg-slate-800 text-white px-3 py-2 rounded-lg">抽選JSON</button>
                     <button type="button" id="btn-print-draw" class="flex-1 min-w-[8rem] text-xs font-bold bg-emerald-600 text-white px-3 py-2 rounded-lg">監査PDF（印刷）</button>
                 </div>
@@ -564,6 +564,16 @@ let csvImportState = { file: null, parsed: null, encoding: 'utf-8' };
 let rosterImportMeta = null;
 let lastCsvAppliedKey = null;
 
+function showFairDrawToast(message, level = 'warn', targetId = 'copy-toast-draw-ops') {
+  const toast = document.getElementById(targetId);
+  if (!toast) return;
+  toast.textContent = message;
+  toast.className = level === 'warn'
+    ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+    : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-900';
+  toast.classList.remove('hidden');
+}
+
 function currentAudience() {
   const f = metaData?.campaignFormats.find((x) => x.id === selectedFormatId);
   return f?.audience === 'internal' ? 'internal' : 'consumer';
@@ -766,7 +776,7 @@ async function loadCsvFile(file) {
   try {
     text = await readFileText(file, encoding);
   } catch {
-    alert('ファイルの読み込みに失敗しました。');
+    showCsvWarn('ファイルの読み込みに失敗しました。');
     return;
   }
   if (encoding === 'utf-8' && looksLikeMojibake(text)) {
@@ -774,7 +784,7 @@ async function loadCsvFile(file) {
   }
   const parsed = parseCsvText(text);
   if (!parsed.rows.length) {
-    alert('CSV からデータ行を読み取れませんでした。形式を確認してください。');
+    showCsvWarn('CSV からデータ行を読み取れませんでした。形式を確認してください。');
     return;
   }
   csvImportState = { file, parsed, encoding };
@@ -786,14 +796,14 @@ async function loadCsvFile(file) {
 
 function applyCsvToRoster() {
   if (!csvImportState.parsed || !csvImportState.file) {
-    alert('先に CSV を読み込んでください。');
+    showCsvWarn('先に CSV を読み込んでください。');
     return;
   }
   const idx = Number(document.getElementById('fd-csv-column')?.value || 0);
   const header = csvImportState.parsed.headers[idx] || `列${idx + 1}`;
   const { lines, truncated } = extractColumnLines(csvImportState.parsed, idx, DEFAULT_ROW_LIMIT);
   if (!lines.length) {
-    alert('選択した列に有効な値がありません。別の列を選んでください。');
+    showCsvWarn('選択した列に有効な値がありません。別の列を選んでください。');
     return;
   }
   const rosterEl = document.getElementById('in-roster');
@@ -1183,7 +1193,7 @@ function bindDrawOpsCopyHandlers(draw) {
           copiedLabel: 'コピーしました',
         });
       } catch {
-        alert('コピーに失敗しました。');
+        showFairDrawToast('コピーに失敗しました。', 'warn', 'copy-toast-draw-ops');
       }
     };
   };
@@ -1644,12 +1654,12 @@ document.getElementById('btn-copy-slack').addEventListener('click', async (e) =>
   try {
     await copyWithFeedback(text, btn, {
       toastEl: document.getElementById('copy-toast-fair-draw'),
-      toastPrefix: 'Slack用',
+      toastPrefix: '共有用',
       lineCount: text.split('\n').length,
       previewLine: text.split('\n')[0],
     });
   } catch {
-    alert('コピーに失敗しました。');
+    showFairDrawToast('コピーに失敗しました。', 'warn', 'copy-toast-fair-draw');
   }
 });
 
@@ -1669,7 +1679,7 @@ document.getElementById('chk-self-responsibility').addEventListener('change', up
 
 document.getElementById('btn-draw').addEventListener('click', async () => {
   if (!canProceedDraw()) {
-    alert('赤フラグが残っています。自己責任チェックを入れるか、景品チェックを見直してください。');
+    showFairDrawToast('赤フラグが残っています。自己責任チェックを入れるか、景品チェックを見直してください。', 'warn', 'copy-toast-draw-ops');
     return;
   }
   const opEl = document.getElementById('in-draw-operator');
@@ -1749,7 +1759,7 @@ document.getElementById('btn-dl-draw-json').addEventListener('click', () => {
 
 document.getElementById('btn-dl-roster-snapshot').addEventListener('click', () => {
   if (!lastDraw?.rosterSnapshot) {
-    alert('先に公平抽選を実行してください。');
+    showFairDrawToast('先に公平抽選を実行してください。', 'warn', 'copy-toast-draw-ops');
     return;
   }
   downloadRosterSnapshot(lastDraw);

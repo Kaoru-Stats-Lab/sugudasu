@@ -115,6 +115,10 @@ function setStatus(message, isError = false) {
   els.status.classList.toggle('text-slate-500', !isError);
 }
 
+function showAnnotateWarn(message) {
+  setStatus(message, true);
+}
+
 function setTool(mode) {
   toolMode = mode;
   els.toolBtns.forEach((btn) => {
@@ -559,12 +563,12 @@ async function loadPdfFile(file) {
 
 async function loadFile(file) {
   const check = validateAnnotateInput(file);
-  if (!check.ok) { alert(check.message); return; }
+  if (!check.ok) { showAnnotateWarn(check.message); return; }
   try {
     if (check.kind === 'pdf') await loadPdfFile(file);
     else await loadImageFile(file);
   } catch (e) {
-    alert(e.message || '読み込みに失敗しました。');
+    showAnnotateWarn(e.message || '読み込みに失敗しました。');
   }
 }
 
@@ -653,7 +657,7 @@ async function downloadPdf() {
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     setStatus('PDF を保存しました（未編集ページは元のまま）。');
   } catch (e) {
-    alert(e.message || 'PDF の作成に失敗しました。');
+    showAnnotateWarn(e.message || 'PDF の作成に失敗しました。');
   }
 }
 

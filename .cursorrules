@@ -11,10 +11,12 @@
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`（**§1.5 新規公開 MECE**）+ `data/tool-registry.json` |
+| **ツールページ リード文（sg-tool-lead）** | **`docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`** · 契約 `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` §4.1 · 分類 `data/tool-lead-profiles.json` · 討議 `UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md` · Rule `.cursor/rules/sugudasu-tool-lead-copy.mdc` |
 | **Hub カード文言（JTBD blurb）** | `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md` · Hub IA `HUB_IA_REFRESH_V2.md` |
 | **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 · **続きを開く** | `docs/DESIGN_GUIDELINE.md`（§3.1b）· 正本 `docs/notes/CONTINUE_LATER_SPEC.md` |
+| **Experience Constitution Review** | アジェンダ `docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md` · 監査 `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · **決定論契約** `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` · **リード文** `TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` · **P0** `UIUX_EXPERIENCE_P0_CHECKLIST.md` · **MECE台帳** `UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md` · 判断ログ `UIUX_EXPERIENCE_JUDGMENT_LOG.md` · マルチAI `docs/prompts/uiux-experience-constitution-RUNBOOK.md` — **CTA色の全ツール一括統一は役員会決議前禁止**（リード文 L1–L6 は決議済） |
 | **技術採用 · 共通化（重複能力）** | 棚卸し `docs/notes/CAPABILITY_INVENTORY.md` · 契約 `docs/notes/TECH_ADOPTION_NOTE.md` §0 · 機械 `data/tech-shared-contracts.json` · `npm run validate:tech-adoption` · Skill `.cursor/skills/sugudasu-tech-adoption/` |
 | **ユーザー向け文言 · 見せる/見せない** | `docs/notes/USER_FACING_COPY_VISIBILITY.md`（`docs/` パス · slug ラベル禁止） |
 | **更新履歴 · ロードマップ（粒度）** | `docs/notes/DEV_TRANSPARENCY_RULES.md` · `data/changelog.json` · `data/roadmap.json` |

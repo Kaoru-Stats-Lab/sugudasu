@@ -37,6 +37,13 @@
     <!-- メインコンテンツ -->
     <main class="sg-main-shell sg-main-shell--wide grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
+        <header class="sg-tool-intro space-y-2 no-print lg:col-span-12">
+          <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>見積・納品・請求をブラウザで発行</strong> — 登録不要。明細・税率・印影まで整えて印刷またはPDF保存します。</p>
+            <p class="sg-tool-lead">会計ソフトやクラウド請求の代替ではありません。入力は端末内のみです。</p>
+          </div>
+        </header>
+
         <div class="no-print col-span-1 lg:col-span-12 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note" aria-label="利用環境の推奨">
             <strong class="font-bold">PC推奨</strong> — 帳票の最終確認・PDF保存・印刷はパソコン向けに最適化しています。スマホは入力や下書きの確認程度を想定しています。
         </div>
@@ -809,7 +816,7 @@
                         }
                     }
                 } catch {
-                    alert('コピーに失敗しました。');
+                    showInvoiceCopyToast('コピーに失敗しました。', 'warn', 'mx-copy-toast');
                 }
             });
 
@@ -1307,7 +1314,7 @@
             anchor.download = filename;
             anchor.click();
             URL.revokeObjectURL(url);
-            alert('下書きデータを保存しました。PDFとは別に、社内フォルダ等へ保管してください。');
+            showInvoiceCopyToast('下書きデータを保存しました。PDFとは別に、社内フォルダ等へ保管してください。', 'ok', 'copy-toast-invoice');
         }
 
         function importInvoiceDraft(input) {
@@ -1326,9 +1333,9 @@
                         return;
                     }
                     applyInvoiceDraft(parsed);
-                    alert('下書きデータを読み込みました。納品書・請求書へ転用する場合は、上の「書類種別」タブを切り替えてから番号・期限・備考を確認し、PDF保存してください。');
+                    showInvoiceCopyToast('下書きデータを読み込みました。納品書・請求書へ転用する場合は、上の「書類種別」タブを切り替えてから番号・期限・備考を確認し、PDF保存してください。', 'ok', 'copy-toast-invoice');
                 } catch {
-                    alert('読み込みに失敗しました。SUGUDASUで保存した下書きデータファイルかご確認ください。');
+                    showInvoiceCopyToast('読み込みに失敗しました。SUGUDASUで保存した下書きデータファイルかご確認ください。', 'warn', 'copy-toast-invoice');
                 }
             };
             reader.readAsText(file);
@@ -1400,7 +1407,7 @@
             const btn = document.getElementById('btn-copy-tool-url');
             const copied = await copyTextWithFallback(message, btn);
             if (!copied) {
-                alert('コピーに失敗しました。ブラウザ権限をご確認ください。');
+                showInvoiceCopyToast('コピーに失敗しました。ブラウザ権限をご確認ください。', 'warn', 'copy-toast-invoice');
             }
         }
 
@@ -1640,6 +1647,16 @@
         function setText(id, text) {
             const el = document.getElementById(id);
             if (el) el.innerText = text;
+        }
+
+        function showInvoiceCopyToast(message, level = 'warn', targetId = 'copy-toast-invoice') {
+            const toast = document.getElementById(targetId);
+            if (!toast) return;
+            toast.textContent = message;
+            toast.className = level === 'warn'
+                ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+                : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+            toast.classList.remove('hidden');
         }
     </script>
 <div id="sg-chrome-bottom"></div>

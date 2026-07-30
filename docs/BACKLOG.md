@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-07-24（§8-13 Agent/MCP ライン · GSC MCP Pending）  
+更新: 2026-07-29（§6b Experience Constitution Review 進行中）  
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -1272,8 +1272,24 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ---
 
+## 6b) Experience Constitution Review（進行中 · 2026-07-29）
+
+**実装統一は会議後。** CTA / コピー演出 / DnD の全ツール一括寄せは決議前禁止。**最終決定は役員会。**
+
+- アジェンダ: [`notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`](notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md)（P1–P8 · CTO/CMO/CPO/UIUX/認知）
+- 監査マトリクス: [`notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md`](notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md)
+- 決定論契約: [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)（新規実装の再現ルール）
+- P0実行チェック: [`notes/UIUX_EXPERIENCE_P0_CHECKLIST.md`](notes/UIUX_EXPERIENCE_P0_CHECKLIST.md)
+- MECE台帳: [`notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md`](notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md)（ツール別進捗管理）
+- 判断ログ: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)（背景・証拠・未決）
+- マルチAI前段（任意）: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · 合成 [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md)
+
+---
+
 ## 7) 参照（SSOT）
 
+- **`docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`** — **Experience Constitution Review v1 アジェンダ**（進行中 · CTA/Copy/DnD 一括統一は決議前禁止）
+- **`docs/notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md`** — ツール×完了系統×Copy/CTA/DnD 監査表
 - **`docs/notes/SUGUDASU_SYNC_LINE.md`** — Sync ブランド · T13-S · Phase S1–S4
 - **`docs/notes/SYNC_TIMELINE_SEO_KEYWORDS.md`** — Sync 進行 **SEO キーワード SSOT**（LP/Core title · 除外 · KPI）
 - **`docs/notes/sync-timeline-keyword-RESEARCH-RESULT.md`** — Gemini/Grok/GPT 要約

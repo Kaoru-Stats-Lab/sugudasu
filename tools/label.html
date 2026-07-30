@@ -25,7 +25,14 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU ラベル" data-sg-subtitle="宛名 · 一括印刷" data-sg-print="true" data-sg-tool-id="label"></div>
 
     <main class="sg-main-shell sg-main-shell--print print-container flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
+
+        <header class="sg-tool-intro space-y-2 no-print lg:col-span-2">
+          <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>宛名・サンキューカードを用紙規格で印刷</strong> — 差出人・宛先を整えて一括印刷します。登録不要・ブラウザ完結です。</p>
+            <p class="sg-tool-lead">宛名管理SaaSの代替ではありません。名簿のクラウド保存はしません。</p>
+          </div>
+        </header>
+
         <section class="no-print sg-setup-panel space-y-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
 
             <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-3">
@@ -142,6 +149,7 @@
                             </tbody>
                     </table>
                 </div>
+                <p id="label-action-toast" class="sg-copy-toast hidden" role="status"></p>
             </div>
 
         </section>
@@ -472,6 +480,16 @@
             );
         }
 
+        function showLabelActionToast(message, level) {
+            const el = document.getElementById('label-action-toast');
+            if (!el) return;
+            el.textContent = message;
+            el.className = level === 'warn'
+                ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 text-amber-900'
+                : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1.5 text-emerald-900';
+            el.classList.remove('hidden');
+        }
+
         function processBulkPaste() {
             const textarea = document.getElementById("form-bulk-textarea");
             const rawText = textarea.value.trim();
@@ -510,7 +528,7 @@
                 }
             } else {
                 showBulkPasteNotice('データの解析に失敗しました。郵便番号・住所・氏名の列形式をご確認ください。', 'warn');
-                alert("データの解析に失敗しました。フォーマットをご確認ください。");
+                showLabelActionToast("データの解析に失敗しました。フォーマットをご確認ください。", 'warn');
             }
         }
 
@@ -625,7 +643,7 @@
 
             localStorage.setItem("address_label_history_v1", JSON.stringify(history));
             document.getElementById("storage-save-title").value = label;
-            alert(`「${label}」を保存しました。`);
+            showLabelActionToast(`「${label}」を保存しました。`, 'ok');
             refreshHistoryListTable();
         }
 
@@ -725,9 +743,9 @@
                         localStorage.setItem("address_label_history_v1", JSON.stringify(current));
                         refreshHistoryListTable();
                         loadFromLocalStorage();
-                        alert("バックアップからデータを正常に復元しました。");
+                        showLabelActionToast("バックアップからデータを正常に復元しました。", 'ok');
                     }
-                } catch { alert("読み込みに失敗しました。正しいバックアップファイルではありません。"); }
+                } catch { showLabelActionToast("読み込みに失敗しました。正しいバックアップファイルではありません。", 'warn'); }
             };
             reader.readAsText(file);
         }

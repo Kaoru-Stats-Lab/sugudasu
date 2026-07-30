@@ -33,11 +33,13 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 差分チェック" data-sg-tool-id="diff"></div>
 
 <main class="sg-main-shell flex-1 space-y-5">
+    <header class="sg-tool-intro space-y-2">
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>AI書き換えの危険な変更から確認</strong> — 数字・日付・URLなど見逃すとまずい差分を優先表示します。登録不要・保存なし・非送信です。</p>
+        </div>
+    </header>
+
     <section class="sg-card p-4 space-y-3">
-        <h1 class="text-base font-bold text-slate-900">AIに書き直させた文の、危険な変更から確認</h1>
-        <p class="text-xs text-slate-600 leading-relaxed">
-            すべての違いを並べるのではなく、数字・日付・URL・「必須／推奨」など<strong>見逃すとまずい変更</strong>から確認します。登録不要・保存なし・データはサーバーに送りません。
-        </p>
         <p data-sg-privacy-badge data-subject="入力内容" data-extra="タブを閉じると内容は消えます" class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
         <p id="diff-warning" class="text-[11px] text-red-700"></p>
     </section>

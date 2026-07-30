@@ -35,6 +35,13 @@
 
 <main class="sg-main-shell sg-main-shell--wide grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
 
+    <header class="sg-tool-intro space-y-2 no-print lg:col-span-12">
+      <div class="sg-tool-lead-deck">
+        <p class="sg-tool-lead"><strong>手取りから逆算して領収書を作る</strong> — 源泉・消費税の逆引きとインボイス記載の領収書PDFをブラウザで完結します。</p>
+        <p class="sg-tool-lead">税務ソフトの代替ではありません。最終判断は利用者側です。</p>
+      </div>
+    </header>
+
     <!-- 入力パネル -->
     <section class="no-print lg:col-span-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 lg:p-6 space-y-5">
         <p data-sg-privacy-badge data-subject="計算データ" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
@@ -222,6 +229,16 @@
         if (mode === 'floor') return Math.floor(n);
         if (mode === 'ceil') return Math.ceil(n);
         return Math.round(n);
+    }
+
+    function showReceiptToast(message, level = 'warn') {
+        const toast = document.getElementById('copy-toast-receipt');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.className = level === 'warn'
+            ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+            : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+        toast.classList.remove('hidden');
     }
 
     function getOptions() {
@@ -530,7 +547,7 @@
         const url = buildShareUrl();
         const btn = e && e.currentTarget ? e.currentTarget : document.getElementById('btn-share-url');
         const copied = await copyText(url, btn, { toastPrefix: '共有用URL' });
-        if (!copied) alert(`コピーできませんでした。URL:\n${url}`);
+        if (!copied) showReceiptToast(`コピーできませんでした。URL:\n${url}`, 'warn');
     }
 
     function applyQueryParams() {

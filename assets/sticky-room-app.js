@@ -695,6 +695,18 @@ function setStatus(text) {
   if (els.status) els.status.textContent = text;
 }
 
+function showStickyToast(message, level = 'warn') {
+  if (!els.copyToast) {
+    setStatus(message);
+    return;
+  }
+  els.copyToast.hidden = false;
+  els.copyToast.className = level === 'warn'
+    ? 'sticky-room-copy-toast sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+    : 'sticky-room-copy-toast sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+  els.copyToast.textContent = message;
+}
+
 function isBoardLocked() {
   return connState === 'expired';
 }
@@ -1434,12 +1446,12 @@ function importBoardFromJsonText(raw) {
   try {
     data = JSON.parse(raw);
   } catch {
-    window.alert('JSON の形式が正しくありません');
+    showStickyToast('JSON の形式が正しくありません', 'warn');
     return false;
   }
   const parsed = parseBoardImportJson(data);
   if (!parsed || parsed.cards.size === 0) {
-    window.alert('読み込める付箋がありません（Export の JSON を選んでください）');
+    showStickyToast('読み込める付箋がありません（Export の JSON を選んでください）', 'warn');
     return false;
   }
   if (cards.size > 0) {
@@ -1484,7 +1496,7 @@ function bindExportMenu() {
       if (els.importFile) els.importFile.value = '';
     };
     reader.onerror = () => {
-      window.alert('ファイルを読めませんでした');
+      showStickyToast('ファイルを読めませんでした', 'warn');
       if (els.importFile) els.importFile.value = '';
     };
     reader.readAsText(file, 'utf-8');

@@ -202,10 +202,20 @@
         return `[SUGUDASU 改善リクエスト]\n${toolLine}ページ: ${page}\n\n${body || '（内容未入力）'}`;
     }
 
+    function showUpdatesToast(message, level = 'warn') {
+        const toast = document.getElementById('copy-toast-updates');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.className = level === 'warn'
+            ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+            : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+        toast.classList.remove('hidden');
+    }
+
     function openMailto() {
         const body = document.getElementById('fb-body').value.trim();
         if (!body) {
-            alert('内容を入力してください。');
+            showUpdatesToast('内容を入力してください。', 'warn');
             return;
         }
         const text = buildFeedbackText();
@@ -227,15 +237,15 @@
                 });
                 return;
             } catch {
-                alert('コピーに失敗しました。');
+                showUpdatesToast('コピーに失敗しました。', 'warn');
                 return;
             }
         }
         try {
             await navigator.clipboard.writeText(text);
-            alert('文面をコピーしました。お好みの連絡手段に貼り付けてください。');
+            showUpdatesToast('文面をコピーしました。お好みの連絡手段に貼り付けてください。', 'ok');
         } catch {
-            alert('コピーに失敗しました。');
+            showUpdatesToast('コピーに失敗しました。', 'warn');
         }
     }
 

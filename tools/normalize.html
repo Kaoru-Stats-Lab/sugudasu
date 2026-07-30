@@ -32,16 +32,10 @@
         </div>
         <p class="text-[11px] text-slate-500">確認手順: <a href="statements.html#verify-devtools" class="text-emerald-800 font-semibold hover:underline">SUGUDASU の約束（DevTools）</a></p>
         <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead">
-                <strong>社内規程で無料の全角半角サイトに名簿を貼れない</strong> — 手打ちや Excel 関数地獄を、<strong>貼付 → 用途ボタン → コピー</strong>でここで終わらせます。
-            </p>
-            <p class="sg-tool-lead">
-                顧客名簿 · EC一括登録 · メールリストの全角半角 · 空白 · 改行を<strong>ブラウザ内だけ</strong>で整えます。変換後は<strong>入力 N 行 → 出力 M 行</strong>を必ず表示（行ズレ防止）。
-            </p>
+            <p class="sg-tool-lead"><strong>名簿・メールの全角半角をブラウザ内で整える</strong> — 貼付後に用途ボタンで変換し、行数を確認してコピーします。サーバーへ送りません。</p>
         </div>
         <p class="sg-tool-lead sg-tool-lead--meta">
-            社員マスタのダミーCSVは <a href="test-data.html">テストデータ</a> から「全角半角整えで開く」でも渡せます。
-            手順の読み物は <a href="guides/office-roster-normalize.html">実務ガイド（都内総務OL編）</a> · 班分け前の名簿は <a href="group-split.html">班分け</a> · 複数列の表は <a href="table-conv.html">表変換</a> へ。
+            ダミーCSVは <a href="test-data.html">テストデータ</a>、班分け前の名簿は <a href="group-split.html">班分け</a> へ。
         </p>
     </header>
 
@@ -445,6 +439,14 @@ let lastResult = null;
 let presetController = null;
 let activePreset = 'ec_form';
 
+function showCopyStatus(message, level = 'warn') {
+  copyToastEl.textContent = message;
+  copyToastEl.className = level === 'warn'
+    ? 'text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+    : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+  copyToastEl.classList.remove('hidden');
+}
+
 function getMaskOps() {
   return {
     email: maskOpEmail.checked,
@@ -783,13 +785,11 @@ btnCopy.addEventListener('click', async () => {
     if (e.message === 'gate') {
       copyGateEl.classList.remove('hidden');
       copyGateCheck.focus();
-      copyToastEl.textContent = '行数が変わっています。チェックに同意してからコピーしてください。';
-      copyToastEl.className = 'text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900';
-      copyToastEl.classList.remove('hidden');
+      showCopyStatus('行数が変わっています。チェックに同意してからコピーしてください。', 'warn');
       return;
     }
-    if (e.message === 'empty') alert('コピーするテキストがありません。');
-    else alert('コピーに失敗しました。');
+    if (e.message === 'empty') showCopyStatus('コピーするテキストがありません。', 'warn');
+    else showCopyStatus('コピーに失敗しました。', 'warn');
   }
 });
 
@@ -844,8 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     clearTestDataHandoff();
     if (!isOverLineLimit(inputEl.value)) runTransform();
-    copyToastEl.textContent = 'テストデータからCSVを受け取りました。変換後にコピーしてください。';
-    copyToastEl.classList.remove('hidden');
+    showCopyStatus('テストデータからCSVを受け取りました。変換後にコピーしてください。', 'warn');
   }
 });
 </script>

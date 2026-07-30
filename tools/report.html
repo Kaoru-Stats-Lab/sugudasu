@@ -25,9 +25,12 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 議事録" data-sg-subtitle="報告書 · 整形" data-sg-tool-id="report"></div>
 
 <main class="sg-main-shell flex-1 space-y-4">
-    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+    <header class="sg-tool-intro space-y-2 no-print">
         <p data-sg-privacy-badge data-subject="メモ" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
-    </p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>雑なメモを議事録・報告書へ整形</strong> — 種類を選んで貼り、ビジネス文面にしてコピーします。登録不要・端末内です。</p>
+        </div>
+    </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <section class="sg-card p-5 lg:p-6 space-y-4">
@@ -306,6 +309,13 @@ ${notes}
         return true;
     }
 
+    function showCopyGuideMessage(toastEl, message) {
+        if (!toastEl) return;
+        toastEl.hidden = false;
+        toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900';
+        toastEl.textContent = message;
+    }
+
     function processBusinessReport() {
         const type = document.getElementById('doc-type').value;
         const fields = {
@@ -338,7 +348,10 @@ ${notes}
         processBusinessReport();
         const text = document.getElementById('output-local-text').value.trim();
         if (!text) {
-            alert('先に「整形する（登録不要で即コピー）」を押してください。');
+            showCopyGuideMessage(
+                document.getElementById('copy-toast-report'),
+                '先に「整形する（登録不要で即コピー）」を押してください。'
+            );
             return;
         }
         copyText(text, e.currentTarget);
@@ -347,7 +360,10 @@ ${notes}
         processBusinessReport();
         const text = document.getElementById('output-gemini-prompt').value.trim();
         if (!text) {
-            alert('先に「整形する（登録不要で即コピー）」を押してください。');
+            showCopyGuideMessage(
+                document.getElementById('copy-toast-report-gemini'),
+                '先に「整形する（登録不要で即コピー）」を押してください。'
+            );
             return;
         }
         await copyText(text, e.currentTarget, {

@@ -25,9 +25,12 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU 逆引き" data-sg-tool-id="reverse"></div>
 
 <main class="sg-main-shell flex-1 space-y-4">
-    <p class="no-print text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full w-fit">
+    <header class="sg-tool-intro space-y-2 no-print">
         <p data-sg-privacy-badge data-subject="入力内容" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full"></p>
-    </p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>言いたいニュアンスから言い換えを探す</strong> — 逆引きの類語・言い回し候補をブラウザ内で出します。辞書サイトへの送信はありません。</p>
+        </div>
+    </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <section class="sg-card p-5 lg:p-6 space-y-4">
@@ -250,6 +253,13 @@
         return true;
     }
 
+    function showCopyGuideMessage(toastEl, message) {
+        if (!toastEl) return;
+        toastEl.hidden = false;
+        toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900';
+        toastEl.textContent = message;
+    }
+
     function buildGeminiPrompt(rawText, situation, matchedWords) {
         const situationMap = {
             business: 'ビジネスメール・社内文書（簡潔で丁寧）',
@@ -340,7 +350,10 @@ ${matchedWords || '（なし）'}
         executeReverseLookup();
         const text = document.getElementById('output-gemini-prompt').value.trim();
         if (!text) {
-            alert('先に「検索してその場で類語を見つける」を押してください。');
+            showCopyGuideMessage(
+                document.getElementById('copy-toast-reverse-gemini'),
+                '先に「検索してその場で類語を見つける」を押してください。'
+            );
             return;
         }
         const btn = document.getElementById('btn-gemini');

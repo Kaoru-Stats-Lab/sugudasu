@@ -656,8 +656,8 @@ export const OUTPUT_FORMATTERS = {
 export const OUTPUT_LABELS = {
   tsv: 'Excel用 TSV',
   csv: 'CSV（BOM）',
-  slack: 'Slack / Teams',
-  line: 'LINE / プレーン',
+  slack: 'チャット用',
+  line: '短文プレーン',
   announce: '告知ブロック',
   json: 'JSON',
   wide: 'TSV（横並び）',

@@ -48,7 +48,7 @@
 - API なし · 印影データは非送信（フォント CDN のみ例外）
 - F7: 黄旗 + FAQ（[freee KB — 電子印鑑](https://www.freee.co.jp/kb/kb-sign/electronic_seals/) の画像型区分に準拠。電子署名との違い · リスク · 書類別目安表を FAQ に掲載）
 - Canvas: `clearTransparentSurface` — 描画直前に物理・論理 `clearRect`（Safari 透過 PNG）
-- コピー・保存成功: `sg-copy-feedback` のグリーンフラッシュ + `Copied!` / `Saved!`
+- コピー・保存成功: `sg-copy-feedback` のグリーンフラッシュ + `コピーしました` / `保存しました`
 
 ### FAQ（8問 + 書類別表）
 

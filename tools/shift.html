@@ -28,12 +28,19 @@
         
         <section class="no-print sg-setup-panel space-y-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
 
-            <p class="text-xs text-slate-600 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 leading-relaxed">① 対象月とスタッフを登録 → ②「シフト自動生成」→ ③ FIX（確定）して印刷</p>
+            <header class="sg-tool-intro space-y-2 no-print">
+              <div class="sg-tool-lead-deck">
+                <p class="sg-tool-lead"><strong>月次シフト表を公平に組んで印刷</strong> — スタッフ登録・自動配置・FIX確定までブラウザで完結。A4横印刷向けです。</p>
+                <p class="sg-tool-lead">勤怠クラウドやシフトSaaSの代替ではありません。確定後の印刷・共有は手元で行います。</p>
+              </div>
+            </header>
+            <p class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 leading-relaxed no-print">操作の目安: 対象月とスタッフを登録 → シフト自動生成 → FIX（確定）して印刷</p>
             
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 class="text-base font-bold text-slate-800 flex items-center gap-1.5">シフト基盤・ルール設定</h2>
                 <button type="button" id="btn-save-shift-data" onclick="saveCurrentDataToStorage()" class="no-print bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition-all">データ保存</button>
             </div>
+            <p id="shift-action-toast" class="sg-copy-toast hidden text-[11px]" role="status"></p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <div>
@@ -231,6 +238,21 @@
         let globalShiftData = {}; // キー: "YYYY-MM-DD", 値: { t1:{type,val}, t2:{type,val}, t3:{type,val}, note:"" }
         const SHIFT_SLOT_IDS = ["t1", "t2", "t3"];
         let shiftSlotConfig = { count: 3, labels: ["早番", "遅番", "夜勤"] };
+        let shiftToastTimer = null;
+
+        function showShiftActionToast(message, level = "ok") {
+            const toast = document.getElementById("shift-action-toast");
+            if (!toast) return;
+            toast.textContent = message;
+            toast.className = level === "warn"
+                ? "sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900"
+                : "sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-900";
+            toast.classList.remove("hidden");
+            if (shiftToastTimer) window.clearTimeout(shiftToastTimer);
+            shiftToastTimer = window.setTimeout(() => {
+                toast.classList.add("hidden");
+            }, 4200);
+        }
 
         function getActiveShiftSlotIds() {
             const count = Math.min(3, Math.max(1, shiftSlotConfig.count || 3));
@@ -848,7 +870,7 @@
             };
 
             localStorage.setItem("sugudasu_pro_snapshot", JSON.stringify(snapshot));
-            alert("現在のすべてのシフトデータ・店休日・メンバー構成をLocalStorageに完全保存しました。次回アクセス時に自動復元されます。");
+            showShiftActionToast("現在のシフトデータ・店休日・メンバー構成を保存しました。次回アクセス時に自動復元されます。", "ok");
         }
 
         function loadSnapshotFromStorage() {

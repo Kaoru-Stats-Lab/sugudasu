@@ -29,12 +29,7 @@
     <header class="sg-tool-intro space-y-2">
         <p class="text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200 inline-block px-3 py-1 rounded-full">WebP→JPG/PNG · 画像をアップロードしない</p>
         <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead">
-                <a href="https://www.iloveimg.com/ja/convert-to-jpg/webp-to-jpg" class="text-sky-700 underline decoration-sky-200" rel="noopener noreferrer" target="_blank">iLoveIMG</a> や <a href="https://convertio.co/ja/webp-jpg/" class="text-sky-700 underline decoration-sky-200" rel="noopener noreferrer" target="_blank">Convertio</a> もブラウザで使えますが、<strong>画像は運営サーバーへアップロード</strong>されます。
-            </p>
-            <p class="sg-tool-lead">
-                本ツールは<strong>端末内だけ</strong>で WebP→JPG/PNG。社外秘スクショ · 顧客素材向け（最大20枚）。
-            </p>
+            <p class="sg-tool-lead"><strong>WebPを端末内だけでJPG・PNGに変換</strong> — 画像はアップロードせず、社外秘スクショ · 顧客素材にも使えます（最大20枚）。</p>
         </div>
     </header>
 
@@ -107,6 +102,7 @@
         </div>
         <input type="file" id="file-input" class="sr-only" accept=".webp,image/webp" multiple>
         <p id="queue-summary" class="text-xs text-slate-500" aria-live="polite"></p>
+        <p id="webp-action-toast" class="sg-copy-toast hidden text-[11px]" role="status"></p>
         <ul id="file-list" class="space-y-3"></ul>
     </section>
 
@@ -197,6 +193,21 @@ const jpegQualityVal = document.getElementById('jpeg-quality-val');
 let queue = [];
 let formatController = null;
 let outputFormat = 'png';
+let webpToastTimer = null;
+
+function showWebpToast(message, level = 'warn') {
+  const toast = document.getElementById('webp-action-toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.className = level === 'warn'
+    ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
+    : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-900';
+  toast.classList.remove('hidden');
+  if (webpToastTimer) window.clearTimeout(webpToastTimer);
+  webpToastTimer = window.setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 4200);
+}
 
 function getQuality() {
   return Number(jpegQuality.value) / 100;
@@ -330,18 +341,18 @@ async function addFiles(fileList) {
   if (incoming.length === 0) return;
   const room = MAX_FILES - queue.length;
   if (room <= 0) {
-    alert(`最大 ${MAX_FILES} 枚までです。`);
+    showWebpToast(`最大 ${MAX_FILES} 枚までです。`, 'warn');
     return;
   }
   const slice = incoming.slice(0, room);
   if (incoming.length > room) {
-    alert(`最大 ${MAX_FILES} 枚のため、${room} 枚だけ追加しました。`);
+    showWebpToast(`最大 ${MAX_FILES} 枚のため、${room} 枚だけ追加しました。`, 'warn');
   }
 
   for (const file of slice) {
     const check = validateWebpInput(file);
     if (!check.ok) {
-      alert(`${file.name}: ${check.message}`);
+      showWebpToast(`${file.name}: ${check.message}`, 'warn');
       continue;
     }
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;

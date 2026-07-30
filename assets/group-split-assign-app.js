@@ -65,6 +65,7 @@ export function mountGroupSplitAssign(root, opts = {}) {
     editToggle: root.querySelector('#gsa-edit-toggle'),
     meetingReady: root.querySelector('#gsa-meeting-ready'),
     startMeeting: root.querySelector('#gsa-start-meeting'),
+    guideToast: root.querySelector('#gsa-guide-toast'),
   };
 
   /** @type {ReturnType<import('./group-split-assign-engine.js').createAssignState> | null} */
@@ -101,7 +102,16 @@ export function mountGroupSplitAssign(root, opts = {}) {
   function showMeetingGuideOnce() {
     const key = 'gsa_meeting_guide_seen_v1';
     if (localStorage.getItem(key) === '1') return;
-    alert('会議モードになりました\n\nSpace：次ターン\nE：条件を編集\nEsc：編集を閉じる');
+    const toast = els.guideToast;
+    if (toast) {
+      toast.textContent = '会議モードになりました — Space：次ターン · E：条件を編集 · Esc：編集を閉じる';
+      toast.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-violet-950';
+      toast.classList.remove('hidden');
+      window.clearTimeout(showMeetingGuideOnce._t);
+      showMeetingGuideOnce._t = window.setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 6000);
+    }
     localStorage.setItem(key, '1');
   }
 

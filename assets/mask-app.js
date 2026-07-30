@@ -399,7 +399,7 @@ function showEditor(show) {
 async function loadFile(file) {
   const check = validateMaskInput(file);
   if (!check.ok) {
-    alert(check.message);
+    setStatus(check.message, true);
     return;
   }
   try {
@@ -427,7 +427,7 @@ async function loadFile(file) {
       : '隠したい範囲をドラッグ';
     setStatus(`${width}×${height} · ${formatBytes(file.size)} — ${hint}`);
   } catch (e) {
-    alert(e.message || '読み込みに失敗しました。');
+    setStatus(e.message || '読み込みに失敗しました。', true);
   }
 }
 
@@ -443,7 +443,7 @@ async function downloadPng() {
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     setStatus('PNG をダウンロードしました。貼り付け先で塗り残しを確認してください。');
   } catch (e) {
-    alert(e.message);
+    setStatus(e.message || 'ダウンロードに失敗しました。', true);
   }
 }
 
