@@ -100,7 +100,7 @@
 | B | カタログに Copy/CTA/DnD 列を追加（目視 SSOT） |
 | C | A+B（機械 + 人間） |
 
-採否は Experience Constitution Review の統合決議で決める。
+採否は Experience **Implementation** Review（旧 Constitution Review · E-CONST）の統合決議で決める。新体験憲法は作らない。
 
 ---
 

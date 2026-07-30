@@ -1,6 +1,7 @@
 /**
  * SUGUDASU コピー契約 — クリップボード・行数チェック（全ツール共通）
- * SSOT: docs/DESIGN_GUIDELINE.md §3.8 · docs/notes/SUGUDASU_OOPS_GUARDRAILS.md
+ * SSOT: docs/DESIGN_GUIDELINE.md §3.8 · docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md §2.2
+ * 採択: E-TOAST/E-FLASH 案 C+（2026-07-30）— 操作点確認 · ペイロード近接 · 全面flash禁止 · ボタン印刷緑化禁止
  */
 
 export const FILTER_REMINDER =
@@ -74,9 +75,7 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
     document.body.removeChild(ta);
   }
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    triggerCopyFlash();
-  }
+  // C+: 全面 flash 廃止（triggerCopyFlash は no-op 互換）
 
   const lockMs = options.lockMs ?? 2000;
   const copiedLabel = options.copiedLabel ?? 'コピーしました';
@@ -93,9 +92,10 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
     const lines = options.lineCount ?? countLines(payload);
     const prefix = options.toastPrefix ?? '出力';
     toastEl.hidden = false;
-    toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+    toastEl.setAttribute('role', 'status');
+    toastEl.className = 'sg-copy-toast sg-copy-toast--ok text-[11px] leading-relaxed rounded-lg px-3 py-2';
     const parts = [
-      '<strong class="text-emerald-800">コピーしました。</strong>',
+      '<strong class="sg-copy-toast__label">コピーしました。</strong>',
       ` ${prefix} · ${lines} 行 · 先頭: ${escapeHtml(preview)}${preview.length >= 40 ? '…' : ''}`,
     ];
     if (options.showFilterReminder) {
@@ -109,6 +109,7 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
 
 /**
  * 変換系: コピー直前に最新出力を再計算してから clipboard へ（入力欄生テキストはコピーしない）
+ * Transform-Copy は近接ペイロード確認のため toastEl を渡すこと（C+ / §3.8）
  * @param {{ computeOutput: () => string | null | undefined, buttonEl: HTMLElement | null, toastEl?: HTMLElement | null, gate?: { gateEl, checkEl, getInputLines, getOutputLines }, showFilterReminder?: boolean, toastPrefix?: string }} cfg
  */
 export async function copyLatestTransform(cfg) {
@@ -143,15 +144,15 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;');
 }
 
-/** §3.8 — 画面全体のグリーンフラッシュ（コピー・保存成功） */
+/**
+ * @deprecated E-TOAST/E-FLASH C+（2026-07-30）で全面 flash 廃止。呼び出し互換のため残す no-op。
+ */
 export function triggerCopyFlash() {
-  if (typeof document === 'undefined') return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.body.classList.add('sg-copy-flash');
-  window.setTimeout(() => document.body.classList.remove('sg-copy-flash'), 320);
+  /* no-op */
 }
 
 /**
+ * 操作点確認（C+）: ラベルを「コピーしました」へ · ボタン色は変えない（印刷緑流用禁止）
  * @param {HTMLElement | null} buttonEl
  * @param {{ lockMs?: number, copiedLabel?: string, fallbackLabel?: string }} [options]
  */
@@ -161,11 +162,12 @@ export function markCopyButtonDone(buttonEl, options = {}) {
   const copiedLabel = options.copiedLabel ?? 'コピーしました';
   const prevLabel = buttonEl.textContent;
   buttonEl.disabled = true;
-  buttonEl.classList.add('sg-copy-btn--done');
+  buttonEl.classList.remove('sg-copy-btn--done');
+  buttonEl.classList.add('sg-copy-btn--confirmed');
   buttonEl.textContent = copiedLabel;
   window.setTimeout(() => {
     buttonEl.disabled = false;
-    buttonEl.classList.remove('sg-copy-btn--done');
+    buttonEl.classList.remove('sg-copy-btn--confirmed', 'sg-copy-btn--done');
     buttonEl.textContent = options.fallbackLabel ?? (prevLabel || 'コピー');
   }, lockMs);
 }
@@ -177,7 +179,8 @@ export function markCopyButtonDone(buttonEl, options = {}) {
 export function showCopyToastHtml(toastEl, html) {
   if (!toastEl) return;
   toastEl.hidden = false;
-  toastEl.className = 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
+  toastEl.setAttribute('role', 'status');
+  toastEl.className = 'sg-copy-toast sg-copy-toast--ok text-[11px] leading-relaxed rounded-lg px-3 py-2';
   toastEl.innerHTML = html;
 }
 

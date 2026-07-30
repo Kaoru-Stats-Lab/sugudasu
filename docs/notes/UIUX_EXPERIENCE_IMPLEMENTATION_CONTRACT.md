@@ -5,8 +5,10 @@
 **親:** `UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`（役員会決議）  
 **根拠:** `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · `uiux-experience-research/SYNTHESIS.md` · CASE-2026-007
 
-> これは **実装契約（HOW）**。  
-> 憲法（WHAT）への昇格可否は役員会で決める。ここは判断を実装に再現するための決定論。
+> これは **実装契約（HOW）** であり、**憲法（WHAT / identity）ではない。**  
+> Identity の正本は Brand Constitution · Commentary · Case Law（E-CONST · 2026-07-30）。  
+> 層の差: [`../legal/LEGAL_INTERPRETATION_GUIDE.md`](../legal/LEGAL_INTERPRETATION_GUIDE.md) §2.1。  
+> 親アジェンダ: `UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`（呼称: Experience **Implementation** Review）。
 
 ---
 
@@ -56,10 +58,57 @@
 
 | トークン | 固定意味 | 禁止 |
 |----------|----------|------|
-| L2 青 (`.sg-btn-primary`) | 主操作（実行・コピー・次へ） | 成功状態の常設色 |
-| L3 緑 (`bg-emerald-600`) | 成果物を外へ出す（印刷/DL/Bake/ZIP） | 内部状態変更（+5分・名簿反映） |
-| 一時成功（緑/✓） | 成功瞬間のみ（1〜2秒） | ボタン常設色へ昇格 |
-| 黒 (`bg-slate-900`) | 小操作・道具操作のみ | ページ主CTA化（例外表なし） |
+| L2 青 (`.sg-btn-primary`) | 主操作（実行・コピー・次へ · handoff · フル幅の副完了） | 成功状態の常設色 |
+| L3 緑 (`bg-emerald-600` / `--sg-print-cta`) | 文脈内の紙出口（印刷/PDFダイアログへ）。**ヘッダー禁止** | 内部操作 · コピー成功のボタン塗り · sticky chrome |
+| コピー成功アクセント (`--sg-copy-ok`) | ✓ / 近接 status 文言のみ（1〜2秒） | 印刷CTAと同HEX · ボタン背景への流用 · `body` 全面 flash |
+| 黒 (`bg-slate-900` / `.sg-btn-ink`) | **小操作のみ**（下表） | フル幅CTA · クロスツール handoff · ページ主ゴール |
+
+### 2.0 印刷配置（E-L3 · 2026-07-30 FIX）
+
+| 採択 | 内容 |
+|------|------|
+| 製品 | チャネル非接続 / 手動持ち帰りが主完了学習（旧称 Copy-First · スローガンとしては使わない）。印刷は紙経路の **shortcut** |
+| 配置 | sticky ヘッダーに印刷を **置かない**（`sugudasu-shell.js`） |
+| 制約 | `window.print()` → ブラウザ印刷ダイアログは **不可避**（受容） |
+| 色・Bake | DL/ZIP を L3 同色にするかは **E-L3-COLOR 延期** |
+
+### 2.1 黒ボタン例外表（E-BLACK · 2026-07-30 採択）
+
+**決議:** 小操作黒は残す · フル幅／handoff 級は L2 青へ · 一括置換はしない（帳票ウェーブで是正）。
+
+| 黒にしてよい（小操作） | 黒にしない（L2 青へ） |
+|------------------------|------------------------|
+| `+ 行を追加` · `＋ スタッフを追加` · `＋ グループを追加` 等の **インライン追加** | `w-full` の黒ボタン |
+| 行・枠の横の短い道具操作（主CTAと競合しない幅） | クロスツール handoff（例: stamp→請求書） |
+| | 共有URL / 送付文面コピー / 一括反映 / 履歴保存 / メール送信 など **作業の山場** |
+
+`product_voice: formal_document` でも、上表の「黒にしない」は適用する。  
+装飾用の黒背景（honor ブロック · プレビュー枠）はボタンではない（本表の対象外）。
+
+### 2.2 コピー成功フィードバック（E-TOAST / E-FLASH · 案 C+ · 2026-07-30 採択）
+
+**決議:** チャネル非接続の持ち帰り確認は薄くしない（旧称 Copy-First · スローガン不可）。削るのは視線外の派手さのみ。
+
+| 必須 | 禁止 |
+|------|------|
+| 操作点: ラベル「コピーしました」（青ボタンは青のまま · `.sg-copy-btn--confirmed`） | `body` 全面緑フラッシュ |
+| Transform-Copy: 近接ペイロード（行数 · 先頭行 · 必要ならフィルター注意） | 成功用浮遊グローバル Toast |
+| `role="status"` / フォーカス移動なし | ボタン背景の印刷 emerald 一時化 |
+| 失敗・警告の近接 status（維持） | 英語 `Copied!` · `alert` 成功 · 確認の意図的薄化 |
+
+成功アクセント色は `--sg-copy-ok`（印刷 `--sg-print-cta` と別）。詳細: `UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md` · リサーチ `COPY_FEEDBACK_WEB_PRACTICE.md`。
+
+### 2.3 体感SLA（E-SLA · 2026-07-30 FIX · ハイブリッド）
+
+**憲法には上げない。** 原則は本契約 · 数値目安は `DESIGN_GUIDELINE.md` §3.9。層の差: `LEGAL_INTERPRETATION_GUIDE.md` §2.1。
+
+| 原則（必須） | 禁止 |
+|--------------|------|
+| 操作への即時フィードバック | 押下後の沈黙 |
+| 成功は非ブロッキング | `alert` 成功 |
+| 長処理は busy / 進捗を見せる | 完了だけ突然表示 |
+
+数値 ms の未達は **下手**であり **違憲ではない**。機械ゲートは「長処理なのに busy なし」など観測可能なものに限る（必須ゲートは段階導入）。
 
 ---
 
@@ -78,7 +127,7 @@
 |------------------|---------|----|
 | `transform_copy` | `copy_result` | L2 青 |
 | `print_finish` | `print_or_export` | L3 緑 |
-| `bake_download` | `download_output` | L3 緑 |
+| `bake_download` | `download_output` | L2 青（暫定）※ L3 同色化は E-L3-COLOR 延期 |
 | `canvas_copy` | `copy_canvas` | L2 青 |
 | `continue_later` | `open_continue_panel` | L2 青 |
 | `session_ephemeral` | `run_now` | L2 青 |
@@ -123,6 +172,7 @@
 - `Copied!`
 - `alert()` による成功通知
 - チャネル名付き共有CTA（CASE-2026-007）
+- コピー成功の `body` 全面フラッシュ · ボタン印刷緑一時化 · 成功確認の薄化（§2.2）
 
 ### 4.1 リード文（`sg-tool-lead`）— 2026-07-30 決議
 
@@ -168,6 +218,7 @@
 product_id:
 completion_model:
 product_voice:
+copy_success_mode: point_confirm | point_plus_payload
 lead_profile: light|heavy
 continue_later: yes|no|separate
 has_file_drop: yes|no
@@ -177,6 +228,8 @@ S2_action:
 S3_action:
 S4_action:
 ```
+
+`copy_success_mode`: 通常コピーは `point_confirm`。Transform-Copy（行構造）は `point_plus_payload`（近接行数必須）。
 
 このブロックが無い実装はレビューに出さない。
 

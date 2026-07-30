@@ -254,13 +254,14 @@ Level 3（どこでも続き）は Sync — [`notes/SUGUDASU_SYNC_LINE.md`](note
 
 | 層 | 種別 | クラス | 用途 |
 |----|------|--------|------|
-| L2 | プライマリ | `.sg-btn-primary` または `bg-blue-600 hover:bg-blue-700 …` | 実行・生成・計算。**1画面1つ** |
-| L3 | 印刷・PDF | `bg-emerald-600 hover:bg-emerald-500` | ヘッダー印刷CTA。**1画面1つ** |
+| L2 | プライマリ | `.sg-btn-primary` または `bg-blue-600 hover:bg-blue-700 …` | 実行・生成・計算・**handoff**・フル幅の副完了。**1画面の「進む」系は青** |
+| L3 | 印刷・PDF（文脈内） | `bg-emerald-600 hover:bg-emerald-500` | **成果物を紙へ出す出口**（プレビュー／結果直下）。**1画面1つ**。**sticky ヘッダーには置かない**（E-L3 · 2026-07-30 確定 · Copy-First と競合するため） |
 | — | セカンダリ | `bg-white border border-slate-200 text-slate-700 hover:bg-slate-50` | 補助操作 |
+| — | インク（小操作） | `bg-slate-900 hover:bg-slate-800`（任意 `.sg-btn-ink`） | **行追加など短い道具操作のみ** |
 | — | 危険 | `text-rose-600 hover:text-rose-700` | 削除など（テキストのみ可） |
 
 - グラデーションボタン（`from-emerald-600 to-indigo-600`）は **使わない**。
-- 小さな「＋行を追加」等は `bg-slate-900` 可（主CTAと競合しない場合のみ）。
+- **黒の可否（E-BLACK · 2026-07-30）:** 小操作黒は可。`w-full` 黒・クロスツール handoff・共有URL/一括反映/履歴保存級は **L2 青**。例外表の正本は [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §2.1。一括置換禁止。
 
 ### 3.3 タブ・セグメント（L1 モード切替）
 
@@ -367,10 +368,12 @@ if (!validateFields([{
 |--------|--------|------|
 | **A. コピー＝最新出力** | 変換・整形・計算があるツール **必須** | 「コピー」押下時に **出力を再計算**してから `clipboard` へ。入力欄の生テキストはコピーしない |
 | **B. 行数 N → M** | 行構造を維持するツール **必須** | `入力 N 行 → 出力 M 行` を目立たせる。一致=緑 · 不一致=黄 + **コピー前チェック必須** |
-| **C. コピー成功フィードバック** | **全ツール必須**（コピーボタンがあるもの） | 緑フラッシュ（`sg-copy-flash`）· ボタン `コピーしました` 2秒（`sg-copy-btn--done` · emerald）· トーストは任意で行数+先頭プレビュー |
-| **D. フィルター注意** | 行単位データをExcelへ戻すツール | コピー成功トースト末尾に1行（非表示行・フィルター） |
+| **C. コピー成功フィードバック（C+）** | **全ツール必須**（コピーボタンがあるもの） | **操作点:** ラベル「コピーしました」~2s（`.sg-copy-btn--confirmed` · **ボタン色は変えない**）。**Transform-Copy:** 近接 status に行数+先頭プレビュー（`toastEl`）。アクセントは `--sg-copy-ok`（印刷緑と別）。`role="status"` |
+| **D. フィルター注意** | 行単位データをExcelへ戻すツール | コピー成功の近接 status 末尾に1行（非表示行・フィルター） |
 
-**実装 SSOT:** `assets/sg-copy-feedback.js`（`SG_COPY_FEEDBACK` グローバル）
+**禁止（E-TOAST/E-FLASH C+ · 2026-07-30）:** `body` 全面フラッシュ · ボタンの印刷 emerald 一時塗り · 成功用グローバル浮遊 Toast · 確認の意図的薄化 · `Copied!` · `alert` 成功
+
+**実装 SSOT:** `assets/sg-copy-feedback.js`（`SG_COPY_FEEDBACK` グローバル）· 討議録 `notes/UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md`
 
 ```html
 <!-- 変換系ツール末尾（shell の前） -->
@@ -425,7 +428,30 @@ await SG_COPY_FEEDBACK.copyLatestTransform({
 | label / shift / present | — | — | △（コピーUIなし） |
 
 - **禁止:** 変換と同時の自動クリップボード上書き（Before/After 確認チャンスを奪う）
-- **L2 青コピー** と **C フィードバック** は競合しない（`コピーしました` 後にボタン文言を復元）
+- **L2 青コピー** と **C フィードバック** は競合しない（`コピーしました` 後にボタン文言を復元 · **色は青のまま**）
+
+### 3.9 体感SLA（E-SLA · 2026-07-30 FIX · ガイドライン級）
+
+**置き場:** DESIGN + Experience 契約の原則。**憲法には上げない**（identity ではなく出来のよさ · [`legal/LEGAL_INTERPRETATION_GUIDE.md`](legal/LEGAL_INTERPRETATION_GUIDE.md) §2.1）。  
+**討議:** [`notes/UIUX_EXPERIENCE_SLA_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SLA_BOARD_DISCUSSION.md)
+
+**原則（硬）**
+
+1. 操作には **即時の視覚フィードバック**（沈黙禁止）
+2. 成功は **非ブロッキング**（`alert` 成功禁止 · C+）
+3. 長処理には **進捗または busy** を見せる（完了だけ突然出さない）
+
+**目安（軟 · 端末・データ量で変動してよい）**
+
+| 系統 | 目安 | 備考 |
+|------|------|------|
+| 押下→ボタン/UI反応 | ≤ 100ms 体感 | 主観。憲法ゲートにしない |
+| Transform-Copy（軽量） | ≤ 300ms 体感即時 | 行数上限とセット |
+| Bake-Download（重） | busy 必須 · 完了は status | ZIP 等 |
+| コピー成功表示 | ~2s（C+） | 既決 |
+| 印刷ダイアログ以降 | OS 管轄 | E-L3 受容 · SLA 対象外 |
+
+**対外コピー:** 「サクサク」など未定義の速さ語は新規に増やさない。既存は段階置換（「すぐ使える」「ブラウザ内で完結」等へ）。
 
 ---
 
@@ -590,7 +616,7 @@ await SG_COPY_FEEDBACK.copyLatestTransform({
 |--------|------|------|
 | トークン・印刷・コンポーネント | `assets/sugudasu.css` | `:root` トークン、`sg-card` / `sg-input` / `sg-trust-badge`、`@media print`（請求・ラベル・シフト含む） |
 | クローム | `assets/sugudasu-shell.js` | ヘッダー・ナビ・フッター。`#sg-chrome-top` の `data-sg-title` 等で **読込時自動マウント**（詳細: `docs/notes/CHROME_HEADER_GUARDRAILS.md`） |
-| **コピー契約** | `assets/sg-copy-feedback.js` | §3.8 — `copyWithFeedback` · 行数チェック · `コピーしました` + 緑フラッシュ |
+| **コピー契約** | `assets/sg-copy-feedback.js` | §3.8 C+ — `copyWithFeedback` · 行数チェック · 操作点「コピーしました」· 近接ペイロード |
 | **フォーム EFO** | `assets/sg-form-validate.js` | §3.4 — 必須未入力の枠ハイライト · インラインエラー · focus |
 | 貼付スキャン | `assets/sg-paste-scan.js` | 文字化け・CRLF（normalize 等） |
 | 文字正規化 | `assets/text-normalize.js` | normalize 専用ロジック |

@@ -676,18 +676,7 @@ function bind() {
     updateToolCursor();
   });
 
-  // ヘッダー印刷は window.print() 直呼びなので横取りして紙を先に焼く
-  document.addEventListener(
-    'click',
-    (e) => {
-      const t = e.target;
-      if (!(t instanceof Element) || !t.closest('#sg-btn-print')) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      void printPaper();
-    },
-    true,
-  );
+  // Ctrl/Cmd+P は紙を先に焼いてから印刷（ヘッダー印刷ボタンは E-L3 で廃止）
   document.addEventListener(
     'keydown',
     (e) => {

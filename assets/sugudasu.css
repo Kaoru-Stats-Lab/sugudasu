@@ -24,6 +24,10 @@
   --sg-logo-word-size-sm: 1.48rem;
   --sg-logo-word-size-xs: 1.32rem;
   --sg-print-cta: #059669;
+  /* コピー成功アクセント（印刷CTAと別トークン · E-TOAST/E-FLASH C+） */
+  --sg-copy-ok: #0f766e;
+  --sg-copy-ok-bg: #f0fdfa;
+  --sg-copy-ok-border: #99f6e4;
   --sg-warning: #d97706;
   --sg-error: #dc2626;
   --sg-main-max: 76rem;
@@ -3601,17 +3605,28 @@ body.ug-desk .sg-dev-stage--beta {
   margin-top: 0.125rem;
   margin-bottom: 0;
 }
+/* Copy success — E-TOAST/E-FLASH C+（2026-07-30）
+   操作点ラベル確認 · 近接ペイロード status · 全面flash禁止 · ボタン印刷緑化禁止 */
 body.sg-copy-flash {
-  animation: sg-copy-flash 320ms ease-out;
+  /* legacy no-op: class may still be toggled by old callers; animation removed */
 }
-@keyframes sg-copy-flash {
-  0% { background-color: #ecfdf5; }
-  100% { background-color: transparent; }
+
+.sg-copy-btn--done,
+.sg-copy-btn--confirmed {
+  /* 背景色は触らない（L2青 / セカンダリを維持）。確認はラベル変化のみ */
+  cursor: wait;
 }
-.sg-copy-btn--done {
-  background: #059669 !important;
-  border-color: #059669 !important;
-  color: #fff !important;
+
+.sg-copy-toast--ok {
+  border: 1px solid var(--sg-copy-ok-border);
+  background: var(--sg-copy-ok-bg);
+  color: var(--sg-text);
+}
+
+.sg-copy-toast--ok .sg-copy-toast__label,
+.sg-copy-toast--ok strong {
+  color: var(--sg-copy-ok);
+  font-weight: 700;
 }
 
 /* —— Copy-first 免責 · TSV/JSON（statements #copy-first-tech と同期）—— */

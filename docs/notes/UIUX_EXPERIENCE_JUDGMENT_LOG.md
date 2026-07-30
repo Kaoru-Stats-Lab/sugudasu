@@ -473,3 +473,176 @@
 
 - 必要なら `verify` スクリプトで `sg-tool-lead` 欠落を機械ゲート化
 - FAQ とリードの断定度揃えは別ウェーブ
+
+---
+
+## 2026-07-30 — 役員会未決バックログ（Experience）を固定 · #1 着手
+
+### 背景
+
+- リード文 L1–L6 · P0-1〜4 は採択・実装済み
+- 残論点をログに残したうえで、優先 #1（帳票系黒CTA例外）から役員会討議へ入る指示
+
+### 証拠
+
+- Agenda §3 · 判断ログ初回未決 · SYNTHESIS 尖り① · 契約 §2「黒=小操作のみ · 例外表なし」
+- 実測 `bg-slate-900` ボタン例: invoice（+行 · URLコピー）· stamp（請求書へ）· receipt（共有URL）· label（一括反映 · 履歴）· shift（+スタッフ）
+
+### 役員会未決（優先順 · 2026-07-30 固定）
+
+| 優先 | ID | 論点 | 昇格先候補 | 状態 |
+|------|-----|------|------------|------|
+| **1** | **E-BLACK** | 帳票系の黒CTAを例外として追認するか | DESIGN §3.2 · 契約 §2.1 | **Closed 2026-07-30**（小操作黒 · フル幅/handoff→青） |
+| 2 | E-TOAST | コピー成功: Toast あり / Toastレス（ボタン上のみ） | DESIGN §3.8 · 契約 §2.2 | **Closed 2026-07-30（案 C+）** |
+| 3 | E-FLASH | 成功フィードバックの緑: 文言+弱フラッシュのみか、一時緑を残すか | DESIGN · P2 | **Closed**（全面flash廃止 · ボタン印刷緑化廃止 · `--sg-copy-ok`） |
+| 4 | E-L3 | ヘッダー印刷廃止 · Copy-First · ダイアログ受容 | DESIGN §3.2 · 契約 §2.0 | **Closed（配置）** · 色は E-L3-COLOR 延期 |
+| 5 | E-SLA | 体感SLAを憲法級に上げるか | DESIGN §3.9 · 契約 §2.3 | **Closed 2026-07-30（H · 憲法に上げない）** |
+| 6 | E-NAME | 「Copy-First」呼称 | ブランド · CASE | **Closed** — スローガン取り下げ · 意味維持 · 差別化新語は持ち越し · [`UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md) |
+| 7 | E-SUBARU | スグダス誤訪問注意の露出 | ブランドトーン | **Defer** |
+| 8 | E-CONST | Experience 憲法条文化 | — | **Closed 2026-07-30（H · 新憲法なし · HOW維持）** |
+
+### 議決不要（実装・運用）
+
+- FAQ↔リード断定度の横断監査
+- 完了系統ごとの P1 ウェーブ（世代差 · P8）
+- `sg-tool-lead` 欠落の機械ゲート
+- Zenn 等の `Copied!` 仕様残骸掃除
+
+### 次アクション
+
+- ~~E-BLACK 討議~~ → **Closed**（下記）
+
+---
+
+## 2026-07-30 — E-BLACK 採択（小操作黒 · フル幅/handoff→青）
+
+### 背景
+
+- 提督が仮総意をそのまま決定: 小操作黒は残す · フル幅／handoff 級は青へ · 契約に例外表 · 一括置換はしない
+
+### 判断
+
+1. 契約 §2.1 例外表を追加、「例外表なし」を廃止
+2. DESIGN §3.2 を同期
+3. 是正ウェーブ: stamp handoff · invoice 送付文面 · receipt 共有URL · label 一括/履歴 · updates メール送信 → L2 青
+4. 残す: invoice +行 · shift +スタッフ · warikan +グループ
+
+### 次アクション
+
+- ~~E-TOAST / E-FLASH~~ → **Closed（案 C+）**（下記）
+
+---
+
+## 2026-07-30 — E-TOAST / E-FLASH 採択（案 C+）
+
+### 背景
+
+- Web慣行リサーチ（Primer / Stripe / nodejs.org 等）+ Copy-First 非妥協を入力に、提督が案 C+ を採択
+
+### 判断
+
+1. 操作点「コピーしました」（ボタン色据え置き）· Transform は近接ペイロード必須
+2. 全面 flash 廃止 · ボタン印刷 emerald 一時化廃止 · グローバル成功 Toast 禁止 · 確認薄化禁止
+3. アクセントは `--sg-copy-ok`（印刷と別トークン）
+4. 共通層 `sg-copy-feedback.js` + CSS を先行反映（`triggerCopyFlash` は no-op 互換）
+
+### 次アクション
+
+- ~~E-L3 色票の前に~~ ヘッダー印刷廃止は部分採択（下記）
+
+---
+
+## 2026-07-30 — E-L3 部分採択（ヘッダー印刷廃止 · Copy-First 優先）
+
+### 背景
+
+- 提督: Output によっては DL 後に印刷する。印刷は shortcut。製品全体は Copy-First。印刷をヘッダーに置かないことは確定
+
+### 判断
+
+1. sticky ヘッダーに印刷ボタンを置かない（Lh · Lc 採択）
+2. 印刷は紙経路の shortcut · chrome 級の主完了にしない
+3. L3 色の集合（印刷のみ vs DL/ZIP 共有）はヘッダー廃止前提で**未決のまま**
+4. DESIGN §3.2 の「ヘッダー印刷CTA」文言を文脈内へ先に改訂。shell 実装は別ウェーブ
+
+### 次アクション
+
+- ~~shell 実装~~ → 実施済（下記更新）
+- 次議題 **E-NAME**（#6）· E-CONST（#8）· E-L3-COLOR（延期）· E-SUBARU（Defer）
+
+---
+
+## 2026-07-30 — E-SLA 採択（ハイブリッド · 憲法に上げない）
+
+### 背景
+
+- 提督が層の差を確認: 憲法＝何者か · SLA＝出来のよさ → FIX
+
+### 判断
+
+1. 案 **H**: 原則3行は契約 §2.3 · 目安表は DESIGN §3.9
+2. 憲法級（案 C）不採択
+3. 「サクサク」新規禁止 · 既存は段階置換
+4. ms 未達は下手であり違憲ではない（Interpretation Guide §2.1）
+
+### 次アクション
+
+- 役員会 Experience 未決は概ね消化（E-SUBARU Defer · E-L3-COLOR · 差別化コピー持ち越しは残）
+
+---
+
+## 2026-07-30 — E-CONST 採択（体験を新憲法にしない · HOW 維持）
+
+### 背景
+
+- 憲法＝identity · Experience 成果の大半は quality/HOW（§2.1 · E-SLA 先例）
+- 持ち帰り等の本意は既存 Brand/Case に既載
+
+### 判断
+
+1. 新「体験憲法」は作らない
+2. Identity 正本 = Brand + Case + 存在様式
+3. 実装契約 + DESIGN = HOW
+4. レビュー呼称を Implementation Review へ
+5. identity 穴は Case/Commentary（体験憲法へ追記しない）
+
+### 次アクション
+
+- E-SUBARU（Defer）· E-L3-COLOR · 差別化コピー持ち越しは必要時のみ
+
+---
+
+## 2026-07-30 — E-NAME 採択（Copy-First スローガン取り下げ · 新語持ち越し）
+
+### 背景
+
+- 呼称が clipboard / コピー主CTAに誤読される。意味（チャネル非接続）は維持したい
+- CMO: 対外は用事・安心・非代理配送。「持って戻る」は本意に近いが時間的距離感あり → 新語は急がない
+
+### 判断
+
+1. 体験スローガンとしての Copy-First は **取り下げ**
+2. 意味は維持（CASE-2026-007 · 手動持ち帰り）
+3. 差別化の言葉は **持ち越し**（誤スローガン量産禁止）
+4. 「あなたが持って戻る」は不採用寄り（距離感メモ）
+
+### 次アクション
+
+- statements 等の見出し寄せは低優先ウェーブ
+- 差別化コピーは別セッション
+
+---
+
+## 2026-07-30 — E-L3 FIX 完了（ヘッダー印刷撤去 · 文脈内 CTA）
+
+### 判断（確定）
+
+1. sticky ヘッダー印刷禁止 · Copy-First 優先 · 印刷＝紙 shortcut · 印刷ダイアログ不可避は受容
+2. shell 非表示 + invoice/shift/label/receipt/timeline 文脈内緑CTA · uragami ツールバー維持
+3. Bake ZIP の L3 化は延期（契約 `bake_download` は暫定 L2）
+
+### 次アクション
+
+- ~~E-SLA~~ → **Closed**（上記）
+- 呼び出し側の冗長 `triggerCopyFlash()` 行の任意掃除は低優先
+

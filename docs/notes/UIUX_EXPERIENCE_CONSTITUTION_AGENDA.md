@@ -1,4 +1,8 @@
-# SUGUDASU Experience Constitution Review v1 — 役員アジェンダ
+# SUGUDASU Experience Implementation Review v1 — 役員アジェンダ
+
+**旧称:** Experience Constitution Review（E-CONST で改称 · 2026-07-30 — **新憲法は作らない**）  
+**Identity 正本:** Brand Constitution · Case Law · 存在様式  
+**HOW 正本:** `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` · `DESIGN_GUIDELINE.md`
 
 **更新:** 2026-07-29  
 **状態:** 会議前アジェンダ（実装統一は会議後）  
@@ -98,7 +102,7 @@ Copy-First / L1-L2-L3 / Calm UX
 
 ## 2. 役割別アジェンダ（会議の進め方）
 
-**会議名:** SUGUDASU Experience Constitution Review v1  
+**会議名:** SUGUDASU Experience Implementation Review v1（旧 Constitution Review）
 **成果物:** P1–P8 に Keep / Change / Defer + P0–P2。Change は 憲法候補 / DESIGN のみ / 実装のみ に分類。  
 **昇格経路:** 合意後 → DESIGN §3.2/§3.8 · 必要なら Case Law / Product Constitution（憲法は勝手に書き換えない）。
 
@@ -178,23 +182,25 @@ Copy-First / L1-L2-L3 / Calm UX
 
 - Keep / Change / Defer を P1–P8 に割付
 - Change は **憲法改正候補 / DESIGN のみ / 実装のみ** に分類
-- 次の作業物: Experience Constitution 草案 1枚 · 監査マトリクス更新 · P0 ウェーブ定義
+- 次の作業物: ~~Experience Constitution 草案~~ → **実装契約 + DESIGN が HOW 正本**（E-CONST）· 監査マトリクス更新 · P0 ウェーブ定義
 - この議題の位置づけ（憲法化 or ガイドライン運用）は、`UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` を叩き台に役員会で決定
 
 ---
 
 ## 3. 立ち止まって決める論点（仮説 · 採否は会議）
 
-先に結論しない。並べるだけ。
+| # | 論点 | 状態 |
+|---|------|------|
+| 1 | 緑成功フィードバック（印刷緑との衝突） | **決議済 C+** — [`UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md) |
+| 2 | 黒ボタン（小操作許容 vs 主CTA化禁止 · 帳票例外） | **決議済 E-BLACK** — 小操作黒残す · フル幅/handoff は青 · 契約 §2.1 |
+| 3 | Copy-First の**呼称**（意味=チャネル非接続は決議済） | **決議済 E-NAME** — スローガン取り下げ · 差別化新語は持ち越し |
+| 4 | 系統別完了 UX | **決議済**（P1 · 6系統） |
+| 5 | 体感 busy/skeleton | **決議済 E-SLA** — 契約原則 + DESIGN 目安 · 憲法に上げない |
+| 6 | ツール `sg-tool-lead` | **決議済**（L1–L6） |
+| 7 | リード vs FAQ の差別化置き場 | **決議済** |
+| 8 | スグダス誤訪問注意 | **Defer** → **E-SUBARU** |
 
-1. **緑成功フィードバックは残すか** — 印刷緑と衝突するなら、成功は「文言+弱フラッシュ」、緑は印刷と安心バッジに限定
-2. **黒ボタン** — 「小操作」許容を維持しつつ、見た目が主CTAになる配置を禁止するか、slate をセカンダリ専用クラスに格上げするか
-3. **Copy-First** — 名前を体験スローガンから外し、憲法用語は「チャネル非接続 / 手動貼付」に限定するか
-4. **系統別完了 UX** — 全ツール同一コピー演出ではなく、Transform / Print / Bake / Canvas の4文法にするか
-5. **体感** — 共通 busy / skeleton / プログレス契約を入れるか、ツールJTBD任せか
-6. **ツール `sg-tool-lead`（リード文）の役割** — **決議済み**（L1–L6）。討議録 [`UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md) · 契約 §4.1 · 分類 [`../../data/tool-lead-profiles.json`](../../data/tool-lead-profiles.json)。**What必須 · light/heavy · Howはリード禁止**
-7. **リード vs FAQ の差別化の置き場** — **決議:** 予防線1句はリード可 · 詳細はFAQ · 長文重複禁止
-8. **誤訪問注意（スグダス等）の露出** — リード議題から切り離し Defer（ブランドトーン別議題）
+**未決バックログ正本:** [`UIUX_EXPERIENCE_JUDGMENT_LOG.md`](UIUX_EXPERIENCE_JUDGMENT_LOG.md)（2026-07-30 — 役員会未決バックログ）· ID: E-BLACK … E-CONST
 
 ---
 
@@ -211,7 +217,7 @@ Copy-First / L1-L2-L3 / Calm UX
 | P7 | **Change** | P0 | DESIGN + 実装 | コピー成功文言を「コピーしました」に統一。`alert` / 英語 `Copied!` / 独自トーストを段階廃止。 |
 | P8 | **Keep+Change** | P1 | 実装 + 運用 | 全面一括改修はしない。完了系統ごとのウェーブ移行（P0→P1）で世代差を収束させる。 |
 
-**Copy-First 再定義（1文）:** SUGUDASUはチャネルへ自動送信せず、成果物をユーザーが手で持ち帰る体験を提供する。
+**Copy-First 再定義（1文 · 意味の正本 · 呼称は E-NAME でスローガン取り下げ）:** SUGUDASUはチャネルへ自動送信せず、成果物をユーザーが手で持ち帰る体験を提供する。対外スローガンに「Copy-First」は使わない（[`UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md)）。
 
 **完了モデル公式分類:** Transform-Copy / Print-Finish / Bake-Download / Canvas-Copy / Continue-Later / Session-Ephemeral（Continue は再開系統として扱い、完了とは混同しない）。
 

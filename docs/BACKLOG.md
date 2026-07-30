@@ -1272,7 +1272,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ---
 
-## 6b) Experience Constitution Review（2026-07-30 時点）
+## 6b) Experience Implementation Review（2026-07-30 時点）
+
+**旧称:** Experience Constitution Review（E-CONST で改称 — **新体験憲法は作らない**）
 
 **最終決定は役員会。** CTA **色**の全ツール一括寄せは未決議のまま禁止。一方で次は **採択・実装済み**。
 
@@ -1289,9 +1291,19 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ### 進行中 · 未決
 
-- CTA 色の世代差収束（帳票の黒主CTA等）· Toast 要否 · 体感 SLA（ガイドライン級）
-- FAQ とリードの断定度横断監査
-- スグダス誤訪問注意の露出（Defer）
+未決ID正本: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)（2026-07-30 役員会未決バックログ）
+
+| 優先 | ID | 論点 |
+|------|-----|------|
+| 1 | E-BLACK | 帳票系黒CTA例外 — **Closed** · [`notes/UIUX_EXPERIENCE_BLACK_CTA_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_BLACK_CTA_BOARD_DISCUSSION.md) · 契約 §2.1 |
+| 2–3 | E-TOAST / E-FLASH | コピー成功演出 — **Closed 案 C+** · [`notes/UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_TOAST_FLASH_BOARD_DISCUSSION.md) · 契約 §2.2 |
+| 4 | E-L3 | ヘッダー印刷廃止 **Closed** · 色は延期 · [`notes/UIUX_EXPERIENCE_L3_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_L3_BOARD_DISCUSSION.md) |
+| 5 | E-SLA | 体感SLA — **Closed H** · [`notes/UIUX_EXPERIENCE_SLA_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SLA_BOARD_DISCUSSION.md) · DESIGN §3.9 |
+| 6 | E-NAME | Copy-First 呼称 — **Closed**（取り下げ）· 新語持ち越し · [`notes/UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md) |
+| 7 | E-SUBARU | スグダス注意（Defer） |
+| 8 | E-CONST | 体験憲法昇格 — **Closed H** · [`notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md) |
+
+- FAQ とリードの断定度横断監査（議決不要 · 運用）
 
 ### ドキュメント地図（MECE · Agent）
 
@@ -1320,7 +1332,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ## 7) 参照（SSOT）
 
-- **`docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`** — Experience Constitution Review アジェンダ（§6b · CTA色一括は未決議）
+- **`docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`** — Experience **Implementation** Review アジェンダ（旧 Constitution · E-CONST）
 - **`docs/notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md`** — ツール×完了系統×Copy/CTA/DnD 監査表
 - **`docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`** — Experience 決定論（`lead_profile` · CTA 配列）
 - **`docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`** — **ツール `sg-tool-lead` Agent 正本**

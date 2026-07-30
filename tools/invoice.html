@@ -300,13 +300,21 @@
                 <p class="text-[10px] text-slate-500 leading-relaxed">PDFは送付・印刷用の完成版です。下書きデータは編集用の控えで、<strong class="text-slate-700">見積で作った内容を読み込んで納品書・請求書に転用</strong>できます（読み込み後に上の書類種別タブを切り替え）。会計ソフトへの直接取込はできません。</p>
             </div>
 
+            <!-- 紙経路（E-L3: ヘッダーではなく文脈内 · ダイアログはブラウザ依存） -->
+            <div class="border-t border-slate-100 pt-4 space-y-2">
+                <button type="button" id="btn-print-invoice" onclick="window.print()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors cursor-pointer shadow-sm">
+                    印刷 / PDF
+                </button>
+                <p class="text-[10px] text-slate-500">ブラウザの印刷ダイアログが開きます（PDF保存もそこから）。送付文面のコピーは下のボタンです。</p>
+            </div>
+
             <!-- クライアント送付（Copy-First · CASE-2026-007） -->
             <div class="border-t border-slate-100 pt-4 space-y-3">
                 <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">🔗 共有・クライアント送付</h3>
-                <button type="button" id="btn-copy-tool-url" onclick="copyToolUrl()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-sm">
+                <button type="button" id="btn-copy-tool-url" onclick="copyToolUrl()" class="w-full sg-btn-primary font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-sm">
                     <span>📋 送付文面をコピー</span>
                 </button>
-                <p class="text-[10px] text-slate-500">PDFはヘッダーから保存・印刷。文面を貼る先はお使いのチャットで。</p>
+                <p class="text-[10px] text-slate-500">文面を貼る先はお使いのチャットで。</p>
                 <p id="copy-toast-invoice" class="sg-copy-toast hidden" role="status"></p>
             </div>
 

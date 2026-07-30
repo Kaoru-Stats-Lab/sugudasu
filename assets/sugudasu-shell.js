@@ -225,9 +225,7 @@
   function siteChromeHtml(mode, title, showPrint, activeFile, subtitle) {
     const desktopLinks = navLinksForMode(mode, activeFile);
     const drawerLinks = drawerLinksForMode(mode);
-    const printBtn = showPrint
-      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="sg-site-nav__print shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">印刷 / PDF</button>`
-      : '';
+    const printBtn = ''; // E-L3: sticky ヘッダーに印刷を置かない（文脈内 CTA へ）
     // Hub はタイトル帯を出さず探索UIに集中。Product は productName を淡く表示。
     const pageTitleBlock =
       mode === 'product' && title && title !== 'SUGUDASU'
@@ -321,9 +319,7 @@
 
   function focusHeaderHtml(title, subtitle, showPrint) {
     // 当日進行はナビより「今の表」が主役 — timeline focus モード（TIMELINE_TOOL_SPEC §7-1）
-    const printBtn = showPrint
-      ? `<button type="button" id="sg-btn-print" onclick="window.print()" class="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-semibold px-3 py-1.5 rounded-md transition-colors">印刷</button>`
-      : '';
+    const printBtn = ''; // E-L3: sticky ヘッダーに印刷を置かない
     const shortTitle = subtitle || title.replace(/^SUGUDASU\s+/, '') || '進行';
     return `<header class="sg-site-header sg-site-header--focus">
       <div class="sg-site-header__inner flex min-h-11 max-w-7xl mx-auto px-3 sm:px-4 items-center justify-between gap-2">
@@ -401,7 +397,7 @@
   /**
    * @param {object} opts
    * @param {string} opts.title — ヘッダー見出し
-   * @param {boolean} [opts.print=false] — 印刷ボタン
+   * @param {boolean} [opts.print=false] — 互換のため残す（E-L3: ヘッダー印刷は出さない。文脈内 CTA を使う）
    * @param {boolean} [opts.landscape=false] — A4横印刷（シフト）
    */
   function mount(opts) {
