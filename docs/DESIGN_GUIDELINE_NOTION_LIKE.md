@@ -249,9 +249,11 @@ components:
 ---
 
 
-> **SUGUDASU 配置:** 本ファイルは **Notion 分析の参照フォーク**（リポジトリ正本）。  
+> **SUGUDASU 配置:** 本ファイルは **Notion 分析の参照フォーク**（リポジトリ正本）。実装正本ではない。  
 > **色・CTA を SUGUDASU に合わせる手順:** [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md)  
-> **コア/Sync 上書き:** [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) · [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md)
+> **コア/Sync 上書き:** [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) · [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md)  
+> **ツール `sg-tool-lead` / Experience 契約:** 本ファイルの対象外 → [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)  
+> HEX（`#0075de` 等）を CSS に直書きしない（`.cursor/rules/sugudasu-design-schedule.mdc`）。
 
 ## Overview
 

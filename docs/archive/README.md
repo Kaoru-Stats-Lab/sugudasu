@@ -13,6 +13,10 @@
 | 幅・余白・FAQ · ガイド記事 | [`notes/UI_LAYOUT_REFRESH_GUIDE.md`](../notes/UI_LAYOUT_REFRESH_GUIDE.md) |
 | 色 · 3層アクション · コンポーネント | [`DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) |
 | 法務・約束ページ | [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md) |
+| Sync UI | [`DESIGN_GUIDELINE_SYNC.md`](../DESIGN_GUIDELINE_SYNC.md) |
+| Notion 分析（参照 · HEX直書き禁止） | [`DESIGN_GUIDELINE_NOTION_LIKE.md`](../DESIGN_GUIDELINE_NOTION_LIKE.md) → 色は [`DESIGN_NOTION_SUGUDASU_ADAPT.md`](../notes/DESIGN_NOTION_SUGUDASU_ADAPT.md) |
+| ツールリード文 | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](../notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) |
+| Experience Review | Backlog §6b · `UIUX_EXPERIENCE_*` |
 | 共通ヘッダー | [`notes/CHROME_HEADER_GUARDRAILS.md`](../notes/CHROME_HEADER_GUARDRAILS.md) |
 
 ---

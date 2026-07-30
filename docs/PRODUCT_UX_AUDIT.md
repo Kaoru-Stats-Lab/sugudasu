@@ -4,6 +4,8 @@
 **監査者ロール**: フロントエンド × PdM × UX 守護神  
 **正本ガイド**: [DESIGN_GUIDELINE.md](./DESIGN_GUIDELINE.md)
 
+> **注意（2026-07-30）:** 本ファイルは **2026-06 時点のスナップショット**。現行の Experience Review · P0 · リード文決議は Backlog **§6b** と [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) を正とする。ここに無い判定で実装を止めるな。
+
 ---
 
 ## マスター・チェックリスト（全ツール横断）

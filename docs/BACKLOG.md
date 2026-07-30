@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-07-29（§6b Experience Constitution Review 進行中）  
+更新: 2026-07-30（§6b Experience · リード文決議 · デザインガイド境界を MECE 更新）
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -1272,24 +1272,65 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ---
 
-## 6b) Experience Constitution Review（進行中 · 2026-07-29）
+## 6b) Experience Constitution Review（2026-07-30 時点）
 
-**実装統一は会議後。** CTA / コピー演出 / DnD の全ツール一括寄せは決議前禁止。**最終決定は役員会。**
+**最終決定は役員会。** CTA **色**の全ツール一括寄せは未決議のまま禁止。一方で次は **採択・実装済み**。
 
-- アジェンダ: [`notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`](notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md)（P1–P8 · CTO/CMO/CPO/UIUX/認知）
+### 決議・実装済み
+
+| 項目 | SSOT | 状態 |
+|------|------|------|
+| P0-1 alert→非blocking / コピー成功文言 | `UIUX_EXPERIENCE_P0_CHECKLIST.md` · `sg-copy-feedback` | **done** |
+| P0-2 内部緑 CTA 剥奪 | 同上 · MECE 台帳 | **done** |
+| P0-3 Copy-First = チャネル非接続 | CASE-2026-007 · 契約 §4 | **done** |
+| P0-4 見た目だけ DnD 可の解消 | MECE · 監査マトリクス | **done**（file drop） |
+| リード文 L1–L6（light/heavy · What必須 · How禁止） | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · [`UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md) · `data/tool-lead-profiles.json` | **決議+全製品適用** |
+| DESIGN §1.2.1 整合 | [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) | **done**（2026-07-30） |
+
+### 進行中 · 未決
+
+- CTA 色の世代差収束（帳票の黒主CTA等）· Toast 要否 · 体感 SLA（ガイドライン級）
+- FAQ とリードの断定度横断監査
+- スグダス誤訪問注意の露出（Defer）
+
+### ドキュメント地図（MECE · Agent）
+
+| 層 | 正本 | 対象 |
+|----|------|------|
+| コア UI · トーン · 3層CTA · 印刷 | [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md) | `sugudasu.com` 実務ツール |
+| 情報ページ（幅·タイポ） | [`DESIGN_GUIDELINE_INFO_PAGES.md`](DESIGN_GUIDELINE_INFO_PAGES.md) | statements · privacy · updates 等 |
+| Sync UI | [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md) | `sync.sugudasu.com` |
+| Notion 分析（参照のみ） | [`DESIGN_GUIDELINE_NOTION_LIKE.md`](DESIGN_GUIDELINE_NOTION_LIKE.md) | **実装しない** · 色は ADAPT |
+| Notion→SUGUDASU 色マップ | [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md) | Schedule |
+| ツール リード文 | [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) | `sg-tool-lead` |
+| Experience 決定論 | [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) | 新規・全面改修 |
+| 監査 · P0 · MECE · 判断 | `UIUX_EXPERIENCE_*`（下表） | 運用台帳 |
+
+- アジェンダ: [`notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`](notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md)
 - 監査マトリクス: [`notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md`](notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md)
-- 決定論契約: [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)（新規実装の再現ルール）
+- 決定論契約: [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)
 - P0実行チェック: [`notes/UIUX_EXPERIENCE_P0_CHECKLIST.md`](notes/UIUX_EXPERIENCE_P0_CHECKLIST.md)
-- MECE台帳: [`notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md`](notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md)（ツール別進捗管理）
-- 判断ログ: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)（背景・証拠・未決）
-- マルチAI前段（任意）: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · 合成 [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md)
+- MECE台帳: [`notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md`](notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md)
+- 判断ログ: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)
+- リード討議録: [`notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md)
+- マルチAI前段: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md)
+- Rule: `.cursor/rules/sugudasu-tool-lead-copy.mdc`
 
 ---
 
 ## 7) 参照（SSOT）
 
-- **`docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`** — **Experience Constitution Review v1 アジェンダ**（進行中 · CTA/Copy/DnD 一括統一は決議前禁止）
+- **`docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`** — Experience Constitution Review アジェンダ（§6b · CTA色一括は未決議）
 - **`docs/notes/UIUX_EXPERIENCE_AUDIT_MATRIX.md`** — ツール×完了系統×Copy/CTA/DnD 監査表
+- **`docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`** — Experience 決定論（`lead_profile` · CTA 配列）
+- **`docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`** — **ツール `sg-tool-lead` Agent 正本**
+- **`docs/notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`** — リード文役員会討議 · L1–L6 採択
+- **`data/tool-lead-profiles.json`** — light/heavy 分類
+- **`docs/DESIGN_GUIDELINE.md`** — コア UI 正本（§1.2.1 リード境界）
+- **`docs/DESIGN_GUIDELINE_INFO_PAGES.md`** — 情報ページ（statements 等）タイポ · **tool lead 対象外**
+- **`docs/DESIGN_GUIDELINE_SYNC.md`** — Sync UI
+- **`docs/DESIGN_GUIDELINE_NOTION_LIKE.md`** — Notion 分析参照（HEX 直書き禁止）
+- **`docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`** — Notion→SUGUDASU 色マップ（Schedule）
 - **`docs/notes/SUGUDASU_SYNC_LINE.md`** — Sync ブランド · T13-S · Phase S1–S4
 - **`docs/notes/SYNC_TIMELINE_SEO_KEYWORDS.md`** — Sync 進行 **SEO キーワード SSOT**（LP/Core title · 除外 · KPI）
 - **`docs/notes/sync-timeline-keyword-RESEARCH-RESULT.md`** — Gemini/Grok/GPT 要約
@@ -1314,8 +1355,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - **Backlog §1-15 · §8-12** — **事務OL軸プロダクト案（Seikei/Mask/Taimu/Keep 採否FIX · 2026-07-01）**
 - **Backlog §1-16** — **`pdf-fill` GO · 設計済 · 未実装（2026-07-22）**
 - **`docs/notes/EVENT_PRODUCT_BUNDLE_IDEAS_LOG.md`** — **イベント束アイデアログ（未評価 · ブレストのみ · Backlog §1-12）**
-- `docs/PRODUCT_UX_AUDIT.md`
+- `docs/PRODUCT_UX_AUDIT.md`（**スナップショット 2026-06** · 現行 Experience / リードは §6b を正とする）
 - `docs/DESIGN_GUIDELINE.md`
+- `docs/DESIGN_GUIDELINE_INFO_PAGES.md`
+- `docs/DESIGN_GUIDELINE_SYNC.md`
+- `docs/DESIGN_GUIDELINE_NOTION_LIKE.md`（参照分析）
 - `README.md`
 - `assets/sugudasu.css`
 - `assets/sugudasu-shell.js`

@@ -2,8 +2,12 @@
 
 **対象**: `/updates` · `/roadmap` · `/statements` · `/privacy` · `/terms` · `/disclaimer`  
 **実装 SSOT**: `assets/sugudasu.css` の `.sg-info-page` · `.sg-info-prose`  
-**親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)  
-**更新**: 2026-06-25
+**親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)（トーン · §1.2.1）  
+**更新**: 2026-07-30（ツールリード文決議との境界を明記）
+
+> **境界（MECE）:** 本ファイルは **情報ページの幅・タイポ・クラス** の正本。  
+> 実務ツールの `sg-tool-lead`（What / light·heavy）は対象外 → [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)。  
+> `.sg-info-page__lead` は **情報ページ用リードの見た目クラス**であり、tool lead の構造ルールとは別物。
 
 ---
 
@@ -71,7 +75,7 @@
 | ページ | 構造 |
 |--------|------|
 | **updates** | `main.sg-info-page` + ヘッダー + 複数 `section.sg-card` |
-| **statements** | 単一 `article.sg-info-prose` + 目次 · 図解キット |
+| **statements** | 単一 `article.sg-info-prose` + 目次 · 図解キット。Copy-first の意味は **チャネル非接続 / 手動持ち帰り**（CASE-2026-007 · 契約 §4）。ツール lead_profile テンプレは当てはめない |
 | **guides** | 索引 `guides.html` + `guides/{slug}` · **`sg-guide-article`**（§9 UI_LAYOUT_REFRESH_GUIDE） |
 | **privacy / terms / disclaimer** | 単一 `article.sg-info-prose`、条文は `h3` + `p` / `ul` |
 
@@ -91,6 +95,7 @@
 
 ## 7. 参照
 
-- 配色トークン: `DESIGN_GUIDELINE.md` §2
+- 配色トークン: `DESIGN_GUIDELINE.md` §2 · ユーザー向け語彙: §1.2.1
+- ツールページ リード文（対象外だが境界確認用）: [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)
 - 廃止レイアウト経緯: [`archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md`](archive/DESIGN_LAYOUT_PRE_UI_REFRESH_2026-07.md)
-- Notion Like カード: `DESIGN_GUIDELINE_NOTION_LIKE.md`（ツール向け。情報ページは **装飾控えめ**）
+- Notion Like カード: `DESIGN_GUIDELINE_NOTION_LIKE.md`（Schedule 参照分析。情報ページは **装飾控えめ**）

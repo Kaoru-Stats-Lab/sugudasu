@@ -2,7 +2,9 @@
 
 **対象**: `tools/*.html` 全 core ツール（レイアウト選定: [`notes/PAGE_LAYOUT_SELECTOR.md`](notes/PAGE_LAYOUT_SELECTOR.md)）  
 **Sync 層（別ライン）**: [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md) — `sync.sugudasu.com` · タイムライン共有  
+**情報ページ（法務·約束）**: [`DESIGN_GUIDELINE_INFO_PAGES.md`](DESIGN_GUIDELINE_INFO_PAGES.md) — statements · privacy 等（**tool lead 対象外**）  
 **Schedule Notion Like（参照 · Agent 必須）**: [`DESIGN_GUIDELINE_NOTION_LIKE.md`](DESIGN_GUIDELINE_NOTION_LIKE.md) + **色マップ SSOT** [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md)（`.cursor/rules/sugudasu-design-schedule.mdc`）  
+**ツールリード文**: [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · Experience 契約 [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §4.1  
 **読者**: Claude / 人間の実装者  
 **更新**: 2026-07-30（§1.2.1 をリード文決議 · Playbook と整合）
 

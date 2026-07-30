@@ -4,8 +4,12 @@
 **親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)（コア無料ツール）  
 **操作モデル SSOT（fleet · site · Sync 共通）**: [`machine-dashboard/docs/specs/notion-ui/INDEX.md`](../../machine-dashboard/docs/specs/notion-ui/INDEX.md) — 右ドロワー · オートセーブ · 「保存済み」· 閉じる＝完了（色トークンは本ファイル §1 優先）  
 **ブランド SSOT**: [`notes/SUGUDASU_SYNC_LINE.md`](notes/SUGUDASU_SYNC_LINE.md)  
-**更新**: 2026-06-26（S1 インフラ結合完了 · UI は本ファイル · env/DB は [`notes/SYNC_ENV_KEYS.md`](notes/SYNC_ENV_KEYS.md)）  
+**更新**: 2026-07-30（Experience / リード文との境界を追記）· 前回 2026-06-26（S1 インフラ結合）  
 **由来**: rakumo カレンダー等の UI を **参考** にした翻訳案（Gemini 監査 + 人間レビュー）。rakumo のコピー・色の丸パクリは禁止。
+
+> **境界:** 本ファイルは Sync の **色・密度・CTA・パステル行** の正本。  
+> コアツールの `sg-tool-lead` 構造は [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)。  
+> Sync 画面にコアの「非送信」バッジを混ぜない（§10）。チャネル名付き共有 CTA は CASE-2026-007 で Reject（コアと同じ）。
 
 ---
 
@@ -209,8 +213,9 @@ rakumo [カレンダー](https://rakumo.com/product/gsuite/calendar/) UI / LP �
 | 用途 | パス |
 |------|------|
 | コア配色・コンポーネント | `assets/sugudasu.css` · `DESIGN_GUIDELINE.md` |
+| コア リード文（Sync LP の What も参照可） | `notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` · Experience 契約 `notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` |
 | Sync LP | `tools/sync-timeline-lp.html` · `assets/sync-timeline-lp-demo.js` |
-| Sync アプリ | `tools/sync-timeline.html` |
+| Sync アプリ | `tools/sync-timeline.html` · `tools/sync-room.html`（付箋） |
 | rakumo 分析メモ（任意アーカイブ） | `docs/notes/RAKUMO_DESIGN_REFERENCE.md` |
 
 ---
@@ -225,3 +230,5 @@ rakumo [カレンダー](https://rakumo.com/product/gsuite/calendar/) UI / LP �
 - [ ] DnD にキーボード代替または reduced-motion 分岐があるか
 - [ ] 版更新が **手動反映** になっているか（自動上書き文案がないか）
 - [ ] コアの「非送信」バッジを Sync 画面に混在させていないか
+- [ ] `sg-tool-lead` がある画面は What があり、How をリードに書いていないか（[`TOOL_LEAD_COPY_AGENT_PLAYBOOK`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)）
+- [ ] チャネル名付き共有ボタンを置いていないか（CASE-2026-007）
