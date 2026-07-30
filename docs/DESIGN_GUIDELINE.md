@@ -4,7 +4,7 @@
 **Sync 層（別ライン）**: [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md) — `sync.sugudasu.com` · タイムライン共有  
 **Schedule Notion Like（参照 · Agent 必須）**: [`DESIGN_GUIDELINE_NOTION_LIKE.md`](DESIGN_GUIDELINE_NOTION_LIKE.md) + **色マップ SSOT** [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md)（`.cursor/rules/sugudasu-design-schedule.mdc`）  
 **読者**: Claude / 人間の実装者  
-**更新**: 2026-07
+**更新**: 2026-07-30（§1.2.1 をリード文決議 · Playbook と整合）
 
 ---
 
@@ -60,13 +60,23 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 
 **誰に書くか:** §1.1 の1人（Notion / スプシは使えるが **エンジニアではない**）。エンジニア向け ROLE や社内コードネームで書かない。
 
+**ツールリード文の構造（2026-07-30 決議）:** 詳細・手順は [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · 契約 [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §4.1 · 分類 `data/tool-lead-profiles.json`。本節は **トーンと語彙**、Playbook は **What/Why/How の出し分け**。食い違うときは Playbook §4.1 を優先。
+
+| `lead_profile` | リードに置く | 置かない |
+|----------------|--------------|----------|
+| **light** | **What**（何か・誰向け）1〜2文 | 長い競合比較 · **How（操作手順）** |
+| **heavy** | What +（任意）シナリオ1句 +（任意）Boundary予防線1句 | How（UI直下 or FAQへ） |
+
+- **FAQ** = 境界・誤解解消（Pull）。リード What の代替にしてはならない。
+- **Hub カード** = 別 SSOT（[`notes/TOOL_CARD_WRITING_GUIDELINE.md`](notes/TOOL_CARD_WRITING_GUIDELINE.md)）。tool lead と兼用しない。
+
 **どこまでわかりやすくするか（線引き）**
 
 | 層 | 載せてよい | 載せない（画面外·FAQ深部へ） |
 |----|------------|------------------------------|
-| **第1画面の h1 / リード** | 仕事の言葉で「何をする道具か」1行 + 「なぜ今使うか」1行 | 英語のコードネーム · Diff / LCS / Workbench / Audit · API · CSS |
+| **第1画面のリード（`sg-tool-lead`）** | 仕事の言葉の **What**（必須）。heavy のみ短い Why / 非代替1句 | 英語のコードネーム · Diff / LCS / Workbench / Audit · API · CSS · **操作手順の列挙** |
 | **ボタン · ラベル** | 「危険な変更を確認」「元の文」「書き換え後」 | 「Run diff」「Mini map」を説明なしで主役にしない |
-| **FAQ / statements** | 必要なら専門語を**定義してから**使う | ユーザーが覚えなくてよい実装詳細 |
+| **FAQ / statements** | 必要なら専門語を**定義してから**使う · できる/できない | ユーザーが覚えなくてよい実装詳細 |
 
 **一読テスト（必ず）:** 「この文を、チャットと Excel は使える総務の人に読ませたとき、**1回で手元の作業が想像できるか**」。No なら書き換え。迷ったら日本語の仕事語に落とす。
 
@@ -77,8 +87,9 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 | AI Rewrite Audit Workbench | （h1 はプロダクト名で足りる。副題は日本語） |
 | Diffの網羅表示ではなく… | すべての違いを並べるのではなく、**見逃すとまずい変更（数字・日付・URLなど）から確認**します |
 | Network（入力データの POST） | `{対象}はサーバーに送信しません`（通信全般ゼロは禁止 · [`DATA_PRIVACY_CLAIM_POLICY`](notes/DATA_PRIVACY_CLAIM_POLICY.md)） |
+| ①登録 → ②生成 → ③印刷（をリードに） | What のみ。手順は UI 直下の短いヒントか FAQ |
 
-**ROLE を使うなら:** Agent に「§1.1 ペルソナとして書け」と渡すのは可。**ROLE でペルソナを上書きしない**（別ペルソナを発明しない）。コピーの SSOT は本節 + `TOOL_NAMING_AGENT_PLAYBOOK` の概念名。
+**ROLE を使うなら:** Agent に「§1.1 ペルソナとして書け」と渡すのは可。**ROLE でペルソナを上書きしない**（別ペルソナを発明しない）。コピーの SSOT は本節 + `TOOL_NAMING_AGENT_PLAYBOOK` の概念名 + **リード構造は `TOOL_LEAD_COPY_AGENT_PLAYBOOK`**。
 
 **本番に出してよいか（見せる / 見せない）:** [`notes/USER_FACING_COPY_VISIBILITY.md`](notes/USER_FACING_COPY_VISIBILITY.md) — `docs/` パス · slug ラベル · Agent 用語はユーザー面禁止。Alpha/Beta バッジとは別問題。
 
@@ -187,7 +198,7 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 `docs/notes/UI_LAYOUT_REFRESH_GUIDE.md` を正本として、core は次を共通化する。
 
 - 本文コンテナ: `.sg-main-shell`（標準幅 76rem） / 帳票ワイド: `.sg-main-shell--wide` / 印刷: `.sg-main-shell--print`
-- ツール冒頭: `.sg-tool-intro` + `.sg-tool-lead-deck`（**単列スタック** · 補足は `.sg-tool-lead--meta`）— **シェル幅いっぱい** · `max-w-3xl` 禁止 · **PC 2列リード禁止**（読みづらい）
+- ツール冒頭: `.sg-tool-intro` + `.sg-tool-lead-deck`（**単列スタック** · 補足は `.sg-tool-lead--meta`）— **シェル幅いっぱい** · `max-w-3xl` 禁止 · **PC 2列リード禁止**（読みづらい）。文案の出し分けは [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)
 - セクション外枠: `.sg-section-shell`
 - FAQ（**必須テンプレ**）: `</main>` の**外**に置く。`.sg-faq-section` > `.sg-faq-inner` > `.sg-faq-title` + `.sg-faq-list`。`main` / `.sg-main-shell` 内に置かない（背景がシェル幅に縮む）
 - 最小文字サイズ: 本文14px・補助12px・マイクロ11px（10px常用禁止）
@@ -624,4 +635,6 @@ npm run build:pages   # → dist/（/assets/ 絶対パス・index.html = hub・t
 - プロンプト履歴: `docs/prompts/`  
 - ペルソナ（運営者）: `docs/operator-profile.md`  
 - モード切替提案（アーカイブ）: [`archive/UI_MODE_SWITCH_DESIGN_PROPOSAL.md`](archive/UI_MODE_SWITCH_DESIGN_PROPOSAL.md)  
+- **ツールリード文:** [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · Experience 契約 [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)  
+- Hub カード文案: [`notes/TOOL_CARD_WRITING_GUIDELINE.md`](notes/TOOL_CARD_WRITING_GUIDELINE.md)  
 - サイト構成: 別紙（統合ドメイン設計）
