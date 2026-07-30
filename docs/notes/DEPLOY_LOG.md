@@ -1747,18 +1747,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — Experience 役員会決議の実装反映 · PowerShell commit 文字化け回避手順 |
 | **change_summary** | Experience 契約/DESIGN/ヘッダー印刷撤去 · sg-copy-feedback C+ · DEV_GIT_AGENT_DELEGATION · powershell-commit-utf8.mdc · .cursorrules |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 76/450 |
 | **gates** | P1–P7 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `1185377`（git push origin main · CF 自動ビルド） |
 | **smoke** | （CF 反映後）`/invoice` コピー成功 · ヘッダーに印刷なし · `/stamp` CTA |
 
 ---
@@ -1767,6 +1767,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-07-30 | 001 executed（1185377 · Experience 実装 · commit 文字化け回避） |
 | 2026-07-30 | 001 approved（Experience 実装 · commit 文字化け回避 · 提督 Commit&Push） |
 | 2026-07-29 | 002 executed（fb3a6b7 · pdf-fill Page unit · shared PDF · Tech Adoption） |
 | 2026-07-29 | 002 approved（pdf-fill Page unit · shared PDF · Tech Adoption · P7 override · 提督 Commit&Push） |
