@@ -25,7 +25,7 @@
 | **Schedule · Sync UI（Notion Like 表）** | **計画** `SCHEDULE_V3_MASTER_PLAN.md` · **汎用/特化** `SCHEDULE_GENERIC_VS_VERTICAL.md` · **UI文案** `SCHEDULE_UI_COPY.md` · **議論ログ** `SCHEDULE_SPLIT_PANE_DECISION_LOG.md` · **Pain/横展開** `SCHEDULE_SUPERVISOR_PAIN_HORIZON.md` · **週間リスト** `SCHEDULE_WEEKLY_LIST_DESIGN.md` · **エコシステム** `SCHEDULE_CONSTRUCTION_ECOSYSTEM.md` · Gemini週間 `docs/prompts/schedule-weekly-list-gemini-prompt.md` · PoC仕様 `SCHEDULE_SPLIT_PANE_POC_SPEC.md` · **`DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色）· 仕様 `SCHEDULE_TOOL_SPEC.md` · 決定 `SYNC_SCHEDULE_PRODUCT_DECISION.md` · `.cursor/rules/sugudasu-design-schedule.mdc` |
 | **ツールページ内 LP（hub ではなく /{tool}）** | `docs/notes/TOOL_PAGE_LP_STRATEGY.md` · §14-9 · `lp-marketing-matrix.json` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
-| **Git push · Agent 委任** | `docs/notes/DEV_GIT_AGENT_DELEGATION.md` · 正本 `../machine-dashboard/docs/notes/dev-git-multi-account.md` |
+| **Git push · Agent 委任** | `docs/notes/DEV_GIT_AGENT_DELEGATION.md`（**日本語 commit = Write→`-F` · Shell に日本語を書かない**）· `learned/powershell-commit-utf8.mdc` · 正本 `../machine-dashboard/docs/notes/dev-git-multi-account.md` |
 | **Agent トークン削減（RTK）** | `docs/notes/RTK_CURSOR.md` |
 | **セッション harvest（黄金ルート）** | `.cursor/rules/self-learning-sugudasu.mdc` · Agent 手順 `.cursor/rules/learned/` · Git/SSH `~/.cursor/rules/learned/` |
 | **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
@@ -53,3 +53,5 @@ npm run build:pages
 ## Git push 委任
 
 本 Agent（**SUGUDASU ワークスペース**）は **`Kaoru-Stats-Lab/sugudasu` の commit/push のみ** 担当。`machine-dashboard` への push は **禁止**（fleet Agent へ）。正本: `docs/notes/DEV_GIT_AGENT_DELEGATION.md`
+
+**Commit 文字化け防止:** メッセージは Cursor **Write** で `.git/COMMIT_MSG_TMP` → `git commit -F`。Shell の `command` / `Set-Content` / `commit -m` に日本語を埋め込まない（CP932 で `?` 化）。

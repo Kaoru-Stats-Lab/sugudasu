@@ -1,0 +1,32 @@
+---
+description: >-
+  git commit / コミットメッセージ / 文字化け / COMMIT_MSG 時は
+  Write→-F のみ。PowerShell に日本語を埋め込まない。
+globs:
+alwaysApply: false
+---
+
+# PowerShell commit 文字化け回避（Token 節約）
+
+**正本:** `docs/notes/DEV_GIT_AGENT_DELEGATION.md`
+
+## 黄金ルート
+
+1. `git add`（パスは ASCII で可）
+2. **Cursor Write** で `.git/COMMIT_MSG_TMP`（UTF-8 · BOM なし · 日本語 OK）
+3. `git commit -F .git/COMMIT_MSG_TMP`
+4. 表示が怪しくても、ファイル経由なら Git 側は UTF-8。GitHub / `git log` で確認
+
+## 禁止（同じミス）
+
+| やってはいけない | なぜ |
+|------------------|------|
+| Shell の `command` に日本語メッセージ | コンソール CP932 経由で `?` / 文字化け |
+| `Set-Content` / `Out-File -Encoding utf8` | BOM + 既に壊れた文字列を書きがち |
+| `git commit -m "...日本語..."` | PS が再エンコードして壊す |
+| bash `<<'EOF'` heredoc | このワークスペースの Shell は PowerShell |
+
+## 却下した案
+
+- 「`-Encoding utf8` なら大丈夫」→ **ダメ**（BOM + 入力時点で破壊）
+- 「コンソール表示が直れば OK」→ 表示と commit バイトは別問題
