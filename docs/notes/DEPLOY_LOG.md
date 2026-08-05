@@ -1767,18 +1767,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — S-SURFACE 決議 · Hub Locate-core · 検索語彙ゲート（A15） |
 | **change_summary** | hub Locate-core · synonyms/intent 欠落埋め · verify-hub-ia 語彙必須 · scaffold-hub-search-vocab · Surface 契約/DESIGN/討議録 |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free`） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 1/450（2026-08） |
 | **gates** | P1–P7 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `78bb69d`（git push origin main · CF 自動ビルド） |
 | **smoke** | （CF 反映後）`/` 検索面一段上げ · 「仮置き」「PDF記入」でヒット |
 
 ---
@@ -1787,6 +1787,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 001 executed（78bb69d · S-SURFACE · Hub Locate-core · 検索語彙ゲート） |
 | 2026-08-05 | 001 approved（S-SURFACE · Hub Locate-core · 検索語彙ゲート · 提督 Commit&Push） |
 | 2026-07-30 | 001 executed（1185377 · Experience 実装 · commit 文字化け回避） |
 | 2026-07-30 | 001 approved（Experience 実装 · commit 文字化け回避 · 提督 Commit&Push） |
