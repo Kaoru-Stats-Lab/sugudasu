@@ -11,6 +11,25 @@
   },
   "entries": [
     {
+      "id": "info-table-padding-20260805",
+      "date": "2026-08-05",
+      "type": "improve",
+      "audience": "public",
+      "title": "約束・ガイド — 表の余白を広げました",
+      "body": "表の文字が枠に張り付いて窮屈に見えていたので、セル左右に余白を入れました。左揃えのまま読みやすくしています。",
+      "tools": []
+    },
+    {
+      "id": "info-table-padding-internal-20260805",
+      "date": "2026-08-05",
+      "type": "chore",
+      "audience": "internal",
+      "title": "sg-info-prose / guide-table セル左 padding 0 廃止",
+      "body": "specificity で guide-table が prose に負けていた。DESIGN_GUIDELINE_INFO_PAGES 更新 · DEPLOY-20260805-004",
+      "tools": [],
+      "rollup": "info-table-padding-20260805"
+    },
+    {
       "id": "pdf-fill-paper-zoom-20260805",
       "date": "2026-08-05",
       "type": "improve",

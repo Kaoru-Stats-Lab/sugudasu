@@ -579,7 +579,7 @@
             .slice()
             .sort((a, b) => (a.order || 0) - (b.order || 0))
             .forEach((cat) => {
-                parts.push(`<div class="space-y-2" id="compare-${esc(cat.id)}">`);
+                parts.push(`<div class="space-y-3" id="compare-${esc(cat.id)}">`);
                 parts.push(`<h3 class="sg-info-subsection-title">${esc(cat.label)}</h3>`);
                 if (cat.blurb) {
                     parts.push(`<p class="text-sm text-slate-600">${esc(cat.blurb)}</p>`);
@@ -588,16 +588,16 @@
                     parts.push('<div class="overflow-x-auto">');
                     parts.push('<table class="w-full border border-slate-200 rounded-lg overflow-hidden min-w-[360px]">');
                     parts.push('<thead class="bg-slate-50"><tr class="text-left">');
-                    parts.push('<th class="p-2 border-b border-slate-200 w-28"></th>');
-                    parts.push(`<th class="p-2 border-b border-slate-200">${esc(cat.compare.altLabel)}</th>`);
-                    parts.push(`<th class="p-2 border-b border-slate-200 text-violet-900">${esc(cat.compare.oursLabel)}</th>`);
+                    parts.push('<th class="px-3 py-2.5 border-b border-slate-200 w-28"></th>');
+                    parts.push(`<th class="px-3 py-2.5 border-b border-slate-200">${esc(cat.compare.altLabel)}</th>`);
+                    parts.push(`<th class="px-3 py-2.5 border-b border-slate-200 text-violet-900">${esc(cat.compare.oursLabel)}</th>`);
                     parts.push('</tr></thead><tbody class="text-slate-600">');
                     cat.compare.rows.forEach((row, i) => {
                         const border = i < cat.compare.rows.length - 1 ? ' border-b border-slate-100' : '';
                         parts.push('<tr>');
-                        parts.push(`<td class="p-2${border} font-semibold align-top">${esc(row.aspect)}</td>`);
-                        parts.push(`<td class="p-2${border} align-top">${esc(row.alt)}</td>`);
-                        parts.push(`<td class="p-2${border} align-top"><strong>${esc(row.ours)}</strong></td>`);
+                        parts.push(`<td class="px-3 py-2.5${border} font-semibold align-top">${esc(row.aspect)}</td>`);
+                        parts.push(`<td class="px-3 py-2.5${border} align-top">${esc(row.alt)}</td>`);
+                        parts.push(`<td class="px-3 py-2.5${border} align-top"><strong>${esc(row.ours)}</strong></td>`);
                         parts.push('</tr>');
                     });
                     parts.push('</tbody></table></div>');

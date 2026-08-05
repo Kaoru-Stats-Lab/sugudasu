@@ -3,7 +3,7 @@
 **対象**: `/updates` · `/roadmap` · `/statements` · `/privacy` · `/terms` · `/disclaimer`  
 **実装 SSOT**: `assets/sugudasu.css` の `.sg-info-page` · `.sg-info-prose`  
 **親ガイド**: [`DESIGN_GUIDELINE.md`](DESIGN_GUIDELINE.md)（トーン · §1.2.1）  
-**更新**: 2026-07-30（ツールリード文決議との境界を明記）
+**更新**: 2026-08-05（表セル左 padding 0 を廃止 · 列間 gutter）
 
 > **境界（MECE）:** 本ファイルは **情報ページの幅・タイポ・クラス** の正本。  
 > 実務ツールの `sg-tool-lead`（What / light·heavy）は対象外 → [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md)。  
@@ -49,7 +49,7 @@
 | 条文 h3 / 小見出し | 14px bold | slate-900 | `.sg-info-prose h3` |
 | 本文 p / li | 14px | slate-700 | `.sg-info-prose` 継承 |
 | カード内見出し | 14px bold | slate-900 | `.sg-info-card-title` |
-| 表（データ） | 12px | slate-600 本文 · slate-800 ヘッダ | `.sg-info-prose table` |
+| 表（データ） | 12px | slate-600 本文 · slate-800 ヘッダ | `.sg-info-prose table` · セル `0.625rem 0.75rem` · 隣接列 `padding-left: 1rem`（**左 padding 0 禁止**） |
 | キャプション | 11px | slate-500 | `.sg-info-caption` |
 | フッター日付 | 12px | slate-600 | `.sg-info-prose footer` |
 | リンク | 14px semibold | blue-600 | `.sg-info-prose a` |

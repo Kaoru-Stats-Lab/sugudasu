@@ -1101,14 +1101,29 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-size: 0.75rem;
   line-height: 1.5;
   color: #475569;
+  /* 直前の説明文と表のあいだに呼吸を置く */
+  margin: 0.75rem 0 1rem;
 }
 .sg-info-prose table th {
   font-weight: 700;
   color: #1e293b;
   text-align: left;
 }
+/* DECISION: 左 padding 0 は「本文と揃える」意図だったが、多列表では列間が潰れて
+   スキャン不能になる（statements 比較表 · 通信レイヤ）。左揃えは維持し、セル内余白で呼吸させる。
+   ガイド記事の .sg-guide-table-scroll より specificity が勝つため、ここを正本にする。 */
 .sg-info-prose table td,
-.sg-info-prose table th { padding: 0.5rem 0.75rem 0.5rem 0; vertical-align: top; }
+.sg-info-prose table th {
+  padding: 0.625rem 0.75rem;
+  vertical-align: top;
+}
+.sg-info-prose table td + td,
+.sg-info-prose table th + th,
+.sg-info-prose table th + td,
+.sg-info-prose table td + th {
+  /* 列境界の視認（右セル側にわずかに足す · 合計 gutter ≈ 1rem） */
+  padding-left: 1rem;
+}
 .sg-info-prose footer {
   font-size: 0.75rem;
   color: #475569;
@@ -1275,15 +1290,32 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   line-height: 1.55;
   color: #475569;
 }
-.sg-guide-table-scroll th,
-.sg-guide-table-scroll td {
-  padding: 0.625rem 0.75rem;
+/*
+  DECISION: ガイド表は枠付きカード内。左揃えは維持し、セル左右に余白必須。
+  `.sg-info-prose table td`（0,1,2）が `.sg-guide-table-scroll td`（0,1,1）に勝つため、
+  本文経由のセレクタで確実に上書きする（event-day-timeline-recovery 等）。
+*/
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table th,
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table td,
+.sg-guide-table-scroll table th,
+.sg-guide-table-scroll table td {
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: top;
   text-align: left;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table th + th,
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table td + td,
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table th + td,
+.sg-guide-body.sg-info-prose .sg-guide-table-scroll table td + th,
+.sg-guide-table-scroll table th + th,
+.sg-guide-table-scroll table td + td,
+.sg-guide-table-scroll table th + td,
+.sg-guide-table-scroll table td + th {
+  padding-left: 1.25rem;
 }
 .sg-guide-table-scroll tbody tr:nth-child(even) {
   background: #fafbfc;
@@ -1310,9 +1342,21 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
     min-width: 32rem;
     font-size: 12px;
   }
-  .sg-guide-table-scroll th,
-  .sg-guide-table-scroll td {
-    padding: 0.5rem 0.625rem;
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table th,
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table td,
+  .sg-guide-table-scroll table th,
+  .sg-guide-table-scroll table td {
+    padding: 0.625rem 0.85rem;
+  }
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table th + th,
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table td + td,
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table th + td,
+  .sg-guide-body.sg-info-prose .sg-guide-table-scroll table td + th,
+  .sg-guide-table-scroll table th + th,
+  .sg-guide-table-scroll table td + td,
+  .sg-guide-table-scroll table th + td,
+  .sg-guide-table-scroll table td + th {
+    padding-left: 1rem;
   }
   .sg-guide-table-scroll td:first-child,
   .sg-guide-table-scroll th:first-child {
@@ -3697,7 +3741,7 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border, #e2e8f0);
   border-radius: 0.75rem;
   background: #f8fafc;
-  padding: 0.65rem 0.85rem;
+  padding: 0.85rem 1.1rem;
 }
 .sg-copy-disclosure summary:hover {
   color: #0f172a;
@@ -3723,7 +3767,7 @@ body.sg-copy-flash {
   border-radius: 0.25rem;
 }
 .sg-note {
-  padding: 0.65rem 0.85rem;
+  padding: 0.85rem 1.1rem;
   border-radius: 0.75rem;
   background: #f8fafc;
   border: 1px solid #e2e8f0;

@@ -1823,10 +1823,31 @@
 
 ---
 
+## DEPLOY-20260805-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — statements/guides 表セル余白（左 padding 0 廃止）· 同日 core 4回目 · P7 override |
+| **change_summary** | `.sg-info-prose table` セル四辺 padding · ガイド表 specificity 勝ち · compare 表 space-y · DESIGN_GUIDELINE_INFO_PAGES |
+| **local_build** | pending（`npm run release:pages:free`） |
+| **deploy_count_today** | 4（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | pending |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | pending — `/statements#compare` · `/guides/event-day-timeline-recovery` 表余白 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 004 approved（表セル余白 · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 003 executed（bc17a05 · Paper Zoom · Smart Diff roadmap） |
 | 2026-08-05 | 003 approved（Paper Zoom · Smart Diff roadmap · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 002 executed（2e68d0f · S-PILOT-2 pdf-fill Workspace） |
