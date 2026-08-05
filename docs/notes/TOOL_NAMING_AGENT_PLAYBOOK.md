@@ -153,6 +153,7 @@ npm run build:pages
 | A12 | **Tech Adoption** | [`CAPABILITY_INVENTORY.md`](CAPABILITY_INVENTORY.md) を読み、既存クラスタ（PDF · キャンバス秘匿 · Continue Later 等）に入るなら **1行追記 or NA**。許可外ライブラリなら [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md) §6。同型が3つ目なら抽出候補 | `validate:tech-adoption` |
 | A13 | **UIUX 決定論契約** | [`UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) の `UIUX_DECISION_BLOCK` を埋め、`completion_model` / `product_voice` / **`lead_profile`** / `cta_order` を明記。未記入なら実装禁止 | （目視 · Review） |
 | A14 | **ツールリード文** | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · `data/tool-lead-profiles.json` · `tools/{id}.html` に `sg-tool-lead`（What必須 · How禁止 · light/heavy） | （目視） |
+| A15 | **Hub 検索語彙** | `data/search-dictionary/{id}.json` · `synonyms.json` に id · `tool-intent-map.json` に id。手順 [`../prompts/hub-search-vocab-on-new-tool.md`](../prompts/hub-search-vocab-on-new-tool.md) · 欠落時 `npm run scaffold:hub-search-vocab -- --write-prompt` | `validate:hub-ia` |
 
 ### B. 本番反映（必須 · core）
 
@@ -178,7 +179,7 @@ npm run build:pages
 
 ```text
 MECE 新規ツール公開: {id}
-A1–A14: OK / NA（欠番があれば列挙）
+A1–A15: OK / NA（欠番があれば列挙）
 B1–B4: OK · smoke: / と /{id}
 C: 触っていない（roadmap追加なし · guidesなし）
 validate:tool-naming · validate:tech-adoption · statements · ogp · build:pages: exit 0

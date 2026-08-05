@@ -555,6 +555,34 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 .sg-hub-hero {
   text-align: left;
 }
+/* S-SURFACE Locate-core: 検索だけ Workspace 級（余白・線・ΔL · 多層影なし） */
+.sg-hub-locate-core {
+  max-width: 40rem;
+  margin-top: 0.25rem;
+  padding: 1rem 1.15rem 1.1rem;
+  background: #ffffff;
+  border: 1px solid #94a3b8;
+  border-radius: 0.75rem;
+}
+.sg-hub-locate-core__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #475569;
+  text-transform: none;
+}
+.sg-hub-locate-core__meta {
+  margin: 0.75rem 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #64748b;
+}
+.sg-hub-locate-core__meta a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .sg-hub-trust {
   display: inline-block;
   margin-top: 0.25rem;
@@ -565,6 +593,12 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   border: 1px solid var(--sg-border);
   border-radius: 0.5rem;
   background: #f8fafc;
+}
+.sg-hub-trust--inline {
+  display: inline-block;
+  margin: 0 0 0 0.5rem;
+  padding: 0.2rem 0.5rem;
+  vertical-align: middle;
 }
 .sg-hub-callout--warn {
   border-color: #fde68a;
@@ -790,21 +824,25 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 }
 .sg-hub-search-label {
   display: block;
-  max-width: 36rem;
-  margin-top: 0.5rem;
+  max-width: none;
+  margin-top: 0;
 }
 .sg-hub-search {
   width: 100%;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #64748b;
   border-radius: 0.5rem;
-  padding: 0.65rem 0.85rem;
-  font-size: 0.9375rem;
+  padding: 0.75rem 0.95rem;
+  font-size: 1rem;
   background: #fff;
   color: #0f172a;
 }
 .sg-hub-search:focus {
-  outline: 2px solid #93c5fd;
+  outline: 2px solid #3b82f6;
   outline-offset: 1px;
+  border-color: #3b82f6;
+}
+.sg-hub-locate-core .sg-hub-search-examples {
+  margin-top: 0.65rem;
 }
 .sg-hub-chips {
   display: flex;

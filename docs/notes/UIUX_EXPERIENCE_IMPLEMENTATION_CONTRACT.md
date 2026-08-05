@@ -1,9 +1,9 @@
 # SUGUDASU UIUX Experience 実装契約（決定論）
 
-**更新:** 2026-07-30  
+**更新:** 2026-08-05  
 **目的:** 新規プロダクト実装時に、どの Agent でも同じ UI/CTA 配列を再現する。  
 **親:** `UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md`（役員会決議）  
-**根拠:** `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · `uiux-experience-research/SYNTHESIS.md` · CASE-2026-007
+**根拠:** `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · `uiux-experience-research/SYNTHESIS.md` · `SYNTHESIS_SURFACE_HIERARCHY.md` · CASE-2026-007
 
 > これは **実装契約（HOW）** であり、**憲法（WHAT / identity）ではない。**  
 > Identity の正本は Brand Constitution · Commentary · Case Law（E-CONST · 2026-07-30）。  
@@ -109,6 +109,53 @@
 | 長処理は busy / 進捗を見せる | 完了だけ突然表示 |
 
 数値 ms の未達は **下手**であり **違憲ではない**。機械ゲートは「長処理なのに busy なし」など観測可能なものに限る（必須ゲートは段階導入）。
+
+### 2.4 Surface / Visual Hierarchy（S-SURFACE · 2026-08-05）
+
+**性質:** HOW（実装契約）。Brand / Case に昇格しない（E-CONST · S-Q3）。  
+**討議:** `UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md` · 合成 `uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md`  
+**見た目の目安:** `DESIGN_GUIDELINE.md` §2.3.1
+
+#### 認知モード（Orient / Locate / Operate / Confirm）
+
+| モード | Hub | Product |
+|--------|-----|---------|
+| Orient | 任意 | 任意（※ `sg-tool-lead` What は §4.1 で必須 · 箱化は任意） |
+| Locate | **必須** | 任意 |
+| Operate | **禁止** | **必須** |
+| Confirm | **禁止** | **必須** |
+
+#### Hub（Locate）
+
+| 層 | 役割 | Surface |
+|----|------|---------|
+| 検索 | Locate-**core** | **一段上げ**（Workspace 級）。IA は検索ファースト維持 |
+| カテゴリ / 最近 | Locate-**assist** | 検索と同列にしない |
+| ツールカード | 一覧 | **同型維持**（カード間ヒエラルキー禁止 · 廃止禁止） |
+
+#### Product（Operate）
+
+| 規則 | 内容 |
+|------|------|
+| Workspace | **1画面に原則1つ**（触る塊） |
+| リード What | 折らない（§4.1） |
+| 長い使い方 / How 箱 | `product_voice` に応じ折る（方針: formal=初回開、fast/visual/ephemeral=常に折る＋？）。実装は折る＋？からパイロット |
+| 境界の作り方 | 余白 · 線 · 背景Δ。**多層影禁止**（S-NO-ELEV） |
+
+#### 禁止（Agent）
+
+- Primary / 色トークンの一括再定義（S-NO-COLOR · 階層の後）
+- Hub カード廃止 · カード間の見た目ヒエラルキー付け
+- Hub / 全ツール Surface 一括改修
+- Material 風多段 Elevation を階層の主手段にする
+- Hub を作業机化（Operate/Confirm を Hub に置く）
+
+#### パイロット（S-PILOT）
+
+許可範囲は **Hub 検索面の一段上げのみ**（カード・色トークン・カテゴリアコーディオンは触らない）。  
+**実装済（2026-08-05）:** `tools/hub.html` の `.sg-hub-locate-core` · `assets/sugudasu.css`。横展開はパイロット結果を判断ログに残してから票を取る。
+
+**語彙ゲート（検索ファースト必須）:** Hub カード全 toolId に `search-dictionary` · `synonyms` · `tool-intent-map` が無いと `validate:hub-ia` が fail。手順: `docs/prompts/hub-search-vocab-on-new-tool.md` · Playbook §1.5 A15。
 
 ---
 

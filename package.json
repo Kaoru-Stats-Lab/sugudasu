@@ -24,6 +24,7 @@
     "validate:statements-product": "node scripts/verify-statements-product.mjs",
     "validate:hub-ia": "node scripts/build-hub-search-bundle.mjs && node scripts/render-hub-cards.mjs && node scripts/verify-hub-ia.mjs",
     "build:hub-search": "node scripts/build-hub-search-bundle.mjs",
+    "scaffold:hub-search-vocab": "node scripts/scaffold-hub-search-vocab.mjs",
     "sync:statements-product-date": "node scripts/verify-statements-product.mjs --sync-date",
     "sync:statements-product-names": "node scripts/sync-statements-product-names.mjs",
     "validate:adsense": "node scripts/verify-adsense-pages.mjs",

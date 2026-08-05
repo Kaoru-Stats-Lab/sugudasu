@@ -4,9 +4,9 @@
 **Sync 層（別ライン）**: [`DESIGN_GUIDELINE_SYNC.md`](DESIGN_GUIDELINE_SYNC.md) — `sync.sugudasu.com` · タイムライン共有  
 **情報ページ（法務·約束）**: [`DESIGN_GUIDELINE_INFO_PAGES.md`](DESIGN_GUIDELINE_INFO_PAGES.md) — statements · privacy 等（**tool lead 対象外**）  
 **Schedule Notion Like（参照 · Agent 必須）**: [`DESIGN_GUIDELINE_NOTION_LIKE.md`](DESIGN_GUIDELINE_NOTION_LIKE.md) + **色マップ SSOT** [`notes/DESIGN_NOTION_SUGUDASU_ADAPT.md`](notes/DESIGN_NOTION_SUGUDASU_ADAPT.md)（`.cursor/rules/sugudasu-design-schedule.mdc`）  
-**ツールリード文**: [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · Experience 契約 [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §4.1  
+**ツールリード文**: [`notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · Experience 契約 [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §4.1 · Surface [`同契約 §2.4`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) / 本ガイド §2.3.1  
 **読者**: Claude / 人間の実装者  
-**更新**: 2026-07-30（§1.2.1 をリード文決議 · Playbook と整合）
+**更新**: 2026-08-05（§2.3.1 Surface / VH · S-SURFACE）
 
 ---
 
@@ -194,6 +194,19 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 | カード影 | `shadow-sm` + `border border-slate-200`（影だけに頼らない） |
 | 入力角丸 | `rounded-lg` |
 | セクション間 | `space-y-5` または `gap-6` |
+
+#### 2.3.1 Surface / 視覚階層（S-SURFACE · 2026-08-05）
+
+**契約正本:** [`notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) §2.4（HOW · 憲法ではない）。
+
+| 原則 | 内容 |
+|------|------|
+| 階層の手段 | **余白 · 境界線 · 背景の明度差（ΔL）**。多層ドロップシャドウを主手段にしない |
+| Hub | 検索だけ一段上げ（Locate-core）。カテゴリ/最近は補助。**カードは同型** |
+| Product | Workspace（触る面）は原則1つ。説明の長い箱はリード What の外で折る方針 |
+| 禁止 | Primary 一括再定義 · カード廃止 · Hub/全ツール一括 Surface · Hub の作業机化 |
+
+実装パイロットは **Hub 検索面のみ**（契約 §2.4 S-PILOT）。
 
 ### 2.5 Core UI Refresh（2026-07）
 

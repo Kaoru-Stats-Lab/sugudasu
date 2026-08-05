@@ -16,7 +16,7 @@
 | **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
 | 共通ヘッダー未表示 | `docs/notes/CHROME_HEADER_GUARDRAILS.md` |
 | UI / ボタン / 印刷 · **続きを開く** | `docs/DESIGN_GUIDELINE.md`（§3.1b）· 正本 `docs/notes/CONTINUE_LATER_SPEC.md` |
-| **Experience Implementation Review**（旧 Constitution Review · E-CONST） | アジェンダ `docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md` · **HOW契約** `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` · 監査 `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · リード文 `TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` · P0/MECE/判断ログ · マルチAI RUNBOOK — **新体験憲法は作らない**（Identity は Brand/Case）· CTA色の全ツール一括統一は役員会決議前禁止 |
+| **Experience Implementation Review**（旧 Constitution Review · E-CONST） | アジェンダ `docs/notes/UIUX_EXPERIENCE_CONSTITUTION_AGENDA.md` · **HOW契約** `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`（§2.4 Surface）· **Surface** Hub Locate-core 実装済 · **Hub検索語彙** `docs/prompts/hub-search-vocab-on-new-tool.md`（A15 · validate:hub-ia）· 監査 `UIUX_EXPERIENCE_AUDIT_MATRIX.md` · リード文 `TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` · P0/MECE/判断ログ · マルチAI RUNBOOK — **新体験憲法は作らない** · CTA色一括は役員会決議前禁止 |
 | **技術採用 · 共通化（重複能力）** | 棚卸し `docs/notes/CAPABILITY_INVENTORY.md` · 契約 `docs/notes/TECH_ADOPTION_NOTE.md` §0 · 機械 `data/tech-shared-contracts.json` · `npm run validate:tech-adoption` · Skill `.cursor/skills/sugudasu-tech-adoption/` |
 | **ユーザー向け文言 · 見せる/見せない** | `docs/notes/USER_FACING_COPY_VISIBILITY.md`（`docs/` パス · slug ラベル禁止） |
 | **更新履歴 · ロードマップ（粒度）** | `docs/notes/DEV_TRANSPARENCY_RULES.md` · `data/changelog.json` · `data/roadmap.json` |

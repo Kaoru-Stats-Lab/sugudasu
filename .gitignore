@@ -8,3 +8,4 @@ assets/tw-build.css
 node_modules/
 .ops/
 docs/private/L3-press.md
+docs/prompts/generated/hub-search-vocab-gap-*.md

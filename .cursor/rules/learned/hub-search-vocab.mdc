@@ -1,0 +1,28 @@
+---
+description: >-
+  新規ツール / Hub 検索 / 語彙 / synonyms / intent / search-dictionary
+  公開時は A15 · validate:hub-ia · scaffold:hub-search-vocab
+globs:
+alwaysApply: false
+---
+
+# Hub 検索語彙（新規ツール必須）
+
+**正本:** `docs/prompts/hub-search-vocab-on-new-tool.md`  
+**Playbook:** §1.5 **A15**
+
+## 必須3点
+
+1. `data/search-dictionary/{id}.json`（v2 プロンプト）
+2. `data/synonyms.json` に toolId
+3. `data/tool-intent-map.json` に toolId
+
+## ゲート
+
+`npm run validate:hub-ia` — 欠落で fail  
+欠落時: `npm run scaffold:hub-search-vocab -- --write-prompt`
+
+## 却下
+
+- 「カードだけ先に出す」
+- Embedding で辞書不要と言う

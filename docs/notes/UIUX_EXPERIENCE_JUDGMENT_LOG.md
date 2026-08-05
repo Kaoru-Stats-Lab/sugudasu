@@ -1,6 +1,6 @@
 # UIUX Experience Judgment Log
 
-**更新:** 2026-07-30  
+**更新:** 2026-08-05  
 **目的:** Experience Review の思想・背景・証拠・判断を時系列で残し、後で同じ基準に立ち戻れるようにする。  
 **扱い:** ここは運用ログ（HOW/WHY）。憲法判断（Judicial Decision）は確定後に `docs/legal/CASE_LAW.md` へ昇格。
 
@@ -500,6 +500,7 @@
 | 6 | E-NAME | 「Copy-First」呼称 | ブランド · CASE | **Closed** — スローガン取り下げ · 意味維持 · 差別化新語は持ち越し · [`UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md) |
 | 7 | E-SUBARU | スグダス誤訪問注意の露出 | ブランドトーン | **Defer** |
 | 8 | E-CONST | Experience 憲法条文化 | — | **Closed 2026-07-30（H · 新憲法なし · HOW維持）** |
+| 9 | **S-SURFACE** | Visual Hierarchy / Surface（のっぺり） | HOW 契約 · DESIGN | **Closed 2026-08-05** · 討議 [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · 契約 §2.4 · **パイロット（Hub検索）残** |
 
 ### 議決不要（実装・運用）
 
@@ -645,4 +646,34 @@
 
 - ~~E-SLA~~ → **Closed**（上記）
 - 呼び出し側の冗長 `triggerCopyFlash()` 行の任意掃除は低優先
+
+---
+
+## 2026-08-05 — S-SURFACE 採択（Visual Hierarchy · HOW）
+
+### 背景
+
+- Hub / ツールののっぺり（境界知覚不足）
+- Gemini / ChatGPT 材料: Q1 の「C」同名異物 · Q2 種別割当逆 · モード表衝突
+
+### 判断（確定）
+
+1. **S-Q3** Surface は HOW（契約 §2.4 · DESIGN §2.3.1）。憲法に上げない
+2. **S-NO-*** 色一括・カード廃止・多層影はしない
+3. **Q1-A＋** 検索ファースト維持 · 検索だけ一段上げ · カード同型 · Q1-G Defer · Q1-C 同列は不採択
+4. **Q2** 方針は split-C（formal 初回 / fast·visual 折る）。実装は折る＋？から
+5. **モード** Hub: Orient任意 · Locate必須 · Operate/Confirm禁止。Product: Operate/Confirm必須 · Locate任意
+6. **S-PILOT** Hub 検索面のみ。尖り6件はすべて Reject
+
+### 実装物
+
+- 討議録（決議）: `UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`
+- 契約 §2.4 · DESIGN §2.3.1
+
+### 次アクション
+
+- ~~Hub 検索一段上げのパイロット実装~~ → **実装済 2026-08-05**（`sg-hub-locate-core`）
+- 語彙ゲート: Playbook A15 · `verify-hub-ia` synonyms/intent 必須 · `scaffold:hub-search-vocab`
+- パイロット結果を本ログへ → 横展開票（ツール Orient 折り等）
+- Q1-G（文脈アコーディオン）は Hub IA ADR 改訂が先（本議題外）
 

@@ -620,6 +620,51 @@
         "reverse"
       ],
       "weight": 90
+    },
+    {
+      "keyword": "コピーを仮置きしたい",
+      "toolIds": ["clip-stash"],
+      "weight": 100
+    },
+    {
+      "keyword": "クリップボードを退避",
+      "toolIds": ["clip-stash"],
+      "weight": 100
+    },
+    {
+      "keyword": "複数のコピーを保持",
+      "toolIds": ["clip-stash"],
+      "weight": 90
+    },
+    {
+      "keyword": "PDFに文字を書きたい",
+      "toolIds": ["pdf-fill"],
+      "weight": 100
+    },
+    {
+      "keyword": "提出用PDFに記入",
+      "toolIds": ["pdf-fill"],
+      "weight": 100
+    },
+    {
+      "keyword": "PDFに印鑑を貼る",
+      "toolIds": ["pdf-fill"],
+      "weight": 90
+    },
+    {
+      "keyword": "説明のために手書きしたい",
+      "toolIds": ["uragami"],
+      "weight": 100
+    },
+    {
+      "keyword": "隣の人に図で説明",
+      "toolIds": ["uragami"],
+      "weight": 100
+    },
+    {
+      "keyword": "デジタル裏紙",
+      "toolIds": ["uragami"],
+      "weight": 90
     }
   ]
 }

@@ -4,13 +4,13 @@
 **Identity 正本:** Brand Constitution · Case Law · 存在様式  
 **HOW 正本:** `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` · `DESIGN_GUIDELINE.md`
 
-**更新:** 2026-07-29  
-**状態:** 会議前アジェンダ（実装統一は会議後）  
+**更新:** 2026-08-05（§3.5 Surface / VH **決議済** · S-PILOT 残）  
+**状態:** v1 決議済み · **S-SURFACE Closed**（Hub 検索パイロットのみ実装許可）
 **監査表:** [`UIUX_EXPERIENCE_AUDIT_MATRIX.md`](UIUX_EXPERIENCE_AUDIT_MATRIX.md)  
 **決定論契約:** [`UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md)  
 **判断ログ:** [`UIUX_EXPERIENCE_JUDGMENT_LOG.md`](UIUX_EXPERIENCE_JUDGMENT_LOG.md)  
-**マルチAI前段:** [`../prompts/uiux-experience-constitution-RUNBOOK.md`](../prompts/uiux-experience-constitution-RUNBOOK.md) · 合成 [`uiux-experience-research/SYNTHESIS.md`](uiux-experience-research/SYNTHESIS.md)  
-**関連:** [`../DESIGN_GUIDELINE.md`](../DESIGN_GUIDELINE.md) §3.2 · §3.8 · [`CONTINUE_LATER_SPEC.md`](CONTINUE_LATER_SPEC.md) §8.1 · CASE-2026-007 · [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md)
+**Surface 議決票:** [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md)  
+**マルチAI前段:** [`../prompts/uiux-experience-constitution-RUNBOOK.md`](../prompts/uiux-experience-constitution-RUNBOOK.md) · 合成 [`uiux-experience-research/SYNTHESIS.md`](uiux-experience-research/SYNTHESIS.md) · Surface [`SYNTHESIS_SURFACE_HIERARCHY.md`](uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md)
 
 > Agent: **CTA・コピー演出・DnD・「サクサク」の全面統一は、本 Review の決議前に勝手に実装しない。**  
 > 「延長で寄せる」だけのパッチは禁止。色の意味・成功の伝え方・仕事の終わり方を先に合意する。  
@@ -199,8 +199,22 @@ Copy-First / L1-L2-L3 / Calm UX
 | 6 | ツール `sg-tool-lead` | **決議済**（L1–L6） |
 | 7 | リード vs FAQ の差別化置き場 | **決議済** |
 | 8 | スグダス誤訪問注意 | **Defer** → **E-SUBARU** |
+| 9 | **Visual Hierarchy / Surface（のっぺり）** | **決議済 S-SURFACE** — [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · 契約 §2.4 · DESIGN §2.3.1 · 実装は Hub パイロットのみ |
 
-**未決バックログ正本:** [`UIUX_EXPERIENCE_JUDGMENT_LOG.md`](UIUX_EXPERIENCE_JUDGMENT_LOG.md)（2026-07-30 — 役員会未決バックログ）· ID: E-BLACK … E-CONST
+**未決バックログ正本:** [`UIUX_EXPERIENCE_JUDGMENT_LOG.md`](UIUX_EXPERIENCE_JUDGMENT_LOG.md) · ID: E-* · S-*（S-SURFACE **Closed** · パイロット残）
+
+---
+
+## 3.5 Surface / VH ウェーブ（2026-08-05 · **決議済**）
+
+**採択要約:** HOW のみ · 検索ファースト＋検索一段上げ · カード同型 · Hub で Operate 禁止 · Orient 折りは product_voice 方針 · **S-PILOT=Hub 検索のみ**。  
+**議決票:** [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md)
+
+| Keep | Defer / 後段 |
+|------|----------------|
+| S-Q3 · S-NO-* · Q1-A＋ · モード表 · S-PILOT(Hub) | Q1-G（要 Hub IA ADR）· 色トークン · 全ツール Orient 実装 · 横展開 |
+
+**Agent:** 一括 Surface / 色 / カード廃止は **引き続き禁止**。許可は Hub 検索一段上げのみ。
 
 ---
 
@@ -236,12 +250,16 @@ Copy-First / L1-L2-L3 / Calm UX
 - 実装: [`../../assets/sg-copy-feedback.js`](../../assets/sg-copy-feedback.js) · [`../../assets/sugudasu.css`](../../assets/sugudasu.css)
 - 監査: [`UIUX_EXPERIENCE_AUDIT_MATRIX.md`](UIUX_EXPERIENCE_AUDIT_MATRIX.md)
 - マルチAI: [`../prompts/uiux-experience-constitution-RUNBOOK.md`](../prompts/uiux-experience-constitution-RUNBOOK.md) · [`uiux-experience-research/SYNTHESIS.md`](uiux-experience-research/SYNTHESIS.md)
+- Surface/VH: [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · [`uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md`](uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md)
 
 ---
 
 ## 6. Agent 禁止（Review 進行中）
 
 - CTA色・コピー成功演出・DnD の **全ツール一括統一 PR**
+- Surface / 背景・カード見た目の **Hub・全ツール一括**（S-SURFACE 後も禁止 · **許可は Hub 検索一段上げのみ**）
+- Primary 色一括変更 · カードUI廃止を「のっぺり解消」として先走る PR
+- Q1-G タスク文脈アコーディオンの先走り（Hub IA ADR 未改訂）
 - 「Copied!」英語への先祖返り
 - Platform SDK / 巨大共通化の先作り
 - 憲法本文の勝手な改正（判例候補は `docs/legal/logs/`）

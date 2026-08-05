@@ -1,6 +1,6 @@
 # SUGUDASU 統合 Backlog（会話全量反映）
 
-更新: 2026-07-30（§6b Experience · リード文決議 · デザインガイド境界を MECE 更新）
+更新: 2026-08-05（§6b Surface / VH 議題オープン）
 対象: `C:\asl_dev\sugudasu`
 
 ---
@@ -1272,11 +1272,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 ---
 
-## 6b) Experience Implementation Review（2026-07-30 時点）
+## 6b) Experience Implementation Review（2026-08-05 時点）
 
 **旧称:** Experience Constitution Review（E-CONST で改称 — **新体験憲法は作らない**）
 
-**最終決定は役員会。** CTA **色**の全ツール一括寄せは未決議のまま禁止。一方で次は **採択・実装済み**。
+**最終決定は役員会 / 経営会議。** CTA **色**の全ツール一括寄せ、および **Surface / カード見た目の一括**は未決議のまま禁止。一方で次は **採択・実装済み**。
 
 ### 決議・実装済み
 
@@ -1302,8 +1302,10 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 6 | E-NAME | Copy-First 呼称 — **Closed**（取り下げ）· 新語持ち越し · [`notes/UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_NAME_BOARD_DISCUSSION.md) |
 | 7 | E-SUBARU | スグダス注意（Defer） |
 | 8 | E-CONST | 体験憲法昇格 — **Closed H** · [`notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md) |
+| 9 | **S-SURFACE** | Visual Hierarchy / のっぺり — **Closed** · Locate-core 実装 · 語彙ゲート A15 · [`notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · [`prompts/hub-search-vocab-on-new-tool.md`](prompts/hub-search-vocab-on-new-tool.md) |
 
 - FAQ とリードの断定度横断監査（議決不要 · 運用）
+- Surface: 色一括・カード廃止・Hub/全ツール一括見た目変更は **禁止**。許可は **Hub 検索一段上げ（S-PILOT）のみ**
 
 ### ドキュメント地図（MECE · Agent）
 
@@ -1324,8 +1326,9 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - P0実行チェック: [`notes/UIUX_EXPERIENCE_P0_CHECKLIST.md`](notes/UIUX_EXPERIENCE_P0_CHECKLIST.md)
 - MECE台帳: [`notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md`](notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md)
 - 判断ログ: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)
+- Surface 討議録: [`notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md)
 - リード討議録: [`notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md)
-- マルチAI前段: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md)
+- マルチAI前段: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md) · Surface [`SYNTHESIS_SURFACE_HIERARCHY.md`](notes/uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md) · prompts [`uiux-surface-hierarchy-BRIEF.md`](prompts/uiux-surface-hierarchy-BRIEF.md)
 - Rule: `.cursor/rules/sugudasu-tool-lead-copy.mdc`
 
 ---

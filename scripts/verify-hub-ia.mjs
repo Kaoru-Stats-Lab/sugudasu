@@ -149,6 +149,27 @@ function main() {
     if (!cardToolIds.has(id)) fail(`hub-cards に inNav ツールが無い: ${id}`);
   }
 
+  // DECISION: 検索ファースト（S-SURFACE）。Hub カード全 id に synonyms / intent が無いと語彙が増えない。
+  {
+    const intentMap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-intent-map.json'), 'utf8'));
+    const synCover = new Set();
+    for (const e of synonyms.entries || []) {
+      for (const tid of e.toolIds || []) synCover.add(tid);
+    }
+    const intentCover = new Set();
+    for (const e of intentMap.entries || []) {
+      for (const tid of e.toolIds || []) intentCover.add(tid);
+    }
+    for (const id of cardToolIds) {
+      if (!synCover.has(id)) {
+        fail(`synonyms 未カバー（Hub）: ${id} — Playbook §1.5 A15 · npm run scaffold:hub-search-vocab -- --write-prompt`);
+      }
+      if (!intentCover.has(id)) {
+        fail(`tool-intent-map 未カバー（Hub）: ${id} — Playbook §1.5 A15`);
+      }
+    }
+  }
+
   for (const [from, tos] of Object.entries(relations.relations || {})) {
     if (!registry.tools[from]) fail(`relations: 未知 from=${from}`);
     for (const to of tos) {
@@ -185,6 +206,7 @@ function main() {
   if (!hubHtml.includes('sg-hub-search-panel')) fail('hub.html: 検索結果パネルが無い');
   if (!hubHtml.includes('sg-hub-popular-grid')) fail('hub.html: 人気グリッドが無い');
   if (!hubHtml.includes('sg-hub-search-example-chips')) fail('hub.html: 検索例チップ容器が無い');
+  if (!hubHtml.includes('sg-hub-locate-core')) fail('hub.html: S-SURFACE Locate-core（sg-hub-locate-core）が無い');
   if (!hubHtml.includes('sg-hub-empty-recommend')) fail('hub.html: 0件おすすめ容器が無い');
   if (!Array.isArray(hubConfig.searchExampleChips) || !hubConfig.searchExampleChips.length) {
     fail('hub-config.searchExampleChips が空');
