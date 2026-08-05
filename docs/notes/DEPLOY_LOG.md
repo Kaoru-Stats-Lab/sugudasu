@@ -1827,19 +1827,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — statements/guides 表セル余白（左 padding 0 廃止）· 同日 core 4回目 · P7 override |
 | **change_summary** | `.sg-info-prose table` セル四辺 padding · ガイド表 specificity 勝ち · compare 表 space-y · DESIGN_GUIDELINE_INFO_PAGES |
-| **local_build** | pending（`npm run release:pages:free`） |
+| **local_build** | `pass`（`npm run release:pages:free`） |
 | **deploy_count_today** | 4（**P7 override** · 提督明示 Commit&Push） |
-| **pages_build_budget_after** | pending |
+| **pages_build_budget_after** | 4/450（2026-08） |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | pending |
-| **smoke** | pending — `/statements#compare` · `/guides/event-day-timeline-recovery` 表余白 |
+| **cf_deployment_id** | `adf59a9`（git push origin main · CF 自動ビルド） |
+| **smoke** | （CF 反映後）`/statements#compare` · `/guides/event-day-timeline-recovery` 表余白 |
 
 ---
 
@@ -1847,6 +1847,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 004 executed（adf59a9 · 表セル余白） |
 | 2026-08-05 | 004 approved（表セル余白 · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 003 executed（bc17a05 · Paper Zoom · Smart Diff roadmap） |
 | 2026-08-05 | 003 approved（Paper Zoom · Smart Diff roadmap · P7 override · 提督 Commit&Push） |
