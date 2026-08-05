@@ -600,8 +600,10 @@
     <p id="pdff-done" class="hidden text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2" role="status">提出用PDFが完成しました</p>
 
     <section id="pdff-workspace" class="hidden space-y-4">
-        <section class="sg-card p-5 space-y-4">
-            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">記入ツール</h2>
+        <!-- S-PILOT-2: 記入ツール+キャンバスを唯一の Workspace。他は Section 級。 -->
+        <div class="sg-surface-workspace space-y-4" data-sg-surface="workspace">
+            <p class="sg-surface-workspace__eyebrow">作業</p>
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2">記入ツール</h2>
             <div class="sg-segment sg-segment--cols-5 sg-segment--notion-soft" role="tablist" aria-label="記入ツール">
                 <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="text" aria-selected="true">文字</button>
                 <button type="button" role="tab" class="sg-segment__btn" data-pdff-mode="datetime" aria-selected="false">日時</button>
@@ -649,21 +651,21 @@
                 <button type="button" id="pdff-undo" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 ml-auto">元に戻す</button>
                 <button type="button" id="pdff-clear" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">クリア</button>
             </div>
-        </section>
 
-        <div class="pdff-work-layout">
-            <nav id="pdff-thumbs" class="pdff-thumbs" aria-label="ページ一覧"></nav>
-            <div class="pdff-stage">
-                <div id="pdff-page-wrap" class="pdff-page-wrap" aria-label="PDFページ">
-                    <canvas id="pdff-page-canvas"></canvas>
-                    <div id="pdff-grid" class="pdff-grid" aria-hidden="true"></div>
-                    <canvas id="pdff-guide-canvas" aria-hidden="true"></canvas>
-                    <div id="pdff-overlay-layer"></div>
+            <div class="pdff-work-layout">
+                <nav id="pdff-thumbs" class="pdff-thumbs" aria-label="ページ一覧"></nav>
+                <div class="pdff-stage">
+                    <div id="pdff-page-wrap" class="pdff-page-wrap" aria-label="PDFページ">
+                        <canvas id="pdff-page-canvas"></canvas>
+                        <div id="pdff-grid" class="pdff-grid" aria-hidden="true"></div>
+                        <canvas id="pdff-guide-canvas" aria-hidden="true"></canvas>
+                        <div id="pdff-overlay-layer"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <section class="sg-card p-5 space-y-4">
+        <section class="sg-card sg-surface-section p-5 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">提出用PDFを完成</h2>
             <p class="text-[11px] text-slate-600 leading-relaxed">編集したページだけ見たまま固定し、触っていないページは元のPDFのまま残します。</p>
             <div class="grid sm:grid-cols-2 gap-3">

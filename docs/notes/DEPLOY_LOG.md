@@ -1783,10 +1783,31 @@
 
 ---
 
+## DEPLOY-20260805-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — S-PILOT-2 pdf-fill Workspace 仮説検証 · 同日 core 2回目 · P7 override |
+| **change_summary** | `sg-surface-workspace` / `sg-surface-section` · pdf-fill 記入+キャンバス包み · Surface 契約/DESIGN/討議録追記 |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`/pdf-fill` 記入面が一段強く見えるか |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 002 approved（S-PILOT-2 pdf-fill Workspace · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 001 executed（78bb69d · S-SURFACE · Hub Locate-core · 検索語彙ゲート） |
 | 2026-08-05 | 001 approved（S-SURFACE · Hub Locate-core · 検索語彙ゲート · 提督 Commit&Push） |
 | 2026-07-30 | 001 executed（1185377 · Experience 実装 · commit 文字化け回避） |

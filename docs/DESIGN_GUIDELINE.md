@@ -203,10 +203,10 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 |------|------|
 | 階層の手段 | **余白 · 境界線 · 背景の明度差（ΔL）**。多層ドロップシャドウを主手段にしない |
 | Hub | 検索だけ一段上げ（Locate-core）。カテゴリ/最近は補助。**カードは同型** |
-| Product | Workspace（触る面）は原則1つ。説明の長い箱はリード What の外で折る方針 |
+| Product | Workspace（触る面）は原則1つ。クラス: `.sg-surface-workspace` / 非作業: `.sg-surface-section` |
 | 禁止 | Primary 一括再定義 · カード廃止 · Hub/全ツール一括 Surface · Hub の作業机化 |
 
-実装パイロットは **Hub 検索面のみ**（契約 §2.4 S-PILOT）。
+パイロット: Hub Locate-core（済）· **pdf-fill S-PILOT-2（仮説検証）**。
 
 ### 2.5 Core UI Refresh（2026-07）
 

@@ -674,6 +674,24 @@
 
 - ~~Hub 検索一段上げのパイロット実装~~ → **実装済 2026-08-05**（`sg-hub-locate-core`）
 - 語彙ゲート: Playbook A15 · `verify-hub-ia` synonyms/intent 必須 · `scaffold:hub-search-vocab`
-- パイロット結果を本ログへ → 横展開票（ツール Orient 折り等）
+- ~~パイロット結果を本ログへ → 横展開票（ツール Orient 折り等）~~
+- **S-PILOT-2（2026-08-05）:** `pdf-fill` で記入+キャンバスを `.sg-surface-workspace`、完成カードを `.sg-surface-section`。提督判定待ち（横展開は判定後）
 - Q1-G（文脈アコーディオン）は Hub IA ADR 改訂が先（本議題外）
+
+---
+
+## 2026-08-05 — S-PILOT-2 着手（pdf-fill Workspace 仮説）
+
+### 仮説
+
+同型白カード連続だと「どこで書くか」が立たない。記入ツール+キャンバスを一段上げ、完成フォームを一段落とせば Operate が先に見える。
+
+### 実装
+
+- `assets/sugudasu.css`: `.sg-surface-workspace` / `.sg-surface-section`
+- `tools/pdf-fill.html`: ツールバーとキャンバスを同一 Workspace に包む
+
+### 判定待ち（提督）
+
+`/pdf-fill` で PDF を開いたあと、記入面が他ブロックより明確に「作業場所」に見えるか。Yes なら横展開票、No/微妙なら差の量を調整。
 

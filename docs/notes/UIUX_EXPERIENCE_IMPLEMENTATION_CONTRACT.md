@@ -152,8 +152,12 @@
 
 #### パイロット（S-PILOT）
 
-許可範囲は **Hub 検索面の一段上げのみ**（カード・色トークン・カテゴリアコーディオンは触らない）。  
-**実装済（2026-08-05）:** `tools/hub.html` の `.sg-hub-locate-core` · `assets/sugudasu.css`。横展開はパイロット結果を判断ログに残してから票を取る。
+| ID | 範囲 | 状態 |
+|----|------|------|
+| S-PILOT | Hub 検索（`.sg-hub-locate-core`） | **実装済** |
+| **S-PILOT-2** | `pdf-fill` 記入ツール+キャンバス（`.sg-surface-workspace`）· 完成カードは `.sg-surface-section` | **仮説検証中** |
+
+共通クラス: `.sg-surface-workspace` / `.sg-surface-section`（DESIGN §2.3.1）。色一括・全ツール横展開は禁止。
 
 **語彙ゲート（検索ファースト必須）:** Hub カード全 toolId に `search-dictionary` · `synonyms` · `tool-intent-map` が無いと `validate:hub-ia` が fail。手順: `docs/prompts/hub-search-vocab-on-new-tool.md` · Playbook §1.5 A15。
 
