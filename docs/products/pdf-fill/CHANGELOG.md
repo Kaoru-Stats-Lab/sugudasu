@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-08-05 — Paper Zoom（S-ZOOM）
+
+### 種別
+
+UX · ADR
+
+### 要約
+
+**Ctrl/Meta+wheel = 表示拡大**（机の中心基準）· Space/中ボタン Pan · 机ダブルクリックでリセット。旧 Ctrl+wheel の文字サイズは **Alt+wheel**（および −＋）へ。ADR-032 · ADR-019/023 改訂。
+
+### 影響
+
+- `assets/pdf-fill-app.js` · `tools/pdf-fill.html` · `decisions.md` · 役員会 [`UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](../../notes/UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md)
+
+---
+
 ## 2026-07-29 — 座標一意性 · sticky 書体（WYSIWYG）
 
 ### 種別

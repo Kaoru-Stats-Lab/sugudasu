@@ -124,6 +124,18 @@ let activeGuides = { guidesX: [], guidesY: [] };
 let pageCssW = 0;
 let pageCssH = 0;
 let busy = false;
+/** Paper Zoom（見る距離）· 焼き付け非依存 */
+const VIEW_ZOOM_MIN = 1;
+const VIEW_ZOOM_MAX = 4;
+let viewZoom = 1;
+let viewPanX = 0;
+let viewPanY = 0;
+let spaceDown = false;
+let panning = false;
+/** @type {number|null} */
+let panPointerId = null;
+let panLastX = 0;
+let panLastY = 0;
 /** @type {ReturnType<typeof setTimeout>|null} */
 let guideFadeTimer = null;
 let guidesLinger = false;
@@ -341,6 +353,78 @@ function scheduleGuideFade() {
   drawGuideOverlay();
 }
 
+function clampViewZoom(z) {
+  return Math.min(VIEW_ZOOM_MAX, Math.max(VIEW_ZOOM_MIN, z));
+}
+
+function applyViewTransform() {
+  const vp = $('pdff-viewport');
+  if (!vp) return;
+  vp.style.transform = `translate(${viewPanX}px, ${viewPanY}px) scale(${viewZoom})`;
+  updatePanCursor();
+}
+
+/**
+ * Ctrl+wheel は机の中心基準（紙が端へ逃げるのを防ぐ）。裏紙 ADR-007 / S-ZOOM と同型。
+ * @param {number} nextZoom
+ */
+function setViewZoom(nextZoom) {
+  const z0 = viewZoom;
+  const z1 = clampViewZoom(nextZoom);
+  if (z1 === z0) return;
+  viewPanX = (viewPanX / z0) * z1;
+  viewPanY = (viewPanY / z0) * z1;
+  viewZoom = z1;
+  applyViewTransform();
+}
+
+function resetView(showStatus = false) {
+  viewZoom = 1;
+  viewPanX = 0;
+  viewPanY = 0;
+  applyViewTransform();
+  if (showStatus) {
+    setStatus('表示を中央に戻しました');
+    window.clearTimeout(resetView._t);
+    resetView._t = window.setTimeout(() => setStatus(''), 1200);
+  }
+}
+
+function updatePanCursor() {
+  const stage = $('pdff-stage') || document.querySelector('.pdff-stage');
+  if (!stage) return;
+  stage.classList.toggle('is-pan-ready', spaceDown || panning);
+  stage.classList.toggle('is-pan-active', panning);
+}
+
+function startPan(e) {
+  if (dragMove || dragSlot || dragResize || dragDraw) return;
+  if (textEditSession || stripEditSession) return;
+  panning = true;
+  panPointerId = e.pointerId;
+  panLastX = e.clientX;
+  panLastY = e.clientY;
+  const stage = $('pdff-stage');
+  stage?.setPointerCapture?.(e.pointerId);
+  updatePanCursor();
+}
+
+function movePan(e) {
+  if (!panning || panPointerId !== e.pointerId) return;
+  viewPanX += e.clientX - panLastX;
+  viewPanY += e.clientY - panLastY;
+  panLastX = e.clientX;
+  panLastY = e.clientY;
+  applyViewTransform();
+}
+
+function endPan(e) {
+  if (!panning || (e && panPointerId !== e.pointerId)) return;
+  panning = false;
+  panPointerId = null;
+  updatePanCursor();
+}
+
 function playPaperEnter() {
   const wrap = $('pdff-page-wrap');
   if (!wrap) return;
@@ -535,6 +619,7 @@ async function loadPdfFile(file) {
     stripEditSession = null;
     sourceName = file.name || 'document.pdf';
     paperEnterPending = true;
+    resetView(false);
     setBusy(true, '提出用紙を準備しています', { current: 1, total: Math.max(1, pageCount) });
     showWorkspace(true);
     buildThumbs();
@@ -580,6 +665,7 @@ function buildThumbs() {
       if (busy || i === pageIndex) return;
       pageIndex = i;
       selectedId = null;
+      resetView(false);
       updatePageLabel();
       await renderPage();
     });
@@ -957,8 +1043,11 @@ function drawGuideOverlay() {
 
 function localPoint(ev, el) {
   const r = el.getBoundingClientRect();
-  const cssX = Math.min(pageCssW, Math.max(0, ev.clientX - r.left));
-  const cssY = Math.min(pageCssH, Math.max(0, ev.clientY - r.top));
+  const w = Math.max(1, r.width);
+  const h = Math.max(1, r.height);
+  // CSS transform（Paper Zoom）後も visual rect → 論理 CSS px へ写像
+  const cssX = ((ev.clientX - r.left) / w) * pageCssW;
+  const cssY = ((ev.clientY - r.top) / h) * pageCssH;
   const ds = displayScale || 1;
   return {
     x: Math.min(pageW(), Math.max(0, cssX / ds)),
@@ -968,6 +1057,7 @@ function localPoint(ev, el) {
 
 function onObjectPointerDown(ev, o) {
   if (busy) return;
+  if (spaceDown || ev.button === 1 || panning) return;
   if (ev.target.closest?.('.pdff-handle') || ev.target.closest?.('.pdff-obj-delete')) return;
   if (ev.target.closest?.('.pdff-strip-slot__grip')) return;
   if (textEditSession) {
@@ -1327,6 +1417,7 @@ async function placeImageFromSrc(src, at = null) {
 
 function onWrapPointerDown(ev) {
   if (!pdfDoc || busy) return;
+  if (spaceDown || ev.button === 1 || panning) return;
   const wrap = $('pdff-page-wrap');
   if (!wrap || ev.target.closest?.('.pdff-obj')) return;
   if (guideFadeTimer) clearTimeout(guideFadeTimer);
@@ -1912,6 +2003,7 @@ function init() {
   const wrap = $('pdff-page-wrap');
   wrap?.addEventListener('pointerdown', onWrapPointerDown);
   wrap?.addEventListener('pointermove', (ev) => {
+    if (panning) return;
     onWrapPointerMove(ev);
     wrap.classList.toggle('pdff-page-wrap--dragging', !!(dragMove || dragSlot || dragResize || dragDraw));
   });
@@ -1923,13 +2015,56 @@ function init() {
     onWrapPointerUp();
     wrap.classList.remove('pdff-page-wrap--dragging');
   });
-  wrap?.addEventListener('wheel', (e) => {
-    if (!(e.ctrlKey || e.metaKey)) return;
-    const o = selectedId ? findOverlay(selectedId) : null;
-    if (!o || (o.type !== 'text' && o.type !== 'input-strip' && o.type !== 'marker')) return;
+
+  const stage = $('pdff-stage');
+  // Ctrl+wheel = Paper Zoom / Alt+wheel = 選択 Object の大きさ（S-ZOOM · ADR-032）
+  stage?.addEventListener(
+    'wheel',
+    (e) => {
+      if (e.altKey) {
+        const o = selectedId ? findOverlay(selectedId) : null;
+        if (!o || (o.type !== 'text' && o.type !== 'input-strip' && o.type !== 'marker')) return;
+        e.preventDefault();
+        bumpFontSize(e.deltaY < 0 ? 1 : -1);
+        return;
+      }
+      if (!(e.ctrlKey || e.metaKey)) return;
+      e.preventDefault();
+      const factor = Math.exp(-e.deltaY * 0.01);
+      setViewZoom(viewZoom * factor);
+    },
+    { passive: false },
+  );
+  stage?.addEventListener('pointerdown', (e) => {
+    const isMiddle = e.button === 1;
+    if (isMiddle || spaceDown) {
+      e.preventDefault();
+      startPan(e);
+    }
+  });
+  stage?.addEventListener('pointermove', (e) => {
+    if (panning) {
+      e.preventDefault();
+      movePan(e);
+    }
+  });
+  stage?.addEventListener('pointerup', (e) => {
+    if (panning) endPan(e);
+  });
+  stage?.addEventListener('pointercancel', (e) => {
+    if (panning) endPan(e);
+  });
+  stage?.addEventListener('dblclick', (e) => {
+    if (e.target !== stage) return;
     e.preventDefault();
-    bumpFontSize(e.deltaY < 0 ? 1 : -1);
-  }, { passive: false });
+    resetView(true);
+  });
+  stage?.addEventListener('auxclick', (e) => {
+    if (e.button === 1) e.preventDefault();
+  });
+  stage?.addEventListener('mousedown', (e) => {
+    if (e.button === 1) e.preventDefault();
+  });
 
   $('pdff-undo')?.addEventListener('click', undo);
   $('pdff-bake')?.addEventListener('click', openBakeDialog);
@@ -1948,6 +2083,7 @@ function init() {
     if (pageIndex <= 0) return;
     pageIndex -= 1;
     selectedId = null;
+    resetView(false);
     updatePageLabel();
     await renderPage();
   });
@@ -1957,6 +2093,7 @@ function init() {
     if (pageIndex >= pageCount - 1) return;
     pageIndex += 1;
     selectedId = null;
+    resetView(false);
     updatePageLabel();
     await renderPage();
   });
@@ -1994,6 +2131,14 @@ function init() {
         cancelStripEdit();
       }
       return;
+    }
+    const tag = /** @type {HTMLElement} */ (e.target)?.tagName || '';
+    if (tag !== 'INPUT' && tag !== 'TEXTAREA' && !/** @type {HTMLElement} */ (e.target)?.isContentEditable) {
+      if (e.code === 'Space' && !e.repeat) {
+        e.preventDefault();
+        spaceDown = true;
+        updatePanCursor();
+      }
     }
     if (e.key === 'Escape') {
       if (pendingMarkerKind) {
@@ -2057,6 +2202,18 @@ function init() {
       e.preventDefault();
       redo();
     }
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'Space') {
+      spaceDown = false;
+      if (!panning) updatePanCursor();
+    }
+  });
+  window.addEventListener('blur', () => {
+    spaceDown = false;
+    endPan();
+    updatePanCursor();
   });
 
   updateUndoUi();

@@ -156,8 +156,9 @@
 |----|------|------|
 | S-PILOT | Hub 検索（`.sg-hub-locate-core`） | **実装済** |
 | **S-PILOT-2** | `pdf-fill` 記入ツール+キャンバス（`.sg-surface-workspace`）· 完成カードは `.sg-surface-section` | **仮説検証中** |
+| **S-ZOOM-PILOT** | `pdf-fill` Paper Zoom（Ctrl+wheel）· Pan（Space/中ボタン）· 文字サイズは Alt+wheel / −＋ | **実装** · 討議 [`UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md) |
 
-共通クラス: `.sg-surface-workspace` / `.sg-surface-section`（DESIGN §2.3.1）。色一括・全ツール横展開は禁止。
+共通クラス: `.sg-surface-workspace` / `.sg-surface-section`（DESIGN §2.3.1）。色一括・全ツール横展開は禁止。Paper Zoom の全 canvas 一括も禁止（S-ZOOM）。
 
 **語彙ゲート（検索ファースト必須）:** Hub カード全 toolId に `search-dictionary` · `synonyms` · `tool-intent-map` が無いと `validate:hub-ia` が fail。手順: `docs/prompts/hub-search-vocab-on-new-tool.md` · Playbook §1.5 A15。
 

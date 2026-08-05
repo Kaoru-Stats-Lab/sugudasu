@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-08-05",
   "disclaimer": "カテゴリ定義の正本は data/categories.json。本ファイルは tools[] · categoryCompare（statements 比較表）のみ。",
   "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md · data/categories.json · scripts/verify-statements-product.mjs",
   "tools": [

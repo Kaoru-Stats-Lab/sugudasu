@@ -501,6 +501,7 @@
 | 7 | E-SUBARU | スグダス誤訪問注意の露出 | ブランドトーン | **Defer** |
 | 8 | E-CONST | Experience 憲法条文化 | — | **Closed 2026-07-30（H · 新憲法なし · HOW維持）** |
 | 9 | **S-SURFACE** | Visual Hierarchy / Surface（のっぺり） | HOW 契約 · DESIGN | **Closed 2026-08-05** · 討議 [`UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · 契約 §2.4 · **パイロット（Hub検索）残** |
+| 10 | **S-ZOOM** | Canvas Paper Zoom（Ctrl+wheel · 文字サイズは Alt） | HOW · Inventory | **Closed 2026-08-05（方針）** · 討議 [`UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md) · パイロット `pdf-fill` |
 
 ### 議決不要（実装・運用）
 
@@ -694,4 +695,32 @@
 ### 判定待ち（提督）
 
 `/pdf-fill` で PDF を開いたあと、記入面が他ブロックより明確に「作業場所」に見えるか。Yes なら横展開票、No/微妙なら差の量を調整。
+
+---
+
+## 2026-08-05 — S-ZOOM 採択（Canvas Paper Zoom · HOW）
+
+### 背景
+
+モザイク・黒塗り・記入で「記入領域を拡大したい」。Ctrl+wheel / 画面内＋−の要望。裏紙は既に Paper Zoom 正本。
+
+### 判断
+
+| ID | 票 |
+|----|-----|
+| S-ZOOM-SCOPE / GESTURE / UI / PDF-FILL / PAN | **Keep** |
+| S-ZOOM-EXTRACT | **条件付き**（3本目で薄い util） |
+| 全ツール一律 · %常設 · ミニマップ | **Reject** |
+
+**衝突解:** pdf-fill の旧 Ctrl+wheel 文字サイズ → **Alt+wheel**（−＋維持）。Ctrl+wheel = 表示拡大。
+
+### 根拠
+
+- 討議 [`UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md)
+- pdf-fill ADR-032 · Inventory Paper Zoom Dup
+
+### 次アクション
+
+- 提督が `/pdf-fill` で Ctrl+wheel / Alt+wheel / Space pan を確認
+- annotate / mask 横展開は別票（本票では禁止）
 

@@ -1,13 +1,14 @@
 # SUGUDASU 重複能力の棚卸し（Capability Inventory）
 
-**更新:** 2026-07-29  
+**更新:** 2026-08-05  
 **役割:** プロダクト横断で「同じ仕事を何回書いているか」を見える化する台帳  
 **下流:** [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md)（採用・抽出の実務ルール）  
 **対象外:** Sync 専用ランタイム（Auth · Room · Realtime）の詳細 — Sync は別ライン
 
 > Agent: 新ツールで「似た処理」を書く前に本表を見る。  
 > **共通化の判断は TECH_ADOPTION_NOTE のゲートに従う。** 本表は事実の棚卸し。  
-> **2026-07-29:** P1（vendor · partial bake · canvas mask）と P2（PDF doc limits）を抽出済み。
+> **2026-07-29:** P1（vendor · partial bake · canvas mask）と P2（PDF doc limits）を抽出済み。  
+> **2026-08-05:** Paper Zoom を Dup に追記（裏紙 · image-trim · pdf-fill パイロット · S-ZOOM）。
 
 ---
 
@@ -88,6 +89,7 @@ Handoff / ZIP / QR                ← 小規模 Shared
 | Undo/Redo（キャンバス） | annotate · mask · pdf-fill · sticky-room 等 | Dup | スキーマが違う | P3 |
 | 画像読込 · Ctrl+V 画像 | annotate · mask · stamp · clip-stash | Dup | clipboard 画像の取り出し | P2 |
 | 長辺リサイズ表示 | annotate 等 | Pattern | 表示用縮小 | P3 |
+| **Paper Zoom / Pan（見る距離）** | 裏紙（正本）· image-trim · **pdf-fill（S-ZOOM パイロット）** · annotate/mask 未 | **Dup** | Ctrl+wheel · Space/中ボタン · CSS transform。画面内％なし。3本目抽出候補 | **P2**（契約→薄い util） |
 
 ### D. 永続 · 再開クラスタ
 

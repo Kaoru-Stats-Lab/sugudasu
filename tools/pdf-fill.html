@@ -34,6 +34,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        touch-action: none;
+      }
+      .pdff-stage.is-pan-ready,
+      .pdff-stage.is-pan-ready .pdff-page-wrap {
+        cursor: grab;
+      }
+      .pdff-stage.is-pan-active,
+      .pdff-stage.is-pan-active .pdff-page-wrap {
+        cursor: grabbing;
+      }
+      .pdff-viewport {
+        transform-origin: center center;
+        will-change: transform;
       }
       .pdff-work-layout {
         display: flex;
@@ -654,12 +667,14 @@
 
             <div class="pdff-work-layout">
                 <nav id="pdff-thumbs" class="pdff-thumbs" aria-label="ページ一覧"></nav>
-                <div class="pdff-stage">
+                <div class="pdff-stage" id="pdff-stage">
+                    <div id="pdff-viewport" class="pdff-viewport">
                     <div id="pdff-page-wrap" class="pdff-page-wrap" aria-label="PDFページ">
                         <canvas id="pdff-page-canvas"></canvas>
                         <div id="pdff-grid" class="pdff-grid" aria-hidden="true"></div>
                         <canvas id="pdff-guide-canvas" aria-hidden="true"></canvas>
                         <div id="pdff-overlay-layer"></div>
+                    </div>
                     </div>
                 </div>
             </div>

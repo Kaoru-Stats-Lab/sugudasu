@@ -1303,9 +1303,11 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 7 | E-SUBARU | スグダス注意（Defer） |
 | 8 | E-CONST | 体験憲法昇格 — **Closed H** · [`notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_CONST_BOARD_DISCUSSION.md) |
 | 9 | **S-SURFACE** | Visual Hierarchy / のっぺり — **Closed** · Locate-core 実装 · 語彙ゲート A15 · [`notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md) · [`prompts/hub-search-vocab-on-new-tool.md`](prompts/hub-search-vocab-on-new-tool.md) |
+| 10 | **S-ZOOM** | Canvas Paper Zoom — **Closed（方針）** · Ctrl+wheel 表示 · Alt+wheel 文字サイズ · パイロット `pdf-fill` · [`notes/UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md) |
 
 - FAQ とリードの断定度横断監査（議決不要 · 運用）
 - Surface: 色一括・カード廃止・Hub/全ツール一括見た目変更は **禁止**。許可は **Hub 検索一段上げ（S-PILOT）のみ**
+- Paper Zoom: 全 canvas 一括・％常設は **禁止**。許可はジェスチャ正本＋ `pdf-fill` パイロット（S-ZOOM）
 
 ### ドキュメント地図（MECE · Agent）
 
@@ -1327,6 +1329,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 - MECE台帳: [`notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md`](notes/UIUX_EXPERIENCE_MECE_TOOL_CHECKLIST.md)
 - 判断ログ: [`notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md`](notes/UIUX_EXPERIENCE_JUDGMENT_LOG.md)
 - Surface 討議録: [`notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_SURFACE_BOARD_DISCUSSION.md)
+- Paper Zoom 討議録: [`notes/UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION.md)
 - リード討議録: [`notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md`](notes/UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md)
 - マルチAI前段: [`prompts/uiux-experience-constitution-RUNBOOK.md`](prompts/uiux-experience-constitution-RUNBOOK.md) · [`notes/uiux-experience-research/SYNTHESIS.md`](notes/uiux-experience-research/SYNTHESIS.md) · Surface [`SYNTHESIS_SURFACE_HIERARCHY.md`](notes/uiux-experience-research/SYNTHESIS_SURFACE_HIERARCHY.md) · prompts [`uiux-surface-hierarchy-BRIEF.md`](prompts/uiux-surface-hierarchy-BRIEF.md)
 - Rule: `.cursor/rules/sugudasu-tool-lead-copy.mdc`

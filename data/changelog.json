@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-08-05",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,41 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "pdf-fill-paper-zoom-20260805",
+      "date": "2026-08-05",
+      "type": "improve",
+      "audience": "public",
+      "title": "PDF記入 — 紙の拡大縮小",
+      "body": "Ctrl（Macは⌘）+マウスホイールで紙を拡大できます。Spaceキーまたは中ボタンで移動、机のダブルクリックで元に戻します。文字の大きさは選択して Alt+ホイール、または －＋ です。",
+      "tools": [
+        "pdf-fill"
+      ]
+    },
+    {
+      "id": "roadmap-smart-diff-20260805",
+      "date": "2026-08-05",
+      "type": "improve",
+      "audience": "public",
+      "title": "ロードマップ — Smart Diff を検討中に追加",
+      "body": "差分チェックの危険な変更の検知強化（Smart Diff）を、開発ロードマップの検討中に載せました。",
+      "tools": [
+        "diff"
+      ]
+    },
+    {
+      "id": "s-zoom-board-internal-20260805",
+      "date": "2026-08-05",
+      "type": "chore",
+      "audience": "internal",
+      "title": "S-ZOOM 議決 · Paper Zoom 実装 · roadmap smart-diff",
+      "body": "UIUX_EXPERIENCE_ZOOM_BOARD_DISCUSSION · ADR-032 · pdf-fill viewport zoom/pan · Alt+wheel font · CAPABILITY_INVENTORY Paper Zoom Dup · roadmap smart-diff · DEPLOY-20260805-003",
+      "tools": [
+        "pdf-fill",
+        "diff"
+      ],
+      "rollup": "pdf-fill-paper-zoom-20260805"
+    },
     {
       "id": "uragami-print-pan-cursor-20260726",
       "date": "2026-07-26",

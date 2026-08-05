@@ -1803,10 +1803,31 @@
 
 ---
 
+## DEPLOY-20260805-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — pdf-fill Paper Zoom（S-ZOOM）· roadmap Smart Diff · 同日 core 3回目 · P7 override |
+| **change_summary** | pdf-fill Ctrl+wheel 表示拡大 · Alt+wheel 文字サイズ · Space/中ボタン pan · S-ZOOM 討議録 · roadmap `smart-diff` · statements-product date sync |
+| **local_build** | pending（`npm run release:pages:free`） |
+| **deploy_count_today** | 3（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | pending |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | pending — `/pdf-fill` Ctrl+wheel · `/roadmap#smart-diff` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 003 approved（Paper Zoom · Smart Diff roadmap · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 002 executed（2e68d0f · S-PILOT-2 pdf-fill Workspace） |
 | 2026-08-05 | 002 approved（S-PILOT-2 pdf-fill Workspace · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 001 executed（78bb69d · S-SURFACE · Hub Locate-core · 検索語彙ゲート） |

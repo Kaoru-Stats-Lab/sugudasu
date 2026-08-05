@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-08-05",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
@@ -210,6 +210,18 @@
       "title": "比較前の全角・空白クレンジング（任意）",
       "summary": "v0.1 公開済（全角・NBSP・行末無視 · 入力欄非改変 · 既定OFF）。normalize ツールのルール移植はしない。残りは既定ONの是非のみ（仕様改訂が必要）。仕様: docs/notes/DIFF_PRECOMPARE_CLEANSE_SPEC.md。",
       "askFeedback": "既定で「全角・行末スペースを無視」をONにしてほしいですか？（今はOFF · 変更するなら仕様を先に改訂します）"
+    },
+    {
+      "id": "smart-diff",
+      "lane": "core",
+      "status": "considering",
+      "priority": 12,
+      "toolId": "diff",
+      "toolLabel": "差分",
+      "toolHref": "diff.html",
+      "title": "Smart Diff — 危険な変更の検知強化",
+      "summary": "AI書き換え前後で、数字・日付・URL・否定の反転・必須⇄推奨など見逃すとまずい差分をさらに見つけやすくする。非送信・ブラウザ完結のまま。新規URLは作らず差分チェックを強化します。",
+      "askFeedback": "いまの差分チェックで見逃しがちな変更（金額・日付・否定語・必須/任意など）があれば教えてください。"
     },
     {
       "id": "search-query-builder",

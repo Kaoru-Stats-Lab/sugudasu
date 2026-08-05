@@ -93,7 +93,8 @@ Overlay Layer（DOM）で Object 描画
 ## 文字（ADR-017 · 023 · 024）
 
 - `contentEditable` によるインライン入力（`prompt` 禁止）
-- fontSize: `clampFontSize`（10–48）· ±ボタン · Ctrl+ホイール
+- fontSize: `clampFontSize`（10–48）· ±ボタン · Alt+ホイール（Ctrl+ホイールは Paper Zoom）
+- Paper Zoom: `#pdff-viewport` に CSS `translate`+`scale`（焼き付け・オーバーレイ正本は非依存）
 - fontFamily UI: `gothic` | `mincho` のみ（ラベルは「ゴシック」「明朝」）
 - 実装スタックは可読性優先（BIZ UD → Noto 等）。UI に実フォント名を出さない
 
