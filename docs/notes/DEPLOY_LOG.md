@@ -1843,10 +1843,31 @@
 
 ---
 
+## DEPLOY-20260805-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — S-SEG-A セグメントコントラスト強化 · 同日 core 5回目 · P7 override |
+| **change_summary** | `.sg-segment` トラック/枠/未選択・選択文字/下線 opacity · DESIGN §3.3 S-SEG-A 追記 · 青塗りなし |
+| **local_build** | pending（`npm run release:pages:free`） |
+| **deploy_count_today** | 5（**P7 override** · 提督明示 Commit&Push） |
+| **pages_build_budget_after** | pending |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | pending |
+| **smoke** | pending — `/invoice` · `/normalize` セグメント視認 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-05 | 005 approved（S-SEG-A セグメントコントラスト · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 004 executed（adf59a9 · 表セル余白） |
 | 2026-08-05 | 004 approved（表セル余白 · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 003 executed（bc17a05 · Paper Zoom · Smart Diff roadmap） |

@@ -226,14 +226,16 @@ textarea.sg-input.sg-field--error {
 }
 
 /* —— Mode segment (sg-segment) — DESIGN_GUIDELINE §3.3 —— */
+/* DECISION S-SEG-A (2026-08-05): 無彩色は維持（青塗り L1 禁止）しつつ、
+   未選択/選択/ピル/トラックのコントラストだけ上げて「どれがONか」を読ませる。 */
 .sg-segment {
   position: relative;
   display: grid;
   gap: 0;
   padding: 0.25rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--sg-border);
-  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
   box-shadow: none;
 }
 
@@ -280,8 +282,8 @@ textarea.sg-input.sg-field--error {
   height: 0;
   border-radius: 0.5rem;
   background: #fff;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
-  border: 1px solid rgb(15 23 42 / 0.06);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
+  border: 1px solid #cbd5e1;
   transition:
     top 120ms cubic-bezier(0.2, 0, 0, 1),
     left 120ms cubic-bezier(0.2, 0, 0, 1),
@@ -300,7 +302,7 @@ textarea.sg-input.sg-field--error {
   background: transparent;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #64748b;
+  color: #475569;
   cursor: pointer;
   text-align: center;
   border-radius: 0.5rem;
@@ -314,31 +316,33 @@ a.sg-segment__btn {
   text-decoration: none;
 }
 
-.sg-segment__btn:hover { color: #1e293b; }
+.sg-segment__btn:hover { color: #0f172a; }
 
 .sg-segment__btn[aria-selected='true'] {
   font-weight: 700;
+  color: #0f172a;
 }
 
 .sg-segment__btn[aria-current='page'] {
   font-weight: 700;
+  color: #0f172a;
 }
 
 .sg-segment--mode-estimate .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
-.sg-segment--mode-delivery .sg-segment__btn[aria-selected='true'] { color: #334155; }
+.sg-segment--mode-delivery .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
 .sg-segment--mode-invoice .sg-segment__btn[aria-selected='true'],
-.sg-segment--mode-invoice .sg-segment__btn[aria-current='page'] { color: #1e40af; }
+.sg-segment--mode-invoice .sg-segment__btn[aria-current='page'] { color: #1e3a8a; }
 .sg-segment--mode-single .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
-.sg-segment--mode-multi .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-multi .sg-segment__btn[aria-selected='true'] { color: #1e3a8a; }
 .sg-segment--mode-coeff .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
-.sg-segment--mode-fixed .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-fixed .sg-segment__btn[aria-selected='true'] { color: #1e3a8a; }
 .sg-segment--mode-local .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
-.sg-segment--mode-gemini .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
-.sg-segment--mode-ec .sg-segment__btn[aria-selected='true'] { color: #0f766e; }
-.sg-segment--mode-csv .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
-.sg-segment--mode-fw .sg-segment__btn[aria-selected='true'] { color: #6d28d9; }
+.sg-segment--mode-gemini .sg-segment__btn[aria-selected='true'] { color: #1e3a8a; }
+.sg-segment--mode-ec .sg-segment__btn[aria-selected='true'] { color: #115e59; }
+.sg-segment--mode-csv .sg-segment__btn[aria-selected='true'] { color: #1e3a8a; }
+.sg-segment--mode-fw .sg-segment__btn[aria-selected='true'] { color: #5b21b6; }
 .sg-segment--mode-label .sg-segment__btn[aria-selected='true'] { color: #0f172a; }
-.sg-segment--mode-card .sg-segment__btn[aria-selected='true'] { color: #1e40af; }
+.sg-segment--mode-card .sg-segment__btn[aria-selected='true'] { color: #1e3a8a; }
 
 .sg-segment__btn[aria-selected='true']::after,
 .sg-segment__btn[aria-current='page']::after {
@@ -350,7 +354,7 @@ a.sg-segment__btn {
   height: 2px;
   border-radius: 1px;
   background: currentColor;
-  opacity: 0.4;
+  opacity: 0.85;
 }
 
 .sg-segment__btn:focus-visible {
@@ -469,18 +473,19 @@ a.sg-segment__btn {
 }
 
 .sg-segment--notion-soft {
-  background: #f8fafc;
-  border-color: #e2e8f0;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
   box-shadow: none;
 }
 
 .sg-segment--notion-soft .sg-segment__pill {
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
+  border-color: #cbd5e1;
   transition-duration: 120ms;
 }
 
 .sg-segment--notion-soft .sg-segment__btn[aria-selected='true']::after {
-  opacity: 0.55;
+  opacity: 0.85;
 }
 
 /* sg-notion-callout — alias; 正本は .sg-segment-hint */

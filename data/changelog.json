@@ -11,6 +11,33 @@
   },
   "entries": [
     {
+      "id": "segment-contrast-20260805",
+      "date": "2026-08-05",
+      "type": "improve",
+      "audience": "public",
+      "title": "モード切替 — 選択が見やすくなりました",
+      "body": "見積・請求などのタブ切替で、いま選んでいる項目がはっきり分かるようコントラストを上げました。色の役割（青の主ボタン）は変えていません。",
+      "tools": [
+        "invoice",
+        "receipt",
+        "normalize"
+      ]
+    },
+    {
+      "id": "segment-contrast-internal-20260805",
+      "date": "2026-08-05",
+      "type": "chore",
+      "audience": "internal",
+      "title": "S-SEG-A sg-segment コントラスト強化",
+      "body": "トラック #f1f5f9 · 枠 #cbd5e1 · 未選択 #475569 · 下線 0.85 · DESIGN §3.3 · DEPLOY-20260805-005",
+      "tools": [
+        "invoice",
+        "receipt",
+        "normalize"
+      ],
+      "rollup": "segment-contrast-20260805"
+    },
+    {
       "id": "info-table-padding-20260805",
       "date": "2026-08-05",
       "type": "improve",

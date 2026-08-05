@@ -298,6 +298,7 @@ Level 3（どこでも続き）は Sync — [`notes/SUGUDASU_SYNC_LINE.md`](note
 
 - キーボード: 左右矢印でタブ移動（`prefers-reduced-motion` 時はヒントフェード省略）。
 - **青塗りセグメントは禁止**（主CTAと役割が衝突する）。
+- **視認性（S-SEG-A · 2026-08-05）:** 無彩色は維持したまま、トラック `#f1f5f9` · 枠/ピル `#cbd5e1` · 未選択 `#475569` · 選択 `#0f172a` · 下線 opacity `0.85`。ベタ青塗りやトグル置換はしない。
 
 **Notion Like variant（2026-06）:** 詳細は `docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md` §7。L1 は **ハイブリッド** — `sg-segment` ピルは維持し、トラックに `sg-segment--notion-soft`（影・青枠弱体化）。モード説明は `.sg-segment-hint`（Callout · ℹ 左 · hairline · indigo 文字禁止）。全面テキストタブ（`.sg-notion-tabs`）への置換は L1 視認性のため **行わない**。
 
