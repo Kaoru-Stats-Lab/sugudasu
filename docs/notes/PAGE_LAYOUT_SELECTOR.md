@@ -72,11 +72,12 @@
 
 ```html
 <main class="sg-info-page">
-  <article class="sg-card sg-info-prose">…</article>
+  <article class="sg-card sg-info-prose sg-info-rhythm">…</article>
+  <!-- 法務: sg-info-rhythm sg-info-rhythm--compact -->
 </main>
 ```
 
-- 詳細: [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md)
+- 詳細: [`DESIGN_GUIDELINE_INFO_PAGES.md`](../DESIGN_GUIDELINE_INFO_PAGES.md)（**§3.1 縦リズム**）
 - **ガイド記事本文に `sg-info-page` を使わない**
 
 ### E 実務ガイド記事

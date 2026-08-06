@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-05",
+  "updatedAt": "2026-08-06",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,34 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "info-vertical-rhythm-20260806",
+      "date": "2026-08-06",
+      "type": "improve",
+      "audience": "public",
+      "title": "約束・法務ページ — 読みやすい余白に",
+      "body": "見出し・図解・枠付き説明のあいだに余白を足し、長文が詰まって見えにくかった箇所を読みやすくしました。",
+      "tools": [
+        "statements"
+      ]
+    },
+    {
+      "id": "info-vertical-rhythm-internal-20260806",
+      "date": "2026-08-06",
+      "type": "chore",
+      "audience": "internal",
+      "title": "情報ページ縦リズム（sg-info-rhythm / stack）",
+      "body": "--sg-info-rhythm-* · .sg-info-stack · 図解 gap · DESIGN_GUIDELINE_INFO_PAGES §3.1 · DEPLOY-20260806-001",
+      "tools": [
+        "statements",
+        "privacy",
+        "terms",
+        "disclaimer",
+        "updates",
+        "roadmap"
+      ],
+      "rollup": "info-vertical-rhythm-20260806"
+    },
     {
       "id": "segment-contrast-20260805",
       "date": "2026-08-05",

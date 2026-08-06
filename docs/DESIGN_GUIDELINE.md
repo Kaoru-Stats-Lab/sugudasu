@@ -193,7 +193,7 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 | カード角丸 | `rounded-xl`（`2xl` はヒーローのみ） |
 | カード影 | `shadow-sm` + `border border-slate-200`（影だけに頼らない） |
 | 入力角丸 | `rounded-lg` |
-| セクション間 | `space-y-5` または `gap-6` |
+| セクション間 | `space-y-5` または `gap-6`（**情報ページ**は [`DESIGN_GUIDELINE_INFO_PAGES.md`](DESIGN_GUIDELINE_INFO_PAGES.md) §3.1 の `--sg-info-rhythm-*` · `.sg-info-stack`） |
 
 #### 2.3.1 Surface / 視覚階層（S-SURFACE · 2026-08-05）
 

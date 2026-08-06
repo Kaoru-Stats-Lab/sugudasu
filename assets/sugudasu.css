@@ -950,7 +950,8 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 .sg-tool-intro {
   width: 100%;
   max-width: none;
-  margin-bottom: 0.25rem;
+  /* リード → 作業面のあいだに呼吸（0.25rem では密着して見える） */
+  margin-bottom: 1.25rem;
 }
 
 /* ツールリード — シェル幅いっぱい · 単列スタック（読みやすさ優先 · 2列禁止） */
@@ -984,6 +985,12 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 /* —— Info pages: updates · statements · legal —— DESIGN_GUIDELINE_INFO_PAGES.md */
 .sg-info-page {
   --sg-info-max-width: 48rem;
+  /* 縦リズム（読みやすさ）— DESIGN_GUIDELINE_INFO_PAGES.md §3.1 */
+  --sg-info-rhythm-xs: 0.5rem;   /* 関連ラベル · ピル同士 */
+  --sg-info-rhythm-sm: 0.75rem;  /* 密接なリスト · caption */
+  --sg-info-rhythm-md: 1.25rem;  /* 見出し→本文 · 段落間の下限 */
+  --sg-info-rhythm-lg: 1.75rem;  /* 枠付きブロック同士 · 図解まわり */
+  --sg-info-rhythm-xl: 2.5rem;   /* 記事内の主要セクション間 */
   flex: 1;
   width: 100%;
   max-width: var(--sg-info-max-width);
@@ -1034,7 +1041,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-weight: 700;
   color: #0f172a;
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.625rem;
 }
 @media (min-width: 640px) {
   .sg-info-section-title { font-size: 0.9375rem; }
@@ -1044,7 +1051,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-weight: 700;
   color: #0f172a;
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.625rem;
 }
 .sg-info-caption {
   font-size: 0.6875rem;
@@ -1055,7 +1062,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1.15rem 1.25rem;
   font-size: 0.875rem;
   line-height: 1.625;
   color: #334155;
@@ -1063,7 +1070,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 .sg-info-callout > p:first-child {
   font-weight: 600;
   color: #1e3a8a;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .sg-info-prose {
@@ -1071,13 +1078,42 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   line-height: 1.625;
   color: #334155;
 }
+/* 記事の主要ブロック間 — space-y より gap の方がマージン潰しに強い */
+.sg-info-prose.sg-info-rhythm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sg-info-rhythm-xl, 2.5rem);
+}
+.sg-info-prose.sg-info-rhythm--compact {
+  gap: 2rem;
+}
+.sg-info-prose.sg-info-rhythm > header {
+  margin: 0;
+}
+/* セクション内の縦スタック（見出し·本文·図·表） */
+.sg-info-stack,
+.sg-info-stack--loose,
+.sg-info-stack--tight {
+  display: flex;
+  flex-direction: column;
+}
+.sg-info-stack {
+  gap: var(--sg-info-rhythm-md, 1.25rem);
+}
+.sg-info-stack--loose {
+  gap: var(--sg-info-rhythm-lg, 1.75rem);
+}
+.sg-info-stack--tight {
+  gap: var(--sg-info-rhythm-sm, 0.75rem);
+}
 .sg-info-prose h1.sg-info-page__title { margin: 0; }
 .sg-info-prose h2.sg-info-section-title { margin: 0; }
 .sg-info-prose h3 {
   font-size: 0.875rem;
   font-weight: 700;
   color: #0f172a;
-  margin-bottom: 0.5rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.65rem;
 }
 .sg-info-prose h3.sg-info-subsection-title {
   font-size: 0.875rem;
@@ -1085,14 +1121,24 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   color: #5b21b6;
 }
 .sg-info-prose p { margin: 0; }
-.sg-info-prose p + p { margin-top: 0.75rem; }
+.sg-info-prose p + p { margin-top: var(--sg-info-rhythm-md, 1.25rem); }
 .sg-info-prose ul,
 .sg-info-prose ol {
   margin: 0;
   padding-left: 1.25rem;
 }
 .sg-info-prose ul { list-style-type: disc; }
-.sg-info-prose li + li { margin-top: 0.25rem; }
+.sg-info-prose li + li { margin-top: 0.4rem; }
+/* 見出しの直後のリスト · 段落が貼り付かないように */
+.sg-info-prose h3 + p,
+.sg-info-prose h3 + ul,
+.sg-info-prose h3 + ol {
+  margin-top: 0;
+}
+.sg-info-prose h3 + ul,
+.sg-info-prose h3 + ol {
+  margin-top: 0.15rem;
+}
 .sg-info-prose a {
   color: #2563eb;
   font-weight: 600;
@@ -1851,7 +1897,7 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
   font-weight: 600;
   text-align: center;
   color: #0f172a;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 .sg-faq-section > .sg-faq-inner > p {
   text-align: center;
@@ -1869,7 +1915,7 @@ details.sg-faq {
   border: none;
   border-radius: 0;
   background: transparent;
-  padding: 0.875rem 0;
+  padding: 1.05rem 0;
   border-bottom: 1px solid #e2e8f0;
 }
 details.sg-faq summary::-webkit-details-marker { display: none; }
@@ -2024,7 +2070,7 @@ body.sg-chrome-focus main {
 
 .sg-changelog-item {
   position: relative;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.75rem;
   padding-left: 1.25rem;
   border-left: 2px solid var(--sg-border);
 }
@@ -3746,7 +3792,7 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border, #e2e8f0);
   border-radius: 0.75rem;
   background: #f8fafc;
-  padding: 0.85rem 1.1rem;
+  padding: 1rem 1.15rem;
 }
 .sg-copy-disclosure summary:hover {
   color: #0f172a;
@@ -3772,7 +3818,7 @@ body.sg-copy-flash {
   border-radius: 0.25rem;
 }
 .sg-note {
-  padding: 0.85rem 1.1rem;
+  padding: 1rem 1.15rem;
   border-radius: 0.75rem;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -3783,7 +3829,7 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border);
   border-radius: 0.75rem;
   background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
-  padding: 1rem 1.1rem;
+  padding: 1.25rem 1.35rem;
 }
 .sg-statements-summary__lead {
   font-size: 0.875rem;
@@ -3794,7 +3840,7 @@ body.sg-copy-flash {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: 0.65rem;
+  margin-top: 0;
 }
 .sg-statements-pill {
   display: inline-block;
@@ -3875,17 +3921,17 @@ body.sg-copy-flash {
 .sg-diagram-stack {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.6rem;
   max-width: 28rem;
-  margin: 0 auto;
+  margin: 0.35rem auto;
 }
 .sg-diagram-stack__layer {
   border: 1px solid var(--sg-border);
   border-radius: 0.5rem;
   background: #f8fafc;
-  padding: 0.45rem 0.65rem;
+  padding: 0.6rem 0.75rem;
   font-size: 0.6875rem;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--sg-muted);
 }
 .sg-diagram-stack__layer strong {
@@ -3899,13 +3945,14 @@ body.sg-copy-flash {
   border: 2px solid var(--sg-primary);
   border-radius: 0.65rem;
   background: #eff6ff;
-  padding: 0.55rem 0.65rem 0.65rem;
+  padding: 0.7rem 0.75rem 0.75rem;
+  margin-top: 0.15rem;
 }
 .sg-diagram-stack__device-label {
   font-size: 0.625rem;
   font-weight: 700;
   color: #1d4ed8;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
 }
 .sg-diagram-stack__layer--local {
   border-color: #93c5fd;
@@ -3919,15 +3966,15 @@ body.sg-copy-flash {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.35rem;
+  gap: 0.55rem;
   max-width: 36rem;
-  margin: 0 auto;
+  margin: 0.35rem auto;
 }
 @media (min-width: 640px) {
   .sg-diagram-flow {
     flex-direction: row;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.45rem;
   }
 }
 .sg-diagram-flow__step {
@@ -3935,10 +3982,10 @@ body.sg-copy-flash {
   border: 1px solid var(--sg-border);
   border-radius: 0.5rem;
   background: #fff;
-  padding: 0.55rem 0.65rem;
+  padding: 0.7rem 0.75rem;
   text-align: center;
   font-size: 0.6875rem;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--sg-text);
 }
 .sg-diagram-flow__step strong {
@@ -3946,7 +3993,7 @@ body.sg-copy-flash {
   font-size: 0.75rem;
   font-weight: 700;
   color: #0f172a;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.35rem;
 }
 .sg-diagram-flow__step--core {
   border-color: #93c5fd;

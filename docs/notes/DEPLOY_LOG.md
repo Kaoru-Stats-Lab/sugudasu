@@ -1863,10 +1863,31 @@
 
 ---
 
+## DEPLOY-20260806-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — 情報ページ縦リズム（statements 密着解消 · 読みやすさトークン） |
+| **change_summary** | `assets/sugudasu.css`（`--sg-info-rhythm-*` · `.sg-info-stack` · 図解 gap）· `tools/statements|privacy|terms|disclaimer|updates|roadmap.html` · `DESIGN_GUIDELINE_INFO_PAGES.md` §3.1 · changelog |
+| **local_build** | `pass`（`npm run release:pages:free`） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後 · 消費済み 6/450） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`/statements` · `/privacy` |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-06 | 001 approved（情報ページ縦リズム · statements 密着解消 · 提督 Commit&Push） |
 | 2026-08-05 | 005 executed（6cfac5b · S-SEG-A セグメントコントラスト） |
 | 2026-08-05 | 005 approved（S-SEG-A セグメントコントラスト · P7 override · 提督 Commit&Push） |
 | 2026-08-05 | 004 executed（adf59a9 · 表セル余白） |

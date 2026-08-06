@@ -25,14 +25,14 @@
 <div id="sg-chrome-top" data-sg-title="SUGUDASU の約束" data-sg-tool-id="statements"></div>
 
 <main class="sg-info-page">
-    <article class="sg-card p-6 lg:p-8 space-y-8 sg-info-prose">
-        <header class="border-b border-slate-200 pb-4 space-y-2">
+    <article class="sg-card p-6 lg:p-8 sg-info-prose sg-info-rhythm">
+        <header class="border-b border-slate-200 pb-5 sg-info-stack--tight">
             <p class="text-[11px] font-bold text-violet-700 tracking-wide">Statements · 非契約 · 読み物</p>
             <h1 class="sg-info-page__title">SUGUDASU の約束</h1>
             <p class="sg-info-page__subtitle">SUGUDASU（すぐだす）</p>
         </header>
 
-        <section id="statements-summary" class="sg-statements-summary space-y-2 scroll-mt-24" aria-labelledby="statements-summary-heading">
+        <section id="statements-summary" class="sg-statements-summary sg-info-stack scroll-mt-24" aria-labelledby="statements-summary-heading">
             <h2 id="statements-summary-heading" class="sg-info-section-title">30秒で読む要点</h2>
             <p class="sg-statements-summary__lead">
                 <strong>登録不要</strong>で URL を開き、<strong>名簿 · 金額 · 抽選リストはブラウザ内</strong>で処理します。
@@ -47,16 +47,16 @@
             <p class="sg-info-caption leading-relaxed">法的な取り扱いは <a href="privacy.html">プライバシーポリシー</a>。本ページは製品設計の約束です。情報管理担当の方は <a href="#for-it-security">情シス・情報管理向けまとめ</a> からどうぞ。</p>
         </section>
 
-        <section id="for-it-security" class="space-y-4 scroll-mt-24 bg-slate-50 border border-slate-200 rounded-xl p-5 lg:p-6" aria-labelledby="for-it-security-heading">
+        <section id="for-it-security" class="sg-info-stack--loose scroll-mt-24 bg-slate-50 border border-slate-200 rounded-xl p-5 lg:p-6" aria-labelledby="for-it-security-heading">
             <h2 id="for-it-security-heading" class="sg-info-section-title">情報管理・情シス担当向けまとめ</h2>
             <p class="text-sm leading-relaxed">
                 社内規程の最終判断は貴社にお任せします。以下は、SUGUDASU 各ツールの<strong>設計意図</strong>と、
                 現場から「外部にデータを送っていないか」を確認するための<strong>一次情報</strong>です（契約 · 保証ではありません）。
             </p>
 
-            <div class="bg-white border border-slate-200 rounded-lg p-4 space-y-3 text-sm leading-relaxed">
+            <div class="bg-white border border-slate-200 rounded-lg p-5 sg-info-stack text-sm leading-relaxed">
                 <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">申請メモにそのまま貼れる要約（コピー可）</p>
-                <blockquote class="border-l-4 border-violet-400 pl-4 text-slate-700 space-y-2 not-italic">
+                <blockquote class="border-l-4 border-violet-400 pl-4 text-slate-700 sg-info-stack--tight not-italic">
                     <p><strong>SUGUDASU</strong> は、静的 HTML + JavaScript をブラウザで実行する無料の実務ツール集です。会員登録はありません。</p>
                     <p>ユーザーが入力・貼り付けした名簿 · 金額 · 画像 · テキスト等を、<strong>ツール処理のために当社サーバーへ POST する設計にはしていません</strong>。処理の中心は端末内（クライアント）です。結果はコピー · ダウンロードで手元に残します。</p>
                     <p>ページの初回読込（HTML/JS/CSS）· 広告配信 · アクセス解析 · ホスティングログでは、<strong>入力内容とは別の通信</strong>が発生しうります（<a href="#verify-layers">通信レイヤ</a> · <a href="privacy.html">プライバシーポリシー</a>）。</p>
@@ -83,7 +83,7 @@
                 </table>
             </div>
 
-            <div class="space-y-2 text-sm">
+            <div class="sg-info-stack--tight text-sm">
                 <h3 class="font-bold text-slate-800">説明しやすい一言（例）</h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
                     <li>「入力はブラウザ内で処理し、名簿等を当社サーバーに送る設計にはしていない静的 Web ツールです」</li>
@@ -118,15 +118,15 @@
             </ul>
         </nav>
 
-        <section class="space-y-3">
+        <section class="sg-info-stack">
             <p>SUGUDASU（すぐだす）は、<strong>アカウント登録なしで URL を開き、ブラウザだけで使える</strong>無料の実務ツール集です。</p>
             <p>請求書、班分け、公平抽選、文字列の正規化——用途はバラバラですが、上記サマリーのとおり <strong>名簿を預けず、結果をすぐコピーする</strong> 設計を共通の軸にしています。</p>
         </section>
 
-        <section id="principles" class="space-y-4 scroll-mt-24">
+        <section id="principles" class="sg-info-stack--loose scroll-mt-24">
             <h2 class="sg-info-section-title">7つの設計原則</h2>
 
-            <div class="space-y-4">
+            <div class="sg-info-stack">
                 <div class="sg-principle-row">
                     <img src="../assets/icons/principles/principle-01-signup.png" alt="" width="48" height="48" class="sg-principle-row__icon" decoding="async">
                     <div class="sg-principle-row__body">
@@ -179,7 +179,7 @@
             </div>
         </section>
 
-        <section id="caveats" class="space-y-3 bg-slate-50 border border-slate-200 rounded-xl p-4 scroll-mt-24">
+        <section id="caveats" class="sg-info-stack bg-slate-50 border border-slate-200 rounded-xl p-5 scroll-mt-24">
             <h2 class="sg-info-section-title">正直な但し書き — ブラウザから「出る」もの</h2>
             <p>信頼のため、<strong>入力データ以外</strong> に通信が発生しうるものを隠しません。</p>
             <div class="overflow-x-auto">
@@ -201,12 +201,12 @@
             <p><strong>入力した名簿 · 金額 · 抽選リスト · 生成するダミーデータを、SUGUDASU がサーバーに保存する設計にはしていません。</strong> 例外（拡張機能 · ネットワーク機器 · 第三者タグ等）の可能性は <a href="privacy.html">プライバシーポリシー</a> に記載しています。</p>
         </section>
 
-        <section class="space-y-3">
+        <section class="sg-info-stack">
             <h2 class="sg-info-section-title">確認のしかた（技術に詳しい方へ）</h2>
             <p>Network · Application · 機内モードの <strong>3ステップ</strong> は、<a href="#verify-devtools">DevTools での確認</a>（Copy-first 技術選定の直後）に詳述しています。通信の種類は <a href="#verify-layers">通信レイヤ</a> もご覧ください。</p>
         </section>
 
-        <section id="copy-first-flow" class="space-y-3 scroll-mt-24" aria-labelledby="copy-first-flow-heading">
+        <section id="copy-first-flow" class="sg-info-stack scroll-mt-24" aria-labelledby="copy-first-flow-heading">
             <h2 id="copy-first-flow-heading" class="sg-info-section-title">Copy-first の流れ</h2>
             <p>画面で見せて終わりにせず、<strong>次のツールへ渡す</strong>までを1本の流れとして設計しています。</p>
             <div class="sg-diagram-flow" role="img" aria-label="貼り付け、ブラウザ内で処理、コピーして TSV や PDF へ">
@@ -228,7 +228,7 @@
             <p>API 自動投稿はしません。幹事が<strong>自分で貼る</strong>ことで、何がどこへ行くかを透明に保ちます（Copy-first = チャネル非接続 / 手動持ち帰り）。<a href="#copy-first-tech">技術選定の詳細</a></p>
         </section>
 
-        <section id="copy-first-tech" class="space-y-4 scroll-mt-24">
+        <section id="copy-first-tech" class="sg-info-stack--loose scroll-mt-24">
             <h2 class="sg-info-section-title">Copy-first の技術選定</h2>
             <p>非契約 · 読み物。出力形式（TSV / JSON）と、チャット名の列挙の意味をまとめています。</p>
 
@@ -262,7 +262,7 @@
             <p><a href="#verify-layers">通信レイヤの説明</a> · <a href="#verify-devtools">DevTools での確認手順</a></p>
         </section>
 
-        <section id="verify-layers" class="space-y-4 scroll-mt-24">
+        <section id="verify-layers" class="sg-info-stack--loose scroll-mt-24">
             <h2 class="sg-info-section-title">通信レイヤ — 何がどこまで端末内か</h2>
             <p>
                 SUGUDASU のツールは、<strong>あなたが貼り付けた名簿 · 表 · テキスト</strong>を
@@ -281,7 +281,7 @@
             </div>
             <details class="sg-copy-disclosure">
                 <summary class="font-semibold text-slate-800 cursor-pointer select-none">レイヤ一覧（表）</summary>
-                <div class="overflow-x-auto mt-3 pt-2 border-t border-slate-200/60">
+                <div class="mt-3 pt-3 border-t border-slate-200/60 overflow-x-auto">
                 <table class="sg-layer-table w-full border-collapse min-w-[480px]">
                     <caption class="sr-only">SUGUDASU におけるデータの流れ</caption>
                     <thead>
@@ -333,7 +333,7 @@
             </p>
             <details class="sg-copy-disclosure">
                 <summary class="font-semibold text-slate-800 cursor-pointer select-none">参考：「ブラウザ完結」と外部通信が両立しうる理由</summary>
-                <p class="mt-2 pt-2 border-t border-slate-200/60 leading-relaxed">
+                <p class="mt-3 pt-3 border-t border-slate-200/60 leading-relaxed">
                     「端末内で処理」と言っても、<strong>ページの取得</strong>や、ツールが明示する
                     地図表示 · 名前解決 · ユーザー指定 URL への取得など、<strong>意図した外部通信</strong>を
                     別途行う設計もあります（当社製品の有無は問いません）。
@@ -343,7 +343,7 @@
             </details>
         </section>
 
-        <section id="telemetry-disclosure" class="space-y-3 scroll-mt-24">
+        <section id="telemetry-disclosure" class="sg-info-stack scroll-mt-24">
             <h2 class="sg-info-section-title">外部サービスの利用 — 何を · 何のため · 入力データとの関係</h2>
             <p>
                 このサイトは、皆さまに無料でツールを使い続けていただくために、以下の外部サービスを利用しています。
@@ -380,7 +380,7 @@
             <p class="sg-info-caption">法的な取り扱いは <a href="privacy.html">プライバシーポリシー</a> をご覧ください。本節は製品設計の開示です。</p>
         </section>
 
-        <section id="verify-devtools" class="space-y-4 scroll-mt-24">
+        <section id="verify-devtools" class="sg-info-stack--loose scroll-mt-24">
             <h2 class="sg-info-section-title">3分で確かめる — 開発者ツールでの確認</h2>
             <p>
                 すべてのツールは入力内容をサーバーに送信しません。
@@ -421,7 +421,7 @@
             </p>
         </section>
 
-        <section id="operations" class="space-y-3 scroll-mt-24">
+        <section id="operations" class="sg-info-stack scroll-mt-24">
             <h2 class="sg-info-section-title">運営の選び方</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[280px]">
@@ -436,7 +436,7 @@
             </div>
         </section>
 
-        <section id="wont-do" class="space-y-3 scroll-mt-24">
+        <section id="wont-do" class="sg-info-stack scroll-mt-24">
             <h2 class="sg-info-section-title">あえてやらないこと</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-[11px] border-collapse min-w-[320px]">
@@ -461,21 +461,21 @@
             </div>
         </section>
 
-        <section id="compare" class="space-y-4 scroll-mt-24">
+        <section id="compare" class="sg-info-stack--loose scroll-mt-24">
             <h2 class="sg-info-section-title">他サービスとの違い — カテゴリ別</h2>
             <p>SUGUDASU は <strong>すべての用途で最適</strong> ではありません。<strong>向く場面</strong> で選んでください。製品カテゴリは相互排他です（1ツールは1カテゴリ）。</p>
             <p id="statements-product-updated" class="sg-info-caption"></p>
-            <div id="statements-compare-root" class="space-y-6" aria-live="polite"></div>
+            <div id="statements-compare-root" class="sg-info-stack--loose" aria-live="polite"></div>
         </section>
 
-        <section id="tools-map" class="space-y-3 scroll-mt-24">
+        <section id="tools-map" class="sg-info-stack scroll-mt-24">
             <h2 class="sg-info-section-title">ツールと約束の対応</h2>
             <p class="text-sm text-slate-600">入力データを処理目的でサーバーに送らない設計のツール一覧です。カテゴリごとに分けています。詳細 FAQ は各ツールページ下部にあります。</p>
-            <div id="statements-tools-map-root" class="space-y-6" aria-live="polite"></div>
+            <div id="statements-tools-map-root" class="sg-info-stack--loose" aria-live="polite"></div>
             <p>ツールの一覧: <a href="hub.html">ツール一覧</a> · <a href="updates.html">更新履歴</a> · <a href="roadmap.html">開発ロードマップ</a></p>
         </section>
 
-        <section id="faq" class="space-y-3 sg-faq-list scroll-mt-24">
+        <section id="faq" class="sg-info-stack sg-faq-list scroll-mt-24">
             <h2 class="sg-info-section-title">よくある質問</h2>
             <details class="sg-faq">
                 <summary class="font-bold cursor-pointer select-none">SUGUDASU は本当にデータを送信しませんか？</summary>
@@ -503,7 +503,7 @@
             </details>
         </section>
 
-        <footer class="space-y-2">
+        <footer class="sg-info-stack--tight">
             <p><strong>関連ページ</strong></p>
             <p>
                 <a href="hub.html">ツール一覧</a>
@@ -579,7 +579,7 @@
             .slice()
             .sort((a, b) => (a.order || 0) - (b.order || 0))
             .forEach((cat) => {
-                parts.push(`<div class="space-y-3" id="compare-${esc(cat.id)}">`);
+                parts.push(`<div class="sg-info-stack" id="compare-${esc(cat.id)}">`);
                 parts.push(`<h3 class="sg-info-subsection-title">${esc(cat.label)}</h3>`);
                 if (cat.blurb) {
                     parts.push(`<p class="text-sm text-slate-600">${esc(cat.blurb)}</p>`);
@@ -622,7 +622,7 @@
             .forEach((cat) => {
                 const rows = byCat.get(cat.id) || [];
                 if (!rows.length) return;
-                parts.push(`<div class="space-y-2" id="tools-map-${esc(cat.id)}">`);
+                parts.push(`<div class="sg-info-stack--tight" id="tools-map-${esc(cat.id)}">`);
                 parts.push(`<h3 class="sg-info-subsection-title">${esc(cat.label)}</h3>`);
                 parts.push('<div class="overflow-x-auto">');
                 parts.push('<table class="w-full text-[11px] border-collapse min-w-[480px]">');
