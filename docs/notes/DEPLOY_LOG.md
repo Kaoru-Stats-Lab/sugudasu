@@ -1903,10 +1903,31 @@
 
 ---
 
+## DEPLOY-20260806-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | hotfix — `/smart-diff` サンプルボタンが未スタイルで操作不能に見える · module 依存でクリック死 |
+| **change_summary** | `sg-btn-secondary` に修正 · preview を export 遅延 import · `bustJsImports` に smart-diff-* |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 3 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P8 · **P7 override**: 同一日3回目 · 本番操作不能 hotfix |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`/smart-diff` でサンプル3ボタンが枠付き · クリックで一覧表示 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-06 | 003 approved（smart-diff サンプルボタン hotfix · P7 override） |
 | 2026-08-06 | 002 executed（81486ce · smart-diff 変更確認 公開） |
 | 2026-08-06 | 002 approved（smart-diff 変更確認 公開 MECE · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-06 | 001 executed（ee14988 · 情報ページ縦リズム） |

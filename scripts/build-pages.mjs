@@ -671,7 +671,13 @@ function writeGuidePages() {
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
   const moduleFiles = fs.readdirSync(distAssets).filter(
-    (name) => name.endsWith('-app.js') || name.endsWith('-engine.js') || name === 'hub-search-boot.js' || name === 'sns-app.js'
+    (name) =>
+      name.endsWith('.js') &&
+      (name.endsWith('-app.js') ||
+        name.endsWith('-engine.js') ||
+        name === 'hub-search-boot.js' ||
+        name === 'sns-app.js' ||
+        name.startsWith('smart-diff-'))
   );
   for (const name of moduleFiles) {
     const p = path.join(distAssets, name);

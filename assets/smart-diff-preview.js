@@ -1,9 +1,11 @@
 /**
  * /smart-diff — loads baked Projection fixtures only (public α).
  * Does not run Matcher / Delta / Parser in the browser yet.
+ *
+ * Export (pdf-lib / fontkit) is dynamic-imported so fixture clicks still work
+ * if export deps fail to load.
  */
 import { mountChangeNavigator } from "./smart-diff-navigator.js";
-import { downloadSmartDiffPdf } from "./smart-diff-export.js";
 
 const FIXTURES = {
   A: new URL("./smart-diff-fixtures/A-docx-projection.json", import.meta.url).href,
@@ -19,54 +21,74 @@ let api = null;
 /** @type {object | null} */
 let currentProjection = null;
 
+function setStatus(msg) {
+  if (status) status.textContent = msg;
+}
+
 async function loadFixture(key) {
-  if (!root) return;
+  if (!root) {
+    setStatus("表示領域が見つかりません");
+    return;
+  }
   const url = FIXTURES[key];
-  if (!url) return;
+  if (!url) {
+    setStatus(`未知のサンプル: ${key}`);
+    return;
+  }
+  setStatus("サンプルを読み込み中…");
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`fixture ${key} missing`);
+  if (!res.ok) throw new Error(`サンプル ${key} を読み込めませんでした（${res.status}）`);
   const data = await res.json();
   const projection = data.projection;
+  if (!projection) throw new Error("サンプルに Projection がありません");
   currentProjection = projection;
   if (exportBtn) exportBtn.disabled = false;
   api = mountChangeNavigator(root, projection, {
     onSelect(_id, anchor) {
-      if (status) {
-        status.textContent = anchor
-          ? `Anchor deltaId=${anchor.deltaId} · semantic=${anchor.semanticNodeId || "—"} · page=${anchor.originHint?.page ?? "—"}`
-          : "";
-      }
+      setStatus(
+        anchor
+          ? `選択中: ${anchor.deltaId || "—"} · page=${anchor.originHint?.page ?? "—"}`
+          : ""
+      );
     },
   });
-  if (status && api) {
-    const a = api.getAnchor?.();
-    status.textContent = a
-      ? `Loaded ${key} · Anchor deltaId=${a.deltaId} · page=${a.originHint?.page ?? "—"}`
-      : `Loaded ${key}`;
-  }
+  const a = api?.getAnchor?.();
+  const labels = { A: "契約書", B: "PDF", C: "表変更" };
+  setStatus(
+    a
+      ? `${labels[key] || key}サンプルを表示中 · ${api.changeCount ?? ""}件`
+      : `${labels[key] || key}サンプルを表示中`
+  );
 }
 
 document.querySelectorAll("[data-sg-sd-fixture]").forEach((btn) => {
   btn.addEventListener("click", () => {
     const key = btn.getAttribute("data-sg-sd-fixture");
     loadFixture(key).catch((err) => {
-      if (status) status.textContent = String(err.message || err);
+      setStatus(String(err?.message || err));
+      console.error("[smart-diff]", err);
     });
   });
 });
 
 exportBtn?.addEventListener("click", async () => {
-  if (!currentProjection) return;
+  if (!currentProjection) {
+    setStatus("先にサンプルを選んでください");
+    return;
+  }
   try {
-    if (status) status.textContent = "PDF を生成しています…";
-    // Export = all changes (ignore current UI filter) — rebuild from original fixture items
+    setStatus("PDF を生成しています…");
+    const { downloadSmartDiffPdf } = await import("./smart-diff-export.js");
     await downloadSmartDiffPdf(currentProjection, {
       oldName: "old",
       newName: "new",
       fileBase: "smart-diff-report",
     });
-    if (status) status.textContent = "PDFレポートをダウンロードしました（全変更 · Filter 非依存）";
+    setStatus("PDFレポートをダウンロードしました");
   } catch (err) {
-    if (status) status.textContent = String(err?.message || err);
+    setStatus(String(err?.message || err));
+    console.error("[smart-diff export]", err);
   }
 });
+
+setStatus("サンプルを選ぶと変更一覧が開きます。");

@@ -107,8 +107,8 @@ export function renderNavigatorHtml(projection, state = {}) {
       <div class="sg-sd-nav__head">
         <strong>Changes ${esc(String(count))}</strong>
         <div class="sg-sd-nav__actions">
-          <button type="button" data-sg-sd-prev class="sg-btn sg-btn--ghost text-xs">前の変更</button>
-          <button type="button" data-sg-sd-next class="sg-btn sg-btn--ghost text-xs">次の変更</button>
+          <button type="button" data-sg-sd-prev class="sg-btn-secondary text-xs">前の変更</button>
+          <button type="button" data-sg-sd-next class="sg-btn-secondary text-xs">次の変更</button>
         </div>
       </div>
       <div class="sg-sd-filters" role="group" aria-label="変更フィルタ">
