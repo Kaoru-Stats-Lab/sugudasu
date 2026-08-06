@@ -1,0 +1,18 @@
+{
+  "id": "B-new",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    { "id": "B-h", "type": "heading", "level": 2, "text": "第3条" },
+    {
+      "id": "B-p1",
+      "type": "paragraph",
+      "children": [{ "id": "B-t1", "type": "text", "content": "支払条件" }]
+    },
+    {
+      "id": "B-p2",
+      "type": "paragraph",
+      "children": [{ "id": "B-t2", "type": "text", "content": "追加条件" }]
+    }
+  ]
+}

@@ -25,6 +25,7 @@
     { "terms": ["QR", "二次元コード"], "toolIds": ["link-qr", "qr-reader"] },
     { "terms": ["OCR", "読み取り", "スキャン"], "toolIds": ["qr-reader"] },
     { "terms": ["差分", "Diff", "AI書き換え"], "toolIds": ["diff"] },
+    { "terms": ["変更確認", "Smart Diff", "文書比較", "契約書比較", "規程改定", "新旧対照", "変更箇所"], "toolIds": ["smart-diff"] },
     { "terms": ["シフト表", "勤務表"], "toolIds": ["shift"] },
     { "terms": ["時給", "勤務時間", "バイト代", "パート給料"], "toolIds": ["time-calc"] },
     { "terms": ["コピペ", "貼り付け", "CSV", "TSV"], "toolIds": ["table-conv", "normalize"] },

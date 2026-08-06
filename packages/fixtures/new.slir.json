@@ -1,0 +1,25 @@
+{
+  "id": "new-doc",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "metadata": { "title": "支払条件（新）" },
+  "children": [
+    {
+      "id": "new-h3",
+      "type": "heading",
+      "level": 2,
+      "text": "第3条"
+    },
+    {
+      "id": "new-p3",
+      "type": "paragraph",
+      "children": [
+        {
+          "id": "new-t3",
+          "type": "text",
+          "content": "支払日は45日以内"
+        }
+      ]
+    }
+  ]
+}

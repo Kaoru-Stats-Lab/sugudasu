@@ -1,0 +1,13 @@
+{
+  "id": "A-old",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    { "id": "A-h", "type": "heading", "level": 2, "text": "第3条" },
+    {
+      "id": "A-p",
+      "type": "paragraph",
+      "children": [{ "id": "A-t", "type": "text", "content": "支払日は30日以内" }]
+    }
+  ]
+}

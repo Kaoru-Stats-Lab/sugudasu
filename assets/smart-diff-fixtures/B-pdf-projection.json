@@ -1,0 +1,108 @@
+{
+  "id": "B-pdf",
+  "projection": {
+    "items": [
+      {
+        "id": "delta-1",
+        "kind": "unchanged",
+        "label": "Chapter One",
+        "visible": false,
+        "selected": false,
+        "candidate": false,
+        "confidence": "high",
+        "matchScore": 100,
+        "oldNodeRef": "b-old-1",
+        "newNodeRef": "b-new-1",
+        "originHint": {
+          "page": 1,
+          "bbox": {
+            "x": 50,
+            "y": 780,
+            "width": 0,
+            "height": 0
+          }
+        }
+      },
+      {
+        "id": "delta-2",
+        "kind": "unchanged",
+        "label": "Chapter Two",
+        "visible": false,
+        "selected": false,
+        "candidate": false,
+        "confidence": "high",
+        "matchScore": 100,
+        "oldNodeRef": "b-old-4",
+        "newNodeRef": "b-new-4",
+        "originHint": {
+          "page": 2,
+          "bbox": {
+            "x": 50,
+            "y": 780,
+            "width": 0,
+            "height": 0
+          }
+        }
+      },
+      {
+        "id": "delta-3",
+        "kind": "unchanged",
+        "label": "Body on page 2.",
+        "visible": false,
+        "selected": false,
+        "candidate": false,
+        "confidence": "high",
+        "matchScore": 85,
+        "oldNodeRef": "b-old-6",
+        "newNodeRef": "b-new-6",
+        "originHint": {
+          "page": 2,
+          "bbox": {
+            "x": 50,
+            "y": 740,
+            "width": 0,
+            "height": 0
+          }
+        }
+      },
+      {
+        "id": "delta-4",
+        "kind": "modified",
+        "label": "Body on page 1.",
+        "visible": true,
+        "selected": false,
+        "candidate": true,
+        "changeDetail": "text_only",
+        "beforeText": "Body on page 1.",
+        "afterText": "Body on page 1 revised.",
+        "confidence": "candidate",
+        "matchScore": 60,
+        "oldNodeRef": "b-old-3",
+        "newNodeRef": "b-new-3",
+        "originHint": {
+          "page": 1,
+          "bbox": {
+            "x": 50,
+            "y": 740,
+            "width": 0,
+            "height": 0
+          }
+        }
+      }
+    ],
+    "view": {
+      "filter": {
+        "content": true,
+        "addedDeleted": true,
+        "style": true,
+        "showModified": true,
+        "showAdded": true,
+        "showDeleted": true,
+        "showUnchanged": false
+      },
+      "activeView": "review",
+      "expandedIds": []
+    },
+    "changeCount": 1
+  }
+}

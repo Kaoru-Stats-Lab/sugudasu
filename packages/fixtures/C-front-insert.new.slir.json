@@ -1,0 +1,15 @@
+{
+  "id": "C-new",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    {
+      "id": "C-intro",
+      "type": "paragraph",
+      "children": [{ "id": "C-ti", "type": "text", "content": "新しい序文" }]
+    },
+    { "id": "C-h1", "type": "heading", "level": 2, "text": "第1条" },
+    { "id": "C-h2", "type": "heading", "level": 2, "text": "第2条" },
+    { "id": "C-h3", "type": "heading", "level": 2, "text": "第3条" }
+  ]
+}

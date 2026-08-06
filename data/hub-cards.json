@@ -428,6 +428,18 @@
       }
     },
     {
+      "toolId": "smart-diff",
+      "href": "smart-diff.html",
+      "blurb": "契約書や規程の修正前後で、どこが変わったか一覧で追いたい時に。追加・削除・変更を順に確認し、提出前の見落としを減らします。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "json-view",
       "href": "json-view.html",
       "blurb": "APIの返り値やログのJSONを確認したい時に。キーや値を探して場所や値をコピーします。",
@@ -438,8 +450,7 @@
         ],
         "popular": false
       }
-    },
-    {
+    },    {
       "toolId": "ai-cleaner",
       "href": "ai-cleaner.html",
       "blurb": "AI出力をNotionやCursorへ移す前に整えたい時に。Markdown・コード・JSONを整えてコピーします。",

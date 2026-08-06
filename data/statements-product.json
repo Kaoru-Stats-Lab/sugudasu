@@ -100,6 +100,14 @@
       "promiseNote": "差分表示 · 保存なし · 非送信"
     },
     {
+      "toolId": "smart-diff",
+      "categoryId": "text",
+      "productName": "SUGUDASU 変更確認（Smart Diff）",
+      "file": "smart-diff.html",
+      "inputHandling": "サンプル Projection · 端末内（α）",
+      "promiseNote": "変更一覧 · PDFレポート · 保存なし · 非送信"
+    },
+    {
       "toolId": "json-view",
       "categoryId": "text",
       "productName": "SUGUDASU JSON構造",

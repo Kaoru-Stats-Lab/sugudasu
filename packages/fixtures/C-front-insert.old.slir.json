@@ -1,0 +1,10 @@
+{
+  "id": "C-old",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    { "id": "C-h1", "type": "heading", "level": 2, "text": "第1条" },
+    { "id": "C-h2", "type": "heading", "level": 2, "text": "第2条" },
+    { "id": "C-h3", "type": "heading", "level": 2, "text": "第3条" }
+  ]
+}

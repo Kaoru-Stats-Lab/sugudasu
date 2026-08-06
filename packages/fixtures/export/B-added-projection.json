@@ -1,0 +1,35 @@
+{
+  "id": "B",
+  "projection": {
+    "items": [
+      {
+        "id": "delta-added-1",
+        "kind": "added",
+        "label": "序文",
+        "visible": true,
+        "afterText": "新しい序文",
+        "newNodeRef": "n-intro"
+      },
+      {
+        "id": "delta-unchanged-1",
+        "kind": "unchanged",
+        "label": "第1条",
+        "visible": false
+      }
+    ],
+    "changeCount": 1,
+    "view": {
+      "filter": {
+        "content": true,
+        "addedDeleted": true,
+        "style": true,
+        "showModified": true,
+        "showAdded": true,
+        "showDeleted": true,
+        "showUnchanged": false
+      },
+      "activeView": "review",
+      "expandedIds": []
+    }
+  }
+}

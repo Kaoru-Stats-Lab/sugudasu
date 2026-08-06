@@ -1,0 +1,14 @@
+{
+  "id": "D-old",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    {
+      "id": "D-p",
+      "type": "paragraph",
+      "children": [
+        { "id": "D-t", "type": "text", "content": "重要事項", "styleSegments": [] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "A-docx",
+  "projection": {
+    "items": [
+      {
+        "id": "delta-1",
+        "kind": "unchanged",
+        "label": "第3条",
+        "visible": false,
+        "selected": false,
+        "candidate": false,
+        "confidence": "high",
+        "matchScore": 100,
+        "oldNodeRef": "a-old-1",
+        "newNodeRef": "a-new-1"
+      },
+      {
+        "id": "delta-2",
+        "kind": "modified",
+        "label": "支払日は30日以内",
+        "visible": true,
+        "selected": false,
+        "candidate": true,
+        "changeDetail": "text_only",
+        "beforeText": "支払日は30日以内",
+        "afterText": "支払日は45日以内",
+        "confidence": "candidate",
+        "matchScore": 63,
+        "oldNodeRef": "a-old-3",
+        "newNodeRef": "a-new-3"
+      }
+    ],
+    "view": {
+      "filter": {
+        "content": true,
+        "addedDeleted": true,
+        "style": true,
+        "showModified": true,
+        "showAdded": true,
+        "showDeleted": true,
+        "showUnchanged": false
+      },
+      "activeView": "review",
+      "expandedIds": []
+    },
+    "changeCount": 1
+  }
+}

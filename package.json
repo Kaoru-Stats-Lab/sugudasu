@@ -78,6 +78,12 @@
     "stress:sticky-room": "node scripts/sticky-room-stress.mjs",
     "poc:schedule-gantt": "npx --yes serve . -l 8090",
     "poc:schedule-split-pane": "npx --yes serve . -l 8092",
+    "test:smart-diff-wave1": "node packages/scripts/run-wave1.mjs",
+    "test:smart-diff-wave2": "node packages/scripts/build-docx-fixtures.mjs && node packages/scripts/run-wave2.mjs",
+    "test:smart-diff-wave2.5": "node packages/scripts/build-docx-smoke-fixtures.mjs && node packages/scripts/run-wave2.5.mjs",
+    "test:smart-diff-wave3": "node packages/scripts/build-pdf-fixtures.mjs && node packages/scripts/run-wave3.mjs",
+    "test:smart-diff-wave4": "node packages/scripts/build-ui-fixtures.mjs && node packages/scripts/run-wave4.mjs",
+    "test:smart-diff-wave5": "node packages/scripts/build-ui-fixtures.mjs && node packages/scripts/build-export-fixtures.mjs && node packages/scripts/run-wave5.mjs",
     "dev:file-transfer": "npm --prefix secret/file-transfer run dev"
   },
   "devDependencies": {
@@ -90,6 +96,10 @@
     "tailwindcss": "^4.3.1"
   },
   "dependencies": {
+    "@fontsource/noto-sans-jp": "^5.3.0",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "@xmldom/xmldom": "^0.9.10",
+    "jszip": "^3.10.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.296"
   }

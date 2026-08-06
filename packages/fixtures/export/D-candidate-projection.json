@@ -1,0 +1,26 @@
+{
+  "id": "D",
+  "projection": {
+    "items": [
+      {
+        "id": "delta-cand-1",
+        "kind": "modified",
+        "label": "第5条",
+        "visible": true,
+        "candidate": true,
+        "confidence": "candidate",
+        "matchScore": 72,
+        "beforeText": "旧文",
+        "afterText": "新文",
+        "changeDetail": "text_only"
+      }
+    ],
+    "changeCount": 1,
+    "view": {
+      "selectedId": null,
+      "filter": {},
+      "activeView": "review",
+      "expandedIds": []
+    }
+  }
+}

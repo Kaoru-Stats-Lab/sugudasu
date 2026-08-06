@@ -340,16 +340,47 @@
     {
       "keyword": "差分",
       "toolIds": [
+        "diff",
+        "smart-diff"
+      ],
+      "weight": 95
+    },
+    {
+      "keyword": "変更確認",
+      "toolIds": [
+        "smart-diff"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "契約書 比較",
+      "toolIds": [
+        "smart-diff",
         "diff"
       ],
       "weight": 95
+    },
+    {
+      "keyword": "文書 変更 確認",
+      "toolIds": [
+        "smart-diff"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "PDF 変更箇所",
+      "toolIds": [
+        "smart-diff"
+      ],
+      "weight": 90
     },
     {
       "keyword": "テキスト",
       "toolIds": [
         "normalize",
         "table-conv",
-        "diff"
+        "diff",
+        "smart-diff"
       ],
       "weight": 80
     },

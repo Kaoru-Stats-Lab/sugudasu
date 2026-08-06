@@ -212,18 +212,6 @@
       "askFeedback": "既定で「全角・行末スペースを無視」をONにしてほしいですか？（今はOFF · 変更するなら仕様を先に改訂します）"
     },
     {
-      "id": "smart-diff",
-      "lane": "core",
-      "status": "considering",
-      "priority": 12,
-      "toolId": "diff",
-      "toolLabel": "差分",
-      "toolHref": "diff.html",
-      "title": "Smart Diff — 危険な変更の検知強化",
-      "summary": "AI書き換え前後で、数字・日付・URL・否定の反転・必須⇄推奨など見逃すとまずい差分をさらに見つけやすくする。非送信・ブラウザ完結のまま。新規URLは作らず差分チェックを強化します。",
-      "askFeedback": "いまの差分チェックで見逃しがちな変更（金額・日付・否定語・必須/任意など）があれば教えてください。"
-    },
-    {
       "id": "search-query-builder",
       "lane": "core",
       "status": "considering",

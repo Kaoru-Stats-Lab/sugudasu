@@ -521,6 +521,20 @@
       "statusNote": "危険な変更の優先表示 · 非送信 · 保存なし · コピー/印刷",
       "categoryId": "text"
     },
+    "smart-diff": {
+      "file": "smart-diff.html",
+      "conceptName": "変更確認",
+      "productName": "SUGUDASU 変更確認（Smart Diff）",
+      "navLabel": "変更確認",
+      "navIcon": "📑",
+      "inNav": true,
+      "navOrder": 16.72,
+      "name": "変更確認",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "変更一覧で承認判断を助ける · サンプルα · 非送信 · PDFレポート",
+      "categoryId": "text"
+    },
     "json-view": {
       "file": "json-view.html",
       "conceptName": "JSON構造",

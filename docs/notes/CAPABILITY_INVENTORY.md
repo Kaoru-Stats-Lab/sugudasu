@@ -107,6 +107,7 @@ Handoff / ZIP / QR                ← 小規模 Shared
 | シフト公平性 | shift | 固有 | — |
 | Unicode 装飾文字 | sns · font-converter | Shared 済み核 | `unicode-math-alpha` |
 | 表変換 | table-conv | 固有 | — |
+| 文書変更確認 · Projection Export | smart-diff（`smart-diff-export` · pdf-lib） | 固有 + Export | pdf-lib は vendor 経由 · Parser 束ねは別 Wave |
 | 工程表 Notion UI | schedule / Sync | 固有 + Sync | ADAPT 正本 |
 
 ---

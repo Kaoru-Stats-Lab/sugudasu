@@ -16,6 +16,7 @@
     "clipboard-trim": { "profile": "light", "status": "ok" },
     "clip-stash": { "profile": "heavy", "status": "ok" },
     "diff": { "profile": "light", "status": "ok" },
+    "smart-diff": { "profile": "heavy", "status": "ok" },
     "fair-draw": { "profile": "heavy", "status": "ok" },
     "font-converter": { "profile": "light", "status": "ok" },
     "group-split": { "profile": "heavy", "status": "ok" },

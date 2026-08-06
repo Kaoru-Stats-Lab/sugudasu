@@ -1,0 +1,15 @@
+{
+  "id": "E-new",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "children": [
+    {
+      "id": "E-t",
+      "type": "table",
+      "rowCount": 2,
+      "columnCount": 2,
+      "contentHash": "table-a-v2",
+      "extractedTextSummary": "表A(内容変更)"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "C-table",
+  "projection": {
+    "items": [
+      {
+        "id": "delta-1",
+        "kind": "modified",
+        "label": "表A",
+        "visible": true,
+        "selected": false,
+        "candidate": true,
+        "changeDetail": "table_changed",
+        "beforeText": "表A",
+        "afterText": "表A(内容変更)",
+        "confidence": "candidate",
+        "matchScore": 61,
+        "oldNodeRef": "E-t",
+        "newNodeRef": "E-t"
+      }
+    ],
+    "view": {
+      "filter": {
+        "content": true,
+        "addedDeleted": true,
+        "style": true,
+        "showModified": true,
+        "showAdded": true,
+        "showDeleted": true,
+        "showUnchanged": false
+      },
+      "activeView": "review",
+      "expandedIds": []
+    },
+    "changeCount": 1
+  }
+}

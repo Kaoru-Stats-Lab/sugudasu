@@ -11,6 +11,29 @@
   },
   "entries": [
     {
+      "id": "smart-diff-ship-20260806",
+      "date": "2026-08-06",
+      "type": "feature",
+      "audience": "public",
+      "title": "変更確認 — 文書の変更箇所を一覧で追う",
+      "body": "契約書・規程などの変更箇所を一覧から順に確認し、承認判断を助けるツールを公開しました（公開α・サンプル文書）。貼り付けテキストの比較は従来どおり差分チェックをご利用ください。",
+      "tools": [
+        "smart-diff"
+      ]
+    },
+    {
+      "id": "smart-diff-ship-internal-20260806",
+      "date": "2026-08-06",
+      "type": "chore",
+      "audience": "internal",
+      "title": "smart-diff 公開 MECE（命名 · hub · vocab · α fixture UI）",
+      "body": "id=smart-diff · productName=SUGUDASU 変更確認（Smart Diff） · /smart-diff · Wave6 Validation 継続 · DEPLOY-20260806-smart-diff",
+      "tools": [
+        "smart-diff"
+      ],
+      "rollup": "smart-diff-ship-20260806"
+    },
+    {
       "id": "info-vertical-rhythm-20260806",
       "date": "2026-08-06",
       "type": "improve",

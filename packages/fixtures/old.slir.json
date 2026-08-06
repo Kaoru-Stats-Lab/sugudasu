@@ -1,0 +1,25 @@
+{
+  "id": "old-doc",
+  "type": "document",
+  "sourceFormat": "fixture",
+  "metadata": { "title": "支払条件（旧）" },
+  "children": [
+    {
+      "id": "old-h3",
+      "type": "heading",
+      "level": 2,
+      "text": "第3条"
+    },
+    {
+      "id": "old-p3",
+      "type": "paragraph",
+      "children": [
+        {
+          "id": "old-t3",
+          "type": "text",
+          "content": "支払日は30日以内"
+        }
+      ]
+    }
+  ]
+}
