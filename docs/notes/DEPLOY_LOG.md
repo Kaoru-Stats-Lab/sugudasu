@@ -1927,18 +1927,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — `/smart-diff` 実ファイル比較（DOCX/PDF DnD） |
 | **change_summary** | 旧/新 DnD · `smart-diff-pipeline` · `smart-diff-core` · JSZip vendor · prepare/build 接続 · FAQ/リード更新 · changelog |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 9/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （consume 後に記入） |
-| **gates** | P1–P7 |
+| **pages_build_budget_after** | 9/450（2026-08 · consume 済） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `3381a7f`（git push origin main · CF 自動ビルド） |
 | **smoke** | （CF 反映後）`https://sugudasu.com/smart-diff` · 旧/新 DnD ·「変更を確認」· サンプル折りたたみ |
 
 ---
@@ -1947,6 +1947,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-08 | 001 executed（3381a7f · smart-diff 実ファイル比較） |
 | 2026-08-08 | 001 approved（smart-diff 実ファイル比較 · 提督 Commit&Push&Deploy） |
 | 2026-08-06 | 003 executed（d15f474 · smart-diff サンプルボタン hotfix） |
 | 2026-08-06 | 003 approved（smart-diff サンプルボタン hotfix · P7 override） |
