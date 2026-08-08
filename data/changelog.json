@@ -11,6 +11,18 @@
   },
   "entries": [
     {
+      "id": "diff-smart-diff-usecase-copy-20260808",
+      "date": "2026-08-08",
+      "type": "improve",
+      "audience": "public",
+      "title": "差分チェックと変更確認の選び方を分かりやすく",
+      "body": "テキストを貼る場合と Word / PDF の新旧を追う場合で、どちらを使うかを両ツールと Hub で揃えて案内するようにしました。",
+      "tools": [
+        "diff",
+        "smart-diff"
+      ]
+    },
+    {
       "id": "smart-diff-upload-20260808",
       "date": "2026-08-08",
       "type": "feature",

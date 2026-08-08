@@ -96,8 +96,8 @@
       "categoryId": "text",
       "productName": "SUGUDASU 差分チェック",
       "file": "diff.html",
-      "inputHandling": "2面テキスト · 端末内",
-      "promiseNote": "差分表示 · 保存なし · 非送信"
+      "inputHandling": "2面テキスト貼付 · 端末内",
+      "promiseNote": "危険変更の優先表示 · 保存なし · 非送信"
     },
     {
       "toolId": "smart-diff",
@@ -105,7 +105,7 @@
       "productName": "SUGUDASU 変更確認（Smart Diff）",
       "file": "smart-diff.html",
       "inputHandling": "DOCX/PDF 旧新ドロップ · 端末内",
-      "promiseNote": "変更一覧 · PDFレポート · 保存なし · 非送信"
+      "promiseNote": "変更一覧で承認判断 · 保存なし · 非送信"
     },
     {
       "toolId": "json-view",

@@ -127,6 +127,11 @@
   ],
   "commonMistakes": [
     {
+      "query": "Word PDF 新旧 変更確認 承認",
+      "meant": "SUGUDASU 変更確認（Smart Diff）",
+      "note": "Word / PDF の旧新で変更を順に追うのは変更確認。差分チェックはテキスト貼り付け向け"
+    },
+    {
       "query": "Word 変更履歴 トラッキング 連携 同期",
       "meant": "SUGUDASU 差分チェック",
       "note": "Wordファイルと直接連動してリアルタイムに変更履歴を記録・同期する機能はないため"

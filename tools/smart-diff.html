@@ -24,10 +24,10 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "差分チェック（/diff）との違いは？",
+          "name": "差分チェックと同じですか？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "差分チェックは貼り付けたテキストの書き換え前後比較です。変更確認（Smart Diff）は文書の変更箇所を一覧から追い、承認判断を助けるためのツールです。"
+            "text": "いいえ。別ツールです。テキストを貼って色で見たいときは差分チェック。WordやPDFの旧版・新版で変更を順に追い、承認してよいか判断したいときは変更確認を使ってください。"
           }
         },
         {
@@ -35,7 +35,7 @@
           "name": "自分の DOCX / PDF を比較できますか？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "できます。旧版と新版の DOCX 同士、または PDF 同士を選び、ブラウザ内で比較します。ファイルはサーバーに送りません。貼り付けテキストの比較は差分チェックをご利用ください。"
+            "text": "できます。旧版と新版の DOCX 同士、または PDF 同士を選び、ブラウザ内で比較します。ファイルはサーバーに送りません。テキストの貼り付け比較は差分チェックをご利用ください。"
           }
         },
         {
@@ -79,8 +79,8 @@ S4_action: （関連）テキスト差分は差分チェックへ
     <header class="sg-tool-intro space-y-2 no-print">
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead"><strong>文書の変更箇所を一覧から順に確認し、承認判断を助けます。</strong> — 登録不要・保存なし・非送信です。</p>
-            <p class="sg-tool-lead">貼り付けテキストだけの比較ではなく、変更確認のために読む量を減らすことを目指します。</p>
-            <p class="sg-tool-lead sg-tool-lead--meta">旧・新の DOCX 同士、または PDF 同士を比較します。テキスト貼り付けは <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a> へ。</p>
+            <p class="sg-tool-lead">Word / PDF の旧版・新版を開き、変更を順に追って「この版でよいか」を判断するためのツールです。</p>
+            <p class="sg-tool-lead sg-tool-lead--meta">テキストを貼って色で見たいときは <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a> へ。迷ったら：貼る文 → 差分チェック / Word・PDF → このページ（変更確認）。</p>
         </div>
     </header>
 
@@ -122,6 +122,7 @@ S4_action: （関連）テキスト差分は差分チェックへ
         <p id="sg-sd-anchor-status" class="text-[11px] text-slate-500">旧・新のファイルを選び、「変更を確認」を押してください。</p>
         <p id="sg-sd-loss-note" class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" hidden></p>
         <div id="sg-sd-navigator-root"></div>
+        <p class="text-[11px] text-slate-500 no-print">迷ったら：テキストを貼って色で見たい → <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a>。Word / PDF の新旧で変更を順に追いたい → このページ（変更確認）。</p>
     </section>
 </main>
 
@@ -129,13 +130,13 @@ S4_action: （関連）テキスト差分は差分チェックへ
     <div class="sg-faq-inner">
         <h2 class="sg-faq-title">変更確認のよくある質問</h2>
         <p class="text-xs text-slate-600 leading-relaxed mb-4 max-w-3xl">
-            契約書・規程・施工計画などの改訂で、「どこが変わったか」を一覧から追い、全文を最初から読み直さずに承認判断するためのツールです。
+            Word / PDF の改訂で、「どこが変わったか」を一覧から追い、全文を最初から読み直さずに承認判断するためのツールです。
         </p>
         <div class="sg-faq-list">
             <details class="sg-faq">
-                <summary>差分チェック（テキスト比較）と同じですか？</summary>
+                <summary>差分チェックと同じですか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>いいえ。<a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a>は貼り付けた文の書き換え前後比較です。変更確認（Smart Diff）は<strong>変更箇所を一覧から確認し、承認判断を助ける</strong>ことを目的にしています。</p>
+                    <p>いいえ。別ツールです。<strong>テキストを貼って色で見たい</strong>ときは <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a>。<strong>Word / PDF の旧版・新版で変更を順に追い、承認してよいか判断したい</strong>ときは変更確認を使ってください。</p>
                 </div>
             </details>
             <details class="sg-faq">

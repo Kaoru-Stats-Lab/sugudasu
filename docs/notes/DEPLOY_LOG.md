@@ -1943,10 +1943,31 @@
 
 ---
 
+## DEPLOY-20260808-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 差分チェック / 変更確認のユースケース対比コピー |
+| **change_summary** | Hub blurb 直交 · 両ツール lead/FAQ/相互リンク · statements · 検索語彙 · PRODUCT_NAMING 対比正本 · changelog |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push&Deploy） |
+| **pages_build_budget_after** | （consume 後に記入） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`/diff` · `/smart-diff` · hub カード文 ·「迷ったら」分岐 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-08 | 002 approved（diff/smart-diff ユースケース対比 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-08 | 001 executed（3381a7f · smart-diff 実ファイル比較） |
 | 2026-08-08 | 001 approved（smart-diff 実ファイル比較 · 提督 Commit&Push&Deploy） |
 | 2026-08-06 | 003 executed（d15f474 · smart-diff サンプルボタン hotfix） |

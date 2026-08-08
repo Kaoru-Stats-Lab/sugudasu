@@ -59,7 +59,12 @@
     {
       "query": "テキスト Diff 貼り付け",
       "meant": "SUGUDASU 差分チェック",
-      "note": "貼り付けテキスト比較は差分チェック。変更確認は文書変更の一覧確認向け"
+      "note": "貼り付けテキスト比較は差分チェック。変更確認は Word / PDF の変更一覧・承認判断向け"
+    },
+    {
+      "query": "差分チェック Smart Diff 違い",
+      "meant": "SUGUDASU 変更確認（Smart Diff）",
+      "note": "テキスト貼付→差分チェック。Word/PDF新旧→変更確認。上位版Diffではない"
     },
     {
       "query": "Word トラック変更",
