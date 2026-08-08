@@ -32,10 +32,10 @@
         },
         {
           "@type": "Question",
-          "name": "いま自分のファイルをアップロードできますか？",
+          "name": "自分の DOCX / PDF を比較できますか？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "公開αではサンプル文書の変更一覧で操作感を確認できます。実ファイルのアップロード比較は順次広げます。貼り付けテキストの比較は差分チェックをご利用ください。"
+            "text": "できます。旧版と新版の DOCX 同士、または PDF 同士を選び、ブラウザ内で比較します。ファイルはサーバーに送りません。貼り付けテキストの比較は差分チェックをご利用ください。"
           }
         },
         {
@@ -62,11 +62,11 @@ product_voice: calm_practical
 copy_success_mode: point_confirm
 lead_profile: heavy
 continue_later: no
-has_file_drop: no
+has_file_drop: yes
 cta_order: S1 > S2 > S3 > S4
-S1_action: サンプルを開く（変更一覧）
-S2_action: 次の変更 / 一覧で確認
-S3_action: PDFレポートを保存
+S1_action: 旧・新ファイルを選ぶ
+S2_action: 変更を確認（比較実行）
+S3_action: 次の変更 / 一覧で確認 · PDFレポートを保存
 S4_action: （関連）テキスト差分は差分チェックへ
 -->
 <div id="sg-chrome-top"
@@ -80,26 +80,47 @@ S4_action: （関連）テキスト差分は差分チェックへ
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead"><strong>文書の変更箇所を一覧から順に確認し、承認判断を助けます。</strong> — 登録不要・保存なし・非送信です。</p>
             <p class="sg-tool-lead">貼り付けテキストだけの比較ではなく、変更確認のために読む量を減らすことを目指します。</p>
-            <p class="sg-tool-lead sg-tool-lead--meta">公開αはサンプル文書での操作確認です。テキスト貼り付けの比較は <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a> へ。</p>
+            <p class="sg-tool-lead sg-tool-lead--meta">旧・新の DOCX 同士、または PDF 同士を比較します。テキスト貼り付けは <a href="diff.html" class="text-blue-600 hover:underline">差分チェック</a> へ。</p>
         </div>
     </header>
 
     <section class="sg-card p-4 space-y-3 no-print">
-        <p data-sg-privacy-badge data-subject="確認中の表示内容" data-extra="サンプルは端末内で表示します · タブを閉じると消えます" class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
+        <p data-sg-privacy-badge data-subject="確認中の文書" data-extra="ブラウザ内で比較します · サーバーに送りません · タブを閉じると消えます" class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
     </section>
 
-    <section class="sg-card p-4 space-y-3" id="smart-diff-preview" aria-label="変更確認">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-            <h2 class="text-sm font-bold text-slate-900">変更一覧（サンプル）</h2>
-            <p class="text-[11px] text-slate-500">サンプル Projection · 差分の再計算はしません</p>
+    <section class="sg-card p-4 space-y-4" id="smart-diff-preview" aria-label="変更確認">
+        <div class="space-y-2">
+            <h2 class="text-sm font-bold text-slate-900">ファイルを比較</h2>
+            <p class="text-[11px] text-slate-500">DOCX 同士、または PDF 同士 · 各 25MB まで · 処理は端末内のみ</p>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+            <div id="sg-sd-drop-old" class="sg-file-drop" tabindex="0" role="button" aria-label="旧版ファイルを選択">
+                <p class="sg-file-drop__title">旧版をドロップ / クリック</p>
+                <p class="sg-file-drop__hint">DOCX または PDF</p>
+                <p id="sg-sd-old-label" class="sg-file-drop__hint mt-2 text-slate-700"></p>
+                <input type="file" class="sr-only" accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+            </div>
+            <div id="sg-sd-drop-new" class="sg-file-drop" tabindex="0" role="button" aria-label="新版ファイルを選択">
+                <p class="sg-file-drop__title">新版をドロップ / クリック</p>
+                <p class="sg-file-drop__hint">DOCX または PDF（旧と同じ形式）</p>
+                <p id="sg-sd-new-label" class="sg-file-drop__hint mt-2 text-slate-700"></p>
+                <input type="file" class="sr-only" accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+            </div>
         </div>
         <div class="flex flex-wrap gap-2 text-xs items-center">
-            <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="A">契約書サンプル</button>
-            <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="B">PDFサンプル</button>
-            <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="C">表変更サンプル</button>
-            <button type="button" id="sg-sd-export-pdf" class="sg-btn-primary text-xs" disabled>PDFレポートを保存</button>
+            <button type="button" id="sg-sd-compare" class="sg-btn-primary text-xs" disabled>変更を確認</button>
+            <button type="button" id="sg-sd-export-pdf" class="sg-btn-secondary text-xs" disabled>PDFレポートを保存</button>
         </div>
-        <p id="sg-sd-anchor-status" class="text-[11px] text-slate-500">サンプルを選ぶと変更一覧が開きます。</p>
+        <details class="text-xs text-slate-600">
+            <summary class="cursor-pointer text-slate-500 hover:text-slate-700">サンプルで操作を試す</summary>
+            <div class="mt-2 flex flex-wrap gap-2 items-center">
+                <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="A">契約書サンプル</button>
+                <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="B">PDFサンプル</button>
+                <button type="button" class="sg-btn-secondary text-xs" data-sg-sd-fixture="C">表変更サンプル</button>
+            </div>
+        </details>
+        <p id="sg-sd-anchor-status" class="text-[11px] text-slate-500">旧・新のファイルを選び、「変更を確認」を押してください。</p>
+        <p id="sg-sd-loss-note" class="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" hidden></p>
         <div id="sg-sd-navigator-root"></div>
     </section>
 </main>
@@ -118,9 +139,9 @@ S4_action: （関連）テキスト差分は差分チェックへ
                 </div>
             </details>
             <details class="sg-faq">
-                <summary>いま自分の DOCX / PDF をアップロードできますか？</summary>
+                <summary>自分の DOCX / PDF を比較できますか？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>公開αではサンプル文書で一覧・次へ・PDFレポートの操作感を確認できます。実ファイルのアップロード比較は順次広げます。</p>
+                    <p>できます。旧版と新版をドロップ（またはクリック選択）し、「変更を確認」を押してください。DOCX 同士、または PDF 同士で比較します。ファイルはサーバーに送りません。</p>
                 </div>
             </details>
             <details class="sg-faq">

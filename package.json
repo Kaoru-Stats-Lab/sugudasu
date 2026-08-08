@@ -3,7 +3,8 @@
   "private": true,
   "description": "SUGUDASU — 無料ビジネスツール8選（静的サイト）",
   "scripts": {
-    "build:pages": "node scripts/build-hub-search-bundle.mjs && node scripts/render-hub-cards.mjs && node scripts/verify-hub-ia.mjs && npm run test:font-styles && node scripts/verify-tool-naming.mjs && node scripts/verify-tech-adoption.mjs && node scripts/verify-changelog.mjs && node scripts/verify-statements-product.mjs && node scripts/sync-readme-tools-table.mjs --check && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
+    "prepare:smart-diff-browser": "node scripts/prepare-smart-diff-browser.mjs",
+    "build:pages": "npm run prepare:smart-diff-browser && node scripts/build-hub-search-bundle.mjs && node scripts/render-hub-cards.mjs && node scripts/verify-hub-ia.mjs && npm run test:font-styles && node scripts/verify-tool-naming.mjs && node scripts/verify-tech-adoption.mjs && node scripts/verify-changelog.mjs && node scripts/verify-statements-product.mjs && node scripts/sync-readme-tools-table.mjs --check && node scripts/verify-ogp.mjs && node scripts/build-pages.mjs && node scripts/verify-pages-free-plan.mjs",
     "build:pages:sync": "node scripts/build-pages.mjs --target=sync && node scripts/verify-pages-free-plan.mjs",
     "deploy:pages:sync": "npm run release:pages:sync && npx wrangler pages deploy dist-sync --project-name=sugudasu-sync --branch=main",
     "deploy:gate": "node scripts/check-deploy-gate.mjs",
@@ -78,6 +79,7 @@
     "stress:sticky-room": "node scripts/sticky-room-stress.mjs",
     "poc:schedule-gantt": "npx --yes serve . -l 8090",
     "poc:schedule-split-pane": "npx --yes serve . -l 8092",
+    "test:smart-diff-browser": "npm run prepare:smart-diff-browser && node scripts/smart-diff-browser-smoke.mjs",
     "test:smart-diff-wave1": "node packages/scripts/run-wave1.mjs",
     "test:smart-diff-wave2": "node packages/scripts/build-docx-fixtures.mjs && node packages/scripts/run-wave2.mjs",
     "test:smart-diff-wave2.5": "node packages/scripts/build-docx-smoke-fixtures.mjs && node packages/scripts/run-wave2.5.mjs",

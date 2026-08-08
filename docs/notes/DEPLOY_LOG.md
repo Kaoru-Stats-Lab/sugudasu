@@ -1923,10 +1923,31 @@
 
 ---
 
+## DEPLOY-20260808-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — `/smart-diff` 実ファイル比較（DOCX/PDF DnD） |
+| **change_summary** | 旧/新 DnD · `smart-diff-pipeline` · `smart-diff-core` · JSZip vendor · prepare/build 接続 · FAQ/リード更新 · changelog |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （consume 後に記入） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/smart-diff` · 旧/新 DnD ·「変更を確認」· サンプル折りたたみ |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-08 | 001 approved（smart-diff 実ファイル比較 · 提督 Commit&Push&Deploy） |
 | 2026-08-06 | 003 executed（d15f474 · smart-diff サンプルボタン hotfix） |
 | 2026-08-06 | 003 approved（smart-diff サンプルボタン hotfix · P7 override） |
 | 2026-08-06 | 002 executed（81486ce · smart-diff 変更確認 公開） |

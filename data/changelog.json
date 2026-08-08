@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-06",
+  "updatedAt": "2026-08-08",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,29 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "smart-diff-upload-20260808",
+      "date": "2026-08-08",
+      "type": "feature",
+      "audience": "public",
+      "title": "変更確認 — 自分の DOCX / PDF を比較",
+      "body": "旧版・新版の DOCX 同士、または PDF 同士をドロップして、ブラウザ内で変更一覧を確認できるようにしました。ファイルはサーバーに送りません。",
+      "tools": [
+        "smart-diff"
+      ]
+    },
+    {
+      "id": "smart-diff-upload-internal-20260808",
+      "date": "2026-08-08",
+      "type": "improve",
+      "audience": "internal",
+      "title": "smart-diff ブラウザパイプライン（DnD → Projection）",
+      "body": "assets/smart-diff-core · prepare:smart-diff-browser · JSZip vendor · compareDocumentBytes · has_file_drop yes",
+      "tools": [
+        "smart-diff"
+      ],
+      "rollup": "smart-diff-upload-20260808"
+    },
     {
       "id": "smart-diff-ship-20260806",
       "date": "2026-08-06",

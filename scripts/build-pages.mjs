@@ -670,23 +670,46 @@ function writeGuidePages() {
 
 function bustJsImports() {
   const distAssets = path.join(DIST, 'assets');
-  const moduleFiles = fs.readdirSync(distAssets).filter(
-    (name) =>
-      name.endsWith('.js') &&
-      (name.endsWith('-app.js') ||
-        name.endsWith('-engine.js') ||
-        name === 'hub-search-boot.js' ||
-        name === 'sns-app.js' ||
-        name.startsWith('smart-diff-'))
-  );
-  for (const name of moduleFiles) {
-    const p = path.join(distAssets, name);
+  /** @param {string} dir */
+  function walkModules(dir) {
+    if (!fs.existsSync(dir)) return [];
+    const out = [];
+    for (const name of fs.readdirSync(dir)) {
+      const p = path.join(dir, name);
+      const st = fs.statSync(p);
+      if (st.isDirectory()) {
+        if (name === 'vendor' || name === 'smart-diff-fonts' || name === 'smart-diff-fixtures') continue;
+        out.push(...walkModules(p));
+        continue;
+      }
+      if (name.endsWith('.js') || name.endsWith('.mjs')) out.push(p);
+    }
+    return out;
+  }
+
+  const moduleFiles = [
+    ...fs.readdirSync(distAssets)
+      .filter(
+        (name) =>
+          name.endsWith('.js') &&
+          (name.endsWith('-app.js') ||
+            name.endsWith('-engine.js') ||
+            name === 'hub-search-boot.js' ||
+            name === 'sns-app.js' ||
+            name.startsWith('smart-diff-'))
+      )
+      .map((name) => path.join(distAssets, name)),
+    ...walkModules(path.join(distAssets, 'smart-diff-core')),
+  ];
+
+  for (const p of moduleFiles) {
     if (!fs.existsSync(p)) continue;
     let src = fs.readFileSync(p, 'utf8');
-    // 相対 .js はすべて ?v=（ホワイトリスト漏れで engine が immutable 固定になるのを防ぐ）
-    src = src.replace(/from (['"])\.\/([^'"]+\.js)(?:\?v=[^'"]*)?\1/g, (_m, q, dep) => {
-      return `from ${q}./${dep}?v=${ASSET_V}${q}`;
-    });
+    // 相対 .js / .mjs はすべて ?v=（ホワイトリスト漏れで immutable 固定になるのを防ぐ）
+    src = src.replace(
+      /from (['"])(\.?\.\/[^'"]+\.(?:js|mjs))(?:\?v=[^'"]*)?\1/g,
+      (_m, q, dep) => `from ${q}${dep}?v=${ASSET_V}${q}`
+    );
     fs.writeFileSync(p, src, 'utf8');
   }
 }
