@@ -1967,18 +1967,18 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — `/diff` 位置の目安の無駄な縦余白を解消 |
 | **change_summary** | minimap 固定 h-72 廃止 · 空は h-24 · 件数に応じた高さ（上限288px） |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 11/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （consume 後に記入） |
-| **gates** | P1–P7 |
+| **pages_build_budget_after** | 11/450（2026-08 · consume 済） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | `e809c86`（git push origin main · CF 自動ビルド） |
 | **smoke** | （CF 反映後）`https://sugudasu.com/diff` · 未実行時に位置の目安が短く · 結果ありで伸びる |
 
 ---
@@ -1987,6 +1987,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-09 | 001 executed（e809c86 · diff minimap 縦余白） |
 | 2026-08-09 | 001 approved（diff minimap 縦余白 · 提督 Commit&Push&Deploy） |
 | 2026-08-08 | 002 executed（3c26824 · diff/smart-diff ユースケース対比） |
 | 2026-08-08 | 002 approved（diff/smart-diff ユースケース対比 · P7 override · 提督 Commit&Push&Deploy） |
