@@ -1963,10 +1963,31 @@
 
 ---
 
+## DEPLOY-20260809-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — `/diff` 位置の目安の無駄な縦余白を解消 |
+| **change_summary** | minimap 固定 h-72 廃止 · 空は h-24 · 件数に応じた高さ（上限288px） |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （consume 後に記入） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/diff` · 未実行時に位置の目安が短く · 結果ありで伸びる |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-09 | 001 approved（diff minimap 縦余白 · 提督 Commit&Push&Deploy） |
 | 2026-08-08 | 002 executed（3c26824 · diff/smart-diff ユースケース対比） |
 | 2026-08-08 | 002 approved（diff/smart-diff ユースケース対比 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-08 | 001 executed（3381a7f · smart-diff 実ファイル比較） |

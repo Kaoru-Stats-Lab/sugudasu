@@ -280,9 +280,16 @@ function renderMiniMap(changes) {
   if (!map) return;
   map.innerHTML = '';
   if (!changes.length) {
-    map.innerHTML = '<p class="text-[11px] text-slate-500">変更なし</p>';
+    map.style.height = '';
+    map.classList.add('h-24');
+    map.setAttribute('aria-hidden', 'true');
     return;
   }
+  map.classList.remove('h-24');
+  map.removeAttribute('aria-hidden');
+  // DECISION: 空の縦長マップで結果欄に空白を作らない。件数に応じて伸ばし上限は従来相当。
+  const px = Math.min(288, Math.max(96, changes.length * 14));
+  map.style.height = `${px}px`;
   const top = changes.length;
   for (let i = 0; i < changes.length; i += 1) {
     const c = changes[i];
