@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="法務・総務のWordにらめっこから生まれた変更確認と、エンジニアのDiffを非エンジニアにも使える差分チェック。SUGUDASUが文書を直さない理由と使い分け。">
+    <title>Word・PDFの変更確認と差分チェックの使い分け | SUGUDASU 実務ガイド</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="Word・PDFの変更確認、どこを見ればいい？">
+    <meta property="og:description" content="にらめっこを減らす変更確認と、貼り付けDiff。直さず確認を助けるSUGUDASUの使い分け。">
+    <meta property="og:url" content="https://sugudasu.com/guides/document-change-review">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="文書の変更確認の使い分け"></div>
+
+<main class="sg-guide-page">
+    <article class="sg-guide-article sg-guide-article--docs">
+        <nav class="sg-guide-breadcrumb" aria-label="パンくず">
+            <a href="/guides">実務ガイド</a>
+            <span aria-hidden="true">›</span>
+            <span>書類・経理</span>
+        </nav>
+
+        <header class="sg-guide-header">
+            <p class="sg-guide-eyebrow">書類 · 総務 · 法務 · 承認前確認</p>
+            <p class="sg-guide-meta">更新 2026-08-09</p>
+            <h1 class="sg-guide-title">Word・PDFの変更確認、どこを見ればいい？「差分チェック」と「変更確認」の使い分け</h1>
+            <div class="sg-guide-lead-deck">
+                <p class="sg-guide-lead">改訂版の契約書や規程を開き、旧版と画面を並べて「どこが変わったか」を探す——法務・総務では、そのにらめっこに時間が溶けやすい仕事があります。確認・共有・改定の前に、変更箇所から追いたい人向けの話です。</p>
+                <p class="sg-guide-lead">SUGUDASU の <a href="/smart-diff">変更確認</a>は、その悩みを起点にしています。一方 <a href="/diff">差分チェック</a>は、エンジニアには馴染みのある Diff を、文面の危ない変更に気づく道具として使えるようにしたものです。どちらも<strong>文書を直さない</strong>。確認の材料を整えるだけです。</p>
+            </div>
+        </header>
+
+        <section class="sg-guide-takeaways" aria-labelledby="guide-takeaways-document-change-review">
+            <h2 id="guide-takeaways-document-change-review" class="sg-guide-takeaways__title">この記事でわかること</h2>
+            <ul>
+                <li>変更確認が「Wordのにらめっこ」から来ている理由</li>
+                <li>差分チェックをエンジニア以外が使う場面</li>
+                <li>SUGUDASU が文書を直さない理由（作業を減らし、判断に戻す）</li>
+                <li>PDFで比較できるもの・できないもの</li>
+            </ul>
+        </section>
+
+        <div class="sg-guide-body sg-info-prose">
+            <h2>変更確認 — Wordをにらめっこする時間が長い、という起点</h2>
+            <p>改訂版が届いたとき、本当に欲しいのは「きれいな要約」や「自動で直した版」より、<strong>どこが変わったかを自分の目で追えること</strong>であることが多いです。条番号がずれ、表が差し替わり、太字だけ変わっている——全文を最初から読む前に、変更の地図が欲しい、という仕事です。</p>
+            <p><a href="/smart-diff">変更確認</a>は、そのために旧版と新版の <strong>Word（DOCX）または PDF</strong> をブラウザ内で比べ、変更を一覧から順に追えるようにしています。承認せよ、とは言いません。承認・共有・改定確認の<strong>手前</strong>で、見る場所を減らすための道具です。</p>
+            <h3>ざっくりした使い方</h3>
+            <ol>
+                <li>旧版・新版をドロップする（DOCX 同士、または PDF 同士）。</li>
+                <li>「変更を確認」で一覧を開く。</li>
+                <li>追加・削除・変更を順に追う。気になる条は原本で再確認する。</li>
+                <li>必要なら PDF レポートを手元に残す（サーバ保存ではない）。</li>
+            </ol>
+            <p>表はセル単位の細かい差分ではなく、「表に変更がある」単位で扱います。金額の突合は、一覧で該当表を見つけたうえで原本を開いてください。</p>
+
+            <h2>差分チェック — エンジニアの Diff を、ほかの仕事にも</h2>
+            <p>エンジニアにとって Diff は日常です。コードレビューで「何が変わったか」を色で見る道具です。<a href="/diff">差分チェック</a>は、その感覚を<strong>テキスト貼り付け</strong>のまま、業務文面向けに寄せたものです。ファイルをドロップする画面ではありません。</p>
+            <p>エンジニア以外でも、次のような場面で使えます。</p>
+            <ul>
+                <li>AI に書き直させた案内文・メール・ブログで、数字や日付が勝手に変わっていないか見る</li>
+                <li>取引先への文面の前後を貼り、URL や必須／推奨の入れ替わりを先に見る</li>
+                <li>規程や契約の<strong>抜粋テキスト</strong>だけが手元にあるとき（ファイル全体は変更確認）</li>
+            </ul>
+            <p>すべての差分を均等に並べるより、数字・日付・URL・否定の反転など、<strong>見逃すとまずい変更</strong>を優先表示します。「エンジニア専用」ではなく、「貼って色で見る」仕事なら誰でも使えます。</p>
+
+            <h2>迷ったら（短い分岐）</h2>
+            <div class="sg-guide-table-scroll" role="region" aria-label="差分チェックと変更確認の使い分け">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>差分チェック</th>
+                            <th>変更確認</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>入力</td>
+                            <td>テキストを貼る</td>
+                            <td>DOCX / PDF の旧・新</td>
+                        </tr>
+                        <tr>
+                            <td>終わり方</td>
+                            <td>危ない変更に気づく</td>
+                            <td>変更を追って、承認してよいか自分で判断する</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>迷ったら:</strong> 貼って色で見たい → <a href="/diff">差分チェック</a>。Word / PDF の新旧で追いたい → <a href="/smart-diff">変更確認</a>。</p>
+
+            <h2>PDFには比較できないものがある</h2>
+            <p>変更確認は OCR（文字認識）をしません。埋め込みテキストが取れる PDF が対象です。これは注意書きではなく、<strong>この道具を選ぶかどうかの判断</strong>です。</p>
+            <div class="sg-guide-table-scroll" role="region" aria-label="PDF比較の可否">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PDFの状態</th>
+                            <th>変更確認</th>
+                            <th>次の一手</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>テキストが選択できる</td>
+                            <td>比較の対象になりうる</td>
+                            <td>旧・新を変更確認へ</td>
+                        </tr>
+                        <tr>
+                            <td>スキャン画像のみ</td>
+                            <td>対象外（OCRしない）</td>
+                            <td>Word / テキスト付き版を取る</td>
+                        </tr>
+                        <tr>
+                            <td>ページごとに混在</td>
+                            <td>読める範囲だけ。欠けは隠さない</td>
+                            <td>その範囲で判断できるか自分で決める</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>SUGUDASU は、なぜ直さないのか</h2>
+            <p>「差分が出たあとに、いい感じに直してほしい」「AI に承認してよいか聞いてほしい」——その期待は自然です。それでも SUGUDASU は直しません。理由は機能不足ではなく、<strong>仕事の分け方</strong>にあります。</p>
+            <p>文書の新旧をにらめっこして「どこが変わったか」を探すのは、多くの場合<strong>作業</strong>です。時間が溶けやすいのに、そこで決まるのはまだ結論ではありません。本当に付加価値が高いのは、そのあと——条項の意味を読む、金額と日付の影響を考える、相手に返す、承認する、といった<strong>判断と対人の仕事</strong>です。</p>
+            <p>SUGUDASU がやるのは、前者の作業を減らして、後者に戻すことです。変更箇所を示し、危ない変更に気づけるようにする。代わりに書き直したり、「これでよい」と断定したりはしません。直してしまうと、直した版の検証や責任の所在までツール側に引きずり込み、結局あなたの判断の時間を奪いやすいからです。</p>
+            <ul>
+                <li><strong>文言を書き換えない</strong> — 契約や規程の文は当事者の責任。勝手に直すと、誰の版かわからなくなる。</li>
+                <li><strong>承認・法務判断を代行しない</strong> — 結論は示さない。確認の材料まで。</li>
+                <li><strong>「全部読まなくてよい」と断定しない</strong> — 読む量を減らす補助であり、確認義務を消す道具ではない。</li>
+                <li><strong>文書をサーバに預けない設計を優先する</strong> — 直すためにクラウドへ送る、という形を取らない（広告等は<a href="/privacy">プライバシーポリシー</a>参照）。</li>
+            </ul>
+            <p>立ち位置はシンプルです。<strong>作業を減らし、判断は残す。</strong> 差分チェックも変更確認も、その線の上にあります。約束の全文は <a href="/statements">SUGUDASUの約束</a>、送信の自分確認は <a href="/guides/browser-data-privacy">非送信の検証ガイド</a> へ。</p>
+
+            <h2>ブラウザ内で確認する</h2>
+            <p>どちらも登録不要で、処理はブラウザ内が中心です。タブを閉じると作業内容は消えます。証跡が必要なら、レポートやメモを手元に残す運用にしてください。</p>
+
+            <h2>よくある選び間違い</h2>
+            <ul>
+                <li><strong>Word ファイルを差分チェックに貼る</strong> — 貼れるのはテキスト。ファイルは変更確認。</li>
+                <li><strong>変更確認に「直して」と期待する</strong> — 直さない。追って、自分で判断する。</li>
+                <li><strong>スキャン PDF だけで比較する</strong> — OCR しないので対象外。</li>
+                <li><strong>DOCX と PDF を混ぜる</strong> — 同じ形式同士でそろえる。</li>
+            </ul>
+
+            <h2>似た道具を、なぜ二つにしているか</h2>
+            <p>名前は近いですが、入り口が違います。テキストを貼る仕事と、Word / PDF の新旧を追う仕事は、画面も失敗パターンも別です。一つに無理にまとめると、どちらも中途半端になります。だから別ツールにしています。優劣ではなく、<strong>仕事の入り口の違い</strong>です。</p>
+        </div>
+
+        <section class="sg-guide-faq sg-faq-section" aria-labelledby="guide-faq-document-change-review">
+            <div class="sg-faq-inner">
+                <h2 id="guide-faq-document-change-review" class="sg-faq-title">よくある質問</h2>
+                <div class="sg-faq-list">
+                    <details class="sg-faq">
+                        <summary>変更確認は差分チェックの上位版ですか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>いいえ。入り口が違う別ツールです。テキスト貼付なら差分チェック、Word / PDF の新旧なら変更確認を使ってください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>変更箇所を見つけたあと、文面を直してくれますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>いいえ。にらめっこで「どこが変わったか」を探す作業を減らし、判断は利用者に残す設計です。文書の書き換えや承認の代行はしません。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>スキャンした契約書 PDF だけでも比較できますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>変更確認は OCR を行わないため、画像だけの PDF は比較対象外です。テキストが選択できる版、または Word があればそちらを使ってください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>文書はサーバーに送られますか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>変更確認・差分チェックはブラウザ内で完結する設計です。詳細は <a href="/statements">SUGUDASUの約束</a> と <a href="/guides/browser-data-privacy">非送信の検証ガイド</a> を参照してください。</p>
+                        </div>
+                    </details>
+                    <details class="sg-faq">
+                        <summary>「候補」と出たらどうすればよいですか？</summary>
+                        <div class="mt-3 text-sm leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                            <p>確定変更ではなく、確認してほしい候補です。気になる箇所は原本で再確認してください。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sg-guide-related">
+            <h2 class="sg-guide-related__title">関連ツール</h2>
+            <p><a href="/smart-diff?utm_source=guide&amp;utm_medium=content&amp;utm_campaign=smart-diff">SUGUDASU 変更確認</a> · <a href="/diff?utm_source=guide&amp;utm_medium=content&amp;utm_campaign=smart-diff">差分チェック</a> · <a href="/guides/browser-data-privacy">非送信の検証</a> · <a href="/statements">SUGUDASUの約束</a></p>
+        </aside>
+
+        <p class="sg-guide-back"><a href="/guides">← 実務ガイド一覧</a></p>
+    </article>
+</main>
+
+<div id="sg-chrome-bottom"></div>
+<script src="../../assets/sugudasu-shell.js"></script>
+</body>
+</html>

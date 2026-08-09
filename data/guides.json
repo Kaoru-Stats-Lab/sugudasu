@@ -1,6 +1,14 @@
 {
-  "updatedAt": "2026-07-25",
+  "updatedAt": "2026-08-09",
   "articles": [
+    {
+      "slug": "document-change-review",
+      "pillar": "docs",
+      "title": "Word・PDFの変更確認、どこを見ればいい？「差分チェック」と「変更確認」の使い分け",
+      "description": "貼り付けかファイルかで選ぶ。DOCX/PDFの新旧確認と、スキャンPDFは対象外であることの実務整理。",
+      "tools": ["smart-diff", "diff"],
+      "published": "2026-08-09"
+    },
     {
       "slug": "browser-data-privacy",
       "pillar": "docs",

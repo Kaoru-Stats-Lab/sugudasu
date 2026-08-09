@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-08",
+  "updatedAt": "2026-08-09",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,31 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "guide-document-change-review-20260809",
+      "date": "2026-08-09",
+      "type": "content",
+      "audience": "public",
+      "title": "実務ガイド — Word・PDFの変更確認と差分チェックの使い分け",
+      "body": "にらめっこを減らす変更確認と、貼り付けの差分チェックの選び方。SUGUDASUが文書を直さない理由も含めて整理しました。",
+      "tools": [
+        "smart-diff",
+        "diff"
+      ]
+    },
+    {
+      "id": "guide-document-change-review-internal-20260809",
+      "date": "2026-08-09",
+      "type": "content",
+      "audience": "internal",
+      "title": "guides/document-change-review 公開",
+      "body": "slug=document-change-review · guides.json · FAQ 相互リンク · 作業論（作業を減らし判断は残す）",
+      "tools": [
+        "smart-diff",
+        "diff"
+      ],
+      "rollup": "guide-document-change-review-20260809"
+    },
     {
       "id": "diff-smart-diff-usecase-copy-20260808",
       "date": "2026-08-08",

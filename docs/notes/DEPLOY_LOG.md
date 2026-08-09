@@ -1983,10 +1983,31 @@
 
 ---
 
+## DEPLOY-20260809-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 実務ガイド「文書の変更確認の使い分け」公開 |
+| **change_summary** | `/guides/document-change-review` · guides.json · 索引 · diff/smart-diff FAQ リンク · changelog · 作業論（直さない） |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push&Deploy） |
+| **pages_build_budget_after** | （consume 後に記入） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/guides/document-change-review` · `/guides` カード · FAQ リンク |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-09 | 002 approved（document-change-review ガイド · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-09 | 001 executed（e809c86 · diff minimap 縦余白） |
 | 2026-08-09 | 001 approved（diff minimap 縦余白 · 提督 Commit&Push&Deploy） |
 | 2026-08-08 | 002 executed（3c26824 · diff/smart-diff ユースケース対比） |
