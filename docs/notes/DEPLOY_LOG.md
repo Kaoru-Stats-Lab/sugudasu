@@ -1987,19 +1987,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 実務ガイド「文書の変更確認の使い分け」公開 |
 | **change_summary** | `/guides/document-change-review` · guides.json · 索引 · diff/smart-diff FAQ リンク · changelog · 作業論（直さない） |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `npm run release:pages:free` OK（changelog type fix 後） |
 | **deploy_count_today** | 2（**P7 override** · 提督明示 Commit&Push&Deploy） |
-| **pages_build_budget_after** | （consume 後に記入） |
+| **pages_build_budget_after** | 12/450（hard 500）2026-08 |
 | **gates** | P1–P6 · P7 override |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | （CF 反映後）`https://sugudasu.com/guides/document-change-review` · `/guides` カード · FAQ リンク |
+| **git_sha** | `1c09473`（ガイド）· `e845192`（changelog type=improve） |
+| **cf_deployment_id** | CF Pages auto（`e845192` push） |
+| **smoke** | `https://sugudasu.com/guides/document-change-review` · `/guides` カード · FAQ リンク |
 
 ---
 
@@ -2007,6 +2008,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-09 | 002 executed（1c09473 / e845192 · document-change-review ガイド · P7 override） |
 | 2026-08-09 | 002 approved（document-change-review ガイド · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-09 | 001 executed（e809c86 · diff minimap 縦余白） |
 | 2026-08-09 | 001 approved（diff minimap 縦余白 · 提督 Commit&Push&Deploy） |
