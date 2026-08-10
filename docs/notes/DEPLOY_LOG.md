@@ -2025,10 +2025,31 @@
 
 ---
 
+## DEPLOY-20260810-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push — sitemap を tool-registry 増減に追従 · mask stub 除外 |
+| **change_summary** | `scripts/build-pages.mjs` · `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
+| **local_build** | `pass`（先に `build:pages` OK · release 予定） |
+| **deploy_count_today** | 2（P7 override · 提督明示の Commit&Push） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`https://sugudasu.com/sitemap.xml` に `/mask` 無し · 製品 URL あり |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-10 | 002 approved（sitemap registry 追従 · mask stub 除外 · P7 override · 提督 Commit&Push） |
 | 2026-08-10 | 001 executed（2767acd / 2fd1922 · 利用計測ファネル本番 · VC価値メーター） |
 | 2026-08-10 | 001 approved（利用計測ファネル本番 · VC価値メーター · 提督 Commit&Push&Deploy） |
 | 2026-08-09 | 002 executed（1c09473 / e845192 · document-change-review ガイド · P7 override） |

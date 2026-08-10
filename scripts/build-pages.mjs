@@ -36,12 +36,24 @@ const SITE_ORIGIN = IS_SYNC ? 'https://sync.sugudasu.com' : 'https://sugudasu.co
 
 process.env.SUGUDASU_DIST = DIST;
 
-/** sitemap 対象外（内部プレビュー・index と重複する hub / sync-index） */
+/** sitemap 対象外（内部プレビュー · 301 stub · index と重複する hub / sync-index） */
 const SITEMAP_SKIP = new Set(
   IS_SYNC
     ? ['sync-index.html', 'sync-timeline.html', 'sync-room.html']
-    : ['brand-logo-preview.html', 'hub.html', 'paper-schedule-research.html', 'present.html']
+    : [
+        'brand-logo-preview.html',
+        'hub.html',
+        'mask.html', // 301 stub → /annotate（verify-ogp SKIP と同期）
+        'paper-schedule-research.html',
+        'present.html',
+      ]
 );
+
+/**
+ * registry に無いが sitemap に載せるサイト頁（プロダクト増減とは独立）
+ * DECISION: プロダクト URL は tool-registry 由来。legal / 入口は明示 allowlist。
+ */
+const SITEMAP_SITE_EXTRA = IS_SYNC ? [] : ['contact.html', 'guides.html'];
 
 function escapeXml(text) {
   return String(text)
@@ -95,16 +107,42 @@ function sitemapPriority(pathname) {
   return '0.8';
 }
 
+/**
+ * プロダクト URL — tool-registry の増減に追従（HTML が無いエントリは落とす）
+ * Sync target は従来どおり sync-*.html 列挙。
+ */
+function sitemapProductFiles(htmlFiles) {
+  if (IS_SYNC) {
+    return htmlFiles.filter((f) => !SITEMAP_SKIP.has(f));
+  }
+  const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-registry.json'), 'utf8'));
+  const files = [];
+  for (const tool of Object.values(registry.tools || {})) {
+    const file = tool.file;
+    if (!file || SITEMAP_SKIP.has(file)) continue;
+    if (!fs.existsSync(path.join(TOOLS, file))) continue;
+    files.push(file);
+  }
+  for (const file of SITEMAP_SITE_EXTRA) {
+    if (SITEMAP_SKIP.has(file)) continue;
+    if (!fs.existsSync(path.join(TOOLS, file))) continue;
+    if (!files.includes(file)) files.push(file);
+  }
+  return files;
+}
+
 function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = [], categoryIds = []) {
+  const productFiles = sitemapProductFiles(htmlFiles);
+  const productPaths = productFiles
+    .map((f) => canonicalPathFromHtml(f))
+    .filter((p) => p && p !== '/' && p !== '/guides');
+
   const paths = [...new Set([
     '/',
     '/guides',
     ...guideSlugs.map((s) => `/guides/${s}`),
     ...categoryIds.map((id) => `/category/${id}`),
-    ...htmlFiles
-      .filter((f) => !SITEMAP_SKIP.has(f))
-      .map((f) => canonicalPathFromHtml(f))
-      .filter((p) => p && p !== '/' && p !== '/guides'),
+    ...productPaths,
   ])];
 
   const urls = paths.map((pathname) => {
@@ -139,6 +177,12 @@ function writeSitemapAndRobots(htmlFiles, lastmod, guideSlugs = [], categoryIds 
     '',
   ].join('\n');
   fs.writeFileSync(path.join(DIST, 'robots.txt'), robots, 'utf8');
+
+  if (!IS_SYNC) {
+    console.log(
+      `  sitemap: ${paths.length} urls · products=${productPaths.length} · guides=${guideSlugs.length} · categories=${categoryIds.length}`
+    );
+  }
 }
 
 function writeRedirects(htmlFiles, guideSlugs = [], categoryIds = []) {

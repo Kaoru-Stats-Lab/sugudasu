@@ -1,6 +1,6 @@
 # SEO · GSC · ビルドパイプライン（SSOT）
 
-**更新:** 2026-07-18  
+**更新:** 2026-08-10  
 **対象:** `sugudasu.com`（core · Cloudflare Pages）  
 **正本コード:** `scripts/build-pages.mjs` · `scripts/verify-ogp.mjs`
 
@@ -46,15 +46,19 @@ Search Console の警告を「ゼロにする」ことではない。
 
 ## 2. ビルドが面倒を見るもの
 
-新規 `tools/{id}.html` を追加すると、ビルドが自動で:
+プロダクトの増減は **`data/tool-registry.json` + `tools/{id}.html`** に追従する。  
+`build:pages` のたびに `dist/sitemap.xml` を再生成する（手編集禁止）。
 
 | 成果物 | 内容 |
 |--------|------|
-| `sitemap.xml` | clean path のみ（`.html` なし） |
-| `_redirects` | `/{id}.html` → `/{id}` 301 |
+| `sitemap.xml` | clean path のみ。**製品 URL = registry（`SITEMAP_SKIP` 除外）** · サイト頁（`contact` / `guides`）· `/guides/*` · `/category/*` · `/` |
+| `_redirects` | `/{id}.html` → `/{id}` 301（`tools/*.html` 列挙） |
 | `robots.txt` | `Disallow: /data/` |
 | `_headers` | `/data/*` に `X-Robots-Tag: noindex, nofollow` |
 | 各 HTML | `<link rel="canonical">` + `og:url` を apex clean path に正規化 |
+
+**増やすとき:** registry に追加 + `tools/{id}.html` → 次の `build:pages` で sitemap に載る。  
+**減らすとき:** registry から外す（または HTML 削除 + skip）→ 次ビルドで sitemap から消える。Hub カードだけ消しても registry に残れば sitemap には残る（意図どおり · SEO やらないこと参照）。
 
 **Agent が手書きしない:** `<link rel="canonical">` · sitemap · robots · `_redirects` の個別追記。
 
