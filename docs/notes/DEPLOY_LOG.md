@@ -2008,19 +2008,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 利用計測 open→started→done 本番反映 · VC価値メーター SSOT |
 | **change_summary** | `sg-analytics.js` · tool_job_started/done · contracts · 各ツール配線 · Playbook A16 · VC_DUE_DILIGENCE_METRICS · validate:usage-analytics |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 13/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P7（release:pages:free） |
+| **pages_build_budget_after** | 13/450（2026-08 · consume 済） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`/stamp` DebugView · product_opened / tool_job_started / tool_job_done |
+| **git_sha** | `2767acd`（analytics）· `2fd1922`（hub-search-bundle） |
+| **cf_deployment_id** | CF Pages auto（`2fd1922` push origin main） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/stamp` · DebugView で `product_opened` / `tool_job_started` / `tool_job_done` |
 
 ---
 
@@ -2028,6 +2029,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-10 | 001 executed（2767acd / 2fd1922 · 利用計測ファネル本番 · VC価値メーター） |
 | 2026-08-10 | 001 approved（利用計測ファネル本番 · VC価値メーター · 提督 Commit&Push&Deploy） |
 | 2026-08-09 | 002 executed（1c09473 / e845192 · document-change-review ガイド · P7 override） |
 | 2026-08-09 | 002 approved（document-change-review ガイド · P7 override · 提督 Commit&Push&Deploy） |
