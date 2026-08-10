@@ -1,0 +1,10 @@
+{
+  "id": "OX-HAS-TARGET",
+  "tsv": "年度\t実績\t目標\n2022\t100\t110\n2023\t120\t125\n2024\t150\t140\n",
+  "expected_observable": {
+    "dimension": "Temporal",
+    "cardinality": 3,
+    "measure_count": 2,
+    "has_target": true
+  }
+}

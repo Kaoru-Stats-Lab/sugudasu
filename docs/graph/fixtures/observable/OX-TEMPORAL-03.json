@@ -1,0 +1,13 @@
+{
+  "id": "OX-TEMPORAL-03",
+  "tsv": "年度\t売上\n2022\t100\n2023\t120\n2024\t150\n",
+  "expected_observable": {
+    "dimension": "Temporal",
+    "cardinality": 3,
+    "measure_count": 1,
+    "measure_type": "Absolute",
+    "unit": "UNKNOWN",
+    "positive_only": true,
+    "positive_negative_mixed": false
+  }
+}

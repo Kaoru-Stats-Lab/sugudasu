@@ -1,0 +1,8 @@
+{
+  "id": "OA-05",
+  "scenario": "部門別売上（順位）",
+  "tsv": "部門\t売上（億円）\n第一営業\t85\n第二営業\t72\n第三営業\t64\n海外事業\t58\nコーポレート\t41\n",
+  "intent": "RANKING",
+  "expected_r1_type": "Bar",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

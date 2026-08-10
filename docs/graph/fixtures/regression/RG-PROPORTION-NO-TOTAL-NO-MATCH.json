@@ -1,0 +1,10 @@
+{
+  "id": "RG-PROPORTION-NO-TOTAL-NO-MATCH",
+  "tsv": "事業部\t売上\nA\t100\nB\t200\nC\t300\n",
+  "intent": "PROPORTION",
+  "expected_decision": {
+    "state": "NO_MATCH",
+    "reason_code": "no_matching_rule"
+  },
+  "note": "RLE-008 requires has_total; without total → NO_MATCH (not silent Pie)"
+}

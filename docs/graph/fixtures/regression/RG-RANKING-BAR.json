@@ -1,0 +1,10 @@
+{
+  "id": "RG-RANKING-BAR",
+  "tsv": "事業部\t売上\n営業本部\t100\n開発本部\t120\n管理本部\t80\n製造本部\t90\n販売本部\t70\n",
+  "intent": "RANKING",
+  "expected_decision": {
+    "matched_rule_id": "RLE-003",
+    "state": "MATCH",
+    "recommended_graph": "Bar"
+  }
+}

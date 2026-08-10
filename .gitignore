@@ -1,6 +1,8 @@
 dist/
 dist-sync/
 tmp/
+packages/fixtures/export/out/
+docs/graph/fixtures/acceptance/out/
 Timelist*.txt
 .env.sync.local
 .codegraph/

@@ -2046,10 +2046,31 @@
 
 ---
 
+## DEPLOY-20260810-003
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — roadmap にグラフ（仮称）検討中 · 在庫/ERP・正規化・グラフEditor・LLM提案を対象外で誠実記載 |
+| **change_summary** | `data/roadmap.json` · Graph 設計パック（`docs/graph/` · `assets/graph-*.js` · tests）· Zenn Graph 下書き · DEPLOY_LOG |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push&Deploy） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Push&Deployして」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後）`https://sugudasu.com/roadmap` — 検討中にグラフ（仮称）· 対象外に在庫/ERP 等 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-10 | 003 approved（roadmap Graph検討中 · 在庫/ERP対象外 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-10 | 002 executed（be898c6 · sitemap registry 追従 · mask stub 除外 · P7 override） |
 | 2026-08-10 | 002 approved（sitemap registry 追従 · mask stub 除外 · P7 override · 提督 Commit&Push） |
 | 2026-08-10 | 001 executed（2767acd / 2fd1922 · 利用計測ファネル本番 · VC価値メーター） |

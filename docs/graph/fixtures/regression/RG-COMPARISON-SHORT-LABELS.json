@@ -1,0 +1,10 @@
+{
+  "id": "RG-COMPARISON-SHORT-LABELS",
+  "tsv": "部門\t人数\nA部\t10\nB部\t20\nC部\t15\n",
+  "intent": "COMPARISON",
+  "expected_decision": {
+    "matched_rule_id": "RLE-003",
+    "state": "MATCH",
+    "recommended_graph": "Bar"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "OX-PERCENTAGE",
+  "tsv": "事業部\t利益率（%）\nA\t10\nB\t12\nC\t8\n",
+  "expected_observable": {
+    "dimension": "Nominal",
+    "cardinality": 3,
+    "measure_count": 1,
+    "measure_type": "Percentage",
+    "unit": "%"
+  }
+}

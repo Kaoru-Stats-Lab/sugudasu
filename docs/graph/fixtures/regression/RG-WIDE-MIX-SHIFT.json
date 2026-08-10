@@ -1,0 +1,11 @@
+{
+  "id": "RG-WIDE-MIX-SHIFT",
+  "tsv": "事業部\t2022\t2023\t2024\t2025\n営業\t100\t110\t120\t130\n開発\t80\t90\t95\t100\n管理\t50\t55\t60\t65\n製造\t70\t75\t80\t85\n",
+  "intent": "MIX_SHIFT",
+  "expected_decision": {
+    "matched_rule_id": "RLE-005",
+    "state": "CONVERTIBLE",
+    "recommended_graph": "100pct_Stacked_Column",
+    "transformation": "normalize_to_percentage"
+  }
+}

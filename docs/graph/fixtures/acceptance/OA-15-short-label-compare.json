@@ -1,0 +1,8 @@
+{
+  "id": "OA-15",
+  "scenario": "短ラベル部門比較",
+  "tsv": "部門\t売上\nA\t120\nB\t95\nC\t88\nD\t70\n",
+  "intent": "COMPARISON",
+  "expected_r1_type": "Bar",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

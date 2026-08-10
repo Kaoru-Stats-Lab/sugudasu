@@ -1,0 +1,12 @@
+{
+  "id": "RG-TREND-DUAL-UNIT-CONDITIONAL",
+  "tsv": "年度\t売上（円）\t利益率（%）\n2022\t1000\t10\n2023\t1200\t12\n2024\t1400\t11\n2025\t1500\t13\n",
+  "intent": "TREND",
+  "expected_decision": {
+    "matched_rule_id": "RLE-007",
+    "state": "CONDITIONAL",
+    "recommended_graph": "Small_Multiples",
+    "confirmation_id": "CND-001",
+    "confirmation_default": "small_multiples"
+  }
+}

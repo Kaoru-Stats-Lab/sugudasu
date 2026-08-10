@@ -1,0 +1,10 @@
+{
+  "id": "RG-TREND-ON-NOMINAL-NO-MATCH",
+  "tsv": "事業部\t売上\n営業\t100\n開発\t120\n管理\t80\n",
+  "intent": "TREND",
+  "expected_decision": {
+    "state": "NO_MATCH",
+    "reason_code": "no_matching_rule"
+  },
+  "note": "No temporal axis: not MISMATCH in v1 (no explicit conflict rule); uncovered → NO_MATCH"
+}

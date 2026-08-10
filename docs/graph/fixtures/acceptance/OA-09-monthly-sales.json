@@ -1,0 +1,8 @@
+{
+  "id": "OA-09",
+  "scenario": "月次売上（12ヶ月可読性）",
+  "tsv": "月\t売上（百万円）\n1月\t82\n2月\t78\n3月\t95\n4月\t88\n5月\t91\n6月\t97\n7月\t102\n8月\t99\n9月\t110\n10月\t108\n11月\t115\n12月\t128\n",
+  "intent": "TREND",
+  "expected_r1_type": "Line",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

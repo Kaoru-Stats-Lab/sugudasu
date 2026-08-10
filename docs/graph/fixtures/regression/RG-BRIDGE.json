@@ -1,0 +1,10 @@
+{
+  "id": "RG-BRIDGE",
+  "tsv": "要因\t増減\n開始\t100\n価格\t20\n数量\t-5\n終了\t115\n",
+  "intent": "BRIDGE",
+  "expected_decision": {
+    "matched_rule_id": "RLE-004",
+    "state": "MATCH",
+    "recommended_graph": "Waterfall"
+  }
+}

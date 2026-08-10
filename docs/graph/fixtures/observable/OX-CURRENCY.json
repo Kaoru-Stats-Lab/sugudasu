@@ -1,0 +1,11 @@
+{
+  "id": "OX-CURRENCY",
+  "tsv": "事業部\t売上（円）\nA\t100\nB\t200\nC\t300\n",
+  "expected_observable": {
+    "dimension": "Nominal",
+    "cardinality": 3,
+    "measure_count": 1,
+    "measure_type": "Currency",
+    "unit": "円"
+  }
+}

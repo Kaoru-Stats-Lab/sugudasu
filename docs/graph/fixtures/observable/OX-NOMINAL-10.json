@@ -1,0 +1,11 @@
+{
+  "id": "OX-NOMINAL-10",
+  "tsv": "品目\t件数\nA\t1\nB\t2\nC\t3\nD\t4\nE\t5\nF\t6\nG\t7\nH\t8\nI\t9\nJ\t10\n",
+  "expected_observable": {
+    "dimension": "Nominal",
+    "cardinality": 10,
+    "measure_count": 1,
+    "measure_type": "Count",
+    "unit": "件"
+  }
+}

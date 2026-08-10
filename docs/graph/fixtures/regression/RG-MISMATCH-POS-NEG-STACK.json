@@ -1,0 +1,9 @@
+{
+  "id": "RG-MISMATCH-POS-NEG-STACK",
+  "tsv": "事業部\t2022\t2023\t2024\n営業\t100\t-20\t130\n開発\t80\t90\t-10\n管理\t50\t55\t60\n",
+  "intent": "BREAKDOWN",
+  "expected_decision": {
+    "state": "MISMATCH",
+    "reason_code": "stacking_reject_positive_negative_mixed"
+  }
+}

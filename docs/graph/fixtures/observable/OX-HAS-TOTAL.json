@@ -1,0 +1,9 @@
+{
+  "id": "OX-HAS-TOTAL",
+  "tsv": "事業部\t売上\nA\t100\nB\t200\n合計\t300\n",
+  "expected_observable": {
+    "dimension": "Nominal",
+    "has_total": true,
+    "measure_count": 1
+  }
+}

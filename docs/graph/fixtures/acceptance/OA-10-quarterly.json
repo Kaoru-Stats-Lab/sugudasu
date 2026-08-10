@@ -1,0 +1,8 @@
+{
+  "id": "OA-10",
+  "scenario": "四半期売上",
+  "tsv": "四半期\t売上（億円）\nQ1\t42\nQ2\t48\nQ3\t51\nQ4\t59\n",
+  "intent": "TREND",
+  "expected_r1_type": "Line",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

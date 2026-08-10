@@ -1,0 +1,10 @@
+{
+  "id": "RG-HIGH-CARD",
+  "tsv": "品目\t件数\nA1\t1\nA2\t2\nA3\t3\nA4\t4\nA5\t5\nA6\t6\nA7\t7\nA8\t8\nA9\t9\nA10\t10\nA11\t11\nA12\t12\nA13\t13\nA14\t14\nA15\t15\n",
+  "intent": "RANKING",
+  "expected_decision": {
+    "matched_rule_id": "RLE-012",
+    "state": "CONDITIONAL",
+    "confirmation_id": "CND-005"
+  }
+}

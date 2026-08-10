@@ -1,0 +1,10 @@
+{
+  "id": "RG-RELATIONSHIP-SCATTER",
+  "tsv": "店舗\t来客数\t売上\nA\t100\t500\nB\t120\t620\nC\t80\t410\nD\t150\t700\n",
+  "intent": "RELATIONSHIP",
+  "expected_decision": {
+    "matched_rule_id": "RLE-015",
+    "state": "MATCH",
+    "recommended_graph": "Scatter"
+  }
+}

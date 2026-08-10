@@ -1,0 +1,9 @@
+{
+  "id": "RG-STRUCTURE-INTENT-NO-MATCH",
+  "tsv": "階層\t値\n親\t100\n子A\t40\n子B\t60\n",
+  "intent": "STRUCTURE",
+  "expected_decision": {
+    "state": "NO_MATCH",
+    "reason_code": "no_matching_rule"
+  }
+}

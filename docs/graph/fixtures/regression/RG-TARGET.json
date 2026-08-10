@@ -1,0 +1,11 @@
+{
+  "id": "RG-TARGET",
+  "tsv": "年度\t実績（対目標）\n2022\t100\n2023\t120\n2024\t150\n2025\t170\n",
+  "intent": "TARGET_VS_ACTUAL",
+  "expected_decision": {
+    "matched_rule_id": "RLE-009",
+    "state": "CONDITIONAL",
+    "recommended_graph": "Bullet",
+    "confirmation_id": "CND-004"
+  }
+}

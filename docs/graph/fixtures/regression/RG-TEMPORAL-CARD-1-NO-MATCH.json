@@ -1,0 +1,9 @@
+{
+  "id": "RG-TEMPORAL-CARD-1-NO-MATCH",
+  "tsv": "年度\t売上\n2024\t100\n",
+  "intent": "TREND",
+  "expected_decision": {
+    "state": "NO_MATCH",
+    "reason_code": "no_matching_rule"
+  }
+}

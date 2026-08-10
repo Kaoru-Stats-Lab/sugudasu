@@ -1,0 +1,10 @@
+{
+  "id": "RG-TREND-COLUMN",
+  "tsv": "年度\t売上\n2022\t100\n2023\t120\n2024\t150\n",
+  "intent": "TREND",
+  "expected_decision": {
+    "matched_rule_id": "RLE-002",
+    "state": "MATCH",
+    "recommended_graph": "Column"
+  }
+}

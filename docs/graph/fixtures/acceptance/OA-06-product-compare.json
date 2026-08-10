@@ -1,0 +1,8 @@
+{
+  "id": "OA-06",
+  "scenario": "商品別件数比較",
+  "tsv": "商品\t件数\nAプラン\t420\nBプラン\t310\nCプラン\t265\nDプラン\t180\n",
+  "intent": "COMPARISON",
+  "expected_r1_type": "Bar",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

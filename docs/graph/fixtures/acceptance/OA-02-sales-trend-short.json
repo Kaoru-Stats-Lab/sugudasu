@@ -1,0 +1,8 @@
+{
+  "id": "OA-02",
+  "scenario": "売上推移（3年・短系列）",
+  "tsv": "年度\t売上（億円）\n2023\t100\n2024\t118\n2025\t130\n",
+  "intent": "TREND",
+  "expected_r1_type": "Column",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

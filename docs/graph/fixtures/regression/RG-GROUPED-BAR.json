@@ -1,0 +1,10 @@
+{
+  "id": "RG-GROUPED-BAR",
+  "tsv": "事業部\t売上（円）\t費用（円）\n営業\t100\t40\n開発\t120\t50\n管理\t80\t30\n",
+  "intent": "COMPARISON",
+  "expected_decision": {
+    "matched_rule_id": "RLE-013",
+    "state": "MATCH",
+    "recommended_graph": "Grouped_Bar"
+  }
+}

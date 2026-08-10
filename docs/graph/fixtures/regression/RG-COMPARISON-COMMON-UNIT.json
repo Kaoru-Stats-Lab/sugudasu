@@ -1,0 +1,11 @@
+{
+  "id": "RG-COMPARISON-COMMON-UNIT",
+  "tsv": "地域\t今年（円）\t前年（円）\n東\t100\t90\n西\t80\t85\n南\t70\t60\n",
+  "intent": "COMPARISON",
+  "expected_decision": {
+    "matched_rule_id": "RLE-013",
+    "state": "MATCH",
+    "recommended_graph": "Grouped_Bar",
+    "deterministic_kind": "priority_fixed"
+  }
+}

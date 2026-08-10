@@ -1,0 +1,9 @@
+{
+  "id": "OA-14",
+  "scenario": "未知単位の推移",
+  "tsv": "年度\t指標\n2022\t100\n2023\t112\n2024\t125\n2025\t140\n",
+  "intent": "TREND",
+  "expected_r1_type": "Line",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"],
+  "notes": "単位ラベルが無い／未知でも誤解を生まないか確認"
+}

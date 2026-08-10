@@ -1,0 +1,11 @@
+{
+  "id": "RG-PROPORTION",
+  "tsv": "事業部\t売上\nA\t100\nB\t200\nC\t300\n合計\t600\n",
+  "intent": "PROPORTION",
+  "expected_decision": {
+    "matched_rule_id": "RLE-008",
+    "state": "CONDITIONAL",
+    "recommended_graph": "Bar",
+    "confirmation_id": "CND-002"
+  }
+}

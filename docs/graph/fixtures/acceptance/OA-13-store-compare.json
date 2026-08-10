@@ -1,0 +1,8 @@
+{
+  "id": "OA-13",
+  "scenario": "店舗別比較",
+  "tsv": "店舗\t売上（万円）\n渋谷\t3200\n新宿\t2900\n池袋\t2450\n横浜\t2100\n大宮\t1800\n",
+  "intent": "COMPARISON",
+  "expected_r1_type": "Bar",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

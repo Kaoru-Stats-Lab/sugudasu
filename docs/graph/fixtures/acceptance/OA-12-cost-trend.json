@@ -1,0 +1,8 @@
+{
+  "id": "OA-12",
+  "scenario": "費用推移",
+  "tsv": "年度\t販管費（億円）\n2022\t45\n2023\t48\n2024\t52\n2025\t55\n",
+  "intent": "TREND",
+  "expected_r1_type": "Line",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

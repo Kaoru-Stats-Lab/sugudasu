@@ -1,0 +1,11 @@
+{
+  "id": "OX-TEMPORAL-04",
+  "tsv": "年度\t売上\n2022\t100\n2023\t120\n2024\t150\n2025\t170\n",
+  "expected_observable": {
+    "dimension": "Temporal",
+    "cardinality": 4,
+    "measure_count": 1,
+    "measure_type": "Absolute",
+    "temporal_equal_interval": true
+  }
+}

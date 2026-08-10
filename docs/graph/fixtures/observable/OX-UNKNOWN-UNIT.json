@@ -1,0 +1,11 @@
+{
+  "id": "OX-UNKNOWN-UNIT",
+  "tsv": "年度\t指標X\n2022\t10\n2023\t20\n2024\t30\n2025\t40\n",
+  "expected_observable": {
+    "dimension": "Temporal",
+    "cardinality": 4,
+    "measure_count": 1,
+    "unit": "UNKNOWN",
+    "measure_type": "Absolute"
+  }
+}

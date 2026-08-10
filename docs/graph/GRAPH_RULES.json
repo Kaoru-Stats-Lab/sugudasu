@@ -1,0 +1,882 @@
+{
+  "schema_version": "1.1.0",
+  "meta": {
+    "role": "machine_readable_rule_definitions",
+    "not": "research_report_dump",
+    "human_docs": [
+      "README.md",
+      "DECISION_CONSTITUTION.md",
+      "GRAPH_DETERMINISTIC_ENGINE.md",
+      "GRAPH_RULES_ARCHITECT_REVIEW.md"
+    ],
+    "pipeline": [
+      "observable_structure",
+      "user_intent",
+      "rule_match",
+      "resolution_state",
+      "graph_spec",
+      "validation",
+      "renderer"
+    ],
+    "out_of_scope": [
+      "svg_rendering",
+      "vega_lite_generation",
+      "clipboard_implementation",
+      "tsv_parser_implementation",
+      "observable_extraction_algorithms"
+    ],
+    "rule_id_authority": "this_file",
+    "updated": "2026-08-08",
+    "schema_changelog": "1.1.0: NO_MATCH≠MISMATCH; deterministic_kind; CND-004 retarget; CONDITIONAL=human one question not AI"
+  },
+  "engine": {
+    "name": "SUGUDASU Graph Deterministic Rule Engine",
+    "id": "sugudasu-graph",
+    "mode": "deterministic",
+    "llm_required": false,
+    "llm_slot": false,
+    "non_send": true,
+    "default_output": "svg"
+  },
+
+  "principles": {
+    "same_input_same_output": true,
+    "observable_before_semantic": true,
+    "user_intent_required": true,
+    "no_hidden_inference": true,
+    "observed_ne_recommended": true,
+    "no_3d_charts": true,
+    "zero_baseline_default": true,
+    "unit_mismatch_prevents_stacking": true,
+    "mismatch_is_success": true,
+    "no_match_is_not_mismatch": true,
+    "conditional_means_ask_human_one_question_not_ai": true
+  },
+
+  "deterministic_semantics": {
+    "definition": "same_input_same_rule_version_same_output",
+    "not_definition": "mathematically_unique_graph_from_structure_alone",
+    "kinds": {
+      "structure_unique": "Observable + Intent admit only one graph under Graph Constitution",
+      "priority_fixed": "Multiple graphs could fit Observable; fixed rule priority / first_match_wins yields reproducible choice (not inference)"
+    }
+  },
+
+  "capability_bound": {
+    "status": "unresolved_pending_reaggregation",
+    "note": "Research text mixed Decision State with Automation. CONVERTIBLE is not human confirmation. Do not treat 58/27/15 as state ratios.",
+    "decision_states": [
+      "MATCH",
+      "CONVERTIBLE",
+      "CONDITIONAL",
+      "MISMATCH",
+      "NO_MATCH"
+    ],
+    "automation_axis": {
+      "status": "unresolved",
+      "labels_proposed_not_final": [
+        "auto_deterministic",
+        "needs_confirmation"
+      ],
+      "legacy_research_claim_do_not_encode_as_fact": {
+        "fully_deterministic_pct": null,
+        "conditional_pct": null,
+        "human_confirmation_pct": null,
+        "original_ambiguous_labels": "MATCH 58% / CONDITIONAL 27% / User Confirmation or Convertible 15%",
+        "hypothesis_only": ">=85% auto or one confirmation — not an implementation KPI until reaggregated"
+      }
+    }
+  },
+
+  "open_issues": [
+    {
+      "id": "U-01",
+      "status": "unresolved",
+      "summary": "Reaggregate 100-case corpus on Decision State vs Automation axes"
+    },
+    {
+      "id": "U-02",
+      "status": "unclear",
+      "summary": "Catalog of CONVERTIBLE transforms that require confirmation vs auto-apply"
+    },
+    {
+      "id": "U-03",
+      "status": "unclear",
+      "summary": "No v1 rules for DISTRIBUTION or STRUCTURE intents"
+    },
+    {
+      "id": "U-04",
+      "status": "unresolved",
+      "summary": "Full 24 graph-type taxonomy vs v1 subset"
+    },
+    {
+      "id": "U-05",
+      "status": "unclear",
+      "summary": "RELATIONSHIP/Scatter observable shape (Quant x Quant vs Nominal + 2 measures)"
+    },
+    {
+      "id": "U-06",
+      "status": "specified_v1",
+      "summary": "Observable extraction algorithms — see OBSERVABLE_EXTRACTION_SPEC.md"
+    },
+    {
+      "id": "U-07",
+      "status": "provisional",
+      "summary": "WCAG contrast numbers are reference only, not guaranteed thresholds"
+    },
+    {
+      "id": "U-08",
+      "status": "resolved_v1",
+      "summary": "CONDITIONAL max_questions=1 is a hard v1 limit; means ask human once, never ask AI"
+    },
+    {
+      "id": "U-09",
+      "status": "unclear",
+      "summary": "UI 6-intent vocabulary mapping to 12 engine intents"
+    },
+    {
+      "id": "U-10",
+      "status": "unresolved",
+      "summary": "CND-003 not wired to any rule; Intent-first UI may make it redundant"
+    },
+    {
+      "id": "U-11",
+      "status": "unclear",
+      "summary": "dual_axis_scale_ratio=10 lacks cited evidence; do not hard-reject on it"
+    },
+    {
+      "id": "U-12",
+      "status": "deferred",
+      "summary": "CASE evidence IDs not embedded in rules"
+    }
+  ],
+
+  "intents": {
+    "TREND": {
+      "label": "推移",
+      "description": "時間経過による数値の変化を見る",
+      "ui_exposure": "core_candidate"
+    },
+    "COMPARISON": {
+      "label": "比較",
+      "description": "複数カテゴリまたは複数指標を比較する",
+      "ui_exposure": "core_candidate"
+    },
+    "PROPORTION": {
+      "label": "割合",
+      "description": "全体に対する構成比を見る",
+      "ui_exposure": "core_candidate"
+    },
+    "RANKING": {
+      "label": "順位",
+      "description": "カテゴリ間の大小関係・順位を見る",
+      "ui_exposure": "core_candidate"
+    },
+    "RELATIONSHIP": {
+      "label": "関係",
+      "description": "2つ以上の変数の関係を見る",
+      "ui_exposure": "core_candidate"
+    },
+    "BREAKDOWN": {
+      "label": "内訳",
+      "description": "全体量と構成要素を見る",
+      "ui_exposure": "core_candidate"
+    },
+    "DISTRIBUTION": {
+      "label": "分布",
+      "description": "値の分布・ばらつきを見る",
+      "ui_exposure": "research_only",
+      "v1_rules": false
+    },
+    "TARGET_VS_ACTUAL": {
+      "label": "達成",
+      "description": "実績と目標・計画値を比較する",
+      "ui_exposure": "extended_candidate"
+    },
+    "BRIDGE": {
+      "label": "増減要因",
+      "description": "始点から終点までの増減要因を見る",
+      "ui_exposure": "extended_candidate"
+    },
+    "MULTI_METRIC": {
+      "label": "複数指標",
+      "description": "異なる指標を同一期間で比較する",
+      "ui_exposure": "extended_candidate"
+    },
+    "STRUCTURE": {
+      "label": "構造",
+      "description": "カテゴリ間の構造・階層を見る",
+      "ui_exposure": "research_only",
+      "v1_rules": false
+    },
+    "MIX_SHIFT": {
+      "label": "構成変化",
+      "description": "期間による構成比の変化を見る",
+      "ui_exposure": "extended_candidate"
+    }
+  },
+
+  "observable_features": {
+    "dimensions": ["Temporal", "Nominal", "Ordinal", "Temporal+Nominal"],
+    "measure_types": [
+      "Currency",
+      "Percentage",
+      "Rate",
+      "Count",
+      "Index",
+      "Net_Change",
+      "Absolute",
+      "Unknown"
+    ],
+    "flags": [
+      "positive_only",
+      "positive_negative_mixed",
+      "zero_included",
+      "has_total",
+      "has_start_end",
+      "has_target",
+      "values_have_different_units",
+      "values_share_common_unit",
+      "temporal_equal_interval"
+    ],
+    "thresholds": {
+      "line_min_temporal_cardinality": 4,
+      "column_max_temporal_cardinality_for_trend": 3,
+      "bar_label_length_threshold": 5,
+      "proportion_max_cardinality": 4,
+      "stacked_max_category_cardinality": 5,
+      "high_cardinality_min": 15,
+      "top_n_default": 10,
+      "dual_axis_scale_ratio": {
+        "value": 10,
+        "status": "unclear_evidence",
+        "use_for_hard_reject": false
+      }
+    },
+    "detection_algorithms": {
+      "status": "specified_v1",
+      "issue": "U-06",
+      "spec": "docs/graph/OBSERVABLE_EXTRACTION_SPEC.md",
+      "implementation": "assets/graph-observable-extractor.js",
+      "tests": "npm run test:graph-observable"
+    }
+  },
+
+  "graph_types": {
+    "Line": {
+      "id": "Line",
+      "encoding": "position",
+      "primary_use": "trend",
+      "v1": true
+    },
+    "Column": {
+      "id": "Column",
+      "encoding": "length",
+      "primary_use": "absolute_value",
+      "v1": true
+    },
+    "Bar": {
+      "id": "Bar",
+      "encoding": "length",
+      "primary_use": "comparison",
+      "v1": true
+    },
+    "Grouped_Bar": {
+      "id": "Grouped_Bar",
+      "encoding": "length",
+      "primary_use": "multi_metric_comparison",
+      "v1": true
+    },
+    "Grouped_Column": {
+      "id": "Grouped_Column",
+      "encoding": "length",
+      "primary_use": "multi_metric_comparison",
+      "v1": true,
+      "v1_role": "conditional_or_target_series_only",
+      "note": "Not chosen by RLE-013 (priority_fixed → Grouped_Bar). Allowed as CND-004 target_as_series encoding."
+    },
+    "Stacked_Column": {
+      "id": "Stacked_Column",
+      "encoding": "length_plus_color",
+      "primary_use": "breakdown",
+      "v1": true
+    },
+    "100pct_Stacked_Column": {
+      "id": "100pct_Stacked_Column",
+      "encoding": "normalized_length_plus_color",
+      "primary_use": "mix_shift",
+      "v1": true
+    },
+    "Waterfall": {
+      "id": "Waterfall",
+      "encoding": "length",
+      "primary_use": "bridge",
+      "v1": true
+    },
+    "Donut": {
+      "id": "Donut",
+      "encoding": "angle_arc_length",
+      "primary_use": "proportion",
+      "status": "observed_practice",
+      "recommended_default": false,
+      "v1": true
+    },
+    "Pie": {
+      "id": "Pie",
+      "encoding": "angle",
+      "primary_use": "proportion",
+      "status": "observed_practice",
+      "recommended_default": false,
+      "v1": true
+    },
+    "Combination_Column_Line": {
+      "id": "Combination_Column_Line",
+      "encoding": "length_plus_position",
+      "primary_use": "multi_metric",
+      "v1": true
+    },
+    "Dual_Axis": {
+      "id": "Dual_Axis",
+      "encoding": "length_plus_position_independent_scales",
+      "primary_use": "multi_metric",
+      "v1": false,
+      "status": "reserved",
+      "reason": "Rendering distinction from Combination_Column_Line unclear for v1 rule outputs; CND-001 uses Combination vs Small_Multiples"
+    },
+    "Bullet": {
+      "id": "Bullet",
+      "encoding": "length_plus_target",
+      "primary_use": "target_vs_actual",
+      "v1": true
+    },
+    "Scatter": {
+      "id": "Scatter",
+      "encoding": "position",
+      "primary_use": "relationship",
+      "v1": true,
+      "caveat": "U-05"
+    },
+    "Bubble": {
+      "id": "Bubble",
+      "encoding": "position_plus_size",
+      "primary_use": "portfolio",
+      "v1": false,
+      "status": "deferred"
+    },
+    "Small_Multiples": {
+      "id": "Small_Multiples",
+      "encoding": "position",
+      "primary_use": "multi_metric",
+      "v1": true
+    },
+    "Treemap": {
+      "id": "Treemap",
+      "v1": false,
+      "status": "deferred"
+    },
+    "Multi_Line": {
+      "id": "Multi_Line",
+      "v1": false,
+      "status": "deferred"
+    }
+  },
+
+  "match_policy": {
+    "order": "priority_desc_then_id_asc",
+    "first_match_wins": true,
+    "meaning_of_first_match_wins": "Reproducible convention under fixed priorities — not a claim that the chosen graph is the only Observable-valid encoding",
+    "on_empty_match": "NO_MATCH",
+    "forbidden": [
+      "random_tie_break",
+      "llm_tie_break",
+      "hidden_semantic_tie_break",
+      "treat_no_match_as_mismatch"
+    ]
+  },
+
+  "rules": [
+    {
+      "id": "RLE-001",
+      "priority": 100,
+      "status": "active",
+      "if": {
+        "dimension": "Temporal",
+        "cardinality": { "min": 4 },
+        "measure_count": 1,
+        "intent": "TREND"
+      },
+      "then": {
+        "recommended_graph": "Line",
+        "state": "MATCH",
+        "deterministic": true
+      }
+    },
+    {
+      "id": "RLE-002",
+      "priority": 95,
+      "status": "active",
+      "note": "Short temporal series for TREND; cardinality disjoint from RLE-001 (max 3 vs min 4)",
+      "if": {
+        "dimension": "Temporal",
+        "cardinality": { "min": 2, "max": 3 },
+        "measure_count": 1,
+        "intent": "TREND"
+      },
+      "then": {
+        "recommended_graph": "Column",
+        "state": "MATCH",
+        "deterministic": true
+      }
+    },
+    {
+      "id": "RLE-003",
+      "priority": 90,
+      "status": "active",
+      "if": {
+        "dimension": "Nominal",
+        "cardinality": { "min": 3, "max": 10 },
+        "measure_count": 1,
+        "intent": ["RANKING", "COMPARISON"]
+      },
+      "then": {
+        "recommended_graph": "Bar",
+        "state": "MATCH",
+        "deterministic": true,
+        "sort": "descending"
+      },
+      "notes": [
+        "sort_order Descending as an observable precondition removed (detection unclear).",
+        "RANKING/COMPARISON intent implies descending sort in output spec."
+      ]
+    },
+    {
+      "id": "RLE-004",
+      "priority": 100,
+      "status": "active",
+      "if": {
+        "measure_type": "Net_Change",
+        "positive_negative_mixed": true,
+        "has_start_end": true,
+        "intent": "BRIDGE"
+      },
+      "then": {
+        "recommended_graph": "Waterfall",
+        "state": "MATCH",
+        "deterministic": true
+      }
+    },
+    {
+      "id": "RLE-005",
+      "priority": 90,
+      "status": "active",
+      "if": {
+        "dimension": "Temporal+Nominal",
+        "nominal_cardinality": { "min": 1, "max": 5 },
+        "measure_type": "Absolute",
+        "measure_count": 1,
+        "intent": "MIX_SHIFT",
+        "positive_negative_mixed": false
+      },
+      "then": {
+        "recommended_graph": "100pct_Stacked_Column",
+        "state": "CONVERTIBLE",
+        "deterministic": true,
+        "transformation": "normalize_to_percentage"
+      },
+      "notes": [
+        "CONVERTIBLE is auto-deterministic here, not human confirmation.",
+        "High nominal cardinality (>5) has no active rule in v1 → NO_MATCH (not MISMATCH) or future CND."
+      ]
+    },
+    {
+      "id": "RLE-006",
+      "priority": 90,
+      "status": "active",
+      "if": {
+        "dimension": "Temporal+Nominal",
+        "nominal_cardinality": { "min": 1, "max": 5 },
+        "measure_type": "Absolute",
+        "measure_count": 1,
+        "intent": "BREAKDOWN",
+        "positive_negative_mixed": false
+      },
+      "then": {
+        "recommended_graph": "Stacked_Column",
+        "state": "MATCH",
+        "deterministic": true
+      },
+      "reject_when": {
+        "positive_negative_mixed": true
+      }
+    },
+    {
+      "id": "RLE-007",
+      "priority": 80,
+      "status": "active",
+      "if": {
+        "dimension": "Temporal",
+        "measure_count": 2,
+        "values_have_different_units": true,
+        "intent": ["TREND", "MULTI_METRIC"]
+      },
+      "then": {
+        "recommended_graph": "Small_Multiples",
+        "observed_graphs": ["Combination_Column_Line", "Dual_Axis"],
+        "state": "CONDITIONAL",
+        "deterministic": false,
+        "requires_confirmation": "CND-001"
+      },
+      "safety": {
+        "zero_baseline": true,
+        "synchronize_zero_line": true,
+        "fallback_graph": "Small_Multiples"
+      }
+    },
+    {
+      "id": "RLE-008",
+      "priority": 75,
+      "status": "active",
+      "if": {
+        "dimension": "Nominal",
+        "cardinality": { "min": 2, "max": 4 },
+        "has_total": true,
+        "intent": "PROPORTION"
+      },
+      "then": {
+        "recommended_graph": "Bar",
+        "observed_graphs": ["Donut", "Pie"],
+        "state": "CONDITIONAL",
+        "deterministic": false,
+        "requires_confirmation": "CND-002"
+      }
+    },
+    {
+      "id": "RLE-009",
+      "priority": 85,
+      "status": "active",
+      "if": {
+        "dimension": "Temporal",
+        "measure_count": 1,
+        "has_target": true,
+        "intent": "TARGET_VS_ACTUAL"
+      },
+      "then": {
+        "recommended_graph": "Bullet",
+        "observed_graphs": ["Combination_Column_Line"],
+        "state": "CONDITIONAL",
+        "deterministic": false,
+        "requires_confirmation": "CND-004"
+      }
+    },
+    {
+      "id": "RLE-012",
+      "priority": 70,
+      "status": "active",
+      "if": {
+        "dimension": "Nominal",
+        "cardinality": { "min": 15 },
+        "measure_count": 1,
+        "intent": ["RANKING", "COMPARISON"]
+      },
+      "then": {
+        "recommended_graph": "Bar",
+        "state": "CONDITIONAL",
+        "deterministic": false,
+        "requires_confirmation": "CND-005",
+        "default_top_n": 10
+      }
+    },
+    {
+      "id": "RLE-013",
+      "priority": 65,
+      "status": "active",
+      "if": {
+        "dimension": "Nominal",
+        "measure_count": 2,
+        "values_share_common_unit": true,
+        "intent": "COMPARISON"
+      },
+      "then": {
+        "recommended_graph": "Grouped_Bar",
+        "state": "MATCH",
+        "deterministic": true,
+        "deterministic_kind": "priority_fixed"
+      },
+      "notes": [
+        "Grouped_Column is also Observable-valid for the same structure.",
+        "Choosing Grouped_Bar via first_match_wins / priority is a fixed convention for reproducibility.",
+        "deterministic:true here means same input → same output under this rule version — NOT that structure admits only one graph."
+      ]
+    },
+    {
+      "id": "RLE-014",
+      "priority": 65,
+      "status": "deferred",
+      "reason": "Identical observable if to RLE-013; orientation is not Observable. Deferred so RLE-013 priority_fixed remains the sole active encoding for this structure.",
+      "if": {
+        "dimension": "Nominal",
+        "measure_count": 2,
+        "values_share_common_unit": true,
+        "intent": "COMPARISON"
+      },
+      "then": {
+        "recommended_graph": "Grouped_Column",
+        "state": "MATCH",
+        "deterministic": true,
+        "deterministic_kind": "priority_fixed"
+      }
+    },
+    {
+      "id": "RLE-015",
+      "priority": 60,
+      "status": "active_provisional",
+      "caveat": "U-05 — observable shape unclear; do not treat as frozen",
+      "if": {
+        "dimension": "Nominal",
+        "measure_count": 2,
+        "intent": "RELATIONSHIP"
+      },
+      "then": {
+        "recommended_graph": "Scatter",
+        "state": "MATCH",
+        "deterministic": true
+      }
+    }
+  ],
+
+  "conditional_rules": {
+    "CND-001": {
+      "question": "2つのグラフの目盛りを左右に分けて1つに重ねますか？それとも上下に分けて表示しますか？",
+      "options": [
+        {
+          "id": "dual_axis_combo",
+          "label": "重ねて表示（2軸）",
+          "recommended_graph": "Combination_Column_Line"
+        },
+        {
+          "id": "small_multiples",
+          "label": "上下に分離",
+          "recommended_graph": "Small_Multiples"
+        }
+      ],
+      "default": "small_multiples",
+      "safety": {
+        "zero_baseline": true,
+        "synchronize_zero_line": true,
+        "reject_unsynchronized_dual_axis": true
+      }
+    },
+    "CND-002": {
+      "question": "ドーナツ型で割合の雰囲気を強調しますか？それとも横棒で正確な大きさを比較しますか？",
+      "options": [
+        {
+          "id": "accuracy",
+          "label": "横棒",
+          "recommended_graph": "Bar"
+        },
+        {
+          "id": "convention",
+          "label": "ドーナツ",
+          "recommended_graph": "Donut",
+          "practice": "observed"
+        }
+      ],
+      "default": "accuracy"
+    },
+    "CND-003": {
+      "status": "defined_unwired",
+      "issue": "U-10",
+      "question": "強調したいのは「全体の金額の増減」ですか？それとも「内訳の割合（%）の変化」ですか？",
+      "options": [
+        {
+          "id": "absolute_total",
+          "label": "金額の合計推移",
+          "recommended_graph": "Stacked_Column"
+        },
+        {
+          "id": "percentage_mix",
+          "label": "構成比（%）推移",
+          "recommended_graph": "100pct_Stacked_Column",
+          "transformation": "normalize_to_percentage"
+        }
+      ],
+      "default": "absolute_total",
+      "note": "No active rule references this CND in v1. Intent-first BREAKDOWN vs MIX_SHIFT may supersede."
+    },
+    "CND-004": {
+      "status": "active",
+      "question": "目標と実績を、どのように見せますか？",
+      "invariant": "TARGET_VS_ACTUAL: both options MUST encode the target. Dropping target is forbidden.",
+      "options": [
+        {
+          "id": "target_as_marker",
+          "label": "実績バーに目標ラインを重ねる（Bullet）",
+          "recommended_graph": "Bullet",
+          "encodes_target": true
+        },
+        {
+          "id": "target_as_series",
+          "label": "実績と目標を並んだ棒で比較する",
+          "recommended_graph": "Grouped_Column",
+          "encodes_target": true,
+          "encoding_note": "Two measures: actual + target (not actual-only Column)"
+        }
+      ],
+      "default": "target_as_marker",
+      "rejected_option": {
+        "id": "ignore_target_plain_column",
+        "reason": "Plain Column without target contradicts Intent TARGET_VS_ACTUAL and is not Observable-justified"
+      }
+    },
+    "CND-005": {
+      "question": "上位10項目に絞って表示しますか？",
+      "options": [
+        {
+          "id": "top_n",
+          "label": "上位10項目＋その他",
+          "recommended_graph": "Bar",
+          "transformation": "top_n_plus_other"
+        },
+        {
+          "id": "all",
+          "label": "全項目を表示",
+          "recommended_graph": "Bar"
+        }
+      ],
+      "default": "top_n"
+    }
+  },
+
+  "validation": {
+    "accessibility": {
+      "status": "provisional_reference",
+      "issue": "U-07",
+      "wcag_contrast_text": 4.5,
+      "wcag_contrast_large_text": 3.0,
+      "do_not_rely_on_color": true,
+      "pattern_or_label_required_for_sign": true,
+      "not_a_guaranteed_implementation_sla": true
+    },
+    "axis": {
+      "zero_baseline_default": true,
+      "dual_axis_zero_sync": true,
+      "reject_unsynchronized_dual_axis": true
+    },
+    "stacking": {
+      "reject_mixed_units": true,
+      "reject_percentage_with_absolute_without_transform": true,
+      "reject_positive_negative_mixed": true
+    },
+    "chart": {
+      "allow_3d": false,
+      "allow_decorative_3d": false
+    }
+  },
+
+  "transformations": {
+    "normalize_to_percentage": {
+      "formula": "value / SUM(category_values) * 100",
+      "requires_common_unit": true,
+      "rounding": "display_only",
+      "preserve_raw_values": true,
+      "conversion_requires_confirmation": false,
+      "note": "Auto CONVERTIBLE when rule says so; other transforms may later set confirmation true (U-02)"
+    },
+    "top_n_plus_other": {
+      "default_n": 10,
+      "preserve_total": true,
+      "other_label": "その他",
+      "conversion_requires_confirmation": false
+    }
+  },
+
+  "resolution_states": {
+    "MATCH": {
+      "description": "Rule matched; Graph Spec decided without user confirmation",
+      "user_confirmation": false,
+      "automation": "auto_deterministic",
+      "note": "May be structure_unique or priority_fixed (see deterministic_semantics)"
+    },
+    "CONVERTIBLE": {
+      "description": "Explicit math transform then decide. Not human confirmation (unless transform catalog requires it — U-02)",
+      "user_confirmation": false,
+      "automation": "auto_deterministic"
+    },
+    "CONDITIONAL": {
+      "description": "Ask the human exactly one question — never ask an AI. Not an LLM consultation state.",
+      "user_confirmation": true,
+      "max_questions": 1,
+      "max_questions_status": "hard_limit_v1",
+      "automation": "needs_confirmation"
+    },
+    "MISMATCH": {
+      "description": "Intent and Observable Structure clearly conflict. Do not generate. Explaining the conflict is success.",
+      "user_confirmation": false,
+      "action": "reject_with_explanation",
+      "automation": "terminal",
+      "not": "NO_MATCH"
+    },
+    "NO_MATCH": {
+      "description": "No active rule matched. Structure and Intent may still be compatible; v1 rule coverage is incomplete. Do not treat as MISMATCH.",
+      "user_confirmation": false,
+      "action": "report_uncovered",
+      "automation": "extensible",
+      "not": "MISMATCH",
+      "example": "Temporal × Quant + Intent DISTRIBUTION → NO_MATCH (rule undefined), not structural conflict"
+    }
+  },
+
+  "fallback": {
+    "unknown_unit": {
+      "unit": "UNKNOWN",
+      "action": "preserve_numeric_value"
+    },
+    "unknown_intent": {
+      "action": "ask_user",
+      "question": "何を伝えたいですか？",
+      "options_ui_hypothesis_not_final": [
+        "推移",
+        "比較",
+        "割合",
+        "順位",
+        "内訳",
+        "達成"
+      ],
+      "note": "UI vocabulary vs 12 intents mapping is U-09"
+    },
+    "no_matching_rule": {
+      "action": "report_uncovered",
+      "message": "現在のルールセットでは、この入力に対するグラフを自動決定できません（ルール未定義）。",
+      "state": "NO_MATCH",
+      "forbidden_alias": "MISMATCH"
+    },
+    "structural_conflict": {
+      "action": "reject_with_explanation",
+      "message": "選んだ目的と、表の構造が合いません。",
+      "state": "MISMATCH",
+      "note": "Emitted only by explicit incompatibility checks, not by empty rule match"
+    }
+  },
+
+  "output_contract": {
+    "decision_emits": [
+      "matched_rule_id",
+      "state",
+      "recommended_graph",
+      "observed_graphs",
+      "transformation",
+      "requires_confirmation",
+      "deterministic_kind",
+      "reason_code"
+    ],
+    "does_not_emit": [
+      "svg_bytes",
+      "vega_lite_spec"
+    ],
+    "format_promises_for_renderer": ["SVG", "PNG"],
+    "clipboard": true,
+    "editable_spec": true,
+    "source_data_embedded": false,
+    "network_required": false
+  }
+}

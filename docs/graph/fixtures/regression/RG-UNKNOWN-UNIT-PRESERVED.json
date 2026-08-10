@@ -1,0 +1,11 @@
+{
+  "id": "RG-UNKNOWN-UNIT-PRESERVED",
+  "tsv": "年度\t指標X\n2022\t10\n2023\t20\n2024\t30\n2025\t40\n",
+  "intent": "TREND",
+  "expected_decision": {
+    "matched_rule_id": "RLE-001",
+    "state": "MATCH",
+    "recommended_graph": "Line",
+    "unit": "UNKNOWN"
+  }
+}

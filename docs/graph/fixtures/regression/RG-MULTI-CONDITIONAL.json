@@ -1,0 +1,11 @@
+{
+  "id": "RG-MULTI-CONDITIONAL",
+  "tsv": "月\t売上（円）\t利益率（%）\n1月\t1000\t12\n2月\t1200\t14\n3月\t1400\t13\n4月\t1300\t11\n",
+  "intent": "MULTI_METRIC",
+  "expected_decision": {
+    "matched_rule_id": "RLE-007",
+    "state": "CONDITIONAL",
+    "recommended_graph": "Small_Multiples",
+    "confirmation_id": "CND-001"
+  }
+}

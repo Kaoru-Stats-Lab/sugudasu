@@ -1,0 +1,10 @@
+{
+  "id": "OX-NOMINAL-04",
+  "tsv": "事業部\t売上\n営業\t100\n開発\t120\n管理\t80\n製造\t90\n",
+  "expected_observable": {
+    "dimension": "Nominal",
+    "cardinality": 4,
+    "measure_count": 1,
+    "measure_type": "Absolute"
+  }
+}

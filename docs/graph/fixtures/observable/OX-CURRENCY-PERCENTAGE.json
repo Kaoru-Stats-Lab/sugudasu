@@ -1,0 +1,12 @@
+{
+  "id": "OX-CURRENCY-PERCENTAGE",
+  "tsv": "月\t売上（円）\t利益率（%）\n1月\t1000\t12\n2月\t1200\t14\n3月\t1400\t13\n",
+  "expected_observable": {
+    "dimension": "Temporal",
+    "cardinality": 3,
+    "measure_count": 2,
+    "values_have_different_units": true,
+    "values_share_common_unit": false,
+    "measure_type_mixed_percentage_absolute": true
+  }
+}

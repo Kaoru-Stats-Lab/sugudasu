@@ -1,0 +1,8 @@
+{
+  "id": "OA-11",
+  "scenario": "担当者別売上",
+  "tsv": "担当\t売上（万円）\n佐藤\t980\n鈴木\t870\n高橋\t760\n田中\t720\n伊藤\t650\n",
+  "intent": "RANKING",
+  "expected_r1_type": "Bar",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}

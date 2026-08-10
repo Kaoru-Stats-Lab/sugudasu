@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-05",
+  "updatedAt": "2026-08-10",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
@@ -95,6 +95,18 @@
       "title": "PNG/JPG → WebP 圧縮（逆方向）",
       "summary": "既存の WebP→JPG の逆。LP/EC 向けの軽量化。非送信・ブラウザ内のみ。",
       "askFeedback": "透過 PNG を残したいケースは多いですか？"
+    },
+    {
+      "id": "graph-decision-paste",
+      "lane": "core",
+      "status": "considering",
+      "priority": 9,
+      "toolId": null,
+      "toolLabel": "グラフ（仮称）",
+      "toolHref": null,
+      "title": "表を貼って、伝えたいことから図を決める（仮称）",
+      "summary": "やる: Excelやスプレッドシートの表を貼り、「推移・比較・順位」など伝えたいことを選び、資料にそのまま貼れる図（SVG/PNG）を出す。判断はルールベースで再現可能にする。編集ソフト化はしない。やらない: 帳票のデータベース化、在庫/ERP代替、色や線幅の細かいグラフエディタ、AIに任せた見た目のゆらぎ。いまは設計と貼付検証の段階で、公開時期は未定です。",
+      "askFeedback": "会議資料で、表から図にするときにいちばん詰まるのは「種類の選択」「Excel操作」「貼ったあとの見た目」のどれですか？"
     },
     {
       "id": "invoice-quality",
@@ -590,9 +602,57 @@
       "toolId": "table-conv",
       "toolLabel": "表変換",
       "toolHref": "table-conv.html",
-      "title": "表データからのグラフ・図表生成",
-      "summary": "SUGUDASU の役割はグラフ前のテキスト・表をきれいにすることまで。棒・折れ線・円などの描画は Excel · スプレッドシート · BI に任せます。",
-      "alternative": "Excel · Google スプレッドシート · 各 BI"
+      "title": "表変換ツール内でのグラフ描画 · Excelグラフウィザードの置き換え",
+      "summary": "表変換の役割は、テキスト・表をきれいに整えるところまでです。表変換の画面の中で棒・折れ線・円を描くことはしません。また、色・系列・軸を細かくいじる Excel 風グラフウィザードの置き換えもしません。表から資料用の図を決める別候補（グラフ仮称）は、ロードマップの「検討中」を参照してください。",
+      "alternative": "Excel · Google スプレッドシート · 検討中のグラフ（仮称）"
+    },
+    {
+      "id": "oos-inventory-erp-wms",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 29,
+      "toolId": null,
+      "toolLabel": "共通",
+      "toolHref": null,
+      "title": "在庫管理システム · ERP / WMS の代替",
+      "summary": "入出庫・棚卸・ロケーション・ロット・SKUマスター・評価単価・会計連動など、在庫を管理する本体は作りません。現場の在庫表を資料用の図にする話（検討中のグラフ仮称）とは別問題です。",
+      "alternative": "販売管理 · ERP · WMS · 既存の在庫 SaaS"
+    },
+    {
+      "id": "oos-excel-normalize-master",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 30,
+      "toolId": null,
+      "toolLabel": "共通",
+      "toolHref": null,
+      "title": "業務Excelのデータベース正規化 · マスター統合 · ER設計",
+      "summary": "会社ごと・担当者ごとに形が違う帳票（ピボット、結合セル、独自列）を、共通の正規データモデルへ矯正する製品にはしません。既存の表を比較・確認・説明しやすくすることは別レーンで考えます。",
+      "alternative": "ETL · BI · データ基盤 · 導入コンサル · ERP導入プロジェクト"
+    },
+    {
+      "id": "oos-graph-visual-editor",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 31,
+      "toolId": null,
+      "toolLabel": "グラフ（仮称）",
+      "toolHref": null,
+      "title": "グラフ編集ソフト（色・線幅・凡例・軸の細かい編集UI）",
+      "summary": "検討中のグラフ（仮称）は、編集そのものを仕事にさせないことが成功条件です。色パレット、線幅、凡例位置、軸文言のドラッグ編集、テーマエディタは作りません。細かく直すなら Excel や Illustrator の方が速い、という前提です。",
+      "alternative": "Excel · PowerPoint · Google スプレッドシート · Illustrator"
+    },
+    {
+      "id": "oos-graph-llm-auto",
+      "lane": "out_of_scope",
+      "status": "out_of_scope",
+      "priority": 32,
+      "toolId": null,
+      "toolLabel": "グラフ（仮称）",
+      "toolHref": null,
+      "title": "AI（LLM）に任せるグラフ自動提案",
+      "summary": "同じ表・同じ意図でも見た目がゆらぐ提案は、提出資料では信頼しにくいため採用しません。検討中のグラフ（仮称）は、ルールで決めて再現可能にすることを優先します。",
+      "alternative": "ChatGPT 等で下書き → 自分で Excel に落とす · 検討中の決定論グラフ（仮称）"
     },
     {
       "id": "oos-url-hash-payload-share",

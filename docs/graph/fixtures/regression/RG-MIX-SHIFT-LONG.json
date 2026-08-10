@@ -1,0 +1,11 @@
+{
+  "id": "RG-MIX-SHIFT-LONG",
+  "tsv": "年度\t事業部\t売上\n2022\t営業\t100\n2022\t開発\t80\n2022\t管理\t50\n2023\t営業\t110\n2023\t開発\t90\n2023\t管理\t55\n2024\t営業\t120\n2024\t開発\t95\n2024\t管理\t60\n",
+  "intent": "MIX_SHIFT",
+  "expected_decision": {
+    "matched_rule_id": "RLE-005",
+    "state": "CONVERTIBLE",
+    "recommended_graph": "100pct_Stacked_Column",
+    "transformation": "normalize_to_percentage"
+  }
+}

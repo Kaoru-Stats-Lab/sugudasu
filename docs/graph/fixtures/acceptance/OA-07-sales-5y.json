@@ -1,0 +1,8 @@
+{
+  "id": "OA-07",
+  "scenario": "年度別売上（5年）",
+  "tsv": "年度\t売上（億円）\n2021\t98\n2022\t110\n2023\t125\n2024\t140\n2025\t155\n",
+  "intent": "TREND",
+  "expected_r1_type": "Line",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"]
+}
