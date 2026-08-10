@@ -2050,19 +2050,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — roadmap にグラフ（仮称）検討中 · 在庫/ERP・正規化・グラフEditor・LLM提案を対象外で誠実記載 |
-| **change_summary** | `data/roadmap.json` · Graph 設計パック（`docs/graph/` · `assets/graph-*.js` · tests）· Zenn Graph 下書き · DEPLOY_LOG |
-| **local_build** | （release:pages:free 前） |
+| **change_summary** | `data/roadmap.json` · Graph 設計パック（`docs/graph/` · `assets/graph-*.js` · tests）· Zenn Graph 下書き · `statements-product` 日付同期 · DEPLOY_LOG |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 15/450） |
 | **deploy_count_today** | 3（P7 override · 提督明示 Commit&Push&Deploy） |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P6 · P7 override · 提督「Commit&Push&Deployして」 |
+| **pages_build_budget_after** | 15/450（2026-08 · consume 済） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`https://sugudasu.com/roadmap` — 検討中にグラフ（仮称）· 対象外に在庫/ERP 等 |
+| **git_sha** | `0a16994`（roadmap+Graph）· `0b9a8b5`（statements sync） |
+| **cf_deployment_id** | CF Pages auto（`0b9a8b5` push origin main） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/roadmap` — 検討中にグラフ（仮称）· 対象外に在庫/ERP 等 |
 
 ---
 
@@ -2070,6 +2071,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-10 | 003 executed（0b9a8b5 · roadmap Graph検討中 · 在庫/ERP対象外 · P7 override） |
 | 2026-08-10 | 003 approved（roadmap Graph検討中 · 在庫/ERP対象外 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-10 | 002 executed（be898c6 · sitemap registry 追従 · mask stub 除外 · P7 override） |
 | 2026-08-10 | 002 approved（sitemap registry 追従 · mask stub 除外 · P7 override · 提督 Commit&Push） |
