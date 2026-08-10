@@ -147,7 +147,7 @@
                 <button id="action-shuffle-btn" onclick="executeAutoGenerateAlgorithm()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1">
                     生成してその場でシフトを作る
                 </button>
-                <button type="button" id="btn-print-shift" onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-md transition-all">
+                <button type="button" id="btn-print-shift" onclick="(window.SG_ANALYTICS&&window.SG_ANALYTICS.printTracked)?window.SG_ANALYTICS.printTracked():window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-md transition-all">
                     印刷 / PDF
                 </button>
                 </div>

@@ -265,6 +265,9 @@ function renderSlots(presetId) {
       <input type="text" id="lq-slot-${slot.id}" class="sg-input text-sm" placeholder="${esc(slot.placeholder)}" autocomplete="off" value="${esc(saved)}">
     `;
     slotsEl.appendChild(wrap);
+    try {
+      window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById(`lq-slot-${slot.id}`), { debounceMs: 400, minLength: 1 });
+    } catch (_) { /* ignore */ }
   }
   updateSlotHint();
 }
@@ -404,6 +407,10 @@ btnDlPng.addEventListener('click', () => {
   if (!lastShareUrl) return;
   qrCanvas.toBlob((blob) => {
     if (!blob) return;
+    if (window.SG_ANALYTICS?.downloadBlobTracked) {
+      window.SG_ANALYTICS.downloadBlobTracked(blob, 'sugudasu-link-qr.png', 'download');
+      return;
+    }
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'sugudasu-link-qr.png';
@@ -453,6 +460,10 @@ window.addEventListener('hashchange', () => {
   const dec = decodeHash(window.location.hash);
   if (!dec.error && dec.links?.length) enterViewOnlyMode(dec);
 });
+
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('lq-name'), { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
 </script>
 </body>
 </html>

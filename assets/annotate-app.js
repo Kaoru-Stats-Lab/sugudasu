@@ -579,23 +579,31 @@ function compositeCanvas() {
 
 async function downloadPng() {
   const blob = await canvasToPngBlob(compositeCanvas());
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = outputFilename(sourceName);
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, outputFilename(sourceName), 'download');
+  } else {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = outputFilename(sourceName);
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
   setStatus('PNG を保存しました。');
 }
 
 async function downloadJpeg() {
   const blob = await canvasToJpegBlob(compositeCanvas());
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = outputFilenameExt(sourceName, 'jpeg');
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, outputFilenameExt(sourceName, 'jpeg'), 'download');
+  } else {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = outputFilenameExt(sourceName, 'jpeg');
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
   setStatus('JPEG を保存しました。');
 }
 
@@ -610,6 +618,7 @@ async function copyOutput() {
     markCopyButtonDone(els.btnCopy, {
       copiedLabel: 'コピーしました',
       fallbackLabel: 'コピー',
+      trackOutcome: 'copy',
     });
     setStatus('コピーしました');
   } catch (e) {
@@ -649,12 +658,18 @@ async function downloadPdf() {
       { pageSize: 'source' },
     );
     const stem = (sourceName || 'document').replace(/\.[^.]+$/, '');
-    const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${stem}-annotated.pdf`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const name = `${stem}-annotated.pdf`;
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'pdf');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
     setStatus('PDF を保存しました（未編集ページは元のまま）。');
   } catch (e) {
     showAnnotateWarn(e.message || 'PDF の作成に失敗しました。');
@@ -690,7 +705,10 @@ els.dropZone.addEventListener('keydown', (e) => {
 });
 els.fileInput.addEventListener('change', () => {
   const f = els.fileInput.files?.[0];
-  if (f) loadFile(f);
+  if (f) {
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
+    loadFile(f);
+  }
   els.fileInput.value = '';
 });
 els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('is-dragover'); });
@@ -699,12 +717,16 @@ els.dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   els.dropZone.classList.remove('is-dragover');
   const f = e.dataTransfer?.files?.[0];
-  if (f) loadFile(f);
+  if (f) {
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+    loadFile(f);
+  }
 });
 document.addEventListener('paste', (e) => {
   const f = imageFileFromClipboard(e.clipboardData);
   if (!f) return;
   e.preventDefault();
+  try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('clipboard_image'); } catch (_) { /* ignore */ }
   loadFile(f);
 });
 

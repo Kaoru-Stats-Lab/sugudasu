@@ -880,6 +880,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 
 - [x] **P0** ホーム画面追加 / ブックマーク誘導（初回完了後 · `localStorage` · `sugudasu-growth.js`）
 - [ ] **P1** GA4 で Direct / 再訪率を追跡
+- [x] **P1** ツール別 開封→着手→完了ファネル（`product_opened` · `tool_job_started` · `tool_job_done` · [`PRODUCT_USAGE_ANALYTICS.md`](notes/PRODUCT_USAGE_ANALYTICS.md) · 2026-08-10）
+- [x] **P1** VC目線の価値メーター SSOT（[`VC_DUE_DILIGENCE_METRICS.md`](notes/VC_DUE_DILIGENCE_METRICS.md) · 週次で価値把握）
 - [ ] **P2** 「よく使うツール」— 最終利用を `localStorage` で hub に表示（ログイン不要）
 
 ##### A5 有料広告（将来 · 今はやらない）
@@ -938,7 +940,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | 領域 | TODO |
 |------|------|
 | E-E-A-T | [x] 法務3ページ · [x] `updates.html` · [x] Form 窓口 |
-| 計測 | [ ] GA4 MCP（`analytics-mcp` · 認証 Pending）· [ ] GSC MCP（**Pending** · Gemini 助言 · §8-13）· [ ] SC インデックス · [ ] ツール別 PV · [x] PSI ベースライン（2026-06-17 · §13） |
+| 計測 | [ ] GA4 MCP（ADC）· [x] 開封→着手→完了 · [x] VC価値メーター（セカンドオピニオン反映済）· [ ] **P0 本番均質デプロイ** · [ ] Exploration · [ ] コホート · [ ] GSC蓄積 · [x] PSI |
 | 実験 | [ ] 広告位置 A/B（承認後）· [ ] シェアボタン CTR |
 | フィードバック | [x] Form + GAS + `FEEDBACK_TRIAGE.md` |
 
@@ -1709,10 +1711,26 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 | **GA4** | [googleanalytics/google-analytics-mcp](https://github.com/googleanalytics/google-analytics-mcp) | **設定済 · 認証 Pending** | `pipx` · `~/.cursor/mcp.json` · `gcloud auth application-default login` 待ち |
 | **GSC** | [AminForou/mcp-gsc](https://github.com/AminForou/mcp-gsc)（候補） | **Pending** | Gemini 助言により **GA MCP 運用安定後** に再評価。metehan777 版は不採用（保守性 · Cursor 非対応） |
 
+**利用ファネル（開封→着手→完了）:** [`docs/notes/PRODUCT_USAGE_ANALYTICS.md`](notes/PRODUCT_USAGE_ANALYTICS.md) · 契約 [`data/tool-job-contracts.json`](../data/tool-job-contracts.json) · 週次 [`docs/prompts/product-usage-weekly-COPYPASTE.md`](prompts/product-usage-weekly-COPYPASTE.md)
+
+**VC / 経営の価値メーター（常時把握）:** [`docs/notes/VC_DUE_DILIGENCE_METRICS.md`](notes/VC_DUE_DILIGENCE_METRICS.md) — A〜F の MECE · GA4で測れる範囲 · ギャップ  
+**セカンドオピニオン（他AI）:** [`docs/prompts/vc-due-diligence-metrics-second-opinion-COPYPASTE.md`](prompts/vc-due-diligence-metrics-second-opinion-COPYPASTE.md)
+
+イベント: `product_opened` · `tool_job_started`（`input_kind`）· `tool_job_done`（`outcome`）· 入力本文は送らない。
+
+- [x] **P1** open→started→done · `input_kind` · A16 / `validate:usage-analytics`（2026-08-10）
+- [x] **P1-VC-METER** VCデューデリ6軸を SSOT 化 · Backlog から辿れる（2026-08-10）
+- [x] **P2-VC-REVIEW** セカンドオピニオン反映済（2026-08-10 · Strong / Pass-with-gaps · イベント増殖せず · [`VC_DUE_DILIGENCE_METRICS.md`](notes/VC_DUE_DILIGENCE_METRICS.md)）
+- [ ] **P0-USAGE-DEPLOY** 計測契約の **本番デプロイ + 全ツール均質監査**（open/start/done/failed · outcome 意味ブレなし）— VCセカンドオピニオン最優先
+- [ ] **P1-USAGE-EXPLORE** GA4 Exploration 完成（転換率 · outcome · input_kind · New/Returning · Tool Pareto）
+- [ ] **P1-USAGE-COHORT** 7/30/60/90 再訪コホート（ログインなし近似と注釈）
 - [x] **P2-MCP-GA-1** `analytics-mcp` 0.6.0 インストール · Cursor `mcp.json` 追記
-- [ ] **P2-MCP-GA-2** Cloud SDK · ADC 認証（Analytics Admin/Data API 有効化）
-- [ ] **P2-MCP-GSC-1** **Pending** — `mcp-gsc` 導入判断（OAuth Desktop · Search Console API · `uvx`）
+- [ ] **P2-MCP-GA-2** Cloud SDK · ADC 認証（Analytics Admin/Data API 有効化）— 週次プロンプト利用の前提
+- [x] **P2-MCP-GA-3** 開封→完了ファネル契約 · `sg-analytics.js` · copy/DL/print 中央フック（2026-08-09）
+- [x] **P2-MCP-GA-4** GA4 カスタムディメンション（`tool_id` · `outcome` · **`input_kind`**）登録済（提督 · 2026-08-10）· Exploration は P1-USAGE-EXPLORE
+- [ ] **P2-MCP-GSC-1** **Pending 解除候補** — 分析は後段でも **データ蓄積は早め**（Acquisition）
 - [ ] **P2-MCP-GSC-2** sugudasu.com 向け定例プロンプト（インデックス · クエリ · sitemap · 新ツール公開後監査）
+- [ ] **P2-SYNC-METER** Sync+広告を含む収益構造（D/E1）を別レーンで整備 · コアGA4と混ぜない
 
 **GSC を Pending にした理由（Gemini 合意）:** 計測系 MCP を同時に増やすと OAuth / GCP 設定 · Cursor MCP デバッグが重なる。GA4 で PV・イベントの読み取りを先に安定させ、GSC は SEO 運用サイクル（公開後 2–4 週）に合わせて追加する。
 

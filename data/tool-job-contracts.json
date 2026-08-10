@@ -1,0 +1,277 @@
+{
+  "version": "2026-08-10",
+  "ssot": "docs/notes/PRODUCT_USAGE_ANALYTICS.md",
+  "inputKinds": [
+    "file_drop",
+    "file_pick",
+    "paste",
+    "clipboard_image",
+    "type",
+    "camera",
+    "load_session",
+    "generate"
+  ],
+  "outcomes": ["copy", "pdf", "download", "print"],
+  "infoPageIds": [
+    "hub",
+    "updates",
+    "roadmap",
+    "statements",
+    "privacy",
+    "terms",
+    "disclaimer",
+    "not-a-car",
+    "brand-logo-preview",
+    "mention"
+  ],
+  "tools": {
+    "invoice": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["copy", "print", "download"],
+      "primary_job": "帳票を印刷・送付文面をコピー"
+    },
+    "stamp": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["copy", "download"],
+      "primary_job": "印影PNGをコピーまたは保存"
+    },
+    "receipt": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["copy", "print"],
+      "primary_job": "領収書を印刷・共有"
+    },
+    "label": {
+      "job": true,
+      "inputs": ["type", "paste", "load_session"],
+      "outputs": ["print", "download"],
+      "primary_job": "宛名ラベルを印刷"
+    },
+    "shift": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["print"],
+      "primary_job": "シフト表を印刷"
+    },
+    "report": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "整形議事録をコピー"
+    },
+    "reverse": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "言い換え候補をコピー"
+    },
+    "normalize": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "整えたテキストをコピー"
+    },
+    "clip-stash": {
+      "job": true,
+      "inputs": ["paste", "clipboard_image", "file_pick"],
+      "outputs": ["copy"],
+      "primary_job": "仮置きカードをコピー"
+    },
+    "search-query": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "検索式をコピー"
+    },
+    "table-conv": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "変換表をコピー"
+    },
+    "webp-to-jpg": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick"],
+      "outputs": ["download"],
+      "primary_job": "変換画像をダウンロード"
+    },
+    "video-frame": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick"],
+      "outputs": ["download", "copy"],
+      "primary_job": "コマ画像を保存"
+    },
+    "annotate": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick", "clipboard_image"],
+      "outputs": ["copy", "download", "pdf"],
+      "primary_job": "赤入れ画像/PDFを持ち帰る"
+    },
+    "image-trim": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick", "clipboard_image"],
+      "outputs": ["copy", "download"],
+      "primary_job": "切り出し画像をコピー/保存"
+    },
+    "clipboard-trim": {
+      "job": true,
+      "inputs": ["clipboard_image", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "余白トリム画像をコピー"
+    },
+    "watermark": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick"],
+      "outputs": ["download"],
+      "primary_job": "透かし画像をダウンロード"
+    },
+    "pdf-images": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick"],
+      "outputs": ["download"],
+      "primary_job": "抽出画像をダウンロード"
+    },
+    "pdf-fill": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick"],
+      "outputs": ["pdf"],
+      "primary_job": "記入済みPDFをダウンロード"
+    },
+    "test-data": {
+      "job": true,
+      "inputs": ["generate", "type"],
+      "outputs": ["copy", "download"],
+      "primary_job": "テストCSVをコピー/DL"
+    },
+    "broken-input": {
+      "job": true,
+      "inputs": ["type", "paste", "generate"],
+      "outputs": ["copy"],
+      "primary_job": "壊れ入力サンプルをコピー"
+    },
+    "group-split": {
+      "job": true,
+      "inputs": ["paste", "type", "file_pick", "load_session", "generate"],
+      "outputs": ["copy", "download"],
+      "primary_job": "班分け結果をコピー/DL"
+    },
+    "match-board": {
+      "job": true,
+      "inputs": ["type", "paste", "load_session"],
+      "outputs": ["copy", "download"],
+      "primary_job": "割当結果をコピー/DL"
+    },
+    "slot-board": {
+      "job": true,
+      "inputs": ["type", "paste", "load_session"],
+      "outputs": ["copy", "download"],
+      "primary_job": "枠取り結果をコピー/DL"
+    },
+    "planning-poker": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["download"],
+      "primary_job": "見積結果CSVをDL"
+    },
+    "timeline": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["print"],
+      "primary_job": "進行表を印刷"
+    },
+    "uragami": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["download", "print"],
+      "primary_job": "裏紙を保存/印刷"
+    },
+    "present": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["copy"],
+      "primary_job": "ギフト文面をコピー"
+    },
+    "fair-draw": {
+      "job": true,
+      "inputs": ["paste", "type", "file_pick", "generate"],
+      "outputs": ["copy", "download", "print"],
+      "primary_job": "抽選結果・監査を持ち帰る"
+    },
+    "warikan": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "割り勘結果をコピー"
+    },
+    "budget-trim": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "引き算結果をコピー"
+    },
+    "sns": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "デコ文字をコピー"
+    },
+    "link-qr": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy", "download"],
+      "primary_job": "URL/QRをコピー・保存"
+    },
+    "qr-reader": {
+      "job": true,
+      "inputs": ["camera", "file_pick"],
+      "outputs": ["copy"],
+      "primary_job": "読取結果をコピー"
+    },
+    "diff": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy", "print"],
+      "primary_job": "差分レポートをコピー/印刷"
+    },
+    "smart-diff": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick", "type", "paste"],
+      "outputs": ["pdf", "copy"],
+      "primary_job": "変更確認PDFを出力"
+    },
+    "json-view": {
+      "job": true,
+      "inputs": ["type", "paste", "file_pick"],
+      "outputs": ["copy"],
+      "primary_job": "パス/値をコピー"
+    },
+    "ai-cleaner": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "整形文をコピー"
+    },
+    "time-calc": {
+      "job": true,
+      "inputs": ["type"],
+      "outputs": ["copy"],
+      "primary_job": "計算結果をコピー"
+    },
+    "font-converter": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "変換文字をコピー"
+    },
+    "mask": {
+      "job": true,
+      "registryOptional": true,
+      "inputs": ["file_drop", "file_pick", "clipboard_image"],
+      "outputs": ["copy", "download"],
+      "primary_job": "マスク画像をコピー/保存",
+      "note": "tools/mask.html あり · registry 未登録時も契約のみ保持"
+    }
+  }
+}

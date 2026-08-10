@@ -340,6 +340,18 @@
             document.getElementById('chk-gratitude').addEventListener('change', buildLineText);
             document.getElementById('chk-surplus-note').addEventListener('change', buildLineText);
             document.getElementById('chk-shortage-note').addEventListener('change', buildLineText);
+
+            try {
+                window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('input-total'), { debounceMs: 400, minLength: 1 });
+                document.getElementById('group-rows')?.addEventListener('input', (e) => {
+                    const t = e.target;
+                    if (t instanceof HTMLInputElement && t.dataset.field === 'name') {
+                        try {
+                            window.SG_ANALYTICS?.trackTextEngaged?.(t, { debounceMs: 400, minLength: 1 });
+                        } catch (_) { /* ignore */ }
+                    }
+                });
+            } catch (_) { /* ignore */ }
         }
 
         function applyWarikanMode(next) {
@@ -779,10 +791,18 @@
                     const text = btn.dataset.text || '';
                     if (!text) return;
                     try {
-                        await navigator.clipboard.writeText(text);
-                        const prev = btn.textContent;
-                        btn.textContent = 'コピー済';
-                        setTimeout(() => { btn.textContent = prev; }, 1500);
+                        if (window.SG_COPY_FEEDBACK?.copyWithFeedback) {
+                            await window.SG_COPY_FEEDBACK.copyWithFeedback(text, btn, {
+                                copiedLabel: 'コピー済',
+                                showFilterReminder: false,
+                            });
+                        } else {
+                            await navigator.clipboard.writeText(text);
+                            const prev = btn.textContent;
+                            btn.textContent = 'コピー済';
+                            setTimeout(() => { btn.textContent = prev; }, 1500);
+                            window.SG_ANALYTICS?.notifyJobDone?.('copy');
+                        }
                     } catch {
                         showWarikanToast('コピーに失敗しました。', 'warn');
                     }

@@ -9,6 +9,7 @@
 | **ブランド憲法 · 義解 · 判例** | `docs/brand/BRAND_CONSTITUTION.md` · **`docs/legal/`**（Commentary · Case Law · Interpretation Guide）· `ANTI_PRINCIPLES.md` · `docs/product/PRODUCT_CONSTITUTION.md` |
 | **提督の残タスク（呼び出し用）** | `docs/notes/TAISHO_PENDING_TASKS.md` · Auth `SYNC_AUTH_POLICY.md` · 思想 `SYNC_S1_REMAINING_TASKS.md` |
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
+| **Sync 探索（議論の地図 · 仕様ではない）** | `docs/notes/SYNC_EXPLORATION_BASE.md` — 系統 A（本ライン・アカウント+クラウド）と混同禁止 · プロンプト `docs/prompts/sync-exploration-base-PROMPT.md` · **役員会** `SYNC_EXPLORATION_BOARD_MINUTES.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
 | **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`（**§1.5 新規公開 MECE**）+ `data/tool-registry.json` |
 | **ツールページ リード文（sg-tool-lead）** | **`docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`** · 契約 `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` §4.1 · 分類 `data/tool-lead-profiles.json` · 討議 `UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md` · Rule `.cursor/rules/sugudasu-tool-lead-copy.mdc` |
@@ -25,11 +26,14 @@
 | **Schedule · Sync UI（Notion Like 表）** | **計画** `SCHEDULE_V3_MASTER_PLAN.md` · **汎用/特化** `SCHEDULE_GENERIC_VS_VERTICAL.md` · **UI文案** `SCHEDULE_UI_COPY.md` · **議論ログ** `SCHEDULE_SPLIT_PANE_DECISION_LOG.md` · **Pain/横展開** `SCHEDULE_SUPERVISOR_PAIN_HORIZON.md` · **週間リスト** `SCHEDULE_WEEKLY_LIST_DESIGN.md` · **エコシステム** `SCHEDULE_CONSTRUCTION_ECOSYSTEM.md` · Gemini週間 `docs/prompts/schedule-weekly-list-gemini-prompt.md` · PoC仕様 `SCHEDULE_SPLIT_PANE_POC_SPEC.md` · **`DESIGN_NOTION_SUGUDASU_ADAPT.md`**（色）· 仕様 `SCHEDULE_TOOL_SPEC.md` · 決定 `SYNC_SCHEDULE_PRODUCT_DECISION.md` · `.cursor/rules/sugudasu-design-schedule.mdc` |
 | **ツールページ内 LP（hub ではなく /{tool}）** | `docs/notes/TOOL_PAGE_LP_STRATEGY.md` · §14-9 · `lp-marketing-matrix.json` |
 | バックログ · 優先度 | `docs/BACKLOG.md` |
+| **利用計測 · VC価値メーター** | `PRODUCT_USAGE_ANALYTICS.md` · **`VC_DUE_DILIGENCE_METRICS.md`** · 週次 `product-usage-weekly-COPYPASTE.md` · セカンドオピニオン `vc-due-diligence-metrics-second-opinion-COPYPASTE.md` · Backlog §8-13-1 |
 | **Git push · Agent 委任** | `docs/notes/DEV_GIT_AGENT_DELEGATION.md`（**日本語 commit = Write→`-F` · Shell に日本語を書かない**）· `learned/powershell-commit-utf8.mdc` · 正本 `../machine-dashboard/docs/notes/dev-git-multi-account.md` |
 | **Agent トークン削減（RTK）** | `docs/notes/RTK_CURSOR.md` |
 | **セッション harvest（黄金ルート）** | `.cursor/rules/self-learning-sugudasu.mdc` · Agent 手順 `.cursor/rules/learned/` · Git/SSH `~/.cursor/rules/learned/` |
 | **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
 | **マルチAIリファクタ（コーダー）** | `docs/notes/MULTI_AI_CODER_PLAYBOOK.md` · **Prior Art §9** · **Skill** `.cursor/skills/sugudasu-multi-ai-code-review/` · `docs/prompts/multi-ai-refactor-RUNBOOK.md` |
+| **設計監査（Architecture Validation）** | 正本 `docs/prompts/architecture-validation-PROMPT.md` · RUNBOOK `architecture-validation-RUNBOOK.md` · Smart Diff `smart-diff-architecture-validation-COPYPASTE.md` — **コードレビューではない** · Cursor 投入前ゲート · Browser 肥大化提案は減点 |
+| **SUGUDASU Graph（仮称）** | `docs/graph/GRAPH_STATUS_GATE.md` · POC `PRESENTATION_OUTPUT_CONSTITUTION.md` · 3役 `GRAPH_R1_SENIOR_REVIEW.md` — **判断系 CLOSED · R1 GO · R2 HOLD · 次=Output Acceptance · Editor禁止** · `matched_rule_id`分岐禁止 · `test:graph-*` · `graph:r1-acceptance-export` |
 | **Sync S1 E2E 試行錯誤ログ** | `docs/notes/SYNC_S1_E2E_SESSION_LOG_20260626.md` |
 
 ## 命名変更 · 新規ツール · デプロイ前（必須）

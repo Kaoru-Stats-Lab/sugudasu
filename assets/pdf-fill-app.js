@@ -1818,12 +1818,17 @@ async function bakeAndDownload() {
       },
     );
     const name = currentSuggestedFileName();
-    const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'pdf');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
 
     const done = $('pdff-done');
     if (done) {
@@ -1883,7 +1888,10 @@ function bindDrop() {
   input.addEventListener('change', () => {
     const f = input.files?.[0];
     input.value = '';
-    if (f) loadPdfFile(f);
+    if (f) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
+      loadPdfFile(f);
+    }
   });
   drop.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -1894,7 +1902,10 @@ function bindDrop() {
     e.preventDefault();
     drop.classList.remove('sg-file-drop--active');
     const f = e.dataTransfer?.files?.[0];
-    if (f) loadPdfFile(f);
+    if (f) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+      loadPdfFile(f);
+    }
   });
 }
 

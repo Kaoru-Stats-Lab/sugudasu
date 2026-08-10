@@ -393,6 +393,13 @@ renderPresets();
 addExcludeRow();
 renderRecent();
 applyPreset('pdf_gather');
+
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(keywordsEl, { debounceMs: 400, minLength: 1 });
+  window.SG_ANALYTICS?.bindTextJobStarted?.(siteEl, { debounceMs: 400, minLength: 1 });
+  window.SG_ANALYTICS?.bindTextJobStarted?.(phraseEl, { debounceMs: 400, minLength: 1 });
+  window.SG_ANALYTICS?.bindTextJobStarted?.(intitleEl, { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
 </script>
 </body>
 </html>

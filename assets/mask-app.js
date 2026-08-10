@@ -435,12 +435,16 @@ async function downloadPng() {
   try {
     paint();
     const blob = await canvasToPngBlob(els.canvas);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = outputFilename(sourceName);
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, outputFilename(sourceName), 'download');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = outputFilename(sourceName);
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
     setStatus('PNG をダウンロードしました。貼り付け先で塗り残しを確認してください。');
   } catch (e) {
     setStatus(e.message || 'ダウンロードに失敗しました。', true);
@@ -459,6 +463,7 @@ async function copyPng() {
     markCopyButtonDone(els.btnCopy, {
       copiedLabel: 'コピーしました',
       fallbackLabel: 'コピー',
+      trackOutcome: 'copy',
     });
     setStatus('コピーしました');
   } catch (e) {
@@ -541,7 +546,10 @@ els.dropZone.addEventListener('keydown', (e) => {
 });
 els.fileInput.addEventListener('change', () => {
   const f = els.fileInput.files && els.fileInput.files[0];
-  if (f) loadFile(f);
+  if (f) {
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
+    loadFile(f);
+  }
   els.fileInput.value = '';
 });
 
@@ -556,13 +564,17 @@ els.dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   els.dropZone.classList.remove('is-dragover');
   const f = e.dataTransfer?.files?.[0];
-  if (f) loadFile(f);
+  if (f) {
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+    loadFile(f);
+  }
 });
 
 document.addEventListener('paste', (e) => {
   const f = imageFileFromClipboard(e.clipboardData);
   if (!f) return;
   e.preventDefault();
+  try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('clipboard_image'); } catch (_) { /* ignore */ }
   loadFile(f);
 });
 

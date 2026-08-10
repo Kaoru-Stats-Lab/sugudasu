@@ -245,6 +245,7 @@ function init() {
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
         fallbackLabel: 'TSVをコピー（Excelへ）',
+        trackOutcome: 'copy',
       });
       setMsg('TSV をコピーしました（Excel にそのまま貼れます）');
     } catch {
@@ -261,6 +262,7 @@ function init() {
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
         fallbackLabel: '共有URLをコピー',
+        trackOutcome: 'copy',
       });
       setMsg('共有用 URL をコピーしました（サーバーには送っていません）');
     } catch {
@@ -286,6 +288,12 @@ function init() {
 
   if (!loadFromHash()) {
     render();
+  }
+
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('bt-import'), { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
   }
 }
 

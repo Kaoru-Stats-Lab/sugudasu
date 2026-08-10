@@ -128,6 +128,7 @@ async function copyPngToClipboard(buttonEl) {
     markCopyButtonDone(buttonEl, {
       copiedLabel: 'コピーしました',
       fallbackLabel: 'クリップボードにコピー',
+      trackOutcome: 'copy',
     });
     showCopySuccessToast('copy');
   } catch {
@@ -147,7 +148,14 @@ function useOnInvoice() {
 }
 
 function bindEvents() {
-  $('stamp-text')?.addEventListener('input', scheduleRedraw);
+  const stampText = $('stamp-text');
+  stampText?.addEventListener('input', scheduleRedraw);
+  // DECISION: 印影本文は送らない。初回有意入力のみ type 着手（debounce は SG_ANALYTICS）
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.(stampText, { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
+  }
 
   $('stamp-color')?.addEventListener('input', (e) => {
     state.color = e.target.value;
@@ -180,6 +188,7 @@ function bindEvents() {
     markCopyButtonDone($('stamp-btn-download'), {
       copiedLabel: '保存しました',
       fallbackLabel: 'PNGを保存',
+      trackOutcome: 'download',
     });
     showSaveSuccessToast();
   });

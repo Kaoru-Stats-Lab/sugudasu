@@ -2,7 +2,10 @@
  * SUGUDASU コピー契約 — クリップボード・行数チェック（全ツール共通）
  * SSOT: docs/DESIGN_GUIDELINE.md §3.8 · docs/notes/UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md §2.2
  * 採択: E-TOAST/E-FLASH 案 C+（2026-07-30）— 操作点確認 · ペイロード近接 · 全面flash禁止 · ボタン印刷緑化禁止
+ * 利用計測: docs/notes/PRODUCT_USAGE_ANALYTICS.md（成功時 tool_job_done · 本文は送らない）
  */
+
+import { notifyJobDone, notifyJobFailed } from './sg-analytics.js';
 
 export const FILTER_REMINDER =
   '⚠ スプシ/Excelでフィルター・非表示行があると、貼り付け時に行が詰まってズレます。解除してから貼ってください。';
@@ -58,6 +61,7 @@ export function syncCopyGate(cfg) {
 export async function copyWithFeedback(text, buttonEl, options = {}) {
   const payload = String(text ?? '');
   if (!payload) {
+    notifyJobFailed('empty');
     throw new Error('empty');
   }
 
@@ -104,6 +108,16 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
     toastEl.innerHTML = parts.join('');
   }
 
+  // DECISION: GA はメタのみ。行数・プレビューはトースト専用でイベントに載せない。
+  notifyJobDone('copy');
+  try {
+    if (typeof globalThis !== 'undefined' && globalThis.SUGUDASU_GROWTH) {
+      globalThis.SUGUDASU_GROWTH.recordToolSuccess();
+    }
+  } catch (_) {
+    /* ignore */
+  }
+
   return { ok: true, lineCount: countLines(payload) };
 }
 
@@ -118,12 +132,16 @@ export async function copyLatestTransform(cfg) {
     const outLines = cfg.gate.getOutputLines();
     const mismatch = inLines !== outLines;
     if (mismatch && cfg.gate.checkEl && !cfg.gate.checkEl.checked) {
+      notifyJobFailed('gate');
       throw new Error('gate');
     }
   }
 
   const output = cfg.computeOutput();
-  if (!output) throw new Error('empty');
+  if (!output) {
+    notifyJobFailed('empty');
+    throw new Error('empty');
+  }
 
   return copyWithFeedback(output, cfg.buttonEl, {
     toastEl: cfg.toastEl,
@@ -154,7 +172,7 @@ export function triggerCopyFlash() {
 /**
  * 操作点確認（C+）: ラベルを「コピーしました」へ · ボタン色は変えない（印刷緑流用禁止）
  * @param {HTMLElement | null} buttonEl
- * @param {{ lockMs?: number, copiedLabel?: string, fallbackLabel?: string }} [options]
+ * @param {{ lockMs?: number, copiedLabel?: string, fallbackLabel?: string, trackOutcome?: 'copy'|'pdf'|'download'|'print' }} [options]
  */
 export function markCopyButtonDone(buttonEl, options = {}) {
   if (!buttonEl) return;
@@ -170,6 +188,14 @@ export function markCopyButtonDone(buttonEl, options = {}) {
     buttonEl.classList.remove('sg-copy-btn--confirmed', 'sg-copy-btn--done');
     buttonEl.textContent = options.fallbackLabel ?? (prevLabel || 'コピー');
   }, lockMs);
+  // DECISION: copyWithFeedback は自前で notifyJobDone する。画像コピー等は trackOutcome で明示。
+  if (options.trackOutcome) {
+    try {
+      notifyJobDone(options.trackOutcome);
+    } catch (_) {
+      /* ignore */
+    }
+  }
 }
 
 /**

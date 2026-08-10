@@ -973,6 +973,7 @@ function renderResult(result) {
 }
 
 async function executeSplit(opts = {}) {
+  try { window.SG_ANALYTICS?.notifyJobStarted?.('generate'); } catch (_) { /* ignore */ }
   errorEl.classList.add('hidden');
   try {
     const mapping = getColumnMapping();
@@ -1049,6 +1050,10 @@ document.getElementById('gs-session-copy').addEventListener('click', async () =>
 document.getElementById('gs-session-dl').addEventListener('click', () => {
   const json = JSON.stringify(getSessionSnapshotObject(), null, 2);
   const blob = new Blob([json], { type: 'application/json' });
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, 'group-split-session.json', 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'group-split-session.json';
@@ -1115,6 +1120,10 @@ copyBtn.addEventListener('click', async () => {
 document.getElementById('gs-dl-csv').addEventListener('click', () => {
   if (!lastResult) return;
   const blob = new Blob([formatCsvUtf8Bom(lastResult)], { type: 'text/csv;charset=utf-8' });
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, 'group-split.csv', 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'group-split.csv';
@@ -1125,6 +1134,10 @@ document.getElementById('gs-dl-csv').addEventListener('click', () => {
 document.getElementById('gs-dl-json').addEventListener('click', () => {
   if (!lastResult) return;
   const blob = new Blob([formatJson(lastResult)], { type: 'application/json' });
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, 'group-split.json', 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'group-split.json';
@@ -1221,6 +1234,10 @@ document.addEventListener('DOMContentLoaded', () => {
   syncParamUi('perSize');
   updateLineCounter();
   updateConstraintSummary();
+
+  try {
+    window.SG_ANALYTICS?.bindTextJobStarted?.(rosterEl, { debounceMs: 400, minLength: 1 });
+  } catch (_) { /* ignore */ }
 });
 </script>
 </body>

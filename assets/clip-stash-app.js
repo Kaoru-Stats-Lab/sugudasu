@@ -692,6 +692,11 @@ async function copyAndFeedback(id, closePreviewAfter = false) {
     await copyCard(card);
     triggerCopyFlash();
     setStatus('コピーしました');
+    try {
+      globalThis.SG_ANALYTICS?.notifyJobDone?.('copy');
+    } catch (_) {
+      /* ignore */
+    }
     if (closePreviewAfter) closePreview();
   } catch {
     if (card.type === 'image') {

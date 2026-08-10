@@ -498,11 +498,16 @@ export function mountGroupSplitAssign(root, opts = {}) {
   els.dlJson?.addEventListener('click', () => {
     if (!state) return;
     const blob = new Blob([JSON.stringify(exportAssignSnapshot(state), null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `match-board-${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    const name = `match-board-${Date.now()}.json`;
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
   });
 
   els.jsonLoad?.addEventListener('click', () => {

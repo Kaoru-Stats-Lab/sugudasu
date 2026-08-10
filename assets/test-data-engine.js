@@ -1477,12 +1477,21 @@ export function generateBulkEmployeeCsv(options, totalCount) {
  */
 export function downloadCsvBlob(csv, filename = 'test-data.csv') {
   const blob = new Blob([csvWithBom(csv)], { type: 'text/csv;charset=utf-8' });
+  if (typeof globalThis !== 'undefined' && globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+    return;
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+  try {
+    globalThis.SUGUDASU_SHELL?.trackToolJobDone?.('download');
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 /**

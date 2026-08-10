@@ -677,6 +677,10 @@ document.getElementById('input-text').addEventListener('input', render);
 document.getElementById('pv-tab-insta').addEventListener('click', () => setPreviewMode('insta'));
 document.getElementById('pv-tab-x').addEventListener('click', () => setPreviewMode('x'));
 
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('input-text'), { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
+
 renderDecoParts();
 render();
 </script>

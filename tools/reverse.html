@@ -244,11 +244,15 @@
             window.SG_COPY_FEEDBACK.markCopyButtonDone(btn, {
                 copiedLabel: 'コピーしました',
                 fallbackLabel: prev || 'コピー',
+                trackOutcome: 'copy',
             });
         } else if (btn) {
             const prev = btn.textContent;
             btn.textContent = 'コピーしました';
             setTimeout(() => { btn.textContent = prev; }, 2000);
+            try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
+        } else {
+            try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
         }
         return true;
     }
@@ -386,5 +390,10 @@ ${matchedWords || '（なし）'}
 <script type="module" src="../assets/sg-copy-feedback.js"></script>
 <script src="../assets/sugudasu-segment.js"></script>
 <script src="../assets/sugudasu-shell.js"></script>
+<script>
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('form-moyamoya-text'), { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
+</script>
 </body>
 </html>

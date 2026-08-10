@@ -63,7 +63,7 @@ function bindDropZone(zone, labelEl, onPick) {
   if (!zone) return;
   const input = zone.querySelector('input[type="file"]');
 
-  const applyFile = async (file) => {
+  const applyFile = async (file, source = "file_pick") => {
     if (!file) return;
     if (file.size > MAX_BYTES) {
       setStatus("ファイルが大きすぎます（25MBまで）");
@@ -76,6 +76,11 @@ function bindDropZone(zone, labelEl, onPick) {
     }
     try {
       const bytes = await file.arrayBuffer();
+      try {
+        globalThis.SG_ANALYTICS?.trackFileAccepted?.(source);
+      } catch (_) {
+        /* ignore */
+      }
       onPick({ file, bytes, kind });
       if (labelEl) {
         labelEl.textContent = `${file.name}（${kind.toUpperCase()}）`;
@@ -107,7 +112,7 @@ function bindDropZone(zone, labelEl, onPick) {
   input?.addEventListener("click", (e) => e.stopPropagation());
   input?.addEventListener("change", () => {
     const f = input.files?.[0];
-    applyFile(f);
+    applyFile(f, "file_pick");
     input.value = "";
   });
   zone.addEventListener("dragover", (e) => {
@@ -119,7 +124,7 @@ function bindDropZone(zone, labelEl, onPick) {
     e.preventDefault();
     zone.classList.remove("is-dragover");
     const f = e.dataTransfer?.files?.[0];
-    applyFile(f);
+    applyFile(f, "file_drop");
   });
 }
 

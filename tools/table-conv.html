@@ -269,12 +269,13 @@ document.getElementById('tc-input')?.addEventListener('paste', () => {
   setTimeout(() => runConvert(document.getElementById('tc-input')?.value || ''), 0);
 });
 
-async function loadFile(file) {
+async function loadFile(file, source = 'file_pick') {
   if (!file) return;
   if (file.size > SIZE_LIMIT_BYTES) {
     showWarn(`ファイルが ${Math.round(SIZE_LIMIT_BYTES / 1024 / 1024)}MB を超えています。`);
     return;
   }
+  try { window.SG_ANALYTICS?.trackFileAccepted?.(source); } catch (_) { /* ignore */ }
   const enc = document.getElementById('tc-sjis')?.checked ? 'shift-jis' : 'utf-8';
   const text = await readFileText(file, enc);
   document.getElementById('tc-input').value = text;
@@ -293,13 +294,17 @@ drop?.addEventListener('drop', (e) => {
   e.preventDefault();
   drop.classList.remove('is-dragover');
   const f = e.dataTransfer?.files?.[0];
-  if (f) loadFile(f);
+  if (f) loadFile(f, 'file_drop');
 });
 fileInput?.addEventListener('change', () => {
   const f = fileInput.files?.[0];
-  if (f) loadFile(f);
+  if (f) loadFile(f, 'file_pick');
   fileInput.value = '';
 });
+
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('tc-input'), { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
 
 SUGUDASU_SEGMENT.mount({
   segmentId: 'tc-out-segment',

@@ -359,11 +359,16 @@ export function mountPlanningPoker(root) {
     if (!state) return;
     const csv = exportResultCsv(state);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `planning-poker-${Date.now()}.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    const name = `planning-poker-${Date.now()}.csv`;
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
   }
 
   function onKeydown(e) {

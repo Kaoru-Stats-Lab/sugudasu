@@ -157,7 +157,7 @@
         <section class="flex flex-col gap-3 justify-center items-start overflow-x-auto bg-slate-200 p-4 rounded-xl border border-gray-300">
             <div class="no-print w-full flex flex-wrap items-center justify-between gap-2">
                 <p class="text-xs text-slate-600">プレビューを確認してから印刷してください。印刷ダイアログはブラウザが表示します。</p>
-                <button type="button" id="btn-print-label" onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm">印刷 / PDF</button>
+                <button type="button" id="btn-print-label" onclick="(window.SG_ANALYTICS&&window.SG_ANALYTICS.printTracked)?window.SG_ANALYTICS.printTracked():window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm">印刷 / PDF</button>
             </div>
             <div id="print-preview-container" class="print-target print-container">
                 </div>
@@ -724,10 +724,14 @@
             const filename = `【宛名ラベル】${dateStr}_${label}.json`;
 
             const blob = new Blob([data], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url; a.download = filename; a.click();
-            URL.revokeObjectURL(url);
+            if (window.SG_ANALYTICS?.downloadBlobTracked) {
+                window.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+            } else {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = filename; a.click();
+                URL.revokeObjectURL(url);
+            }
         }
 
         function importBackupData(input) {

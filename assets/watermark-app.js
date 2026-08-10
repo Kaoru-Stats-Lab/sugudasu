@@ -301,6 +301,10 @@ function escapeHtml(s) {
  * @param {string} filename
  */
 function downloadBlob(blob, filename) {
+  if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+    return;
+  }
   const a = document.createElement('a');
   const url = URL.createObjectURL(blob);
   a.href = url;
@@ -416,11 +420,13 @@ function bindDrop(zone, onFiles, externalInput) {
     e.preventDefault();
     zone.classList.remove('is-dragover');
     const list = [...(e.dataTransfer?.files || [])];
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
     onFiles(list);
   });
   input?.addEventListener('change', () => {
     const list = [...(input.files || [])];
     input.value = '';
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
     onFiles(list);
   });
 }

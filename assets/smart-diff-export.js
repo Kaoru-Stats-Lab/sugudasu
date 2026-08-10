@@ -140,11 +140,21 @@ export async function downloadSmartDiffPdf(projection, opts = {}) {
 
   const bytes = await doc.save();
   const blob = new Blob([bytes], { type: "application/pdf" });
-  const a = document.createElement("a");
   const base = opts.fileBase || "smart-diff-report";
+  const filename = `${base}_smart-diff.pdf`;
+  if (typeof globalThis !== "undefined" && globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, filename, "pdf");
+    return report;
+  }
+  const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `${base}_smart-diff.pdf`;
+  a.download = filename;
   a.click();
   URL.revokeObjectURL(a.href);
+  try {
+    globalThis.SUGUDASU_SHELL?.trackToolJobDone?.("pdf");
+  } catch (_) {
+    /* ignore */
+  }
   return report;
 }

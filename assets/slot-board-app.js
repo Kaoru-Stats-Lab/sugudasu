@@ -596,6 +596,7 @@ function initControls() {
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
         fallbackLabel: '復元コードをコピー',
+        trackOutcome: 'copy',
       });
       setActionMsg('復元コードをコピーしました');
     } catch {
@@ -617,6 +618,7 @@ function initControls() {
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
         fallbackLabel: 'TSVをコピー',
+        trackOutcome: 'copy',
       });
       setActionMsg('TSV をコピーしました');
     } catch {
@@ -632,6 +634,7 @@ function initControls() {
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
         fallbackLabel: 'パワポ用テキスト',
+        trackOutcome: 'copy',
       });
       setActionMsg('パワポ用テキストをコピーしました');
     } catch {
@@ -641,12 +644,17 @@ function initControls() {
 
   $('sb-export-json')?.addEventListener('click', () => {
     const blob = new Blob([exportProjectJson(bundle())], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `sugudasu-slot-${Date.now()}.json`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    const name = `sugudasu-slot-${Date.now()}.json`;
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
     setActionMsg('JSON をダウンロードしました');
   });
 
@@ -669,6 +677,14 @@ function initControls() {
       setActionMsg('JSON の読み込みに失敗しました');
     }
   });
+
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('sb-box1'), { debounceMs: 400, minLength: 1 });
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('sb-box2'), { debounceMs: 400, minLength: 1 });
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('sb-import'), { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
+  }
 
   $('sb-clear')?.addEventListener('click', async () => {
     if (!confirm('盤面をクリアしますか？')) return;

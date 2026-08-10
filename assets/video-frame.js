@@ -107,6 +107,10 @@ export function captureFramePng(video) {
  * @param {string} fileName
  */
 export function downloadBlob(blob, fileName) {
+  if (typeof globalThis !== 'undefined' && globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, fileName, 'download');
+    return;
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -116,6 +120,11 @@ export function downloadBlob(blob, fileName) {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
+  try {
+    globalThis.SUGUDASU_SHELL?.trackToolJobDone?.('download');
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 /**
@@ -237,7 +246,10 @@ function init() {
   });
   fileInput.addEventListener('change', () => {
     const f = fileInput.files && fileInput.files[0];
-    if (f) loadFile(f);
+    if (f) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
+      loadFile(f);
+    }
     fileInput.value = '';
   });
 
@@ -255,7 +267,10 @@ function init() {
   });
   dropZone.addEventListener('drop', (e) => {
     const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f) loadFile(f);
+    if (f) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+      loadFile(f);
+    }
   });
 
   video.addEventListener('loadedmetadata', () => {

@@ -94,6 +94,8 @@
   }
 
   function recordToolSuccess() {
+    // DECISION: localStorage のみ（ブックマーク誘導）。GA の tool_job_done は
+    // sg-copy-feedback / SG_ANALYTICS 側。ここで毎計算 GA を叩くと warikan 等が水増しになる。
     try {
       const n = parseInt(localStorage.getItem(LS_SUCCESS) || '0', 10) + 1;
       localStorage.setItem(LS_SUCCESS, String(n));

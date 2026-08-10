@@ -154,6 +154,7 @@ npm run build:pages
 | A13 | **UIUX 決定論契約** | [`UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md`](UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md) の `UIUX_DECISION_BLOCK` を埋め、`completion_model` / `product_voice` / **`lead_profile`** / `cta_order` を明記。未記入なら実装禁止 | （目視 · Review） |
 | A14 | **ツールリード文** | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · `data/tool-lead-profiles.json` · `tools/{id}.html` に `sg-tool-lead`（What必須 · How禁止 · light/heavy） | （目視） |
 | A15 | **Hub 検索語彙** | `data/search-dictionary/{id}.json` · `synonyms.json` に id · `tool-intent-map.json` に id。手順 [`../prompts/hub-search-vocab-on-new-tool.md`](../prompts/hub-search-vocab-on-new-tool.md) · 欠落時 `npm run scaffold:hub-search-vocab -- --write-prompt` | `validate:hub-ia` |
+| A16 | **利用計測（開封→着手→完了）** | [`PRODUCT_USAGE_ANALYTICS.md`](PRODUCT_USAGE_ANALYTICS.md) · [`data/tool-job-contracts.json`](../../data/tool-job-contracts.json) に `inputs`/`outputs` · 着手は `notifyJobStarted`/`bindTextJobStarted`/`trackFileAccepted` · 完了は中央フック · 本文・ファイル名禁止 | `validate:usage-analytics` |
 
 ### B. 本番反映（必須 · core）
 
@@ -179,10 +180,10 @@ npm run build:pages
 
 ```text
 MECE 新規ツール公開: {id}
-A1–A15: OK / NA（欠番があれば列挙）
+A1–A16: OK / NA（欠番があれば列挙）
 B1–B4: OK · smoke: / と /{id}
 C: 触っていない（roadmap追加なし · guidesなし）
-validate:tool-naming · validate:tech-adoption · statements · ogp · build:pages: exit 0
+validate:tool-naming · validate:tech-adoption · validate:usage-analytics · statements · ogp · build:pages: exit 0
 UIUX_DECISION_BLOCK: 添付済み
 ```
 

@@ -455,6 +455,7 @@ async function copyCsv() {
     markCopyButtonDone(els.btnCopy, {
       copiedLabel: 'コピーしました',
       fallbackLabel: 'コピー',
+      trackOutcome: 'copy',
     });
     setStatus('コピーしました');
   } catch (e) {
@@ -538,12 +539,17 @@ async function downloadBulkEmployeeCsv() {
     }
 
     const blob = new Blob(blobParts, { type: 'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = defaultFilename(options.idPrefix, 'employee', totalCount);
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    const name = defaultFilename(options.idPrefix, 'employee', totalCount);
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
 
     const previewChunk = generateDataset({
       ...options,
@@ -625,7 +631,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  els.btnGenerate.addEventListener('click', () => generateWithYield());
+  els.btnGenerate.addEventListener('click', () => {
+    try {
+      globalThis.SG_ANALYTICS?.notifyJobStarted?.('generate');
+    } catch (_) {
+      /* ignore */
+    }
+    generateWithYield();
+  });
   els.btnDownload.addEventListener('click', () => downloadCsv());
   els.btnCopy.addEventListener('click', () => copyCsv());
   if (els.btnOpenNormalize) els.btnOpenNormalize.addEventListener('click', () => openNormalize());

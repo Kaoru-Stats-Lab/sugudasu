@@ -267,6 +267,10 @@ function renderQueueSummary() {
 }
 
 function downloadBlob(blob, filename) {
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+    return;
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -373,6 +377,7 @@ dropZone.addEventListener('keydown', (e) => {
   }
 });
 fileInput.addEventListener('change', () => {
+  try { window.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
   addFiles(fileInput.files);
   fileInput.value = '';
 });
@@ -387,7 +392,10 @@ dropZone.addEventListener('dragleave', () => {
 dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropZone.classList.remove('border-sky-400', 'bg-sky-50/50');
-  if (e.dataTransfer?.files) addFiles(e.dataTransfer.files);
+  if (e.dataTransfer?.files) {
+    try { window.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+    addFiles(e.dataTransfer.files);
+  }
 });
 
 urlFetchBtn.addEventListener('click', () => addFromUrl(urlInput.value));
@@ -401,7 +409,10 @@ urlInput.addEventListener('keydown', (e) => {
 document.addEventListener('paste', async (e) => {
   if (document.activeElement === urlInput) return;
   const handled = await handlePaste(e.clipboardData);
-  if (handled) e.preventDefault();
+  if (handled) {
+    try { window.SG_ANALYTICS?.trackFileAccepted?.('clipboard_image'); } catch (_) { /* ignore */ }
+    e.preventDefault();
+  }
 });
 
 jpegQuality.addEventListener('input', () => {

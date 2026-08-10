@@ -108,6 +108,11 @@ async function copyText(text, okLabel = 'コピーしました', opts = {}) {
     await navigator.clipboard.writeText(text);
     triggerCopyFlash();
     showToast(okLabel);
+    try {
+      globalThis.SG_ANALYTICS?.notifyJobDone?.('copy');
+    } catch (_) {
+      /* ignore */
+    }
     if (opts.flashPath && els.pathBar && !els.pathBar.classList.contains('jv-path--empty')) {
       els.pathBar.classList.add('jv-path--copied');
       window.setTimeout(() => els.pathBar?.classList.remove('jv-path--copied'), 800);
@@ -379,6 +384,12 @@ function bindEvents() {
     expandedPaths = new Set(['']);
     renderTree();
   });
+
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.(els.input, { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 bindEvents();

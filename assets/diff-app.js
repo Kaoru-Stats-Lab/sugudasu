@@ -390,6 +390,7 @@ async function copyReport() {
     markCopyButtonDone(btn, {
       copiedLabel: 'コピーしました',
       fallbackLabel: '結果をコピー',
+      trackOutcome: 'copy',
     });
     if (status) status.textContent = 'コピーしました';
   } catch {
@@ -428,7 +429,10 @@ function analyze() {
 function bindEvents() {
   $('diff-run')?.addEventListener('click', analyze);
   $('diff-copy')?.addEventListener('click', copyReport);
-  $('diff-print')?.addEventListener('click', () => window.print());
+  $('diff-print')?.addEventListener('click', () => {
+    if (globalThis.SG_ANALYTICS?.printTracked) globalThis.SG_ANALYTICS.printTracked();
+    else window.print();
+  });
   $('diff-layout-side')?.addEventListener('click', () => {
     layoutMode = 'side';
     analyze();
@@ -445,6 +449,13 @@ function bindEvents() {
   $('diff-after')?.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') analyze();
   });
+
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('diff-before'), { debounceMs: 400, minLength: 1 });
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.($('diff-after'), { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 if (typeof document !== 'undefined') {

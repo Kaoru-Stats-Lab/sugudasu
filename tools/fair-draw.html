@@ -1011,6 +1011,10 @@ function buildRosterSnapshotFileContent(draw) {
 
 function downloadTextFile(filename, content) {
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = filename;
@@ -1611,7 +1615,8 @@ function printAudit() {
   renderAuditPrint();
   const section = document.getElementById('audit-print');
   section.classList.remove('hidden');
-  window.print();
+  if (window.SG_ANALYTICS?.printTracked) window.SG_ANALYTICS.printTracked();
+  else window.print();
   section.classList.add('hidden');
 }
 
@@ -1665,9 +1670,14 @@ document.getElementById('btn-copy-slack').addEventListener('click', async (e) =>
 
 document.getElementById('btn-dl-json').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(buildAuditPayload(), null, 2)], { type: 'application/json' });
+  const name = `sugudasu-fair-draw-audit-${Date.now()}.json`;
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `sugudasu-fair-draw-audit-${Date.now()}.json`;
+  a.download = name;
   a.click();
   URL.revokeObjectURL(a.href);
 });
@@ -1697,6 +1707,7 @@ document.getElementById('btn-draw').addEventListener('click', async () => {
     },
   ])) return;
   try {
+    try { window.SG_ANALYTICS?.notifyJobStarted?.('generate'); } catch (_) { /* ignore */ }
     lastDraw = await executeFairDrawFromForm();
   } catch (e) {
     if (e.message === 'ROSTER_EMPTY') {
@@ -1749,10 +1760,15 @@ document.getElementById('btn-draw').addEventListener('click', async () => {
 document.getElementById('btn-dl-draw-json').addEventListener('click', () => {
   const payload = buildAuditPayload();
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const stamp = lastDraw ? auditFileStamp(lastDraw) : { sha8: String(Date.now()), d: '', cp: 'cp' };
+  const name = `sugudasu-draw-${stamp.cp}-${stamp.d || 'audit'}-${stamp.sha8}.json`;
+  if (window.SG_ANALYTICS?.downloadBlobTracked) {
+    window.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    return;
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  const stamp = lastDraw ? auditFileStamp(lastDraw) : { sha8: String(Date.now()), d: '', cp: 'cp' };
-  a.download = `sugudasu-draw-${stamp.cp}-${stamp.d || 'audit'}-${stamp.sha8}.json`;
+  a.download = name;
   a.click();
   URL.revokeObjectURL(a.href);
 });
@@ -1802,6 +1818,9 @@ const l1Ctrl = SUGUDASU_SEGMENT.mount({
 syncLotteryPanels(initialLotteryTab);
 
 document.getElementById('in-roster').addEventListener('input', updateRosterCountUI);
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(document.getElementById('in-roster'), { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
 
 document.querySelectorAll('input[name="draw-prize-mode"]').forEach((el) => {
   el.addEventListener('change', syncDrawPrizeModePanels);

@@ -507,6 +507,7 @@
         }
         try {
             await navigator.clipboard.writeText(text);
+            try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
             return true;
         } catch {
             const area = document.createElement('textarea');
@@ -515,6 +516,9 @@
             area.select();
             const ok = document.execCommand('copy');
             document.body.removeChild(area);
+            if (ok) {
+              try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
+            }
             return ok;
         }
     }
@@ -606,7 +610,13 @@
             });
         });
 
-        document.getElementById('btn-print').addEventListener('click', () => window.print());
+        document.getElementById('btn-print').addEventListener('click', () => {
+            try {
+                if (window.SG_ANALYTICS?.notifyJobDone) window.SG_ANALYTICS.notifyJobDone('print');
+                else window.SUGUDASU_SHELL?.trackToolJobDone?.('print');
+            } catch (_) { /* ignore */ }
+            window.print();
+        });
         document.getElementById('btn-share-url').addEventListener('click', shareUrl);
         window.addEventListener('resize', scalePreview);
     }

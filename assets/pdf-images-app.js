@@ -82,12 +82,21 @@ function clearPending() {
 }
 
 function downloadBlob(blob, filename) {
+  if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+    globalThis.SG_ANALYTICS.downloadBlobTracked(blob, filename, 'download');
+    return;
+  }
   const a = document.createElement('a');
   const url = URL.createObjectURL(blob);
   a.href = url;
   a.download = filename;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
+  try {
+    globalThis.SUGUDASU_SHELL?.trackToolJobDone?.('download');
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 /**
@@ -309,12 +318,18 @@ function bindDrop() {
     e.preventDefault();
     zone.classList.remove('is-dragover');
     const file = e.dataTransfer?.files?.[0];
-    if (file) processFile(file);
+    if (file) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_drop'); } catch (_) { /* ignore */ }
+      processFile(file);
+    }
   });
   input?.addEventListener('change', () => {
     const file = input.files?.[0];
     input.value = '';
-    if (file) processFile(file);
+    if (file) {
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('file_pick'); } catch (_) { /* ignore */ }
+      processFile(file);
+    }
   });
 }
 

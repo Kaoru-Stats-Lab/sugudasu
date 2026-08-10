@@ -111,6 +111,12 @@ function bind() {
       run();
     }
   });
+
+  try {
+    globalThis.SG_ANALYTICS?.bindTextJobStarted?.(els.input, { debounceMs: 400, minLength: 1 });
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 setMode('markdown');

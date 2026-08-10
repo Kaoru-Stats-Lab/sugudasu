@@ -349,12 +349,17 @@ function turnPage() {
 async function savePng() {
   try {
     const blob = await renderExportPng(strokes, cssW, cssH);
-    const a = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    a.href = url;
-    a.download = `uragami-${new Date().toISOString().slice(0, 10)}.png`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const name = `uragami-${new Date().toISOString().slice(0, 10)}.png`;
+    if (globalThis.SG_ANALYTICS?.downloadBlobTracked) {
+      globalThis.SG_ANALYTICS.downloadBlobTracked(blob, name, 'download');
+    } else {
+      const a = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
     setStatus('PNGを保存しました');
   } catch {
     setStatus('PNGを保存できませんでした');
@@ -391,7 +396,8 @@ function clearPrintObjectUrl() {
 async function printPaper() {
   const img = els.printImg;
   if (!img) {
-    window.print();
+    if (globalThis.SG_ANALYTICS?.printTracked) globalThis.SG_ANALYTICS.printTracked();
+    else window.print();
     return;
   }
   try {
@@ -409,11 +415,13 @@ async function printPaper() {
       });
     }
     setStatus('');
-    window.print();
+    if (globalThis.SG_ANALYTICS?.printTracked) globalThis.SG_ANALYTICS.printTracked();
+    else window.print();
   } catch {
     preparePrintSheet('sync');
     setStatus('');
-    window.print();
+    if (globalThis.SG_ANALYTICS?.printTracked) globalThis.SG_ANALYTICS.printTracked();
+    else window.print();
   }
 }
 

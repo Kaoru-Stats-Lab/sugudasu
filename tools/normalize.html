@@ -830,6 +830,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('preset-hint').innerHTML = PRESET_HINTS.ec_form;
   updateLineCounter();
 
+  try {
+    window.SG_ANALYTICS?.bindTextJobStarted?.(inputEl, { debounceMs: 400, minLength: 1 });
+  } catch (_) { /* ignore */ }
+
   const handoff = readTestDataHandoff();
   if (handoff) {
     inputEl.value = handoff.csv;

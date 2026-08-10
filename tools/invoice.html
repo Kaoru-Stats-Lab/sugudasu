@@ -302,7 +302,7 @@
 
             <!-- 紙経路（E-L3: ヘッダーではなく文脈内 · ダイアログはブラウザ依存） -->
             <div class="border-t border-slate-100 pt-4 space-y-2">
-                <button type="button" id="btn-print-invoice" onclick="window.print()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors cursor-pointer shadow-sm">
+                <button type="button" id="btn-print-invoice" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors cursor-pointer shadow-sm">
                     印刷 / PDF
                 </button>
                 <p class="text-[10px] text-slate-500">ブラウザの印刷ダイアログが開きます（PDF保存もそこから）。送付文面のコピーは下のボタンです。</p>
@@ -818,6 +818,7 @@
                         });
                     } else {
                         await navigator.clipboard.writeText(text);
+                        try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
                         if (toast) {
                             toast.textContent = 'コピーしました';
                             toast.classList.remove('hidden');
@@ -905,6 +906,14 @@
 
             document.getElementById('in-note').value = DOC_CONFIG[currentDocType].noteContent;
             document.getElementById('in-note').placeholder = DOC_CONFIG[currentDocType].notePlaceholder || '特記事項を入力してください。';
+
+            document.getElementById('btn-print-invoice')?.addEventListener('click', () => {
+                try {
+                    if (window.SG_ANALYTICS?.notifyJobDone) window.SG_ANALYTICS.notifyJobDone('print');
+                    else window.SUGUDASU_SHELL?.trackToolJobDone?.('print');
+                } catch (_) { /* ignore */ }
+                window.print();
+            });
 
             renderFormRows();
             updatePreview();
@@ -1322,6 +1331,10 @@
             anchor.download = filename;
             anchor.click();
             URL.revokeObjectURL(url);
+            try {
+                if (window.SG_ANALYTICS?.notifyJobDone) window.SG_ANALYTICS.notifyJobDone('download');
+                else window.SUGUDASU_SHELL?.trackToolJobDone?.('download');
+            } catch (_) { /* ignore */ }
             showInvoiceCopyToast('下書きデータを保存しました。PDFとは別に、社内フォルダ等へ保管してください。', 'ok', 'copy-toast-invoice');
         }
 
@@ -1396,6 +1409,7 @@
             }
             try {
                 await navigator.clipboard.writeText(text);
+                try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
                 return true;
             } catch {
                 const area = document.createElement('textarea');
@@ -1405,6 +1419,9 @@
                 area.select();
                 const copied = document.execCommand('copy');
                 document.body.removeChild(area);
+                if (copied) {
+                  try { window.SG_ANALYTICS?.notifyJobDone?.('copy'); } catch (_) { /* ignore */ }
+                }
                 return copied;
             }
         }

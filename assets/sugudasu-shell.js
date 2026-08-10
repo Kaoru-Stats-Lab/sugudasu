@@ -421,6 +421,7 @@
 
     ensureFavicon();
     loadGa4();
+    loadAnalyticsScript();
 
     if (top) {
       if (top.querySelector('.sg-chrome')) return;
@@ -574,6 +575,78 @@
     } catch (_) {
       // noop: tracking failure should never block UI
     }
+  }
+
+  /** @returns {string} */
+  function resolveCurrentToolId() {
+    try {
+      const top = document.getElementById('sg-chrome-top');
+      const fromDom = top && top.getAttribute('data-sg-tool-id');
+      if (fromDom) return String(fromDom).trim();
+    } catch (_) { /* ignore */ }
+    const seg = (global.location.pathname || '').split('/').filter(Boolean).pop() || '';
+    if (!seg || seg === 'index.html') return 'hub';
+    return seg.replace(/\.html$/i, '') || 'unknown';
+  }
+
+  /**
+   * 完了ファネル — SSOT: docs/notes/PRODUCT_USAGE_ANALYTICS.md
+   * @param {'copy'|'pdf'|'download'|'print'} outcome
+   * @param {Record<string, string|number|boolean>} [extra]
+   */
+  function trackToolJobDone(outcome, extra) {
+    if (global.SG_ANALYTICS && typeof global.SG_ANALYTICS.notifyJobDone === 'function' && !global.SG_ANALYTICS.__queue) {
+      global.SG_ANALYTICS.notifyJobDone(outcome, extra);
+      return;
+    }
+    const o = String(outcome || '');
+    if (o !== 'copy' && o !== 'pdf' && o !== 'download' && o !== 'print') return;
+    const toolId = resolveCurrentToolId();
+    if (!toolId || toolId === 'unknown') return;
+    trackGaEvent('tool_job_done', Object.assign({
+      tool_id: toolId,
+      outcome: o,
+    }, extra || {}));
+  }
+
+  /** analytics ESM 到着前の着手バインドを保持（HTML インライン競合対策） */
+  function installAnalyticsQueueStub() {
+    if (global.SG_ANALYTICS && !global.SG_ANALYTICS.__queue) return;
+    if (global.SG_ANALYTICS && global.SG_ANALYTICS.__queue) return;
+    const q = [];
+    function enqueue(name) {
+      return function () {
+        q.push([name, Array.prototype.slice.call(arguments)]);
+      };
+    }
+    global.SG_ANALYTICS = {
+      __queue: q,
+      notifyJobStarted: enqueue('notifyJobStarted'),
+      notifyJobDone: enqueue('notifyJobDone'),
+      notifyJobFailed: enqueue('notifyJobFailed'),
+      downloadBlobTracked: enqueue('downloadBlobTracked'),
+      printTracked: enqueue('printTracked'),
+      trackFileAccepted: enqueue('trackFileAccepted'),
+      trackPasteEngaged: enqueue('trackPasteEngaged'),
+      trackTextEngaged: enqueue('trackTextEngaged'),
+      bindTextJobStarted: enqueue('bindTextJobStarted'),
+      trackToolJobDone: enqueue('notifyJobDone'),
+      trackToolJobStarted: enqueue('notifyJobStarted'),
+    };
+  }
+
+  function loadAnalyticsScript() {
+    installAnalyticsQueueStub();
+    if (global.SG_ANALYTICS && !global.SG_ANALYTICS.__queue) return;
+    if (document.querySelector('script[data-sg-analytics]')) return;
+    const s = document.createElement('script');
+    s.src = assetUrl('sg-analytics.js');
+    s.async = true;
+    s.setAttribute('data-sg-analytics', '1');
+    // type=module だと global 代入タイミングがずれるため classic + IIFE ではなく
+    // sg-analytics.js は ESM。module で読み globalThis.SG_ANALYTICS を待つ。
+    s.type = 'module';
+    document.head.appendChild(s);
   }
 
   function loadGrowthScript() {
@@ -770,6 +843,8 @@
     pageHref,
     logoHtml,
     trackGaEvent,
+    trackToolJobDone,
+    resolveCurrentToolId,
     getToolMeta,
     formatToolVersionLabel,
     loadToolRegistry,
