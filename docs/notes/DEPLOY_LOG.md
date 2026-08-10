@@ -2029,19 +2029,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push — sitemap を tool-registry 増減に追従 · mask stub 除外 |
 | **change_summary** | `scripts/build-pages.mjs` · `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |
-| **local_build** | `pass`（先に `build:pages` OK · release 予定） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 14/450） |
 | **deploy_count_today** | 2（P7 override · 提督明示の Commit&Push） |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P6 · P7 override |
+| **pages_build_budget_after** | 14/450（2026-08 · consume 済） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`https://sugudasu.com/sitemap.xml` に `/mask` 無し · 製品 URL あり |
+| **git_sha** | `be898c6` |
+| **cf_deployment_id** | CF Pages auto（`be898c6` push origin main） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/sitemap.xml` — `/mask` 無し · products≈48 |
 
 ---
 
@@ -2049,6 +2050,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-10 | 002 executed（be898c6 · sitemap registry 追従 · mask stub 除外 · P7 override） |
 | 2026-08-10 | 002 approved（sitemap registry 追従 · mask stub 除外 · P7 override · 提督 Commit&Push） |
 | 2026-08-10 | 001 executed（2767acd / 2fd1922 · 利用計測ファネル本番 · VC価値メーター） |
 | 2026-08-10 | 001 approved（利用計測ファネル本番 · VC価値メーター · 提督 Commit&Push&Deploy） |
