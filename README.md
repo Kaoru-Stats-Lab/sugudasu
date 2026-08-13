@@ -27,10 +27,7 @@ python -m http.server 8080
 | [invoice.html](tools/invoice.html) | /invoice | SUGUDASU 請求書 | 請求書 | beta |
 | [stamp.html](tools/stamp.html) | /stamp | SUGUDASU 電子印鑑 | 印鑑 | beta |
 | [receipt.html](tools/receipt.html) | /receipt | SUGUDASU 領収書 | 領収書 | gamma |
-| [label.html](tools/label.html) | /label | SUGUDASU ラベル | ラベル | gamma |
 | [shift.html](tools/shift.html) | /shift | SUGUDASU シフト | シフト | beta |
-| [report.html](tools/report.html) | /report | SUGUDASU 議事録 | 議事録 | gamma |
-| [reverse.html](tools/reverse.html) | /reverse | SUGUDASU 逆引き | 逆引き | gamma |
 | [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
 | [clip-stash.html](tools/clip-stash.html) | /clip-stash | SUGUDASU 仮置き | 仮置き | beta |
 | [search-query.html](tools/search-query.html) | /search-query | SUGUDASU 検索式ビルダー | 検索式 | alpha |
@@ -93,6 +90,9 @@ python -m http.server 8080
 
 | ファイル | URL | 名称 | stage |
 |---|---|---|---|
+| [label.html](tools/label.html) | /label | SUGUDASU ラベル | reject |
+| [report.html](tools/report.html) | /report | SUGUDASU 議事録 | reject |
+| [reverse.html](tools/reverse.html) | /reverse | SUGUDASU 逆引き | reject |
 | [present.html](tools/present.html) | /present | SUGUDASU ギフト | reject |
 
 <!-- AUTO:TOOLS_END -->

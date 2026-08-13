@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-08-13",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
   "disclaimer": "Hub カードの説明文（JTBD blurb）。タイトルは registry.conceptName。badges は status/spec/popular。",
   "cards": [
@@ -40,30 +40,6 @@
       }
     },
     {
-      "toolId": "label",
-      "href": "label.html",
-      "blurb": "大量の封筒発送や名刺印刷で宛名ラベルを作りたい時に。住所リストを規定のラベル枠へ配置します。",
-      "badges": {
-        "status": "ga",
-        "spec": [
-          "local"
-        ],
-        "popular": false
-      }
-    },
-    {
-      "toolId": "report",
-      "href": "report.html",
-      "blurb": "会議のメモから議事録を作成したい時に。決定事項や次のタスクを整理します。",
-      "badges": {
-        "status": "ga",
-        "spec": [
-          "local"
-        ],
-        "popular": false
-      }
-    },
-    {
       "toolId": "shift",
       "href": "shift.html",
       "blurb": "スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。",
@@ -93,18 +69,6 @@
       "blurb": "名簿から公平抽選。シード付きの監査 PDF / JSON を出力。",
       "badges": {
         "status": "beta",
-        "spec": [
-          "local"
-        ],
-        "popular": false
-      }
-    },
-    {
-      "toolId": "reverse",
-      "href": "reverse.html",
-      "blurb": "逆引き類語 · 言い換え検索。ニュアンス別に表現を探す。",
-      "badges": {
-        "status": "ga",
         "spec": [
           "local"
         ],

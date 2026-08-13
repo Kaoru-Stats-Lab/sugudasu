@@ -12,13 +12,10 @@
     "normalize",
     "webp-to-jpg",
     "shift",
-    "label",
     "sns",
     "present",
     "work-calc",
     "table-conv",
-    "report",
-    "reverse",
     "hub"
   ],
   "reviewed": [
@@ -30,11 +27,8 @@
     "normalize",
     "webp-to-jpg",
     "shift",
-    "label",
     "sns",
     "present",
-    "report",
-    "reverse",
     "hub"
   ],
   "notes": "live 14件は reviewed 完了。planned（timeline/work-calc/table-conv）は実装後に reviewed へ昇格。"

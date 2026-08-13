@@ -5,7 +5,7 @@
     "rules": {
       "light": "What 1–2 sentences. No How in lead. No long Why. Optional meta links OK in sg-tool-lead--meta.",
       "heavy": "What + optional scenario 1 phrase + optional boundary 1 phrase. How not in lead (UI or FAQ).",
-      "exclude_pages": ["mask", "present", "hub", "statements", "top"]
+      "exclude_pages": ["mask", "present", "label", "report", "reverse", "hub", "statements", "top"]
     }
   },
   "tools": {
@@ -23,7 +23,6 @@
     "image-trim": { "profile": "light", "status": "ok" },
     "invoice": { "profile": "heavy", "status": "ok" },
     "json-view": { "profile": "light", "status": "ok" },
-    "label": { "profile": "heavy", "status": "ok" },
     "link-qr": { "profile": "light", "status": "ok" },
     "match-board": { "profile": "heavy", "status": "ok" },
     "mention": { "profile": "heavy", "status": "ok" },
@@ -33,8 +32,6 @@
     "planning-poker": { "profile": "heavy", "status": "ok" },
     "qr-reader": { "profile": "light", "status": "ok" },
     "receipt": { "profile": "heavy", "status": "ok" },
-    "report": { "profile": "light", "status": "ok" },
-    "reverse": { "profile": "light", "status": "ok" },
     "schedule-sync": { "profile": "heavy", "status": "ok", "file": "sync-schedule.html" },
     "search-query": { "profile": "light", "status": "ok" },
     "shift": { "profile": "heavy", "status": "ok" },

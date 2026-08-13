@@ -25,18 +25,26 @@
 <div id="sg-chrome-top" data-sg-title="ツール一覧" data-sg-tool-id="hub" data-sg-nav="hub"></div>
 
 <main class="sg-main-shell sg-main-shell--wide flex-1 space-y-8" autocomplete="off">
-    <section class="sg-hub-hero space-y-3 sg-info-prose">
+    <section class="sg-hub-hero" aria-labelledby="sg-hub-tagline-ja">
         <!-- L0+L1 併記 · docs/brand/CATCHPHRASE_CANDIDATES.md · DECISION_LOG 2026-08-13 -->
-        <p class="sg-hub-tagline-en" lang="en">Open. Use. Close.</p>
-        <h2 class="sg-hub-tagline-ja">開く。使う。閉じる。</h2>
-        <p class="sg-hub-tagline-fact text-sm text-slate-600">ブラウザだけで完結。登録不要。</p>
-        <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead">
-                入力データは<strong>サーバーに送信しません</strong>。フリーランス · 店舗 · オフィス · イベント幹事が抱える「すぐ終わらせたい」実務を、<strong>このブラウザだけ</strong>で。
-            </p>
-            <p class="sg-tool-lead">
-                SUGUDASU（すぐだす）は、請求書 · 進行表 · 班分けなど<strong>その場で完結する業務</strong>に特化した無料ツール集。登録不要 · 完全ローカル処理です。
-            </p>
+        <div class="sg-hub-hero__surface">
+            <header class="sg-hub-hero__head">
+                <p class="sg-hub-tagline-en" lang="en">Open. Use. Close.</p>
+                <h1 id="sg-hub-tagline-ja" class="sg-hub-tagline-ja">開く。使う。閉じる。</h1>
+                <p class="sg-hub-tagline-fact">ブラウザだけで完結。登録不要。</p>
+            </header>
+            <div class="sg-hub-hero__lead">
+                <p class="sg-hub-lead">
+                    請求書を出す、領収書を渡す、シフトを組む——<strong>その場で終わらせたい仕事</strong>のための道具箱です。
+                </p>
+                <p class="sg-hub-lead sg-hub-lead--meta">
+                    登録もインストールも不要。入力した内容は<strong>このブラウザに留まります</strong>。
+                </p>
+            </div>
+            <ul class="sg-hub-hero__trust" aria-label="SUGUDASUの約束">
+                <li><span class="sg-hub-trust">完全ローカル処理</span></li>
+                <li><span class="sg-hub-trust">無料</span></li>
+            </ul>
         </div>
     </section>
 
@@ -139,18 +147,6 @@
         <h3 class="sg-hub-card__title">領収書</h3>
         <p class="sg-hub-card__blurb">領収書をPDFで作成したい時に。但し書きや金額を入力して作成します。</p>
         </a>
-        <a href="label.html" class="sg-hub-card sg-card p-5" data-tool-id="label" data-category-id="docs" data-search="宛名ラベル ラベル sugudasu ラベル 宛名ラベル 大量の封筒発送や名刺印刷で宛名ラベルを作りたい時に。住所リストを規定のラベル枠へ配置します。 ga local 宛名ラベル 宛名印刷 ラベル印刷 封筒宛名 帳票 宛名シール シール印刷 住所ラベル 差出人シール 発送ラベル サンキューカード サンキューシール お礼カード サンクスカード エクセル宛名印刷 csv宛名ラベル コピペ宛名" data-popular="0">
-        <button type="button" class="sg-hub-fav" data-fav-toggle="label" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
-        <h3 class="sg-hub-card__title">宛名ラベル</h3>
-        <p class="sg-hub-card__blurb">大量の封筒発送や名刺印刷で宛名ラベルを作りたい時に。住所リストを規定のラベル枠へ配置します。</p>
-        </a>
-        <a href="report.html" class="sg-hub-card sg-card p-5" data-tool-id="report" data-category-id="text" data-search="議事録整形 議事録 sugudasu 議事録 議事録・報告書 会議のメモから議事録を作成したい時に。決定事項や次のタスクを整理します。 ga local 議事録整形 会議メモ テキスト整形 議事録作成 議事録 業務報告書 週報 日報 会議録 ミーティング議事録 作業報告書 トラブル報告書 不具合報告書 イベント報告書 プロジェクト報告書 ぎじろく" data-popular="0">
-        <button type="button" class="sg-hub-fav" data-fav-toggle="report" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
-        <h3 class="sg-hub-card__title">議事録整形</h3>
-        <p class="sg-hub-card__blurb">会議のメモから議事録を作成したい時に。決定事項や次のタスクを整理します。</p>
-        </a>
         <a href="shift.html" class="sg-hub-card sg-card p-5" data-tool-id="shift" data-category-id="staffing" data-search="シフト表 シフト sugudasu シフト シフト表 スタッフの月間シフト表を作りたい時に。勤務予定と労働時間を計算します。 ga local 人気 シフト表 勤務表 勤務表 シフト作成 勤務計画 シフト自動生成 勤務予定表 バイトシフト パートシフト 店舗シフト シフト管理 シフトジェネレーター しふとひょう きんむひょう" data-popular="1">
         <button type="button" class="sg-hub-fav" data-fav-toggle="shift" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
@@ -168,12 +164,6 @@
         <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--beta">Beta</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
         <h3 class="sg-hub-card__title">公平抽選</h3>
         <p class="sg-hub-card__blurb">名簿から公平抽選。シード付きの監査 PDF / JSON を出力。</p>
-        </a>
-        <a href="reverse.html" class="sg-hub-card sg-card p-5" data-tool-id="reverse" data-category-id="text" data-search="逆引き辞典 逆引き sugudasu 逆引き 逆引き辞典 逆引き類語 · 言い換え検索。ニュアンス別に表現を探す。 ga local 記号の意味 特殊文字調べる 逆引き辞典 文字コード検索 類語辞典 言い換え辞典 言葉探し 言葉が出てこない 語彙力 ビジネスメール言い換え 類義語辞典 ことば探し 表現言い換え ニュアンス検索 もやもや言葉 言葉の逆引き" data-popular="0">
-        <button type="button" class="sg-hub-fav" data-fav-toggle="reverse" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>
-        <div class="sg-hub-card__badges"><span class="sg-hub-badge sg-hub-badge--status sg-hub-badge--ga">正式</span><span class="sg-hub-badge sg-hub-badge--spec sg-hub-badge--local">完全ローカル</span></div>
-        <h3 class="sg-hub-card__title">逆引き辞典</h3>
-        <p class="sg-hub-card__blurb">逆引き類語 · 言い換え検索。ニュアンス別に表現を探す。</p>
         </a>
         <a href="normalize.html" class="sg-hub-card sg-card p-5" data-tool-id="normalize" data-category-id="text" data-search="テキスト整え 全角半角 sugudasu 全角半角整え 全角半角・テキスト整え コピペしたテキストの余計な改行や全角半角の混ざりを直したい時に。スペースや文字の表記ゆれを統一します。 beta local 全角 半角 名簿整え コピペ 貼り付け csv tsv 全角半角整え 全角半角変換 文字種変換 スペース削除 改行カンマ変換 空白削除 ゼロ落ち防止 伏字化 日付フォーマット統一 sqlイン変換 名簿クレンジング データクレンジング" data-popular="0">
         <button type="button" class="sg-hub-fav" data-fav-toggle="normalize" aria-label="お気に入り" aria-pressed="false" title="お気に入り">☆</button>

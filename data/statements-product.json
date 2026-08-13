@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-10",
+  "updatedAt": "2026-08-13",
   "disclaimer": "カテゴリ定義の正本は data/categories.json。本ファイルは tools[] · categoryCompare（statements 比較表）のみ。",
   "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md · data/categories.json · scripts/verify-statements-product.mjs",
   "tools": [
@@ -34,14 +34,6 @@
       "file": "receipt.html",
       "inputHandling": "金額 · 端末内",
       "promiseNote": "手取り逆引き · 印刷"
-    },
-    {
-      "toolId": "label",
-      "categoryId": "docs",
-      "productName": "SUGUDASU ラベル",
-      "file": "label.html",
-      "inputHandling": "宛名リスト · 端末内",
-      "promiseNote": "一括貼付 · 印刷"
     },
     {
       "toolId": "shift",
@@ -122,22 +114,6 @@
       "file": "ai-cleaner.html",
       "inputHandling": "文章・コード貼付 · 端末内",
       "promiseNote": "Markdown/コード/JSON · 意味理解なし · 非送信"
-    },
-    {
-      "toolId": "reverse",
-      "categoryId": "text",
-      "productName": "SUGUDASU 逆引き",
-      "file": "reverse.html",
-      "inputHandling": "用語 · 端末内",
-      "promiseNote": "逆引き辞典 · ブラウザ内"
-    },
-    {
-      "toolId": "report",
-      "categoryId": "text",
-      "productName": "SUGUDASU 議事録",
-      "file": "report.html",
-      "inputHandling": "メモ · 端末内",
-      "promiseNote": "下書き整形 · コピー"
     },
     {
       "toolId": "webp-to-jpg",

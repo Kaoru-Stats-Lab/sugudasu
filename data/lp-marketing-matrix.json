@@ -76,15 +76,6 @@
       "implDifficulty": "低"
     },
     {
-      "tool_id": "label",
-      "productName": "SUGUDASU 宛名ラベル",
-      "registryStatus": "live",
-      "primaryPain": "郵便番号や住所の分割エラーで市販ラベル印刷がズレる",
-      "primaryType": "D",
-      "typeReason": "市販ラベル用紙メーカーの型番プリセット最適化",
-      "implDifficulty": "中"
-    },
-    {
       "tool_id": "invoice",
       "productName": "SUGUDASU 見積・請求書",
       "registryStatus": "live",
@@ -154,9 +145,9 @@
     },
     {
       "name": "ビジネス帳票束",
-      "tool_ids": ["invoice", "receipt", "label", "shift"],
+      "tool_ids": ["invoice", "receipt", "shift"],
       "persona": "フリーランス・小規模店舗主・人事労務担当者",
-      "promptOrder": ["invoice", "receipt", "label", "shift"]
+      "promptOrder": ["invoice", "receipt", "shift"]
     }
   ],
   "deltaProblems": [
@@ -194,11 +185,6 @@
       "tool_id": "table-conv",
       "delta": "Excelのセルをテキストに貼ったときのタブ区切りの見えない構造",
       "typicalAsk": "「Notionにこの表貼りたいんだけど、セル崩れずにコピペできる？」"
-    },
-    {
-      "tool_id": "label",
-      "delta": "住所録の「マンション名が長すぎて枠からはみ出る」文字数の揺らぎ",
-      "typicalAsk": "「この長い住所、ラベルの枠内に収まるように途中で改行していい？」"
     },
     {
       "tool_id": "invoice",

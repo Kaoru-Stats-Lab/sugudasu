@@ -2088,10 +2088,32 @@
 
 ---
 
+## DEPLOY-20260813-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — label/report/reverse Reject · Hub hero · Purge |
+| **change_summary** | 3プロダクト Reject · hub-cards/synonyms/intent/search purge · 提供終了ページ · PRODUCT_REJECT_LOG_20260813 |
+| **local_build** | `pending` |
+| **deploy_count_today** | 2 |
+| **pages_build_budget_after** | pending |
+| **gates** | P1–P7（release:pages:free 前） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **git_sha** | pending |
+| **cf_deployment_id** | pending |
+| **smoke** | `/` から label/report/reverse 無し · `/label` `/report` `/reverse` 提供終了案内 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 002 approved（label/report/reverse Reject · Hub hero · Purge · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 001 executed（2ac4c9a · Hub tagline · Direct B · CASE-007 · chip labels） |
 | 2026-08-13 | 001 approved（CASE-007 · Direct B · Hub tagline · chip · next-path · 提督 Commit&Push&Deploy） |
 | 2026-08-10 | 003 executed（0b9a8b5 · roadmap Graph検討中 · 在庫/ERP対象外 · P7 override） |

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-09",
+  "updatedAt": "2026-08-13",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,19 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "reject-label-report-reverse-20260813",
+      "date": "2026-08-13",
+      "type": "improve",
+      "audience": "public",
+      "title": "宛名ラベル · 議事録整形 · 逆引き辞典の提供終了",
+      "body": "3ツールをカタログ · ナビ · 検索から外し、新規提供を終了しました。品質が現行ラインナップの基準に届かないこと、利用実績が弱いこと、SUGUDASUの強みが活きにくい領域であることを理由に Reject しています。理由の詳細も更新履歴に残しています。ブックマーク向けの案内ページのみ残します。",
+      "tools": [
+        "label",
+        "report",
+        "reverse"
+      ]
+    },
     {
       "id": "guide-document-change-review-20260809",
       "date": "2026-08-09",

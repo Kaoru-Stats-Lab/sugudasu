@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-08-13",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/BRAND_NORMALIZE.md",
   "disclaimer": "検索同義語（toolId ルーティング補助）。UI 表示名・conceptName は変えない。ブランド語正規化は brand-normalize.json / search-thesaurus.json。意図マップは tool-intent-map.json。自由入力の検索キーワードは Analytics に送らない。",
   "entries": [
@@ -34,10 +34,7 @@
     { "terms": ["コピペ整形", "AI出力", "マークダウン整形", "コード抽出", "チャットログ"], "toolIds": ["ai-cleaner"] },
     { "terms": ["異常系テスト", "限界値", "入力チェック", "文字化けテスト", "ゼロ幅スペース", "フォーム崩れ"], "toolIds": ["broken-input"] },
     { "terms": ["JSONビューア", "JSONツリー", "APIレスポンス", "JSON整形表示", "キー検索"], "toolIds": ["json-view"] },
-    { "terms": ["記号の意味", "特殊文字調べる", "逆引き辞典", "文字コード検索"], "toolIds": ["reverse"] },
-    { "terms": ["宛名ラベル", "宛名印刷", "ラベル印刷", "封筒宛名", "帳票"], "toolIds": ["label"] },
     { "terms": ["ドラフト会議", "枠割り当て", "メンバー指名", "配属決め"], "toolIds": ["match-board"] },
-    { "terms": ["議事録整形", "会議メモ", "テキスト整形", "議事録作成"], "toolIds": ["report"] },
     { "terms": ["検索コマンド", "検索式", "アンド検索", "検索オプション", "Google検索"], "toolIds": ["search-query"] },
     { "terms": ["枠取り", "スロットパレット", "時間枠割り当て", "リソース管理"], "toolIds": ["slot-board"] },
     { "terms": ["ダミーデータ", "テストデータ作成", "社員マスタ", "擬似データ", "CSVテスト"], "toolIds": ["test-data"] },
