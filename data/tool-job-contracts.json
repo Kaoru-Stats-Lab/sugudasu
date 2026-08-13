@@ -85,6 +85,12 @@
       "outputs": ["copy"],
       "primary_job": "検索式をコピー"
     },
+    "prompt-handoff": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "プロンプトをコピー"
+    },
     "table-conv": {
       "job": true,
       "inputs": ["type", "paste"],

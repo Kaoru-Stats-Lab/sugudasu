@@ -84,6 +84,14 @@
       "promiseNote": "検索式の組み立てのみ · 結果は表示しない"
     },
     {
+      "toolId": "prompt-handoff",
+      "categoryId": "text",
+      "productName": "SUGUDASU AIプロンプトビルダー",
+      "file": "prompt-handoff.html",
+      "inputHandling": "表・差分の貼付 · 端末内",
+      "promiseNote": "閉じたプロンプトのみ · AI非呼出 · 非送信"
+    },
+    {
       "toolId": "diff",
       "categoryId": "text",
       "productName": "SUGUDASU 差分チェック",

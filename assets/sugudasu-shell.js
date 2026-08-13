@@ -15,6 +15,7 @@
     { id: 'normalize', file: 'normalize.html', label: '全角半角', icon: '🔤' },
     { id: 'clip-stash', file: 'clip-stash.html', label: '仮置き', icon: '📋' },
     { id: 'search-query', file: 'search-query.html', label: '検索式', icon: '🔍' },
+    { id: 'prompt-handoff', file: 'prompt-handoff.html', label: 'プロンプト', icon: '✉️' },
     { id: 'table-conv', file: 'table-conv.html', label: '表変換', icon: '📊' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'video-frame', file: 'video-frame.html', label: '動画コマ抜き', icon: '🎬' },

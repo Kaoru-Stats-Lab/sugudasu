@@ -34,6 +34,7 @@
     "receipt": { "profile": "heavy", "status": "ok" },
     "schedule-sync": { "profile": "heavy", "status": "ok", "file": "sync-schedule.html" },
     "search-query": { "profile": "light", "status": "ok" },
+    "prompt-handoff": { "profile": "light", "status": "ok" },
     "shift": { "profile": "heavy", "status": "ok" },
     "slot-board": { "profile": "heavy", "status": "ok" },
     "sns": { "profile": "light", "status": "ok" },

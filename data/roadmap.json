@@ -231,21 +231,9 @@
       "toolId": "search-query",
       "toolLabel": "検索式",
       "toolHref": "search-query.html",
-      "title": "検索式ビルダー — 拡張（複数 filetype OR · Sync除外同期）",
-      "summary": "v0.1（単一 filetype · LocalStorage除外）は公開済み。複数 OR 括弧や Sync 同期は後続。仕様: docs/notes/SEARCH_QUERY_BUILDER_SPEC.md",
-      "askFeedback": "複数ファイル種別の OR 指定は必要ですか？"
-    },
-    {
-      "id": "prompt-scaffold-local",
-      "lane": "core",
-      "status": "considering",
-      "priority": 25,
-      "toolId": "sns",
-      "toolLabel": "投稿文",
-      "toolHref": "sns.html",
-      "title": "AI 用プロンプト組み立て（非送信）",
-      "summary": "役割・制約・貼付データの型をフォームで埋め、完成文をコピーして ChatGPT 等へ自分で貼る。本文は SUGUDASU から外部 API に送りません。",
-      "askFeedback": "よく使う型（要約 · 敬語直し · 表整形 · コードレビュー等）はどれですか？"
+      "title": "検索式ビルダー — 分野寄せ（統計・挿絵）と site チップ",
+      "summary": "v0.2: 統計・白書 / 挿絵サイト寄りプリセット（計6）· e-Gov・法令・NDL・e-Stat・いらすとやチップ。補助金プリセット・商用保証はOUT。仕様: docs/notes/SEARCH_QUERY_BUILDER_SPEC.md",
+      "askFeedback": "統計・挿絵のプリセットは使いやすいですか？ site チップは足りていますか？"
     },
     {
       "id": "mask-video-frame-capture",

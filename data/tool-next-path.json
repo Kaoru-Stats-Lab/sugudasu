@@ -63,9 +63,33 @@
       "nextId": "table-conv",
       "reason": "列は整った。表として貼りたいときだけ",
       "linkLabel": "表に変換する"
+    },
+    "table-conv": {
+      "type": "C",
+      "nextId": "prompt-handoff",
+      "reason": "表にしたあと、人向けの説明を外のAIに頼むとき",
+      "linkLabel": "説明プロンプトを作る"
+    },
+    "diff": {
+      "type": "C",
+      "nextId": "prompt-handoff",
+      "reason": "差分のあと、レビュー依頼文を外のAI向けに整えるとき",
+      "linkLabel": "依頼プロンプトを作る"
+    },
+    "smart-diff": {
+      "type": "C",
+      "nextId": "prompt-handoff",
+      "reason": "変更確認のあと、説明文を外のAI向けに整えるとき",
+      "linkLabel": "依頼プロンプトを作る"
     }
   },
   "rejectedReverses": [
+    {
+      "edge": "table-conv|diff|smart-diff→prompt-handoff",
+      "reverse": "prompt-handoff→table-conv|diff|smart-diff",
+      "verdict": "reject",
+      "why": "handoff 後に元ツールへ戻すとループ。閉じた一方向のみ"
+    },
     {
       "edge": "pdf-fill→stamp",
       "reverse": "stamp→pdf-fill",

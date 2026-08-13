@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelやスプレッドシートの表をMarkdownに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"できます。ExcelやGoogleスプレッドシートで範囲をコピーするとタブ区切り（TSV）で貼り付けられるので、入力欄に貼って変換し、Markdownタブの結果をコピーしてください。Notion・Backlog・GitHubのドキュメント向けです。"}},{"@type":"Question","name":"CSVとJSONは相互に変換できますか？","acceptedAnswer":{"@type":"Answer","text":"Excel貼付やCSVファイルを入力に、JSON・CSV・TSV・Markdownを出力できます（片道）。同じ入力から出力タブを切り替えて形式を選べます。Markdown表の貼付からの逆変換はv1.1で検討中です。"}},{"@type":"Question","name":"データは外部に送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。読み込み・変換・コピーまですべてブラウザ内で完結します。当社サーバーへ表データを送りません。Networkタブでは、表データを含むPOSTの有無を確認できます（ページ読込・解析等は別。手順はSUGUDASUの約束）。"}},{"@type":"Question","name":"Shift-JISのCSVが文字化けします","acceptedAnswer":{"@type":"Answer","text":"Shift-JIS（CSVファイル）をオンにしてからファイルを読み込んでください。UTF-8のBOM付きCSVは自動で扱います。①・㈱などCP932拡張文字はブラウザ依存で置換される場合があります。"}},{"@type":"Question","name":"TableConvertなど他の変換サイトとの違いは？","acceptedAnswer":{"@type":"Answer","text":"SUGUDASU表変換は社内規程で外部アップロードが禁止の現場向けに非送信を前面に出し、日本のShift-JIS CSVに対応しています。LaTeX・XML・PDF出力やスプレッドシート型エディタ・API連携はありません。1列リストは全角半角整えをご利用ください。"}},{"@type":"Question","name":"会員登録や課金は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"不要です。無料でブラウザからそのまま使えます。"}},{"@type":"Question","name":"1列だけのリストは使えますか？","acceptedAnswer":{"@type":"Answer","text":"2列以上の表向けです。1列だけならテキスト整形（全角半角整え）の方が向いています。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 表変換" data-sg-subtitle="5,000行まで · 表データはサーバーに送信しません" data-sg-tool-id="table-conv"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 表変換" data-sg-subtitle="5,000行まで · 表データはサーバーに送信しません" data-sg-tool-id="table-conv" data-sg-next-id="prompt-handoff" data-sg-next-label="説明プロンプトを作る" data-sg-next-reason="表にしたあと、人向けの説明を外のAIに頼むとき"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
     <header class="sg-tool-intro space-y-2">
@@ -41,6 +41,8 @@
         <p class="sg-tool-lead sg-tool-lead--meta">
             1列リストの整形は <a href="normalize.html">全角半角整え</a> · 請求書の内税分離は <a href="invoice.html">請求書</a> をご利用ください。
         </p>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">表にしたあと、人向けの説明を外のAIに頼むとき</span> <a class="sg-tool-next-path__link" href="/prompt-handoff">説明プロンプトを作る</a></p>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

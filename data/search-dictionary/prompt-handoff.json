@@ -1,0 +1,32 @@
+{
+  "toolId": "prompt-handoff",
+  "source": "cursor",
+  "reviewedAt": "2026-08-13",
+    "aliases": [
+    "AIプロンプト",
+    "AIプロンプトビルダー",
+    "プロンプト組立て",
+    "プロンプト作成",
+    "ChatGPT用プロンプト",
+    "依頼文作成",
+    "AIに渡す文",
+    "handoffプロンプト",
+    "表の説明プロンプト",
+    "差分の説明プロンプト",
+    "プロンプトビルダー"
+  ],
+  "jobsShort": [
+    "表の説明を頼む",
+    "差分の依頼文を作る",
+    "AIに渡す文を作る",
+    "プロンプトを組み立てる"
+  ],
+  "hiddenKeywords": [
+    "prompt handoff",
+    "llm prompt builder",
+    "chatgpt prompt scaffold",
+    "プロンプトビルダ",
+    "あいぷろんぷと"
+  ],
+  "notes": "オープンなAI入口ではない。表・差分の閉じた handoff のみ。"
+}

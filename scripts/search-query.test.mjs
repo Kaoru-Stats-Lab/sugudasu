@@ -9,6 +9,8 @@ import {
   toHalfWidthSpace,
   buildSearchQuery,
   googleSearchUrl,
+  SEARCH_PRESETS,
+  SITE_CHIPS,
 } from '../assets/search-query.js';
 
 {
@@ -76,6 +78,25 @@ import {
   const url = googleSearchUrl('foo filetype:pdf');
   assert.ok(url.startsWith('https://www.google.com/search?q='));
   assert.ok(url.includes(encodeURIComponent('foo filetype:pdf')));
+}
+
+{
+  assert.equal(Object.keys(SEARCH_PRESETS).length, 6);
+  assert.ok(!Object.keys(SEARCH_PRESETS).some((id) => /subsid|hojo|補助/i.test(id)));
+  assert.equal(SEARCH_PRESETS.estat_stats.site, 'e-stat.go.jp');
+  assert.equal(SEARCH_PRESETS.illust_sites.site, 'irasutoya.com');
+}
+
+{
+  const hosts = SITE_CHIPS.map((c) => c.host);
+  assert.ok(hosts.includes('elaws.e-gov.go.jp'));
+  assert.ok(hosts.includes('ndl.go.jp'));
+  assert.ok(hosts.includes('irasutoya.com'));
+  const q = buildSearchQuery({
+    keywords: '改正',
+    site: 'elaws.e-gov.go.jp',
+  });
+  assert.ok(q.query.includes('site:elaws.e-gov.go.jp'));
 }
 
 console.log('search-query.test.mjs: OK');

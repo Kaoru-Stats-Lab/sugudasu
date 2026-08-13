@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="表や差分など SUGUDASU の出力を、外の AI に渡す閉じたプロンプトに組み立て。非送信・登録不要。AI は呼び出しません。">
+    <title>表・差分を外のAIへ渡す文を組み立てる — AIプロンプトビルダー | SUGUDASU</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SUGUDASU">
+    <meta property="og:title" content="AIプロンプトビルダー | SUGUDASU">
+    <meta property="og:description" content="normalize・差分の出力を閉じたプロンプトに。ハルシネ対策付き。非送信。検索式ビルダーの姉妹。">
+    <meta property="og:url" content="https://sugudasu.com/prompt-handoff">
+    <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
+    <meta name="twitter:title" content="SUGUDASU AIプロンプトビルダー">
+    <meta name="twitter:description" content="表・差分を外のAIへ。非送信。">
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"AIの回答を生成しますか？","acceptedAnswer":{"@type":"Answer","text":"しません。プロンプト文を組み立ててコピーするだけです。外のAIサービスへはご自身で貼ってください。"}},{"@type":"Question","name":"貼った内容はサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"SUGUDASUのサーバーには送りません。処理はブラウザ内だけです。外のAIに貼る可否は各自のルールで判断してください。"}},{"@type":"Question","name":"どんな用途がありますか？","acceptedAnswer":{"@type":"Answer","text":"v0.1は表・CSVの意味説明と、差分の説明文の2つだけです。SUGUDASUの出力に閉じた用途に限定しています。"}},{"@type":"Question","name":"ハルシネーションを防げますか？","acceptedAnswer":{"@type":"Answer","text":"保証はしません。完成プロンプトに入力範囲外を作らない制約を必ず入れます。回答の正しさは外のAIと利用者の確認次第です。"}}]}</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/sugudasu.css">
+</head>
+<body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
+<div id="sg-chrome-top" data-sg-title="SUGUDASU AIプロンプトビルダー" data-sg-subtitle="表・差分を外のAIへ · 非送信" data-sg-tool-id="prompt-handoff"></div>
+
+<main class="sg-main-shell flex-1 space-y-6">
+    <header class="sg-tool-intro space-y-2">
+        <p class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 inline-block px-3 py-1 rounded-full">単機能 · 非送信 · 登録不要</p>
+        <div class="sg-tool-lead-deck">
+            <p class="sg-tool-lead"><strong>SUGUDASUの出力を、外のAIに渡す文にします</strong> — 表と差分に限定。検索式ビルダーの姉妹。オープンな質問窓口ではありません。AIは呼び出しません。</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">用途・入力</h2>
+
+            <div>
+                <p class="text-xs font-semibold text-slate-600 mb-2">用途</p>
+                <div class="flex flex-wrap gap-2" id="ph-presets" role="radiogroup" aria-label="用途プリセット"></div>
+                <p class="text-[11px] text-slate-600 mt-2" id="ph-preset-hint" role="note"></p>
+                <p class="text-[11px] text-slate-500 mt-1" id="ph-related"></p>
+            </div>
+
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-600">貼り付け（SUGUDASUの出力）</span>
+                <textarea id="ph-paste" rows="10" maxlength="20000" class="sg-input text-sm w-full font-mono" placeholder="" autocomplete="off"></textarea>
+            </label>
+
+            <label class="block space-y-1">
+                <span class="text-xs font-semibold text-slate-600">宛先・目的（任意）</span>
+                <input id="ph-purpose" type="text" maxlength="200" class="sg-input text-sm w-full" placeholder="例: 上長へのレビュー依頼 · チーム共有用" autocomplete="off">
+            </label>
+        </section>
+
+        <section class="sg-card p-5 lg:p-6 space-y-4">
+            <h2 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">完成したプロンプト</h2>
+            <p id="ph-warn" class="hidden text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" role="alert"></p>
+            <pre id="ph-out" class="sg-input font-mono text-xs whitespace-pre-wrap break-all min-h-[12rem] max-h-[28rem] overflow-y-auto bg-slate-50" aria-live="polite"></pre>
+            <div class="flex flex-wrap gap-2 items-center">
+                <button type="button" id="ph-copy" class="sg-btn-primary">コピー</button>
+            </div>
+            <p id="ph-copy-toast" class="sg-copy-toast hidden" role="status"></p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">プロンプトを作るだけです。AIの回答は生成しません。正しさ・ハルシネの有無は保証しません。</p>
+            <p class="text-[11px] text-slate-500 leading-relaxed">業務データを外のAIに貼る可否は、各自のルールで判断してください。SUGUDASUのサーバーには送りません。</p>
+        </section>
+    </div>
+</main>
+
+<section class="no-print sg-faq-section">
+    <div class="sg-faq-inner">
+        <h2 class="sg-faq-title">AIプロンプトビルダーのよくある質問</h2>
+        <p class="text-xs text-slate-500 mb-4">SUGUDASUの出力向けに閉じたプロンプトです。汎用のAIチャット入口ではありません。</p>
+        <div class="sg-faq-list">
+            <details class="sg-faq" open>
+                <summary>AIの回答を生成しますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>しません。</strong> プロンプト文を組み立ててコピーするだけです。外のAIサービスへはご自身で貼ってください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>貼った内容はサーバーに送られますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>SUGUDASUのサーバーには送りません。処理はブラウザ内だけです。外のAIに貼る可否は各自のルールで判断してください。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>どんな用途がありますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p>v0.1は<strong>表・CSVの意味説明</strong>と<strong>差分の説明文</strong>の2つだけです。オープンな質問や汎用要約は扱いません。</p>
+                </div>
+            </details>
+            <details class="sg-faq">
+                <summary>ハルシネーションを防げますか？</summary>
+                <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+                    <p><strong>保証はしません。</strong> 完成プロンプトに「入力範囲外を作らない」制約を必ず入れます。回答の正しさは外のAIと利用者の確認次第です。</p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script src="../assets/sugudasu-shell.js"></script>
+<script type="module" src="../assets/sg-copy-feedback.js"></script>
+<script type="module">
+import {
+  PROMPT_PRESETS,
+  buildHandoffPrompt,
+} from '../assets/prompt-handoff.js';
+
+const presetRoot = document.getElementById('ph-presets');
+const presetHint = document.getElementById('ph-preset-hint');
+const relatedEl = document.getElementById('ph-related');
+const pasteEl = document.getElementById('ph-paste');
+const purposeEl = document.getElementById('ph-purpose');
+const outEl = document.getElementById('ph-out');
+const warnEl = document.getElementById('ph-warn');
+const copyBtn = document.getElementById('ph-copy');
+const toastEl = document.getElementById('ph-copy-toast');
+
+/** @type {keyof typeof PROMPT_PRESETS} */
+let activePreset = 'table_explain';
+
+function applyPreset(id) {
+  activePreset = id;
+  const p = PROMPT_PRESETS[id];
+  presetHint.textContent = p.hint;
+  pasteEl.placeholder = p.pastePlaceholder;
+  relatedEl.innerHTML =
+    '関連: ' +
+    p.relatedTools
+      .map((t) => `<a class="text-blue-700 underline font-semibold" href="${t.href}">${t.label}</a>`)
+      .join(' · ');
+  [...presetRoot.querySelectorAll('button')].forEach((btn) => {
+    const on = btn.dataset.preset === id;
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    btn.className = on
+      ? 'text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-600 bg-emerald-50 text-emerald-900'
+      : 'text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50';
+  });
+  refresh();
+}
+
+function renderPresets() {
+  presetRoot.innerHTML = '';
+  for (const [id, p] of Object.entries(PROMPT_PRESETS)) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.role = 'radio';
+    btn.dataset.preset = id;
+    btn.textContent = p.label;
+    btn.addEventListener('click', () => applyPreset(/** @type {any} */ (id)));
+    presetRoot.appendChild(btn);
+  }
+}
+
+function refresh() {
+  const built = buildHandoffPrompt({
+    presetId: activePreset,
+    paste: pasteEl.value,
+    purpose: purposeEl.value,
+  });
+  if (built.ok) {
+    outEl.textContent = built.prompt;
+    warnEl.classList.add('hidden');
+    warnEl.textContent = '';
+    copyBtn.disabled = false;
+    copyBtn.classList.remove('opacity-50', 'pointer-events-none');
+  } else {
+    outEl.textContent = '（SUGUDASUの出力を貼るとここに完成文が出ます）';
+    warnEl.textContent = built.error;
+    warnEl.classList.toggle('hidden', !pasteEl.value.trim() && !built.error);
+    if (!pasteEl.value.trim()) warnEl.classList.add('hidden');
+    copyBtn.disabled = true;
+    copyBtn.classList.add('opacity-50', 'pointer-events-none');
+  }
+}
+
+copyBtn.addEventListener('click', async () => {
+  const built = buildHandoffPrompt({
+    presetId: activePreset,
+    paste: pasteEl.value,
+    purpose: purposeEl.value,
+  });
+  if (!built.ok) return;
+  try {
+    await SG_COPY_FEEDBACK.copyWithFeedback(built.prompt, copyBtn, {
+      toastEl,
+      lineCount: built.prompt.split('\n').length,
+      previewLine: built.prompt.split('\n')[0] || '',
+      toastPrefix: 'プロンプト',
+    });
+    window.SG_ANALYTICS?.notifyJobCompleted?.({ toolId: 'prompt-handoff', via: 'copy' });
+  } catch {
+    /* ignore */
+  }
+});
+
+[pasteEl, purposeEl].forEach((el) => el.addEventListener('input', refresh));
+
+renderPresets();
+applyPreset('table_explain');
+
+try {
+  window.SG_ANALYTICS?.bindTextJobStarted?.(pasteEl, { debounceMs: 400, minLength: 1 });
+} catch (_) { /* ignore */ }
+</script>
+</body>
+</html>

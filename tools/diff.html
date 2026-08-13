@@ -30,7 +30,7 @@
     </style>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 差分チェック" data-sg-tool-id="diff"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 差分チェック" data-sg-tool-id="diff" data-sg-next-id="prompt-handoff" data-sg-next-label="依頼プロンプトを作る" data-sg-next-reason="差分のあと、レビュー依頼文を外のAI向けに整えるとき"></div>
 
 <main class="sg-main-shell flex-1 space-y-5">
     <header class="sg-tool-intro space-y-2">
@@ -38,6 +38,8 @@
             <p class="sg-tool-lead"><strong>AI書き換えの危険な変更から確認</strong> — 数字・日付・URLなど見逃すとまずい差分を優先表示します。登録不要・保存なし・非送信です。</p>
             <p class="sg-tool-lead sg-tool-lead--meta">テキストを貼って色で見たいときに使います。Word / PDF の新旧で変更を順に追いたいときは <a href="smart-diff.html" class="text-blue-600 hover:underline">変更確認</a> へ。</p>
         </div>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">差分のあと、レビュー依頼文を外のAI向けに整えるとき</span> <a class="sg-tool-next-path__link" href="/prompt-handoff">依頼プロンプトを作る</a></p>
     </header>
 
     <section class="sg-card p-4 space-y-3">

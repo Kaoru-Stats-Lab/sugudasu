@@ -167,9 +167,23 @@
       "inNav": true,
       "navOrder": 9.2,
       "name": "検索式ビルダー（filetype / site）",
+      "version": "0.2.0",
+      "stage": "alpha",
+      "statusNote": "分野寄せプリセット · SEARCH_QUERY_BUILDER_SPEC.md",
+      "categoryId": "text"
+    },
+    "prompt-handoff": {
+      "file": "prompt-handoff.html",
+      "conceptName": "AIプロンプト",
+      "productName": "SUGUDASU AIプロンプトビルダー",
+      "navLabel": "プロンプト",
+      "navIcon": "✉️",
+      "inNav": true,
+      "navOrder": 9.3,
+      "name": "AIプロンプトビルダー（表・差分の閉じた handoff）",
       "version": "0.1.0",
       "stage": "alpha",
-      "statusNote": "Google検索式のローカル組み立て · 非送信 · SEARCH_QUERY_BUILDER_SPEC.md",
+      "statusNote": "検索式ビルダー姉妹 · 外のAIへ · 非送信 · PROMPT_HANDOFF_SPEC.md",
       "categoryId": "text"
     },
     "table-conv": {

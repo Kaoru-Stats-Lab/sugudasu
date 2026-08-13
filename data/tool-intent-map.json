@@ -6,6 +6,20 @@
   "layer": 3,
   "entries": [
     {
+      "keyword": "プロンプト",
+      "toolIds": [
+        "prompt-handoff"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "AIプロンプト",
+      "toolIds": [
+        "prompt-handoff"
+      ],
+      "weight": 100
+    },
+    {
       "keyword": "画像",
       "toolIds": [
         "watermark",

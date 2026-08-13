@@ -112,6 +112,18 @@
       }
     },
     {
+      "toolId": "prompt-handoff",
+      "href": "prompt-handoff.html",
+      "blurb": "表や差分の結果を、外のAIに渡す文にしたい時に。検索式ビルダー姉妹の閉じたプロンプト組立てです。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "table-conv",
       "href": "table-conv.html",
       "blurb": "ExcelやCSVの表を別形式へ変換したい時に。MarkdownやJSONへ変換します。",

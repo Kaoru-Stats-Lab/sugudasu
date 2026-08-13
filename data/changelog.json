@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "prompt-handoff-alpha-20260813",
+      "date": "2026-08-13",
+      "type": "feature",
+      "audience": "public",
+      "title": "AIプロンプトビルダー — 表・差分を外のAIへ渡す文を作る",
+      "body": "検索式ビルダーの姉妹ツールです。normalizeや差分の結果を貼ると、外のAI向けの依頼文ができます。回答の生成はしません。入力範囲外を作らない注意書きを必ず入れます。",
+      "tools": [
+        "prompt-handoff"
+      ]
+    },
+    {
       "id": "budget-trim-intake-copy-20260813",
       "date": "2026-08-13",
       "type": "improve",

@@ -2193,10 +2193,32 @@
 
 ---
 
+## DEPLOY-20260813-007
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督「進めて」— AIプロンプトビルダー公開 · 検索式 v0.2 分野寄せ · 姉妹命名 |
+| **change_summary** | `prompt-handoff` 新規 · SEARCH_QUERY v0.2 · naming AIプロンプトビルダー · next-path |
+| **local_build** | （release:pages:free 実行時に記入） |
+| **deploy_count_today** | 7（P7 override · 提督明示） |
+| **pages_build_budget_after** | （release 後） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **git_sha** | （push 後） |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | `/prompt-handoff` 200 · Hub に AIプロンプト · `/search-query` に統計・挿絵プリセット |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 007 approved（AIプロンプトビルダー · 検索式 v0.2 · P7 override · 提督「進めて」） |
 | 2026-08-13 | 006 executed（bd31b5f · S-SEG-B · S-CARD-HAIRLINE · P7 override） |
 | 2026-08-13 | 006 approved（S-SEG-B · S-CARD-HAIRLINE · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 005 executed（8a86648 · AdSense R2 allowlist · Reject noindex · Hub · P7 override） |

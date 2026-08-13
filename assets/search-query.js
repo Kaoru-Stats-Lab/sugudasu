@@ -8,7 +8,7 @@ export const LS_EXCLUDES_MAX = 10;
 export const EXCLUDE_MAX = 3;
 export const KEYWORD_MAX = 500;
 
-/** @typedef {'pdf_gather'|'gov_jp'|'exclude_noise'|'free'} SearchPresetId */
+/** @typedef {'pdf_gather'|'gov_jp'|'estat_stats'|'illust_sites'|'exclude_noise'|'free'} SearchPresetId */
 
 /** @type {Record<SearchPresetId, { label: string, hint: string, filetype: string, site: string }>} */
 export const SEARCH_PRESETS = {
@@ -20,9 +20,21 @@ export const SEARCH_PRESETS = {
   },
   gov_jp: {
     label: '官公庁・自治体寄り',
-    hint: 'まず go.jp。lg.jp / ac.jp はワンタッチで変更可',
+    hint: 'まず go.jp。lg.jp / e-Gov 等は下のチップで変更可',
     filetype: '',
     site: 'go.jp',
+  },
+  estat_stats: {
+    label: '統計・白書寄り',
+    hint: '公的統計サイトに寄せる。数字の正しさは元サイトで確認',
+    filetype: '',
+    site: 'e-stat.go.jp',
+  },
+  illust_sites: {
+    label: '挿絵・素材サイト寄り',
+    hint: 'よく使う挿絵サイトに寄せる。利用条件・商用可否は元サイトで確認',
+    filetype: '',
+    site: 'irasutoya.com',
   },
   exclude_noise: {
     label: 'まとめを除いて探す',
@@ -37,6 +49,22 @@ export const SEARCH_PRESETS = {
     site: '',
   },
 };
+
+/**
+ * site 欄ワンタッチ（弱いUI · SPEC §4-1）
+ * primary=true は常時1行目、それ以外は「よく使うサイト」2段目
+ * @type {{ label: string, host: string, primary?: boolean }[]}
+ */
+export const SITE_CHIPS = [
+  { label: 'go.jp', host: 'go.jp', primary: true },
+  { label: 'lg.jp', host: 'lg.jp', primary: true },
+  { label: 'ac.jp', host: 'ac.jp', primary: true },
+  { label: 'e-Stat', host: 'e-stat.go.jp' },
+  { label: 'e-Gov', host: 'e-gov.go.jp' },
+  { label: '法令', host: 'elaws.e-gov.go.jp' },
+  { label: '国会図書館', host: 'ndl.go.jp' },
+  { label: 'いらすとや', host: 'irasutoya.com' },
+];
 
 /**
  * URL / ホスト文字列 → site: 用ホスト

@@ -31,6 +31,7 @@ python -m http.server 8080
 | [normalize.html](tools/normalize.html) | /normalize | SUGUDASU 全角半角整え | 全角半角 | beta |
 | [clip-stash.html](tools/clip-stash.html) | /clip-stash | SUGUDASU 仮置き | 仮置き | beta |
 | [search-query.html](tools/search-query.html) | /search-query | SUGUDASU 検索式ビルダー | 検索式 | alpha |
+| [prompt-handoff.html](tools/prompt-handoff.html) | /prompt-handoff | SUGUDASU AIプロンプトビルダー | プロンプト | alpha |
 | [table-conv.html](tools/table-conv.html) | /table-conv | SUGUDASU 表変換 | 表変換 | beta |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [video-frame.html](tools/video-frame.html) | /video-frame | SUGUDASU 動画コマ抜き | 動画コマ抜き | alpha |
