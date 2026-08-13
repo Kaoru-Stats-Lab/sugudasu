@@ -2155,20 +2155,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督「進めて」— AdSense R2 · 有用性の低いコンテンツ是正（広告allowlist · Reject noindex/sitemap除外 · Hub価値） |
 | **change_summary** | `adsense-pages.mjs` allowlist · `verify-adsense-pages` · `build-pages` Reject除外+`_headers` · `hub.html` 価値モジュール · ADSENSE_R2 ログ群 |
-| **local_build** | （release:pages:free 実行時に記入） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 20/450） |
 | **deploy_count_today** | 5（P7 override · 提督明示の続行） |
-| **pages_build_budget_after** | （release 後） |
+| **pages_build_budget_after** | 20/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | （push 後） |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | `/invoice` に pagead 無し · `/hub` `/guides` に pagead 有り · sitemap に `/label` 無し · `/label` meta noindex |
+| **git_sha** | `8a86648` |
+| **cf_deployment_id** | CF Pages auto（`8a86648` push origin main） |
+| **smoke** | （CF 反映後）`/invoice` に pagead 無し · `/hub` `/guides` に pagead 有り · sitemap に `/label` 無し · `/label` meta noindex |
 
 ---
 
@@ -2176,6 +2176,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 005 executed（8a86648 · AdSense R2 allowlist · Reject noindex · Hub · P7 override） |
 | 2026-08-13 | 005 approved（AdSense R2 allowlist · Reject noindex · Hub · P7 override · 提督「進めて」） |
 | 2026-08-13 | 004 executed（0db2f1e · 定性FB · Issues Inbox · AdSenseメール残 · P7 override） |
 | 2026-08-13 | 004 approved（定性FB · Issues Inbox · AdSenseメール残 · P7 override · 提督 Commit&Push&Deploy） |
