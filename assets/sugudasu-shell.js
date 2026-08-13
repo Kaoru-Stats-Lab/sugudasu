@@ -607,6 +607,11 @@
       tool_id: toolId,
       outcome: o,
     }, extra || {}));
+    try {
+      import(assetUrl('sg-tool-next-path.js')).then(function (m) {
+        if (m && typeof m.offerToolNextPath === 'function') m.offerToolNextPath(toolId);
+      }).catch(function () { /* ignore */ });
+    } catch (_) { /* ignore */ }
   }
 
   /** analytics ESM 到着前の着手バインドを保持（HTML インライン競合対策） */

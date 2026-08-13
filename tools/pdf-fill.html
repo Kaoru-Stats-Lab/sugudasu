@@ -566,7 +566,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Acrobatや専用ソフトは必要ですか？","acceptedAnswer":{"@type":"Answer","text":"不要です。ブラウザだけで利用できます。インストールや会員登録も必要ありません。"}},{"@type":"Question","name":"データは送信されますか？","acceptedAnswer":{"@type":"Answer","text":"送信されません。すべてブラウザ内で処理します。"}},{"@type":"Question","name":"楕円で囲みたいです。","acceptedAnswer":{"@type":"Answer","text":"文字ツールの記号から「⬭」を配置してください。図形編集ではなく、紙へ記号を書く体験を優先しています。"}},{"@type":"Question","name":"PDFの文章を編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。このツールはPDF編集ソフトではなく、提出用PDFを完成させるツールです。"}},{"@type":"Question","name":"保存すると何が起きますか？","acceptedAnswer":{"@type":"Answer","text":"編集したページを見たまま固定した提出用PDFとして保存します。あとから文字だけ消したり、黒塗りだけ外したりはできません。"}},{"@type":"Question","name":"黒塗りの情報は復元できますか？","acceptedAnswer":{"@type":"Answer","text":"保存後は復元できません。"}},{"@type":"Question","name":"元のPDFは消えますか？","acceptedAnswer":{"@type":"Answer","text":"消えません。提出用PDFを新しく作成します。元のPDFはそのまま残ります。"}},{"@type":"Question","name":"会員登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"必要ありません。すぐ使えます。"}},{"@type":"Question","name":"電子印鑑は使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。SUGUDASU電子印鑑からコピーして、Ctrl+Vで貼り付けできます。"}},{"@type":"Question","name":"スマートフォンでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"このツールはPCでの利用を前提に設計しています。提出書類を見やすく正確に記入できることを優先しています。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU PDF記入" data-sg-subtitle="提出用 · 文字·印·黒塗り · 非送信" data-sg-tool-id="pdf-fill"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU PDF記入" data-sg-subtitle="提出用 · 文字·印·黒塗り · 非送信" data-sg-tool-id="pdf-fill" data-sg-next-id="stamp" data-sg-next-label="次に印影を押す" data-sg-next-reason="記入した提出用に判子が要る"></div>
 
 <main class="sg-main-shell sg-main-shell--wide flex-1 space-y-6">
     <div class="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note">
@@ -583,6 +583,8 @@
                 Acrobatの代替ではありません。印影の生成は <a href="stamp.html" class="text-violet-800 underline font-semibold">電子印鑑</a>、画像の秘匿は <a href="annotate.html" class="text-violet-800 underline font-semibold">赤入れ</a>。不安があるときは下の <a href="#faq" class="text-violet-800 underline font-semibold">よくある質問</a> もどうぞ。
             </p>
         </div>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">記入した提出用に判子が要る</span> <a class="sg-tool-next-path__link" href="/stamp">次に印影を押す</a></p>
     </header>
 
     <section id="pdff-drop-section" class="sg-card p-5 lg:p-6 space-y-4">

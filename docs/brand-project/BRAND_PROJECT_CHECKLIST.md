@@ -1,7 +1,7 @@
 # SUGUDASU Brand Project Checklist
 
 **役割:** ブランド設計プロジェクトの現在地を管理する正本  
-**更新:** 2026-07-25  
+**更新:** 2026-08-09  
 **運用:** 完了した項目だけをチェックし、議論の本文は各SSOT・Decision Log・ADRへ置く
 
 ## SSOT
@@ -15,6 +15,7 @@
 - 決定事項: [`DECISION_LOG.md`](DECISION_LOG.md)
 - 未解決事項: [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md)
 - ADR雛形: [`ADR_TEMPLATE.md`](ADR_TEMPLATE.md) — **憲法判断は ADR 禁止 · Case Law へ**
+- **Identity / 市場探索（議論地図 · 仕様ではない）:** [`../notes/SUGUDASU_IDENTITY_EXPLORATION_BASE.md`](../notes/SUGUDASU_IDENTITY_EXPLORATION_BASE.md) · 生ログ [`../notes/identity-evolution/`](../notes/identity-evolution/README.md)
 
 ## Phase 0 — ブランド憲法
 
@@ -49,7 +50,7 @@
 
 ## Phase 2 — 市場戦略
 
-**Status:** Not Started
+**Status:** Not Started（たたき台あり）
 
 - [ ] 市場構造
 - [ ] JTBD
@@ -58,7 +59,9 @@
 - [ ] Category Position
 - [ ] 市場リスク
 
-**成果物:** Market Strategy Report
+**成果物:** Market Strategy Report  
+**たたき台:** [`../notes/SUGUDASU_IDENTITY_EXPLORATION_BASE.md`](../notes/SUGUDASU_IDENTITY_EXPLORATION_BASE.md) §2〜4 · 生ログ S-2026-08-a  
+**注意:** 探索地図の `[LEANING]` を Report 完成扱いにしない。憲法は書き換えない。
 
 ## Phase 2.5 — Habit Formation
 
@@ -71,7 +74,8 @@
 - [ ] Chromeタブ戦略
 - [ ] 「検索より先に開く」仮説
 
-**成果物:** Habit Formation Report
+**成果物:** Habit Formation Report  
+**関連:** Identity 探索 §4（発見経路）· ガイド/note への昇格ルールは同 BASE §5
 
 ## Phase 3 — Message Architecture
 
@@ -85,7 +89,8 @@
 - [ ] Product Copy
 - [ ] SEO Copy
 
-**成果物:** Messaging Guide
+**成果物:** Messaging Guide  
+**たたき台:** Identity 探索 §2（定義の変遷）— Hub/LP へ載せる前に `[LEANING]` 以上 + 必要なら DECISION
 
 ## Phase 4 — Marketing System
 
@@ -100,7 +105,8 @@
 - [ ] Product間導線
 - [ ] Referral
 
-**成果物:** Marketing Blueprint
+**成果物:** Marketing Blueprint  
+**実行正本（チャネル別）:** Guides [`../notes/GUIDES_CONTENT_STRATEGY.md`](../notes/GUIDES_CONTENT_STRATEGY.md) · Zenn [`../notes/ZENN_EDITORIAL_PLAN.md`](../notes/ZENN_EDITORIAL_PLAN.md) · note [`../notes/NOTE_BROWSER_SERIES_OUTLINE.md`](../notes/NOTE_BROWSER_SERIES_OUTLINE.md) — ネタ源として Identity 探索 §5
 
 ## Phase 5 — Portfolio
 

@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-07-20",
-  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md",
-  "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。検索例チップは表示文言であり Analytics にキーワード本文は送らない。",
+  "updatedAt": "2026-08-13",
+  "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md",
+  "disclaimer": "Hub 表示専用。カテゴリ本体は categories.json。検索例チップは表示文言であり Analytics にキーワード本文は送らない。chipLabels は 2026-08-13 役員会で実体に寄せて是正（イベント→当日運営 等）。",
   "chipOrder": [
     "docs",
     "staffing",
@@ -14,11 +14,11 @@
   ],
   "chipLabels": {
     "docs": "帳票",
-    "staffing": "シフト",
+    "staffing": "シフト・時給",
     "text": "テキスト",
-    "media": "画像",
-    "people": "配属",
-    "ops": "イベント",
+    "media": "画像・動画",
+    "people": "配属・抽選",
+    "ops": "当日運営",
     "devtest": "テスト",
     "creative": "SNS"
   },

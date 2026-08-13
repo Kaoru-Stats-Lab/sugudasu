@@ -260,7 +260,10 @@ Domain（受け渡せる状態まで）· Persona（前に出ない同僚）· A
 
 **関連ADR:** なし  
 
-**関連Product:** `invoice` · `receipt`（`stamp` は既に PNG コピーのみで対象外）
+**関連Product:** `invoice` · `receipt`（`stamp` は既に PNG コピーのみで対象外）· `warikan`（残件の𝕏シェアは 2026-08-13 撤去）
+
+**残件クローズ（2026-08-13）:**  
+`warikan` の「𝕏 結果をシェア」、`sugudasu-growth.js` の `shareX*` / `openXIntent`、帳票 CTA 計測の死セレクタ、`.sg-btn-x` を撤去。`invoice` 見出しを Copy 動詞へ是正。監査メモ: `docs/notes/CASE_2026_007_RESIDUAL_CLEANUP_20260813.md`。
 
 ---
 

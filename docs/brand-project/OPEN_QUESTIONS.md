@@ -7,6 +7,19 @@
 [`DECISION_LOG.md`](DECISION_LOG.md) またはADRへ移し、
 このファイルから削除する。
 
+## Q-00 — キャッチコピー（英語タグライン）— 一部解決
+
+**関連Phase:** ブランド露出 · LP · OGP  
+**候補・評価:** [`../brand/CATCHPHRASE_CANDIDATES.md`](../brand/CATCHPHRASE_CANDIDATES.md)  
+**解決済み:** L0 = **Open. Use. Close.** · L1 = **開く。使う。閉じる。** · Hub 併記（[`DECISION_LOG`](DECISION_LOG.md) 2026-08-13）
+
+- ~~ヒーロー第1を Open. Use. Close. にするか~~ → **確定**
+- ~~日本語 L1~~ → **開く。使う。閉じる。確定 · Hub 併記**
+- 「No Login. No Upload.」系は L2 サブ降格でよいか
+- ~~英コアを本番 Hub に併記するか~~ → **併記済**
+
+---
+
 ## Q-01 — Bookmark戦略
 
 **関連Phase:** 2.5 / 4 / 6
@@ -39,13 +52,21 @@
 
 既存Hub IAの実装判断を再審議するのではなく、ブランド適合だけを監査する。
 
-## Q-05 — Category Design
+## Q-05 — Category Design — 一部解決（2026-08-13）
 
-**関連Phase:** 2 / 5
+**関連Phase:** 2 / 5  
+**議事:** [`../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md`](../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md)
 
-- 現在のカテゴリはユーザーの仕事・Painから理解できるか
-- 技術形式ではなく「何を終わらせるか」で分類できているか
-- Product追加時にカテゴリを増やす条件は何か
+**解決済み**
+
+- 厳密一軸MECEを目指さない（実用分類 · 8固定 Keep）
+- 欠陥の本丸はチップ短縮の不誠実さ → **ラベル是正は可決**
+- ツール大量の categoryId 付け替え · カテゴリ増 · マルチタグ → **Defer / 否決**
+
+**残**
+
+- `chipLabels` 実装後の実機感（文字量 · Mobile）
+- ops 中身の個別付け替え提案（ある場合のみ再議）
 
 ## Q-06 — Chromeタブ戦略
 

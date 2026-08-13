@@ -23,7 +23,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。会員登録なしで見積書・納品書・請求書を作成でき、登録番号の記載にも対応しています。","@type":"Answer"},"name":"登録不要でインボイス対応の請求書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。ブラウザの印刷機能からPDF保存・印刷が可能です。実務で使える体裁で出力できます。","@type":"Answer"},"name":"作成した書類はPDF保存できますか？","@type":"Question"},{"acceptedAnswer":{"text":"PDFは送付用の完成版です。下書きデータはあとから編集したり別PCで開き直したりするためのファイルで、会計ソフトへの直接取込はできません。","@type":"Answer"},"name":"PDFと下書きデータの保存の違いは？","@type":"Question"},{"acceptedAnswer":{"text":"保存で入力内容をファイルにダウンロードし、社内フォルダや別PCへ保管できます。読み込みでファイルを選ぶとフォームに復元します（現在の入力は上書き）。途中保存・似た案件のたたき台・バックアップ向けで、取引先への送付はPDFを使います。","@type":"Answer"},"name":"下書きデータの保存・読み込みはどう使いますか？","@type":"Question"},{"acceptedAnswer":{"text":"できます。見積で保存した下書きデータを読み込み、書類種別タブで納品書・請求書に切り替えると明細・宛先・金額は維持されたまま体裁だけ変わります。番号・期限・備考は書類に合わせて直してからPDF保存してください。","@type":"Answer"},"name":"見積の下書きを納品書・請求書に転用できますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。基本処理はブラウザ内で完結し、入力した顧客情報や金額データは外部送信しません。","@type":"Answer"},"name":"入力データは外部に送信されますか？","@type":"Question"},{"acceptedAnswer":{"text":"むしろ「仕事が早すぎる人」として評価されることが多いです。整ったPDFを即提出できるため、周囲には“段取りの達人”として映ります。","@type":"Answer"},"name":"会員登録すらせず一瞬で請求書を出したら、手抜きだと思われませんか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。中古車の売買代金、整備・部品代、店舗向けの諸経費など、明細に取引内容を記載して請求書・見積書を作成できます。自動車売買契約書そのものの作成機能ではありません。","@type":"Answer"},"name":"中古車の個人売買や整備工場向けに請求書は使えますか？","@type":"Question"},{"acceptedAnswer":{"text":"いいえ。SUGUDASU（スグダス）は登録不要の無料ビジネスツールです。SUBARUの中古車サービス「SUGDAS」とは名称の読みが同じですが、別のサービスであり提携関係はありません。","@type":"Answer"},"name":"SUBARUの中古車サービス「スグダス」と同じですか？","@type":"Question"},{"acceptedAnswer":{"text":"請求書モードの税務検算で源泉税と差引支払額の参考値を表示できます。100万円超は二段階税率（20.42%）を自動適用。正本は国税庁 No.2792。","@type":"Answer"},"name":"フリーランス請求の源泉徴収は計算できますか？","@type":"Question"},{"acceptedAnswer":{"text":"個人への報酬で1回の支払が100万円超のとき、100万円以下は10.21%、超えた部分は20.42%＋102,100円で源泉税を計算する仕組み。本ツールは源泉徴収ON時に自動適用。公式は国税庁 No.2792。","@type":"Answer"},"name":"二段階税率（100万円超の源泉徴収）とは？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 請求書" data-sg-subtitle="見積 · 納品 · 請求" data-sg-print="true" data-sg-tool-id="invoice"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 請求書" data-sg-subtitle="見積 · 納品 · 請求" data-sg-print="true" data-sg-tool-id="invoice" data-sg-next-id="stamp" data-sg-next-label="次に印影を押す" data-sg-next-reason="帳票を出したあと社印が要る"></div>
 
     <div class="no-print sg-section-shell mt-4">
     <nav class="sg-segment sg-segment--cols-3 sg-segment--mode-invoice sg-doc-cluster w-full sg-segment--notion-soft" aria-label="書類ツール">
@@ -42,7 +42,9 @@
             <p class="sg-tool-lead"><strong>見積・納品・請求をブラウザで発行</strong> — 登録不要。明細・税率・印影まで整えて印刷またはPDF保存します。</p>
             <p class="sg-tool-lead">会計ソフトやクラウド請求の代替ではありません。入力は端末内のみです。</p>
           </div>
-        </header>
+        
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">帳票を出したあと社印が要る</span> <a class="sg-tool-next-path__link" href="/stamp">次に印影を押す</a></p>
+    </header>
 
         <div class="no-print col-span-1 lg:col-span-12 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-[11px] sm:text-xs text-indigo-950 leading-relaxed" role="note" aria-label="利用環境の推奨">
             <strong class="font-bold">PC推奨</strong> — 帳票の最終確認・PDF保存・印刷はパソコン向けに最適化しています。スマホは入力や下書きの確認程度を想定しています。
@@ -308,13 +310,13 @@
                 <p class="text-[10px] text-slate-500">ブラウザの印刷ダイアログが開きます（PDF保存もそこから）。送付文面のコピーは下のボタンです。</p>
             </div>
 
-            <!-- クライアント送付（Copy-First · CASE-2026-007） -->
+            <!-- 持ち帰り（Copy-First · CASE-2026-007） -->
             <div class="border-t border-slate-100 pt-4 space-y-3">
-                <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">🔗 共有・クライアント送付</h3>
+                <h3 class="text-xs font-bold text-slate-800 border-l-2 border-indigo-600 pl-2">送付文面をコピー</h3>
                 <button type="button" id="btn-copy-tool-url" onclick="copyToolUrl()" class="w-full sg-btn-primary font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all cursor-pointer shadow-sm">
                     <span>📋 送付文面をコピー</span>
                 </button>
-                <p class="text-[10px] text-slate-500">文面を貼る先はお使いのチャットで。</p>
+                <p class="text-[10px] text-slate-500">社内Wikiやチャットへ貼れば、次回も同じ道具に戻れます。SUGUDASU から自動送信はしません。</p>
                 <p id="copy-toast-invoice" class="sg-copy-toast hidden" role="status"></p>
             </div>
 
@@ -1682,6 +1684,9 @@
                 ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
                 : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
             toast.classList.remove('hidden');
+            if (level === 'ok') {
+                try { window.SUGUDASU_GROWTH?.decorateCopyToast?.(toast); } catch (_) { /* ignore */ }
+            }
         }
     </script>
 <div id="sg-chrome-bottom"></div>

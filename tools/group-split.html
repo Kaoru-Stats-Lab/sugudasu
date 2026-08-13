@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"研修やブレイクアウトで班分けが必要なのはどんなとき？","acceptedAnswer":{"@type":"Answer","text":"新入社員研修のグループワーク、ハッカソンのチーム編成など、参加者を組に分け共有したい場面。幹事の事務作業（割当·共有·説明責任）向け。"}},{"@type":"Question","name":"当日欠席が出たときはどうする？","acceptedAnswer":{"@type":"Answer","text":"名前タップで除外。同一シードで属性条件に基づき自動再構成。JSONコピーでPC→スマホ復元可。"}},{"@type":"Question","name":"入力した参加者名簿はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。名簿はサーバーに送信されず、ブラウザ内だけで処理されます。"}},{"@type":"Question","name":"ブラウザを閉じたらデータはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"全部消える。復元は事前のJSONコピーを同期メモ経由で貼り付け。"}},{"@type":"Question","name":"班分け結果の公平性・再現性は？","acceptedAnswer":{"@type":"Answer","text":"同じ名簿·条件·シードなら同一班構成を再現。偶然に左右されない。"}},{"@type":"Question","name":"欠席除外時に幹事が都合よく操作できる？","acceptedAnswer":{"@type":"Answer","text":"タップ除外後は同一シードで自動再構成。手作業パズル不要。"}},{"@type":"Question","name":"使い方の流れは？","acceptedAnswer":{"@type":"Answer","text":"名簿貼付→属性条件→名前ルール（任意）→実行→TSV/Slack/JSONコピー。"}},{"@type":"Question","name":"Excel や Slack にそのまま貼れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。TSV/Slack/告知/JSONを1クリックコピー。名簿上限250名。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 班分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 班分け" data-sg-subtitle="研修 · ハッカソン · 非送信" data-sg-tool-id="group-split" data-sg-next-id="timeline" data-sg-next-label="次に進行表を作る" data-sg-next-reason="班が決まったあと当日の進行表を組む"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
 
@@ -37,8 +37,10 @@
             </p>
         </div>
         <p class="sg-tool-lead sg-tool-lead--meta">
-            名簿前処理は <a href="normalize.html">全角半角整え</a> · 当日の進行は <a href="timeline.html">イベント進行</a>。
+            名簿前処理は <a href="normalize.html">全角半角整え</a>。
         </p>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">班が決まったあと当日の進行表を組む</span> <a class="sg-tool-next-path__link" href="/timeline">次に進行表を作る</a></p>
     </header>
 
     <p class="text-[11px] text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">

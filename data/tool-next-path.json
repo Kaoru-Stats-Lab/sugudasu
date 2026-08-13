@@ -1,0 +1,100 @@
+{
+  "updatedAt": "2026-08-13",
+  "ssot": "docs/notes/TOOL_NEXT_PATH_SPEC.md",
+  "policy": "DONE後に編集が書いた次の1本だけ。relations.json（多対多）・履歴推薦・Hub並び替えとは別物。逆方向は自動追加禁止（SPEC §5-3）。",
+  "types": {
+    "A": "同じ成果物の仕上げ工程が残っている",
+    "B": "持ち運び形式だけ足りない",
+    "C": "中身の正しさを人が確認する工程が残っている",
+    "D": "人・場の段取りが単発ツールの外に続く",
+    "E": "法務・注意書きなど添える文が残っている"
+  },
+  "paths": {
+    "pdf-fill": {
+      "type": "A",
+      "nextId": "stamp",
+      "reason": "記入した提出用に判子が要る",
+      "linkLabel": "次に印影を押す"
+    },
+    "invoice": {
+      "type": "A",
+      "nextId": "stamp",
+      "reason": "帳票を出したあと社印が要る",
+      "linkLabel": "次に印影を押す"
+    },
+    "receipt": {
+      "type": "A",
+      "nextId": "stamp",
+      "reason": "帳票を出したあと社印が要る",
+      "linkLabel": "次に印影を押す"
+    },
+    "stamp": {
+      "type": "A",
+      "nextId": "invoice",
+      "reason": "印影を用意したあと請求書に押す",
+      "linkLabel": "請求書を開く"
+    },
+    "webp-to-jpg": {
+      "type": "A",
+      "nextId": "annotate",
+      "reason": "変換した画面を共有前に整えたい",
+      "linkLabel": "次に赤入れする"
+    },
+    "image-trim": {
+      "type": "A",
+      "nextId": "annotate",
+      "reason": "切り出した図に指示や黒塗りが要る",
+      "linkLabel": "次に赤入れする"
+    },
+    "clipboard-trim": {
+      "type": "A",
+      "nextId": "annotate",
+      "reason": "取り込んだ画面を共有前に整えたい",
+      "linkLabel": "次に赤入れする"
+    },
+    "group-split": {
+      "type": "D",
+      "nextId": "timeline",
+      "reason": "班が決まったあと当日の進行表を組む",
+      "linkLabel": "次に進行表を作る"
+    },
+    "normalize": {
+      "type": "C",
+      "nextId": "table-conv",
+      "reason": "列は整った。表として貼りたいときだけ",
+      "linkLabel": "表に変換する"
+    }
+  },
+  "rejectedReverses": [
+    {
+      "edge": "pdf-fill→stamp",
+      "reverse": "stamp→pdf-fill",
+      "verdict": "reject",
+      "why": "印影後は invoice を next に採用"
+    },
+    {
+      "edge": "invoice|receipt→stamp",
+      "reverse": "stamp→receipt",
+      "verdict": "reject",
+      "why": "stamp の next は1本・invoice 優先"
+    },
+    {
+      "edge": "webp-to-jpg|image-trim|clipboard-trim→annotate",
+      "reverse": "annotate→webp|trim",
+      "verdict": "reject",
+      "why": "工程逆流・赤入れ後は外出し完了が多い"
+    },
+    {
+      "edge": "group-split→timeline",
+      "reverse": "timeline→group-split",
+      "verdict": "reject",
+      "why": "進行のあとに班分けは稀"
+    },
+    {
+      "edge": "normalize→table-conv",
+      "reverse": "table-conv→normalize",
+      "verdict": "reject",
+      "why": "表化後の列整形は主経路ではない"
+    }
+  ]
+}

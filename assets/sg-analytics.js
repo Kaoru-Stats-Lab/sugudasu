@@ -88,6 +88,14 @@ export function notifyJobDone(outcome, extra) {
     sanitizeExtra(extra),
   );
   track('tool_job_done', params);
+  // DECISION: 編集固定の次の1本のみ。履歴推薦禁止 — TOOL_NEXT_PATH_SPEC.md
+  import('./sg-tool-next-path.js')
+    .then(function (m) {
+      if (m && typeof m.offerToolNextPath === 'function') m.offerToolNextPath(toolId);
+    })
+    .catch(function () {
+      /* ignore */
+    });
 }
 
 /**

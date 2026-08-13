@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-07-26",
   "ssot": "docs/notes/product-template.md · docs/notes/HUB_IA_REFRESH_V2.md",
-  "disclaimer": "関連ツール（Product Phase 2）。Hub IA では未使用。",
+  "disclaimer": "関連ツール（Product Phase 2 · 多対多）。Hub IA では未使用。DONE後の次の1本は data/tool-next-path.json（別SSOT）。",
   "relations": {
     "invoice": ["stamp", "receipt", "label"],
     "stamp": ["invoice", "receipt"],

@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"iLoveIMGやConvertioと何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"多くのアップロード型ツールは画像を運営サーバーへ送って変換します。SUGUDASUは端末のブラウザ内だけで処理し、画像ファイルのPOSTは発生しません。DevToolsのネットワークタブで確認できます。"}},{"@type":"Question","name":"WebPをPNGやJPEGに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。WebPファイルを選び、出力形式（PNGまたはJPEG）を指定して変換・ダウンロードできます。処理はブラウザ内だけで行います。"}},{"@type":"Question","name":"PNGやJPEGをWebPに変換できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールは WebP を PNG/JPEG に戻す用途向けです（Excel貼付・旧システム登録など）。"}},{"@type":"Question","name":"画像は外部サーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。ファイルは端末内だけでデコード・再エンコードされ、SUGUDASUのサーバーへアップロードされません。"}},{"@type":"Question","name":"透過WebPをJPEGにするとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"JPEGは透過に非対応のため、背景は白で塗りつぶされます。透過を残す場合はPNG出力を選んでください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU WebP変換" data-sg-subtitle="JPG/PNG · 非送信" data-sg-tool-id="webp-to-jpg"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU WebP変換" data-sg-subtitle="JPG/PNG · 非送信" data-sg-tool-id="webp-to-jpg" data-sg-next-id="annotate" data-sg-next-label="次に赤入れする" data-sg-next-reason="変換した画面を共有前に整えたい"></div>
 
 <main class="sg-main-shell flex-1 space-y-6">
 
@@ -31,6 +31,8 @@
         <div class="sg-tool-lead-deck">
             <p class="sg-tool-lead"><strong>WebPを端末内だけでJPG・PNGに変換</strong> — 画像はアップロードせず、社外秘スクショ · 顧客素材にも使えます（最大20枚）。</p>
         </div>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">変換した画面を共有前に整えたい</span> <a class="sg-tool-next-path__link" href="/annotate">次に赤入れする</a></p>
     </header>
 
     <section class="sg-card p-5 space-y-3" aria-labelledby="compare-heading">

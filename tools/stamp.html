@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"電子印鑑とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"電子文書に貼り付ける印影画像データのことです。本ツールは画像型の認印（丸）を作成します。"}},{"@type":"Question","name":"電子署名や電子契約と同じですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。法的な本人性・改ざん防止の中心は電子署名です。本ツールの透過PNGは印影の見た目であり、電子署名そのものではありません。"}},{"@type":"Question","name":"請求書・見積書に使えますか？","acceptedAnswer":{"@type":"Answer","text":"商習慣の範囲では画像型の印影を請求書・見積書・納品書に載せる運用はよくあります。担当者印サイズに合わせて作成できます。"}},{"@type":"Question","name":"角印（社印）は作れますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールは認印（丸）のみです。角印はIllustrator等で作成したPNGを請求書の社印欄からアップロードしてください。"}},{"@type":"Question","name":"偽造やコピーのリスクはありますか？","acceptedAnswer":{"@type":"Answer","text":"あります。画像型は誰でもコピーして別の書類に貼り付けられるため、押印者や押印日時を技術的に証明する力は限定的です。重要な契約書では電子署名付きの運用を検討してください。"}},{"@type":"Question","name":"入力した名前や印影はサーバーに送られますか？","acceptedAnswer":{"@type":"Answer","text":"送られません。印影の生成はブラウザ内だけで行います。"}}]}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 電子印鑑" data-sg-subtitle="認印 · 請求書用" data-sg-tool-id="stamp"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 電子印鑑" data-sg-subtitle="認印 · 請求書用" data-sg-tool-id="stamp" data-sg-next-id="invoice" data-sg-next-label="請求書を開く" data-sg-next-reason="印影を用意したあと請求書に押す"></div>
 
 <div class="no-print px-4 sm:px-6 lg:px-8 mt-4">
 <nav class="sg-segment sg-segment--cols-3 sg-segment--mode-invoice sg-doc-cluster w-full sg-segment--notion-soft" aria-label="書類ツール">
@@ -46,6 +46,8 @@
                 <strong>角印（社印）</strong>は本ツールの対象外です。Illustrator 等で作った透過PNGを請求書の社印欄からアップロードしてください。
             </p>
         </div>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">印影を用意したあと請求書に押す</span> <a class="sg-tool-next-path__link" href="/invoice">請求書を開く</a></p>
     </header>
 
     <div class="stamp-layout grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

@@ -130,6 +130,9 @@ async function copyPngToClipboard(buttonEl) {
       fallbackLabel: 'クリップボードにコピー',
       trackOutcome: 'copy',
     });
+    try {
+      globalThis.SUGUDASU_GROWTH?.recordToolSuccess?.();
+    } catch (_) { /* ignore */ }
     showCopySuccessToast('copy');
   } catch {
     showToast('お使いのブラウザでは画像コピーに未対応です。PNG保存をお試しください。', 'warn');
@@ -190,6 +193,9 @@ function bindEvents() {
       fallbackLabel: 'PNGを保存',
       trackOutcome: 'download',
     });
+    try {
+      globalThis.SUGUDASU_GROWTH?.recordToolSuccess?.();
+    } catch (_) { /* ignore */ }
     showSaveSuccessToast();
   });
 

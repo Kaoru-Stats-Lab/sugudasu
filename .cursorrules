@@ -11,7 +11,7 @@
 | **Sync ライン · S1** | `docs/notes/SUGUDASU_SYNC_LINE.md` · `SYNC_S1_ARCHITECTURE.md` |
 | **Sync 探索（議論の地図 · 仕様ではない）** | `docs/notes/SYNC_EXPLORATION_BASE.md` — 系統 A（本ライン・アカウント+クラウド）と混同禁止 · プロンプト `docs/prompts/sync-exploration-base-PROMPT.md` · **役員会** `SYNC_EXPLORATION_BOARD_MINUTES.md` |
 | **本番デプロイ · Cloudflare Pages** | `docs/notes/DEPLOY_CLOUDFLARE_PAGES.md` |
-| **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`（**§1.5 新規公開 MECE**）+ `data/tool-registry.json` |
+| **ツール命名 · ヘッダー · ナビ · hub 表記** | `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md`（**§1.5 新規公開 MECE · A17 next-path · Purge E1–E2**）+ `data/tool-registry.json` |
 | **ツールページ リード文（sg-tool-lead）** | **`docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`** · 契約 `UIUX_EXPERIENCE_IMPLEMENTATION_CONTRACT.md` §4.1 · 分類 `data/tool-lead-profiles.json` · 討議 `UIUX_EXPERIENCE_LEAD_COPY_BOARD_DISCUSSION.md` · Rule `.cursor/rules/sugudasu-tool-lead-copy.mdc` |
 | **Hub カード文言（JTBD blurb）** | `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md` · Hub IA `HUB_IA_REFRESH_V2.md` |
 | **SEO · GSC · canonical /data noindex** | `docs/notes/SEO_GSC_AND_BUILD_PIPELINE.md` |

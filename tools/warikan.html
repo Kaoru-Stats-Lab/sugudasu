@@ -132,9 +132,6 @@
                             class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg shadow-sm transition-colors">
                             📋 ワンクリックコピー
                         </button>
-                        <button type="button" id="btn-x-share" class="sg-btn-x" title="ログイン中のXアカウントで投稿画面を開きます">
-                            𝕏 結果をシェア
-                        </button>
                     </div>
                 </div>
                 <label class="flex items-start gap-2 text-xs text-slate-600 cursor-pointer select-none">
@@ -292,6 +289,10 @@
                 ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
                 : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
             toastEl.classList.remove('hidden');
+            // B: 成功トースト内のみ（固定バナー廃止）
+            if (level === 'ok') {
+                try { window.SUGUDASU_GROWTH?.decorateCopyToast?.(toastEl); } catch (_) { /* ignore */ }
+            }
         }
 
         function init() {
@@ -334,7 +335,6 @@
             });
             document.getElementById('btn-calculate').addEventListener('click', calculate);
             document.getElementById('btn-copy').addEventListener('click', copyText);
-            document.getElementById('btn-x-share').addEventListener('click', shareToX);
             document.getElementById('input-total').addEventListener('input', calculate);
             document.getElementById('select-round').addEventListener('change', calculate);
             document.getElementById('chk-gratitude').addEventListener('change', buildLineText);
@@ -965,18 +965,7 @@
                 ta.select();
                 document.execCommand('copy');
             }
-            showWarikanToast('清算テキストをコピーしました。チャット等へ手動で貼り付けてください。', 'ok');
-        }
-
-        function shareToX() {
-            if (!lastResult || !window.SUGUDASU_GROWTH) {
-                showWarikanToast('先に割り勘を計算してください。', 'warn');
-                return;
-            }
-            window.SUGUDASU_GROWTH.shareXWarikan(() => ({
-                total: '¥' + formatYen(lastResult.total),
-                hint: lastResult.mode === 'fixed' ? '合コン固定額モード対応' : '傾斜係数で公平精算',
-            }));
+            showWarikanToast('清算テキストをコピーしました。社内Wikiやチャットへ手動で貼り付けてください。', 'ok');
         }
 
         function escHtml(s) {

@@ -23,13 +23,7 @@
         { "selector": "#btn-add-spacer-row", "label": "invoice_add_spacer_row" },
         { "selector": "#btn-export-draft", "label": "invoice_export_draft" },
         { "selector": "#input-import-draft", "label": "invoice_import_draft" },
-        { "selector": "#btn-copy-tool-url", "label": "invoice_copy_tool_url" },
-        { "selector": "#btn-share-slack", "label": "invoice_share_slack" },
-        { "selector": "#btn-share-chatwork", "label": "invoice_share_chatwork" },
-        { "selector": "#btn-share-googlechat", "label": "invoice_share_googlechat" },
-        { "selector": "#btn-share-teams", "label": "invoice_share_teams" },
-        { "selector": "#btn-share-lineworks", "label": "invoice_share_lineworks" },
-        { "selector": "#btn-config-chat-targets", "label": "invoice_config_chat_targets" }
+        { "selector": "#btn-copy-tool-url", "label": "invoice_copy_tool_url" }
       ]
     },
     "receipt": {
@@ -39,14 +33,7 @@
         { "selector": "#btn-bulk-apply", "label": "receipt_bulk_apply" },
         { "selector": "#btn-print", "text": "逆算する（登録不要でPDF出力）", "label": "receipt_calculate_print" },
         { "selector": "#sg-btn-print", "label": "receipt_print_pdf" },
-        { "selector": "#btn-chat-config", "label": "receipt_config_chat_targets" },
-        { "selector": "#btn-x-share", "label": "receipt_share_x" },
-        { "selector": "#btn-share-url", "label": "receipt_copy_tool_url" },
-        { "selector": "button[data-chat=\"slack\"]", "label": "receipt_share_slack" },
-        { "selector": "button[data-chat=\"chatwork\"]", "label": "receipt_share_chatwork" },
-        { "selector": "button[data-chat=\"googlechat\"]", "label": "receipt_share_googlechat" },
-        { "selector": "button[data-chat=\"teams\"]", "label": "receipt_share_teams" },
-        { "selector": "button[data-chat=\"lineworks\"]", "label": "receipt_share_lineworks" }
+        { "selector": "#btn-share-url", "label": "receipt_copy_tool_url" }
       ]
     },
     "label": {
@@ -83,8 +70,7 @@
         { "selector": "#btn-mode-fixed", "label": "warikan_mode_fixed" },
         { "selector": "#btn-add-group", "label": "warikan_add_group" },
         { "selector": "#btn-calculate", "text": "計算してその場で精算を終わらせる", "label": "warikan_calculate" },
-        { "selector": "#btn-copy", "label": "warikan_copy_result" },
-        { "selector": "#btn-x-share", "label": "warikan_share_x" }
+        { "selector": "#btn-copy", "label": "warikan_copy_result" }
       ]
     },
     "sns": {

@@ -879,6 +879,7 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 ##### A4 直接（Direct）— 再訪・囲い込み
 
 - [x] **P0** ホーム画面追加 / ブックマーク誘導（初回完了後 · `localStorage` · `sugudasu-growth.js`）
+  - **2026-08-13 是正:** 固定バナー+OS手順を撤去。完了トースト内1行（Ctrl+D · 2回目以降）+ Copy文言の社内Wiki意味づけ（[`bookmark-direct-revisit-research/SYNTHESIS.md`](notes/bookmark-direct-revisit-research/SYNTHESIS.md)）
 - [ ] **P1** GA4 で Direct / 再訪率を追跡
 - [x] **P1** ツール別 開封→着手→完了ファネル（`product_opened` · `tool_job_started` · `tool_job_done` · [`PRODUCT_USAGE_ANALYTICS.md`](notes/PRODUCT_USAGE_ANALYTICS.md) · 2026-08-10）
 - [x] **P1** VC目線の価値メーター SSOT（[`VC_DUE_DILIGENCE_METRICS.md`](notes/VC_DUE_DILIGENCE_METRICS.md) · 週次で価値把握）

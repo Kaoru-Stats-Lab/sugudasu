@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","mainEntity":[{"acceptedAnswer":{"text":"はい。源泉徴収税と消費税を自動逆算し、領収書作成に必要な金額をすばやく算出できます。","@type":"Answer"},"name":"手取り金額から税金を逆算できますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。適格請求書の要件に合わせた記載項目に対応し、PDF保存や印刷も行えます。","@type":"Answer"},"name":"インボイス対応の領収書は作れますか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。計算と作成はブラウザ内で処理されるため、外部サーバーへ送信されません。","@type":"Answer"},"name":"入力した金額データは安全ですか？","@type":"Question"},{"acceptedAnswer":{"text":"電卓で悩む時間が消えるので、周囲からは「数字に強い人」に見られがちです。実際はツール活用でも、結果として意思決定が速くなるのは大きな強みです。","@type":"Answer"},"name":"手取り逆算を一瞬で出したら、できすぎて怪しまれませんか？","@type":"Question"},{"acceptedAnswer":{"text":"はい。中古車売買の手付金・残代金、整備費などの領収書を作成できます。適格請求書としての要件充足は取引内容に応じてご確認ください。","@type":"Answer"},"name":"中古車売買の領収書は作れますか？","@type":"Question"}],"@type":"FAQPage"}</script>
 </head>
 <body class="sg-body text-slate-800 min-h-screen flex flex-col antialiased">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 領収書" data-sg-subtitle="手取り逆引き · インボイス" data-sg-print="true" data-sg-tool-id="receipt"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 領収書" data-sg-subtitle="手取り逆引き · インボイス" data-sg-print="true" data-sg-tool-id="receipt" data-sg-next-id="stamp" data-sg-next-label="次に印影を押す" data-sg-next-reason="帳票を出したあと社印が要る"></div>
 
 <div class="no-print sg-section-shell mt-4">
 <nav class="sg-segment sg-segment--cols-3 sg-segment--mode-invoice sg-doc-cluster w-full sg-segment--notion-soft" aria-label="書類ツール">
@@ -40,6 +40,8 @@
         <p class="sg-tool-lead"><strong>手取りから逆算して領収書を作る</strong> — 源泉・消費税の逆引きとインボイス記載の領収書PDFをブラウザで完結します。</p>
         <p class="sg-tool-lead">税務ソフトの代替ではありません。最終判断は利用者側です。</p>
       </div>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">帳票を出したあと社印が要る</span> <a class="sg-tool-next-path__link" href="/stamp">次に印影を押す</a></p>
     </header>
 
     <!-- 入力パネル -->
@@ -149,7 +151,7 @@
             <button type="button" id="btn-share-url" class="w-full sg-btn-primary font-bold py-2.5 rounded-xl text-xs">
                 共有用URLをコピー
             </button>
-            <p class="text-[10px] text-slate-500">URLには宛名・金額が含まれます。コピー前に確認ダイアログを表示します。貼る先はお使いのチャットで。</p>
+            <p class="text-[10px] text-slate-500">URLには宛名・金額が含まれます。コピー前に確認ダイアログを表示します。貼る先はお使いの社内Wikiやチャットで（自動送信しません）。</p>
             <p id="copy-toast-receipt" class="sg-copy-toast hidden" role="status"></p>
         </div>
     </section>
@@ -240,6 +242,9 @@
             ? 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900'
             : 'sg-copy-toast text-[11px] leading-relaxed rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2';
         toast.classList.remove('hidden');
+        if (level === 'ok') {
+            try { window.SUGUDASU_GROWTH?.decorateCopyToast?.(toast); } catch (_) { /* ignore */ }
+        }
     }
 
     function getOptions() {

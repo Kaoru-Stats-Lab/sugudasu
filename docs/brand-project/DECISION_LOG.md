@@ -9,6 +9,50 @@
 
 ---
 
+## 2026-08-13 — Hub カテゴリは厳密MECEではない · チップラベル是正を可決
+
+**決定事項**  
+カテゴリ8箱の id 構造は Keep。一軸MECE再設計・箱の増設・マルチタグは否決/凍結。チップ「イベント」「配属」等の短縮が実体を偽る点を欠陥と認定し、`hub-config` ラベル是正を可決。ツール大量の categoryId 付け替えは Defer。
+
+**理由**  
+Hub憲法どおりカテゴリは想起補助でありファイル分類ではない。競議議事: [`../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md`](../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md)。
+
+**関連ドキュメント**
+
+- [`../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md`](../notes/HUB_CATEGORY_BOARD_MINUTES_20260813.md)
+- `data/categories.json` · `data/hub-config.json`
+
+---
+
+## 2026-08-13 — Hub に Open. Use. Close. / 開く。使う。閉じる。を併記
+
+**決定事項**  
+Hub ヒーローに L0 英語 **Open. Use. Close.** と L1 日本語 **開く。使う。閉じる。** を併記。従来ヒーロー「ブラウザだけで完結。登録不要。」は L2 事実行へ降格（リード本文は維持）。
+
+**理由**  
+L0 記号と母語世界観を同面に置き、事実（登録不要）は下段で支える。
+
+**関連ドキュメント**
+
+- [`../brand/CATCHPHRASE_CANDIDATES.md`](../brand/CATCHPHRASE_CANDIDATES.md)
+- `tools/hub.html` · `assets/sugudasu.css`（`.sg-hub-tagline-*`）
+
+---
+
+## 2026-08-13 — ブランド記号 L0 を Open. Use. Close. に確定
+
+**決定事項**  
+英語ブランド記号（L0）を **Open. Use. Close.** に確定。日本語ヒーロー（L1）・事実コピー（L2）・面への実装は未決。姉妹案・否定並列は候補ドキュメントにストック。
+
+**理由**  
+存在様式（開いて使い、閉じる／戻る）と一致。仕様リスト（No Login…）より世界観。英語 Native 観点でも Japlish ではなく、セッション寿命のコンセプトは伝わる（F1/F2 は L2 の役割）。
+
+**関連ドキュメント**
+
+- [`../brand/CATCHPHRASE_CANDIDATES.md`](../brand/CATCHPHRASE_CANDIDATES.md)（§1.5 置き場 · §1.6 Native 監査）
+
+---
+
 ## 2026-07-25 — 帳票のチャネル名付き共有UIを撤去（Copy-First）
 
 **決定事項**  

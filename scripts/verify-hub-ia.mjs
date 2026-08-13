@@ -177,6 +177,60 @@ function main() {
     }
   }
 
+    // DONE 後の次の1本 — docs/notes/TOOL_NEXT_PATH_SPEC.md（新規 A17 · Purge E1–E2）
+    const nextPathPath = path.join(ROOT, 'data/tool-next-path.json');
+    if (fs.existsSync(nextPathPath)) {
+      const nextDoc = JSON.parse(fs.readFileSync(nextPathPath, 'utf8'));
+      const TYPES = new Set(['A', 'B', 'C', 'D', 'E']);
+      const pathEntries = Object.entries(nextDoc.paths || {});
+      for (const [from, entry] of pathEntries) {
+        if (!registry.tools[from]) {
+          fail(`tool-next-path: 未知 from=${from} — Purge 時は paths[id] を削除（Playbook §1.5 E1）`);
+        }
+        if (!entry || typeof entry !== 'object') fail(`tool-next-path: 不正 entry from=${from}`);
+        if (!TYPES.has(entry.type)) fail(`tool-next-path: type 不正 from=${from} type=${entry.type}`);
+        if (!entry.nextId || !registry.tools[entry.nextId]) {
+          fail(
+            `tool-next-path: 未知 nextId=${entry.nextId} (from ${from}) — Purge 時は nextId===id の from を再ジャッジ（Playbook §1.5 E2）`,
+          );
+        }
+        if (entry.nextId === from) fail(`tool-next-path: 自己参照禁止 from=${from}`);
+        if (!entry.linkLabel || !String(entry.linkLabel).trim()) {
+          fail(`tool-next-path: linkLabel 必須 from=${from}`);
+        }
+        if (!entry.reason || !String(entry.reason).trim()) {
+          fail(`tool-next-path: reason 必須 from=${from}`);
+        }
+        const toolHtmlPath = path.join(ROOT, 'tools', `${from}.html`);
+        if (!fs.existsSync(toolHtmlPath)) {
+          fail(`tool-next-path: tools/${from}.html が無い`);
+        } else {
+          const th = fs.readFileSync(toolHtmlPath, 'utf8');
+          if (!th.includes(`data-sg-next-id="${entry.nextId}"`)) {
+            fail(
+              `tool-next-path: tools/${from}.html に data-sg-next-id="${entry.nextId}" が無い — npm run sync:tool-next-path`,
+            );
+          }
+          if (!th.includes('sg-tool-next-path--inline')) {
+            fail(`tool-next-path: tools/${from}.html にインライン Next が無い — npm run sync:tool-next-path`);
+          }
+        }
+      }
+      // from 以外に data-sg-next-id / インライン Next が残っていないこと
+      const toolsDir = path.join(ROOT, 'tools');
+      for (const name of fs.readdirSync(toolsDir)) {
+        if (!name.endsWith('.html')) continue;
+        const id = name.replace(/\.html$/i, '');
+        if (id === 'hub' || nextDoc.paths[id]) continue;
+        const th = fs.readFileSync(path.join(toolsDir, name), 'utf8');
+        if (/data-sg-next-id=/.test(th) || /sg-tool-next-path--inline/.test(th)) {
+          fail(
+            `tool-next-path: 非 from ページ tools/${name} に Next が残っている — npm run sync:tool-next-path`,
+          );
+        }
+      }
+    }
+
   for (const id of hubConfig.popularToolIds || []) {
     if (!registry.tools[id]) fail(`hub-config.popularToolIds 未知: ${id}`);
     if (!cardToolIds.has(id)) fail(`hub-config.popularToolIds が hub-cards に無い: ${id}`);

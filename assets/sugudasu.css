@@ -560,6 +560,32 @@ details.sg-notion-toggle[open] .sg-notion-toggle__summary::before {
 .sg-hub-hero {
   text-align: left;
 }
+.sg-hub-tagline-en {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  color: #64748b;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.sg-hub-tagline-ja {
+  margin: 0.15rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+}
+.sg-hub-tagline-fact {
+  margin: 0.35rem 0 0;
+  font-weight: 600;
+}
+@media (min-width: 640px) {
+  .sg-hub-tagline-ja {
+    font-size: 1.5rem;
+  }
+}
 /* —— Surface 階層（S-SURFACE · Hub Locate / Product Workspace）——
    手段: 余白 · 線 · 背景Δ。多層影禁止。 */
 .sg-surface-workspace {
@@ -1990,75 +2016,36 @@ body.sg-chrome-focus main {
 }
 
 /* Growth: bookmark banner (§2-5 A4) */
-.sg-bookmark-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  padding: 0.75rem;
-  pointer-events: none;
-}
-.sg-bookmark-banner__inner {
-  pointer-events: auto;
-  max-width: 42rem;
-  margin: 0 auto;
+/* Direct 再訪 B: 完了トースト内1行（固定バナー禁止 · SYNTHESIS 2026-08-13） */
+.sg-bookmark-hint {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
-  background: #0f172a;
-  color: #e2e8f0;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-  border: 1px solid #334155;
-}
-.sg-bookmark-banner__title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 0.25rem;
-}
-.sg-bookmark-banner__body {
-  font-size: 0.6875rem;
-  line-height: 1.5;
-  color: #cbd5e1;
-}
-.sg-bookmark-banner__hint {
-  font-size: 0.625rem;
-  color: #94a3b8;
-  margin-top: 0.35rem;
-}
-.sg-bookmark-banner__close {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  padding: 0.5rem 0.875rem;
-  border-radius: 0.5rem;
-  background: #334155;
-  color: #f8fafc;
-  border: none;
-  cursor: pointer;
-}
-.sg-bookmark-banner__close:hover { background: #475569; }
-
-.sg-btn-x {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  padding: 0.5rem 0.875rem;
-  border-radius: 0.5rem;
-  border: 1px solid #1d9bf0;
-  background: #fff;
-  color: #0f1419;
-  cursor: pointer;
-  transition: background 0.15s;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+  font-size: 0.625rem;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #64748b;
 }
-.sg-btn-x:hover { background: #eff9ff; }
+.sg-bookmark-hint__dismiss {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cbd5e1;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+}
+.sg-bookmark-hint__dismiss:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
 
 /* —— Changelog (updates.html) —— */
 .sg-changelog {
@@ -3785,6 +3772,75 @@ body.sg-copy-flash {
 .sg-copy-toast--ok strong {
   color: var(--sg-copy-ok);
   font-weight: 700;
+}
+
+/* —— DONE 後の次の1本（編集固定 · TOOL_NEXT_PATH_SPEC）—— */
+.sg-tool-next-path {
+  position: fixed;
+  z-index: 40;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: 28rem;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--sg-border, #e2e8f0);
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+  color: var(--sg-text, #0f172a);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.sg-tool-next-path--inline {
+  position: static;
+  z-index: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  max-width: none;
+  margin: 0;
+  box-shadow: none;
+  background: #f8fafc;
+  padding: 0.5rem 0.75rem;
+}
+.sg-tool-next-path__reason {
+  margin: 0;
+  flex: 1 1 10rem;
+  color: var(--sg-muted, #64748b);
+}
+.sg-tool-next-path__link {
+  font-weight: 600;
+  color: var(--sg-primary, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sg-tool-next-path__link:hover {
+  color: #1d4ed8;
+}
+.sg-tool-next-path__dismiss {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--sg-muted, #64748b);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.15rem 0.35rem;
+  cursor: pointer;
+  border-radius: 0.35rem;
+}
+.sg-tool-next-path__dismiss:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+@media print {
+  .sg-tool-next-path {
+    display: none !important;
+  }
 }
 
 /* —— Copy-first 免責 · TSV/JSON（statements #copy-first-tech と同期）—— */

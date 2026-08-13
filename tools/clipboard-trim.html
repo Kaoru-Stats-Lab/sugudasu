@@ -22,7 +22,7 @@
     <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"画像はサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。貼り付けから余白除去・PNGコピーまでブラウザ内だけで処理します。タブを閉じるとデータは消えます。"}},{"@type":"Question","name":"画像切り出しとの違いは？","acceptedAnswer":{"@type":"Answer","text":"画像切り出しは指定サイズ（枠）に収めるツールです。余白トリムは周囲の不要な余白を自動で限界まで削り落とす専用ツールです。"}},{"@type":"Question","name":"ファイルの保存やダウンロードはできますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。本ツールはクリップボードへのPNGコピー専用です。PNGをコピーボタンを押したら、そのままPowerPoint等へ貼り付けてください。"}},{"@type":"Question","name":"うまく余白が削られない画像はありますか？","acceptedAnswer":{"@type":"Answer","text":"外周が完全な単一色（まっ白など）ではない画像は削れません。外枠に1ピクセルの影やノイズがあるスクショ、グラデーション、写真は対象外です。"}},{"@type":"Question","name":"2枚以上の画像を一括処理できますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ、1枚ずつの処理専用です。続けてCtrl+Vを押せば上書きされるため、資料に貼り付けながら連続で作業できます。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 余白トリム" data-sg-subtitle="Ctrl+V → 余白除去 → PNGコピー" data-sg-tool-id="clipboard-trim"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 余白トリム" data-sg-subtitle="Ctrl+V → 余白除去 → PNGコピー" data-sg-tool-id="clipboard-trim" data-sg-next-id="annotate" data-sg-next-label="次に赤入れする" data-sg-next-reason="取り込んだ画面を共有前に整えたい"></div>
 
 <main class="sg-main-shell flex-1 space-y-8">
     <header class="sg-tool-intro space-y-2">
@@ -38,6 +38,8 @@
         <p class="sg-tool-lead sg-tool-lead--meta">
             社外配布用の透かしは <a href="watermark.html">透かし</a> · 貼れない WebP は <a href="webp-to-jpg.html">WebP変換</a> から。
         </p>
+    
+        <p class="sg-tool-next-path sg-tool-next-path--inline no-print" data-sg-tool-next><span class="sg-tool-next-path__reason">取り込んだ画面を共有前に整えたい</span> <a class="sg-tool-next-path__link" href="/annotate">次に赤入れする</a></p>
     </header>
 
     <div id="ct-drop" class="sg-file-drop" tabindex="0" role="button" aria-label="画像を選択または貼り付け">

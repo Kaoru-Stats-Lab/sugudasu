@@ -113,6 +113,8 @@ export async function copyWithFeedback(text, buttonEl, options = {}) {
   try {
     if (typeof globalThis !== 'undefined' && globalThis.SUGUDASU_GROWTH) {
       globalThis.SUGUDASU_GROWTH.recordToolSuccess();
+      // B: 完了フィードバック内1行（通算2回目以降 · 固定バナー禁止）
+      if (toastEl) globalThis.SUGUDASU_GROWTH.decorateCopyToast(toastEl);
     }
   } catch (_) {
     /* ignore */
@@ -208,6 +210,13 @@ export function showCopyToastHtml(toastEl, html) {
   toastEl.setAttribute('role', 'status');
   toastEl.className = 'sg-copy-toast sg-copy-toast--ok text-[11px] leading-relaxed rounded-lg px-3 py-2';
   toastEl.innerHTML = html;
+  try {
+    if (typeof globalThis !== 'undefined' && globalThis.SUGUDASU_GROWTH) {
+      globalThis.SUGUDASU_GROWTH.decorateCopyToast(toastEl);
+    }
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 if (typeof globalThis !== 'undefined') {

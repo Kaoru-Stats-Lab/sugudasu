@@ -155,6 +155,7 @@ npm run build:pages
 | A14 | **ツールリード文** | [`TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`](TOOL_LEAD_COPY_AGENT_PLAYBOOK.md) · `data/tool-lead-profiles.json` · `tools/{id}.html` に `sg-tool-lead`（What必須 · How禁止 · light/heavy） | （目視） |
 | A15 | **Hub 検索語彙** | `data/search-dictionary/{id}.json` · `synonyms.json` に id · `tool-intent-map.json` に id。手順 [`../prompts/hub-search-vocab-on-new-tool.md`](../prompts/hub-search-vocab-on-new-tool.md) · 欠落時 `npm run scaffold:hub-search-vocab -- --write-prompt` | `validate:hub-ia` |
 | A16 | **利用計測（開封→着手→完了）** | [`PRODUCT_USAGE_ANALYTICS.md`](PRODUCT_USAGE_ANALYTICS.md) · [`data/tool-job-contracts.json`](../../data/tool-job-contracts.json) に `inputs`/`outputs` · 着手は `notifyJobStarted`/`bindTextJobStarted`/`trackFileAccepted` · 完了は中央フック · 本文・ファイル名禁止 | `validate:usage-analytics` |
+| A17 | **DONE後の次の1本** | [`TOOL_NEXT_PATH_SPEC.md`](TOOL_NEXT_PATH_SPEC.md) §5 · 新 id を from / next にするか **ジャッジ** · 逆方向は自動追加禁止 · 載せるなら `data/tool-next-path.json` に type·nextId·reason·linkLabel · 載せないなら JSON を触らない（NA） | `validate:hub-ia` |
 
 ### B. 本番反映（必須 · core）
 
@@ -172,7 +173,7 @@ npm run build:pages
 | `data/roadmap.json` に「完了」行を追加 | shipped は **JSON から削除**が正（`DEV_TRANSPARENCY_RULES.md`） |
 | `sitemap` / `robots` / `_redirects` / canonical 手書き | `build:pages` が生成 |
 | guides / LP / `lp-marketing-matrix` | マーケ別タスク。ツールα公開の必須ではない |
-| 他ツールからの相互リンク | 仕様に書いてあるときだけ |
+| `relations.json` の多対多リンクだけ足す | DONE導線ではない。次の1本は **A17 / tool-next-path** |
 | Sync / Supabase / `deploy:pages:sync` | core と別経路 |
 | 無関係ファイルの整形 · 共通化 · リファクタ | 禁止（ただし A12 / Inventory P1 の抽出は Tech Adoption ループの範囲） |
 
@@ -180,12 +181,28 @@ npm run build:pages
 
 ```text
 MECE 新規ツール公開: {id}
-A1–A16: OK / NA（欠番があれば列挙）
+A1–A17: OK / NA（欠番があれば列挙）
+A17 next-path: 追加 {from→next} / 変更 / NA（理由1行）· 逆方向ジャッジ: Reject or 追加
 B1–B4: OK · smoke: / と /{id}
 C: 触っていない（roadmap追加なし · guidesなし）
-validate:tool-naming · validate:tech-adoption · validate:usage-analytics · statements · ogp · build:pages: exit 0
+validate:tool-naming · validate:tech-adoption · validate:usage-analytics · validate:hub-ia · statements · ogp · build:pages: exit 0
 UIUX_DECISION_BLOCK: 添付済み
 ```
+
+### E. ツール Purge / 非公開（MECE · 必須）
+
+id を hub / 本番から外す・削除するとき（命名変更の id 破壊を含む）:
+
+| # | 箇所 | 確認内容 |
+|---|------|----------|
+| E1 | `data/tool-next-path.json` | **`paths[id]` を削除** |
+| E2 | 同上 | **`nextId === id` の全 from** を列挙し、差し替え or 削除を再ジャッジ（放置禁止） |
+| E2b | `npm run sync:tool-next-path` | HTML の `data-sg-next-*` / インラインを再同期（非 from から削除） |
+| E3 | `data/relations.json` | 当該 id を from/to から除去 |
+| E4 | registry · hub · shell · statements · synonyms · intent · job-contracts 等 | 既存の削除手順に従う |
+| E5 | `npm run validate:hub-ia` | 未知 id で FAIL しないこと |
+
+正本の判断基準: [`TOOL_NEXT_PATH_SPEC.md`](TOOL_NEXT_PATH_SPEC.md) §5-2 · §5-3。
 
 ---
 
