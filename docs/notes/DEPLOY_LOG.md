@@ -2092,19 +2092,19 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — label/report/reverse Reject · Hub hero · Purge |
 | **change_summary** | 3プロダクト Reject · hub-cards/synonyms/intent/search purge · 提供終了ページ · PRODUCT_REJECT_LOG_20260813 |
-| **local_build** | `pending` |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 17/450） |
 | **deploy_count_today** | 2 |
-| **pages_build_budget_after** | pending |
-| **gates** | P1–P7（release:pages:free 前） |
+| **pages_build_budget_after** | 17/450（2026-08 · consume 済） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | pending |
-| **cf_deployment_id** | pending |
+| **git_sha** | `56b8667` |
+| **cf_deployment_id** | CF Pages auto（`56b8667` push origin main） |
 | **smoke** | `/` から label/report/reverse 無し · `/label` `/report` `/reverse` 提供終了案内 |
 
 ---
@@ -2113,6 +2113,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 002 executed（56b8667 · label/report/reverse Reject · Hub hero · Purge） |
 | 2026-08-13 | 002 approved（label/report/reverse Reject · Hub hero · Purge · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 001 executed（2ac4c9a · Hub tagline · Direct B · CASE-007 · chip labels） |
 | 2026-08-13 | 001 approved（CASE-007 · Direct B · Hub tagline · chip · next-path · 提督 Commit&Push&Deploy） |
