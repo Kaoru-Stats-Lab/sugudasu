@@ -26,7 +26,7 @@
 
     <main class="sg-main-shell sg-main-shell--print print-layout print-target flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         
-        <section class="no-print sg-setup-panel space-y-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <section class="no-print sg-setup-panel space-y-6 sg-card p-5">
 
             <header class="sg-tool-intro space-y-2 no-print">
               <div class="sg-tool-lead-deck">
@@ -134,7 +134,7 @@
 
         <section class="space-y-4 print-full relative">
             
-            <div class="no-print bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-4">
+            <div class="no-print sg-card p-4 flex flex-wrap justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <span class="text-xs font-bold text-slate-500">書類ステータス:</span>
                     <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border">
@@ -670,7 +670,7 @@
             months.forEach((m, monthIndex) => {
                 const monthContainer = document.createElement("div");
                 // 印刷時は1ヶ月ごとに強制改ページ（page-break-before）
-                monthContainer.className = `bg-white p-5 rounded-2xl shadow-sm border border-slate-200 relative card-shadow-none print-color-adjust ${monthIndex > 0 ? 'page-break' : ''} ${!isDocumentFixed ? 'watermark-active' : ''}`;
+                monthContainer.className = `sg-card p-5 relative card-shadow-none print-color-adjust ${monthIndex > 0 ? 'page-break' : ''} ${!isDocumentFixed ? 'watermark-active' : ''}`;
                 
                 // カレンダーヘッダー
                 let html = `

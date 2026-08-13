@@ -112,6 +112,8 @@ body.sg-body {
 }
 
 /* —— Components —— */
+/* DECISION S-CARD-HAIRLINE (2026-08-13): カード境界は hairline（--sg-border）を正本。
+   影だけ・強い枠（#94a3b8 Surface）の全カード横展開は禁止。レガシー Tailwind 重複は sg-card へ寄せる。 */
 .sg-card {
   background: var(--sg-surface);
   border: 1px solid var(--sg-border);
@@ -226,17 +228,18 @@ textarea.sg-input.sg-field--error {
 }
 
 /* —— Mode segment (sg-segment) — DESIGN_GUIDELINE §3.3 —— */
-/* DECISION S-SEG-A (2026-08-05): 無彩色は維持（青塗り L1 禁止）しつつ、
-   未選択/選択/ピル/トラックのコントラストだけ上げて「どれがONか」を読ませる。 */
+/* DECISION S-SEG-B (2026-08-13): 青塗り L1 は禁止のまま、
+   トラックを一段濃く・未選択を弱く・選択ピル＋下線を強くし、ON/OFF の SNR を上げる。
+   （S-SEG-A の延長 · 塗り色で差を出さない） */
 .sg-segment {
   position: relative;
   display: grid;
   gap: 0;
-  padding: 0.25rem;
+  padding: 0.3rem;
   border-radius: 0.75rem;
-  border: 1px solid #cbd5e1;
-  background: #f1f5f9;
-  box-shadow: none;
+  border: 1px solid #94a3b8;
+  background: #e2e8f0;
+  box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.06);
 }
 
 .sg-segment--cols-2 { grid-template-columns: repeat(2, 1fr); }
@@ -282,8 +285,10 @@ textarea.sg-input.sg-field--error {
   height: 0;
   border-radius: 0.5rem;
   background: #fff;
-  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
-  border: 1px solid #cbd5e1;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.08),
+    0 2px 8px rgb(15 23 42 / 0.12);
+  border: 1px solid #64748b;
   transition:
     top 120ms cubic-bezier(0.2, 0, 0, 1),
     left 120ms cubic-bezier(0.2, 0, 0, 1),
@@ -297,16 +302,16 @@ textarea.sg-input.sg-field--error {
 .sg-segment__btn {
   position: relative;
   z-index: 1;
-  padding: 0.5rem 0.35rem;
+  padding: 0.55rem 0.4rem;
   border: none;
   background: transparent;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #475569;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #64748b;
   cursor: pointer;
   text-align: center;
   border-radius: 0.5rem;
-  transition: color 120ms ease;
+  transition: color 120ms ease, font-weight 120ms ease;
 }
 
 a.sg-segment__btn {
@@ -316,7 +321,7 @@ a.sg-segment__btn {
   text-decoration: none;
 }
 
-.sg-segment__btn:hover { color: #0f172a; }
+.sg-segment__btn:hover { color: #334155; }
 
 .sg-segment__btn[aria-selected='true'] {
   font-weight: 700;
@@ -348,13 +353,13 @@ a.sg-segment__btn {
 .sg-segment__btn[aria-current='page']::after {
   content: '';
   position: absolute;
-  left: 18%;
-  right: 18%;
-  bottom: 0.15rem;
-  height: 2px;
-  border-radius: 1px;
+  left: 12%;
+  right: 12%;
+  bottom: 0.2rem;
+  height: 3px;
+  border-radius: 1.5px;
   background: currentColor;
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .sg-segment__btn:focus-visible {
@@ -473,19 +478,21 @@ a.sg-segment__btn {
 }
 
 .sg-segment--notion-soft {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  box-shadow: none;
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  box-shadow: inset 0 1px 2px rgb(15 23 42 / 0.06);
 }
 
 .sg-segment--notion-soft .sg-segment__pill {
-  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
-  border-color: #cbd5e1;
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.08),
+    0 2px 8px rgb(15 23 42 / 0.12);
+  border-color: #64748b;
   transition-duration: 120ms;
 }
 
 .sg-segment--notion-soft .sg-segment__btn[aria-selected='true']::after {
-  opacity: 0.85;
+  opacity: 1;
 }
 
 /* sg-notion-callout — alias; 正本は .sg-segment-hint */

@@ -2172,10 +2172,32 @@
 
 ---
 
+## DEPLOY-20260813-006
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — S-SEG-B セグメント視認性 · S-CARD-HAIRLINE（レガシーカードを sg-card へ） |
+| **change_summary** | `sugudasu.css` segment/card · DESIGN_GUIDELINE · invoice/receipt/warikan/shift/link-qr |
+| **local_build** | （release:pages:free 実行時に記入） |
+| **deploy_count_today** | 6（P7 override · 提督明示 Commit&Push&Deploy） |
+| **pages_build_budget_after** | （release 後） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **git_sha** | （push 後） |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | 請求書/割勘等のフォームカードが hairline · セグメント選択が一段読みやすい |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 006 approved（S-SEG-B · S-CARD-HAIRLINE · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 005 executed（8a86648 · AdSense R2 allowlist · Reject noindex · Hub · P7 override） |
 | 2026-08-13 | 005 approved（AdSense R2 allowlist · Reject noindex · Hub · P7 override · 提督「進めて」） |
 | 2026-08-13 | 004 executed（0db2f1e · 定性FB · Issues Inbox · AdSenseメール残 · P7 override） |

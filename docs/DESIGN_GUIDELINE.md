@@ -24,7 +24,7 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 |------|------|
 | **ツール横断で色を統一**（indigo/amber 等を廃止） | 9本を行き来するユーザーが「別サイトに飛んだ」と感じないため。差別化はヘッダー1アイコン＋タイトルのみで足りる |
 | **3層アクション**（L1 セグメント / L2 青 / L3 緑） | モード切替・実行・印刷の役割が混ざると誤タップと AdSense 審査リスクが増える。Stripe・iOS 設定画面と同様、**色の意味を固定**する |
-| **L1 は無彩色ピル**（`sg-segment`） | 青塗りタブは「押せる主ボタン」と誤認されやすい。選択状態は白ピル＋スライド（180ms）で十分伝わる |
+| **L1 は無彩色ピル**（`sg-segment`） | 青塗りタブは「押せる主ボタン」と誤認されやすい。選択は白ピル＋下線＋字重で伝え、差はコントラストで取る（塗り色ではない） |
 | **L3 緑は印刷/PDFのみ・1画面1つ** | 請求・領収・ラベルで「保存」と「印刷」が競合しないよう、収益導線（印刷完了）を最も目立たせつつ他CTAを青に集約 |
 | **流行UIを追わない** | グラデCTA・ダーク＋蛍光・PROバッジはチープ感と有料誤解を招く。実務ツールは **3年後も古く見えない** 中立トーンが正 |
 | **ローカル完結バッジ**（emerald pill） | 「データを送らない」はペルソナの不安解消に直結。緑はこの用途に限定し他へ流用しない |
@@ -191,7 +191,7 @@ Gemini 生成物にありがちな「PROバッジ・絵文字多め・ギフト�
 | ページ左右 padding | `px-4 sm:px-6 lg:px-8` |
 | カード padding | `p-5 lg:p-6` |
 | カード角丸 | `rounded-xl`（`2xl` はヒーローのみ） |
-| カード影 | `shadow-sm` + `border border-slate-200`（影だけに頼らない） |
+| カード境界 | **`.sg-card`** = hairline `1px solid var(--sg-border)` · **影なし**（S-CARD-HAIRLINE）。影だけ・Surface 強い枠の全カード横展開は禁止 |
 | 入力角丸 | `rounded-lg` |
 | セクション間 | `space-y-5` または `gap-6`（**情報ページ**は [`DESIGN_GUIDELINE_INFO_PAGES.md`](DESIGN_GUIDELINE_INFO_PAGES.md) §3.1 の `--sg-info-rhythm-*` · `.sg-info-stack`） |
 
@@ -298,7 +298,7 @@ Level 3（どこでも続き）は Sync — [`notes/SUGUDASU_SYNC_LINE.md`](note
 
 - キーボード: 左右矢印でタブ移動（`prefers-reduced-motion` 時はヒントフェード省略）。
 - **青塗りセグメントは禁止**（主CTAと役割が衝突する）。
-- **視認性（S-SEG-A · 2026-08-05）:** 無彩色は維持したまま、トラック `#f1f5f9` · 枠/ピル `#cbd5e1` · 未選択 `#475569` · 選択 `#0f172a` · 下線 opacity `0.85`。ベタ青塗りやトグル置換はしない。
+- **視認性（S-SEG-B · 2026-08-13）:** 無彩色は維持したまま、トラック `#e2e8f0` · 枠 `#94a3b8` · ピル枠 `#64748b` · 未選択 `#64748b` / weight 500 · 選択 `#0f172a` / weight 700 · 下線 3px opacity 1。ベタ青塗りやトグル置換はしない。
 
 **Notion Like variant（2026-06）:** 詳細は `docs/notes/DESIGN_NOTION_SUGUDASU_ADAPT.md` §7。L1 は **ハイブリッド** — `sg-segment` ピルは維持し、トラックに `sg-segment--notion-soft`（影・青枠弱体化）。モード説明は `.sg-segment-hint`（Callout · ℹ 左 · hairline · indigo 文字禁止）。全面テキストタブ（`.sg-notion-tabs`）への置換は L1 視認性のため **行わない**。
 
