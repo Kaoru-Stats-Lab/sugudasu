@@ -2176,20 +2176,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — S-SEG-B セグメント視認性 · S-CARD-HAIRLINE（レガシーカードを sg-card へ） |
 | **change_summary** | `sugudasu.css` segment/card · DESIGN_GUIDELINE · invoice/receipt/warikan/shift/link-qr |
-| **local_build** | （release:pages:free 実行時に記入） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 21/450） |
 | **deploy_count_today** | 6（P7 override · 提督明示 Commit&Push&Deploy） |
-| **pages_build_budget_after** | （release 後） |
+| **pages_build_budget_after** | 21/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | （push 後） |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | 請求書/割勘等のフォームカードが hairline · セグメント選択が一段読みやすい |
+| **git_sha** | `bd31b5f` |
+| **cf_deployment_id** | CF Pages auto（`bd31b5f` push origin main） |
+| **smoke** | （CF 反映後）請求書/割勘等のフォームカードが hairline · セグメント選択が一段読みやすい |
 
 ---
 
@@ -2197,6 +2197,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 006 executed（bd31b5f · S-SEG-B · S-CARD-HAIRLINE · P7 override） |
 | 2026-08-13 | 006 approved（S-SEG-B · S-CARD-HAIRLINE · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 005 executed（8a86648 · AdSense R2 allowlist · Reject noindex · Hub · P7 override） |
 | 2026-08-13 | 005 approved（AdSense R2 allowlist · Reject noindex · Hub · P7 override · 提督「進めて」） |
