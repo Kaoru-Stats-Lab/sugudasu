@@ -2113,19 +2113,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 引き算パレット 入口分離 · 仕事語 · URL FAQ（P7 override） |
 | **change_summary** | `budget-trim.html` · `budget-trim-app.js` · `budget-trim.css` · SPEC §⑦ · changelog · パース/ハッシュを画面から除去 |
 | **local_build** | `pass`（`npm run release:pages:free` · budget 18/450） |
 | **deploy_count_today** | 3 |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 18/450（2026-08 · consume 済） |
 | **gates** | P1–P8（P7 override · 提督明示の Commit&Push&Deploy） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後）`https://sugudasu.com/budget-trim` |
+| **git_sha** | `c7eae20` |
+| **cf_deployment_id** | CF Pages auto（`c7eae20` push origin main） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/budget-trim` — 読み込む · + 行を追加（ワークスペース右）· この画面のURL · FAQ 別PC |
 
 ---
 
@@ -2133,6 +2134,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 003 executed（c7eae20 · budget-trim 入口分離 · 仕事語 · URL FAQ） |
 | 2026-08-13 | 003 approved（budget-trim 入口分離 · 仕事語 · URL FAQ · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 002 executed（56b8667 · label/report/reverse Reject · Hub hero · Purge） |
 | 2026-08-13 | 002 approved（label/report/reverse Reject · Hub hero · Purge · 提督 Commit&Push&Deploy） |
