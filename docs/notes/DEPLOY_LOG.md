@@ -2197,20 +2197,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督「進めて」— AIプロンプトビルダー公開 · 検索式 v0.2 分野寄せ · 姉妹命名 |
 | **change_summary** | `prompt-handoff` 新規 · SEARCH_QUERY v0.2 · naming AIプロンプトビルダー · next-path |
-| **local_build** | （release:pages:free 実行時に記入） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 22/450） |
 | **deploy_count_today** | 7（P7 override · 提督明示） |
-| **pages_build_budget_after** | （release 後） |
+| **pages_build_budget_after** | 22/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | （push 後） |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | `/prompt-handoff` 200 · Hub に AIプロンプト · `/search-query` に統計・挿絵プリセット |
+| **git_sha** | `5f5d224` |
+| **cf_deployment_id** | CF Pages auto（`5f5d224` push origin main） |
+| **smoke** | （CF 反映後）`/prompt-handoff` · Hub「AIプロンプト」· `/search-query` 統計・挿絵 |
 
 ---
 
@@ -2218,6 +2218,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 007 executed（5f5d224 · AIプロンプトビルダー · 検索式 v0.2 · P7 override） |
 | 2026-08-13 | 007 approved（AIプロンプトビルダー · 検索式 v0.2 · P7 override · 提督「進めて」） |
 | 2026-08-13 | 006 executed（bd31b5f · S-SEG-B · S-CARD-HAIRLINE · P7 override） |
 | 2026-08-13 | 006 approved（S-SEG-B · S-CARD-HAIRLINE · P7 override · 提督 Commit&Push&Deploy） |
