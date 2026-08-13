@@ -119,26 +119,6 @@
 
 ---
 
-## DEPLOY-20260813-001
-
-| 項目 | 値 |
-|------|-----|
-| **status** | `approved` |
-| **target** | `core` |
-| **reason** | CASE-2026-007 残件 · Direct再訪B · Hub Open.Use.Close.併記 · カテゴリchip是正 · tool-next-path |
-| **change_summary** | `sugudasu-growth.js` · `sg-copy-feedback.js` · `hub.html` · `hub-config.json` · invoice/receipt/warikan · brand/catchphrase · DEPLOY関連docs |
-| **local_build** | （release:pages:free 前） |
-| **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P7 確認予定 |
-| **approver** | 提督 |
-| **agent** | cursor |
-| **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/` · `/invoice` · `/warikan`） |
-
----
-
 ## DEPLOY-20260626-001
 
 | 項目 | 値 |
@@ -2084,6 +2064,26 @@
 | **git_sha** | `0a16994`（roadmap+Graph）· `0b9a8b5`（statements sync） |
 | **cf_deployment_id** | CF Pages auto（`0b9a8b5` push origin main） |
 | **smoke** | （CF 反映後）`https://sugudasu.com/roadmap` — 検討中にグラフ（仮称）· 対象外に在庫/ERP 等 |
+
+---
+
+## DEPLOY-20260813-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — CASE-007残件 · Direct再訪B · Hub Open.Use.Close.併記 · カテゴリchip是正 · tool-next-path |
+| **change_summary** | `sugudasu-growth.js` · `sg-copy-feedback.js` · `hub.html` · `hub-config.json` · invoice/receipt/warikan · brand/catchphrase · next-path |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 確認予定 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/` · `/invoice` · `/warikan`） |
 
 ---
 
