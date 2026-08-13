@@ -2,5 +2,11 @@
   "enabled": true,
   "client": "ca-pub-5846418506934424",
   "mode": "auto-ads",
-  "note": "ads.txt 正本と同一 pub · Sync（dist-sync）には注入しない · build-pages が <head> に挿入"
+  "injectPolicy": "allowlist",
+  "allowPaths": [
+    "hub / index",
+    "guides.html · guides/*",
+    "updates · statements · roadmap"
+  ],
+  "note": "ADSENSE_R2_BOARD_SYNTHESIS · ツール・法務・提供終了URLには注入しない · Sync は常に除外 · build-pages が判定"
 }

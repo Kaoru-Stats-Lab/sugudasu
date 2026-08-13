@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * AdSense ビルド後検証 — core 全 HTML に自動広告タグ · Sync はゼロ
- * data/adsense.json enabled 時のみ core を要求。Sync は常に pagead 禁止。
+ * AdSense ビルド後検証 — allowlist 面のみタグ必須 · それ以外は禁止
+ * SSOT: adsense-pages.mjs · ADSENSE_R2_BOARD_SYNTHESIS.md
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ADSENSE_MARKER, loadAdsenseConfig } from './adsense-pages.mjs';
+import { ADSENSE_MARKER, loadAdsenseConfig, shouldInjectAdsense } from './adsense-pages.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -40,6 +40,12 @@ function listHtmlFiles(dir, acc = []) {
   return acc;
 }
 
+/** dist 相対パス → shouldInject 用のヒント */
+function injectOptsForRel(relPath) {
+  if (relPath.startsWith('guides/')) return { guide: true };
+  return {};
+}
+
 if (!fs.existsSync(DIST)) {
   fail(`${DIST} がありません。先に npm run build:pages を実行してください`);
 }
@@ -67,23 +73,36 @@ if (!adsenseConfig) {
 }
 
 const missing = [];
+const forbidden = [];
 const wrongClient = [];
+let allowCount = 0;
+
 for (const file of htmlFiles) {
+  const r = rel(file);
   const html = fs.readFileSync(file, 'utf8');
-  if (!html.includes(ADSENSE_MARKER)) {
-    missing.push(rel(file));
-    continue;
-  }
-  if (!html.includes(adsenseConfig.client)) {
-    wrongClient.push(rel(file));
+  const want = shouldInjectAdsense(r, injectOptsForRel(r));
+  const has = html.includes(ADSENSE_MARKER);
+  if (want) {
+    allowCount += 1;
+    if (!has) missing.push(r);
+    else if (!html.includes(adsenseConfig.client)) wrongClient.push(r);
+  } else if (has) {
+    forbidden.push(r);
   }
 }
 
 if (missing.length) {
   fail(
-    `core の HTML に AdSense タグがありません（${missing.length}件）: ${missing.slice(0, 8).join(', ')}${
+    `allowlist 面に AdSense タグがありません（${missing.length}件）: ${missing.slice(0, 8).join(', ')}${
       missing.length > 8 ? '…' : ''
-    } — tools/*.html を追加したら build-pages が自動注入します`
+    }`
+  );
+}
+if (forbidden.length) {
+  fail(
+    `allowlist 外に AdSense タグがあります（${forbidden.length}件）: ${forbidden.slice(0, 8).join(', ')}${
+      forbidden.length > 8 ? '…' : ''
+    } — ADSENSE_R2: ツール面へは注入しない`
   );
 }
 if (wrongClient.length) {
@@ -91,5 +110,5 @@ if (wrongClient.length) {
 }
 
 console.log(
-  `[adsense-guard] OK: core — ${htmlFiles.length} HTML · auto ads (${adsenseConfig.client})`
+  `[adsense-guard] OK: core — ${htmlFiles.length} HTML · allowlist ads=${allowCount} · client ${adsenseConfig.client}`
 );

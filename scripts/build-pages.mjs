@@ -120,6 +120,8 @@ function sitemapProductFiles(htmlFiles) {
   for (const tool of Object.values(registry.tools || {})) {
     const file = tool.file;
     if (!file || SITEMAP_SKIP.has(file)) continue;
+    // DECISION: Reject 提供終了は noindex + sitemap 除外（AdSense R2 · thin URL 希釈防止）
+    if (tool.judgment === 'Reject') continue;
     if (!fs.existsSync(path.join(TOOLS, file))) continue;
     files.push(file);
   }
@@ -382,6 +384,31 @@ function writeHeaders() {
     '',
     '/e/*',
     '  X-Robots-Tag: noindex, nofollow',
+    '',
+    // DECISION: Reject 提供終了 — meta robots に加えヘッダでも除外（AdSense R2）
+    '/label',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/label/*',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/report',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/report/*',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/reverse',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/reverse/*',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/present',
+    '  X-Robots-Tag: noindex, follow',
+    '',
+    '/present/*',
+    '  X-Robots-Tag: noindex, follow',
     '',
   ].join('\n');
   fs.writeFileSync(path.join(DIST, '_headers'), headers, 'utf8');
@@ -684,7 +711,7 @@ function rewriteHtml(html, file = '', opts = {}) {
   out = out.replace(/\n\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*/g, '\n');
   out = out.replace(/\n<script>\s*SUGUDASU_SHELL\.mount\(\{[^}]+\}\);\s*<\/script>\s*/g, '\n');
 
-  out = injectAdsenseHead(out, adsenseConfig);
+  out = injectAdsenseHead(out, adsenseConfig, file, opts);
 
   if (file) {
     out = applySeoCanonical(out, file, opts);
