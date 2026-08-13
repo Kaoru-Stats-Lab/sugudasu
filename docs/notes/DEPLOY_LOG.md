@@ -2134,19 +2134,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 定性FB（フッタ＋失敗時）→ GitHub Issues · AdSense用メール残置 |
 | **change_summary** | `functions/api/feedback.js` · `sg-feedback.js` · shell/analytics · updates/contact/privacy · QUALITATIVE_FEEDBACK_INTAKE · research |
-| **local_build** | `pass`（release 予定） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 19/450） |
 | **deploy_count_today** | 4（P7 override · 提督明示のデプロイ） |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P6 · P7 override |
+| **pages_build_budget_after** | 19/450（2026-08 · consume 済） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （CF 反映後）`/updates` に運営メール残 · フッタ「フィードバック」· `GITHUB_FEEDBACK_TOKEN` 未設定時は案内文 |
+| **git_sha** | `0db2f1e` |
+| **cf_deployment_id** | CF Pages auto（`0db2f1e` push origin main） |
+| **smoke** | （CF 反映後）`/updates` 運営メール残 · フッタ「フィードバック」· token 未設定時はメール案内 |
 
 ---
 
@@ -2154,6 +2155,7 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 004 executed（0db2f1e · 定性FB · Issues Inbox · AdSenseメール残 · P7 override） |
 | 2026-08-13 | 004 approved（定性FB · Issues Inbox · AdSenseメール残 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 003 executed（c7eae20 · budget-trim 入口分離 · 仕事語 · URL FAQ） |
 | 2026-08-13 | 003 approved（budget-trim 入口分離 · 仕事語 · URL FAQ · P7 override · 提督 Commit&Push&Deploy） |
