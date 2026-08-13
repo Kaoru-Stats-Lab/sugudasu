@@ -2071,19 +2071,20 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — CASE-007残件 · Direct再訪B · Hub Open.Use.Close.併記 · カテゴリchip是正 · tool-next-path |
 | **change_summary** | `sugudasu-growth.js` · `sg-copy-feedback.js` · `hub.html` · `hub-config.json` · invoice/receipt/warikan · brand/catchphrase · next-path |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 16/450） |
 | **deploy_count_today** | 1 |
-| **pages_build_budget_after** | （executed 後） |
-| **gates** | P1–P7 確認予定 |
+| **pages_build_budget_after** | 16/450（2026-08 · consume 済） |
+| **gates** | P1–P7 確認済み（release:pages:free） |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
-| **smoke** | （executed 後 · `/` · `/invoice` · `/warikan`） |
+| **git_sha** | `3cb7c02`（本体）· `2ac4c9a`（DEPLOY approve · README） |
+| **cf_deployment_id** | CF Pages auto（`2ac4c9a` push origin main） |
+| **smoke** | （CF 反映後）`https://sugudasu.com/` — Open. Use. Close. · chip「当日運営」· `/invoice` Copy-First · `/warikan` に𝕏無し |
 
 ---
 
@@ -2091,6 +2092,8 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 001 executed（2ac4c9a · Hub tagline · Direct B · CASE-007 · chip labels） |
+| 2026-08-13 | 001 approved（CASE-007 · Direct B · Hub tagline · chip · next-path · 提督 Commit&Push&Deploy） |
 | 2026-08-10 | 003 executed（0b9a8b5 · roadmap Graph検討中 · 在庫/ERP対象外 · P7 override） |
 | 2026-08-10 | 003 approved（roadmap Graph検討中 · 在庫/ERP対象外 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-10 | 002 executed（be898c6 · sitemap registry 追従 · mask stub 除外 · P7 override） |
