@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SUGUDASU への問い合わせ。不具合・改善提案は Google フォーム（ログイン不要）またはメール。入力業務データは問い合わせに含めないでください。">
+    <meta name="description" content="SUGUDASU への問い合わせ。不具合・改善はページ内フィードバックまたはメール。入力業務データは問い合わせに含めないでください。">
     <title>問い合わせ | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
     <meta property="og:title" content="問い合わせ — SUGUDASU">
-    <meta property="og:description" content="不具合・改善提案の送り方。Googleフォームまたはメール。名簿や請求データを送らないでください。">
+    <meta property="og:description" content="不具合・改善提案の送り方。ページ内フィードバックまたはメール。名簿や請求データを送らないでください。">
     <meta property="og:url" content="https://sugudasu.com/contact">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
@@ -30,7 +30,7 @@
             <p class="sg-info-page__subtitle">SUGUDASU（すぐだす）運営への連絡先</p>
         </header>
 
-        <p>ツールの不具合報告・使い方の質問・改善提案を受け付けます。回答は Google フォーム経由で運営に届き、<strong>当サイトのサーバーには保存しません</strong>。</p>
+        <p>ツールの不具合報告・使い方の質問・改善提案を受け付けます。返信は原則行いません。</p>
 
         <section class="sg-info-callout">
             <p><strong>送らないでください</strong></p>
@@ -38,21 +38,32 @@
         </section>
 
         <section>
-            <h2 class="text-base font-bold text-slate-800">おすすめ: Googleフォーム</h2>
-            <p class="mt-2">ログイン不要で回答できます。返信は原則行いません（重大な不具合の再現に必要な場合のみ、個別に対応することがあります）。</p>
+            <h2 class="text-base font-bold text-slate-800">おすすめ: ページ内フィードバック</h2>
+            <p class="mt-2">遷移なしで短文を送れます（メタ＋コメントのみ · GitHub Issues に届き、運営・開発が確認します）。</p>
             <p class="mt-4">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform"
-                   target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg">
-                    Googleフォームで送る
-                </a>
+                <button type="button"
+                   class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg"
+                   data-sg-feedback-open data-sg-feedback-source="contact">
+                    フィードバックを送る
+                </button>
             </p>
         </section>
 
         <section>
-            <h2 class="text-base font-bold text-slate-800">メール（代替）</h2>
+            <h2 class="text-base font-bold text-slate-800">メール</h2>
             <p class="mt-2">件名に「SUGUDASU」と対象ツール名（例: 見積会議）を書いてください。</p>
+            <!-- AdSense 審査対策 · 通過後に削除予定 -->
             <p class="mt-2 font-mono text-sm"><a href="mailto:banzai.millionaire@gmail.com?subject=SUGUDASU%20%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B" class="text-blue-600 underline">banzai.millionaire@gmail.com</a></p>
+        </section>
+
+        <section>
+            <h2 class="text-base font-bold text-slate-800">Googleフォーム（任意）</h2>
+            <p class="mt-2">ログイン不要の旧窓口です。</p>
+            <p class="mt-3">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform"
+                   target="_blank" rel="noopener noreferrer"
+                   class="text-blue-600 underline text-sm">Googleフォームを開く</a>
+            </p>
         </section>
 
         <section>

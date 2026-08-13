@@ -343,6 +343,8 @@
       <div class="sg-section-shell text-center text-[11px] text-slate-400 space-x-2">
         <a href="${homeHref()}" class="text-slate-500 hover:underline">ツール一覧</a>
         <span aria-hidden="true">·</span>
+        <button type="button" class="text-slate-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer">フィードバック</button>
+        <span aria-hidden="true">·</span>
         <a href="${pageHref('privacy.html')}" class="hover:underline">プライバシー</a>
         <span aria-hidden="true">·</span>
         <span>ブラウザ内完結</span>
@@ -364,6 +366,8 @@
           <a href="${pageHref('guides.html')}" class="text-blue-600 hover:underline">実務ガイド</a>
           <span class="text-slate-300 mx-1">|</span>
           <a href="${pageHref('contact.html')}" class="text-blue-600 hover:underline">問い合わせ</a>
+          <span class="text-slate-300 mx-1">|</span>
+          <button type="button" class="text-blue-600 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer">フィードバック</button>
           <span class="text-slate-300 mx-1">|</span>
           <a href="${pageHref('updates.html')}" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>
@@ -434,6 +438,7 @@
     }
 
     loadGrowthScript();
+    loadFeedbackScript();
     applyCtaLabels(file);
     applyDevStageBadge();
     applyToolNamingFromRegistry();
@@ -665,6 +670,17 @@
     s.onload = function () {
       if (global.SUGUDASU_GROWTH) global.SUGUDASU_GROWTH.init();
     };
+    document.head.appendChild(s);
+  }
+
+  /** 定性 FB（フッタ · 失敗ストリップ）· QUALITATIVE_FEEDBACK_INTAKE */
+  function loadFeedbackScript() {
+    if (document.querySelector('script[data-sg-feedback]')) return;
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = assetUrl('sg-feedback.js');
+    s.async = true;
+    s.setAttribute('data-sg-feedback', '1');
     document.head.appendChild(s);
   }
 

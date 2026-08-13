@@ -2130,10 +2130,31 @@
 
 ---
 
+## DEPLOY-20260813-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 定性FB（フッタ＋失敗時）→ GitHub Issues · AdSense用メール残置 |
+| **change_summary** | `functions/api/feedback.js` · `sg-feedback.js` · shell/analytics · updates/contact/privacy · QUALITATIVE_FEEDBACK_INTAKE · research |
+| **local_build** | `pass`（release 予定） |
+| **deploy_count_today** | 4（P7 override · 提督明示のデプロイ） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （CF 反映後）`/updates` に運営メール残 · フッタ「フィードバック」· `GITHUB_FEEDBACK_TOKEN` 未設定時は案内文 |
+
+---
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-13 | 004 approved（定性FB · Issues Inbox · AdSenseメール残 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 003 executed（c7eae20 · budget-trim 入口分離 · 仕事語 · URL FAQ） |
 | 2026-08-13 | 003 approved（budget-trim 入口分離 · 仕事語 · URL FAQ · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 002 executed（56b8667 · label/report/reverse Reject · Hub hero · Purge） |

@@ -1,24 +1,24 @@
 # 改善リクエスト・トリアージ（運用 SSOT）
 
-更新: 2026-06-17  
-**受信箱（生データ）:** [Google スプレッドシート（回答）](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit) — **提督のみ・公開しない**  
-**報告窓口（ユーザー向け）:** [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform) · `tools/updates.html`  
+更新: 2026-08-13  
+**新・主経路（採択）:** インページ FB（フッタ＋失敗時）→ GitHub Issues · label `feedback-inbox` — **Cursor / `gh` が直接読める**  
+**取込仕様:** [`notes/QUALITATIVE_FEEDBACK_INTAKE.md`](notes/QUALITATIVE_FEEDBACK_INTAKE.md)  
+**レガシー受信箱:** [Google スプレッドシート（回答）](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit) — Form 経由の旧着信のみ · 提督  
+**レガシー報告窓口:** [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform) · `tools/updates.html`（新規導線は Issues へ移行予定）  
 **公開履歴（反映済みのみ）:** `data/changelog.json` · `tools/updates.html`
 
 ---
 
-## 0. GitHub に全部入れる？ → **いいえ**
+## 0. Inbox 方針（2026-08-13〜）
 
-| データ | 正本 | GitHub に入れる？ |
-|--------|------|-------------------|
-| Form の生回答（全文・タイムスタンプ・返信希望メール等） | **スプシのみ** | **入れない**（個人情報・未整理） |
-| FB-ID / Status / Backlog / メモ | **スプシ** | 入れない（運用台帳はスプシで十分） |
-| 要約 + 要件メモ + 実装 TODO | **GitHub**（`FEEDBACK_TRIAGE.md` · `BACKLOG.md`） | **採用・実装に進む件だけ** |
-| 反映済みの告知 | **GitHub**（`data/changelog.json`） | **done になった機能だけ**（編集済み過去形） |
+| 経路 | 正本 | Cursor |
+|------|------|--------|
+| **インページ FB（新）** | GitHub Issues（`feedback-inbox`） | **読める**（`gh issue list`） |
+| **Form（レガシー）** | スプシ | 読めない（提督が要約して本ファイル/Backlog へ） |
 
-**原則:** スプシ = 受信箱・ステータス管理の **単一正本**。GitHub へは「実装や意思決定に使う要約」だけエスカレーション。Form 1件 = GitHub 1行、ではない。
+インページ経路は **メタ＋短文のみ**（メール欄なし · 業務データ禁止）なので Issue 化してよい。Form の生回答（返信希望メール等）は従来どおりスプシのみ。
 
-**Agent への依頼:** 「FB-20260617-002 を実装して」など **FB-ID か Backlog 節**を指定すればよい。スプシの生データを Git にコピーする必要はない。
+**Agent:** 未読は `gh issue list -R Kaoru-Stats-Lab/sugudasu --label feedback-inbox --state open`。旧 FB-ID（`FB-20260617-002` 等）は本ファイル＋ Backlog を参照。
 
 ---
 

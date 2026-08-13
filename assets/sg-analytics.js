@@ -118,6 +118,16 @@ export function notifyJobFailed(reasonCode, extra) {
       sanitizeExtra(extra),
     ),
   );
+  // DECISION: 定性受け皿 — GA には本文を載せない。UI は CustomEvent で起動（QUALITATIVE_FEEDBACK_INTAKE）
+  try {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('sg:job-failed', { detail: { tool_id: toolId, reason_code: reason } }),
+      );
+    }
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 /**

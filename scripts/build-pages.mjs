@@ -498,6 +498,8 @@ const BUST_ASSET_NAMES_EXPLICIT = [
   'test-data-handoff.js',
   'unicode-math-alpha.js',
   'sg-copy-feedback.js',
+  'sg-feedback.js',
+  'sg-analytics.js',
   'sg-copy-disclosure.js',
   'sg-paste-scan.js',
   'sg-form-validate.js',
