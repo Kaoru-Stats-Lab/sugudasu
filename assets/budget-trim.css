@@ -74,6 +74,14 @@
   }
 }
 
+.bt-workspace-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 .bt-list {
   display: flex;
   flex-direction: column;
@@ -99,12 +107,26 @@
 }
 
 .bt-item__name {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   margin: 0;
+  min-width: 0;
+}
+
+.bt-item__name-input {
+  width: 100%;
+  min-width: 0;
   font-size: 0.875rem;
   font-weight: 700;
   color: #0f172a;
-  overflow-wrap: anywhere;
-  min-width: 0;
+  padding: 0.25rem 0.4rem;
+}
+
+.bt-item__name-input[readonly] {
+  background: transparent;
+  border-color: transparent;
+  color: #475569;
 }
 
 .bt-item__idx {

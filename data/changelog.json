@@ -11,6 +11,29 @@
   },
   "entries": [
     {
+      "id": "budget-trim-intake-copy-20260813",
+      "date": "2026-08-13",
+      "type": "improve",
+      "audience": "public",
+      "title": "引き算パレット — 行の追加と、別PCへの持ち運びを分かりやすく",
+      "body": "表の貼り付けと、ワークスペースからの行追加を分けました。項目名もその場で直せます。別のパソコンでも同じ数字に戻せる使い方をFAQに書きました。",
+      "tools": [
+        "budget-trim"
+      ]
+    },
+    {
+      "id": "budget-trim-intake-copy-internal-20260813",
+      "date": "2026-08-13",
+      "type": "improve",
+      "audience": "internal",
+      "title": "budget-trim P4 入口分離 · 仕事語 · URL FAQ",
+      "body": "貼る=読み込む / 打つ=+行を追加（黒・ワークスペース右）· 項目名編集 · パース/ハッシュ/共有URLを画面から除去 · FAQ 別PC再現+表なし · SPEC §⑦ · P7 override",
+      "tools": [
+        "budget-trim"
+      ],
+      "rollup": "budget-trim-intake-copy-20260813"
+    },
+    {
       "id": "reject-label-report-reverse-20260813",
       "date": "2026-08-13",
       "type": "improve",

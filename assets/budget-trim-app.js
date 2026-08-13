@@ -14,6 +14,7 @@ import {
   applyAmountDelta,
   formatYen,
   newId,
+  detoxLabel,
   AMOUNT_SOFT_DIGITS,
   clampYenAmount,
 } from './budget-trim-engine.js';
@@ -106,8 +107,11 @@ function renderList() {
       return `<article class="bt-item sg-lock-row${locked ? ' sg-lock-row--on bt-item--locked' : ''}" data-id="${it.id}">
         <div class="bt-item__row">
           <span class="sg-lock-row__mark" aria-hidden="true">${locked ? '🔒' : '🔓'}</span>
-          <p class="bt-item__name"><span class="bt-item__idx">${idx + 1}.</span>${escapeHtml(it.name)}</p>
-          <input type="text" inputmode="numeric" class="sg-input bt-item__amount" data-amount="${it.id}" value="${formatYen(it.amount)}" ${locked ? 'readonly' : ''} aria-label="${escapeHtml(it.name)}の金額" aria-readonly="${locked ? 'true' : 'false'}">
+          <div class="bt-item__name">
+            <span class="bt-item__idx">${idx + 1}.</span>
+            <input type="text" class="sg-input bt-item__name-input" data-name="${it.id}" value="${escapeHtml(it.name)}" placeholder="項目名" ${locked ? 'readonly' : ''} aria-label="項目名" aria-readonly="${locked ? 'true' : 'false'}">
+          </div>
+          <input type="text" inputmode="numeric" class="sg-input bt-item__amount" data-amount="${it.id}" value="${formatYen(it.amount)}" ${locked ? 'readonly' : ''} aria-label="${escapeHtml(it.name || '項目')}の金額" aria-readonly="${locked ? 'true' : 'false'}">
           <span class="bt-item__yen">円</span>
           <button type="button" class="bt-lock ${locked ? 'bt-lock--closed' : 'bt-lock--open'}" data-lock="${it.id}" aria-pressed="${locked ? 'true' : 'false'}" title="確定枠の目印（合計計算は制限しません）">
             ${locked ? '🔒 ロック中' : '🔓 未ロック'}
@@ -140,7 +144,7 @@ function parseImport() {
   const text = $('bt-import')?.value || '';
   const parsed = parseBudgetPaste(text);
   if (!parsed.length) {
-    setMsg('読み取れる行がありません。項目名と金額のタブ区切りを貼ってください。');
+    setMsg('読み取れる行がありません。項目名と金額の表を貼ってください。');
     return;
   }
   items = parsed;
@@ -204,6 +208,17 @@ function init() {
   });
 
   $('bt-list')?.addEventListener('change', (e) => {
+    const nameInp = /** @type {HTMLInputElement|null} */ (
+      /** @type {HTMLElement} */ (e.target).closest('[data-name]')
+    );
+    if (nameInp) {
+      if (nameInp.readOnly) return;
+      const id = nameInp.getAttribute('data-name');
+      const name = detoxLabel(nameInp.value);
+      items = items.map((it) => (it.id === id ? { ...it, name } : it));
+      render();
+      return;
+    }
     const inp = /** @type {HTMLElement} */ (e.target).closest('[data-amount]');
     if (!inp) return;
     if (/** @type {HTMLInputElement} */ (inp).readOnly) return;
@@ -261,10 +276,10 @@ function init() {
       triggerCopyFlash();
       markCopyButtonDone(btn, {
         copiedLabel: 'コピーしました',
-        fallbackLabel: '共有URLをコピー',
+        fallbackLabel: 'この画面のURLをコピー',
         trackOutcome: 'copy',
       });
-      setMsg('共有用 URL をコピーしました（サーバーには送っていません）');
+      setMsg('この画面のURLをコピーしました（サーバーには送っていません）');
     } catch {
       setMsg('コピーに失敗しました');
     }
@@ -277,8 +292,14 @@ function init() {
   });
 
   $('bt-add-row')?.addEventListener('click', () => {
-    items = [...items, { id: newId(), name: '新規項目', amount: 0, locked: false }];
+    // DECISION: 打つ入口はワークスペース右の黒ボタン（請求書と同型）。貼るカードに置かない。
+    const id = newId();
+    items = [...items, { id, name: '', amount: 0, locked: false }];
     render();
+    requestAnimationFrame(() => {
+      const el = /** @type {HTMLInputElement|null} */ (document.querySelector(`[data-name="${id}"]`));
+      el?.focus();
+    });
   });
 
   window.addEventListener('hashchange', () => {
