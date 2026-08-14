@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-10",
+  "updatedAt": "2026-08-14",
   "disclaimer": "予定は開発の都合で前後します。契約や SLA ではありません。掲載のない機能を「やらない」とは限りませんが、下記「対象外」に挙げた領域は意図的にスコープ外です。",
   "statusLegend": {
     "scheduled": "予定 — 次の開発サイクルに入っています（時期は変わることがあります）",
@@ -8,9 +8,18 @@
     "out_of_scope": "対象外 — 意図的にスコープ外（別サービスを推奨）"
   },
   "lanes": [
-    { "id": "core", "label": "予定 · 検討中（sugudasu.com）" },
-    { "id": "sync", "label": "Sync（sync.sugudasu.com）" },
-    { "id": "out_of_scope", "label": "対象外" }
+    {
+      "id": "core",
+      "label": "予定 · 検討中（sugudasu.com）"
+    },
+    {
+      "id": "sync",
+      "label": "Sync（sync.sugudasu.com）"
+    },
+    {
+      "id": "out_of_scope",
+      "label": "対象外"
+    }
   ],
   "items": [
     {
@@ -23,31 +32,7 @@
       "toolHref": "shift.html",
       "title": "時間帯 × ポジション × 複数名",
       "summary": "同じランチ帯にキッチン・ホール・レジを並べられる表。飲食・小規模店舗向けの v2 中核。",
-      "askFeedback": "業態名・1日の時間帯の切り方・各帯の必要人数をフォームで歓迎します。"
-    },
-    {
-      "id": "watermark-v01",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 4,
-      "toolId": "watermark",
-      "toolLabel": "透かし",
-      "toolHref": "watermark.html",
-      "title": "画像透かし一括（文字/ロゴ · 9点 · ZIP）",
-      "summary": "v0.1 実装。Canvas焼き込み · 透過3段階 · 最大20枚。PDF・タイル・ドラッグ配置はOUT。仕様: docs/notes/WATERMARK_TOOL_SPEC.md",
-      "askFeedback": "社外秘表示でよく使うのは文字ですか、ロゴですか？"
-    },
-    {
-      "id": "pdf-page-png-extract",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 6,
-      "toolId": "pdf-images",
-      "toolLabel": "PDF画像",
-      "toolHref": "pdf-images.html",
-      "title": "PDF埋め込み画像の抽出（Image XObject）",
-      "summary": "v0.1 実装。SSOT/TECH確定どおり。pdfjs-dist 5.4.296 · 上限超過は拒否 · ZIP · 透かしへ誘導。ページ全体化は別ツール候補。",
-      "askFeedback": "仕様書から図を抜くとき、埋め込み画像だけで足りますか？"
+      "askFeedback": "業態名・1日の時間帯の切り方・各帯の必要人数をフィードバックで歓迎します。"
     },
     {
       "id": "shift-v2-peak",
@@ -97,16 +82,40 @@
       "askFeedback": "透過 PNG を残したいケースは多いですか？"
     },
     {
-      "id": "graph-decision-paste",
+      "id": "graph-breakdown",
       "lane": "core",
       "status": "considering",
       "priority": 9,
-      "toolId": null,
-      "toolLabel": "グラフ（仮称）",
-      "toolHref": null,
-      "title": "表を貼って、伝えたいことから図を決める（仮称）",
-      "summary": "やる: Excelやスプレッドシートの表を貼り、「推移・比較・順位」など伝えたいことを選び、資料にそのまま貼れる図（SVG/PNG）を出す。判断はルールベースで再現可能にする。編集ソフト化はしない。やらない: 帳票のデータベース化、在庫/ERP代替、色や線幅の細かいグラフエディタ、AIに任せた見た目のゆらぎ。いまは設計と貼付検証の段階で、公開時期は未定です。",
-      "askFeedback": "会議資料で、表から図にするときにいちばん詰まるのは「種類の選択」「Excel操作」「貼ったあとの見た目」のどれですか？"
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
+      "title": "内訳を見せたい（構成比）",
+      "summary": "α の Intent「内訳を見せたい」は準備中。積み上げ棒や構成比など、資料で一瞬読める内訳の見せ方を検討（円・ドーナツは別判断 · R2/R3）。Graph Editor 化はしない。",
+      "askFeedback": "内訳でいちばん欲しいのは「棒の積み上げ」「100%積み上げ」「その他」のどれですか？"
+    },
+    {
+      "id": "graph-bridge",
+      "lane": "core",
+      "status": "considering",
+      "priority": 9,
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
+      "title": "増減要因を見せたい（ブリッジ）",
+      "summary": "α の Intent「増減要因を見せたい」は準備中。期首→増減→期末のような橋渡し図（Waterfall 系）を、誤読しにくい形で検討。達成色の自動発明はしない。",
+      "askFeedback": "会議で増減要因を出すとき、いちばん困るのは「形の選び方」「Excel操作」「ラベルの重なり」のどれですか？"
+    },
+    {
+      "id": "graph-dual-axis-overlay",
+      "lane": "core",
+      "status": "considering",
+      "priority": 10,
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
+      "title": "単位の違う指標の重ね表示（2軸）",
+      "summary": "α では誤読防止のため上下分離のみ。左右の軸を増やして棒＋折れ線を1枚に重ねる複合は未対応。需要と安全条件（0基線同期など）を見て判断。",
+      "askFeedback": "上下分離で足りる場面と、どうしても1枚に重ねたい場面の比率を教えてください。"
     },
     {
       "id": "invoice-quality",
@@ -155,18 +164,6 @@
       "askFeedback": "手動で足りる場面と、自動候補が欲しい場面の比率を歓迎します。"
     },
     {
-      "id": "annotate-annotate-text",
-      "lane": "core",
-      "status": "rejected",
-      "priority": 14,
-      "toolId": "annotate",
-      "toolLabel": "赤入れ",
-      "toolHref": "annotate.html",
-      "title": "注釈の文字入れ（Skitch 風）",
-      "summary": "Reject 2026-07-24。Skitch型矢印＋テキストは「Skitch Imitation」と誤認され、汎用注釈アプリ期待を招く。自由記述は採用しない。指すは矢印·枠、注記はスタンプ。",
-      "askFeedback": null
-    },
-    {
       "id": "planning-poker-simultaneous-reveal",
       "lane": "core",
       "status": "considering",
@@ -212,42 +209,6 @@
       "summary": "report 等と同型の共有ボタン。個人情報を載せない運用前提。"
     },
     {
-      "id": "diff-normalize-option",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 23,
-      "toolId": "diff",
-      "toolLabel": "差分",
-      "toolHref": "diff.html",
-      "title": "比較前の全角・空白クレンジング（任意）",
-      "summary": "v0.1 公開済（全角・NBSP・行末無視 · 入力欄非改変 · 既定OFF）。normalize ツールのルール移植はしない。残りは既定ONの是非のみ（仕様改訂が必要）。仕様: docs/notes/DIFF_PRECOMPARE_CLEANSE_SPEC.md。",
-      "askFeedback": "既定で「全角・行末スペースを無視」をONにしてほしいですか？（今はOFF · 変更するなら仕様を先に改訂します）"
-    },
-    {
-      "id": "search-query-builder",
-      "lane": "core",
-      "status": "considering",
-      "priority": 24,
-      "toolId": "search-query",
-      "toolLabel": "検索式",
-      "toolHref": "search-query.html",
-      "title": "検索式ビルダー — 分野寄せ（統計・挿絵）と site チップ",
-      "summary": "v0.2: 統計・白書 / 挿絵サイト寄りプリセット（計6）· e-Gov・法令・NDL・e-Stat・いらすとやチップ。補助金プリセット・商用保証はOUT。仕様: docs/notes/SEARCH_QUERY_BUILDER_SPEC.md",
-      "askFeedback": "統計・挿絵のプリセットは使いやすいですか？ site チップは足りていますか？"
-    },
-    {
-      "id": "mask-video-frame-capture",
-      "lane": "core",
-      "status": "scheduled",
-      "priority": 6,
-      "toolId": "video-frame",
-      "toolLabel": "動画コマ抜き",
-      "toolHref": "video-frame.html",
-      "title": "ローカル動画からの静止画コマ抜き（PNG）",
-      "summary": "実装済み α（VIDEO_FRAME_PNG_SPEC.md）。nav「動画コマ抜き」· id video-frame。GIF/Tango OUT。コマ送り・キーボード・時刻付きファイル名。",
-      "askFeedback": "操作マニュアル用に、手元の録画から画面PNGを抜くことはありますか？"
-    },
-    {
       "id": "sync-schedule-v3",
       "lane": "sync",
       "status": "sync_lane",
@@ -257,18 +218,6 @@
       "toolHref": "https://sync.sugudasu.com/schedule",
       "title": "工事・制作向け Schedule（Notion 風表）",
       "summary": "現場監督向けの工程表 · 週間リスト · 印刷。コアのシフト表とは別ラインです。",
-      "external": true
-    },
-    {
-      "id": "sticky-room-undo-v2",
-      "lane": "sync",
-      "status": "sync_lane",
-      "priority": 2,
-      "toolId": null,
-      "toolLabel": "Room",
-      "toolHref": "https://sync.sugudasu.com/room",
-      "title": "Sticky Room — Undo / Export（v2）",
-      "summary": "付箋・見出しのリアルタイム共有は v1 公開済み。Undo/Redo · JSON/MD/TSV 書き出しは v2。ドローやチャットは対象外。",
       "external": true
     },
     {
@@ -623,11 +572,11 @@
       "lane": "out_of_scope",
       "status": "out_of_scope",
       "priority": 31,
-      "toolId": null,
-      "toolLabel": "グラフ（仮称）",
-      "toolHref": null,
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
       "title": "グラフ編集ソフト（色・線幅・凡例・軸の細かい編集UI）",
-      "summary": "検討中のグラフ（仮称）は、編集そのものを仕事にさせないことが成功条件です。色パレット、線幅、凡例位置、軸文言のドラッグ編集、テーマエディタは作りません。細かく直すなら Excel や Illustrator の方が速い、という前提です。",
+      "summary": "SUGUDASU グラフは、編集そのものを仕事にさせないことが成功条件です。色パレット、線幅、凡例位置、軸文言のドラッグ編集、テーマエディタは作りません。細かく直すなら Excel や Illustrator の方が速い、という前提です。",
       "alternative": "Excel · PowerPoint · Google スプレッドシート · Illustrator"
     },
     {
@@ -635,12 +584,12 @@
       "lane": "out_of_scope",
       "status": "out_of_scope",
       "priority": 32,
-      "toolId": null,
-      "toolLabel": "グラフ（仮称）",
-      "toolHref": null,
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
       "title": "AI（LLM）に任せるグラフ自動提案",
-      "summary": "同じ表・同じ意図でも見た目がゆらぐ提案は、提出資料では信頼しにくいため採用しません。検討中のグラフ（仮称）は、ルールで決めて再現可能にすることを優先します。",
-      "alternative": "ChatGPT 等で下書き → 自分で Excel に落とす · 検討中の決定論グラフ（仮称）"
+      "summary": "同じ表・同じ意図でも見た目がゆらぐ提案は、提出資料では信頼しにくいため採用しません。グラフはルールで決めて再現可能にすることを優先します。",
+      "alternative": "ChatGPT 等で下書き → 自分で Excel に落とす · SUGUDASU グラフ（決定論）"
     },
     {
       "id": "oos-url-hash-payload-share",
@@ -653,6 +602,68 @@
       "title": "URL ハッシュに本文を埋め込んで渡すメモ共有",
       "summary": "sugudasu.com には本文が届かない一方、Slack/LINE に貼った瞬間に相手（とチャット側）へ全文が渡ります。機密共有にもならず、実務ではコピペや既存チャットで足りるため作りません。",
       "alternative": "チャットへの直接貼付 · 社内 Wiki · Sync の明示共有（別ライン）"
+    },
+    {
+      "id": "graph-pie-donut",
+      "lane": "core",
+      "status": "considering",
+      "priority": 11,
+      "toolId": "graph",
+      "toolLabel": "グラフ",
+      "toolHref": "graph.html",
+      "title": "円グラフ · ドーナツ（構成比の別判断）",
+      "summary": "FAQどおり円・ドーナツは未対応。内訳（graph-breakdown）とは別に、円系を採用するかは R2/R3 で判断。Graph Editor 化はしない。",
+      "askFeedback": "資料で円グラフが必須の場面はどのくらいありますか？棒の内訳で足りる場面の方が多いですか？"
+    },
+    {
+      "id": "search-query-multi-filetype",
+      "lane": "core",
+      "status": "considering",
+      "priority": 12,
+      "toolId": "search-query",
+      "toolLabel": "検索式",
+      "toolHref": "search-query.html",
+      "title": "複数 filetype / OR 指定",
+      "summary": "v0.2 公開済み。FAQどおり filetype は現状1つ。複数拡張子の OR 指定は別チケット候補。",
+      "askFeedback": "filetype を複数選びたい検索はどのくらいありますか？"
+    },
+    {
+      "id": "diff-proper-noun-generic",
+      "lane": "core",
+      "status": "considering",
+      "priority": 13,
+      "toolId": "diff",
+      "toolLabel": "差分",
+      "toolHref": "diff.html",
+      "title": "汎用の固有名詞欠落検知",
+      "summary": "FAQどおり、汎用的な固有名詞検知への拡張は検討項目。いまは限定パターン中心。",
+      "askFeedback": "固有名詞の抜け検知が欲しい文書の種類（契約・仕様・議事）を教えてください。"
+    },
+    {
+      "id": "sync-timeline-realtime",
+      "lane": "sync",
+      "status": "sync_lane",
+      "priority": 3,
+      "toolId": null,
+      "toolLabel": "進行",
+      "toolHref": "https://sync.sugudasu.com/timeline",
+      "title": "進行表の複数端末リアルタイム反映",
+      "summary": "Sync 進行 LP で準備中。コアのイベント進行はローカル完結。複数端末同期は Sync レーン。",
+      "external": true,
+      "askFeedback": "現場進行で、複数端末の同時更新が必須の場面はありますか？"
+    },
+    {
+      "id": "sync-quote-receipt-pdf",
+      "lane": "sync",
+      "status": "sync_lane",
+      "priority": 4,
+      "toolId": null,
+      "toolLabel": "Sync 課金",
+      "toolHref": "https://sync.sugudasu.com/",
+      "title": "稟議用見積 PDF · 領収 PDF · チケット購入",
+      "summary": "Sync LP で準備中（ボタン disabled）。購入フローと帳票 PDF は Sync 側の次段。",
+      "external": true,
+      "askFeedback": "稟議に必要なのは見積 PDF・領収 PDF・どちらが先ですか？"
     }
   ]
 }

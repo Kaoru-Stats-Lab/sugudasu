@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SUGUDASUの開発ロードマップ。シフトv2・繁忙期人数・向いている業態を公開。病院24時間看護シフトは対象外と明記。要望はGoogleフォームへ。">
+    <meta name="description" content="SUGUDASUの開発ロードマップ。シフトv2・繁忙期人数・向いている業態を公開。病院24時間看護シフトは対象外と明記。要望はページ内フィードバックへ。">
     <title>開発ロードマップ | SUGUDASU</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
@@ -36,6 +36,7 @@
         <h1 class="sg-info-page__title">開発ロードマップ</h1>
         <p class="sg-info-page__lead sg-info-prose">
             「これ、開発スケジュールに入ってますか？」——よく聞かれるので、<strong>予定</strong>と<strong>対象外</strong>をここにまとめます。
+            コアの項目は<strong>プロダクトごと</strong>にまとめています（ヌケモレ防止）。
             すでに反映したものは <a href="updates.html">更新履歴</a>、設計思想は <a href="statements.html">SUGUDASUの約束</a> をご覧ください。
         </p>
         <p id="roadmap-updated" class="sg-info-caption"></p>
@@ -56,8 +57,10 @@
             「うちの店ではこう使いたい」「この業種には向かない」どちらも助かります。
         </p>
         <p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">Googleフォーム</a>
-            （ログイン不要）· ツール名に <strong>シフト</strong> や <strong>roadmap</strong> と書いてください。
+            <button type="button"
+                class="text-blue-600 font-semibold hover:underline bg-transparent border-0 p-0 cursor-pointer"
+                data-sg-feedback-open data-sg-feedback-source="roadmap">フィードバックを送る</button>
+            （ログイン不要）· 本文に <strong>シフト</strong> や <strong>roadmap</strong> と書いてください。分類は「機能の要望」が近いです。
         </p>
         <p class="text-xs text-slate-500">
             個人を特定できる情報は書かないでください。返信は原則行いません。採用した要望はロードマップと更新履歴に反映します。
@@ -72,7 +75,6 @@
 (function () {
     'use strict';
 
-    const FEEDBACK_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform';
     const STATUS_LABELS = {
         scheduled: { text: '予定', cls: 'sg-roadmap-badge--scheduled' },
         considering: { text: '検討中', cls: 'sg-roadmap-badge--considering' },
@@ -111,7 +113,63 @@
         return `<span class="sg-roadmap-badge ${b.cls}">${esc(b.text)}</span>`;
     }
 
-    function itemHtml(item) {
+    function productKey(item) {
+        if (item.toolId) return 'tool:' + item.toolId;
+        return 'label:' + (item.toolLabel || 'その他');
+    }
+
+    function productAnchor(key) {
+        return 'product-' + String(key).replace(/[^a-zA-Z0-9_-]+/g, '-');
+    }
+
+    function groupByProduct(laneItems) {
+        const map = new Map();
+        for (const item of laneItems) {
+            const key = productKey(item);
+            if (!map.has(key)) {
+                map.set(key, {
+                    key,
+                    toolId: item.toolId || null,
+                    toolLabel: item.toolLabel || 'その他',
+                    toolHref: item.toolHref || null,
+                    external: !!item.external,
+                    items: [],
+                    minPriority: item.priority || 99
+                });
+            }
+            const g = map.get(key);
+            g.items.push(item);
+            g.minPriority = Math.min(g.minPriority, item.priority || 99);
+            if (!g.toolHref && item.toolHref) {
+                g.toolHref = item.toolHref;
+                g.external = !!item.external;
+            }
+        }
+        return [...map.values()].sort((a, b) => a.minPriority - b.minPriority || a.toolLabel.localeCompare(b.toolLabel, 'ja'));
+    }
+
+    function productHeadingLink(group) {
+        if (group.external && group.toolHref) {
+            return `<a href="${esc(group.toolHref)}" class="text-blue-600 font-semibold hover:underline" target="_blank" rel="noopener noreferrer">${esc(group.toolLabel)}</a>`;
+        }
+        if (group.toolHref) {
+            return `<a href="${esc(group.toolHref)}" class="text-blue-600 font-semibold hover:underline">${esc(group.toolLabel)}</a>`;
+        }
+        return esc(group.toolLabel);
+    }
+
+    function statusCountsHtml(items) {
+        const order = ['scheduled', 'considering', 'sync_lane', 'out_of_scope'];
+        const counts = {};
+        for (const it of items) counts[it.status] = (counts[it.status] || 0) + 1;
+        return order
+            .filter((s) => counts[s])
+            .map((s) => `${badgeHtml(s)}<span class="text-[11px] text-slate-500">${counts[s]}</span>`)
+            .join('');
+    }
+
+    function itemHtml(item, opts) {
+        const showTool = !(opts && opts.hideTool);
         const toolLink = item.external
             ? `<a href="${esc(item.toolHref)}" class="text-blue-600 font-semibold hover:underline" target="_blank" rel="noopener noreferrer">${esc(item.toolLabel)}</a>`
             : item.toolHref
@@ -121,13 +179,13 @@
             ? `<p class="text-xs text-slate-500 mt-2"><strong>代替:</strong> ${esc(item.alternative)}</p>`
             : '';
         const fb = item.askFeedback
-            ? `<p class="text-xs text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2 mt-2">${esc(item.askFeedback)} <a href="${FEEDBACK_FORM}" class="font-semibold underline" target="_blank" rel="noopener noreferrer">フォーム</a></p>`
+            ? `<p class="text-xs text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2 mt-2">${esc(item.askFeedback)} <button type="button" class="font-semibold underline bg-transparent border-0 p-0 cursor-pointer text-emerald-900" data-sg-feedback-open data-sg-feedback-source="roadmap">フィードバック</button></p>`
             : '';
         return `
             <article class="sg-roadmap-item" id="${esc(item.id)}">
                 <div class="flex flex-wrap items-center gap-2 mb-1.5">
                     ${badgeHtml(item.status)}
-                    ${toolLink ? `<span class="text-[11px] text-slate-500">${toolLink}</span>` : ''}
+                    ${showTool && toolLink ? `<span class="text-[11px] text-slate-500">${toolLink}</span>` : ''}
                     <a href="#${esc(item.id)}" class="text-[10px] text-slate-400 hover:text-blue-600 ml-auto no-print" aria-label="この項目へのリンク">#</a>
                 </div>
                 <h3 class="sg-roadmap-item__title">${esc(item.title)}</h3>
@@ -136,6 +194,30 @@
                 ${fb}
             </article>
         `;
+    }
+
+    function productIndexHtml(groups, laneId) {
+        if (groups.length < 2) return '';
+        const links = groups.map((g) => {
+            const n = g.items.length;
+            return `<a class="sg-roadmap-product-chip" href="#${esc(productAnchor(laneId + '-' + g.key))}">${esc(g.toolLabel)}<span class="sg-roadmap-product-chip__n">${n}</span></a>`;
+        }).join('');
+        return `<nav class="sg-roadmap-product-index" aria-label="プロダクト一覧">${links}</nav>`;
+    }
+
+    function productsHtml(groups, laneId) {
+        return groups.map((g) => {
+            const aid = productAnchor(laneId + '-' + g.key);
+            return `
+                <section class="sg-roadmap-product" id="${esc(aid)}" aria-labelledby="${esc(aid)}-title">
+                    <div class="sg-roadmap-product__head">
+                        <h3 id="${esc(aid)}-title" class="sg-roadmap-product__title">${productHeadingLink(g)}</h3>
+                        <div class="sg-roadmap-product__counts flex flex-wrap items-center gap-1.5">${statusCountsHtml(g.items)}</div>
+                    </div>
+                    <div class="sg-roadmap-list mt-3">${g.items.map((it) => itemHtml(it, { hideTool: true })).join('')}</div>
+                </section>
+            `;
+        }).join('');
     }
 
     function renderLegend(data) {
@@ -156,18 +238,20 @@
         root.innerHTML = lanes.map((lane) => {
             const laneItems = items.filter((i) => i.lane === lane.id);
             if (!laneItems.length) return '';
+            const groups = groupByProduct(laneItems);
             const intro = lane.id === 'out_of_scope'
-                ? '<p class="text-sm text-slate-600 mb-4">ミスマッチを防ぐため、<strong>意図的にスコープ外</strong>としている領域です（Decline 相当 · 個別要望の却下は載せません）。</p>'
+                ? '<p class="text-sm text-slate-600 mb-4">ミスマッチを防ぐため、<strong>意図的にスコープ外</strong>としている領域です（Decline 相当 · 個別要望の却下は載せません）。プロダクト／領域ごとにまとめています。</p>'
                 : lane.id === 'sync'
-                    ? '<p class="text-sm text-slate-600 mb-4">工事・制作の工程表は <strong>sync.sugudasu.com</strong> の別ラインです。店舗の勤務表（シフト）とは別物です。</p>'
+                    ? '<p class="text-sm text-slate-600 mb-4">工事・制作の工程表は <strong>sync.sugudasu.com</strong> の別ラインです。店舗の勤務表（シフト）とは別物です。項目はプロダクトごとにまとめています。</p>'
                     : lane.id === 'core'
-                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。すでに公開したものは <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ（ロードマップからは外します）。</p>'
+                        ? '<p class="text-sm text-slate-600 mb-4"><strong>予定</strong>は次の開発サイクルに入っています。<strong>検討中</strong>は FB で優先度が上がりうる候補です。下のチップからプロダクトへジャンプできます。すでに公開したものは <a href="updates.html" class="text-blue-600 font-semibold hover:underline">更新履歴</a>へ（ロードマップからは外します）。</p>'
                         : '';
             return `
                 <section aria-labelledby="roadmap-lane-${esc(lane.id)}">
                     <h2 id="roadmap-lane-${esc(lane.id)}" class="sg-info-section-title">${esc(lane.label)}</h2>
                     ${intro}
-                    <div class="sg-roadmap-list mt-4">${laneItems.map(itemHtml).join('')}</div>
+                    ${productIndexHtml(groups, lane.id)}
+                    <div class="sg-roadmap-products mt-4">${productsHtml(groups, lane.id)}</div>
                 </section>
             `;
         }).join('');

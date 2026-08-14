@@ -69,11 +69,6 @@
                 data-sg-feedback-open data-sg-feedback-source="updates">
                 フィードバックを送る
             </button>
-            <a id="btn-google-form" href="https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform"
-                target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center justify-center border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold px-4 py-2.5 rounded-lg">
-                Googleフォーム（任意）
-            </a>
         </div>
 
         <p class="sg-info-caption mt-3">
@@ -132,7 +127,6 @@
     'use strict';
 
     const CONTACT_EMAIL = 'banzai.millionaire@gmail.com';
-    const FEEDBACK_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform';
     const TYPE_LABELS = {
         feat: { text: '新機能', cls: 'sg-changelog-badge--feature' },
         feature: { text: '新機能', cls: 'sg-changelog-badge--feature' },
@@ -317,10 +311,6 @@
 
     document.getElementById('btn-mailto').addEventListener('click', openMailto);
     document.getElementById('btn-copy-fb').addEventListener('click', copyFeedback);
-
-    document.querySelectorAll('#btn-google-form, a[href*="1FAIpQLSdzBg0IS1t"]').forEach(el => {
-        el.href = FEEDBACK_FORM_URL;
-    });
 
     loadChangelog();
 })();

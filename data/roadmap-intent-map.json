@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "note": "User-visible disabled Intent / CND must point at a live roadmap id. Ship → delete roadmap id + this map entry. validate:roadmap enforces.",
+  "maps": [
+    {
+      "tool_id": "graph",
+      "intent": "BREAKDOWN",
+      "roadmap_id": "graph-breakdown",
+      "label": "内訳を見せたい"
+    },
+    {
+      "tool_id": "graph",
+      "intent": "BRIDGE",
+      "roadmap_id": "graph-bridge",
+      "label": "増減要因を見せたい"
+    },
+    {
+      "tool_id": "graph",
+      "choice_id": "dual_axis_combo",
+      "roadmap_id": "graph-dual-axis-overlay",
+      "label": "重ねて表示（2軸）"
+    }
+  ]
+}

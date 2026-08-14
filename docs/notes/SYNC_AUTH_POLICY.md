@@ -170,7 +170,7 @@
 |----|------|--------|
 | メールアドレス | 表示 · **変更** → 現パスワード → Supabase `updateUser` + 確認メール | P0 |
 | パスワード | **変更** → 現パスワード + 新パスワード（ログイン中） | P0 |
-| 改善を提案する | 外部リンク「改善を提案する ↗」→ [β 不具合・改善フォーム](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor)（`BACKLOG` §5-4 正本） | P1 |
+| 改善を提案する | インページ「フィードバック」（`data-sg-feedback-open` · Form 禁止 · `FEEDBACK_TRIAGE.md`） | P1 |
 | ログアウト | **グレーテキストリンク** · 二次確認なし · **赤にしない**（退会のみ赤 · 提督 2026-06-26 確定） | P0 |
 | **危険な操作** | 赤枠セクション · **アカウントを削除** | P0 |
 | フッター | 利用規約 · プライバシーポリシー（小・グレー）· **ビルド番号**（`text-xs` 相当 · 極小 · 右下 · 提督 2026-06-26 確定） | P1/P2 |
@@ -204,7 +204,7 @@
 - [ ] PW 表示切替
 - [ ] アカウントオーバーレイ（リスト行 + ヘアライン）
 - [ ] メール変更（現PW + 確認メール）
-- [ ] フッター — 規約 · プライバシー · [フィードバック](https://docs.google.com/forms/d/e/1FAIpQLSchvqtu9j3FL4KTxSG70txXwbREaJFZ-IrdwAKjuCRWz5jaPw/viewform?usp=publish-editor) · ビルド番号（極小）
+- [ ] フッター — 規約 · プライバシー · フィードバック（インページ · Form 禁止）· ビルド番号（極小）
 - [ ] 退会 — 現PW + **メール全文タイプ**（Supabase Danger zone 型）
 - [ ] 列挙同一応答（登録/リセット）
 - [ ] 制限・インフラは **アカウント外**（§5-5b）— ルーム行 / 全局バナーのみ

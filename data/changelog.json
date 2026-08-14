@@ -11,6 +11,48 @@
   },
   "entries": [
     {
+      "id": "roadmap-by-product-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "public",
+      "title": "開発ロードマップをプロダクトごとに整理",
+      "body": "予定・検討中・対象外を、シフトやグラフなどプロダクト見出しの下にまとめました。チップから該当プロダクトへ飛べます。",
+      "tools": [
+        "roadmap"
+      ]
+    },
+    {
+      "id": "roadmap-by-product-internal-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "internal",
+      "title": "roadmap product grouping · validate:roadmap R7 · Form purge",
+      "body": "tools/roadmap.html 製品グループ · verify-roadmap · intent-map · contact Form purge · DEV_TRANSPARENCY §5b",
+      "tools": [
+        "roadmap"
+      ],
+      "rollup": "roadmap-by-product-20260814"
+    },
+    {
+      "id": "feedback-form-purge-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "public",
+      "title": "問い合わせ窓口をページ内フィードバックに統一",
+      "body": "Googleフォームへの案内をやめました。不具合・改善・ロードマップ要望は各ページの「フィードバック」から送れます（返信はありません）。",
+      "tools": []
+    },
+    {
+      "id": "feedback-form-purge-internal-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "internal",
+      "title": "Google Form Purge · FB-only intake",
+      "body": "roadmap/updates/contact/paper-schedule · FEEDBACK_TRIAGE · QF-8 · Sync AUTH 改善リンク",
+      "tools": [],
+      "rollup": "feedback-form-purge-20260814"
+    },
+    {
       "id": "graph-no-combo-axis-20260814",
       "date": "2026-08-14",
       "type": "improve",

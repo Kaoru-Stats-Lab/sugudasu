@@ -1,9 +1,10 @@
 # 開発透明性 — 更新履歴 · 予定 · 対象外（粒度 SSOT）
 
-**更新:** 2026-07-17  
-**正本データ:** `data/changelog.json` · `data/roadmap.json` · **`data/categories.json`**（カテゴリ SSOT）· **`data/statements-product.json`**（tools · categoryCompare）  
+**更新:** 2026-08-14  
+**正本データ:** `data/changelog.json` · `data/roadmap.json` · `data/roadmap-intent-map.json` · **`data/categories.json`**（カテゴリ SSOT）· **`data/statements-product.json`**（tools · categoryCompare）  
 **画面:** [`/updates`](../../tools/updates.html) · [`/roadmap`](../../tools/roadmap.html) · [`/statements`](../../tools/statements.html)（他サービスとの違い · ツールと約束）  
-**Hub IA:** [`HUB_IA_REFRESH_V2.md`](HUB_IA_REFRESH_V2.md) · [`ADR-0003`](../decisions/ADR-0003-hub-product-independence.md)
+**Hub IA:** [`HUB_IA_REFRESH_V2.md`](HUB_IA_REFRESH_V2.md) · [`ADR-0003`](../decisions/ADR-0003-hub-product-independence.md)  
+**検証:** `npm run validate:roadmap`（出荷取り残し · Intent 準備中の掲載漏れ）
 
 ---
 
@@ -157,17 +158,38 @@
 - [ ] 予定 / 検討中 / 対象外 のどれか明確か？
 - [ ] 対象外は**領域**単位か（個別 FB ではないか）？
 - [ ] **同一 PR で** `statements-product.json` の `updatedAt` を合わせたか？（`npm run sync:statements-product-date` 可）新ツールなら tools[] · category も更新
+- [ ] UI に「準備中 / 未対応 / previewReady:false」を出すなら `data/roadmap.json` **と**（該当時）`data/roadmap-intent-map.json` を同 PR で更新したか？
 
 **新ツール追加時（roadmap と同タイミング）**
 
 - [ ] `data/statements-product.json` に `toolId` · `categoryId` · `inputHandling` · `promiseNote` を追加したか？
 - [ ] 既存 MECE カテゴリに収まるか？収まらなければカテゴリ新設と compare の有無を決めたか？
 - [ ] `npm run validate:statements-product` が通るか？
+- [ ] α 公開時: 残課題（Intent 準備中など）を roadmap `considering` に載せたか？ 本体機能を誤って scheduled に残していないか？
 
 **デプロイ後**
 
 - [ ] shipped した roadmap 項目を JSON から外したか？
+- [ ] `roadmap-intent-map.json` の対応行を外したか？（該当時）
 - [ ] changelog 1件追加したか（ユーザー向け文言）？
+- [ ] `npm run validate:roadmap` が通るか？
+
+---
+
+## 5b. 機械ゲート（roadmap hygiene）
+
+```bash
+npm run validate:roadmap   # build:pages に含む
+```
+
+| ルール | 内容 |
+|--------|------|
+| **R1** | `scheduled`/`considering` の summary が「実装済みα / v0.x実装」口調で、かつ「未対応·検討·拡張」等がない → **fail**（出荷済みの取り残し） |
+| **R3** | `graph-app` の `previewReady:false` / `ready:false` は `data/roadmap-intent-map.json` → 実在 roadmap id 必須（toolId 一致） |
+| **R6** | `status: rejected` / `done` を JSON に残さない |
+| **R7** | 各 item に `toolLabel` 必須 · `toolId` があるなら `tool-registry.json` に存在 |
+
+**画面:** `/roadmap` はレーン内を **プロダクト（toolId / toolLabel）単位**にグループ化。ローンチ · アップデート PR では **残課題を該当プロダクト見出しの下に載せる / 出荷したら消す** をゲートで強制する。
 
 ---
 
@@ -175,6 +197,8 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | §5b R7 · `/roadmap` プロダクト単位グループ · by-product ログ |
+| 2026-08-14 | §5b validate:roadmap · Intent map · ローンチ時の残課題掲載チェック |
 | 2026-07-17 | §1 に statements-product（MECE 製品地図）を追加 · roadmap と同タイミング更新を必須化 |
 | 2026-07-15 | §0 — changelog.json=全履歴 · `/updates`=public のみ、を明示 |
 | 2026-07-10 | **ユーザー価値テスト**追加 · FAQ/SEO/パネル微調整を public 禁止 · 新ツールは feature で独立 |

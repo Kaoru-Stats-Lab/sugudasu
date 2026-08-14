@@ -1,9 +1,10 @@
 # 定性フィードバック受け皿 — 取込仕様（SSOT）
 
-**更新:** 2026-08-13  
+**更新:** 2026-08-14  
 **地位:** 役員会採択（フッタ＋失敗時 · Inbox=GitHub Issues）  
 **リサーチ:** [`qualitative-feedback-research/SYNTHESIS.md`](qualitative-feedback-research/SYNTHESIS.md)  
-**旧 Form 運用:** [`../FEEDBACK_TRIAGE.md`](../FEEDBACK_TRIAGE.md)（レガシー · 移行中）
+**運用:** [`../FEEDBACK_TRIAGE.md`](../FEEDBACK_TRIAGE.md)  
+**Google Form:** **2026-08-14 Purge** — ユーザー面リンク全削除（管理者名露出回避 · Cursor 不可読）。窓口は本仕様のインページ FB のみ。
 
 ---
 
@@ -18,8 +19,9 @@
 | QF-5 | Hub 上部バナー | **Defer** |
 | QF-6 | 公開★ · NPS · 報酬 | **Reject** |
 | QF-7 | 成功定義 = 月数件でも受け皿 OK（件数≠ Discoverability 失敗） | **Adopt** |
+| **QF-8** | Google Form をユーザー導線から **Purge**（roadmap/updates/contact/調査LP含む） | **Adopt（2026-08-14）** |
 
-**やらない:** Google Form を主経路にする（Cursor が読めない · 遷移摩擦）。
+**やらない:** Google Form を主経路・任意第2窓口にする（Cursor が読めない · 遷移摩擦 · 管理者アカウント露出）。
 
 ---
 
@@ -65,7 +67,7 @@ gh issue view <n> -R Kaoru-Stats-Lab/sugudasu
 | フィールド | 必須 | 内容 |
 |------------|:----:|------|
 | `tool_id` | ○ | registry id（例: `stamp`） |
-| `source` | ○ | `footer` \| `failure_inline` |
+| `source` | ○ | `footer` \| `failure_inline` \| `updates` \| `contact` \| `roadmap` \| `paper-schedule-research` 等 |
 | `kind` | ○ | `bug` \| `ux` \| `feature` \| `other` |
 | `message` | ○ | 短文（上限 500 文字 · trim） |
 | `app_version` | — | changelog / registry version があれば |
@@ -174,4 +176,5 @@ gh label create feedback-kind-other -R Kaoru-Stats-Lab/sugudasu -c "BFDADC"
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | QF-8 · Google Form ユーザー導線 Purge · source に roadmap/updates/contact 等 |
 | 2026-08-13 | 初版 — QF-1/2/3/7 Adopt · Inbox=GitHub Issues · Form 主経路廃止方針 |

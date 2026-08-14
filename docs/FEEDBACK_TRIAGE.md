@@ -1,24 +1,22 @@
 # 改善リクエスト・トリアージ（運用 SSOT）
 
-更新: 2026-08-13  
-**新・主経路（採択）:** インページ FB（フッタ＋失敗時）→ GitHub Issues · label `feedback-inbox` — **Cursor / `gh` が直接読める**  
+更新: 2026-08-14  
+**主経路（唯一）:** インページ FB（フッタ＋失敗時＋ roadmap/updates/contact 等）→ GitHub Issues · label `feedback-inbox` — **Cursor / `gh` が直接読める**  
 **取込仕様:** [`notes/QUALITATIVE_FEEDBACK_INTAKE.md`](notes/QUALITATIVE_FEEDBACK_INTAKE.md)  
-**レガシー受信箱:** [Google スプレッドシート（回答）](https://docs.google.com/spreadsheets/d/1rLYbcqHJMpcj3FIfbCi4LypUM-TKYyQ_g8lt4JWfmhw/edit) — Form 経由の旧着信のみ · 提督  
-**レガシー報告窓口:** [Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdzBg0IS1t-LM_J9nkZgECodmm_wFlHvw9jLb6KpWVPK_f1nA/viewform) · `tools/updates.html`（新規導線は Issues へ移行予定）  
+**Google Form:** **Purge（2026-08-14）** — ユーザー面のリンク全削除。管理者名露出回避 · Cursor 不可読のため主経路から廃止。旧スプシはアーカイブのみ（新規着信想定なし）。  
 **公開履歴（反映済みのみ）:** `data/changelog.json` · `tools/updates.html`
 
 ---
 
-## 0. Inbox 方針（2026-08-13〜）
+## 0. Inbox 方針（2026-08-14〜）
 
 | 経路 | 正本 | Cursor |
 |------|------|--------|
-| **インページ FB（新）** | GitHub Issues（`feedback-inbox`） | **読める**（`gh issue list`） |
-| **Form（レガシー）** | スプシ | 読めない（提督が要約して本ファイル/Backlog へ） |
+| **インページ FB** | GitHub Issues（`feedback-inbox`） | **読める**（`gh issue list`） |
+| **Google Form** | — | **Purge**（リンクなし · 新規誘導禁止） |
+| **メール** | AdSense 審査用に `/contact` · `/updates` に当面残置 | 弱い · 主経路にしない |
 
-インページ経路は **メタ＋短文のみ**（メール欄なし · 業務データ禁止）なので Issue 化してよい。Form の生回答（返信希望メール等）は従来どおりスプシのみ。
-
-**Agent:** 未読は `gh issue list -R Kaoru-Stats-Lab/sugudasu --label feedback-inbox --state open`。旧 FB-ID（`FB-20260617-002` 等）は本ファイル＋ Backlog を参照。
+**Agent:** 未読は `gh issue list -R Kaoru-Stats-Lab/sugudasu --label feedback-inbox --state open`。旧 FB-ID（`FB-20260617-002` 等）は本ファイル下部キュー＋ Backlog を参照。
 
 ---
 
@@ -26,98 +24,54 @@
 
 | 層 | 置き場 | 誰が見る | 載せるもの |
 |----|--------|----------|------------|
-| **Inbox** | Google スプレッドシート | 提督 | Form の生回答・タイムスタンプ・返信希望 |
+| **Inbox** | GitHub Issues `feedback-inbox` | 提督 · Cursor | メタ＋短文（返信なし） |
 | **Triage** | 本ファイル + `docs/BACKLOG.md` | 提督・Agent | 要約・ステータス・要件メモ・Backlog 参照 |
 | **Shipped** | `data/changelog.json` | 全ユーザー | **編集済み・過去形**のリリースログのみ |
 
-**スプシをサイトに埋め込まない理由:** 個人情報・未整理の文言・却下理由が混ざる。ユーザー向けは changelog のみで十分。
-
 ---
 
-## 2. スプレッドシート列（設定済み）
+## 2. 旧 Google Form / スプシ（アーカイブ）
 
-Form 回答シートの **G〜J 列**（`FB-ID` · `Status` · `Backlog` · `メモ`）— 提督が着信後に記入。
+Form URL はサイトから削除済み。過去回答のスプシは提督ローカル参照のみ（サイト・ドキュメントのユーザー導線に載せない）。
 
-### 既存2件の記入例（コピペ用）
-
-| 行 | FB-ID | Status | Backlog | メモ |
-|----|-------|--------|---------|------|
-| 2 | `FB-20260617-001` | `done` | `§12-1` | 枠数1-3・名称可変。changelog 2026-06-17 反映済 |
-| 3 | `FB-20260617-002` | `要件定義` | `§12-2` | 複数人/帯・新人のみ禁止。FEEDBACK_TRIAGE §5 参照 |
-
-### 列の意味
-
-| 列名 | 例 | 意味 |
-|------|-----|------|
-| `FB-ID` | `FB-20260617-002` | Git のキュー表・Backlog と突合 |
-| `Status` | 下表 | トリアージ結果 |
-| `Backlog` | `§12-2` | 採用時の Backlog 節（Git） |
-| `メモ` | 要件メモ1行 | 不採用理由・重複先など |
-
-### Status 定義
-
-| Status | 意味 | 次アクション |
-|--------|------|--------------|
-| `inbox` | 未読・未整理 | 要約して FB-ID 付与 |
-| `要件定義` | 採用意欲あり・仕様未確定 | Backlog に P2/P3 で起票・`docs/prompts/` に要件ドラフト |
-| `planned` | 仕様確定・実装待ち | Backlog の TODO を `[ ]` で管理 |
-| `done` | 反映済み | `changelog.json` にエントリ · スプシを `done` |
-| `wontfix` | 不採用 | メモに理由（ニーズ薄・代替あり・スコープ外） |
-| `duplicate` | 重複 | 統合先 FB-ID をメモ |
-
-**H 列プルダウン:** GAS の `setupStatusDropdown` を1回実行（`gas/README.md` §5）。上記6値のみ選択可。
+旧 Status 列・FB-ID 運用は **§5 キュー表**に残る履歴のみ。新規は Issue 番号で管理。
 
 ---
 
 ## 3. 運用フロー（1件あたり）
 
-1. Form → スプシに着信（自動）
-2. 提督が週1 or 着信時に Status を更新
-3. `要件定義` 以上になったら **本ファイルのキュー表** + **BACKLOG** に1行追記
-4. 実装・デプロイ後 → `changelog.json` → スプシ `done`
-
-Agent は実装依頼時に **本ファイルと BACKLOG** を読む。スプシ全文の再掲は不要。
-
-**着信通知（気づく）:** Form 送信 → **GAS**（`gas/form-on-submit-notify.gs`）でメール + FB-ID 自動付与。設置手順は `gas/README.md`。コード不要の暫定は Form の「新しい回答のメール通知を受け取る」。
+1. ユーザーがインページ FB 送信 → Issue 着信
+2. Agent / 提督が `feedback-inbox` を確認 · 要約
+3. 採用なら **BACKLOG** に起票 · Issue に Backlog 参照をコメント
+4. 実装・デプロイ後 → `changelog.json` → Issue close
 
 ---
 
-## 4. キュー（要約・ステータス）
+## 4. ステータス（Issue / 本ファイル共通語彙）
 
-| FB-ID | 着信 | 種別 | ツール | 要約 | Status | Backlog / 備考 |
-|-------|------|------|--------|------|--------|----------------|
-| FB-20260617-001 | 2026-06-17 9:36 | 不具合・バグ | shift | 早/遅/夜固定ではなく枠数・名称を可変に。1シフトのみの店も | **done** | §12-1 · changelog 2026-06-17 反映済 |
-| FB-20260617-002 | 2026-06-17 9:44 | 機能改善 | shift | 同一シフト帯に複数人配置。新人だけの帯は不可（ベテラン必須） | **要件定義** | §12-2 · データモデル変更が必要 |
-
----
-
-## 5. FB-20260617-002 要件メモ（ドラフト）
-
-**ユーザー要望（原文要約）**
-
-- 同じシフト帯（早番など）に **複数スタッフ** を入れたい
-- **新人だけ** でシフト帯を埋めない（少なくとも1名は非新人）
-
-**現状との差分**
-
-| 項目 | 現状 | 要望 |
-|------|------|------|
-| 1枠あたりの人数 | 1名（select 1つ） | 複数名 |
-| 新人ルール | 「重複NGキーワード」（既定: 新人）= **同一日に新人タグが2人入るのを避ける** | **シフト帯単位**で「新人のみ」を禁止 |
-| UI | ドロップダウン1つ | 複数選択 or タグ追加 UI |
-
-**未確定（要件定義で決める）**
-
-- 複数配置は **手動のみ** か **自動生成も** 対応するか
-- 「新人」の定義 = タグ文字列一致でよいか（現行 `tag` フィールド流用）
-- 1枠の上限人数（無制限 vs 店舗設定）
-- 印刷レイアウト（セル内複数行・字号）
-
-**見込み:** P2 · 工数中〜大（`globalShiftData` の `{ type, val }` → 配列化、自動生成・集計の全面見直し）
+| Status | 意味 |
+|--------|------|
+| `inbox` | 未整理 |
+| `要件定義` | 採用意欲あり・仕様未確定 |
+| `planned` | 仕様確定・実装待ち |
+| `done` | 反映済み |
+| `wontfix` | 不採用 |
+| `duplicate` | 重複 |
 
 ---
 
-## 6. Phase B（任意・将来）
+## 5. 旧キュー表（Form 時代 · 参照のみ）
 
-- **`data/roadmap.json`** + **`tools/roadmap.html`** — 予定 / 検討中 / 対象外を公開 · **粒度:** [`DEV_TRANSPARENCY_RULES.md`](notes/DEV_TRANSPARENCY_RULES.md)
-- `updates.html` ⇄ `roadmap.html` — `.sg-dev-transparency-nav` 対ナビ · changelog と役割分担（過去 / 未来）
+| FB-ID | Status | Backlog | メモ |
+|-------|--------|---------|------|
+| `FB-20260617-001` | `done` | `§12-1` | 枠数1-3・名称可変。changelog 2026-06-17 反映済 |
+| `FB-20260617-002` | `要件定義` | `§12-2` | 複数人/帯・新人のみ禁止 |
+
+---
+
+## 変更履歴
+
+| 日付 | 内容 |
+|------|------|
+| 2026-08-14 | Google Form ユーザー導線 Purge · インページ FB へ収斂 |
+| 2026-08-13 | インページ FB → Issues を主経路に採択 |
