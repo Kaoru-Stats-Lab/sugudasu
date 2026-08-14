@@ -2294,24 +2294,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy · フッタの GitHub Issues リンクを外しフィードバック導線のみに（P7 override） |
 | **change_summary** | sugudasu-shell.js — ユーザー面から Issues リンク削除 · FB tooltip 平易化 |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 27/450） |
 | **deploy_count_today** | 5（P7 override · 提督明示） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 27/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （executed 後） |
+| **git_sha** | `bedde2c` |
+| **cf_deployment_id** | CF Pages auto（`bedde2c` push origin main） |
 | **smoke** | （CF 反映後）フッタに「フィードバック」あり · 「GitHub Issues」なし |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 005 executed（bedde2c · フッタ Issues リンク削除 · FBのみ · P7 override） |
 | 2026-08-14 | 005 approved（フッタ Issues リンク削除 · FBのみ · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 004 executed（2422961 · graph 複合非対応の理由明示 · P7 override） |
 | 2026-08-14 | 004 approved（graph 複合非対応の理由明示 · P7 override · 提督 Commit&Push&Deploy） |
