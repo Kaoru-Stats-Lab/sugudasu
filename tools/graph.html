@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Excelの表を貼り、伝えたい目的を選ぶとグラフが決まります。色を整えてSVGをコピー。登録不要・非送信。">
-  <title>表から資料用グラフを作る | SUGUDASU グラフ</title>
+  <meta name="description" content="Excelの表を貼り、伝えたい目的を選ぶと資料で伝わるグラフになります。SVGをコピーしてパワポや資料へ。登録不要・非送信・無料。">
+  <title>Excelの表から資料用グラフを作る（無料・非送信） | SUGUDASU グラフ</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SUGUDASU">
-  <meta property="og:title" content="表から資料用グラフを作る">
-  <meta property="og:description" content="Excel貼付→目的選択→SVGコピー。AI推測なし。サーバーに送りません。">
+  <meta property="og:title" content="Excelの表から資料用グラフを作る">
+  <meta property="og:description" content="目的を選ぶと伝わる形が決まる。SVGをコピーしてスライドへ。AI推測なし・サーバーに送りません。">
   <meta property="og:url" content="https://sugudasu.com/graph">
   <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
   <meta property="og:image:width" content="1200">
@@ -16,10 +16,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
   <meta name="twitter:title" content="SUGUDASU グラフ">
-  <meta name="twitter:description" content="表を貼る。目的を選ぶ。グラフが決まる。非送信。">
+  <meta name="twitter:description" content="表を貼る。目的を選ぶ。伝わるグラフになる。非送信。">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="../assets/sugudasu.css">
-  <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。表の解析からグラフ描画・SVGコピーまでブラウザ内だけで処理します。"}},{"@type":"Question","name":"どんな表が使えますか？","acceptedAnswer":{"@type":"Answer","text":"Excelやスプレッドシートからコピーしたタブ区切りの表です。推移・比較・順位・達成など、伝えたい目的に合う列構成が必要です。"}},{"@type":"Question","name":"グラフの種類は自分で選ぶのですか？","acceptedAnswer":{"@type":"Answer","text":"種類名ではなく「何を伝えたいか」を選びます。表の形と目的から決定論的に決まります。AIによる推測はありません。"}},{"@type":"Question","name":"色は変えられますか？","acceptedAnswer":{"@type":"Answer","text":"主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を塗り分ける編集画面はありません。"}},{"@type":"Question","name":"出力形式は何ですか？","acceptedAnswer":{"@type":"Answer","text":"SVGをクリップボードへコピーします。スライドや資料へ貼り付けて使います。貼付後の図形編集は前提にしません。"}}]}</script>
+  <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelの表から無料でグラフを作れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。登録不要・無料です。Excelやスプレッドシートからコピーした表を貼り、伝えたい目的を選ぶと資料用のグラフができます。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。表の解析からグラフ描画・SVGコピーまでブラウザ内だけで処理します。"}},{"@type":"Question","name":"グラフの種類は自分で選ぶのですか？","acceptedAnswer":{"@type":"Answer","text":"棒や折れ線といった種類名ではなく、「推移を見せたい」「達成を見せたい」など伝えたいことを選びます。表の形とその目的から、資料で伝わりやすい見せ方が決まります。AIによる推測はありません。"}},{"@type":"Question","name":"SVGとは何ですか？パワポに貼れますか？","acceptedAnswer":{"@type":"Answer","text":"SVGは拡大してもボケにくい図の形式です。コピーしてPowerPointやGoogleスライド、Wordなどの資料に貼れます。必要ならIllustratorやInkscapeなどのドローソフトでも開けます。このツールは貼るだけで使えることを優先しており、貼付後の細かい編集は必須にしません。"}},{"@type":"Question","name":"色は変えられますか？","acceptedAnswer":{"@type":"Answer","text":"主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を一つずつ塗り分ける編集画面はありません。"}},{"@type":"Question","name":"円グラフは作れますか？","acceptedAnswer":{"@type":"Answer","text":"現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成（目標線・Bullet・並棒）など、資料でよく使う形に絞っています。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <!--
@@ -40,50 +40,57 @@ non_send: true
     <p data-sg-privacy-badge data-subject="表データ" data-extra="Excel · 資料貼付" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
     <div class="sg-tool-lead-deck">
       <p class="sg-tool-lead">
-        Excelの表を資料用の<strong>グラフ</strong>にしたいときに。最初から見本が表示され、目的を選ぶと形が決まり、色を整えてSVGをコピーします。
+        Excelの表を、資料で<strong>伝わるグラフ</strong>にしたいときに。目的（推移・達成など）を選ぶと、その伝え方に合う見せ方が決まります。
       </p>
       <p class="sg-tool-lead">
-        AIは使いません。表の変換だけなら <a href="table-conv.html" class="text-violet-800 underline font-semibold">表変換</a> へ。
+        最初から見本が出るので、完成イメージを見ながら色を整えてSVGをコピーできます。AIは使いません。表の形式変換だけなら <a href="table-conv.html" class="text-violet-800 underline font-semibold">表変換</a> へ。
       </p>
     </div>
   </header>
 
-  <div id="sg-graph-root" class="space-y-6 max-w-4xl"></div>
+  <div id="sg-graph-root" class="space-y-6 w-full max-w-4xl mx-auto"></div>
 
-  <aside class="no-print ad-slot ad-slot--result max-w-2xl">広告枠</aside>
+  <aside class="no-print ad-slot ad-slot--result w-full max-w-2xl mx-auto">広告枠</aside>
 </main>
 
 <section class="sg-faq-section no-print" aria-labelledby="graph-faq-heading">
   <div class="sg-faq-inner space-y-2">
     <h2 id="graph-faq-heading" class="text-sm font-bold text-slate-900 mb-3">よくある質問</h2>
     <details class="sg-faq" open>
+      <summary>Excelの表から無料でグラフを作れますか？</summary>
+      <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+        <p>はい。登録不要・無料です。Excelやスプレッドシートからコピーした表を貼り、伝えたい目的を選ぶと資料用のグラフができます。</p>
+      </div>
+    </details>
+    <details class="sg-faq">
       <summary>データはサーバーに送信されますか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
         <p>いいえ。表の解析からグラフ描画・SVGコピーまでブラウザ内だけで処理します。</p>
       </div>
     </details>
     <details class="sg-faq">
-      <summary>どんな表が使えますか？</summary>
+      <summary>グラフの種類は自分で選ぶのですか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-        <p>Excelやスプレッドシートからコピーしたタブ区切りの表です。推移・比較・順位・達成など、伝えたい目的に合う列構成が必要です。</p>
+        <p>棒や折れ線といった<strong>種類名</strong>ではなく、「推移を見せたい」「達成を見せたい」など<strong>伝えたいこと</strong>を選びます。表の形とその目的から、資料で伝わりやすい見せ方が決まります。AIによる推測はありません。</p>
       </div>
     </details>
     <details class="sg-faq">
-      <summary>グラフの種類は自分で選ぶのですか？</summary>
+      <summary>SVGとは何ですか？パワポに貼れますか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-        <p>種類名ではなく「何を伝えたいか」を選びます。表の形と目的から決定論的に決まります。AIによる推測はありません。</p>
+        <p>SVGは拡大してもボケにくい図の形式です。コピーしてPowerPointやGoogleスライド、Wordなどの資料に貼れます。必要ならIllustratorやInkscapeなどのドローソフトでも開けます。</p>
+        <p class="mt-2">このツールは<strong>貼るだけで使えること</strong>を優先しており、貼付後の細かい編集は必須にしません。</p>
       </div>
     </details>
     <details class="sg-faq">
       <summary>色は変えられますか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-        <p>主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を塗り分ける編集画面はありません。</p>
+        <p>主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を一つずつ塗り分ける編集画面はありません。</p>
       </div>
     </details>
     <details class="sg-faq">
-      <summary>出力形式は何ですか？</summary>
+      <summary>円グラフは作れますか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-        <p>SVGをクリップボードへコピーします。スライドや資料へ貼り付けて使います。貼付後の図形編集は前提にしません。</p>
+        <p>現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成（目標線・Bullet・並棒）など、資料でよく使う形に絞っています。</p>
       </div>
     </details>
   </div>

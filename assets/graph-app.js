@@ -157,7 +157,7 @@ export async function mountGraphApp(root) {
     <section class="sg-panel space-y-3" aria-labelledby="sg-graph-data-h">
       <h2 id="sg-graph-data-h" class="text-sm font-bold text-slate-700">1. 表を貼る</h2>
       <p class="text-xs text-slate-600 leading-relaxed">
-        いまは見本の表です。下のプレビューが<strong>こんなグラフになる</strong>例です。Excelから自分の表に差し替えると、すぐ形が変わります。
+        いまは見本の表です。下のプレビューが、<strong>その目的で伝わる見せ方</strong>の例です。Excelから自分の表に差し替えると、すぐ形が変わります。
       </p>
       <textarea id="sg-graph-tsv" class="w-full min-h-[8rem] font-mono text-xs border border-slate-300 rounded-md p-2" spellcheck="false" aria-label="TSVまたはExcelから貼り付け"></textarea>
       <div class="flex flex-wrap gap-2 items-center">

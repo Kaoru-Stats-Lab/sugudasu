@@ -2233,10 +2233,30 @@
 | **cf_deployment_id** | CF Pages auto（`d0e7111` push origin main） |
 | **smoke** | （CF 反映後）`/graph` · Hub「グラフ」· Intent見本プレビュー |
 
+## DEPLOY-20260814-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy · graph リード/FAQ/センタリング · フッタ GitHub Issues（P7 override） |
+| **change_summary** | graph ユーザー向けコピー · FAQ SEO · mx-auto · shell に GitHub Issues リンク |
+| **local_build** | pending（release:pages:free 前） |
+| **deploy_count_today** | 2（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 時に記入） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **git_sha** | （push 後） |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）/graph リード·FAQ · フッタ GitHub Issues |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 002 approved（graph コピー/FAQ/センタリング · GitHub Issues · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 001 executed（d0e7111 · graph α · registry · hub · 期待合わせUI） |
 | 2026-08-14 | 001 approved（graph α · registry · hub · 期待合わせUI · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 007 executed（5f5d224 · AIプロンプトビルダー · 検索式 v0.2 · P7 override） |
