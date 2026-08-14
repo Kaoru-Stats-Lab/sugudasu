@@ -49,6 +49,12 @@ export function buildPresentationFromSettings(state = {}) {
   if (typeof state.show_unit_label === 'boolean') {
     presentation.show_unit_label = state.show_unit_label;
   }
+  if (typeof state.show_category_labels === 'boolean') {
+    presentation.show_category_labels = state.show_category_labels;
+  }
+  if (typeof state.show_value_axis_labels === 'boolean') {
+    presentation.show_value_axis_labels = state.show_value_axis_labels;
+  }
   return presentation;
 }
 

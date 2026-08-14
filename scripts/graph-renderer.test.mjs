@@ -57,6 +57,23 @@ function buildPayload(tsv, intent, choice) {
   assert.equal(a.body, b.body);
 }
 
+// Line: category band centers (not flush to Y-axis endpoints)
+{
+  const tsv = '月\t来場者\n6月\t1000\n7月\t1100\n8月\t1400\n9月\t1300\n';
+  const payload = buildPayload(tsv, 'TREND');
+  const r = await renderGraph(payload, { format: 'svg', width: 640, height: 360 });
+  assert.equal(r.ok, true, r.reason_codes?.join(','));
+  assert.equal(r.chart_type, 'Line');
+  const axisX = Number(r.body.match(/sg-axis-y" x1="([0-9.]+)"/)[1]);
+  const firstCx = Number(r.body.match(/sg-mark-point" cx="([0-9.]+)"/)[1]);
+  const points = [...r.body.matchAll(/sg-mark-point" cx="([0-9.]+)"/g)].map((m) => Number(m[1]));
+  assert.equal(points.length, 4);
+  assert.ok(firstCx > axisX + 8, `first point too flush to Y-axis: cx=${firstCx} axis=${axisX}`);
+  const step = points[1] - points[0];
+  assert.ok(Math.abs(points[2] - points[1] - step) < 0.01);
+  assert.ok(Math.abs(points[3] - points[2] - step) < 0.01);
+}
+
 // Column
 {
   const tsv = '年度\t売上\n2022\t100\n2023\t120\n2024\t150\n';
@@ -229,6 +246,44 @@ function buildPayload(tsv, intent, choice) {
   assert.match(r.body, /sg-mark-actual/);
   assert.match(r.body, /sg-mark-target/);
   assert.match(r.body, /#64748B/);
+}
+
+// Grouped_Column: accent_categories paints the actual bar for that category
+{
+  const tsv =
+    '部門\t実績\t目標\n第一営業\t85\t90\n第二営業\t72\t70\n第三営業\t64\t80\n';
+  const payload = buildPayload(tsv, 'TARGET_VS_ACTUAL', 'target_as_series');
+  const r = await renderGraph(payload, {
+    format: 'svg',
+    presentation: { accent_categories: ['第二営業'], accent_color: '#EA580C' },
+  });
+  assert.equal(r.ok, true, r.reason_codes?.join(','));
+  assert.match(r.body, /#EA580C/);
+}
+
+// Small_Multiples: dual-unit measures as stacked panels
+{
+  const tsv =
+    '年度\t売上（円）\t利益率（%）\n2022\t1000\t10\n2023\t1200\t12\n2024\t1400\t11\n2025\t1500\t13\n';
+  const payload = buildPayload(tsv, 'MULTI_METRIC', 'small_multiples');
+  assert.equal(payload.graph_spec?.chart?.type, 'Small_Multiples');
+  assert.equal(payload.graph_spec.data.series.length, 2);
+  const r = await renderGraph(payload, {
+    format: 'svg',
+    presentation: { show_category_labels: false },
+  });
+  assert.equal(r.ok, true, r.reason_codes?.join(','));
+  assert.equal(r.chart_type, 'Small_Multiples');
+  assert.match(r.body, /売上/);
+  assert.match(r.body, /利益率/);
+  assert.match(r.body, /sg-label-panel/);
+  assert.doesNotMatch(r.body, />2022</);
+  const withCats = await renderGraph(payload, {
+    format: 'svg',
+    presentation: { show_category_labels: true, show_value_axis_labels: false },
+  });
+  assert.match(withCats.body, />2022</);
+  assert.doesNotMatch(withCats.body, /sg-label-value/);
 }
 
 // Column + constant target line (T-line)

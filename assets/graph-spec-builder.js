@@ -355,6 +355,15 @@ function buildDataPayload(decision, ctx, chartType, observable) {
     if (paired) return paired;
   }
 
+  if (
+    (chartType === 'Small_Multiples' || chartType === 'Combination_Column_Line') &&
+    table.headers?.length >= 3 &&
+    table.rows?.length
+  ) {
+    const multi = buildMultiMeasureFromTable(table, unit, observable, chartType);
+    if (multi) return multi;
+  }
+
   if (chartType === 'Scatter' && table.headers?.length >= 3 && table.rows?.length) {
     const catIdx = 0;
     const m0 = 1;
@@ -487,6 +496,43 @@ function buildDataPayload(decision, ctx, chartType, observable) {
     ],
     categories,
     category_role: categoryRoleFromObservable(observable, chartType),
+    preserve_raw: true,
+  };
+}
+
+/**
+ * Temporal (or nominal) × 2+ measure columns — Small_Multiples / Combination.
+ * One series per measure column (not flattened to primary only).
+ */
+function buildMultiMeasureFromTable(table, unit, observable, chartType) {
+  const headers = table.headers.map(String);
+  const rows = table.rows;
+  if (headers.length < 3 || !rows?.length) return null;
+  const dimIdx = 0;
+  const measureIdxs = [];
+  for (let i = 1; i < headers.length; i++) measureIdxs.push(i);
+  if (measureIdxs.length < 2) return null;
+
+  const categories = rows.map((r, i) => String(r[dimIdx] ?? `row_${i}`));
+  const category_role = categoryRoleFromObservable(observable, chartType);
+  const series = measureIdxs.map((mi) => {
+    const label = headers[mi] || `measure_${mi}`;
+    return {
+      id: label,
+      label,
+      unit,
+      role: 'measure',
+      values: rows.map((r, i) => {
+        const raw = Number(r[mi]);
+        const n = Number.isFinite(raw) ? raw : 0;
+        return { category: categories[i], raw: n, display: n };
+      }),
+    };
+  });
+  return {
+    series,
+    categories,
+    category_role,
     preserve_raw: true,
   };
 }

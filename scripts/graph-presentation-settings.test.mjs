@@ -26,11 +26,15 @@ const p = buildPresentationFromSettings({
   accent_color: 'ea580c',
   accent_categories: ['12月', '12月', ''],
   show_value_labels: true,
+  show_category_labels: false,
+  show_value_axis_labels: false,
 });
 assert.equal(p.series_color, '#1D4ED8');
 assert.equal(p.accent_color, '#EA580C');
 assert.deepEqual(p.accent_categories, ['12月']);
 assert.equal(p.show_value_labels, true);
+assert.equal(p.show_category_labels, false);
+assert.equal(p.show_value_axis_labels, false);
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const rulesDoc = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'graph', 'GRAPH_RULES.json'), 'utf8'));

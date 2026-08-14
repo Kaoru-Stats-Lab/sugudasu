@@ -13,7 +13,7 @@
 
 import { validateGraphSpecPayload } from './graph-spec-validator.js';
 
-const R1_TYPES = new Set(['Bar', 'Column', 'Line', 'Bullet', 'Grouped_Column']);
+const R1_TYPES = new Set(['Bar', 'Column', 'Line', 'Bullet', 'Grouped_Column', 'Small_Multiples']);
 
 /** @see docs/graph/GRAPH_DEFAULT_PALETTE.md · GRAPH_TARGET_REPRESENTATION.md */
 const DEFAULT_PRESENTATION = Object.freeze({
@@ -90,7 +90,7 @@ export async function renderGraph(payload, options = {}) {
       [
         {
           reason_code: 'renderer_type_not_in_r1',
-          message: `R1 supports Bar/Column/Line/Bullet/Grouped_Column; got ${type}`,
+          message: `R1 supports Bar/Column/Line/Bullet/Grouped_Column/Small_Multiples; got ${type}`,
         },
       ]
     );
@@ -176,6 +176,7 @@ function renderSvgByType(type, spec, ctx) {
   if (type === 'Column') return renderColumn(spec, ctx);
   if (type === 'Bullet') return renderBullet(spec, ctx);
   if (type === 'Grouped_Column') return renderGroupedColumn(spec, ctx);
+  if (type === 'Small_Multiples') return renderSmallMultiples(spec, ctx);
   return renderLine(spec, ctx);
 }
 
@@ -505,7 +506,9 @@ function renderLine(spec, ctx) {
   const { min, max } = yDomain(vals, zeroBaseline);
   const ticks = niceTicks(min, max);
   const yScale = (v) => L.plotY + L.plotH - ((v - min) / (max - min)) * L.plotH;
-  const xAt = (i) => L.plotX + (cats.length <= 1 ? L.plotW / 2 : (i / (cats.length - 1)) * L.plotW);
+  // カテゴリ帯の中央（端点合わせ禁止）— 月ラベル付き資料用折れ線は棒と同流儀
+  const band = L.plotW / Math.max(cats.length, 1);
+  const xAt = (i) => L.plotX + i * band + band / 2;
   const zeroY = yScale(0);
 
   const graphic = [];
@@ -688,7 +691,7 @@ function renderGroupedColumn(spec, ctx) {
     const y = Math.min(yScale(v), zeroY);
     const h = Math.abs(yScale(v) - zeroY);
     graphic.push(
-      `<rect class="sg-mark-column sg-mark-actual" x="${fmt(baseX)}" y="${fmt(y)}" width="${fmt(barW)}" height="${fmt(h)}" fill="${esc(p.series_color)}"${stroke}/>`
+      `<rect class="sg-mark-column sg-mark-actual" x="${fmt(baseX)}" y="${fmt(y)}" width="${fmt(barW)}" height="${fmt(h)}" fill="${esc(fillForCategory(c, p))}"${stroke}/>`
     );
     markValueLabel(text, p, baseX + barW / 2, Math.min(y, zeroY) - 4, v, 'middle');
     if (target && targetVals[i] != null) {
@@ -716,6 +719,96 @@ function renderGroupedColumn(spec, ctx) {
 
   appendUnitAnnotation(text, actual, L, p);
   return wrapSvg(width, height, graphic, text, 'Grouped_Column');
+}
+
+/**
+ * Small_Multiples (CND-001 safe default): one panel per measure series, stacked.
+ * Dual-axis overlay is not rendered here (HOLD for α).
+ */
+function renderSmallMultiples(spec, ctx) {
+  const { width, height, presentation: p } = ctx;
+  const seriesList = Array.isArray(spec.data?.series) ? spec.data.series.filter(Boolean) : [];
+  if (!seriesList.length) {
+    return wrapSvg(width, height, [], [], 'Small_Multiples');
+  }
+  const n = seriesList.length;
+  const gap = 16;
+  const titleH = 18;
+  const panelH = Math.max(80, (height - gap * (n - 1) - titleH * n) / n);
+  const graphic = [];
+  const text = [];
+
+  seriesList.forEach((series, si) => {
+    const cats = categories(spec, series);
+    const vals = valuesInCategoryOrder(series, cats);
+    const zeroBaseline = spec.constraints?.zero_baseline !== false;
+    const { min, max } = yDomain(vals.length ? vals : [0], zeroBaseline);
+    const ticks = niceTicks(min, max);
+    const leftForValues = estimateLabelWidthPx(
+      String(Math.max(...vals.map(Math.abs), 1)),
+      p.value_font_size
+    );
+    const top = si * (panelH + titleH + gap);
+    const L = {
+      plotX: Math.max(48, leftForValues),
+      plotY: top + titleH + 4,
+      plotW: width - Math.max(48, leftForValues) - 16,
+      plotH: panelH - 8,
+    };
+    const yScale = (v) => L.plotY + L.plotH - ((v - min) / (max - min || 1)) * L.plotH;
+    const band = L.plotW / Math.max(cats.length, 1);
+    const barGap = band * p.bar_gap;
+    const barW = Math.max(band - barGap, 1);
+    const zeroY = yScale(0);
+    const stroke = markStrokeAttrs(p);
+    const seriesFill = si === 0 ? p.series_color : p.accent_color;
+
+    text.push(
+      `<text class="sg-label-panel" x="${fmt(L.plotX)}" y="${fmt(top + 12)}" text-anchor="start" font-size="${fmt(Math.max(11, p.category_font_size - 1))}" fill="${esc(p.text_color)}">${esc(series.label || series.id || `系列${si + 1}`)}</text>`
+    );
+
+    if (p.grid) {
+      for (const t of ticks) {
+        const y = yScale(t);
+        graphic.push(
+          `<line class="sg-grid" x1="${fmt(L.plotX)}" y1="${fmt(y)}" x2="${fmt(L.plotX + L.plotW)}" y2="${fmt(y)}" stroke="${esc(p.grid_color)}" stroke-width="1"/>`
+        );
+      }
+    }
+    graphic.push(
+      `<line class="sg-axis-x" x1="${fmt(L.plotX)}" y1="${fmt(zeroY)}" x2="${fmt(L.plotX + L.plotW)}" y2="${fmt(zeroY)}" stroke="${esc(p.baseline_color)}" stroke-width="1.5"/>`
+    );
+    graphic.push(
+      `<line class="sg-axis-y" x1="${fmt(L.plotX)}" y1="${fmt(L.plotY)}" x2="${fmt(L.plotX)}" y2="${fmt(L.plotY + L.plotH)}" stroke="${esc(p.axis_color)}" stroke-width="1"/>`
+    );
+
+    cats.forEach((c, i) => {
+      const v = vals[i];
+      const x = L.plotX + i * band + barGap / 2;
+      const y = Math.min(yScale(v), zeroY);
+      const h = Math.abs(yScale(v) - zeroY);
+      const fill = fillForCategory(c, { ...p, series_color: seriesFill });
+      graphic.push(
+        `<rect class="sg-mark-column" x="${fmt(x)}" y="${fmt(y)}" width="${fmt(barW)}" height="${fmt(h)}" fill="${esc(fill)}"${stroke}/>`
+      );
+      markValueLabel(text, p, x + barW / 2, Math.min(y, zeroY) - 4, v, 'middle');
+      if (p.show_category_labels && si === n - 1) {
+        text.push(
+          `<text class="sg-label-category" x="${fmt(x + barW / 2)}" y="${fmt(L.plotY + L.plotH + 16)}" text-anchor="middle" font-size="${fmt(p.category_font_size)}" fill="${esc(p.text_color)}">${esc(c)}</text>`
+        );
+      }
+    });
+
+    if (p.show_value_axis_labels) {
+      for (const t of ticks) {
+        text.push(
+          `<text class="sg-label-value" x="${fmt(L.plotX - 8)}" y="${fmt(yScale(t) + 4)}" text-anchor="end" font-size="${fmt(p.value_font_size)}" fill="${esc(p.text_color)}">${esc(fmt(t))}</text>`
+        );
+      }
+    }
+  });
+
+  return wrapSvg(width, height, graphic, text, 'Small_Multiples');
 }
 
 function wrapSvg(width, height, graphicParts, textParts, type) {

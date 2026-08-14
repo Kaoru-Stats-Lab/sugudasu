@@ -19,7 +19,7 @@
   <meta name="twitter:description" content="表を貼る。目的を選ぶ。伝わるグラフになる。非送信。">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="../assets/sugudasu.css">
-  <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelの表から無料でグラフを作れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。登録不要・無料です。Excelやスプレッドシートからコピーした表を貼り、伝えたい目的を選ぶと資料用のグラフができます。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。表の解析からグラフ描画・SVGコピーまでブラウザ内だけで処理します。"}},{"@type":"Question","name":"グラフの種類は自分で選ぶのですか？","acceptedAnswer":{"@type":"Answer","text":"棒や折れ線といった種類名ではなく、「推移を見せたい」「達成を見せたい」など伝えたいことを選びます。表の形とその目的から、資料で伝わりやすい見せ方が決まります。AIによる推測はありません。"}},{"@type":"Question","name":"SVGとは何ですか？パワポに貼れますか？","acceptedAnswer":{"@type":"Answer","text":"SVGは拡大してもボケにくい図の形式です。コピーしてPowerPointやGoogleスライド、Wordなどの資料に貼れます。必要ならIllustratorやInkscapeなどのドローソフトでも開けます。このツールは貼るだけで使えることを優先しており、貼付後の細かい編集は必須にしません。"}},{"@type":"Question","name":"色は変えられますか？","acceptedAnswer":{"@type":"Answer","text":"主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を一つずつ塗り分ける編集画面はありません。"}},{"@type":"Question","name":"円グラフは作れますか？","acceptedAnswer":{"@type":"Answer","text":"現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成（目標線・Bullet・並棒）など、資料でよく使う形に絞っています。"}}]}</script>
+  <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Excelの表から無料でグラフを作れますか？","acceptedAnswer":{"@type":"Answer","text":"はい。登録不要・無料です。Excelやスプレッドシートからコピーした表を貼り、伝えたい目的を選ぶと資料用のグラフができます。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。表の解析からグラフ描画・SVGコピーまでブラウザ内だけで処理します。"}},{"@type":"Question","name":"グラフの種類は自分で選ぶのですか？","acceptedAnswer":{"@type":"Answer","text":"棒や折れ線といった種類名ではなく、「推移を見せたい」「達成を見せたい」など伝えたいことを選びます。表の形とその目的から、資料で伝わりやすい見せ方が決まります。AIによる推測はありません。"}},{"@type":"Question","name":"SVGとは何ですか？パワポに貼れますか？","acceptedAnswer":{"@type":"Answer","text":"SVGは拡大してもボケにくい図の形式です。コピーしてPowerPointやGoogleスライド、Wordなどの資料に貼れます。必要ならIllustratorやInkscapeなどのドローソフトでも開けます。このツールは貼るだけで使えることを優先しており、貼付後の細かい編集は必須にしません。"}},{"@type":"Question","name":"色は変えられますか？","acceptedAnswer":{"@type":"Answer","text":"主色と強調色をHEXまたはピッカーで変え、強調したい項目だけを選べます。全要素を一つずつ塗り分ける編集画面はありません。"}},{"@type":"Question","name":"単位の違う2つの指標（売上と利益率など）は？","acceptedAnswer":{"@type":"Answer","text":"「単位の違う2指標」を選ぶと、上下に分けたグラフになります。見本の表（売上×利益率）から試せます。左右の軸を重ねる2軸グラフは、いまの公開版では誤読を避けるため出していません。"}},{"@type":"Question","name":"項目名や軸の数値は消せますか？","acceptedAnswer":{"@type":"Answer","text":"プレビュー上の「項目名」「軸の数値」のチェックを外すと非表示にできます。目盛り間隔の細かい指定は公開版では扱いません。"}},{"@type":"Question","name":"円グラフは作れますか？","acceptedAnswer":{"@type":"Answer","text":"現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成・単位の違う2指標（上下分離）など、資料でよく使う形に絞っています。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
 <!--
@@ -88,9 +88,22 @@ non_send: true
       </div>
     </details>
     <details class="sg-faq">
+      <summary>単位の違う2つの指標（売上と利益率など）は？</summary>
+      <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+        <p>「単位の違う2指標」を選ぶと、<strong>上下に分けたグラフ</strong>になります。見本の表（売上×利益率）からすぐ試せます。</p>
+        <p class="mt-2">左右の軸を重ねる<strong>2軸グラフ</strong>は、いまの公開版では誤読を避けるため出していません。</p>
+      </div>
+    </details>
+    <details class="sg-faq">
+      <summary>項目名や軸の数値は消せますか？</summary>
+      <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
+        <p>プレビュー上の「項目名」「軸の数値」のチェックを外すと非表示にできます。目盛り間隔の細かい指定は公開版では扱いません。</p>
+      </div>
+    </details>
+    <details class="sg-faq">
       <summary>円グラフは作れますか？</summary>
       <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-        <p>現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成（目標線・Bullet・並棒）など、資料でよく使う形に絞っています。</p>
+        <p>現時点では円グラフ・ドーナツは未対応です。推移・比較・順位・達成・単位の違う2指標（上下分離）など、資料でよく使う形に絞っています。</p>
       </div>
     </details>
   </div>

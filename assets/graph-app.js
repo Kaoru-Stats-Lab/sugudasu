@@ -24,11 +24,15 @@ const SAMPLE_RANK =
   '商品\t売上\nA\t210\nB\t180\nC\t150\nD\t90\nE\t60\n';
 const SAMPLE_TARGET =
   '部門\t実績\t目標\n第一営業\t85\t90\n第二営業\t72\t70\n第三営業\t64\t80\n';
+const SAMPLE_DUAL =
+  '年度\t売上（円）\t利益率（%）\n2022\t1000\t10\n2023\t1200\t12\n2024\t1400\t11\n2025\t1500\t13\n';
+
 const SAMPLES = {
   TREND: SAMPLE_TREND,
   COMPARISON: SAMPLE_COMPARE,
   RANKING: SAMPLE_RANK,
   TARGET_VS_ACTUAL: SAMPLE_TARGET,
+  MULTI_METRIC: SAMPLE_DUAL,
 };
 
 const SAMPLE_SET = new Set(Object.values(SAMPLES));
@@ -106,6 +110,20 @@ function thumbSvg(kind) {
           `<rect x="38" y="18" width="8" height="8" fill="${gray}"/>` +
           `<rect x="50" y="16" width="8" height="18" fill="${blue}"/>`
       );
+    case 'dual':
+      // Small_Multiples 見本（上下分離）— 重ね2軸ではない
+      return box(
+        `<rect x="8" y="8" width="56" height="28" fill="#F8FAFC" stroke="#E2E8F0"/>` +
+          `<rect x="12" y="11" width="5" height="8" fill="${blue}"/>` +
+          `<rect x="20" y="9" width="5" height="10" fill="${blue}"/>` +
+          `<rect x="28" y="12" width="5" height="7" fill="${blue}"/>` +
+          `<rect x="36" y="10" width="5" height="9" fill="${blue}"/>` +
+          `<line x1="12" y1="22" x2="60" y2="22" stroke="#CBD5E1" stroke-width="1"/>` +
+          `<rect x="12" y="28" width="5" height="5" fill="${orange}"/>` +
+          `<rect x="20" y="26" width="5" height="7" fill="${orange}"/>` +
+          `<rect x="28" y="29" width="5" height="4" fill="${orange}"/>` +
+          `<rect x="36" y="27" width="5" height="6" fill="${orange}"/>`
+      );
     default:
       return box(`<rect x="8" y="8" width="56" height="28" fill="#F8FAFC" stroke="#E2E8F0"/>`);
   }
@@ -116,6 +134,13 @@ const INTENT_OPTIONS = [
   { id: 'COMPARISON', label: '比較したい', thumb: 'bars', hint: '棒で比べる', previewReady: true },
   { id: 'RANKING', label: '順位を見せたい', thumb: 'rank', hint: '横棒の並び', previewReady: true },
   { id: 'TARGET_VS_ACTUAL', label: '達成を見せたい', thumb: 'target_line', hint: '目標線 · Bullet · 並棒', previewReady: true },
+  {
+    id: 'MULTI_METRIC',
+    label: '単位の違う2指標',
+    thumb: 'dual',
+    hint: '見本: 売上×利益率を上下分離（重ね2軸はα対象外）',
+    previewReady: true,
+  },
   {
     id: 'BREAKDOWN',
     label: '内訳を見せたい',
@@ -133,9 +158,21 @@ const INTENT_OPTIONS = [
 ];
 
 const CND_OPTIONS = [
-  { id: 'target_as_line', label: '実績の棒に目標線', thumb: 'target_line' },
-  { id: 'target_as_marker', label: 'Bullet（目標マーカー）', thumb: 'bullet' },
-  { id: 'target_as_series', label: '実績と目標を並棒', thumb: 'grouped' },
+  { id: 'target_as_line', label: '実績の棒に目標線', thumb: 'target_line', group: 'CND-004' },
+  { id: 'target_as_marker', label: 'Bullet（目標マーカー）', thumb: 'bullet', group: 'CND-004' },
+  { id: 'target_as_series', label: '実績と目標を並棒', thumb: 'grouped', group: 'CND-004' },
+];
+
+const CND_DUAL_OPTIONS = [
+  { id: 'small_multiples', label: '上下に分離（推奨）', thumb: 'dual', group: 'CND-001', ready: true },
+  {
+    id: 'dual_axis_combo',
+    label: '重ねて表示（2軸）',
+    thumb: 'target_line',
+    group: 'CND-001',
+    ready: false,
+    hint: 'α未対応 · 誤読防止のため非表示',
+  },
 ];
 
 function cardClass(selected, disabled) {
@@ -170,8 +207,8 @@ export async function mountGraphApp(root) {
       <p class="text-xs text-slate-500">種類名ではなく目的を選びます。右のミニ図はイメージです。</p>
       <div id="sg-graph-intent-cards" class="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-labelledby="sg-graph-intent-h"></div>
       <div id="sg-graph-cnd-wrap" class="hidden space-y-2 pt-1">
-        <p class="text-xs font-semibold text-slate-600">目標の見せ方</p>
-        <div id="sg-graph-cnd-cards" class="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="目標の見せ方"></div>
+        <p id="sg-graph-cnd-label" class="text-xs font-semibold text-slate-600">見せ方の選択</p>
+        <div id="sg-graph-cnd-cards" class="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-labelledby="sg-graph-cnd-label"></div>
       </div>
     </section>
     <section class="sg-panel space-y-3" aria-labelledby="sg-graph-out-h">
@@ -185,6 +222,8 @@ export async function mountGraphApp(root) {
           </select>
         </label>
         <label class="flex items-center gap-1"><input type="checkbox" id="sg-graph-values"> 値ラベル</label>
+        <label class="flex items-center gap-1"><input type="checkbox" id="sg-graph-cat-labels" checked> 項目名</label>
+        <label class="flex items-center gap-1"><input type="checkbox" id="sg-graph-axis-labels" checked> 軸の数値</label>
         <label class="flex items-center gap-1"><input type="checkbox" id="sg-graph-frame"> 半面プレビュー枠</label>
       </div>
       <div class="flex flex-wrap gap-2">
@@ -227,6 +266,8 @@ export async function mountGraphApp(root) {
     cats: root.querySelector('#sg-graph-cats'),
     slot: root.querySelector('#sg-graph-slot'),
     values: root.querySelector('#sg-graph-values'),
+    catLabels: root.querySelector('#sg-graph-cat-labels'),
+    axisLabels: root.querySelector('#sg-graph-axis-labels'),
     frame: root.querySelector('#sg-graph-frame'),
     redraw: root.querySelector('#sg-graph-redraw'),
     copy: root.querySelector('#sg-graph-copy'),
@@ -236,6 +277,7 @@ export async function mountGraphApp(root) {
 
   let intentId = 'TREND';
   let cndId = 'target_as_line';
+  let cndMode = 'CND-004'; // or CND-001
   let usingSample = true;
 
   function renderIntentCards() {
@@ -253,15 +295,29 @@ export async function mountGraphApp(root) {
     }).join('');
   }
 
+  function activeCndOptions() {
+    return cndMode === 'CND-001' ? CND_DUAL_OPTIONS : CND_OPTIONS;
+  }
+
   function renderCndCards() {
-    el.cndCards.innerHTML = CND_OPTIONS.map((o) => {
-      const selected = o.id === cndId;
-      return `<label class="${cardClass(selected, false)}">
-        <input type="radio" name="sg-graph-cnd" value="${o.id}" class="sr-only" ${selected ? 'checked' : ''}>
+    const opts = activeCndOptions();
+    const cndLabel = root.querySelector('#sg-graph-cnd-label');
+    if (cndLabel) {
+      cndLabel.textContent =
+        cndMode === 'CND-001' ? '単位の違う指標の見せ方' : '目標の見せ方';
+    }
+    el.cndCards.innerHTML = opts
+      .map((o) => {
+        const selected = o.id === cndId;
+        const disabled = o.ready === false;
+        const hint = o.hint ? `<span class="block text-[10px] text-slate-500 mt-0.5">${o.hint}</span>` : '';
+        return `<label class="${cardClass(selected, disabled)}">
+        <input type="radio" name="sg-graph-cnd" value="${o.id}" class="sr-only" ${selected ? 'checked' : ''} ${disabled ? 'disabled' : ''}>
         ${thumbSvg(o.thumb)}
-        <span class="text-xs font-semibold text-slate-800 leading-snug">${o.label}</span>
+        <span class="min-w-0"><span class="text-xs font-semibold text-slate-800 leading-snug">${o.label}</span>${hint}</span>
       </label>`;
-    }).join('');
+      })
+      .join('');
   }
 
   function applySampleForIntent(id, force) {
@@ -319,19 +375,33 @@ export async function mountGraphApp(root) {
   async function redraw() {
     try {
       await ensureEngine();
-      el.cndWrap.classList.toggle('hidden', intentId !== 'TARGET_VS_ACTUAL');
       const extracted = extractObservableFromTsv(el.tsv.value);
       const decision = engine.decide({
         observable: extracted.observable,
         intent: intentId,
         measures: extracted.measures,
       });
+
+      const needsCnd = decision.state === 'CONDITIONAL' && decision.confirmation_id;
+      if (decision.confirmation_id === 'CND-004') {
+        cndMode = 'CND-004';
+        if (!CND_OPTIONS.some((o) => o.id === cndId)) cndId = 'target_as_line';
+      } else if (decision.confirmation_id === 'CND-001') {
+        cndMode = 'CND-001';
+        if (!CND_DUAL_OPTIONS.some((o) => o.id === cndId && o.ready !== false)) {
+          cndId = 'small_multiples';
+        }
+      }
+      const showCnd = Boolean(needsCnd);
+      el.cndWrap.classList.toggle('hidden', !showCnd);
+      if (showCnd) renderCndCards();
+
       const payload = buildGraphSpec(decision, {
         intent: intentId,
         observable: extracted.observable,
         table: extracted.table,
         measures: extracted.measures,
-        confirmation_choice_id: intentId === 'TARGET_VS_ACTUAL' ? cndId : null,
+        confirmation_choice_id: showCnd ? cndId : null,
         rulesDoc,
       });
       if (!payload.graph_spec) {
@@ -363,6 +433,8 @@ export async function mountGraphApp(root) {
         accent_color: el.accentHex.value,
         accent_categories: selectedAccents(),
         show_value_labels: el.values.checked,
+        show_category_labels: el.catLabels?.checked !== false,
+        show_value_axis_labels: el.axisLabels?.checked !== false,
       });
       const chart = await renderGraph(payload, {
         format: 'svg',
@@ -439,6 +511,8 @@ export async function mountGraphApp(root) {
     el.accentHex.addEventListener(ev, () => redraw());
     el.slot.addEventListener(ev, () => redraw());
     el.values.addEventListener(ev, () => redraw());
+    el.catLabels?.addEventListener(ev, () => redraw());
+    el.axisLabels?.addEventListener(ev, () => redraw());
     el.frame.addEventListener(ev, () => redraw());
   });
   el.cats.addEventListener('change', () => redraw());

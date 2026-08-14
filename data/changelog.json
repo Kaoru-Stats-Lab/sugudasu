@@ -11,6 +11,29 @@
   },
   "entries": [
     {
+      "id": "graph-dual-labels-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "public",
+      "title": "グラフ — 単位の違う2指標とラベル表示の調整",
+      "body": "売上と利益率など単位の違う指標を上下に分けて表示できます。項目名・軸の数値の表示切替、折れ線の始点余白も整えました。重ね2軸は公開版では出していません。",
+      "tools": [
+        "graph"
+      ]
+    },
+    {
+      "id": "graph-dual-labels-internal-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "internal",
+      "title": "graph · Small_Multiples · label toggles · Line band center",
+      "body": "CND-001 · MULTI_METRIC見本 · show_category/axis_labels · Line xAt band center · 重ね2軸 HOLD",
+      "tools": [
+        "graph"
+      ],
+      "rollup": "graph-dual-labels-20260814"
+    },
+    {
       "id": "graph-alpha-20260814",
       "date": "2026-08-14",
       "type": "feature",
