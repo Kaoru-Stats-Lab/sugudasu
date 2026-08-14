@@ -2332,25 +2332,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy · Graph Waterfall（増減ブリッジ）α（P7 override） |
 | **change_summary** | BRIDGE Intent · Renderer Waterfall · OA-19 · STATUS_GATE R1.x+ · roadmap graph-bridge 削除 |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 29/450） |
 | **deploy_count_today** | 7（P7 override · 提督明示） |
-| **pages_build_budget_after** | （consume 後に記入） |
+| **pages_build_budget_after** | 29/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | （push 後） |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | `/graph` Intent「増減要因」· FAQ · OA-19 |
+| **git_sha** | `f56e53f` |
+| **cf_deployment_id** | CF Pages auto（`f56e53f` push origin main） |
+| **smoke** | （CF 反映後）`/graph` Intent「増減要因」· FAQ · 見本プレビュー |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 007 executed（f56e53f · Graph Waterfall α · P7 override） |
 | 2026-08-14 | 007 approved（Graph Waterfall α · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 006 executed（d080e4b · Roadmap 製品グループ · Form purge · validate:roadmap · P7 override） |
 | 2026-08-14 | 006 approved（Roadmap 製品グループ · Form purge · validate:roadmap · P7 override · 提督 Commit&Push&Deploy） |
