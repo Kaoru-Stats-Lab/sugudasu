@@ -2313,25 +2313,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy · Roadmap プロダクト単位一覧 · Form purge · validate:roadmap（P7 override） |
 | **change_summary** | /roadmap 製品グループ · intent-map · verify-roadmap · contact Form purge · 検討ギャップ棚卸し |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 28/450） |
 | **deploy_count_today** | 6（P7 override · 提督明示） |
-| **pages_build_budget_after** | （consume 後に記入） |
+| **pages_build_budget_after** | 28/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · release:pages:free |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **git_sha** | （push 後） |
-| **cf_deployment_id** | （push 後） |
-| **smoke** | `/roadmap` プロダクトチップ · `/contact` に Googleフォームなし |
+| **git_sha** | `d080e4b` |
+| **cf_deployment_id** | CF Pages auto（`d080e4b` push origin main） |
+| **smoke** | （CF 反映後）`/roadmap` プロダクトチップ · `/contact` に Googleフォームなし |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 006 executed（d080e4b · Roadmap 製品グループ · Form purge · validate:roadmap · P7 override） |
 | 2026-08-14 | 006 approved（Roadmap 製品グループ · Form purge · validate:roadmap · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 005 executed（bedde2c · フッタ Issues リンク削除 · FBのみ · P7 override） |
 | 2026-08-14 | 005 approved（フッタ Issues リンク削除 · FBのみ · P7 override · 提督 Commit&Push&Deploy） |
