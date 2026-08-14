@@ -345,9 +345,7 @@
       <div class="sg-section-shell text-center text-[11px] text-slate-400 space-x-2">
         <a href="${homeHref()}" class="text-slate-500 hover:underline">ツール一覧</a>
         <span aria-hidden="true">·</span>
-        <button type="button" class="text-slate-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer" title="短いコメントが GitHub Issues に届きます">フィードバック</button>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/Kaoru-Stats-Lab/sugudasu/issues" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:underline">GitHub Issues</a>
+        <button type="button" class="text-slate-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer" title="任意の短いコメントを送れます（返信はありません）">フィードバック</button>
         <span aria-hidden="true">·</span>
         <a href="${pageHref('privacy.html')}" class="hover:underline">プライバシー</a>
         <span aria-hidden="true">·</span>
@@ -371,9 +369,7 @@
           <span class="text-slate-300 mx-1">|</span>
           <a href="${pageHref('contact.html')}" class="text-blue-600 hover:underline">問い合わせ</a>
           <span class="text-slate-300 mx-1">|</span>
-          <button type="button" class="text-blue-600 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer" title="短いコメントが GitHub Issues に届きます">フィードバック</button>
-          <span class="text-slate-300 mx-1">|</span>
-          <a href="https://github.com/Kaoru-Stats-Lab/sugudasu/issues" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub Issues</a>
+          <button type="button" class="text-blue-600 hover:underline bg-transparent border-0 p-0 cursor-pointer text-[11px]" data-sg-feedback-open data-sg-feedback-source="footer" title="任意の短いコメントを送れます（返信はありません）">フィードバック</button>
           <span class="text-slate-300 mx-1">|</span>
           <a href="${pageHref('updates.html')}" class="text-blue-600 hover:underline">更新履歴</a>
           <span class="text-slate-300 mx-1">|</span>

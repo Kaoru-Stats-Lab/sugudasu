@@ -2290,10 +2290,29 @@
 | **cf_deployment_id** | CF Pages auto（`2422961` push origin main） |
 | **smoke** | （CF 反映後）`/graph` リード · FAQ「複合グラフ」 |
 
+## DEPLOY-20260814-005
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy · フッタの GitHub Issues リンクを外しフィードバック導線のみに（P7 override） |
+| **change_summary** | sugudasu-shell.js — ユーザー面から Issues リンク削除 · FB tooltip 平易化 |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 5（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （CF 反映後）フッタに「フィードバック」あり · 「GitHub Issues」なし |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 005 approved（フッタ Issues リンク削除 · FBのみ · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 004 executed（2422961 · graph 複合非対応の理由明示 · P7 override） |
 | 2026-08-14 | 004 approved（graph 複合非対応の理由明示 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 003 executed（0467808 · graph ラベル · 2指標上下分離 · Line帯中央 · P7 override） |
