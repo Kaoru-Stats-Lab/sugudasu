@@ -106,19 +106,6 @@ function buildPayload(tsv, intent, choice) {
   assert.ok(r.reason_codes.includes('terminal_payload_no_render'));
 }
 
-// R2 type not drawn (Waterfall via BRIDGE)
-{
-  const payload = buildPayload(
-    '要因\t増減\n開始\t100\n価格\t20\n数量\t-5\n終了\t115\n',
-    'BRIDGE'
-  );
-  assert.equal(payload.graph_spec?.chart?.type, 'Waterfall');
-  const r = await renderGraph(payload, { format: 'svg' });
-  assert.equal(r.ok, false);
-  assert.ok(r.reason_codes.includes('renderer_type_not_in_r1'));
-  assert.equal(R1_TYPES.has('Waterfall'), false);
-}
-
 // PNG from same Spec
 {
   const tsv = '年度\t売上\n2022\t100\n2023\t120\n2024\t150\n2025\t170\n';
@@ -312,6 +299,24 @@ function buildPayload(tsv, intent, choice) {
   assert.equal(r.ok, true, r.reason_codes?.join(','));
   assert.match(r.body, /sg-mark-target-line/);
   assert.match(r.body, /polyline class="sg-mark-target-line"/);
+}
+
+// Waterfall (BRIDGE): start → deltas → end
+{
+  const tsv = '要因\t増減\n開始\t100\n価格\t20\n数量\t-5\n終了\t115\n';
+  const payload = buildPayload(tsv, 'BRIDGE');
+  assert.equal(payload.graph_spec?.chart?.type, 'Waterfall', JSON.stringify(payload));
+  const roles = payload.graph_spec.data.series[0].values.map((v) => v.step_role);
+  assert.deepEqual(roles, ['start', 'delta', 'delta', 'end']);
+  const r = await renderGraph(payload, { format: 'svg' });
+  assert.equal(r.ok, true, r.reason_codes?.join(','));
+  assert.equal(r.chart_type, 'Waterfall');
+  assert.match(r.body, /sg-mark-waterfall/);
+  assert.match(r.body, /data-role="start"/);
+  assert.match(r.body, /data-role="end"/);
+  assert.match(r.body, /#1E3A5F/);
+  assert.match(r.body, /#EA580C/);
+  assert.equal(R1_TYPES.has('Waterfall'), true);
 }
 
 console.log('graph-renderer: OK');

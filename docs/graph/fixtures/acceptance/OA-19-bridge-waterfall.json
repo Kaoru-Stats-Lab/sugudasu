@@ -1,0 +1,9 @@
+{
+  "id": "OA-19",
+  "scenario": "増減要因ブリッジ（Waterfall · 期首→要因→期末）",
+  "tsv": "要因\t増減\n開始\t100\n価格\t20\n数量\t-5\nコスト\t-8\n終了\t107\n",
+  "intent": "BRIDGE",
+  "expected_r1_type": "Waterfall",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"],
+  "note": "R1.x+ Waterfall · GRAPH_WATERFALL_SPEC · 達成色なし · 符号色は増減識別のみ"
+}

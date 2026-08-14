@@ -45,10 +45,12 @@ const preview = wrapDeckHalfLeftPreview(result.body, {
 | `Column` + `encoding.target=line` | R1.x T-line · 定数は水平線、変動は polyline |
 | `Bullet` | R1.x T-marker · CND-004 `target_as_marker` |
 | `Grouped_Column` | R1.x T-series · CND-004 `target_as_series` |
+| `Small_Multiples` | 単位違い2指標 · CND-001 |
+| `Waterfall` | R1.x+ BRIDGE · [`GRAPH_WATERFALL_SPEC.md`](./GRAPH_WATERFALL_SPEC.md) |
 
-正本: [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md)
+正本: [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md) · Waterfall [`GRAPH_WATERFALL_SPEC.md`](./GRAPH_WATERFALL_SPEC.md)
 
-他 type（Waterfall / Pie 等）→ `renderer_type_not_in_r1` REJECT。達成緑/赤は描かない。
+他 type（Pie 等）→ `renderer_type_not_in_r1` REJECT。達成緑/赤は描かない。Waterfall の増減色は符号識別のみ。
 
 ### 成功
 

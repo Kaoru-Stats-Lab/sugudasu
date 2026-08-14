@@ -94,18 +94,6 @@
       "askFeedback": "内訳でいちばん欲しいのは「棒の積み上げ」「100%積み上げ」「その他」のどれですか？"
     },
     {
-      "id": "graph-bridge",
-      "lane": "core",
-      "status": "considering",
-      "priority": 9,
-      "toolId": "graph",
-      "toolLabel": "グラフ",
-      "toolHref": "graph.html",
-      "title": "増減要因を見せたい（ブリッジ）",
-      "summary": "α の Intent「増減要因を見せたい」は準備中。期首→増減→期末のような橋渡し図（Waterfall 系）を、誤読しにくい形で検討。達成色の自動発明はしない。",
-      "askFeedback": "会議で増減要因を出すとき、いちばん困るのは「形の選び方」「Excel操作」「ラベルの重なり」のどれですか？"
-    },
-    {
       "id": "graph-dual-axis-overlay",
       "lane": "core",
       "status": "considering",

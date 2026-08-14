@@ -108,7 +108,8 @@ Acceptance では「ノートPC画面できれい」だけでなく、可能な�
 1. `text_color` / `axis_color` を濃くする  
 2. `line_width` を上げる  
 3. 棒に暗い stroke を 1px 足す（塗りは維持可）  
-4. （任意）`proj_contrast` プリセットでさらに一段  
+4. **折れ点円**（`sg-mark-point` · 現行 `r=3.5`）を太く／大きく — 線幅3に対して点が細い。候補: `r≈4.5〜5` または `fill`＋白/`ink` の細い stroke。Roadmap 項目にはしない（α機能ギャップではない · 次の Renderer 調整バッチで）  
+5. （任意）`proj_contrast` プリセットでさらに一段  
 
 数値の確定は Acceptance（半面縮小・投影想定）のあとでよい。
 

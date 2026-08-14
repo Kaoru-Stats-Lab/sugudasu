@@ -26,6 +26,8 @@ const SAMPLE_TARGET =
   '部門\t実績\t目標\n第一営業\t85\t90\n第二営業\t72\t70\n第三営業\t64\t80\n';
 const SAMPLE_DUAL =
   '年度\t売上（円）\t利益率（%）\n2022\t1000\t10\n2023\t1200\t12\n2024\t1400\t11\n2025\t1500\t13\n';
+const SAMPLE_BRIDGE =
+  '要因\t増減\n開始\t100\n価格\t20\n数量\t-5\nコスト\t-8\n終了\t107\n';
 
 const SAMPLES = {
   TREND: SAMPLE_TREND,
@@ -33,6 +35,7 @@ const SAMPLES = {
   RANKING: SAMPLE_RANK,
   TARGET_VS_ACTUAL: SAMPLE_TARGET,
   MULTI_METRIC: SAMPLE_DUAL,
+  BRIDGE: SAMPLE_BRIDGE,
 };
 
 const SAMPLE_SET = new Set(Object.values(SAMPLES));
@@ -105,10 +108,10 @@ function thumbSvg(kind) {
     case 'bridge':
       return box(
         `<rect x="8" y="8" width="56" height="28" fill="#F8FAFC" stroke="#E2E8F0"/>` +
-          `<rect x="14" y="20" width="8" height="14" fill="${blue}"/>` +
-          `<rect x="26" y="14" width="8" height="10" fill="${orange}"/>` +
-          `<rect x="38" y="18" width="8" height="8" fill="${gray}"/>` +
-          `<rect x="50" y="16" width="8" height="18" fill="${blue}"/>`
+          `<rect x="12" y="18" width="8" height="16" fill="#1E3A5F"/>` +
+          `<rect x="24" y="12" width="8" height="10" fill="${blue}"/>` +
+          `<rect x="36" y="16" width="8" height="8" fill="${orange}"/>` +
+          `<rect x="48" y="14" width="8" height="20" fill="#1E3A5F"/>`
       );
     case 'dual':
       // Small_Multiples 見本（上下分離）— 重ね2軸ではない
@@ -152,8 +155,8 @@ const INTENT_OPTIONS = [
     id: 'BRIDGE',
     label: '増減要因を見せたい',
     thumb: 'bridge',
-    hint: '準備中（プレビュー未対応）',
-    previewReady: false,
+    hint: '期首→増減→期末の橋渡し（Waterfall）',
+    previewReady: true,
   },
 ];
 

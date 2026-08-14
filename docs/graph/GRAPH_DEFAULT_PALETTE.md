@@ -73,12 +73,17 @@ Bertin / 可視化の定石: 棒の **長さ**・線の **位置** が量の主�
 | `mark_stroke_width` | `0`（既定） | **枠線デフォルトOFF**。投影で輪郭が欲しいときだけ `1` |
 | `line` | `#1D4ED8` | 折れ線（series と同系） |
 | `line_width` | `3` | px（投影で消えにくい） |
+| `point_radius` | `3.5`（現行） | 折れ点円。**次の Renderer 調整で検討:** `4.5〜5` または白フチ＋濃色塗り（投影・縮小で点が線に埋もれない） |
 | `target_marker` | `#0F172A` | Bullet 目標ティック（達成色ではない） |
 | `target_line` | `#EA580C` | Column 目標線（Excel「目標値」文化・accent と同系） |
 | `target_line_width` | `2` | px |
 | `target_series` | `#64748B` | Grouped_Column の目標棒（中立グレー） |
+| `waterfall_total` | `#1E3A5F` | Waterfall 開始・終了（合計棒） |
+| `waterfall_positive` | `#1D4ED8` | Waterfall 増加ステップ（series と同系） |
+| `waterfall_negative` | `#EA580C` | Waterfall 減少ステップ（accent 橙 · **達成赤ではない**） |
 
-**禁止:** 達成率からの緑/赤自動割当。GAP は長さ・位置（バー端 vs マーカー／並棒／目標線）で見せる。正本 [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md)。
+**禁止:** 達成率からの緑/赤自動割当。GAP は長さ・位置（バー端 vs マーカー／並棒／目標線）で見せる。正本 [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md)。  
+Waterfall の増減色は **符号（+/−）の識別**であり、目標達成の意味付けではない。正本 [`GRAPH_WATERFALL_SPEC.md`](./GRAPH_WATERFALL_SPEC.md)。
 
 特定項目アクセント時の塗り分け:
 

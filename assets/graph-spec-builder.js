@@ -475,10 +475,20 @@ function buildDataPayload(decision, ctx, chartType, observable) {
   }
 
   if (chartType === 'Waterfall') {
-    values = values.map((v) => ({
-      ...v,
-      sign: Number(v.raw) < 0 ? 'negative' : Number(v.raw) > 0 ? 'positive' : 'zero',
-    }));
+    const START_RE = /^(開始|始点|期首|期初|start|beginning|期初残高)$/i;
+    const END_RE = /^(終了|終点|期末|end|ending|期末残高)$/i;
+    values = values.map((v) => {
+      const cat = String(v.category ?? '');
+      let step_role = 'delta';
+      if (START_RE.test(cat)) step_role = 'start';
+      else if (END_RE.test(cat)) step_role = 'end';
+      const n = Number(v.raw);
+      return {
+        ...v,
+        step_role,
+        sign: n < 0 ? 'negative' : n > 0 ? 'positive' : 'zero',
+      };
+    });
   }
 
   const seriesLabel =

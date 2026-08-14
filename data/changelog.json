@@ -11,6 +11,29 @@
   },
   "entries": [
     {
+      "id": "graph-waterfall-bridge-20260814",
+      "date": "2026-08-14",
+      "type": "feature",
+      "audience": "public",
+      "title": "グラフ — 増減要因（橋渡し図）に対応",
+      "body": "「増減要因を見せたい」を選ぶと、期首→要因→期末の橋渡し図ができます。増減の色は増えた／減ったの識別用で、目標達成の緑・赤は自動では付けません。",
+      "tools": [
+        "graph"
+      ]
+    },
+    {
+      "id": "graph-waterfall-bridge-internal-20260814",
+      "date": "2026-08-14",
+      "type": "feature",
+      "audience": "internal",
+      "title": "graph Waterfall R1.x+ · BRIDGE previewReady · OA-19",
+      "body": "GRAPH_WATERFALL_SPEC · renderer · STATUS_GATE · roadmap graph-bridge removed · intent-map",
+      "tools": [
+        "graph"
+      ],
+      "rollup": "graph-waterfall-bridge-20260814"
+    },
+    {
       "id": "roadmap-by-product-20260814",
       "date": "2026-08-14",
       "type": "improve",

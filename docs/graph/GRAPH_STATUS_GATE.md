@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-14（目標3型 LOCKED · 着地 Parking · Acceptance=SVGのみ · **registry 公開準備**）  
 **Judgment stack:** **CLOSED / 全 GO**（再設計禁止）  
-**Renderer:** **R1 GO**（Bar / Column / Line）· **R1.x GO**（目標3型）· **R2/R3 HOLD**  
+**Renderer:** **R1 GO**（Bar / Column / Line）· **R1.x GO**（目標3型）· **R1.x+ Waterfall GO**（BRIDGE 限定）· **R2/R3 残り HOLD**  
 **次工程:** **§1.5 MECE 配線済み**（`tools/graph.html` · hub · registry）· 本番 push は `DEPLOY_LOG` 承認後
 
 > Presentation Output Constitution 固定。Renderer は考えない。`matched_rule_id` 分岐禁止。  
@@ -27,7 +27,8 @@
 | 判断系パイプライン境界 | CLOSED / GO |
 | R1 種別 Bar/Column/Line | GO |
 | R1.x 目標3型（線 / Bullet / 並棒 · CND-004） | **LOCKED / GO** |
-| R2/R3（Pie/Donut/Waterfall 等） | **HOLD · 実装しない** |
+| R1.x+ Waterfall（BRIDGE Intent） | **GO** · 正本 [`GRAPH_WATERFALL_SPEC.md`](./GRAPH_WATERFALL_SPEC.md) |
+| R2/R3（Pie/Donut · 汎用 Stacked 等） | **HOLD · 実装しない** |
 | 貼付後 SVG 編集不可前提 | 確定 |
 | Acceptance 成果物 | **SVGのみ**（PNG併記しない） |
 | Editor / テーマ一式 / 軸書式UI / 出典テキストボックス | REJECT |
@@ -65,7 +66,7 @@
 6. 着地 / YTD — Parking  
 7. ~~registry / hub 公開（§1.5 MECE）~~ ✅ 配線 · **本番 push は別承認**
 
-**今やらない:** Pie/Donut、汎用 Grouped/Stacked（目標以外）、達成色発明、着地Intent、YTD勝手変換、軸書式UI、判断系作り直し。
+**今やらない:** Pie/Donut、汎用 Grouped/Stacked（目標以外）、達成色発明、着地Intent、YTD勝手変換、軸書式UI、判断系作り直し。Waterfall は BRIDGE 限定で GO。
 
 
 ---
@@ -103,7 +104,8 @@ Output Acceptance（手動貼付）  ← **次 = OA-16/17/18 · OA-05**
 | Presentation Output Constitution | **固定** |
 | Renderer R1 | **GO** |
 | Renderer R1.x（目標） | **GO** |
-| Renderer R2/R3 | **HOLD** |
+| Renderer R1.x+ Waterfall | **GO** |
+| Renderer R2/R3（Pie 等） | **HOLD** |
 | Graph Editor / 編集 UI | **禁止** |
 | R1 Output Acceptance | **Active** |
 | LLM | **不要・固定** |
@@ -123,7 +125,7 @@ Output Acceptance（手動貼付）  ← **次 = OA-16/17/18 · OA-05**
 
 1. **グラフ Editor を作らない**（全要素色塗り・字号スライダー・軸 DnD・**テーマ一式**エディタ）。**ロール色の HEX/ピッカーは必須**
 2. 品質基準は「編集しなくても、そのまま資料に貼れる」
-3. R2（Waterfall / Scatter / Donut 等）は Acceptance 前に増やさない
+3. Pie / Donut / Dual / Scatter 等は Acceptance 前に増やさない（Waterfall は R1.x+ で解禁済）
 4. 「貼ったあとに直したくなる箇所」はまず **Renderer デフォルト不足** として扱う
 5. SVG 編集可能性はユーザー向け KPI にしない（二次価値）
 

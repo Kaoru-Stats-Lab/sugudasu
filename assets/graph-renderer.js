@@ -7,15 +7,24 @@
  *
  * Thinks nothing. Does not read Rule / Intent / matched_rule_id for branching.
  * Invalid Spec → REJECT (no auto-fix, no draw).
- * R1.x: Column+目標線 · Bullet · Grouped_Column（GRAPH_TARGET_REPRESENTATION）。達成色の自動発明はしない。
+ * R1.x: Column+目標線 · Bullet · Grouped_Column（GRAPH_TARGET_REPRESENTATION）。
+ * R1.x+: Waterfall（GRAPH_WATERFALL_SPEC · BRIDGE）。達成色の自動発明はしない。
  */
 'use strict';
 
 import { validateGraphSpecPayload } from './graph-spec-validator.js';
 
-const R1_TYPES = new Set(['Bar', 'Column', 'Line', 'Bullet', 'Grouped_Column', 'Small_Multiples']);
+const R1_TYPES = new Set([
+  'Bar',
+  'Column',
+  'Line',
+  'Bullet',
+  'Grouped_Column',
+  'Small_Multiples',
+  'Waterfall',
+]);
 
-/** @see docs/graph/GRAPH_DEFAULT_PALETTE.md · GRAPH_TARGET_REPRESENTATION.md */
+/** @see docs/graph/GRAPH_DEFAULT_PALETTE.md · GRAPH_TARGET_REPRESENTATION.md · GRAPH_WATERFALL_SPEC.md */
 const DEFAULT_PRESENTATION = Object.freeze({
   series_color: '#1D4ED8',
   series_muted_color: '#93C5FD',
@@ -27,6 +36,9 @@ const DEFAULT_PRESENTATION = Object.freeze({
   target_line_color: '#EA580C',
   target_line_width: 2,
   target_series_color: '#64748B',
+  waterfall_total_color: '#1E3A5F',
+  waterfall_positive_color: '#1D4ED8',
+  waterfall_negative_color: '#EA580C',
   grid_color: '#E2E8F0',
   axis_color: '#334155',
   baseline_color: '#0F172A',
@@ -90,7 +102,7 @@ export async function renderGraph(payload, options = {}) {
       [
         {
           reason_code: 'renderer_type_not_in_r1',
-          message: `R1 supports Bar/Column/Line/Bullet/Grouped_Column/Small_Multiples; got ${type}`,
+          message: `R1 supports Bar/Column/Line/Bullet/Grouped_Column/Small_Multiples/Waterfall; got ${type}`,
         },
       ]
     );
@@ -177,6 +189,7 @@ function renderSvgByType(type, spec, ctx) {
   if (type === 'Bullet') return renderBullet(spec, ctx);
   if (type === 'Grouped_Column') return renderGroupedColumn(spec, ctx);
   if (type === 'Small_Multiples') return renderSmallMultiples(spec, ctx);
+  if (type === 'Waterfall') return renderWaterfall(spec, ctx);
   return renderLine(spec, ctx);
 }
 
@@ -556,6 +569,144 @@ function renderLine(spec, ctx) {
 
   appendUnitAnnotation(text, series, L, p);
   return wrapSvg(width, height, graphic, text, 'Line');
+}
+
+/**
+ * Waterfall (R1.x+): start → deltas → end on shared zero baseline.
+ * Sign colors identify +/- steps — not achievement green/red.
+ * @see docs/graph/GRAPH_WATERFALL_SPEC.md
+ */
+function renderWaterfall(spec, ctx) {
+  const { width, height, presentation: p } = ctx;
+  const series = primarySeries(spec);
+  const cats = categories(spec, series);
+  const valueMap = new Map((series.values || []).map((v) => [String(v.category), v]));
+  const steps = cats.map((c) => {
+    const v = valueMap.get(c) || { raw: 0, display: 0, sign: 'zero', step_role: 'delta' };
+    const raw = Number(v.raw ?? v.display ?? 0);
+    const role = v.step_role || 'delta';
+    return {
+      category: c,
+      raw: Number.isFinite(raw) ? raw : 0,
+      role,
+      sign: v.sign || (raw < 0 ? 'negative' : raw > 0 ? 'positive' : 'zero'),
+    };
+  });
+
+  let running = 0;
+  const segments = [];
+  for (const s of steps) {
+    if (s.role === 'start') {
+      const top = s.raw;
+      const bottom = 0;
+      running = top;
+      segments.push({ ...s, bottom, top, labelValue: s.raw, isTotal: true });
+    } else if (s.role === 'end') {
+      const top = s.raw;
+      const bottom = 0;
+      running = top;
+      segments.push({ ...s, bottom, top, labelValue: s.raw, isTotal: true });
+    } else {
+      const prev = running;
+      const next = prev + s.raw;
+      const bottom = Math.min(prev, next);
+      const top = Math.max(prev, next);
+      running = next;
+      segments.push({ ...s, bottom, top, labelValue: s.raw, isTotal: false });
+    }
+  }
+
+  const domainVals = segments.flatMap((seg) => [seg.bottom, seg.top]);
+  const leftForValues = estimateLabelWidthPx(
+    String(Math.max(...domainVals.map(Math.abs), 1)),
+    p.value_font_size
+  );
+  const L = layout(width, height, Math.max(48, leftForValues));
+  const zeroBaseline = spec.constraints?.zero_baseline !== false;
+  let { min, max } = yDomain(domainVals.length ? domainVals : [0], zeroBaseline);
+  const pad = (max - min) * 0.1 || 1;
+  max = max + pad;
+  const ticks = niceTicks(min, max);
+  const yScale = (v) => L.plotY + L.plotH - ((v - min) / (max - min)) * L.plotH;
+  const band = L.plotW / Math.max(cats.length, 1);
+  const gap = band * p.bar_gap;
+  const barW = Math.max(band - gap, 1);
+  const zeroY = yScale(0);
+  const stroke = markStrokeAttrs(p);
+  const showLabels = true; // Waterfall narrative: direct labels are part of the mark (GRAPH_WATERFALL_SPEC)
+
+  const graphic = [];
+  const text = [];
+
+  if (p.grid) {
+    for (const t of ticks) {
+      const y = yScale(t);
+      graphic.push(
+        `<line class="sg-grid" x1="${fmt(L.plotX)}" y1="${fmt(y)}" x2="${fmt(L.plotX + L.plotW)}" y2="${fmt(y)}" stroke="${esc(p.grid_color)}" stroke-width="1"/>`
+      );
+    }
+  }
+  graphic.push(
+    `<line class="sg-baseline" x1="${fmt(L.plotX)}" y1="${fmt(zeroY)}" x2="${fmt(L.plotX + L.plotW)}" y2="${fmt(zeroY)}" stroke="${esc(p.baseline_color)}" stroke-width="1.5"/>`
+  );
+  graphic.push(
+    `<line class="sg-axis-y" x1="${fmt(L.plotX)}" y1="${fmt(L.plotY)}" x2="${fmt(L.plotX)}" y2="${fmt(L.plotY + L.plotH)}" stroke="${esc(p.axis_color)}" stroke-width="1"/>`
+  );
+
+  let prevTopX = null;
+  let prevTopY = null;
+  segments.forEach((seg, i) => {
+    const x = L.plotX + i * band + gap / 2;
+    const yTop = yScale(seg.top);
+    const yBot = yScale(seg.bottom);
+    const h = Math.max(Math.abs(yBot - yTop), 1);
+    const y = Math.min(yTop, yBot);
+    let fill = p.waterfall_positive_color || p.series_color;
+    if (seg.isTotal) fill = p.waterfall_total_color || '#1E3A5F';
+    else if (seg.sign === 'negative') fill = p.waterfall_negative_color || p.accent_color;
+    else if (seg.sign === 'zero') fill = p.series_muted_color || fill;
+
+    if (prevTopX != null && !seg.isTotal) {
+      graphic.push(
+        `<line class="sg-mark-waterfall-connector" x1="${fmt(prevTopX)}" y1="${fmt(prevTopY)}" x2="${fmt(x)}" y2="${fmt(yScale(seg.sign === 'negative' ? seg.top : seg.bottom))}" stroke="${esc(p.axis_color)}" stroke-width="1" stroke-dasharray="3 2"/>`
+      );
+    } else if (prevTopX != null && seg.isTotal && seg.role === 'end') {
+      graphic.push(
+        `<line class="sg-mark-waterfall-connector" x1="${fmt(prevTopX)}" y1="${fmt(prevTopY)}" x2="${fmt(x)}" y2="${fmt(yTop)}" stroke="${esc(p.axis_color)}" stroke-width="1" stroke-dasharray="3 2"/>`
+      );
+    }
+
+    graphic.push(
+      `<rect class="sg-mark-waterfall" data-role="${esc(seg.role)}" x="${fmt(x)}" y="${fmt(y)}" width="${fmt(barW)}" height="${fmt(h)}" fill="${esc(fill)}"${stroke}/>`
+    );
+
+    if (showLabels) {
+      const fs = Math.max(10, Number(p.value_font_size) - 1);
+      text.push(
+        `<text class="sg-label-mark-value" x="${fmt(x + barW / 2)}" y="${fmt(yTop - 6)}" text-anchor="middle" font-size="${fmt(fs)}" fill="${esc(p.text_color)}">${esc(fmt(seg.labelValue))}</text>`
+      );
+    }
+
+    if (p.show_category_labels) {
+      text.push(
+        `<text class="sg-label-category" x="${fmt(x + barW / 2)}" y="${fmt(L.plotY + L.plotH + 18)}" text-anchor="middle" font-size="${fmt(p.category_font_size)}" fill="${esc(p.text_color)}">${esc(seg.category)}</text>`
+      );
+    }
+
+    prevTopX = x + barW;
+    prevTopY = yTop;
+  });
+
+  if (p.show_value_axis_labels) {
+    for (const t of ticks) {
+      text.push(
+        `<text class="sg-label-value" x="${fmt(L.plotX - 8)}" y="${fmt(yScale(t) + 4)}" text-anchor="end" font-size="${fmt(p.value_font_size)}" fill="${esc(p.text_color)}">${esc(fmt(t))}</text>`
+      );
+    }
+  }
+
+  appendUnitAnnotation(text, series, L, p);
+  return wrapSvg(width, height, graphic, text, 'Waterfall');
 }
 
 /**

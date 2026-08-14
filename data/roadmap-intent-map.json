@@ -10,12 +10,6 @@
     },
     {
       "tool_id": "graph",
-      "intent": "BRIDGE",
-      "roadmap_id": "graph-bridge",
-      "label": "増減要因を見せたい"
-    },
-    {
-      "tool_id": "graph",
       "choice_id": "dual_axis_combo",
       "roadmap_id": "graph-dual-axis-overlay",
       "label": "重ねて表示（2軸）"
