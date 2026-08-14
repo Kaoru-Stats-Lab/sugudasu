@@ -5,7 +5,8 @@
   "expected_decision": {
     "matched_rule_id": "RLE-009",
     "state": "CONDITIONAL",
-    "recommended_graph": "Bullet",
+    "recommended_graph": "Column",
     "confirmation_id": "CND-004"
-  }
+  },
+  "note": "Temporal×TARGET → Column + 目標線既定（GRAPH_TARGET_REPRESENTATION）。Bullet は Nominal（RLE-009A）。"
 }

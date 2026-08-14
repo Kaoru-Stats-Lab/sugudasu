@@ -33,7 +33,7 @@
 | **コード索引（CodeGraph）** | `docs/notes/CODEGRAPH_CURSOR.md` |
 | **マルチAIリファクタ（コーダー）** | `docs/notes/MULTI_AI_CODER_PLAYBOOK.md` · **Prior Art §9** · **Skill** `.cursor/skills/sugudasu-multi-ai-code-review/` · `docs/prompts/multi-ai-refactor-RUNBOOK.md` |
 | **設計監査（Architecture Validation）** | 正本 `docs/prompts/architecture-validation-PROMPT.md` · RUNBOOK `architecture-validation-RUNBOOK.md` · Smart Diff `smart-diff-architecture-validation-COPYPASTE.md` — **コードレビューではない** · Cursor 投入前ゲート · Browser 肥大化提案は減点 |
-| **SUGUDASU Graph（仮称）** | `docs/graph/GRAPH_STATUS_GATE.md` · POC `PRESENTATION_OUTPUT_CONSTITUTION.md` · 3役 `GRAPH_R1_SENIOR_REVIEW.md` — **判断系 CLOSED · R1 GO · R2 HOLD · 次=Output Acceptance · Editor禁止** · `matched_rule_id`分岐禁止 · `test:graph-*` · `graph:r1-acceptance-export` |
+| **SUGUDASU Graph（仮称）** | `docs/graph/GRAPH_STATUS_GATE.md` · 目標3型 `GRAPH_TARGET_REPRESENTATION.md` · Color Lab `docs/graph/lab/graph-color-lab.html` · 着地Parking — **R1+R1.x GO · hub未公開 · Editor禁止** · `test:graph-*` · `test:graph-presentation` · `graph:r1-acceptance-export`（SVGのみ） |
 | **Sync S1 E2E 試行錯誤ログ** | `docs/notes/SYNC_S1_E2E_SESSION_LOG_20260626.md` |
 
 ## 命名変更 · 新規ツール · デプロイ前（必須）

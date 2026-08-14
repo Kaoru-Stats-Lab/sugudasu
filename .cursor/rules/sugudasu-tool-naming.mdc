@@ -26,7 +26,7 @@ alwaysApply: true
 5. `npm run validate:tool-naming` → `npm run build:pages`
 
 **新規ツール公開（hub · statements · changelog · README · deploy）:** 
-`docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5 MECE チェックリスト** を上から YES/NA。再発明しない。
+`docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5 MECE**（**A17** DONE後next-path · **Purge E1–E2**）を上から YES/NA。再発明しない。
 **Hub カード文案:** `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md` を必ず読んでから `hub-cards.json` を書く。
 
 ## 3層

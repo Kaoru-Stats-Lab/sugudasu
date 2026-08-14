@@ -7,11 +7,22 @@
 
 正本レビュー: [`GRAPH_R1_SENIOR_REVIEW.md`](./GRAPH_R1_SENIOR_REVIEW.md)
 
-### 貼付先ロック（重要）
+### 貼付先ロック（重要 · 確定）
 
-**Google Slides / PowerPoint 2019 へ SVG を貼ると、図内テキストや余白は実質編集できない（PPT2019 は観測）。**  
-したがって文字切れ・ラベル欠け・読めない軸は「あとで直す」前提で合格にできない。PNG も同様に固定画素。  
-新しい PowerPoint で図形変換できる場合があっても **環境依存**なので、一次解は **出力時点で完成** とする。
+**判定（2026-08-14 · 提督確認）:** SVG は貼付後に編集できない。  
+**製品方針:** **編集できない前提でプロダクトを作る。** Office は版が多く、MS-Office と OpenOffice / LibreOffice Impress では挙動が違う。特定版の「図形に変換できる」に依存すると汎用性が落ちる。
+
+| 経路 | 扱い |
+|------|------|
+| Google Slides + SVG | 編集不可 |
+| PowerPoint（買い切り・365・各版）+ SVG | 編集不可として扱う |
+| OpenOffice / LibreOffice Impress + SVG | 編集不可として扱う（MS と挙動が違う） |
+| Keynote 等 | 同上（環境依存の救済は一次にしない） |
+| PNG | 編集不可 |
+| 一部環境の「図形に変換」 | **ボーナスのみ** · 合否・一次解に使わない |
+
+したがって文字切れ・ラベル欠け・読めない軸は「あとで直す」前提で合格にできない。一次解は **出力時点で完成**。  
+MS 固有機能に合わせた出力最適化より、**どのデッキでも貼って読めるデフォルト**を優先する。
 
 さらに実務では:
 
@@ -28,8 +39,9 @@
 
 - これはグラフエディタではない（色・線の自由編集ではない）
 - 候補は「プリセット少数」または「デフォルトを半面前提に変える」まで
-- **理想:** 貼付後に PPT 等で微調整できること（環境依存・二次）
-- **一次:** それでも一発完成。微調整可能性を合否条件にしない
+- **理想:** 貼付後に PPT 等で微調整できること（環境依存・二次・当てにしない）
+- **一次:** 編集不可前提で一発完成。微調整可能性を合否条件にしない
+- **汎用性:** MS 固有挙動より、OpenOffice/LibreOffice を含む広いデッキで読めること
 - 裁定プロンプト: [`../prompts/graph-r1-acceptance-gap-judgment-COPYPASTE.md`](../prompts/graph-r1-acceptance-gap-judgment-COPYPASTE.md)
 
 ---
@@ -61,7 +73,7 @@ npm run test:graph-renderer
 
 ---
 
-## 2. ケースセット（15 · 拡充可〜20）
+## 2. ケースセット（18 · 拡充可〜20）
 
 | ID | シナリオ | Intent | 期待 R1 type | fixture |
 |----|----------|--------|--------------|---------|
@@ -80,8 +92,19 @@ npm run test:graph-renderer
 | OA-13 | 店舗別比較 | COMPARISON | Bar | `OA-13-store-compare.json` |
 | OA-14 | 未知単位の推移 | TREND | Line | `OA-14-unknown-unit-trend.json` |
 | OA-15 | 短ラベル部門比較 | COMPARISON | Bar | `OA-15-short-label-compare.json` |
+| OA-16 | 部門別・実績対目標（マーカー） | TARGET_VS_ACTUAL | Bullet | `OA-16-dept-target-bullet.json` |
+| OA-17 | 部門別・実績対目標（並棒） | TARGET_VS_ACTUAL | Grouped_Column | `OA-17-dept-target-grouped.json` |
+| OA-18 | 月次売上・一定目標線 | TARGET_VS_ACTUAL | Column | `OA-18-monthly-target-line.json` |
 
-R1 外（Waterfall 等）は本 Acceptance に含めない（R2 HOLD）。
+R1.x 目標3型（OA-16〜18）は [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md) に固定。Waterfall / Pie / YTD累計は含めない。  
+CONDITIONAL は fixture の `confirmation_choice_id` で固定（CND-004）。
+
+機械生成:
+
+```bash
+npm run graph:r1-acceptance-export
+# → docs/graph/fixtures/acceptance/out/OA-*.svg (+ .png)
+```
 
 ---
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-08-14",
   "ssot": "docs/notes/BRAND_NORMALIZE.md",
   "purpose": "Layer3: ブランド語彙・キーワード → 実 toolId（registry）。架空IDは写像済み。",
   "layer": 3,
@@ -674,6 +674,36 @@
     {
       "keyword": "デジタル裏紙",
       "toolIds": ["uragami"],
+      "weight": 90
+    },
+    {
+      "keyword": "表からグラフ",
+      "toolIds": ["graph"],
+      "weight": 100
+    },
+    {
+      "keyword": "棒グラフ",
+      "toolIds": ["graph"],
+      "weight": 100
+    },
+    {
+      "keyword": "資料用グラフ",
+      "toolIds": ["graph"],
+      "weight": 100
+    },
+    {
+      "keyword": "目標線",
+      "toolIds": ["graph"],
+      "weight": 90
+    },
+    {
+      "keyword": "Excelグラフ",
+      "toolIds": ["graph"],
+      "weight": 95
+    },
+    {
+      "keyword": "SVGでグラフをコピー",
+      "toolIds": ["graph"],
       "weight": 90
     }
   ]

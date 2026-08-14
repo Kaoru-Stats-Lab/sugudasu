@@ -8,6 +8,17 @@
 
 const TEMPORAL_HEADER = /^(年度|年月|月|四半期|期間|年|日付|date|year|month|quarter)$/i;
 const TARGET_RE = /目標|計画|予算|見込み|target|plan|budget|forecast/i;
+const ACTUAL_RE = /実績|actual|売上|成績|結果|結果値/i;
+
+/** Header/label is a target/plan/budget token (Observable §4.10). */
+export function isTargetHeaderToken(s) {
+  return TARGET_RE.test(String(s ?? ''));
+}
+
+/** Prefer as actual measure when pairing with a target column. */
+export function isActualHeaderToken(s) {
+  return ACTUAL_RE.test(String(s ?? ''));
+}
 const TOTAL_RE = /^(合計|計|小計|総計|total|sum)$/i;
 const TOTAL_HEADER_RE = /合計|総計|total/i;
 const START_RE = /^(開始|始点|期首|期初|start|beginning|期初残高)$/i;

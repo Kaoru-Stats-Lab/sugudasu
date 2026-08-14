@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-13",
+  "updatedAt": "2026-08-14",
   "ssot": "docs/notes/HUB_IA_REFRESH_V2.md · docs/notes/BRAND_NORMALIZE.md",
   "disclaimer": "検索同義語（toolId ルーティング補助）。UI 表示名・conceptName は変えない。ブランド語正規化は brand-normalize.json / search-thesaurus.json。意図マップは tool-intent-map.json。自由入力の検索キーワードは Analytics に送らない。",
   "entries": [
@@ -17,6 +17,7 @@
     { "terms": ["PDF", "埋め込み画像"], "toolIds": ["pdf-images"] },
     { "terms": ["全角", "半角", "名簿整え"], "toolIds": ["normalize"] },
     { "terms": ["Markdown", "CSV", "TSV", "表"], "toolIds": ["table-conv"] },
+    { "terms": ["グラフ", "棒グラフ", "折れ線", "目標線", "資料用グラフ", "SVGグラフ"], "toolIds": ["graph"] },
     { "terms": ["景表法", "景品", "抽選", "公平抽選"], "toolIds": ["fair-draw"] },
     { "terms": ["班分け", "グループ分け"], "toolIds": ["group-split"] },
     { "terms": ["Planning Poker", "プランニングポーカー", "見積もり"], "toolIds": ["planning-poker"] },

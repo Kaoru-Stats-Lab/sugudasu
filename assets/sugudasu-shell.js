@@ -17,6 +17,7 @@
     { id: 'search-query', file: 'search-query.html', label: '検索式', icon: '🔍' },
     { id: 'prompt-handoff', file: 'prompt-handoff.html', label: 'プロンプト', icon: '✉️' },
     { id: 'table-conv', file: 'table-conv.html', label: '表変換', icon: '📊' },
+    { id: 'graph', file: 'graph.html', label: 'グラフ', icon: '📈' },
     { id: 'webp-to-jpg', file: 'webp-to-jpg.html', label: 'WebP→JPG', icon: '🖼️' },
     { id: 'video-frame', file: 'video-frame.html', label: '動画コマ抜き', icon: '🎬' },
     { id: 'annotate', file: 'annotate.html', label: '赤入れ', icon: '✏️' },

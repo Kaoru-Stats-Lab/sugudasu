@@ -2214,10 +2214,30 @@
 
 ---
 
+## DEPLOY-20260814-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy · SUGUDASU グラフ α 公開（registry · hub · 期待合わせUI） |
+| **change_summary** | graph 新ツール · R1.x 目標3型 · Intent見本カード · SVGコピー · §1.5 MECE |
+| **local_build** | pending（release:pages:free 前） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 時に記入） |
+| **gates** | P1–P7 · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **git_sha** | （push 後） |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）/graph · Hub「グラフ」· Intent見本プレビュー |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 001 approved（graph α · registry · hub · 期待合わせUI · 提督 Commit&Push&Deploy） |
 | 2026-08-13 | 007 executed（5f5d224 · AIプロンプトビルダー · 検索式 v0.2 · P7 override） |
 | 2026-08-13 | 007 approved（AIプロンプトビルダー · 検索式 v0.2 · P7 override · 提督「進めて」） |
 | 2026-08-13 | 006 executed（bd31b5f · S-SEG-B · S-CARD-HAIRLINE · P7 override） |

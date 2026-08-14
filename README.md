@@ -33,6 +33,7 @@ python -m http.server 8080
 | [search-query.html](tools/search-query.html) | /search-query | SUGUDASU 検索式ビルダー | 検索式 | alpha |
 | [prompt-handoff.html](tools/prompt-handoff.html) | /prompt-handoff | SUGUDASU AIプロンプトビルダー | プロンプト | alpha |
 | [table-conv.html](tools/table-conv.html) | /table-conv | SUGUDASU 表変換 | 表変換 | beta |
+| [graph.html](tools/graph.html) | /graph | SUGUDASU グラフ | グラフ | alpha |
 | [webp-to-jpg.html](tools/webp-to-jpg.html) | /webp-to-jpg | SUGUDASU WebP変換 | WebP→JPG | beta |
 | [video-frame.html](tools/video-frame.html) | /video-frame | SUGUDASU 動画コマ抜き | 動画コマ抜き | alpha |
 | [annotate.html](tools/annotate.html) | /annotate | SUGUDASU 赤入れ | 赤入れ | gamma |

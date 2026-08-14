@@ -284,7 +284,12 @@ function validateTarget(spec, errors) {
 
 function hasTargetInSeries(spec) {
   const series = spec.data?.series || [];
-  return series.some((s) => /目標|target|plan|budget/i.test(String(s.label || s.id || '')));
+  if (series.some((s) => /目標|target|plan|budget/i.test(String(s.label || s.id || '')) || s.role === 'target')) {
+    return true;
+  }
+  return series.some((s) =>
+    (s.values || []).some((v) => v != null && v.target != null && Number.isFinite(Number(v.target)))
+  );
 }
 
 function validateTransformation(spec, errors) {

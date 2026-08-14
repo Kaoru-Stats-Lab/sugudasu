@@ -1,7 +1,9 @@
 # R1 Output Acceptance — Results Log
 
 **Protocol:** [`../../GRAPH_R1_OUTPUT_ACCEPTANCE.md`](../../GRAPH_R1_OUTPUT_ACCEPTANCE.md)  
-**Rule:** チャット貼り付け禁止 · 表のみ · 「直したくなる箇所」はまずデフォルト不足として記録
+**Rule:** チャット貼り付け禁止 · 表のみ · 「直したくなる箇所」はまずデフォルト不足として記録  
+**次（提督）:** 目標3型 OA-16/17/18 = **PASS（SVG確認済 2026-08-14）** · 残 OA-01〜15 は必要に応じて  
+**Export:** `npm run graph:r1-acceptance-export` → SVG only
 
 ---
 
@@ -13,7 +15,7 @@
 | OA-02 | | | | | |
 | OA-03 | | | | | |
 | OA-04 | | | | | |
-| OA-05 | Google Slides | PARTIAL | | N（ラベル欠け） | 2 |
+| OA-05 | Google Slides | PASS（再確認·SVG） | Y | Y（長ラベル+単位） | 0（旧2は解消） |
 | OA-06 | | | | | |
 | OA-07 | | | | | |
 | OA-08 | | | | | |
@@ -24,6 +26,9 @@
 | OA-13 | | | | | |
 | OA-14 | | | | | |
 | OA-15 | | | | | |
+| OA-16 | SVG確認 | **PASS** | Y | Y | 0 |
+| OA-17 | SVG確認 | **PASS** | Y | Y | 0 |
+| OA-18 | SVG確認 | **PASS** | Y | Y | 0 |
 
 Overall: `PASS` / `FAIL` / `PARTIAL`
 
@@ -31,7 +36,31 @@ Overall: `PASS` / `FAIL` / `PARTIAL`
 
 ## Per-case notes
 
-### OA-05（Slides · 2026-08-08）
+### 貼付チェックリスト（OA-16 / 17 / 18 · 2026-08-14）
+
+正本: [`../../GRAPH_TARGET_REPRESENTATION.md`](../../GRAPH_TARGET_REPRESENTATION.md) · セッション [`../../GRAPH_SESSION_LOG_2026-08-14_TARGET_LANDING.md`](../../GRAPH_SESSION_LOG_2026-08-14_TARGET_LANDING.md)
+
+| 手順 | ファイル |
+|------|----------|
+| 1 | `out/OA-16.svg` Bullet — 目標ティック · GAP · 達成色が無いこと |
+| 2 | `out/OA-17.svg` Grouped_Column — 並棒 · 半面でも差が分かるか |
+| 3 | `out/OA-18.svg` Column+目標線 — 定数水平線（橙） |
+| 4 | （再）`out/OA-05.svg` — コーポレート等の長ラベル切れが直っているか |
+| 5 | 結果を Summary 表と下記メモに記入 |
+
+### OA-16 / OA-17 / OA-18（目標3型 · **PASS 2026-08-14**）
+
+提督: SVG 確認済み。直したくなる箇所なし（報告時点）。
+
+| ID | type | Overall |
+|----|------|---------|
+| OA-16 | Bullet | PASS |
+| OA-17 | Grouped_Column | PASS |
+| OA-18 | Column + target line | PASS |
+
+### OA-05（再確認 · 2026-08-14）
+
+長ラベル余白修正後 + **単位ラベル（`sg-label-unit`）を S0 既定で追加**。旧 PARTIAL の主因は解消扱い。
 
 | 評価 | Y/N | メモ |
 |------|-----|------|
@@ -54,7 +83,7 @@ Overall: `PASS` / `FAIL` / `PARTIAL`
 | 1 | カテゴリラベル | 長い項目名が切れない | **デフォルト不足・重要度↑**（Slides+SVG は貼付後編集不可 → 左余白をラベル幅に追従） |
 | 2 | 意味の「ひと目」 | 達成/乖離・前年比が欲しい。単色ベタは弱い | **B-data=データ+ R1外の可能性** / **B-fill=デフォルト視認性**（目標無しで達成色を発明しない）。IRに限らず社内資料でも重要 |
 
-メモ: Slides / **PPT2019** とも SVG 貼付後は編集救済しにくい（2026-08-08 観測）。縮小・半面・字号・手戻りを成功条件に含める。手戻りを Editor で吸収しない。裁定プロンプト v1.8。
+メモ: 色つけ必須。**VI/CI → HEX、それ以外 → ピッカー**。禁止は全要素塗り／テーマ一式のみ（きつく締めすぎない）。正本 `GRAPH_R1_COLOR_MUST_JUDGMENT.md`。
 
 ### OA-01
 

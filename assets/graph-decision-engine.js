@@ -117,7 +117,7 @@ export function createGraphDecisionEngine(rulesDoc) {
         transformation: then.transformation || null,
         requires_confirmation: Boolean(cndId),
         confirmation_id: cndId,
-        confirmation_default: cnd?.default ?? null,
+        confirmation_default: then.confirmation_default ?? cnd?.default ?? null,
         confirmation_options: cnd?.options ?? null,
         deterministic: then.deterministic ?? null,
         deterministic_kind: then.deterministic_kind || null,

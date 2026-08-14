@@ -3,7 +3,7 @@
 **Date:** 2026-08-10  
 **Role:** Senior UI/UX（＋現行 Renderer デフォルトとの突合）  
 **Scope:** VICI が固い大企業向けブランド色ではなく、**SUGUDASU デフォルト色**  
-**Related:** [`GRAPH_R1_ROUNDTRIP_JUDGMENT.md`](./GRAPH_R1_ROUNDTRIP_JUDGMENT.md) · [`PRESENTATION_OUTPUT_CONSTITUTION.md`](./PRESENTATION_OUTPUT_CONSTITUTION.md)
+**Related:** [`GRAPH_R1_ROUNDTRIP_JUDGMENT.md`](./GRAPH_R1_ROUNDTRIP_JUDGMENT.md) · [`PRESENTATION_OUTPUT_CONSTITUTION.md`](./PRESENTATION_OUTPUT_CONSTITUTION.md) · **配色トークン正本** [`GRAPH_DEFAULT_PALETTE.md`](./GRAPH_DEFAULT_PALETTE.md)
 
 ---
 
@@ -21,10 +21,13 @@ SUGUDASU の主戦場は「毎回デザイナーに頼めない担当」なの�
 
 ## 一行裁定
 
-> **色パレットをユーザーに選ばせない。**  
-> 代わりに **SUGUDASU 投影耐性デフォルト**を強くし、意味は色だけに載せない。  
-> 「投影ハイコントラスト」は opt-in 1 プリセットまで。色エディタは作らない。
+> **デフォルトは投影耐性を強くする。意味は色だけに載せない。**  
+> 「投影ハイコントラスト」は opt-in 1 プリセットまで。  
+> **ロール色の HEX / ピッカーは許可（必須寄り）。**  
+> 禁止は全要素塗りとテーマ一式エディタのみ（[`GRAPH_R1_COLOR_MUST_JUDGMENT.md`](./GRAPH_R1_COLOR_MUST_JUDGMENT.md)）。
 
+~~色パレットをユーザーに選ばせない。~~ ← 撤回。  
+~~色ピッカー禁止。~~ ← 撤回（ロール用は GO）。
 ---
 
 ## 解決の優先順位（UI/UX）
@@ -68,19 +71,20 @@ SUGUDASU の主戦場は「毎回デザイナーに頼めない担当」なの�
 - デフォルトにしない必要はない、という議論もあるが:  
   **画面共有・印刷・PDF** では強すぎて「うるさい」ことがある → まずは **通常デフォルトを投影寄りに寄せ**、さらに足りない人だけ opt-in
 - 証拠: 投影の色あせは **広く知られた現象**（個人体験に閉じない）。`proj_safe`（下余白）より一般化してよい
-- **色ピッカー／テーマエディタは禁止**
+- **ロール用色ピッカー / HEX は許可**（Color Must）。テーマ一式エディタと全要素ピッカーだけ禁止
 
 ### 4. やらない
 
 | 案 | 判定 |
 |----|------|
-| ユーザーがブランド色を逐一指定 | REJECT（Editor） |
+| ユーザーがブランド色を逐一・全要素指定 | REJECT（Editor） |
+| **主色 / 強調色など色ロールを少数変える** | **MUST**（Color Must 裁定） |
 | VICI 準拠の企業テーマを製品に内蔵 | REJECT / Outside（企業向け別線） |
 | パステル多色で「きれいなダッシュボード」風 | REJECT（投影で死ぬ） |
 | 赤緑だけに達成を載せる | REJECT（色覚・投影の二重リスク） |
 | 「PPTで色を直せ」を一次解 | REJECT（編集不可経路あり） |
 
-VICI が厳しい会社: SVG/PNG を渡して **彼らの側で差し替える**（二次価値）。SUGUDASU は止めないが、一次フローに組み込まない。
+VICI が厳しい会社: **主色ロールでブランド色を載せて再出力**が一次。SVG を渡して彼らの側で差し替えるのは二次。
 
 ---
 

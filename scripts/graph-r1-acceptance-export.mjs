@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * R1 Output Acceptance — SVG/PNG export for slide paste tests.
+ * R1 Output Acceptance — SVG export for slide paste tests (SVG only · no PNG).
  * Does not change Decision/Spec/Validator. R2 types are skipped if they appear.
  *
  * Usage:
  *   node scripts/graph-r1-acceptance-export.mjs
  *   npm run graph:r1-acceptance-export
  *
- * Output: docs/graph/fixtures/acceptance/out/{id}.svg (+ .png if sharp available)
+ * Output: docs/graph/fixtures/acceptance/out/{id}.svg
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -45,10 +45,18 @@ for (const file of files) {
     observable: extracted.observable,
     table: extracted.table,
     measures: extracted.measures,
+    confirmation_choice_id: fx.confirmation_choice_id || null,
     rulesDoc,
   });
 
-  const svg = await renderGraph(payload, { format: 'svg', width: 640, height: 360 });
+  const renderOpts = {
+    format: 'svg',
+    width: 640,
+    height: 360,
+  };
+  if (fx.deck_slot) renderOpts.deck_slot = fx.deck_slot;
+
+  const svg = await renderGraph(payload, renderOpts);
   const row = {
     id: fx.id,
     scenario: fx.scenario,
@@ -74,11 +82,6 @@ for (const file of files) {
 
   const svgPath = path.join(outDir, `${fx.id}.svg`);
   fs.writeFileSync(svgPath, svg.body, 'utf8');
-
-  const png = await renderGraph(payload, { format: 'png', width: 640, height: 360 });
-  if (png.ok && Buffer.isBuffer(png.body)) {
-    fs.writeFileSync(path.join(outDir, `${fx.id}.png`), png.body);
-  }
 
   summary.push(row);
   console.log(`[OK] ${fx.id} → ${svg.chart_type} (${svgPath})`);

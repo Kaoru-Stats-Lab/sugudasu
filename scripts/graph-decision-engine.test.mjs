@@ -192,15 +192,48 @@ function d(observable, intent, measures) {
   assert.equal(r.matched_rule_id, 'RLE-009');
   assert.equal(r.state, 'CONDITIONAL');
   assert.equal(r.confirmation_id, 'CND-004');
-  assert.equal(r.recommended_graph, 'Bullet');
+  assert.equal(r.recommended_graph, 'Column');
+  assert.equal(r.confirmation_default, 'target_as_line');
   const graphs = (r.confirmation_options || []).map((o) => o.recommended_graph);
+  assert.ok(graphs.includes('Column'));
   assert.ok(graphs.includes('Bullet'));
   assert.ok(graphs.includes('Grouped_Column'));
-  assert.equal(graphs.includes('Column') && !graphs.includes('Grouped_Column'), false);
   assert.ok(
     (r.confirmation_options || []).every((o) => o.encodes_target === true),
     'CND-004 options must encode target'
   );
+}
+
+{
+  const r = d(
+    {
+      dimension: 'Nominal',
+      measure_count: 2,
+      has_target: true,
+      cardinality: 3,
+    },
+    'TARGET_VS_ACTUAL'
+  );
+  assert.equal(r.matched_rule_id, 'RLE-009A');
+  assert.equal(r.state, 'CONDITIONAL');
+  assert.equal(r.confirmation_id, 'CND-004');
+  assert.equal(r.recommended_graph, 'Bullet');
+  assert.equal(r.confirmation_default, 'target_as_marker');
+}
+
+{
+  const r = d(
+    {
+      dimension: 'Temporal',
+      measure_count: 2,
+      has_target: true,
+      cardinality: 4,
+    },
+    'TARGET_VS_ACTUAL'
+  );
+  assert.equal(r.matched_rule_id, 'RLE-009');
+  assert.equal(r.confirmation_id, 'CND-004');
+  assert.equal(r.confirmation_default, 'target_as_line');
 }
 
 {

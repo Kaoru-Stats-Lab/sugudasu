@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-13",
+  "updatedAt": "2026-08-14",
   "disclaimer": "カテゴリ定義の正本は data/categories.json。本ファイルは tools[] · categoryCompare（statements 比較表）のみ。",
   "ssot": "docs/notes/DEV_TRANSPARENCY_RULES.md · data/categories.json · scripts/verify-statements-product.mjs",
   "tools": [
@@ -74,6 +74,14 @@
       "file": "table-conv.html",
       "inputHandling": "表 · CSV · 端末内",
       "promiseNote": "Excel貼付→MD/JSON/TSV · 非送信"
+    },
+    {
+      "toolId": "graph",
+      "categoryId": "text",
+      "productName": "SUGUDASU グラフ",
+      "file": "graph.html",
+      "inputHandling": "表貼付 · 端末内",
+      "promiseNote": "目的選択→決定論グラフ→SVGコピー · 非送信"
     },
     {
       "toolId": "search-query",

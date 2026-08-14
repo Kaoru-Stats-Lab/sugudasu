@@ -97,6 +97,12 @@
       "outputs": ["copy"],
       "primary_job": "変換表をコピー"
     },
+    "graph": {
+      "job": true,
+      "inputs": ["type", "paste"],
+      "outputs": ["copy"],
+      "primary_job": "SVGをコピー"
+    },
     "webp-to-jpg": {
       "job": true,
       "inputs": ["file_drop", "file_pick"],

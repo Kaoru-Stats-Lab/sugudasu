@@ -9,7 +9,8 @@ alwaysApply: false
 **正本:** `docs/notes/TOOL_NAMING_AGENT_PLAYBOOK.md` **§1.5**  
 **カード文言:** `docs/notes/TOOL_CARD_WRITING_GUIDELINE.md`（Hub blurb / conceptName）  
 **ツールリード:** `docs/notes/TOOL_LEAD_COPY_AGENT_PLAYBOOK.md`（`sg-tool-lead` · light/heavy）  
-**利用計測:** `docs/notes/PRODUCT_USAGE_ANALYTICS.md` · `data/tool-job-contracts.json`（**A16**）
+**利用計測:** `docs/notes/PRODUCT_USAGE_ANALYTICS.md` · `data/tool-job-contracts.json`（**A16**）  
+**DONE後の次の1本:** `docs/notes/TOOL_NEXT_PATH_SPEC.md` · `data/tool-next-path.json`（**A17** · Purge 時は E1–E2）
 
 新規ツールを hub / 本番に出すときは:
 
@@ -18,9 +19,10 @@ alwaysApply: false
 3. **リード文を `TOOL_LEAD_COPY_AGENT_PLAYBOOK.md` で確定**し `data/tool-lead-profiles.json` + `sg-tool-lead` を書く（A14）
 4. **Hub 検索語彙（A15）** — `search-dictionary/{id}.json` · synonyms · intent。手順 `docs/prompts/hub-search-vocab-on-new-tool.md` · 欠落は `scaffold:hub-search-vocab -- --write-prompt`
 5. **利用計測（A16）** — `tool-job-contracts.json` に inputs/outputs · 着手/完了は中央フック · `validate:usage-analytics`
-6. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）· **A11–A16**
-7. 表 C は触らない（roadmap 完了行追加・guides 必須化など）
-8. 報告は §1.5 D のテンプレ（A1–A16）
+6. **DONE後の次の1本（A17）** — 続く工程があるかジャッジ · 逆方向は自動追加しない · 載せるなら `tool-next-path.json` · Purge 時は from/next 両方から削除
+7. **§1.5 表 A→B を上から YES/NA**（毎回 Thinking で洗い直さない）· **A11–A17**
+8. 表 C は触らない（roadmap 完了行追加・guides 必須化など）
+9. 報告は §1.5 D のテンプレ（A1–A17）
 
 デプロイは `DEPLOY_LOG.md` + `release:pages:free` + `push origin main`。  
 共通化・Dup 棚卸しは `.cursor/skills/sugudasu-tech-adoption/` · `validate:tech-adoption`。

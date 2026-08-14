@@ -1,6 +1,6 @@
 # SUGUDASU Graph — Renderer API（最小）
 
-**Status:** R1 Active  
+**Status:** R1 + R1.x（目標） Active  
 **Constitution:** [`PRESENTATION_OUTPUT_CONSTITUTION.md`](./PRESENTATION_OUTPUT_CONSTITUTION.md)  
 **Implementation:** `assets/graph-renderer.js`
 
@@ -15,11 +15,40 @@ import { validateGraphSpecPayload } from '../assets/graph-spec-validator.js';
 // payload = buildGraphSpec(...) の結果
 const result = await renderGraph(payload, {
   format: 'svg',           // 'svg' | 'png'
-  presentation: {},        // optional Presentation Settings (R1: colors/widths only)
-  width: 640,
-  height: 360,
+  deck_slot: 'half_left',  // 'generic' | 'full' | 'half_left'
+  presentation: {
+    series_color: '#1D4ED8',
+    accent_color: '#EA580C',
+    accent_categories: ['12月'],
+    target_marker_color: '#0F172A',   // Bullet
+    target_line_color: '#EA580C',     // Column 目標線
+    target_series_color: '#64748B',   // Grouped_Column 目標棒
+    show_value_labels: false,         // 既定OFF · true で棒/点に数値
+    show_unit_label: true,
+  },
+  // width/height optional — deck_slot defaults apply when omitted
+});
+
+// Roundtrip S2 — コピー用 SVG とは別物の半面プレビュー
+import { wrapDeckHalfLeftPreview } from '../assets/graph-renderer.js';
+const preview = wrapDeckHalfLeftPreview(result.body, {
+  chartWidth: result.width,
+  chartHeight: result.height,
 });
 ```
+
+### R1 / R1.x 対応 type
+
+| type | 役割 |
+|------|------|
+| `Bar` / `Column` / `Line` | R1 |
+| `Column` + `encoding.target=line` | R1.x T-line · 定数は水平線、変動は polyline |
+| `Bullet` | R1.x T-marker · CND-004 `target_as_marker` |
+| `Grouped_Column` | R1.x T-series · CND-004 `target_as_series` |
+
+正本: [`GRAPH_TARGET_REPRESENTATION.md`](./GRAPH_TARGET_REPRESENTATION.md)
+
+他 type（Waterfall / Pie 等）→ `renderer_type_not_in_r1` REJECT。達成緑/赤は描かない。
 
 ### 成功
 
@@ -31,6 +60,9 @@ const result = await renderGraph(payload, {
   body: '<svg ...>...</svg>',   // png 時は Buffer
   chart_type: 'Line',
   network_required: false,
+  deck_slot: 'half_left',
+  width: 560,
+  height: 420,
 }
 ```
 
@@ -74,19 +106,42 @@ Invalid Spec → Validator REJECT → **Renderer は描画しない・修正し�
 
 ---
 
-## Presentation Settings（R1 最小）
+## Presentation Settings（R1）
+
+正本トークン: [`GRAPH_DEFAULT_PALETTE.md`](./GRAPH_DEFAULT_PALETTE.md)
 
 ```js
 {
-  series_color: '#2F6FED',
+  series_color: '#1D4ED8',
+  series_muted_color: '#93C5FD',
+  accent_color: '#EA580C',
+  accent_categories: [],      // 特定項目だけ accent
+  series_stroke: '#0F172A',
+  mark_stroke_width: 0,       // 棒枠線は既定OFF。投影用に1可
   grid: true,
   show_category_labels: true,
   show_value_axis_labels: true,
-  line_width: 2,
+  show_unit_label: true,      // unit≠UNKNOWN のとき右上に（単位）
+  show_value_labels: false,   // 棒/点の数値 · 既定OFF
+  line_width: 3,
+  deck_slot: 'generic',       // or options.deck_slot
 }
 ```
 
-Unit 推定・Intent・Rule は扱わない。
+| deck_slot | 既定サイズ | 用途 |
+|-----------|------------|------|
+| `generic` | 640×360 | 互換 |
+| `full` | 960×540 | スライドほぼ全面 |
+| `half_left` | 560×420 | 左グラフ・右コメント |
+
+### 半面プレビュー（S2）
+
+`wrapDeckHalfLeftPreview(chartSvg)` — 16:9（960×540）フレームに左チャート・右「コメント」ゴースト。  
+**コピー用本体 SVG とは別。** 貼る前の可読性確認用（Roundtrip S2）。
+
+Bar はカテゴリラベル幅に応じて左余白を広げる（切れ防止）。
+
+Unit 推定・Intent·Rule は扱わない。
 
 ---
 

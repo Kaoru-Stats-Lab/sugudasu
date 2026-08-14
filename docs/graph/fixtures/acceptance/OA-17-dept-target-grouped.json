@@ -1,0 +1,10 @@
+{
+  "id": "OA-17",
+  "scenario": "部門別・実績対目標（Grouped_Column・並棒）",
+  "tsv": "部門\t実績\t目標\n第一営業\t85\t90\n第二営業\t72\t70\n第三営業\t64\t80\n海外事業\t58\t60\nコーポレート\t41\t50\n",
+  "intent": "TARGET_VS_ACTUAL",
+  "confirmation_choice_id": "target_as_series",
+  "expected_r1_type": "Grouped_Column",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"],
+  "note": "R1.x · CND-004 target_as_series。目標棒は中立グレー。"
+}

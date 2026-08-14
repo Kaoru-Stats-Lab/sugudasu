@@ -1,9 +1,9 @@
 # SUGUDASU Graph（仮称）— Design Pack
 
-**Status:** 判断系 CLOSED · Renderer R1 GO · **次工程 = Output Acceptance**（R2 HOLD · 編集 UI 禁止）  
+**Status:** 判断系 CLOSED · Renderer R1 + R1.x（目標3型）GO · **次工程 = 手動 Output Acceptance**（着地 PARKING · R2 HOLD · 編集 UI 禁止）  
 **Purpose:** Cursor / Product / UX / Engineering 共通参照  
 **Principle:** AIではなく、決定論的なプログラムとして実装する  
-**更新:** 2026-08-08
+**更新:** 2026-08-14
 
 > グラフ作成の難しさは、描画ではなく選択にある。  
 > R1 成功 = **描画できた** ではなく **約3分で実務資料に貼れる**。
@@ -38,10 +38,15 @@ SUGUDASU Graph は未公開の設計パックである。
 | [PRESENTATION_OUTPUT_CONSTITUTION.md](./PRESENTATION_OUTPUT_CONSTITUTION.md) | **出力憲法** · 編集させない · SVG/PNG · matched_rule_id禁止 | Output Constitution |
 | [GRAPH_RENDERER_API.md](./GRAPH_RENDERER_API.md) | Renderer 最小 API · R1 | Renderer API |
 | [GRAPH_RENDERER_R1_PLAN.md](./GRAPH_RENDERER_R1_PLAN.md) | Bar/Column/Line 計画 | R1 Plan |
-| [GRAPH_R1_SENIOR_REVIEW.md](./GRAPH_R1_SENIOR_REVIEW.md) | UIUX/CTO/CPO · GO継続 · R2 HOLD · 編集禁止 | Senior Review |
+| [GRAPH_TARGET_REPRESENTATION.md](./GRAPH_TARGET_REPRESENTATION.md) | **目標3型 LOCKED** · 目標線 / Bullet / 並棒 · CND-004 · YTD除外 | Target SoT |
+| [lab/graph-color-lab.html](./lab/graph-color-lab.html) | **Color Must ラボ**（HEX+ピッカー · 強調カテゴリ · noindex） | Pre-publish UI |
+| [GRAPH_LANDING_FORECAST_PARKING.md](./GRAPH_LANDING_FORECAST_PARKING.md) | **着地見込み PARKING** · Intentにしない · 必須列A–E | Landing |
+| [GRAPH_SESSION_LOG_2026-08-14_TARGET_LANDING.md](./GRAPH_SESSION_LOG_2026-08-14_TARGET_LANDING.md) | 2026-08-14 セッション決定 · 次工程順序 | Session log |
+| [GRAPH_AXIS_SOURCE_JUDGMENT.md](./GRAPH_AXIS_SOURCE_JUDGMENT.md) | 軸ラベル向き・出典（Excel書式/テキストボックスはREJECT） | Axis/Source |
+| [GRAPH_R1_PROJECTION_COLOR_JUDGMENT.md](./GRAPH_R1_PROJECTION_COLOR_JUDGMENT.md) | 投影耐性デフォルト · コントラスト | Projection |
+| [GRAPH_R1_SENIOR_REVIEW.md](./GRAPH_R1_SENIOR_REVIEW.md) | UIUX/CTO/CPO · GO継続 · R2 HOLD · 色ロール必須 | Senior Review |
 | [GRAPH_R1_OUTPUT_ACCEPTANCE.md](./GRAPH_R1_OUTPUT_ACCEPTANCE.md) | 貼付 Acceptance · 評価軸 · OA-01〜15 | Next step |
 | [GRAPH_R1_ROUNDTRIP_JUDGMENT.md](./GRAPH_R1_ROUNDTRIP_JUDGMENT.md) | 貼付後手戻り解法（戻って再コピペ vs 他） | Architect+UX |
-| [GRAPH_R1_PROJECTION_COLOR_JUDGMENT.md](./GRAPH_R1_PROJECTION_COLOR_JUDGMENT.md) | 投影・遠距離のデフォルト色／コントラスト | Senior UI/UX |
 | [../prompts/graph-r1-acceptance-gap-judgment-COPYPASTE.md](../prompts/graph-r1-acceptance-gap-judgment-COPYPASTE.md) | Acceptance ギャップの GO/HOLD 裁定（ChatGPT） | Judgment prompt |
 | [GRAPH_STATUS_GATE.md](./GRAPH_STATUS_GATE.md) | 判断系 CLOSED · R1 GO · Acceptance Active · Editor 禁止 | Status Gate |
 | [GRAPH_SPEC_CONTRACT.md](./GRAPH_SPEC_CONTRACT.md) | **Graph Spec 契約** · Decision→Spec→Renderer · Rule を Renderer に持ち込まない | Spec Contract |

@@ -22,6 +22,7 @@
     "group-split": { "profile": "heavy", "status": "ok" },
     "image-trim": { "profile": "light", "status": "ok" },
     "invoice": { "profile": "heavy", "status": "ok" },
+    "graph": { "profile": "heavy", "status": "ok" },
     "json-view": { "profile": "light", "status": "ok" },
     "link-qr": { "profile": "light", "status": "ok" },
     "match-board": { "profile": "heavy", "status": "ok" },

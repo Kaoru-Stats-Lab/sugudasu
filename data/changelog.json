@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-13",
+  "updatedAt": "2026-08-14",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,29 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "graph-alpha-20260814",
+      "date": "2026-08-14",
+      "type": "feature",
+      "audience": "public",
+      "title": "グラフ — 表を貼って目的を選ぶと資料用の図ができる",
+      "body": "Excelの表を貼り、「推移」「達成」など伝えたいことを選ぶとグラフの形が決まります。色を整えてSVGをコピーし、資料に貼れます。AIによる推測はしません。サーバーに送りません。",
+      "tools": [
+        "graph"
+      ]
+    },
+    {
+      "id": "graph-alpha-internal-20260814",
+      "date": "2026-08-14",
+      "type": "feature",
+      "audience": "internal",
+      "title": "graph α · registry · R1.x 目標3型 · SVGコピー",
+      "body": "§1.5 MECE · Intent→Decision→Spec→Renderer · CND-004 · Color Must · Graph Editorなし · GRAPH_TOOL_SPEC",
+      "tools": [
+        "graph"
+      ],
+      "rollup": "graph-alpha-20260814"
+    },
     {
       "id": "prompt-handoff-alpha-20260813",
       "date": "2026-08-13",

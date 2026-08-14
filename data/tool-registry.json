@@ -200,6 +200,20 @@
       "statusNote": "Excel貼付/CSV→MD·JSON·TSV · Shift-JIS · 非送信 · 5,000行",
       "categoryId": "text"
     },
+    "graph": {
+      "file": "graph.html",
+      "conceptName": "グラフ",
+      "productName": "SUGUDASU グラフ",
+      "navLabel": "グラフ",
+      "navIcon": "📈",
+      "inNav": true,
+      "navOrder": 9.55,
+      "name": "表から資料用グラフ（Intent→決定論→SVG）",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "Excel貼付→目的選択→SVGコピー · 非送信 · GRAPH_TOOL_SPEC.md · R1.x",
+      "categoryId": "text"
+    },
     "webp-to-jpg": {
       "file": "webp-to-jpg.html",
       "conceptName": "WebP変換",

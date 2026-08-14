@@ -1,0 +1,12 @@
+{
+  "id": "RG-TARGET-NOMINAL",
+  "tsv": "部門\t実績\t目標\n第一営業\t85\t90\n第二営業\t72\t70\n第三営業\t64\t80\n",
+  "intent": "TARGET_VS_ACTUAL",
+  "expected_decision": {
+    "matched_rule_id": "RLE-009A",
+    "state": "CONDITIONAL",
+    "recommended_graph": "Bullet",
+    "confirmation_id": "CND-004"
+  },
+  "note": "部門×実績×目標。達成色は発明しない。CND-004 で Bullet or Grouped_Column。"
+}

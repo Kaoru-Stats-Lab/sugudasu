@@ -10,6 +10,8 @@
  */
 'use strict';
 
+import { isTargetHeaderToken, isActualHeaderToken } from './graph-observable-extractor.js';
+
 const SPEC_VERSION = '1.0.0';
 
 const ENCODING_BY_TYPE = {
@@ -94,11 +96,12 @@ const ENCODING_BY_TYPE = {
     synchronize_zero_line: true,
   },
   Bullet: {
-    x: { field: 'category', type: 'temporal' },
-    y: { field: 'display', type: 'quantitative', zero_baseline: true },
+    x: { field: 'display', type: 'quantitative', zero_baseline: true },
+    y: { field: 'category', type: 'nominal' },
     color: null,
     series_field: null,
     mark: 'bullet',
+    orientation: 'horizontal',
     target: { field: 'target', encoding: 'marker' },
   },
   Scatter: {
@@ -263,6 +266,17 @@ function materializeSpec(decision, ctx, opts) {
   if (encoding.y && encoding.y.zero_baseline != null) {
     encoding.y.zero_baseline = constraints.zero_baseline;
   }
+  if (encoding.x && encoding.x.zero_baseline != null) {
+    encoding.x.zero_baseline = constraints.zero_baseline;
+  }
+
+  // Attach target encoding when Spec data carries targets (CND-004 paths)
+  if (dataHasTarget(data) && !encoding.target) {
+    encoding.target = {
+      field: 'target',
+      encoding: chartType === 'Bullet' ? 'marker' : chartType === 'Grouped_Column' ? 'series' : 'line',
+    };
+  }
 
   const sort = decision.sort || null;
   if (sort === 'descending' && (chartType === 'Bar' || chartType === 'Grouped_Bar')) {
@@ -328,6 +342,18 @@ function buildDataPayload(decision, ctx, chartType, observable) {
       ? ctx.measures
       : [];
   const table = ctx.table || { headers: [], rows: [] };
+
+  if (
+    (chartType === 'Bullet' ||
+      chartType === 'Grouped_Column' ||
+      chartType === 'Grouped_Bar' ||
+      chartType === 'Column') &&
+    table.headers?.length >= 3 &&
+    table.rows?.length
+  ) {
+    const paired = buildActualTargetFromTable(table, unit, chartType, observable);
+    if (paired) return paired;
+  }
 
   if (chartType === 'Scatter' && table.headers?.length >= 3 && table.rows?.length) {
     const catIdx = 0;
@@ -463,6 +489,105 @@ function buildDataPayload(decision, ctx, chartType, observable) {
     category_role: categoryRoleFromObservable(observable, chartType),
     preserve_raw: true,
   };
+}
+
+function buildActualTargetFromTable(table, unit, chartType, observable) {
+  const headers = table.headers.map(String);
+  const rows = table.rows;
+  const dimIdx = 0;
+  const measureIdxs = [];
+  for (let i = 1; i < headers.length; i++) measureIdxs.push(i);
+  if (measureIdxs.length < 2) return null;
+
+  const targetIdx = measureIdxs.find((i) => isTargetHeaderToken(headers[i]));
+  if (targetIdx == null) return null;
+
+  const rest = measureIdxs.filter((i) => i !== targetIdx);
+  const actualIdx =
+    rest.find((i) => isActualHeaderToken(headers[i])) ?? rest[0] ?? null;
+  if (actualIdx == null) return null;
+
+  const categories = rows.map((r, i) => String(r[dimIdx] ?? `row_${i}`));
+  const category_role = categoryRoleFromObservable(observable, chartType);
+
+  const actualValues = rows.map((r, i) => {
+    const raw = Number(r[actualIdx]);
+    const target = Number(r[targetIdx]);
+    return {
+      category: categories[i],
+      raw: Number.isFinite(raw) ? raw : 0,
+      display: Number.isFinite(raw) ? raw : 0,
+      target: Number.isFinite(target) ? target : null,
+    };
+  });
+
+  if (chartType === 'Grouped_Column' || chartType === 'Grouped_Bar') {
+    return {
+      series: [
+        {
+          id: 'actual',
+          label: headers[actualIdx] || '実績',
+          unit,
+          role: 'actual',
+          values: actualValues.map(({ category, raw, display }) => ({ category, raw, display })),
+        },
+        {
+          id: 'target',
+          label: headers[targetIdx] || '目標',
+          unit,
+          role: 'target',
+          values: rows.map((r, i) => {
+            const raw = Number(r[targetIdx]);
+            return {
+              category: categories[i],
+              raw: Number.isFinite(raw) ? raw : 0,
+              display: Number.isFinite(raw) ? raw : 0,
+            };
+          }),
+        },
+      ],
+      categories,
+      category_role,
+      preserve_raw: true,
+    };
+  }
+
+  const targetNums = actualValues.map((v) => v.target).filter((t) => t != null);
+  const constant =
+    targetNums.length > 0 && targetNums.every((t) => Object.is(t, targetNums[0]));
+  const targetEncoding = chartType === 'Bullet' ? 'marker' : 'line';
+
+  // Bullet (marker) or Column (reference line) — no invented achievement color
+  return {
+    series: [
+      {
+        id: 'actual',
+        label: headers[actualIdx] || '実績',
+        unit,
+        role: 'actual',
+        values: actualValues,
+      },
+    ],
+    categories,
+    category_role,
+    preserve_raw: true,
+    target: {
+      field: 'target',
+      encoding: targetEncoding,
+      constant: Boolean(constant),
+      values: actualValues.map((v) => v.target),
+    },
+  };
+}
+
+function dataHasTarget(data) {
+  if (!data) return false;
+  if (data.target && (Array.isArray(data.target.values) || data.target.field)) return true;
+  const series = data.series || [];
+  if (series.some((s) => s.role === 'target')) return true;
+  return series.some((s) =>
+    (s.values || []).some((v) => v != null && v.target != null && Number.isFinite(Number(v.target)))
+  );
 }
 
 function buildConstraints(decision, rulesDoc) {

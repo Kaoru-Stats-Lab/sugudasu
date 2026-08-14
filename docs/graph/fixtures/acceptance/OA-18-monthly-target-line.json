@@ -1,0 +1,10 @@
+{
+  "id": "OA-18",
+  "scenario": "月次売上・一定目標線（Column + Target Line）",
+  "tsv": "月\t売上\t目標\n4月\t56912\t80000\n5月\t50693\t80000\n6月\t91569\t80000\n7月\t65478\t80000\n8月\t76951\t80000\n9月\t85631\t80000\n",
+  "intent": "TARGET_VS_ACTUAL",
+  "confirmation_choice_id": "target_as_line",
+  "expected_r1_type": "Column",
+  "paste_targets": ["PowerPoint", "Google Slides", "Keynote"],
+  "note": "T-line · 定数目標は全幅水平線（GRAPH_TARGET_REPRESENTATION）。Excel目標値文化。"
+}
