@@ -42,7 +42,7 @@ Excel（TSV）を貼り、「何を伝えたいか」を選ぶとグラフの形
 
 - Graph Editor（要素ごとの塗り分け UI）
 - Pie / Donut / Waterfall（R2/R3 HOLD）
-- **重ね2軸（Dual_Axis / Combination_Column_Line）** — CND-001 の安全既定は上下分離のみ
+- **重ね2軸（Dual_Axis / Combination_Column_Line）** — CND-001 の安全既定は上下分離のみ。棒＋複数折れ線を左右軸で1枚に重ねる複合（いわゆる2軸・複数系列）も α 非対応。理由はユーザー向け FAQ（軸の取り違え · スケール潰し · 重なり）に明記
 - 達成緑・未達赤の自動発明
 - 着地見込み Intent
 - 貼付後 SVG 編集前提

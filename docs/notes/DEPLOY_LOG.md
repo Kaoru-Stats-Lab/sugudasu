@@ -2271,10 +2271,29 @@
 | **cf_deployment_id** | CF Pages auto（`0467808` push origin main） |
 | **smoke** | （CF 反映後）`/graph` · 単位の違う2指標 · 折れ線始点余白 · 項目名OFF |
 
+## DEPLOY-20260814-004
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy · graph 複合/重ね軸を出さない理由をリード・FAQに明示（P7 override） |
+| **change_summary** | tools/graph.html FAQ+JSON-LD+lead · graph-app hint · GRAPH_TOOL_SPEC · hub 語彙 |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 4（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · release:pages:free |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （CF 反映後）`/graph` リード · FAQ「複合グラフ」 |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-14 | 004 approved（graph 複合非対応の理由明示 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 003 executed（0467808 · graph ラベル · 2指標上下分離 · Line帯中央 · P7 override） |
 | 2026-08-14 | 003 approved（graph ラベル · 2指標上下分離 · Line帯中央 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 002 executed（a5328d3 · graph コピー/FAQ/センタリング · GitHub Issues · P7 override） |

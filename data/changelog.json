@@ -11,6 +11,29 @@
   },
   "entries": [
     {
+      "id": "graph-no-combo-axis-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "public",
+      "title": "グラフ — 重ね複合グラフを出さない理由を明記",
+      "body": "棒と折れ線を左右の軸で1枚に重ねる複合図は出さない方針と、誤読しやすい理由をリードとFAQに書きました。単位の違う指標は上下に分けて表示します。",
+      "tools": [
+        "graph"
+      ]
+    },
+    {
+      "id": "graph-no-combo-axis-internal-20260814",
+      "date": "2026-08-14",
+      "type": "improve",
+      "audience": "internal",
+      "title": "graph · FAQ why no dual/combo overlay",
+      "body": "lead · FAQ · JSON-LD · CND dual hint · hub vocab 2軸/複合/3軸",
+      "tools": [
+        "graph"
+      ],
+      "rollup": "graph-no-combo-axis-20260814"
+    },
+    {
       "id": "graph-dual-labels-20260814",
       "date": "2026-08-14",
       "type": "improve",

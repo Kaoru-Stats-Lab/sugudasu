@@ -171,7 +171,7 @@ const CND_DUAL_OPTIONS = [
     thumb: 'target_line',
     group: 'CND-001',
     ready: false,
-    hint: 'α未対応 · 誤読防止のため非表示',
+    hint: 'α未対応 · 軸の取り違え・スケール潰しを避けるため',
   },
 ];
 
