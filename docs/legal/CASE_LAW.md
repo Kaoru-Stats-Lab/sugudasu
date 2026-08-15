@@ -42,6 +42,7 @@
 | [CASE-2026-008](#case-2026-008) | 裏紙「説明モード」事件 | **Reject**（モード）· Fit 強化は合憲 | Persona · Domain · Anti · Mission |
 | [CASE-2026-009](#case-2026-009) | 漢字拡大・カタログ線引き事件 | **Reject**（漢字拡大）· Hub Value 非採用理由 · 端末は主軸にしない | Domain · 存在様式 · Anti · Product |
 | [CASE-2026-010](#case-2026-010) | Clip Stash × Edge Drop 事件 | **Reject**（Drop移植・管理）· **GO**（出口DnD・確認Preview） | WHY · Domain · Anti · C-10 |
+| [CASE-2026-011](#case-2026-011) | PowerToys 摩擦・新規HTML 事件 | **Reject**（一式移植・OCR・OS常駐・仮置きAdaptボタン）· 本件新規HTML 0 · Crop等は着手不可 · PARKは範囲+トリガー | WHY · Domain · Anti · C-10 · F5 |
 
 ---
 
@@ -390,6 +391,54 @@ SUGUDASU 仮置きは Edge Drop の簡易版ではない。**作業中の素材�
 **関連Product:** `clip-stash`
 
 **原料:** [`logs/2026-08-15_clip-stash_edge_drop.md`](./logs/2026-08-15_clip-stash_edge_drop.md)
+
+---
+
+## CASE-2026-011
+
+**事件名:** PowerToys 摩擦・新規HTML 事件  
+
+**争点:**  
+1. Microsoft PowerToys の機能セット（常駐・ランチャー・ウィンドウ管理・OCR・AIペースト・設定）を SUGUDASU へ移植してよいか。  
+2. 抽出された JTBD のために新規 HTML を足してよいか。  
+3. 仮置きへ Adapt 常時ボタン・矩形クロップ・セッション自動破棄を今すぐ足してよいか。
+
+**立法事実:**  
+- PowerToys は OS↔アプリの摩擦をネイティブ特権（常駐・キーフック・オーバーレイ）で解く。SUGUDASU は業務データ↔ブラウザ。特権の模倣はサンドボックスと憲法（登録不要・静的配信・設定させない）で破綻する。  
+- 有効な摩擦は 3 つに限られる: 形式の非互換、視認と確認の中断、単純反復の摩耗。  
+- Peek（確認）と Handoff（出口）は CASE-2026-010 で既に合憲・出荷済。  
+- 汎用 OCR は 90% 精度が 100% 目視校正を強制する。日本語帳票・縦書き・表構造と WASM モデルサイズ（15MB 超）は Calm UX と静的俊敏性を壊す。  
+- 監査の「即時実装」（カードフッターの形式コピー常時表示、テキスト全画面 Peek、タブ閉じ破棄）は CASE-2026-010 の「コピーが最短導線」「編集しない」「text/table は現行サイズ」および IndexedDB 永続と衝突する。
+
+**適用条文:**  
+WHY · Domain · Anti（複雑にしない · 教え込まない · 設定させない）· F5 · Commentary C-01 · C-10 カテゴリ期待 · CASE-2026-001 / 003 / 010（カテゴリ一式の模倣）· CASE-2026-002（管理・履歴 Reject）· CASE-2026-007（Copy-First）· CASE-2026-009（新規 HTML を Hub Value で足さない）
+
+**判決:**  
+
+| 争点 | 判決 |
+|------|------|
+| PowerToys 機能セットの移植 | **Reject** |
+| Always On Top · Awake · FancyZones · Run · Workspaces · Keyboard Manager · ZoomIt 等 OS常駐/設定/学習 | **Reject** |
+| 汎用 OCR / Text Extractor / AI ペースト | **Reject**（仮置きには到来しても入れない。別プロダクトはモデル条件が揃ってから再審） |
+| クリップボード履歴の新規 HTML | **Reject** |
+| 新規ツール（新規 HTML） | **本件監査では 0**（カタログ全体の凍結ではない。有効 JTBD は既存の入口/出口へ翻訳） |
+| Peek（画像/PDF 確認）· 出口 DnD | **Keep**（CASE-2026-010。再審しない） |
+| 仮置きの形式コピー常時ボタン | **Reject**（表の出口は `table-conv`） |
+| テキスト全画面 Peek · 矩形クロップ | **着手不可**（再開条件はレビューログ。HOLD を着手可と読まない） |
+| タブ閉じ破棄 | **Reject** |
+| 画像一括リサイズ · Normalize 自動判別 · 画像内スポイト · PowerRename | **PARK（範囲付き）**。仮置きには入れない。Normalize に一括改名を足さない。トリガー前は実装しない |
+
+**理由:**  
+PowerToys はユーティリティ OS 拡張のカテゴリ期待を形成する。一式を足すと SUGUDASU が常駐ランチャーに見える（C-10）。OS 責務は Domain 外。OCR と生成 AI ペーストは非決定論であり、置いたバイトを変質させない原則と実務事故リスクに反する。新規 HTML 0 は **本件監査の結論** であり、今後の全カタログ凍結ではない（CASE-2026-009 と同型の「あったら便利では足さない」）。形式変換の JTBD 自体は価値があるが、仮置きフッターのボタン増殖はヒックの法則に反する。主座は既出荷の `table-conv`。Normalize は1テキストの貼り先整えであり、多数対象の一括改名とは JTBD が違う。Crop は「切り出して渡す」なら出口、「新カード複製」なら編集に近い。境界はプロトタイプでユーザーに聞くまで製品に入れない。
+
+**今後への影響:**  
+ネイティブ特権ユーティリティ（PowerToys · ランチャー · ウィンドウマネージャ · 画面 OCR）のカタログをコアに足す提案は、便利さでは覆さない。PARK はスコープと再開トリガー無しでは書かない。HOLD を着手可と読まない。外向けに「機能を増やさない」と宣言しない。憲法本文は改正しない。
+
+**関連ADR:** なし（憲法判断）。仮置き HOW は CASE-2026-010 の製品仕様を維持。  
+
+**関連Product:** `clip-stash`（Peek/Handoff は既存）· `table-conv`（表の形式出口）· `normalize`（1テキストの整え。一括改名は載せない）· 画像系（一括リサイズは PARK）· 不採用（PowerToys 移植 · OCR ツール）
+
+**原料:** [`logs/2026-08-15_powertoys_friction_source.md`](./logs/2026-08-15_powertoys_friction_source.md) · レビュー [`logs/2026-08-15_powertoys_friction.md`](./logs/2026-08-15_powertoys_friction.md)
 
 ---
 

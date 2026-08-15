@@ -1,17 +1,16 @@
 # プロダクトアイディア評価台帳 — ジャッジ基準SSOT
 
-**更新**: 2026-07-22  
+**更新**: 2026-08-15  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **起源**: 20〜30代・ITリテラシー高め会社員の「面倒くさい」20選ディスカッション（店長 × ディレクター）
 
 > **使い方:** 新ツール提案時は [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) の判定順・F1〜F7と、本台帳の市場性・判例を突合してから `BACKLOG.md` に載せる。  
 > 実装仕様は各ツールの SSOT（例: `LOTTERY_PRIZE_LAW_TOOL_SPEC.md`）へ。  
 > **2026-07-22:** `pdf-fill`（SUGUDASU PDF記入）を **§19 GO** として正式登録。  
-> **2026-07-27:** `mention`（SUGUDASU Mention）を **§20 条件付き GO**（Extension 先行 · LLM なし）として設計登録。
-
----
-
-## 1. 総評（思想）
+> **2026-07-27:** `mention`（SUGUDASU Mention）を **§20 条件付き GO**（Extension 先行 · LLM なし）として設計登録。  
+> **2026-08-14:** `json-view` 姉妹候補（XML構造 · HTML構造）を **§21 HOLD**（いま作らない · AI文脈で再燃しうる）。  
+> **2026-08-14:** 漢字拡大を **§22 Reject**（CASE-2026-009 · 未実装 · Hub Value では覆さない）。  
+> **2026-08-15:** PowerToys 一式移植を **§23 Reject**（CASE-2026-011 · 新規 HTML 0 · OCR Reject · Adapt/Crop は仮置きに今すぐ足さない）。
 
 > **「SUGUDASU適合」と「市場で勝てる」は別軸。**  
 > **常にマーケットイン。プロダクトアウトを避ける。**
@@ -666,7 +665,106 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 ---
 
-## 21. 関連ドキュメント
+## 21. 構造ビュー姉妹 — XML / HTML（HOLD · 2026-08-14）
+
+**きっかけ:** `json-view`（[JSON構造](https://sugudasu.com/json-view)）出荷後の議論。XML 同様のニーズはあるか · HTML は AI 文脈で増えるか。  
+**決定:** **いまは作らない（HOLD）**。需要ログ・再燃条件が揃うまで実装しない。  
+**関連 SSOT:** `docs/notes/JSON_VIEW_SPEC.md` §7b
+
+### 21-1. 判定
+
+| 案 | SUGUDASU適合 | 市場・Pain（P-B） | 判定 | メモ |
+|----|--------------|-------------------|------|------|
+| **XML構造**（json-view 同型） | ◎（貼る・見る・パス・非送信） | △ | **HOLD** | SOAP/基幹連携には痛いが母数は JSON より狭い。表変換でも XML は恒久対象外（`TABLE_CONV_TOOL_SPEC`） |
+| **HTML構造**（木表示 · パス） | ○ | △→○の芽 | **HOLD** | AI が吐く HTML の確認・箇所コピー需要は増えうる。ただし「編集器」「ブラウザ再現」に膨らむと F5/境界割れ |
+
+### 21-2. 再燃条件（どれか満たしたら再ジャッジ）
+
+1. Hub 検索・定性FB・Issues で「XML」「HTMLツリー」「AIのHTMLを確認」が **繰り返し**来る  
+2. `json-view` 利用ログで「似たジョブの欠落」が明確（推測だけは不可）  
+3. 仕様を **貼る・見る・探す・パス/値コピー** に閉じられ、編集・プレビュー・修復を OUT にできる  
+
+### 21-3. いまやらないこと（再提案防止）
+
+| やる（将来の最小） | やらない |
+|--------------------|----------|
+| json-view と同ジョブの縮小版 | 万能フォーマットビューア1ページ |
+| 非送信 · 登録不要 | HTML ライブプレビューを主価値にする |
+| AI文脈は「確認・持ち帰り」まで | 「AIが直したHTML」生成・修復保証 |
+
+### 21-4. 縮小版（HOLD 時の置き場）
+
+- 実装チケットは切らない  
+- Backlog 必須化しない  
+- 本節 + `JSON_VIEW_SPEC` §7b が正本  
+
+---
+
+## 22. 漢字拡大（Reject · 2026-08-14 · CASE-2026-009）
+
+**きっかけ:** 紙に書く直前の漢字巨大表示。DD と、Hub Value / 端末を採用軸にするかの線引き。  
+**決定:** **Reject**（未実装。Hub / registry 追加なし）。同一 JTBD の無料 Web が既にある。  
+**判例:** [`docs/legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-009)  
+**原料:** [`docs/legal/logs/2026-08-14_kanji-magnifier_source.md`](../legal/logs/2026-08-14_kanji-magnifier_source.md)
+
+### 22-1. 判定
+
+| 軸 | 判定 | メモ |
+|----|------|------|
+| SUGUDASU適合 | ○（F1〜F5 には乗る） | 学習・辞典・なぞりは持たない極小案でも |
+| 市場・差別化 | × | 同一 UX の無料 Web が複数。憲法適合は競合も満たす |
+| Hub Value | 採用理由にしない | Direct はインフラ。習慣化は存在様式と衝突 |
+| Adjacent | × | 帳票・名簿・画像・整形・会議の隣に来ない |
+| 端末 | 主軸にしない | 落ちた理由は Tool Value と隣接。スマホだからではない |
+
+### 22-2. 再提案防止
+
+- 「SUGUDASUっぽい」だけでは GO にしない。競合が F1〜F5 を満たすなら、未解決 JTBD か競合では解きにくい制約を特定できなければ Reject
+- Hub にあること・ブックマーク再訪をカタログ拡大の理由にしない
+- 生活・学習・汎用変換を横連携と呼ばない
+
+---
+
+## 23. PowerToys 一式（Reject · 2026-08-15 · CASE-2026-011）
+
+**きっかけ:** Microsoft PowerToys の摩擦構造分析に基づく戦略監査。ネイティブ特権ユーティリティを SUGUDASU へ翻訳できるか。  
+**決定:** **Reject**（一式移植 · 本件新規 HTML 0 · OCR · OS 常駐 · 仮置き Adapt ボタン）。Peek / 出口は CASE-2026-010 のまま Keep。テキスト全画面 Peek · Crop は **着手不可**。一括リサイズ · Normalize 自動判別 · PowerRename は範囲付き PARK（トリガー前は実装しない。Normalize に一括改名を足さない）。  
+**判例:** [`docs/legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-011)  
+**原料:** [`docs/legal/logs/2026-08-15_powertoys_friction_source.md`](../legal/logs/2026-08-15_powertoys_friction_source.md)  
+**レビュー:** [`docs/legal/logs/2026-08-15_powertoys_friction.md`](../legal/logs/2026-08-15_powertoys_friction.md)
+
+### 23-1. 判定
+
+| 軸 | 判定 | メモ |
+|----|------|------|
+| SUGUDASU適合 | ×（一式） | OS 責務・常駐・設定・学習。ブラウザ完結の Domain 外 |
+| 形式変換 JTBD | ○（価値はある） | 主座は既出荷の `table-conv`。仮置きフッター増殖は Reject。Normalize は1テキストの整え |
+| 確認 Peek | 出荷済 | CASE-2026-010。画像/PDF。テキスト全画面は着手不可（UT 待ち） |
+| 市場・差別化 | 一式では × | PowerToys の簡易 Web 版に見える |
+| 新規 HTML | 本件 0 | カタログ全体の凍結ではない。Hub Value では足さない |
+| OCR | ×（仮置き） | 90% 精度 = 100% 目視校正。到来しても仮置きには入れない |
+
+### 23-2. 再提案防止
+
+- PowerToys / ランチャー / ウィンドウマネージャ / 画面 OCR のカタログをコアに足さない
+- 「摩擦がある」だけでは新規ツールにしない。既存の入口/出口へ翻訳できるなら HTML を足さない
+- HOLD を着手可と読まない。PARK はスコープと再開トリガー無しでは書かない
+- 仮置きへの形式コピー常時ボタン・矩形クロップ・タブ閉じ破棄は、便利さでは CASE-2026-010 を覆さない
+- PowerRename の一括改名を Normalize のトグルに足さない（1つを整える識別を揺らさない）
+- 外向けに「機能を増やさない」と宣言しない
+
+### 23-3. PARK 再開（トリガー前は実装しない）
+
+正本は [`docs/legal/logs/2026-08-15_powertoys_friction.md`](../legal/logs/2026-08-15_powertoys_friction.md) の判定表。要約:
+
+- 一括リサイズ · 提出容量: ゲート順は **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**。Hub/GSC 単独で 11/15 前に製品コードを解禁しない。仮置き・新規圧縮 HTML には入れない。議論 [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md) · 草案 [`IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)。**公開 roadmap には今載せない**（11/15 GO 後に `considering` を再審）
+- リサイズ→赤入れ一括注入: **Reject**（HOW §11.6）。赤入れ画像キュー切替: **PARK（annotate HOW）** · **公開 roadmap 載せない** · 再開は annotate 単体 HOW 草案のあと（提出リサイズの 11/15 ゲートとは別）
+- Normalize 自動判別: 貼り先プリセットの取り違えが主摩擦になったとき。ソース推定でプリセット切替は再開条件にしない
+- Crop: **製品外**プロトタイプでユーザーに聞いたあと。会議室だけでは再開しない。ラボ `docs/products/clip-stash/lab/`
+
+---
+
+## 24. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
@@ -675,6 +773,9 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 | `docs/products/pdf-fill/` | **PDF記入** 設計正本（README · philosophy · specification · ui-ux · technical-design · decisions） |
 | `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |
+| `docs/notes/JSON_VIEW_SPEC.md` | json-view · **§7b XML/HTML HOLD** |
+| `docs/legal/CASE_LAW.md` CASE-2026-009 | 漢字拡大 Reject · カタログ線引き |
+| `docs/legal/CASE_LAW.md` CASE-2026-011 | PowerToys 一式 Reject · 新規 HTML 0 · OCR |
 | `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | SOSA調査ログ + GTM/UX転用SSOT |
 | `docs/notes/SUGUDASU_SYNC_LINE.md` | Sync ライン正本 · 旗艦 Schedule |
 | `docs/notes/TACTICS_BOARD_PRODUCT_NOTE.md` | ZoneBoard へのポインタ（正本: `C:\asl_dev\zoneboard`） |

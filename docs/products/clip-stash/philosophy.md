@@ -85,8 +85,9 @@ SUGUDASU 仮置きは、**情報を管理するためのツールではない**�
 - **Brand Constitution:** 考えない · 教えない · 整理しない · 提案しない
 - **Product Constitution:** 処理ゼロの滞留装置。F5（3分加工）型のツールとは別種
 - **Anti Principles:** PureRef化 · ノート化 · 高機能化 · AI化 — すべて Reject 方向
-- **カテゴリ期待（C-10）:** クリップボード管理 · Edge Drop 一式は移植しない
+- **カテゴリ期待（C-10）:** クリップボード管理 · Edge Drop 一式 · PowerToys 一式は移植しない
+- **形式変換:** 仮置きに形式ボタンを増やさない。表の出口は `table-conv`。Normalize に多数ファイルの一括改名を載せない（CASE-2026-011）
 
 詳細な操作拒否リストは `specification.md` を参照。出口の実装は `SPEC_HANDOFF.md`。
 
-**憲法判例:** [`CASE-2026-001`](../../legal/CASE_LAW.md#case-2026-001) · [`CASE-2026-002`](../../legal/CASE_LAW.md#case-2026-002) · [`CASE-2026-010`](../../legal/CASE_LAW.md#case-2026-010)
+**憲法判例:** [`CASE-2026-001`](../../legal/CASE_LAW.md#case-2026-001) · [`CASE-2026-002`](../../legal/CASE_LAW.md#case-2026-002) · [`CASE-2026-010`](../../legal/CASE_LAW.md#case-2026-010) · [`CASE-2026-011`](../../legal/CASE_LAW.md#case-2026-011)

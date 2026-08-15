@@ -1,7 +1,7 @@
 # SUGUDASU Brand Open Questions
 
 **役割:** ブランド設計でまだ答えが出ていないテーマだけを管理する  
-**更新:** 2026-07-21
+**更新:** 2026-08-15
 
 解決したテーマは結論を
 [`DECISION_LOG.md`](DECISION_LOG.md) またはADRへ移し、
@@ -31,6 +31,8 @@
 ## Q-02 — Habit Formation
 
 **関連Phase:** 2.5 / 6
+
+**閉じた線（CASE-2026-009）:** 「困ったらまず SUGUDASU」という習慣化は新規ツールの採用理由にしない。再訪は次の実務。計測・用語は未解決のまま。
 
 - 「毎日使わせる習慣」ではなく「次の都度実務で思い出す」をどう測るか
 - 通知やメールを使わず再訪理由をどう作るか
@@ -80,6 +82,8 @@
 
 **関連Phase:** 2.5
 
+**閉じた線（CASE-2026-009）:** Direct／ブックマークは再訪インフラとして Keep。それをカタログ拡大の理由にはしない。経路の実測は未解決。
+
 - SUGUDASUを検索エンジンより先に開く場面は何か
 - Hub、ブックマーク、履歴、社内Wikiのどれが主経路か
 - この仮説をどの指標と期間で検証するか
@@ -91,3 +95,24 @@
 - Report / Guide / Blueprint / Strategyをどのフォルダへ置くか
 - 完成成果物と調査メモをどう分離するか
 - PhaseごとにADRが必要となる判断基準は何か
+
+## Q-09 — 画像の提出容量適合（一括リサイズ HOW）
+
+**関連Phase:** 製品 HOW · CASE-2026-011 PARK  
+**閉じた線:** 新規「画像圧縮」HTML は今作らない。Hub Value で GO しない。リサイズ→赤入れ一括注入 Reject。赤入れ画像キューは annotate PARK · **公開 roadmap 載せない**（2026-08-15）。実装ゲートは **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**（Hub/GSC 単独で 11/15 前に解禁しない）。  
+**ログ:** [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md)  
+**草案:** [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §6 · §11.6
+
+- 既存画像出口（`webp-to-jpg` 等）に「メール添付 / フォーム 2MB」プリセットを足すか
+- Wasm（jSquash）をいつ vendor 化するか、Canvas `toBlob` だけで足りるか
+- 11/15 HOW レビュー後、Hub/GSC（縮小・圧縮・2MB）をどう読むか
+- 11/15 GO 後、提出リサイズを `considering` に載せるか（annotate キューは別）
+
+## Q-10 — 仮置き Crop（製品外プロトタイプ）
+
+**関連Phase:** clip-stash · CASE-2026-011 着手不可  
+**閉じた線:** 仮置き製品本体・registry には入れない。会議室だけでは再開しない。  
+**ラボ:** [`../products/clip-stash/lab/crop-handoff-prototype.html`](../products/clip-stash/lab/crop-handoff-prototype.html)
+
+- 矩形選択は「編集」に見えるか、「持っていく素材を絞る」に見えるか（ユーザー実測）
+- 結果を新カード複製にするか、クリップボードへ出すだけにするか

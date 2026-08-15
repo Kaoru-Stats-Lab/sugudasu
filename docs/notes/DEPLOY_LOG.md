@@ -2366,10 +2366,29 @@
 | **cf_deployment_id** | CF Pages auto（`66eb42d` push origin main） |
 | **smoke** | （CF 反映後）`/clip-stash` Space Preview · カード DnD 出口 · 入口 Strip |
 
+## DEPLOY-20260815-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — CASE-2026-011 · 提出リサイズ HOW · 実装ゲート固定（docs） |
+| **change_summary** | PowerToys 摩擦ログ · CASE-011 · 提出リサイズ HOW §6/§11 · 赤入れ連携 Reject/PARK · Crop 製品外ラボ · DECISION/台帳/Q-09（本番 HTML 変更なし） |
+| **local_build** | （release 前） |
+| **deploy_count_today** | 2（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override（同一日 2 回目 · 提督 Commit&Push&Deploy） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | docs 中心 · 本番プロダクト面の差分なし · `sugudasu.com/` 到達確認 |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-15 | 002 approved（CASE-011 · 提出リサイズ HOW · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-15 | 001 executed（66eb42d · 仮置き Handoff · CASE-2026-010） |
 | 2026-08-15 | 001 approved（仮置き Handoff · CASE-2026-010 · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 007 executed（f56e53f · Graph Waterfall α · P7 override） |

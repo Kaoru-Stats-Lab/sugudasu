@@ -30,7 +30,7 @@
 - [x] Cursor格納完了
 - [x] 相互リンク確認
 - [x] **憲法義解** — `docs/legal/CONSTITUTION_COMMENTARY.md`
-- [x] **判例集** — `docs/legal/CASE_LAW.md`（CASE-2026-001〜010）
+- [x] **判例集** — `docs/legal/CASE_LAW.md`（CASE-2026-001〜011）
 - [x] **解釈手順** — `docs/legal/LEGAL_INTERPRETATION_GUIDE.md`
 - [x] **PCT-6 任意性（Discretion）** — `docs/legal/PERSONA_CONSTITUTION_TRAITS.md`
 

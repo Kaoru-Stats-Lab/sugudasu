@@ -9,6 +9,64 @@
 
 ---
 
+## 2026-08-15 — 提出リサイズの実装ゲートは 11/15 HOW → Hub/GSC
+
+**決定事項**  
+画像一括リサイズ · 提出容量の製品コード解禁順は **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**。Hub/GSC が先に目立っても 11/15 前に実装しない。公開 roadmap は今載せない。
+
+**理由**  
+HOW 未確定のまま需要信号だけで HTML を足すと CASE-009 型の Hub Value GO に戻る。観測はレビュー後の優先度・`considering` 再審に使う。
+
+**関連ドキュメント**
+- [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §6
+- [`../legal/logs/2026-08-15_powertoys_friction.md`](../legal/logs/2026-08-15_powertoys_friction.md)
+
+---
+
+## 2026-08-15 — 赤入れ複数枚キューは roadmap に載せない
+
+**決定事項**  
+リサイズ成果の赤入れ一括注入は Reject。赤入れの画像キュー切替は annotate 側 PARK のまま。**公開 `/roadmap` には載せない**。台帳 · HOW §11.6 で足りる。提出一括リサイズ本体も 11/15 HOW GO 前は roadmap に載せない。製品コード（annotate キュー · 提出リサイズ HTML）はトリガー前に着手しない。
+
+**理由**  
+`considering` は公開の優先シグナル。OCR 候補と並ぶと期待が膨らむ。効率の痛みは認めるが、解く場所は annotate であり提出リサイズの出荷条件ではない。
+
+**関連ドキュメント**
+- [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §11.6
+- [`../notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`](../notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) §23-3
+
+---
+
+## 2026-08-15 — 画像圧縮の新規 HTML は今作らない（提出容量は 11/15 HOW）
+
+**決定事項**  
+クライアントサイド画像圧縮の新規 HTML は HOLD。Hub「あるかも」期待・「リサイズがあるから圧縮も」は採用理由にしない。メール添付 25MB / フォーム 2MB などの提出容量 JTBD は棄却せず、**2026-11-15** の画像一括リサイズ HOW と同じ案件で既存出口のプリセットとして検討する。仮置きには圧縮を入れない。憲法本文は改正しない。
+
+**理由**  
+非送信で圧縮できることとカタログに足すことは別。競合（Squoosh 等）が F1〜F5 を満たす領域では Hub Value で GO しない（CASE-2026-009）。閉域の Pain はしばしば配送路であり、圧縮だけでは解けない。
+
+**関連ドキュメント**
+- [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md)
+- [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-011) CASE-2026-011 · [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-009) CASE-2026-009
+
+---
+
+## 2026-08-15 — PowerToys 一式は移植しない（新規 HTML 0）
+
+**決定事項**  
+PowerToys の機能セットは SUGUDASU へ移植しない。OS 常駐・ランチャー・設定・OCR・AI ペーストで新規 HTML を足さない。**本件監査の新規ツールは 0**（カタログ全体の凍結ではない）。Peek（確認）と出口 DnD は CASE-2026-010 のまま Keep。仮置きの形式コピー常時ボタンは Reject（出口は `table-conv`）。テキスト全画面 Peek と矩形クロップは **着手不可**（HOLD を着手可と読まない）。セッション破棄は Reject。一括リサイズ・Normalize 自動判別・PowerRename は範囲付き PARK（トリガー前は実装しない。Normalize に一括改名を足さない）。外向けに「機能を増やさない」と宣言しない。憲法本文は改正しない。
+
+**理由**  
+PowerToys は OS↔アプリの摩擦をネイティブ特権で解く。SUGUDASU は業務データ↔ブラウザ。一式を足すと常駐ランチャーのカテゴリ期待になる。OCR は目視校正という別摩擦を生む。形式変換の JTBD は価値があるが、仮置きのボタン増殖は Copy-First とヒックの法則に反する。第二読で HOLD と「今すぐ足さない」の二重管理を廃止した。
+
+**関連ドキュメント**
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-011) CASE-2026-011
+- [`../legal/logs/2026-08-15_powertoys_friction.md`](../legal/logs/2026-08-15_powertoys_friction.md)
+- [`../legal/logs/2026-08-15_powertoys_friction_source.md`](../legal/logs/2026-08-15_powertoys_friction_source.md)
+
+---
+
 ## 2026-08-15 — 仮置きは Edge Drop を移植しない（卓上 · 出口）
 
 **決定事項**  

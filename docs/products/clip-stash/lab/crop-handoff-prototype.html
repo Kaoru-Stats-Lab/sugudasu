@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Crop handoff lab（製品外）· SUGUDASU</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --accent: #4f46e5;
+      --ok: #047857;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    header h1 { font-size: 1rem; margin: 0 0 0.35rem; }
+    header p { margin: 0; font-size: 0.8rem; color: var(--muted); }
+    .warn {
+      margin: 0.75rem 1.25rem 0;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #fcd34d;
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 0.8rem;
+      border-radius: 0.5rem;
+    }
+    main {
+      display: grid;
+      gap: 1rem;
+      padding: 1rem 1.25rem 2rem;
+      max-width: 960px;
+    }
+    @media (min-width: 800px) {
+      main { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+    }
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+    .panel h2 { font-size: 0.85rem; margin: 0 0 0.75rem; }
+    #stage-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      user-select: none;
+      touch-action: none;
+    }
+    #stage {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      background: #0f172a;
+      cursor: crosshair;
+    }
+    #sel {
+      position: absolute;
+      border: 2px solid #a5b4fc;
+      background: rgba(79, 70, 229, 0.18);
+      pointer-events: none;
+      display: none;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    button {
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+    }
+    button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    label.q {
+      display: block;
+      font-size: 0.8rem;
+      margin: 0.5rem 0 0.25rem;
+      font-weight: 600;
+    }
+    textarea {
+      width: 100%;
+      min-height: 4.5rem;
+      font: inherit;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: 0.5rem;
+      resize: vertical;
+    }
+    .choices { display: grid; gap: 0.35rem; }
+    .choices label {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      padding: 0.45rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .choices input { margin-top: 0.15rem; }
+    #preview {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid var(--line);
+      background: #f1f5f9;
+      min-height: 80px;
+    }
+    #status { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; min-height: 1.2em; }
+    #export-box {
+      margin-top: 0.75rem;
+      padding: 0.65rem;
+      border-radius: 0.5rem;
+      background: #f8fafc;
+      border: 1px dashed var(--line);
+      font-size: 0.75rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--muted);
+    }
+    .ok { color: var(--ok); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Crop handoff lab（製品外）</h1>
+    <p>仮置き本体・Hub・registry には載せない。問い: 矩形は「編集」か「持っていく素材を絞る」か。</p>
+  </header>
+  <p class="warn">
+    製品外プロトタイプです。本番の仮置きには入りません（CASE-2026-011 · 着手不可）。
+    実測後のメモだけを役員会へ戻してください。
+  </p>
+
+  <main>
+    <section class="panel">
+      <h2>1. 画像を置く → 矩形で範囲</h2>
+      <div id="stage-wrap">
+        <canvas id="stage" width="640" height="400" aria-label="切り出しキャンバス"></canvas>
+        <div id="sel"></div>
+      </div>
+      <div class="row">
+        <button type="button" id="btn-sample">サンプル図を使う</button>
+        <label class="row" style="margin:0; align-items:center; gap:0.35rem; font-size:0.8rem;">
+          <input type="file" id="file" accept="image/*" hidden>
+          <button type="button" id="btn-file">画像を選ぶ</button>
+        </label>
+        <button type="button" id="btn-clear" disabled>範囲を消す</button>
+        <button type="button" class="primary" id="btn-crop" disabled>切り出して下に出す</button>
+      </div>
+      <p id="status" role="status"></p>
+      <h2 style="margin-top:1rem">2. 切り出し結果（プレビュー）</h2>
+      <canvas id="preview" width="320" height="180"></canvas>
+      <div class="row">
+        <button type="button" id="btn-copy" disabled>クリップボードへコピー（渡す）</button>
+        <button type="button" id="btn-dl" disabled>PNG 保存</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>3. 触ったあとの一言（必須）</h2>
+      <p style="font-size:0.8rem; color:var(--muted); margin:0 0 0.75rem;">
+        会議室の推測ではなく、触った人の答えを残すための欄です。
+      </p>
+
+      <p class="label q">この操作はどちらに近いですか？</p>
+      <div class="choices" role="radiogroup" aria-label="操作の印象">
+        <label><input type="radio" name="feel" value="edit"> 画像を編集している感じ</label>
+        <label><input type="radio" name="feel" value="narrow"> 次に持っていく素材を絞っている感じ</label>
+        <label><input type="radio" name="feel" value="unsure"> どちらとも言えない</label>
+      </div>
+
+      <p class="label q">結果の出し方で自然なのは？</p>
+      <div class="choices" role="radiogroup" aria-label="出口">
+        <label><input type="radio" name="egress" value="clipboard"> コピーして外へ貼るだけでよい</label>
+        <label><input type="radio" name="egress" value="new-card"> 切り出したものを「もう一枚」として卓上に残したい</label>
+        <label><input type="radio" name="egress" value="both"> どちらも欲しい</label>
+      </div>
+
+      <label class="q" for="note">メモ（任意）</label>
+      <textarea id="note" placeholder="例: PowerPoint に一部分だけ載せたい、など"></textarea>
+
+      <div class="row">
+        <button type="button" class="primary" id="btn-save-note">この回答を下に書き出す</button>
+      </div>
+      <div id="export-box">まだ回答なし</div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const stage = document.getElementById('stage');
+      const sctx = stage.getContext('2d');
+      const preview = document.getElementById('preview');
+      const pctx = preview.getContext('2d');
+      const sel = document.getElementById('sel');
+      const status = document.getElementById('status');
+      const exportBox = document.getElementById('export-box');
+
+      /** @type {HTMLImageElement|null} */
+      let img = null;
+      /** @type {{ x0:number,y0:number,x1:number,y1:number }|null} */
+      let rect = null;
+      let dragging = false;
+      /** @type {HTMLCanvasElement|null} */
+      let cropCanvas = null;
+
+      const btnClear = document.getElementById('btn-clear');
+      const btnCrop = document.getElementById('btn-crop');
+      const btnCopy = document.getElementById('btn-copy');
+      const btnDl = document.getElementById('btn-dl');
+
+      function setStatus(t) {
+        status.textContent = t || '';
+      }
+
+      function paint() {
+        sctx.fillStyle = '#0f172a';
+        sctx.fillRect(0, 0, stage.width, stage.height);
+        if (!img) {
+          sctx.fillStyle = '#94a3b8';
+          sctx.font = '16px sans-serif';
+          sctx.fillText('画像を置くか、サンプルを使う', 24, stage.height / 2);
+          return;
+        }
+        const scale = Math.min(stage.width / img.naturalWidth, stage.height / img.naturalHeight);
+        const dw = img.naturalWidth * scale;
+        const dh = img.naturalHeight * scale;
+        const dx = (stage.width - dw) / 2;
+        const dy = (stage.height - dh) / 2;
+        sctx.drawImage(img, dx, dy, dw, dh);
+        stage._map = { scale, dx, dy, dw, dh };
+      }
+
+      function clientToCanvas(clientX, clientY) {
+        const r = stage.getBoundingClientRect();
+        const x = ((clientX - r.left) / r.width) * stage.width;
+        const y = ((clientY - r.top) / r.height) * stage.height;
+        return { x, y };
+      }
+
+      function syncSelDom() {
+        if (!rect) {
+          sel.style.display = 'none';
+          return;
+        }
+        const r = stage.getBoundingClientRect();
+        const sx = Math.min(rect.x0, rect.x1) / stage.width * r.width;
+        const sy = Math.min(rect.y0, rect.y1) / stage.height * r.height;
+        const sw = Math.abs(rect.x1 - rect.x0) / stage.width * r.width;
+        const sh = Math.abs(rect.y1 - rect.y0) / stage.height * r.height;
+        sel.style.display = 'block';
+        sel.style.left = sx + 'px';
+        sel.style.top = sy + 'px';
+        sel.style.width = Math.max(1, sw) + 'px';
+        sel.style.height = Math.max(1, sh) + 'px';
+      }
+
+      function loadImage(source) {
+        const el = new Image();
+        el.onload = () => {
+          img = el;
+          rect = null;
+          cropCanvas = null;
+          btnClear.disabled = true;
+          btnCrop.disabled = true;
+          btnCopy.disabled = true;
+          btnDl.disabled = true;
+          pctx.clearRect(0, 0, preview.width, preview.height);
+          paint();
+          setStatus('ドラッグで必要な範囲だけ囲む');
+        };
+        el.onerror = () => setStatus('画像を読めませんでした');
+        el.src = source;
+      }
+
+      function makeSample() {
+        const c = document.createElement('canvas');
+        c.width = 640;
+        c.height = 400;
+        const x = c.getContext('2d');
+        x.fillStyle = '#1e293b';
+        x.fillRect(0, 0, 640, 400);
+        x.fillStyle = '#38bdf8';
+        x.fillRect(40, 40, 220, 140);
+        x.fillStyle = '#f472b6';
+        x.fillRect(300, 80, 280, 200);
+        x.fillStyle = '#f8fafc';
+        x.font = 'bold 28px sans-serif';
+        x.fillText('見積明細（サンプル）', 48, 320);
+        x.font = '18px sans-serif';
+        x.fillText('この中の一部だけ次の資料へ渡したい、という想定', 48, 352);
+        loadImage(c.toDataURL('image/png'));
+      }
+
+      stage.addEventListener('pointerdown', (ev) => {
+        if (!img) return;
+        stage.setPointerCapture(ev.pointerId);
+        const p = clientToCanvas(ev.clientX, ev.clientY);
+        dragging = true;
+        rect = { x0: p.x, y0: p.y, x1: p.x, y1: p.y };
+        syncSelDom();
+        btnClear.disabled = false;
+        btnCrop.disabled = false;
+      });
+      stage.addEventListener('pointermove', (ev) => {
+        if (!dragging || !rect) return;
+        const p = clientToCanvas(ev.clientX, ev.clientY);
+        rect.x1 = p.x;
+        rect.y1 = p.y;
+        syncSelDom();
+      });
+      stage.addEventListener('pointerup', () => {
+        dragging = false;
+      });
+
+      document.getElementById('btn-sample').addEventListener('click', makeSample);
+      document.getElementById('btn-file').addEventListener('click', () => {
+        document.getElementById('file').click();
+      });
+      document.getElementById('file').addEventListener('change', (ev) => {
+        const f = ev.target.files && ev.target.files[0];
+        if (!f) return;
+        const url = URL.createObjectURL(f);
+        loadImage(url);
+      });
+      btnClear.addEventListener('click', () => {
+        rect = null;
+        syncSelDom();
+        btnClear.disabled = true;
+        btnCrop.disabled = true;
+        setStatus('範囲を消した');
+      });
+
+      btnCrop.addEventListener('click', () => {
+        if (!img || !rect || !stage._map) return;
+        const map = stage._map;
+        const cx0 = Math.min(rect.x0, rect.x1);
+        const cy0 = Math.min(rect.y0, rect.y1);
+        const cx1 = Math.max(rect.x0, rect.x1);
+        const cy1 = Math.max(rect.y0, rect.y1);
+        const ix0 = Math.max(0, Math.floor((cx0 - map.dx) / map.scale));
+        const iy0 = Math.max(0, Math.floor((cy0 - map.dy) / map.scale));
+        const ix1 = Math.min(img.naturalWidth, Math.ceil((cx1 - map.dx) / map.scale));
+        const iy1 = Math.min(img.naturalHeight, Math.ceil((cy1 - map.dy) / map.scale));
+        const w = Math.max(1, ix1 - ix0);
+        const h = Math.max(1, iy1 - iy0);
+        const out = document.createElement('canvas');
+        out.width = w;
+        out.height = h;
+        out.getContext('2d').drawImage(img, ix0, iy0, w, h, 0, 0, w, h);
+        cropCanvas = out;
+        const fit = Math.min(preview.width / w, preview.height / h, 1);
+        pctx.fillStyle = '#f1f5f9';
+        pctx.fillRect(0, 0, preview.width, preview.height);
+        const dw = w * fit;
+        const dh = h * fit;
+        pctx.drawImage(out, (preview.width - dw) / 2, (preview.height - dh) / 2, dw, dh);
+        btnCopy.disabled = false;
+        btnDl.disabled = false;
+        setStatus(`切り出し ${w}×${h} px（元は変えない）`);
+      });
+
+      btnCopy.addEventListener('click', async () => {
+        if (!cropCanvas) return;
+        try {
+          const blob = await new Promise((res, rej) =>
+            cropCanvas.toBlob((b) => (b ? res(b) : rej(new Error('blob'))), 'image/png'),
+          );
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          setStatus('クリップボードへコピーした（卓上に新カードは作っていない）');
+        } catch {
+          setStatus('この環境では画像コピーが使えません。PNG 保存を試してください');
+        }
+      });
+
+      btnDl.addEventListener('click', () => {
+        if (!cropCanvas) return;
+        cropCanvas.toBlob((blob) => {
+          if (!blob) return;
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'crop-handoff-lab.png';
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }, 'image/png');
+      });
+
+      document.getElementById('btn-save-note').addEventListener('click', () => {
+        const feel = (document.querySelector('input[name="feel"]:checked') || {}).value || '';
+        const egress = (document.querySelector('input[name="egress"]:checked') || {}).value || '';
+        const note = document.getElementById('note').value.trim();
+        if (!feel || !egress) {
+          exportBox.textContent = '「印象」と「出口」の両方を選んでから書き出してください。';
+          return;
+        }
+        const payload = {
+          at: new Date().toISOString(),
+          feel,
+          egress,
+          note: note || null,
+          lab: 'clip-stash/lab/crop-handoff-prototype',
+          product: false,
+        };
+        exportBox.innerHTML =
+          '<span class="ok">書き出し済み</span>\n' + JSON.stringify(payload, null, 2);
+      });
+
+      paint();
+      makeSample();
+    })();
+  </script>
+</body>
+</html>

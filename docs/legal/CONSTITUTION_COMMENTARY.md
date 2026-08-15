@@ -56,6 +56,7 @@ SUGUDASU は **仕事そのものを行わない。** 操作 · 段取り · 整
 - [`CASE-2026-003`](./CASE_LAW.md#case-2026-003) Annotate（制作工程に踏み込まない）
 - [`CASE-2026-009`](./CASE_LAW.md#case-2026-009) 漢字拡大（同一 JTBD のコモディティは Domain に乗っても作らない）
 - [`CASE-2026-010`](./CASE_LAW.md#case-2026-010) Clip Stash × Edge Drop（卓上・出口。管理一式は移植しない）
+- [`CASE-2026-011`](./CASE_LAW.md#case-2026-011) PowerToys 一式移植 Reject · OCR Reject · 新規 HTML 0
 
 ---
 
@@ -322,7 +323,7 @@ Product Constitution 判定順（Persona → Pain → …）
 広く共有された **視覚記号** は採用できる。  
 特定プロダクトを想起させる **視覚言語一式** は採用しない。
 
-同様に、あるカテゴリ（知識管理 · 注釈アプリ · クリップボード管理 · 端末間ドロップ）の期待を一式で満たすと、SUGUDASU の Domain から外れる。
+同様に、あるカテゴリ（知識管理 · 注釈アプリ · クリップボード管理 · 端末間ドロップ · ネイティブ特権ユーティリティ）の期待を一式で満たすと、SUGUDASU の Domain から外れる。
 
 ### 関連判例
 
@@ -330,6 +331,7 @@ Product Constitution 判定順（Persona → Pain → …）
 - [`CASE-2026-002`](./CASE_LAW.md#case-2026-002) Clip Stash
 - [`CASE-2026-003`](./CASE_LAW.md#case-2026-003) Annotate
 - [`CASE-2026-010`](./CASE_LAW.md#case-2026-010) Clip Stash × Edge Drop
+- [`CASE-2026-011`](./CASE_LAW.md#case-2026-011) PowerToys 一式 · OCR · 新規 HTML 0
 
 ---
 
@@ -337,6 +339,7 @@ Product Constitution 判定順（Persona → Pain → …）
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-15 | C-01 · C-10 関連判例に CASE-2026-011（PowerToys 一式移植しない · OCR Reject · 新規 HTML 0） |
 | 2026-08-15 | C-01 · C-10 関連判例に CASE-2026-010（仮置き × Edge Drop · 出口は戻す · 管理一式は移植しない） |
 | 2026-08-14 | C-01 · C-03 関連判例に CASE-2026-009（漢字拡大 · Hub Value · 端末は主軸にしない） |
 | 2026-07-24 | 初版 · `docs/legal/` 法体系 · 旧 brand 義解から移管拡充 |
