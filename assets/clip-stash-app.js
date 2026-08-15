@@ -1,10 +1,13 @@
 /**
  * SUGUDASU 仮置き — UI
  * docs/products/clip-stash/specification.md
+ * docs/products/clip-stash/SPEC_HANDOFF.md
  */
 import {
   TYPE_LABELS,
+  CLIP_STASH_DND_MIME,
   buildCardFromPaste,
+  buildHandoffPayload,
   copyCard,
   formatBytes,
   formatTimestamp,
@@ -52,6 +55,8 @@ const els = {
 let cards = [];
 /** @type {string|null} */
 let selectedId = null;
+/** @type {Set<string>} */
+let selectedIds = new Set();
 /** @type {IDBDatabase|null} */
 let db = null;
 /** @type {string|null} */
@@ -62,6 +67,8 @@ let dropSlot = null;
 let dragPreview = null;
 /** @type {Map<string, string>} */
 const thumbUrls = new Map();
+/** @type {string[]} */
+let handoffObjectUrls = [];
 /** @type {boolean} */
 let suppressClick = false;
 /** @type {ReturnType<typeof setTimeout>|null} */
@@ -93,6 +100,10 @@ function bindDropZone() {
   });
 
   zone.addEventListener('dragenter', (e) => {
+    if (isInternalHandoff(e.dataTransfer)) {
+      e.preventDefault();
+      return;
+    }
     if (!hasFilePayload(e.dataTransfer)) return;
     e.preventDefault();
     const bridge = inspectDataTransferBridge(e.dataTransfer);
@@ -102,6 +113,11 @@ function bindDropZone() {
     if (bridge) showBridgeToast(bridge);
   });
   zone.addEventListener('dragover', (e) => {
+    if (isInternalHandoff(e.dataTransfer)) {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      return;
+    }
     if (!hasFilePayload(e.dataTransfer)) return;
     e.preventDefault();
     if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
@@ -117,6 +133,7 @@ function bindDropZone() {
   zone.addEventListener('drop', (e) => {
     e.preventDefault();
     zone.classList.remove('is-dragover', 'is-bridge');
+    if (isInternalHandoff(e.dataTransfer)) return;
     if (!hasFilePayload(e.dataTransfer)) return;
     void addFromFiles(e.dataTransfer?.files, e.dataTransfer);
   });
@@ -131,6 +148,56 @@ function bindDropZone() {
     void addFromFiles(files);
     if (els.fileInput) els.fileInput.value = '';
   });
+}
+
+/**
+ * @param {DataTransfer|null|undefined} dt
+ */
+function isInternalHandoff(dt) {
+  if (!dt?.types) return false;
+  return Array.from(dt.types).includes(CLIP_STASH_DND_MIME);
+}
+
+function revokeHandoffUrls() {
+  for (const url of handoffObjectUrls) URL.revokeObjectURL(url);
+  handoffObjectUrls = [];
+}
+
+/**
+ * @param {DataTransfer} dt
+ * @param {import('./clip-stash-engine.js').ClipStashCard[]} group
+ */
+function fillHandoffDataTransfer(dt, group) {
+  const payload = buildHandoffPayload(group);
+  dt.effectAllowed = 'copyMove';
+  dt.setData(CLIP_STASH_DND_MIME, payload.internal);
+  dt.setData('text/plain', payload.textPlain);
+  if (payload.textHtml) dt.setData('text/html', payload.textHtml);
+  if (payload.uriList) dt.setData('text/uri-list', payload.uriList);
+
+  revokeHandoffUrls();
+  const files = payload.files.map(
+    (f) => new File([f.bytes], f.name, { type: f.mime }),
+  );
+  for (const file of files) {
+    try {
+      dt.items.add(file);
+    } catch {
+      /* ignore */
+    }
+  }
+  const first = files[0];
+  const meta = payload.files[0];
+  if (first && meta) {
+    const url = URL.createObjectURL(first);
+    handoffObjectUrls.push(url);
+    // DECISION: DownloadURL は blob URL。base64 化は巨大化で dragstart を止める。成功は保証しない。
+    try {
+      dt.setData('DownloadURL', `${meta.mime}:${meta.name}:${url}`);
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 /**
@@ -277,6 +344,7 @@ function bindBoardDnD() {
   els.board.addEventListener('dragover', onBoardDragOver);
   els.board.addEventListener('dragleave', onBoardDragLeave);
   els.board.addEventListener('drop', onBoardDrop);
+  document.addEventListener('dragover', onDocDragOver);
 }
 
 function setStatus(msg, isError = false) {
@@ -439,7 +507,7 @@ function applySlidePreview(planned) {
 }
 
 function renderCard(card, slotEl) {
-  const isSelected = card.id === selectedId;
+  const isSelected = selectedIds.has(card.id);
   const btn = document.createElement('article');
   btn.className = 'cs-card sg-card';
   btn.dataset.id = card.id;
@@ -470,11 +538,8 @@ function renderCard(card, slotEl) {
       suppressClick = false;
       return;
     }
-    selectCard(card.id, { rerender: false });
-    els.board?.querySelectorAll('.cs-card').forEach((el) => {
-      el.classList.toggle('is-selected', el.dataset.id === card.id);
-      el.draggable = el.dataset.id === card.id;
-    });
+    selectCard(card.id, { rerender: false, toggle: e.ctrlKey || e.metaKey });
+    syncSelectionDom();
   });
   btn.addEventListener('dblclick', (e) => {
     if (e.target instanceof Element && e.target.closest('.cs-card__delete')) return;
@@ -482,7 +547,7 @@ function renderCard(card, slotEl) {
     void copyAndFeedback(card.id, true);
   });
   btn.addEventListener('dragstart', (e) => {
-    if (card.id !== selectedId) {
+    if (!selectedIds.has(card.id) || !e.dataTransfer) {
       e.preventDefault();
       return;
     }
@@ -490,15 +555,23 @@ function renderCard(card, slotEl) {
     dropSlot = null;
     btn.classList.add('is-dragging');
     els.board?.classList.add('is-drag-active');
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', card.id);
-    }
+    const group = cards.filter((c) => selectedIds.has(c.id));
+    fillHandoffDataTransfer(e.dataTransfer, group);
   });
-  btn.addEventListener('dragend', () => {
+  btn.addEventListener('dragend', (e) => {
+    const effect = e.dataTransfer?.dropEffect;
+    if (effect === 'copy') {
+      try {
+        globalThis.SG_ANALYTICS?.notifyJobDone?.('copy');
+      } catch {
+        /* ignore */
+      }
+    }
     dragId = null;
     btn.classList.remove('is-dragging');
+    document.body.classList.remove('is-cs-drag-exit');
     clearDropGuide();
+    revokeHandoffUrls();
     suppressClick = true;
     window.setTimeout(() => {
       suppressClick = false;
@@ -527,6 +600,11 @@ function render() {
     } else {
       slotEl.classList.add('cs-slot--empty');
       slotEl.setAttribute('aria-label', `空きスロット ${slot + 1}`);
+      slotEl.addEventListener('click', () => {
+        if (suppressClick) return;
+        selectCard(null, { rerender: false });
+        syncSelectionDom();
+      });
     }
     els.board.appendChild(slotEl);
   });
@@ -534,9 +612,31 @@ function render() {
   applyDropGuide();
 }
 
-function selectCard(id, { rerender = true } = {}) {
-  selectedId = id;
+function selectCard(id, { rerender = true, toggle = false } = {}) {
+  if (!id) {
+    selectedIds = new Set();
+    selectedId = null;
+  } else if (toggle) {
+    if (selectedIds.has(id)) selectedIds.delete(id);
+    else selectedIds.add(id);
+    selectedId = selectedIds.has(id) ? id : ([...selectedIds][0] || null);
+  } else {
+    selectedIds = new Set([id]);
+    selectedId = id;
+  }
   if (rerender) render();
+}
+
+function syncSelectionDom() {
+  els.board?.querySelectorAll('.cs-card').forEach((el) => {
+    const on = selectedIds.has(el.dataset.id || '');
+    el.classList.toggle('is-selected', on);
+    el.draggable = on;
+  });
+}
+
+function isMultiHandoff() {
+  return selectedIds.size > 1;
 }
 
 function slotFromEvent(e) {
@@ -549,6 +649,11 @@ function slotFromEvent(e) {
 function onBoardDragOver(e) {
   if (!dragId || !els.board) return;
   e.preventDefault();
+  document.body.classList.remove('is-cs-drag-exit');
+  if (isMultiHandoff()) {
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+    return;
+  }
   if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
 
   const slot = slotFromEvent(e);
@@ -572,6 +677,16 @@ function onBoardDragOver(e) {
   applySlidePreview(dragPreview);
 }
 
+function onDocDragOver(e) {
+  if (!dragId) return;
+  const overBoard = !!(e.target instanceof Node && els.board?.contains(e.target));
+  document.body.classList.toggle('is-cs-drag-exit', !overBoard);
+  if (!overBoard) {
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+  }
+}
+
 function onBoardDragLeave(e) {
   if (!els.board || !dragId) return;
   if (e.relatedTarget instanceof Node && els.board.contains(e.relatedTarget)) return;
@@ -579,13 +694,24 @@ function onBoardDragLeave(e) {
   dragPreview = null;
   clearSlidePreview();
   applyDropGuide();
+  document.body.classList.add('is-cs-drag-exit');
 }
 
 function onBoardDrop(e) {
   e.preventDefault();
-  const from = dragId || e.dataTransfer?.getData('text/plain');
+  const raw = e.dataTransfer?.getData(CLIP_STASH_DND_MIME) || '';
+  /** @type {string[]} */
+  let ids = [];
+  try {
+    ids = JSON.parse(raw || '{}').ids || [];
+  } catch {
+    ids = [];
+  }
   const slot = dropSlot ?? slotFromEvent(e);
   clearDropGuide();
+  document.body.classList.remove('is-cs-drag-exit');
+  if (ids.length > 1 || isMultiHandoff()) return;
+  const from = dragId || ids[0];
   if (!from || slot === null) return;
   void moveCardToSlot(from, slot);
 }
@@ -607,6 +733,7 @@ async function moveCardToSlot(fromId, targetSlot) {
     await putCard(db, card);
   }
   cards = await getAllCards(db);
+  selectedIds = new Set([fromId]);
   selectedId = fromId;
   render();
 }
@@ -680,6 +807,7 @@ async function commitPaste(paste) {
   const card = buildCardFromPaste(paste, nextSlotIndex(cards));
   await putCard(db, card);
   cards = await getAllCards(db);
+  selectedIds = new Set([card.id]);
   selectedId = card.id;
   render();
   setStatus('');
@@ -713,14 +841,24 @@ async function deleteCardById(id) {
   if (!db) return;
   await deleteCard(db, id);
   cards = await getAllCards(db);
-  if (selectedId === id) selectedId = null;
+  selectedIds.delete(id);
+  if (selectedId === id) selectedId = [...selectedIds][0] || null;
   render();
   setStatus('');
 }
 
 async function deleteSelected() {
-  if (!selectedId) return;
-  await deleteCardById(selectedId);
+  if (!db) return;
+  const ids = selectedIds.size ? [...selectedIds] : (selectedId ? [selectedId] : []);
+  if (!ids.length) return;
+  for (const id of ids) {
+    await deleteCard(db, id);
+  }
+  cards = await getAllCards(db);
+  selectedIds = new Set();
+  selectedId = null;
+  render();
+  setStatus('');
 }
 
 function isPreviewOpen() {
@@ -738,6 +876,8 @@ function openPreview() {
     previewObjectUrl = null;
   }
   const panel = els.preview.querySelector('.cs-preview__panel');
+  const isMedia = card.type === 'image' || card.type === 'pdf';
+  panel?.classList.toggle('cs-preview__panel--media', isMedia);
   panel?.classList.toggle('cs-preview__panel--pdf', card.type === 'pdf');
   els.previewType.textContent = TYPE_LABELS[card.type];
   if (card.type === 'text') {
@@ -787,9 +927,11 @@ function buildPdfPreviewHtml(card) {
     return '<p class="cs-preview__meta">PDF を表示できません</p>';
   }
   previewObjectUrl = URL.createObjectURL(blob);
-  const viewerSrc = `${previewObjectUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&zoom=page-width`;
+  const viewerSrc = `${previewObjectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&zoom=page-width`;
   return `${meta}
-    <iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(viewerSrc)}"></iframe>`;
+    <div class="cs-preview__pdf-stage">
+      <iframe class="cs-preview__pdf" title="PDFプレビュー" src="${esc(viewerSrc)}"></iframe>
+    </div>`;
 }
 
 function closePreview() {
@@ -797,7 +939,10 @@ function closePreview() {
     URL.revokeObjectURL(previewObjectUrl);
     previewObjectUrl = null;
   }
-  els.preview?.querySelector('.cs-preview__panel')?.classList.remove('cs-preview__panel--pdf');
+  els.preview?.querySelector('.cs-preview__panel')?.classList.remove(
+    'cs-preview__panel--pdf',
+    'cs-preview__panel--media',
+  );
   els.preview?.classList.add('hidden');
   document.body.classList.remove('cs-preview-open');
 }
@@ -833,7 +978,7 @@ document.addEventListener('keydown', (e) => {
   if (isPreviewOpen()) return;
 
   if (e.key === 'Delete' || e.key === 'Backspace') {
-    if (!selectedId) return;
+    if (!selectedIds.size && !selectedId) return;
     e.preventDefault();
     void deleteSelected();
   }

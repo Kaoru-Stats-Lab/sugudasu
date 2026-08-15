@@ -4,8 +4,13 @@ import {
   TEXT_PREVIEW_LINES,
   TABLE_PREVIEW_ROWS,
   buildCardFromPaste,
+  buildHandoffPayload,
+  bytesEqual,
+  CLIP_STASH_DND_MIME,
   copyPayload,
+  handoffFileName,
   imageFormatLabel,
+  tableTsvToHtml,
   classifyInputBridge,
   inputBridgeMessage,
   primaryInputBridge,
@@ -188,5 +193,103 @@ assert.deepEqual(slotIndices([]), []);
   assert.equal(formatTimestamp(new Date(now.getTime() - 2 * 3600_000).toISOString(), now), '2時間前');
   assert.equal(formatTimestamp(new Date('2026-07-25T18:00:00').toISOString(), now), '昨日');
 }
+
+{
+  const card = buildCardFromPaste({ kind: 'text', text: 'hello from stash' }, 0);
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.textPlain, 'hello from stash');
+  assert.equal(payload.textPlain.includes(card.id), false);
+  assert.equal(JSON.parse(payload.internal).ids[0], card.id);
+  assert.equal(payload.files.length, 0);
+}
+
+{
+  const bytes = Uint8Array.from([137, 80, 78, 71, 1, 2, 3]).buffer;
+  const card = buildCardFromPaste(
+    {
+      kind: 'image',
+      imageMime: 'image/png',
+      imageData: bytes,
+      imageBytes: 7,
+      imageWidth: 1,
+      imageHeight: 1,
+    },
+    0,
+  );
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.textPlain.includes(card.id), false);
+  assert.equal(payload.textPlain, 'image.png');
+  assert.equal(payload.files.length, 1);
+  assert.equal(payload.files[0].mime, 'image/png');
+  assert.equal(payload.files[0].name, 'image.png');
+  assert.equal(bytesEqual(payload.files[0].bytes, bytes), true);
+}
+
+{
+  const bytes = Uint8Array.from([37, 80, 68, 70, 9, 9, 9]).buffer;
+  const preview = Uint8Array.from([137, 80, 78, 71]).buffer;
+  const card = buildCardFromPaste(
+    {
+      kind: 'pdf',
+      pdfData: bytes,
+      pdfBytes: 7,
+      pdfName: 'brief',
+      pdfMime: 'application/pdf',
+      pdfPreviewData: preview,
+      pdfPageCount: 2,
+    },
+    0,
+  );
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.textPlain.includes(card.id), false);
+  assert.equal(handoffFileName(card), 'brief.pdf');
+  assert.equal(payload.files[0].mime, 'application/pdf');
+  assert.equal(bytesEqual(payload.files[0].bytes, bytes), true);
+  assert.equal(bytesEqual(payload.files[0].bytes, preview), false);
+}
+
+{
+  const card = buildCardFromPaste(
+    { kind: 'table', tableTsv: 'a\tb', tableRows: 1, tableCols: 2 },
+    0,
+  );
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.textPlain, 'a\tb');
+  assert.equal(payload.textHtml, '<table><tr><td>a</td><td>b</td></tr></table>');
+  assert.equal(payload.textPlain.includes(card.id), false);
+}
+
+{
+  const card = buildCardFromPaste(
+    { kind: 'url', url: 'https://example.com/x', urlTitle: 'Ex' },
+    0,
+  );
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.textPlain, 'https://example.com/x');
+  assert.equal(payload.uriList, 'https://example.com/x');
+  assert.equal(payload.textPlain.includes(card.id), false);
+}
+
+{
+  const jpeg = Uint8Array.from([0xff, 0xd8, 0xff, 1]).buffer;
+  const card = buildCardFromPaste(
+    {
+      kind: 'image',
+      imageMime: 'image/jpeg',
+      imageData: jpeg,
+      imageBytes: 4,
+      imageWidth: 2,
+      imageHeight: 2,
+    },
+    0,
+  );
+  const payload = buildHandoffPayload([card]);
+  assert.equal(payload.files[0].mime, 'image/jpeg');
+  assert.equal(payload.files[0].name, 'image.jpg');
+  assert.equal(bytesEqual(payload.files[0].bytes, jpeg), true);
+}
+
+assert.equal(CLIP_STASH_DND_MIME, 'application/x-sugudasu-clip-stash');
+assert.equal(tableTsvToHtml('x\ty'), '<table><tr><td>x</td><td>y</td></tr></table>');
 
 console.log('clip-stash-engine.test.mjs: ok');

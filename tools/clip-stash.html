@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="仕事中にコピーした文字・表・URL・画像・色を一旦置く。IndexedDB・非送信。編集しない・整理しない一時退避。">
+    <meta name="description" content="仕事中の素材を一旦卓上に置く。確認して次へ持っていく。IndexedDB・非送信。編集しない・整理しない。">
     <title>コピーしたものを一旦置く | SUGUDASU 仮置き</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SUGUDASU">
     <meta property="og:title" content="コピーしたものを一旦置く — SUGUDASU 仮置き">
-    <meta property="og:description" content="Ctrl+Vで置く · ダブルクリックでコピー · Spaceで確認。PureRefでもメモでもない一時退避。">
+    <meta property="og:description" content="置く · 確認する · 持っていく。編集しない・整理しない一時退避。">
     <meta property="og:url" content="https://sugudasu.com/clip-stash">
     <meta property="og:image" content="https://sugudasu.com/assets/og-card.png">
     <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sugudasu.com/assets/og-card.png">
     <meta name="twitter:title" content="SUGUDASU 仮置き">
-    <meta name="twitter:description" content="思考を止めずにコピーを退避。ブラウザ内 · 非送信。">
+    <meta name="twitter:description" content="置く · 確認する · 持っていく。ブラウザ内 · 非送信。">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="../assets/sugudasu.css">
     <style>
@@ -85,6 +85,17 @@
       .cs-card.is-slide-preview { z-index: 2; }
       .cs-board.is-drag-active .cs-card:not(.is-selected) { opacity: 0.72; }
       .cs-board.is-drag-active .cs-card.is-slide-preview { opacity: 0.92; }
+      body.is-cs-drag-exit .cs-board {
+        opacity: 0.52;
+        transform: scale(0.985);
+        transition: opacity 0.12s ease, transform 0.12s ease;
+      }
+      body.is-cs-drag-exit .cs-card.is-dragging {
+        opacity: 1;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.24);
+        transform: translateY(-8px) scale(1.04);
+        z-index: 3;
+      }
       .sg-file-drop--strip {
         padding: 0.85rem 1rem;
         cursor: default;
@@ -118,23 +129,44 @@
       .cs-preview__pdf {
         display: block;
         width: 100%;
-        height: min(78vh, 52rem);
+        height: 100%;
         border: 0;
         border-radius: 0.5rem;
         background: #f8fafc;
       }
+      .cs-preview__panel--media {
+        width: min(96vw, 90rem);
+        max-height: 92vh;
+        height: 92vh;
+        padding: 0.75rem 0.85rem;
+      }
+      .cs-preview__panel--media .cs-preview__img {
+        max-width: 100%;
+        max-height: calc(92vh - 4.5rem);
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+      }
       .cs-preview__panel--pdf {
-        width: min(56rem, 96vw);
-        max-height: min(92vh, 56rem);
-        padding: 0.75rem 0.85rem 0.85rem;
-        overflow-x: hidden;
-        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
       .cs-preview__pdf-stage {
+        flex: 1 1 auto;
+        min-height: 0;
         width: 100%;
+        height: 100%;
+        overflow: hidden;
         background: #f1f5f9;
         border-radius: 0.5rem;
-        overflow: auto;
+      }
+      .cs-preview__panel--pdf .cs-preview__pdf {
+        width: 100%;
+        height: 100%;
+        min-height: calc(92vh - 5rem);
       }
       .cs-preview__pdf-page {
         display: block;
@@ -349,17 +381,17 @@
       .cs-preview__title { font-weight: 700; }
       body.cs-preview-open { overflow: hidden; }
     </style>
-    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PureRefやメモアプリとの違いは？","acceptedAnswer":{"@type":"Answer","text":"PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。Ctrl+Vで置き、ダブルクリックで戻すだけ。編集・タグ・フォルダはありません。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。IndexedDBに端末内だけで保存します。SUGUDASUのサーバーへ送りません。"}},{"@type":"Question","name":"カードを編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。変更したい場合は貼り直してください。"}}]}</script>
+    <script type="application/ld+json" data-sg-faq>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"PureRefやメモアプリとの違いは？","acceptedAnswer":{"@type":"Answer","text":"PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。置いて、確認して、次へ持っていく。編集・タグ・フォルダはありません。"}},{"@type":"Question","name":"データはサーバーに送信されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。IndexedDBに端末内だけで保存します。SUGUDASUのサーバーへ送りません。"}},{"@type":"Question","name":"カードを編集できますか？","acceptedAnswer":{"@type":"Answer","text":"できません。変更したい場合は貼り直してください。"}}]}</script>
 </head>
 <body class="sg-body min-h-screen flex flex-col antialiased text-slate-800">
-<div id="sg-chrome-top" data-sg-title="SUGUDASU 仮置き" data-sg-subtitle="貼り付け · ドラッグ · ダブルクリックでコピー" data-sg-tool-id="clip-stash"></div>
+<div id="sg-chrome-top" data-sg-title="SUGUDASU 仮置き" data-sg-subtitle="置く · 確認する · 持っていく" data-sg-tool-id="clip-stash"></div>
 
 <main class="sg-main-shell flex-1 space-y-5" tabindex="0">
     <header class="sg-tool-intro space-y-2">
         <p data-sg-privacy-badge data-subject="コピー内容" data-extra="IndexedDB · 端末内" class="text-[11px] font-bold text-violet-700 bg-violet-50 border border-violet-200 inline-block px-3 py-1 rounded-full"></p>
         <div class="sg-tool-lead-deck">
-            <p class="sg-tool-lead"><strong>作業中のコピーを一旦置く</strong> — 文字・表・URL・画像・色を端末内に一時退避。編集・整理・永久保管はしません。</p>
-            <p class="sg-tool-lead">PureRefやメモアプリの代替ではありません。仕事が終わったら消える退避です。</p>
+            <p class="sg-tool-lead"><strong>作業中の素材を一旦卓上に置く</strong> — 確認して、次の場所へ持っていく。編集・整理・永久保管はしません。</p>
+            <p class="sg-tool-lead">クリップボード管理やメモアプリの代替ではありません。仕事が終わったら消える退避です。</p>
         </div>
     </header>
 
@@ -403,7 +435,7 @@
             <details class="sg-faq">
                 <summary>PureRefやメモアプリとの違いは？</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。<strong>Ctrl+V</strong>で置き、<strong>ダブルクリック</strong>で戻すだけ。タグ · フォルダ · 編集はありません。</p>
+                    <p>PureRefは集めて眺める場所、メモは編集と整理が前提です。仮置きは成果物ができるまで一時的に置く場所です。置いて、確認して、次へ持っていく。タグ · フォルダ · 編集はありません。</p>
                 </div>
             </details>
             <details class="sg-faq">
@@ -421,7 +453,7 @@
             <details class="sg-faq">
                 <summary>操作一覧</summary>
                 <div class="mt-3 text-xs leading-relaxed text-slate-600 pt-2 border-t border-slate-200/60">
-                    <p>クリックで選択 · 選択したカードをドラッグで別スロットへ · ダブルクリックでコピー · Spaceで確認 · Escで閉じる · Deleteまたは<strong>×</strong>で削除 · <strong>Ctrl+V</strong>または画像·PDFのドラッグで追加。削除した位置は空スロットのまま残ります。</p>
+                    <p>クリックで選択 · <strong>Ctrl+クリック</strong>（Mac は Command）で複数選択 · 選択したカードをドラッグで並べ替え、または窓の外へ持っていく · ダブルクリックでコピー · Spaceで確認 · Escで閉じる · Deleteまたは<strong>×</strong>で削除 · <strong>Ctrl+V</strong>または画像·PDFのドラッグで追加。削除した位置は空スロットのまま残ります。外へドラッグできないときは、ダブルクリックでコピーしてください。</p>
                 </div>
             </details>
         </div>

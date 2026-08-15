@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-14",
+  "updatedAt": "2026-08-15",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,29 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "clip-stash-handoff-20260815",
+      "date": "2026-08-15",
+      "type": "feature",
+      "audience": "public",
+      "title": "仮置き — 確認して、次の場所へ持っていける",
+      "body": "置いた画像やPDFを大きく確認できます。カードをほかの窓やデスクトップへドラッグして渡せます。渡せないときは、これまでどおりダブルクリックでコピーできます。",
+      "tools": [
+        "clip-stash"
+      ]
+    },
+    {
+      "id": "clip-stash-handoff-internal-20260815",
+      "date": "2026-08-15",
+      "type": "feature",
+      "audience": "internal",
+      "title": "clip-stash Handoff P0/P1 · CASE-2026-010",
+      "body": "SPEC_HANDOFF · 出口 DnD · UUID 非漏洩テスト · 元バイト維持 · 識別 Preview · Ctrl+Click 複数選択 · フィルタ/ピン留め Reject",
+      "tools": [
+        "clip-stash"
+      ],
+      "rollup": "clip-stash-handoff-20260815"
+    },
     {
       "id": "graph-waterfall-bridge-20260814",
       "date": "2026-08-14",

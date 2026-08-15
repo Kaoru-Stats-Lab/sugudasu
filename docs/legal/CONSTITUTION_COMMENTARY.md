@@ -2,7 +2,7 @@
 
 **役割:** ブランド憲法の **公式 Commentary** — 立法事実 · 立法意思 · 保護法益 · 許容/禁止例 · 関連判例  
 **役割でないもの:** 憲法改正 · 製品仕様 · ADR（設計選択） · 判例本文の代替  
-**更新:** 2026-07-24  
+**更新:** 2026-08-15  
 **憲法本文:** [`../brand/BRAND_CONSTITUTION.md`](../brand/BRAND_CONSTITUTION.md) · [`../brand/ANTI_PRINCIPLES.md`](../brand/ANTI_PRINCIPLES.md) · [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)  
 **判例集:** [`CASE_LAW.md`](./CASE_LAW.md)  
 **解釈手順:** [`LEGAL_INTERPRETATION_GUIDE.md`](./LEGAL_INTERPRETATION_GUIDE.md)
@@ -54,6 +54,8 @@ SUGUDASU は **仕事そのものを行わない。** 操作 · 段取り · 整
 
 - [`CASE-2026-002`](./CASE_LAW.md#case-2026-002) Clip Stash（管理しない）
 - [`CASE-2026-003`](./CASE_LAW.md#case-2026-003) Annotate（制作工程に踏み込まない）
+- [`CASE-2026-009`](./CASE_LAW.md#case-2026-009) 漢字拡大（同一 JTBD のコモディティは Domain に乗っても作らない）
+- [`CASE-2026-010`](./CASE_LAW.md#case-2026-010) Clip Stash × Edge Drop（卓上・出口。管理一式は移植しない）
 
 ---
 
@@ -137,10 +139,12 @@ SUGUDASU は **仕事そのものを行わない。** 操作 · 段取り · 整
 ### 禁止例
 
 - Hub のニュース化 · Discover · 学習コンテンツ主軸
+- 「困ったらまず SUGUDASU」を新規ツールの採用理由にすること（習慣化・囲い込み）
 
 ### 関連判例
 
 - Hub 憲法 · NEW 前面化 Reject（CASE 索引参照）
+- [`CASE-2026-009`](./CASE_LAW.md#case-2026-009) 漢字拡大・カタログ線引き（再訪は次の実務。Hub Value は採用の主因にしない）
 
 ---
 
@@ -318,13 +322,14 @@ Product Constitution 判定順（Persona → Pain → …）
 広く共有された **視覚記号** は採用できる。  
 特定プロダクトを想起させる **視覚言語一式** は採用しない。
 
-同様に、あるカテゴリ（知識管理 · 注釈アプリ）の期待を一式で満たすと、SUGUDASU の Domain から外れる。
+同様に、あるカテゴリ（知識管理 · 注釈アプリ · クリップボード管理 · 端末間ドロップ）の期待を一式で満たすと、SUGUDASU の Domain から外れる。
 
 ### 関連判例
 
 - [`CASE-2026-001`](./CASE_LAW.md#case-2026-001) PureRef
 - [`CASE-2026-002`](./CASE_LAW.md#case-2026-002) Clip Stash
 - [`CASE-2026-003`](./CASE_LAW.md#case-2026-003) Annotate
+- [`CASE-2026-010`](./CASE_LAW.md#case-2026-010) Clip Stash × Edge Drop
 
 ---
 
@@ -332,4 +337,6 @@ Product Constitution 判定順（Persona → Pain → …）
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-15 | C-01 · C-10 関連判例に CASE-2026-010（仮置き × Edge Drop · 出口は戻す · 管理一式は移植しない） |
+| 2026-08-14 | C-01 · C-03 関連判例に CASE-2026-009（漢字拡大 · Hub Value · 端末は主軸にしない） |
 | 2026-07-24 | 初版 · `docs/legal/` 法体系 · 旧 brand 義解から移管拡充 |

@@ -568,6 +568,136 @@ export function copyPayload(card) {
   return '';
 }
 
+/** ボード並び替え専用。text/plain には載せない。 */
+export const CLIP_STASH_DND_MIME = 'application/x-sugudasu-clip-stash';
+
+const IMAGE_HANDOFF_EXT = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+  'image/svg+xml': 'svg',
+};
+
+/**
+ * 出口ファイル名。ユーザーに付けさせない（名前付け Reject）。
+ * @param {ClipStashCard} card
+ */
+export function handoffFileName(card) {
+  if (card.type === 'image') {
+    const ext = IMAGE_HANDOFF_EXT[String(card.imageMime || '').toLowerCase()] || 'png';
+    return `image.${ext}`;
+  }
+  if (card.type === 'pdf') {
+    const raw = String(card.pdfName || 'document')
+      .replace(/[/\\?%*:|"<>]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim() || 'document';
+    const base = raw.replace(/\.pdf$/i, '') || 'document';
+    return `${base}.pdf`;
+  }
+  return '';
+}
+
+/**
+ * @param {string} tsv
+ */
+export function tableTsvToHtml(tsv) {
+  const lines = String(tsv || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  const rows = lines.map((line) => {
+    const cells = line.split('\t').map((c) => `<td>${escapeHtmlText(c)}</td>`).join('');
+    return `<tr>${cells}</tr>`;
+  });
+  return `<table>${rows.join('')}</table>`;
+}
+
+/**
+ * @param {string} s
+ */
+function escapeHtmlText(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * 出口 DnD 用ペイロード。text/plain にカード UUID を載せない。
+ * image / pdf の bytes は置いた本体（再エンコードしない）。
+ * @param {ClipStashCard[]} cards
+ */
+export function buildHandoffPayload(cards) {
+  const list = (cards || []).filter(Boolean);
+  const ids = list.map((c) => c.id).filter(Boolean);
+  /** @type {{ name: string, mime: string, bytes: ArrayBuffer }[]} */
+  const files = [];
+  /** @type {string[]} */
+  const texts = [];
+  /** @type {string[]} */
+  const htmlParts = [];
+  /** @type {string[]} */
+  const uris = [];
+
+  for (const card of list) {
+    if (card.type === 'image' && card.imageData) {
+      const name = handoffFileName(card);
+      files.push({
+        name,
+        mime: card.imageMime || 'image/png',
+        bytes: card.imageData,
+      });
+      texts.push(name);
+    } else if (card.type === 'pdf' && card.pdfData) {
+      const name = handoffFileName(card);
+      files.push({
+        name,
+        mime: card.pdfMime || 'application/pdf',
+        bytes: card.pdfData,
+      });
+      texts.push(name);
+    } else if (card.type === 'table') {
+      const tsv = card.tableTsv || '';
+      texts.push(tsv);
+      htmlParts.push(tableTsvToHtml(tsv));
+    } else if (card.type === 'url') {
+      const url = card.url || '';
+      texts.push(url);
+      if (url) uris.push(url);
+    } else if (card.type === 'color') {
+      texts.push(card.colorHex || '');
+    } else {
+      texts.push(copyPayload(card) || card.text || '');
+    }
+  }
+
+  return {
+    ids,
+    internal: JSON.stringify({ ids }),
+    textPlain: texts.filter((t) => t !== '').join('\n'),
+    textHtml: htmlParts.length ? htmlParts.join('') : '',
+    uriList: uris.join('\n'),
+    files,
+  };
+}
+
+/**
+ * @param {ArrayBuffer|null|undefined} a
+ * @param {ArrayBuffer|null|undefined} b
+ */
+export function bytesEqual(a, b) {
+  if (!(a instanceof ArrayBuffer) || !(b instanceof ArrayBuffer)) return false;
+  if (a.byteLength !== b.byteLength) return false;
+  const ua = new Uint8Array(a);
+  const ub = new Uint8Array(b);
+  for (let i = 0; i < ua.length; i += 1) {
+    if (ua[i] !== ub[i]) return false;
+  }
+  return true;
+}
+
 /**
  * @param {string} mime
  */

@@ -9,6 +9,37 @@
 
 ---
 
+## 2026-08-15 — 仮置きは Edge Drop を移植しない（卓上 · 出口）
+
+**決定事項**  
+Edge Drop の機能セットは仮置きへ移植しない。仮置きの定義は「作業中の素材を次の場所へ渡す卓上」。出口 DnD と画像/PDF の確認プレビューは GO。複数選択は一括削除・一括出口に限り条件付き GO。フィルタ · ピン留め · グループ管理 · ホットエッジ · 同期は Reject。憲法本文は改正しない。
+
+**理由**  
+保存（あとで取り出す）と仮置き（今、次へ渡す）は逆。Drop 一式を足すとクリップボード管理になり、CASE-2026-002 の管理 Reject を破る。出口は Copy-First の持ち帰りであり、チャネル送信ではない。
+
+**関連ドキュメント**
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-010) CASE-2026-010
+- [`../legal/logs/2026-08-15_clip-stash_edge_drop.md`](../legal/logs/2026-08-15_clip-stash_edge_drop.md)
+- [`../products/clip-stash/philosophy.md`](../products/clip-stash/philosophy.md)
+- [`../products/clip-stash/SPEC_HANDOFF.md`](../products/clip-stash/SPEC_HANDOFF.md)
+
+---
+
+## 2026-08-14 — カタログ線引き（漢字拡大 Reject · Hub Value / 端末）
+
+**決定事項**  
+漢字拡大はコアカタログに採用しない。Hub Value（道具箱にあること・Direct 再訪）は採用の主因にしない。横連携は同一仕事系列の直前・直後に限る。端末は採用・排除の主軸にしない（割り勘は合憲）。憲法本文は改正しない。
+
+**理由**  
+「SUGUDASUっぽい」と「作るべき」は別。競合が既に F1〜F5 を満たす領域では憲法適合は差別化ではない。習慣化を採用理由にすると存在様式と衝突する。初日の「スマホ主戦場禁止」は割り勘と衝突するため否決。憲法判断は判例へ。
+
+**関連ドキュメント**
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-009) CASE-2026-009
+- [`../legal/logs/2026-08-14_catalog_line.md`](../legal/logs/2026-08-14_catalog_line.md)
+- [`../product/PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md)（横連携・PC原則の運用）
+
+---
+
 ## 2026-08-13 — Hub カテゴリは厳密MECEではない · チップラベル是正を可決
 
 **決定事項**  

@@ -2347,10 +2347,29 @@
 | **cf_deployment_id** | CF Pages auto（`f56e53f` push origin main） |
 | **smoke** | （CF 反映後）`/graph` Intent「増減要因」· FAQ · 見本プレビュー |
 
+## DEPLOY-20260815-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 仮置き 出口 DnD · 識別 Preview · CASE-2026-010 |
+| **change_summary** | clip-stash Handoff P0/P1 · 大型 Preview · UUID 非漏洩 · 元バイト維持 · Ctrl+Click · SPEC_HANDOFF · changelog |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 30/450） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | 30/450（2026-08 · consume 済） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | （CF 反映後）`/clip-stash` Space Preview · カード DnD 出口 · 入口 Strip |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-15 | 001 approved（仮置き Handoff · CASE-2026-010 · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 007 executed（f56e53f · Graph Waterfall α · P7 override） |
 | 2026-08-14 | 007 approved（Graph Waterfall α · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 006 executed（d080e4b · Roadmap 製品グループ · Form purge · validate:roadmap · P7 override） |
