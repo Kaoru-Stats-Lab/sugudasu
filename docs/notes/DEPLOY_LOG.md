@@ -2351,7 +2351,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 仮置き 出口 DnD · 識別 Preview · CASE-2026-010 |
 | **change_summary** | clip-stash Handoff P0/P1 · 大型 Preview · UUID 非漏洩 · 元バイト維持 · Ctrl+Click · SPEC_HANDOFF · changelog |
@@ -2362,13 +2362,15 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **git_sha** | `66eb42d` |
+| **cf_deployment_id** | CF Pages auto（`66eb42d` push origin main） |
 | **smoke** | （CF 反映後）`/clip-stash` Space Preview · カード DnD 出口 · 入口 Strip |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-15 | 001 executed（66eb42d · 仮置き Handoff · CASE-2026-010） |
 | 2026-08-15 | 001 approved（仮置き Handoff · CASE-2026-010 · 提督 Commit&Push&Deploy） |
 | 2026-08-14 | 007 executed（f56e53f · Graph Waterfall α · P7 override） |
 | 2026-08-14 | 007 approved（Graph Waterfall α · P7 override · 提督 Commit&Push&Deploy） |
