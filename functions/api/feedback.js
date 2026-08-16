@@ -14,7 +14,14 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const KINDS = new Set(['bug', 'ux', 'feature', 'other']);
-const SOURCES = new Set(['footer', 'failure_inline', 'updates', 'contact']);
+const SOURCES = new Set([
+  'footer',
+  'failure_inline',
+  'updates',
+  'contact',
+  'roadmap',
+  'paper-schedule-research',
+]);
 const MAX_MESSAGE = 500;
 const RATE_LIMIT_PER_DAY = 10;
 

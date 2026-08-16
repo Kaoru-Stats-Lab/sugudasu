@@ -99,6 +99,13 @@
                 <label for="in-to" class="block text-xs font-bold text-slate-600 mb-1">宛名（お支払先）</label>
                 <input type="text" id="in-to" placeholder="株式会社〇〇 御中" class="sg-input text-sm">
             </div>
+            <div id="issuer-slot-single">
+                <div id="issuer-field">
+                    <label for="in-issuer" class="block text-xs font-bold text-slate-600 mb-1">発行者名（受領者）</label>
+                    <input type="text" id="in-issuer" placeholder="山田 太郎" class="sg-input text-sm">
+                    <p id="issuer-multi-hint" class="text-[10px] text-slate-500 mt-1 hidden">この名前を、全員の領収書に入れます。</p>
+                </div>
+            </div>
         </div>
 
         <div id="panel-multi" class="hidden space-y-3 border-t border-slate-100 pt-3">
@@ -110,13 +117,9 @@
                 </select>
                 <button type="button" id="btn-bulk-apply" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline">一括反映（金額・但し書き）</button>
             </div>
+            <p class="text-[10px] font-bold text-slate-500">宛名（お支払先）と手取り</p>
             <div id="multi-rows" class="space-y-2 max-h-48 overflow-y-auto"></div>
-        </div>
-
-        <div class="border-t border-slate-100 pt-3">
-            <label for="in-issuer" class="block text-xs font-bold text-slate-600 mb-1">発行者名（受領者）</label>
-            <input type="text" id="in-issuer" placeholder="山田 太郎" class="sg-input text-sm">
-            <p id="issuer-multi-hint" class="text-[10px] text-slate-500 mt-1 hidden">A4マルチでは全員の領収書に同じ発行者名を入れます。</p>
+            <div id="issuer-slot-multi"></div>
         </div>
 
         <div class="space-y-2 border-t border-slate-100 pt-3">
@@ -382,8 +385,8 @@
             row.className = 'grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200';
             row.innerHTML = `
                 <span class="col-span-1 text-[10px] font-bold text-slate-400">${i + 1}</span>
-                <input type="text" class="multi-name sg-input text-xs col-span-5 py-1" placeholder="氏名" data-idx="${i}">
-                <input type="number" class="multi-net sg-input text-xs col-span-6 py-1 font-mono" placeholder="手取り" data-idx="${i}" min="0">
+                <input type="text" class="multi-name sg-input text-xs col-span-5 py-1" placeholder="宛名（お支払先）" data-idx="${i}" aria-label="宛名 ${i + 1}">
+                <input type="number" class="multi-net sg-input text-xs col-span-6 py-1 font-mono" placeholder="手取り（円）" data-idx="${i}" min="0" aria-label="手取り ${i + 1}">
             `;
             container.appendChild(row);
         }
@@ -467,12 +470,19 @@
         `;
     }
 
+    function placeIssuerField(multi) {
+        const field = document.getElementById('issuer-field');
+        const slot = document.getElementById(multi ? 'issuer-slot-multi' : 'issuer-slot-single');
+        if (field && slot && field.parentNode !== slot) slot.appendChild(field);
+        document.getElementById('issuer-multi-hint').classList.toggle('hidden', !multi);
+    }
+
     function applyOutputMode(mode) {
         outputMode = mode;
         const single = mode === 'single';
         document.getElementById('panel-single').classList.toggle('hidden', !single);
         document.getElementById('panel-multi').classList.toggle('hidden', single);
-        document.getElementById('issuer-multi-hint').classList.toggle('hidden', single);
+        placeIssuerField(!single);
         updatePreview();
     }
 
@@ -483,7 +493,7 @@
 
     const OUTPUT_MODE_HINTS = {
         single: '<strong>1枚出力：</strong>宛名・発行者を1件ずつ入力して領収書PDFを作成します。',
-        multi: '<strong>A4マルチ印刷：</strong>3名はA4 1枚に収まるよう配置（受領印ONでも可）。人数・各行の手取り額と、共通の発行者名を入力して一括印刷します。',
+        multi: '<strong>A4マルチ印刷：</strong>3名はA4 1枚に収まるよう配置（受領印ONでも可）。各行に宛名と手取り、共通の発行者名を入れて一括印刷します。',
     };
 
     function scalePreview() {

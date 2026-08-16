@@ -11,6 +11,38 @@
   },
   "entries": [
     {
+      "id": "receipt-multi-fields-in-tab-20260816",
+      "date": "2026-08-16",
+      "type": "fix",
+      "audience": "public",
+      "title": "領収書 — A4マルチ印刷で宛名と発行者を同じ画面で入れる",
+      "body": "人数ごとの宛名（お支払先）と、全員共通の発行者名（受領者）を、A4マルチ印刷のパネル内で入れられます。",
+      "tools": [
+        "receipt"
+      ]
+    },
+    {
+      "id": "receipt-multi-fields-in-tab-internal-20260816",
+      "date": "2026-08-16",
+      "type": "fix",
+      "audience": "internal",
+      "title": "receipt: 宛名+発行者を A4マルチパネル内へ（DOM移動）",
+      "body": "in-issuer を #issuer-field に包み、モード切替で slot-single/slot-multi へ移動。行プレースホルダを宛名に揃える。FB は token 未設定が全ページ 503。",
+      "tools": [
+        "receipt"
+      ],
+      "rollup": "receipt-multi-fields-in-tab-20260816"
+    },
+    {
+      "id": "feedback-token-internal-20260816",
+      "date": "2026-08-16",
+      "type": "fix",
+      "audience": "internal",
+      "title": "feedback: GITHUB_FEEDBACK_TOKEN 投入 · labels 作成",
+      "body": "本番 Pages に secret なし → feedback_not_configured。wrangler pages secret put。inbox Issues は 0件（一度も未受信）。再デプロイ後に有効。fine-grained PAT 差し替え推奨。",
+      "tools": []
+    },
+    {
       "id": "receipt-issuer-multi-20260816",
       "date": "2026-08-16",
       "type": "fix",
@@ -27,7 +59,7 @@
       "type": "fix",
       "audience": "internal",
       "title": "receipt: issuer field visible in A4 multi mode",
-      "body": "in-issuer を panel-single から共通欄へ。マルチは全員同一発行者。提出条件適合 DDR は Park（ID未発行）",
+      "body": "in-issuer を panel-single から共通欄へ。マルチは全員同一発行者。提出条件適合 DDR は Park（ID未発行）。後続でタブ内配置に再配置（receipt-multi-fields-in-tab-20260816）。",
       "tools": [
         "receipt"
       ],

@@ -139,8 +139,8 @@ gh issue view <n> -R Kaoru-Stats-Lab/sugudasu
 ## 7. 実装チェックリスト
 
 - [x] `functions/api/feedback.js` + レート制限（Cache API 近似）
-- [ ] CF Pages（sugudasu）に `GITHUB_FEEDBACK_TOKEN` 設定 · 任意で OWNER/REPO
-- [ ] label `feedback-inbox` · `feedback-kind-bug|ux|feature|other` 作成
+- [x] CF Pages（sugudasu）に `GITHUB_FEEDBACK_TOKEN` 設定（2026-08-16 · wrangler pages secret put · production）
+- [x] label `feedback-inbox` · `feedback-kind-bug|ux|feature|other` 作成
 - [x] `assets/sg-feedback.js`（パネル · 失敗ストリップ）
 - [x] `sugudasu-shell.js` フッタリンク + module 読込
 - [x] `notifyJobFailed` → `sg:job-failed` → 失敗ストリップ
@@ -176,5 +176,6 @@ gh label create feedback-kind-other -R Kaoru-Stats-Lab/sugudasu -c "BFDADC"
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-16 | `GITHUB_FEEDBACK_TOKEN` 未設定が原因で全ページ 503。secret 投入 · labels 作成。**本番 Functions は再デプロイ後に有効**。トークンは暫定（gh CLI OAuth）。Issues 専用 fine-grained PAT へ差し替え推奨 |
 | 2026-08-14 | QF-8 · Google Form ユーザー導線 Purge · source に roadmap/updates/contact 等 |
 | 2026-08-13 | 初版 — QF-1/2/3/7 Adopt · Inbox=GitHub Issues · Form 主経路廃止方針 |

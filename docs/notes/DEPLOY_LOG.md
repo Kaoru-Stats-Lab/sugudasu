@@ -2389,7 +2389,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 領収書 A4マルチの発行者入力 · 提出条件適合 DDR |
 | **change_summary** | `tools/receipt.html` 発行者欄を両モード共通化 · `IMAGE_SUBMIT_FIT_DECISION_RECORD.md` · HOW §3/§7 · changelog |
@@ -2400,13 +2400,34 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | CF Pages auto（`ee550fd` push origin main） |
+| **git_sha** | `ee550fd` |
 | **smoke** | `/receipt` A4マルチで発行者入力 → プレビュー右下 |
+
+## DEPLOY-20260816-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 領収書 A4マルチの宛名+発行者をタブ内へ · フィードバック送信 503 修復 |
+| **change_summary** | `tools/receipt.html` 発行者をモード別スロットへ · `functions/api/feedback.js` source 許容 · FB token/labels 運用記録 · changelog |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 33/450 · consume 済） |
+| **deploy_count_today** | 2（P7 override · 提督明示 Commit&Push&Deploy） |
+| **pages_build_budget_after** | 33/450（2026-08 · consume 済） |
+| **gates** | P1–P6 · P7 override（同一日 2 回目 · 提督 Commit&Push&Deploy） |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | `/receipt` A4マルチで宛名+発行者 → プレビュー。フッタ FB 送信が成功すること |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-16 | 002 approved（領収書タブ内入力 · FB 503 · P7 override · 提督 Commit&Push&Deploy） |
+| 2026-08-16 | 001 executed（ee550fd · 領収書発行者 · 提出条件適合 DDR） |
 | 2026-08-16 | 001 approved（領収書発行者 · 提出条件適合 DDR · 提督 Commit&Push&Deploy） |
 | 2026-08-15 | 002 executed（e45aa89 · CASE-011 · 提出リサイズ HOW · P7 override） |
 | 2026-08-15 | 002 approved（CASE-011 · 提出リサイズ HOW · P7 override · 提督 Commit&Push&Deploy） |
