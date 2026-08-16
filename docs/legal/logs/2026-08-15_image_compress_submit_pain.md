@@ -2,7 +2,8 @@
 
 **関連:** [CASE-2026-011](../CASE_LAW.md#case-2026-011) · [`2026-08-15_powertoys_friction.md`](./2026-08-15_powertoys_friction.md)  
 **決定ログ:** [`../../brand-project/DECISION_LOG.md`](../../brand-project/DECISION_LOG.md)  
-**HOW 草案:** [`../../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)
+**HOW 草案:** [`../../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)  
+**2026-08-16 追記:** 項目4の「既存画像出口の提出プリセット」は **Reject に更新**。置き場・LOCKED・11/15 の3問は [`../../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md`](../../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md)。本ログの当日決定（圧縮 HTML HOLD · Hub Value 非採用 · 仮置きに入れない）は維持。
 
 **材料:** クライアントサイド画像圧縮の導入妥当性・OSS選定リサーチ。続けてメール添付上限（25MB）・閉域での配送路の確認。
 

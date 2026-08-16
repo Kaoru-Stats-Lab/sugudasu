@@ -2385,10 +2385,29 @@
 | **cf_deployment_id** | CF Pages auto（`e45aa89` push origin main） |
 | **smoke** | docs 中心 · 本番プロダクト面の差分なし · `sugudasu.com/` 到達確認 |
 
+## DEPLOY-20260816-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 領収書 A4マルチの発行者入力 · 提出条件適合 DDR |
+| **change_summary** | `tools/receipt.html` 発行者欄を両モード共通化 · `IMAGE_SUBMIT_FIT_DECISION_RECORD.md` · HOW §3/§7 · changelog |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 32/450 · consume 済） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | 32/450（2026-08 · consume 済） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **smoke** | `/receipt` A4マルチで発行者入力 → プレビュー右下 |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-16 | 001 approved（領収書発行者 · 提出条件適合 DDR · 提督 Commit&Push&Deploy） |
 | 2026-08-15 | 002 executed（e45aa89 · CASE-011 · 提出リサイズ HOW · P7 override） |
 | 2026-08-15 | 002 approved（CASE-011 · 提出リサイズ HOW · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-15 | 001 executed（66eb42d · 仮置き Handoff · CASE-2026-010） |

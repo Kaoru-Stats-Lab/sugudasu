@@ -10,7 +10,8 @@
 > **2026-07-27:** `mention`（SUGUDASU Mention）を **§20 条件付き GO**（Extension 先行 · LLM なし）として設計登録。  
 > **2026-08-14:** `json-view` 姉妹候補（XML構造 · HTML構造）を **§21 HOLD**（いま作らない · AI文脈で再燃しうる）。  
 > **2026-08-14:** 漢字拡大を **§22 Reject**（CASE-2026-009 · 未実装 · Hub Value では覆さない）。  
-> **2026-08-15:** PowerToys 一式移植を **§23 Reject**（CASE-2026-011 · 新規 HTML 0 · OCR Reject · Adapt/Crop は仮置きに今すぐ足さない）。
+> **2026-08-15:** PowerToys 一式移植を **§23 Reject**（CASE-2026-011 · 新規 HTML 0 · OCR Reject · Adapt/Crop は仮置きに今すぐ足さない）。  
+> **2026-08-15:** TXT-Crypter 型テキスト暗号URLを **§24 Reject**（CASE-2026-012 · コア新規HTMLなし · 仮置き暗号退避なし）。
 
 > **「SUGUDASU適合」と「市場で勝てる」は別軸。**  
 > **常にマーケットイン。プロダクトアウトを避ける。**
@@ -757,14 +758,40 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 正本は [`docs/legal/logs/2026-08-15_powertoys_friction.md`](../legal/logs/2026-08-15_powertoys_friction.md) の判定表。要約:
 
-- 一括リサイズ · 提出容量: ゲート順は **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**。Hub/GSC 単独で 11/15 前に製品コードを解禁しない。仮置き・新規圧縮 HTML には入れない。議論 [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md) · 草案 [`IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)。**公開 roadmap には今載せない**（11/15 GO 後に `considering` を再審）
+- 一括リサイズ · 提出容量: ゲート順は **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**。Hub/GSC 単独で 11/15 前に製品コードを解禁しない。仮置き・新規圧縮 HTML・既存出口への容量追加には入れない。正本 [`IMAGE_SUBMIT_FIT_DECISION_RECORD.md`](IMAGE_SUBMIT_FIT_DECISION_RECORD.md) · 議論 [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md) · 草案 [`IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)。**公開 roadmap には今載せない**（11/15 GO 後に `considering` を再審）
 - リサイズ→赤入れ一括注入: **Reject**（HOW §11.6）。赤入れ画像キュー切替: **PARK（annotate HOW）** · **公開 roadmap 載せない** · 再開は annotate 単体 HOW 草案のあと（提出リサイズの 11/15 ゲートとは別）
 - Normalize 自動判別: 貼り先プリセットの取り違えが主摩擦になったとき。ソース推定でプリセット切替は再開条件にしない
 - Crop: **製品外**プロトタイプでユーザーに聞いたあと。会議室だけでは再開しない。ラボ `docs/products/clip-stash/lab/`
 
 ---
 
-## 24. 関連ドキュメント
+## 24. TXT-Crypter 型テキスト暗号URL（Reject · 2026-08-15 · CASE-2026-012）
+
+**きっかけ:** [TXT-Crypter](https://tc.chigusa-web.com/) 観測と「F2/F3一致だから SUGUDASU に載せる」提案（Secret Copy Link · 仮置き暗号ロック · Wiki埋め込み）。  
+**決定:** **Reject**（コア新規暗号URL HTML · Vault · 仮置き暗号退避 · Wiki埋め込み主座 · チャット Secret Link のコア掲載）。技法（クライアント暗号＋URLペイロード）は製品 GO の根拠にしない。  
+**判例:** [`docs/legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-012)  
+**ログ:** [`docs/legal/logs/2026-08-15_txt_crypter_url_crypto.md`](../legal/logs/2026-08-15_txt_crypter_url_crypto.md)
+
+### 24-1. 判定
+
+| 軸 | 判定 | メモ |
+|----|------|------|
+| F1〜F4 技法 | ○（相似） | 登録不要 · ブラウザ完結 · 静的 · サーバ非保存データ |
+| Persona / Pain | ×（コア製品） | 保管・パスフレーズ運用。Copy-First 持ち帰りと別 |
+| 市場 | × | 同型無料が既にある（CASE-009） |
+| C-10 | × | テキスト暗号ユーティリティカテゴリ |
+| 仮置き連携 | × | CASE-010/011 · 変質・加工しない |
+
+### 24-2. 再提案防止
+
+- 「非送信・ステートレスだから GO」で始めない
+- Vault UI を削っただけでは Wiki 埋め込みは Reject のまま
+- 仮置きに暗号ボタンを足さない
+- Secret / 別置きの再審は立法事実必須（コア Hub 化しない）
+
+---
+
+## 25. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
@@ -776,6 +803,7 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 | `docs/notes/JSON_VIEW_SPEC.md` | json-view · **§7b XML/HTML HOLD** |
 | `docs/legal/CASE_LAW.md` CASE-2026-009 | 漢字拡大 Reject · カタログ線引き |
 | `docs/legal/CASE_LAW.md` CASE-2026-011 | PowerToys 一式 Reject · 新規 HTML 0 · OCR |
+| `docs/legal/CASE_LAW.md` CASE-2026-012 | TXT-Crypter 型暗号URL Reject |
 | `docs/notes/REVENUECAT_SOSA_SUGUDASU_SSOT.md` | SOSA調査ログ + GTM/UX転用SSOT |
 | `docs/notes/SUGUDASU_SYNC_LINE.md` | Sync ライン正本 · 旗艦 Schedule |
 | `docs/notes/TACTICS_BOARD_PRODUCT_NOTE.md` | ZoneBoard へのポインタ（正本: `C:\asl_dev\zoneboard`） |

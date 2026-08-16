@@ -43,6 +43,7 @@
 | [CASE-2026-009](#case-2026-009) | 漢字拡大・カタログ線引き事件 | **Reject**（漢字拡大）· Hub Value 非採用理由 · 端末は主軸にしない | Domain · 存在様式 · Anti · Product |
 | [CASE-2026-010](#case-2026-010) | Clip Stash × Edge Drop 事件 | **Reject**（Drop移植・管理）· **GO**（出口DnD・確認Preview） | WHY · Domain · Anti · C-10 |
 | [CASE-2026-011](#case-2026-011) | PowerToys 摩擦・新規HTML 事件 | **Reject**（一式移植・OCR・OS常駐・仮置きAdaptボタン）· 本件新規HTML 0 · Crop等は着手不可 · PARKは範囲+トリガー | WHY · Domain · Anti · C-10 · F5 |
+| [CASE-2026-012](#case-2026-012) | TXT-Crypter 型テキスト暗号URL 事件 | **Reject**（コア新規暗号URLツール · 仮置き暗号退避 · Wiki埋め込み主座）· Vault Reject · 技法≠製品GO | Persona · Domain · Anti · C-10 · Product · CASE-009 |
 
 ---
 
@@ -439,6 +440,50 @@ PowerToys はユーティリティ OS 拡張のカテゴリ期待を形成する
 **関連Product:** `clip-stash`（Peek/Handoff は既存）· `table-conv`（表の形式出口）· `normalize`（1テキストの整え。一括改名は載せない）· 画像系（一括リサイズは PARK）· 不採用（PowerToys 移植 · OCR ツール）
 
 **原料:** [`logs/2026-08-15_powertoys_friction_source.md`](./logs/2026-08-15_powertoys_friction_source.md) · レビュー [`logs/2026-08-15_powertoys_friction.md`](./logs/2026-08-15_powertoys_friction.md)
+
+---
+
+## CASE-2026-012
+
+**事件名:** TXT-Crypter 型テキスト暗号URL 事件
+
+**争点:**  
+1. サーバー非保存・登録不要・暗号データをURLに閉じ込めるステートレス構造は、F2/F3 と一致するからコア新規ツールとして GO か。  
+2. Secret Copy Link · 仮置きの暗号ロック · Wiki/Notion 埋め込みを SUGUDASU コアに載せてよいか。  
+3. Vault UI を削れば「単機能テキスト伏字」として合憲か。
+
+**立法事実:**  
+- [TXT-Crypter](https://tc.chigusa-web.com/) はブラウザ完結のテキスト暗号化と復号URL埋め込みを無料提供。FAQ 主座は Notion 等への平文回避。復号 OSS 公開済み。  
+- 提案は「思想が完全一致」としつつ、応用ユースケースはチャット秘密共有・仮置き画面共有ロック・手順書埋め込み。  
+- SUGUDASU ユーザの標準動線は整える→コピー/DLで手元へ戻す。秘密の長期保管・パスフレーズ運用は製品が代替していない。  
+- 仮置きは CASE-2026-010/011 により変質させない卓上。加工・Adapt・暗号退避は境界外。  
+- 同型競合が既に無料で存在する（CASE-2026-009 と同型の市場事実）。
+
+**適用条文:**  
+Persona · Domain · Anti（教え込まない · 複雑にしない · 管理させない）· Commentary C-10 カテゴリ期待 · Product Constitution（判定順 · Hub Value 非採用）· CASE-2026-002 / 007 / 009 / 010 / 011 · F5 · F7
+
+**判決:**
+
+| 争点 | 判決 |
+|------|------|
+| コア新規 HTML（テキスト暗号URL / 伏字リンク） | **Reject** |
+| パスワードマネージャ / Vault UI | **Reject** |
+| 仮置きへの暗号退避・画面共有ロック | **Reject** |
+| Wiki/Notion 埋め込みを主座にした製品 | **Reject** |
+| チャット用 Secret Copy Link のコア掲載 | **Reject**（コア）。Secret / 別置きは立法事実が揃うまで再開しない |
+| クライアント暗号 + URL ペイロードという技法 | 製品 GO の根拠にしない。Sync / Secret 既存線で必要なときのみ |
+
+**理由:**  
+F1〜F4 の技法相似と製品 Domain の一致は別物。判定を仕組みから始めると CASE-009（SUGUDASUっぽいだけでは足りない）を繰り返す。TXT-Crypter の本丸はメモ上の秘密保管であり、Copy-First の3分実務とは隣だが同一でない。パスフレーズ運用は教え込みと F7（安全の過剰断定）に触れる。Vault UI を削っても Wiki 埋め込み JTBD は保管隣接のまま。仮置き暗号は卓上の変質・加工導線であり CASE-010/011 と衝突する。チャット平文の Pain は認めるが、会社公認の配送・既存 Vault Send・マスクして持ち帰りが先で、コアカタログに暗号ユーティリティを足す立法事実はない。
+
+**今後への影響:**  
+「非送信・ステートレス・URLにデータを閉じ込める」を理由にコア新規 HTML を提案してはならない。技法の再利用と製品 GO を混同しない。憲法本文は改正しない。
+
+**関連ADR:** なし（憲法判断）
+
+**関連Product:** 不採用（コア暗号URLツール）· `clip-stash`（暗号退避しない）· マスク/赤入れ（画像の隠す。テキスト暗号保管ではない）· `secret/file-transfer`（別判定の Secret · 本件でコア化しない）
+
+**原料:** [`logs/2026-08-15_txt_crypter_url_crypto.md`](./logs/2026-08-15_txt_crypter_url_crypto.md)
 
 ---
 

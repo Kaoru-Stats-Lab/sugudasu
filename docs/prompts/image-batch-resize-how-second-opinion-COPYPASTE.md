@@ -2,9 +2,10 @@
 
 **用途:** 他 AI（Claude / GPT / Grok / Gemini 別スレ等）に、SUGUDASU の **提出直前画像 HOW** の採用／非採用判定を批判的に再評価させる。  
 **正本（レビュー対象）:** [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md)  
+**置き場 LOCKED:** [`../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md`](../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md) — 既存出口追加 · Squoosh クローンは Reject。11/15 は記録 §18 の3問から。  
 **関連議論:** [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md) · CASE-2026-009 / 011  
 **一次意見:** HOW §8（Imgix）· §9（枚数・命名）· §9.4（Gemini カタログ）— **盲信禁止**  
-**更新:** 2026-08-15
+**更新:** 2026-08-16
 
 ---
 
@@ -38,6 +39,7 @@
 
 - CASE-2026-009: Hub「あるかも」期待で新規ツール GO にしない
 - CASE-2026-011: PowerToys一式移植しない。仮置きにリサイズ/圧縮を入れない。新規「画像圧縮」HTMLは今作らない
+- 2026-08-16 LOCKED: webp-to-jpg / image-trim / annotate への容量・長辺追加は Reject。Squooshクローンは Reject。置き場を既存出口に戻すな
 - この HOW の JTBD は「提出・添付・フォームの容量または長辺条件に画像を載せる」一件だけ
 - SNS固定枠・余白パディングで枠に揃える仕事は既存 `image-trim` の領域
 - 形式変換（WebP→JPEG等）の主座は既存 `webp-to-jpg`
@@ -73,7 +75,7 @@
 
 # QUESTIONS（すべてに答えよ）
 
-1. **JTBD境界:** 提出容量 HOW と image-trim（SNS/枠）と webp-to-jpg（形式）の三分割は妥当か？ 統合または第4ツールが必要なら、憲法制約下で最小案を1つだけ。
+1. **JTBD境界:** 提出容量 HOW と image-trim（SNS/枠）と webp-to-jpg（形式）の三分割は 2026-08-16 に LOCKED（既存へ足さない）。覆すな。11/15 は記録 §18 の Q1–Q3 のみ。
 2. **仕様Adopt/Reject:** Geminiの仕様リストを1行ずつ Adopt / Reject / Park / Belong-elsewhere で判定し、理由を1文。一次意見と違う行だけ太く論じよ。
 3. **命名Adopt/Reject:** 命名4型を同様に判定。一次テンプレの弱点（可読性・Windows禁則文字・日本語・バッチ衝突・メール添付後の可読性）を最大3つ。
 4. **プリセット:** mail / 2mb / w1200 の3つはMECEか？ 足すなら最大1つ、削るならどれか。PPT 16:9 を今足すべきか。

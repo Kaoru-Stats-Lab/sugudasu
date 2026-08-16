@@ -99,10 +99,6 @@
                 <label for="in-to" class="block text-xs font-bold text-slate-600 mb-1">宛名（お支払先）</label>
                 <input type="text" id="in-to" placeholder="株式会社〇〇 御中" class="sg-input text-sm">
             </div>
-            <div>
-                <label for="in-issuer" class="block text-xs font-bold text-slate-600 mb-1">発行者名（受領者）</label>
-                <input type="text" id="in-issuer" placeholder="山田 太郎" class="sg-input text-sm">
-            </div>
         </div>
 
         <div id="panel-multi" class="hidden space-y-3 border-t border-slate-100 pt-3">
@@ -115,6 +111,12 @@
                 <button type="button" id="btn-bulk-apply" class="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline">一括反映（金額・但し書き）</button>
             </div>
             <div id="multi-rows" class="space-y-2 max-h-48 overflow-y-auto"></div>
+        </div>
+
+        <div class="border-t border-slate-100 pt-3">
+            <label for="in-issuer" class="block text-xs font-bold text-slate-600 mb-1">発行者名（受領者）</label>
+            <input type="text" id="in-issuer" placeholder="山田 太郎" class="sg-input text-sm">
+            <p id="issuer-multi-hint" class="text-[10px] text-slate-500 mt-1 hidden">A4マルチでは全員の領収書に同じ発行者名を入れます。</p>
         </div>
 
         <div class="space-y-2 border-t border-slate-100 pt-3">
@@ -470,6 +472,7 @@
         const single = mode === 'single';
         document.getElementById('panel-single').classList.toggle('hidden', !single);
         document.getElementById('panel-multi').classList.toggle('hidden', single);
+        document.getElementById('issuer-multi-hint').classList.toggle('hidden', single);
         updatePreview();
     }
 
@@ -480,7 +483,7 @@
 
     const OUTPUT_MODE_HINTS = {
         single: '<strong>1枚出力：</strong>宛名・発行者を1件ずつ入力して領収書PDFを作成します。',
-        multi: '<strong>A4マルチ印刷：</strong>3名はA4 1枚に収まるよう配置（受領印ONでも可）。人数と各行の手取り額を入力して一括印刷します。',
+        multi: '<strong>A4マルチ印刷：</strong>3名はA4 1枚に収まるよう配置（受領印ONでも可）。人数・各行の手取り額と、共通の発行者名を入力して一括印刷します。',
     };
 
     function scalePreview() {

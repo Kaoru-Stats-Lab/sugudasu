@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-15",
+  "updatedAt": "2026-08-16",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,38 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "receipt-issuer-multi-20260816",
+      "date": "2026-08-16",
+      "type": "fix",
+      "audience": "public",
+      "title": "領収書 — A4マルチでも発行者名を入れられる",
+      "body": "複数枚を一度に出すときも、発行者名（受領者）を入力できます。全員の領収書に同じ名前が入ります。",
+      "tools": [
+        "receipt"
+      ]
+    },
+    {
+      "id": "receipt-issuer-multi-internal-20260816",
+      "date": "2026-08-16",
+      "type": "fix",
+      "audience": "internal",
+      "title": "receipt: issuer field visible in A4 multi mode",
+      "body": "in-issuer を panel-single から共通欄へ。マルチは全員同一発行者。提出条件適合 DDR は Park（ID未発行）",
+      "tools": [
+        "receipt"
+      ],
+      "rollup": "receipt-issuer-multi-20260816"
+    },
+    {
+      "id": "image-submit-fit-ddr-internal-20260816",
+      "date": "2026-08-16",
+      "type": "improve",
+      "audience": "internal",
+      "title": "提出条件適合画像 — Decision Record Park",
+      "body": "IMAGE_SUBMIT_FIT_DECISION_RECORD · 既存出口 Reject · Squooshクローン Reject · 薄い1画面 Park · 11/15 Q1–Q3",
+      "tools": []
+    },
     {
       "id": "clip-stash-handoff-20260815",
       "date": "2026-08-15",

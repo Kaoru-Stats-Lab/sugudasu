@@ -9,6 +9,36 @@
 
 ---
 
+## 2026-08-16 — 提出条件適合の置き場は既存出口に足さない（薄い1画面は Park）
+
+**決定事項**  
+手元画像を提出先の容量・長辺に載せる JTBD は棄却しない。Squoosh クローン · コーデックラボ · GIF/SVG/PDF を束ねる圧縮サイトは Reject。`webp-to-jpg` / `image-trim` / `annotate` への容量・長辺追加、next-path のみ、共通エンジン先行も Reject。やるなら提出条件専用の薄い1画面のみだが、**今は ID を切らない · コードを書かない · 2026-11-15 HOW レビューまで Park**。Hub Value · ブックマーク · 「Squoosh にない」は採用理由にしない。憲法本文は改正しない。
+
+**理由**  
+既存2ツールの主座（形式変換 · 切り出し）と提出条件適合は一般から見て別仕事。載せ先が無いこと自体は CASE-009 の立法事実にならない。独立 JTBD の実在と既存代替の不足は未証明。Park 理由は実装困難ではない。
+
+**関連ドキュメント**
+- [`../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md`](../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md)
+- [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §3
+- [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md) Q-09
+
+---
+
+## 2026-08-15 — TXT-Crypter 型テキスト暗号URLはコア Reject（CASE-2026-012）
+
+**決定事項**  
+サーバー非保存のテキスト暗号URLツールをコア（Hub / registry）に新設しない。Vault UI · 仮置き暗号退避 · Wiki/Notion 埋め込み主座 · チャット用 Secret Link のコア掲載は Reject。クライアント暗号＋URL埋め込みは技法として Sync/Secret で必要なときのみ再利用可であり、製品 GO の根拠にしない。憲法本文は改正しない。
+
+**理由**  
+F1〜F4 の相似は Persona・市場・C-10 を飛ばせない。同型が既に無料で存在する（CASE-009）。仮置きへの加工は CASE-010/011 と衝突。ユーザの標準は持ち帰りであり、秘密保管を代替しない。
+
+**関連ドキュメント**
+- [`../legal/CASE_LAW.md`](../legal/CASE_LAW.md#case-2026-012)
+- [`../legal/logs/2026-08-15_txt_crypter_url_crypto.md`](../legal/logs/2026-08-15_txt_crypter_url_crypto.md)
+- [`../notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md`](../notes/PRODUCT_IDEA_JUDGMENT_LEDGER.md) §24
+
+---
+
 ## 2026-08-15 — 提出リサイズの実装ゲートは 11/15 HOW → Hub/GSC
 
 **決定事項**  

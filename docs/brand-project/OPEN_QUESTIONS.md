@@ -99,12 +99,14 @@
 ## Q-09 — 画像の提出容量適合（一括リサイズ HOW）
 
 **関連Phase:** 製品 HOW · CASE-2026-011 PARK  
-**閉じた線:** 新規「画像圧縮」HTML は今作らない。Hub Value で GO しない。リサイズ→赤入れ一括注入 Reject。赤入れ画像キューは annotate PARK · **公開 roadmap 載せない**（2026-08-15）。実装ゲートは **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**（Hub/GSC 単独で 11/15 前に解禁しない）。  
+**閉じた線:** 新規「画像圧縮」HTML · Squoosh クローン · GIF/SVG/PDF 束ねは Reject。Hub Value で GO しない。`webp-to-jpg` / `image-trim` / `annotate` への容量追加は Reject（2026-08-16）。リサイズ→赤入れ一括注入 Reject。赤入れ画像キューは annotate PARK · **公開 roadmap 載せない**。実装ゲートは **① 2026-11-15 HOW レビュー → ② その後 Hub/GSC**。  
+**意思決定記録:** [`../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md`](../notes/IMAGE_SUBMIT_FIT_DECISION_RECORD.md)  
 **ログ:** [`../legal/logs/2026-08-15_image_compress_submit_pain.md`](../legal/logs/2026-08-15_image_compress_submit_pain.md)  
-**草案:** [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §6 · §11.6
+**草案:** [`../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md`](../notes/IMAGE_BATCH_RESIZE_SUBMIT_HOW_20261115.md) §3 · §6 · §7 · §11.6
 
-- 既存画像出口（`webp-to-jpg` 等）に「メール添付 / フォーム 2MB」プリセットを足すか
-- Wasm（jSquash）をいつ vendor 化するか、Canvas `toBlob` だけで足りるか
+- 11/15 の3問: 提出条件の分布 · OS 代替の成立（発見・想起・行動）· 薄い「容量以下」だけで独立 JTBD か（記録 §18）
+- 案6（薄い専用1画面）を GO するか、案7（作らない）を継続するか。既存出口への追加は再開しない
+- Wasm（jSquash）をいつ vendor 化するか、Canvas `toBlob` だけで足りるか（技術は3問のあと）
 - 11/15 HOW レビュー後、Hub/GSC（縮小・圧縮・2MB）をどう読むか
 - 11/15 GO 後、提出リサイズを `considering` に載せるか（annotate キューは別）
 
