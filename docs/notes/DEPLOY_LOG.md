@@ -2408,7 +2408,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 領収書 A4マルチの宛名+発行者をタブ内へ · フィードバック送信 503 修復 |
 | **change_summary** | `tools/receipt.html` 発行者をモード別スロットへ · `functions/api/feedback.js` source 許容 · FB token/labels 運用記録 · changelog |
@@ -2419,13 +2419,15 @@
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
+| **cf_deployment_id** | CF Pages auto（`e02118a` push origin main） |
+| **git_sha** | `e02118a` |
 | **smoke** | `/receipt` A4マルチで宛名+発行者 → プレビュー。フッタ FB 送信が成功すること |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-16 | 002 executed（e02118a · 領収書タブ内入力 · FB 503 · P7 override） |
 | 2026-08-16 | 002 approved（領収書タブ内入力 · FB 503 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-16 | 001 executed（ee550fd · 領収書発行者 · 提出条件適合 DDR） |
 | 2026-08-16 | 001 approved（領収書発行者 · 提出条件適合 DDR · 提督 Commit&Push&Deploy） |
