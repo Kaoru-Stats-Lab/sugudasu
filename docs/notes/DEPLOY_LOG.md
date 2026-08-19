@@ -2442,10 +2442,30 @@
 | **git_sha** | `399f27c` |
 | **smoke** | `/pdf-pick` ページ選択と「PDF記入で続ける」· `/pdf-fill` スキャン文字FAQ |
 
+## DEPLOY-20260819-002
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — 請求書 FAQ に弥生アフィリエイト1本（同日 core 2回目 · P7 オーバーライド） |
+| **change_summary** | `invoice` FAQ · disclaimer/privacy に A8.net · changelog internal |
+| **local_build** | （release:pages:free 前） |
+| **deploy_count_today** | 2（P7 override · 提督明示） |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P6 · P7 override · 提督「Commit&Push&Deploy」 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （push 後） |
+| **git_sha** | （push 後） |
+| **smoke** | `/invoice` FAQ「PDFと下書き」に個人向け確定申告ソフト · `/disclaimer` · `/privacy` |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-19 | 002 approved（請求書 FAQ 弥生アフィリエイト1本 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-19 | 001 executed（399f27c · ページ抜き公開 · PDF記入 handoff · スキャンOCR FAQ） |
 | 2026-08-19 | 001 approved（ページ抜き公開 · PDF記入 handoff · スキャンOCR FAQ · 提督 Commit&Push&Deploy） |
 | 2026-08-16 | 002 executed（e02118a · 領収書タブ内入力 · FB 503 · P7 override） |

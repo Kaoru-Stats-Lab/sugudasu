@@ -11,6 +11,17 @@
   },
   "entries": [
     {
+      "id": "invoice-a8-yayoi-internal-20260819",
+      "date": "2026-08-19",
+      "type": "improve",
+      "audience": "internal",
+      "title": "請求書FAQに弥生アフィリエイト1本（個人向け確定申告）",
+      "body": "帳簿の続きは会計ソフト側。A8 は弥生シリーズの個人事業主向けリンク1本のみ。免責・プライバシーに A8.net を追記。",
+      "tools": [
+        "invoice"
+      ]
+    },
+    {
       "id": "pdf-pick-fill-handoff-20260819",
       "date": "2026-08-19",
       "type": "improve",
