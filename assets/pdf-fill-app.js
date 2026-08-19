@@ -39,6 +39,7 @@ import {
 } from './pdf-fill-engine.js';
 import { ensurePdfjs, pdfjsDocumentExtras } from './sg-pdf-vendor.js';
 import { buildPartialAnnotatedPdf } from './sg-pdf-partial.js';
+import { consumePdfHandoff } from './sg-pdf-handoff.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -2229,6 +2230,15 @@ function init() {
 
   updateUndoUi();
   updateBakeEnabled();
+  consumePdfHandoff('pdf-fill')
+    .then((hop) => {
+      if (!hop) return;
+      try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('load_session'); } catch (_) { /* ignore */ }
+      return loadPdfFile(hop.file);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 init();

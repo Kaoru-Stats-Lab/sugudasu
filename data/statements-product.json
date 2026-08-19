@@ -28,6 +28,14 @@
       "promiseNote": "提出用完成 · 編集ページのみ固定 · Paper First · OCR喪失受入"
     },
     {
+      "toolId": "pdf-pick",
+      "categoryId": "docs",
+      "productName": "SUGUDASU ページ抜き",
+      "file": "pdf-pick.html",
+      "inputHandling": "PDF · 端末内（pdf.js / pdf-lib）",
+      "promiseNote": "選んだページだけ1つのPDF · 結合・圧縮しない · 非送信"
+    },
+    {
       "toolId": "receipt",
       "categoryId": "docs",
       "productName": "SUGUDASU 領収書",

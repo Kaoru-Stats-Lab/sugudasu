@@ -16,6 +16,12 @@
       "reason": "記入した提出用に判子が要る",
       "linkLabel": "次に印影を押す"
     },
+    "pdf-pick": {
+      "type": "A",
+      "nextId": "pdf-fill",
+      "reason": "渡すページを残したあと、提出用に記入する",
+      "linkLabel": "PDF記入で続ける"
+    },
     "invoice": {
       "type": "A",
       "nextId": "stamp",
@@ -101,6 +107,12 @@
       "reverse": "stamp→receipt",
       "verdict": "reject",
       "why": "stamp の next は1本・invoice 優先"
+    },
+    {
+      "edge": "pdf-pick→pdf-fill",
+      "reverse": "pdf-fill→pdf-pick",
+      "verdict": "reject",
+      "why": "記入後にページ抜きへ戻すのは逆流。残すページを先に決める"
     },
     {
       "edge": "webp-to-jpg|image-trim|clipboard-trim→annotate",

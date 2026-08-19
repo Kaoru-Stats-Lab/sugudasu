@@ -25,6 +25,7 @@
     { id: 'clipboard-trim', file: 'clipboard-trim.html', label: '余白トリム', icon: '📐' },
     { id: 'watermark', file: 'watermark.html', label: '透かし', icon: '💧' },
     { id: 'pdf-fill', file: 'pdf-fill.html', label: 'PDF記入', icon: '✍️' },
+    { id: 'pdf-pick', file: 'pdf-pick.html', label: 'ページ抜き', icon: '📑' },
     { id: 'pdf-images', file: 'pdf-images.html', label: 'PDF画像', icon: '📄' },
     { id: 'test-data', file: 'test-data.html', label: 'テストデータ', icon: '🧪' },
     { id: 'broken-input', file: 'broken-input.html', label: '壊れ入力', icon: '💥' },

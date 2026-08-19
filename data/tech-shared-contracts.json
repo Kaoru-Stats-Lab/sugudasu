@@ -73,9 +73,17 @@
       "message": "applyBlackRect 実装は sg-canvas-mask.js のみ（他は re-export）"
     },
     {
+      "id": "local-pdf-handoff-db",
+      "directories": ["assets"],
+      "include": ["*-app.js", "*-engine.js", "sg-*.js"],
+      "excludeFiles": ["sg-pdf-handoff.js"],
+      "regex": "sg-pdf-handoff-v1",
+      "message": "PDF handoff の IndexedDB は sg-pdf-handoff.js のみ"
+    },
+    {
       "id": "inline-pdf-doc-40mb",
       "directories": ["assets"],
-      "include": ["pdf-fill-engine.js", "pdf-images-engine.js"],
+      "include": ["pdf-fill-engine.js", "pdf-images-engine.js", "pdf-pick-engine.js"],
       "excludeFiles": ["sg-pdf-limits.js"],
       "regex": "MAX_FILE_BYTES\\s*=\\s*40\\s*\\*\\s*1024\\s*\\*\\s*1024",
       "message": "Document PDF 上限は sg-pdf-limits（PDF_DOC_MAX_FILE_BYTES）から import"

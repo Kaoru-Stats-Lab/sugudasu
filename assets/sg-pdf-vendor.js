@@ -1,6 +1,6 @@
 /**
  * SUGUDASU — pdf.js / pdf-lib vendor bootstrap（共通）
- * 影響: pdf-fill · annotate · pdf-images · clip-stash
+ * 影響: pdf-fill · annotate · pdf-images · clip-stash · pdf-pick
  * 正本: docs/notes/TECH_ADOPTION_NOTE.md · CAPABILITY_INVENTORY.md
  */
 

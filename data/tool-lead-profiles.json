@@ -29,6 +29,7 @@
     "mention": { "profile": "heavy", "status": "ok" },
     "normalize": { "profile": "light", "status": "ok" },
     "pdf-fill": { "profile": "heavy", "status": "ok" },
+    "pdf-pick": { "profile": "light", "status": "ok" },
     "pdf-images": { "profile": "heavy", "status": "ok" },
     "planning-poker": { "profile": "heavy", "status": "ok" },
     "qr-reader": { "profile": "light", "status": "ok" },

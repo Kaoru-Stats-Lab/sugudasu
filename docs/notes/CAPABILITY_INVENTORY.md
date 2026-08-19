@@ -1,6 +1,6 @@
 # SUGUDASU 重複能力の棚卸し（Capability Inventory）
 
-**更新:** 2026-08-05  
+**更新:** 2026-08-19  
 **役割:** プロダクト横断で「同じ仕事を何回書いているか」を見える化する台帳  
 **下流:** [`TECH_ADOPTION_NOTE.md`](TECH_ADOPTION_NOTE.md)（採用・抽出の実務ルール）  
 **対象外:** Sync 専用ランタイム（Auth · Room · Realtime）の詳細 — Sync は別ライン
@@ -63,6 +63,7 @@ Handoff / ZIP / QR                ← 小規模 Shared
 | ファイル DnD 見た目 | `.sg-file-drop` | Pattern | watermark / table-conv 等 | Done |
 | 印影 → 請求書 | `stamp-handoff.js` | Shared | sessionStorage 1回 | Done |
 | テストデータ handoff | `test-data-handoff.js` | Shared | 同上パターン | Done |
+| **PDF 切り出し後 → 記入/赤入れ** | `sg-pdf-handoff.js` ← pdf-pick → pdf-fill · annotate | **Shared** | IndexedDB 1回 · 読んだら消す · 元スキャンは置かない | Done |
 | ZIP 生成 | `watermark-engine` → `pdf-images` が import | Shared | 良い抽出例 | Done |
 | QR encode/decode 核 | `link-qr-engine` · `qr-reader-parser` | Shared | 小クラスタ | Done |
 | フォーム検証 · CSV · paste-scan | `sg-form-validate` 等 | Shared | 必要なツールだけ | Done |
@@ -71,13 +72,14 @@ Handoff / ZIP / QR                ← 小規模 Shared
 
 | 能力 | 出現 | 状態 | 備考 | 優先 |
 |------|------|------|------|------|
-| pdf.js vendor 読込 · worker | `sg-pdf-vendor.js` ← pdf-fill · annotate · pdf-images · clip-stash | **Shared** | `ensurePdfjs` / `pdfjsDocumentExtras` | Done |
-| pdf-lib vendor 読込 | `sg-pdf-vendor.loadPdfLib` | **Shared** | partial bake 経由 | Done |
-| ページ rasterize（viewport） | pdf-fill · annotate · pdf-images | Diverge | scale / 用途が違う | P2（契約だけ） |
+| pdf.js vendor 読込 · worker | `sg-pdf-vendor.js` ← pdf-fill · annotate · pdf-images · clip-stash · **pdf-pick** | **Shared** | `ensurePdfjs` / `pdfjsDocumentExtras` | Done |
+| pdf-lib vendor 読込 | `sg-pdf-vendor.loadPdfLib` | **Shared** | partial bake · **pdf-pick 組立** | Done |
+| ページ rasterize（viewport） | pdf-fill · annotate · pdf-images · pdf-pick（サムネのみ） | Diverge | scale / 用途が違う | P2（契約だけ） |
 | **編集ページだけ焼き · 未編集は copyPages** | `sg-pdf-partial.js` ← pdf-fill · annotate | **Shared** | 既定 `pageSize: 'source'` | Done |
+| **選択ページだけ copyPages して新PDF** | `pdf-pick-engine` | **Diverge** | 全ページ保持（partial）とは主座が違う。3本目の抽出はまだしない | 観察 |
 | ページ単位座標（scale=1 正本） | `pdf-fill-engine` `cssToPage` / `pageToCss` · `paintOverlaysToCanvas` | Diverge | annotate はキャンバス px · **統一禁止** | **P3**（統一禁止） |
 | キャンバス座標（client→canvas） | annotate · mask · image-trim 等 | Pattern | `getBoundingClientRect` スケール | P2（薄い util 可） |
-| PDF 上限（MB · ページ） | `sg-pdf-limits.js` ← pdf-fill · pdf-images（annotate ページ上限も共有 · バイトは 25MB 維持） | **Shared** | Document 向け 40MB/50p | Done |
+| PDF 上限（MB · ページ） | `sg-pdf-limits.js` ← pdf-fill · pdf-images · **pdf-pick**（annotate ページ上限も共有 · バイトは 25MB 維持） | **Shared** | Document 向け 40MB/50p | Done |
 
 ### C. キャンバス · 画像秘匿クラスタ
 

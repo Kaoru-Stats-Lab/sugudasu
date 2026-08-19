@@ -117,7 +117,7 @@
     },
     "annotate": {
       "job": true,
-      "inputs": ["file_drop", "file_pick", "clipboard_image"],
+      "inputs": ["file_drop", "file_pick", "clipboard_image", "load_session"],
       "outputs": ["copy", "download", "pdf"],
       "primary_job": "赤入れ画像/PDFを持ち帰る"
     },
@@ -145,9 +145,15 @@
       "outputs": ["download"],
       "primary_job": "抽出画像をダウンロード"
     },
-    "pdf-fill": {
+    "pdf-pick": {
       "job": true,
       "inputs": ["file_drop", "file_pick"],
+      "outputs": ["pdf"],
+      "primary_job": "選んだページのPDFをダウンロード"
+    },
+    "pdf-fill": {
+      "job": true,
+      "inputs": ["file_drop", "file_pick", "load_session"],
       "outputs": ["pdf"],
       "primary_job": "記入済みPDFをダウンロード"
     },

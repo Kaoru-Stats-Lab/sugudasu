@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-16",
+  "updatedAt": "2026-08-19",
   "policy": "docs/notes/DEV_TRANSPARENCY_RULES.md",
   "schema": {
     "audience": [
@@ -10,6 +10,29 @@
     "note": "internal=MECE開発台帳 · public=/updates に pickup · rollup=public の id へ紐づけ"
   },
   "entries": [
+    {
+      "id": "pdf-pick-fill-handoff-20260819",
+      "date": "2026-08-19",
+      "type": "improve",
+      "audience": "public",
+      "title": "ページ抜き — 選んだページをPDF記入へそのまま渡す",
+      "body": "渡すページを選んだあと、「PDF記入で続ける」で次の画面が開きます。ファイルの上げ直しは不要です。処理はブラウザ内です。",
+      "tools": [
+        "pdf-pick",
+        "pdf-fill"
+      ]
+    },
+    {
+      "id": "pdf-pick-20260819",
+      "date": "2026-08-19",
+      "type": "feature",
+      "audience": "public",
+      "title": "ページ抜き — 渡していいページだけPDFにする",
+      "body": "複合機でまとめてスキャンした資料から、渡すページだけを選んで1つのPDFにできます。処理はブラウザ内です。結合・圧縮・黒塗りはしません。",
+      "tools": [
+        "pdf-pick"
+      ]
+    },
     {
       "id": "receipt-multi-fields-in-tab-20260816",
       "date": "2026-08-16",

@@ -1,6 +1,6 @@
 # プロダクトアイディア評価台帳 — ジャッジ基準SSOT
 
-**更新**: 2026-08-15  
+**更新**: 2026-08-19  
 **リポジトリ**: `C:\asl_dev\sugudasu`  
 **起源**: 20〜30代・ITリテラシー高め会社員の「面倒くさい」20選ディスカッション（店長 × ディレクター）
 
@@ -11,7 +11,8 @@
 > **2026-08-14:** `json-view` 姉妹候補（XML構造 · HTML構造）を **§21 HOLD**（いま作らない · AI文脈で再燃しうる）。  
 > **2026-08-14:** 漢字拡大を **§22 Reject**（CASE-2026-009 · 未実装 · Hub Value では覆さない）。  
 > **2026-08-15:** PowerToys 一式移植を **§23 Reject**（CASE-2026-011 · 新規 HTML 0 · OCR Reject · Adapt/Crop は仮置きに今すぐ足さない）。  
-> **2026-08-15:** TXT-Crypter 型テキスト暗号URLを **§24 Reject**（CASE-2026-012 · コア新規HTMLなし · 仮置き暗号退避なし）。
+> **2026-08-15:** TXT-Crypter 型テキスト暗号URLを **§24 Reject**（CASE-2026-012 · コア新規HTMLなし · 仮置き暗号退避なし）。  
+> **2026-08-19:** `pdf-pick`（SUGUDASU ページ抜き）を **§25 GO** として正式登録。
 
 > **「SUGUDASU適合」と「市場で勝てる」は別軸。**  
 > **常にマーケットイン。プロダクトアウトを避ける。**
@@ -791,12 +792,75 @@ INV-ARCHIVE = 第2柱（別ジョブ・法務重い）。SHIFT-METER = 旗艦を
 
 ---
 
-## 25. 関連ドキュメント
+## 25. SUGUDASU ページ抜き（`pdf-pick` · 2026-08-19）
+
+**判定:** **GO（コア採用）**  
+**Tier:** **A**  
+**id:** `pdf-pick` · **productName:** SUGUDASU ページ抜き  
+**設計正本:** [`PDF_PICK_SPEC.md`](PDF_PICK_SPEC.md)
+
+憲法 [`PRODUCT_CONSTITUTION.md`](../product/PRODUCT_CONSTITUTION.md) の判定順に従い採点した。
+
+### 25-1. テンプレ記入（§10）
+
+### 案名: SUGUDASU ページ抜き（渡していいページだけ PDF）
+
+- 主ペルソナ: **P-B**（実務マイクロ修正）— 複合機で一括スキャンした束を相手に渡す直前。副: 現場事務
+- SUGUDASU適合: **F1◎ F2◎ F3◎ F4◎ F5◎ F6◎ F7○**
+- 市場: M1◎（PDF分割・ページ抽出の検索は厚い）· M2◎（非送信 × 混入ページを渡さない）· M3○（ilovepdf 等は红海・アップロードが楔）· M4△〜○ · M5◎（赤入れの直前）· M6○ · M7○
+- 判定: **GO**
+- Tier: **A**
+- 差別化1文: **Acrobat/Toolbox ではなく、「渡してはいけないページが混ざったスキャン」を端末内で束から外す**
+- 既存ツールとの関係: **新規**（赤入れ=ページ上を隠す · PDF記入=書類全体を完成 · PDF画像抽出=埋め込み画像。いずれもページ単位の残す／落とすではない）
+
+### 25-2. Persona → Pain → 市場 → F → ラベル
+
+| 段階 | 結論 |
+|------|------|
+| **Persona** | P-B 主。スキャン束を相手へ渡す人 |
+| **Pain** | 他案件・個人情報ページが混ざり、渡すのは一部だけにしたい |
+| **市場** | 適合◎・市場○〜◎ → コア GO。アップロード型が解けない制約（混入 PII）が楔 |
+| **F1〜F7** | 下表。Sync 分岐不要 |
+| **ラベル** | **GO**（コア） |
+
+#### F1〜F7
+
+| # | 判定 | 根拠 |
+|---|------|------|
+| F1 登録不要 | ◎ | URL を開いて即利用 |
+| F2 データ非送信 | ◎ | pdf.js / pdf-lib のみ・端末内。元 PDF はメモリのみ |
+| F3 静的配信 | ◎ | Pages Free |
+| F4 1ファイル完結寄り | ◎ | `tools/pdf-pick.html` + 共有アセット |
+| F5 実務3分課題 | ◎ | ドロップ → 選ぶ → DL |
+| F6 印刷/PDF価値 | ◎ | 成果物が渡す用 PDF |
+| F7 過剰断定回避 | ○ | 「渡してよい」の判定はユーザー。AI判定しない |
+
+### 25-3. 境界（再提案防止）
+
+| やる | やらない |
+|------|----------|
+| 選んだページを文書順で 1 PDF にする | PDF Toolbox（結合・回転・圧縮の箱） |
+| オプトインで残すページを選ぶ | `pdf-fill` / `annotate` に分割を足す |
+| 残ページ上の秘匿は赤入れへ渡す | 読書の分割表示（duo-reader / FRACTO · Outside Scope） |
+| Document 上限 40MB/50p を共有 | 上限を独断で上げる · 51p の自動スライス |
+
+CASE-2026-009: 「PDF 操作が無いから足す」では GO しない。独立 JTBD（渡す直前に混入ページを外す）があるから GO。
+
+### 25-4. 実装メモ
+
+- 仕様: [`PDF_PICK_SPEC.md`](PDF_PICK_SPEC.md)
+- 技術: `sg-pdf-vendor` · `sg-pdf-limits` · pdf-lib `copyPages`（ラスタ化しない）
+- Next path: 完了後の次の1本は **赤入れ**（残したページ上にまだ隠すものがある）
+
+---
+
+## 26. 関連ドキュメント
 
 | パス | 内容 |
 |------|------|
 | `secret/file-transfer/README.md` | **Secret ファイル送信** · Workers シグナリング |
 | `docs/products/mention/` | **Mention** 設計正本（README · philosophy · specification） |
+| `docs/notes/PDF_PICK_SPEC.md` | ページ抜き · 台帳 §25 GO |
 | `docs/products/pdf-fill/` | **PDF記入** 設計正本（README · philosophy · specification · ui-ux · technical-design · decisions） |
 | `docs/notes/DRAFT_ASSIGNMENT_PRODUCT_NOTE.md` | 希望順位割当 · ユースケース · 境界 |
 | `docs/notes/LOTTERY_PRIZE_LAW_TOOL_SPEC.md` | lottery 実装SSOT |

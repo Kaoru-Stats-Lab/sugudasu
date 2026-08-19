@@ -106,7 +106,16 @@
     {
       "keyword": "PDF",
       "toolIds": [
-        "pdf-images"
+        "pdf-images",
+        "pdf-fill",
+        "pdf-pick"
+      ],
+      "weight": 100
+    },
+    {
+      "keyword": "ページ抜き",
+      "toolIds": [
+        "pdf-pick"
       ],
       "weight": 100
     },

@@ -25,6 +25,7 @@ import {
   validateAnnotateInput,
 } from './annotate-engine.js';
 import { ensurePdfjs, pdfjsDocumentExtras } from './sg-pdf-vendor.js';
+import { consumePdfHandoff } from './sg-pdf-handoff.js';
 import { markCopyButtonDone, triggerCopyFlash } from './sg-copy-feedback.js';
 
 const els = {
@@ -759,3 +760,12 @@ document.addEventListener('keydown', (e) => {
 setTool('black');
 updateHistoryButtons();
 setStatus('画像またはPDFをドロップ · Ctrl+V');
+consumePdfHandoff('annotate')
+  .then((hop) => {
+    if (!hop) return;
+    try { globalThis.SG_ANALYTICS?.trackFileAccepted?.('load_session'); } catch (_) { /* ignore */ }
+    return loadFile(hop.file);
+  })
+  .catch((err) => {
+    console.error(err);
+  });

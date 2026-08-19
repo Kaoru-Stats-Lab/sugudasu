@@ -2423,10 +2423,29 @@
 | **git_sha** | `e02118a` |
 | **smoke** | `/receipt` A4マルチで宛名+発行者 → プレビュー。フッタ FB 送信が成功すること |
 
+## DEPLOY-20260819-001
+
+| 項目 | 値 |
+|------|-----|
+| **status** | `approved` |
+| **target** | `core` |
+| **reason** | 提督 Commit&Push&Deploy — ページ抜き公開 · PDF記入への 1 回 handoff · スキャンOCR FAQ |
+| **change_summary** | `pdf-pick` α · `sg-pdf-handoff` · pdf-fill/annotate 受け取り · FAQ（文字レイヤ有無） · registry/hub/changelog |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 34/450 · consume 済） |
+| **deploy_count_today** | 1 |
+| **pages_build_budget_after** | （executed 後） |
+| **gates** | P1–P7 |
+| **approver** | 提督 |
+| **agent** | cursor |
+| **cf_project** | `sugudasu` |
+| **cf_deployment_id** | （executed 後） |
+| **smoke** | （executed 後 · `/pdf-pick` · `/pdf-fill`） |
+
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-19 | 001 approved（ページ抜き公開 · PDF記入 handoff · スキャンOCR FAQ · 提督 Commit&Push&Deploy） |
 | 2026-08-16 | 002 executed（e02118a · 領収書タブ内入力 · FB 503 · P7 override） |
 | 2026-08-16 | 002 approved（領収書タブ内入力 · FB 503 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-16 | 001 executed（ee550fd · 領収書発行者 · 提出条件適合 DDR） |

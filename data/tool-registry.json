@@ -327,6 +327,20 @@
       "statusNote": "提出用完成 · 文字追加/印/黒白塗り · ラスタ焼き付け · 非送信 · docs/products/pdf-fill/",
       "categoryId": "docs"
     },
+    "pdf-pick": {
+      "file": "pdf-pick.html",
+      "conceptName": "ページ抜き",
+      "productName": "SUGUDASU ページ抜き",
+      "navLabel": "ページ抜き",
+      "navIcon": "📑",
+      "inNav": true,
+      "navOrder": 10.73,
+      "name": "渡すページだけ切り出し",
+      "version": "0.1.0",
+      "stage": "alpha",
+      "statusNote": "スキャン束から渡すページだけ · copyPages · 非送信 · PDF_PICK_SPEC.md",
+      "categoryId": "docs"
+    },
     "test-data": {
       "file": "test-data.html",
       "conceptName": "テストデータ",

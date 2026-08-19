@@ -533,6 +533,7 @@ const BUST_ASSET_NAMES_EXPLICIT = [
   'sg-pdf-vendor.js',
   'sg-pdf-partial.js',
   'sg-pdf-limits.js',
+  'sg-pdf-handoff.js',
   'sg-canvas-mask.js',
   'sg-linkify.js',
   'sg-csv-import.js',

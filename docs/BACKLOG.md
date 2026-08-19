@@ -1256,7 +1256,8 @@ $$\text{収益} = \underbrace{\text{セッション数}}_{\text{A 認知}} \time
 13. **§1-15** `normalize` 事務OL訴求 — Seikei 再ポジション（プリセット · LP · スタンドアロンバッジ）  
 14. **§1-15** 新規 `mask` — スクショ機密消し（Canvas · 非送信）
 15. **§1-14** `png-to-webp` — WebP 圧縮（T09b · 調査済）
-15b. **§1-16** `pdf-fill` — SUGUDASU PDF記入（**GO · 設計済** · 台帳 §19 · 未実装）
+15b. **§1-16** `pdf-fill` — SUGUDASU PDF記入（**GO · 設計済** · 台帳 §19）  
+15c. **`pdf-pick`** — ページ抜き（**GO** · 台帳 §25 · [`PDF_PICK_SPEC.md`](notes/PDF_PICK_SPEC.md)）
 
 ### P2（通常優先）
 

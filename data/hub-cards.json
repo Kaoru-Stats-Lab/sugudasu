@@ -234,6 +234,19 @@
       }
     },
     {
+      "toolId": "pdf-pick",
+      "href": "pdf-pick.html",
+      "blurb": "まとめてスキャンした資料から、渡していいページだけ切り出したい時に。選んだページだけを1つのPDFにします。",
+      "badges": {
+        "status": "new",
+        "spec": [
+          "local",
+          "pc"
+        ],
+        "popular": false
+      }
+    },
+    {
       "toolId": "pdf-images",
       "href": "pdf-images.html",
       "blurb": "PDFの中から埋め込まれた画像だけを取り出したい時に。画質を落とさず画像として抽出します。",

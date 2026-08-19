@@ -5,6 +5,7 @@ import { buildPartialAnnotatedPdf } from '../assets/sg-pdf-partial.js';
 import { applyBlackRect, applyMosaicRect } from '../assets/sg-canvas-mask.js';
 import { MAX_FILE_BYTES as fillMax, MAX_PAGES as fillPages } from '../assets/pdf-fill-engine.js';
 import { MAX_FILE_BYTES as imgMax, MAX_PAGES as imgPages } from '../assets/pdf-images-engine.js';
+import { MAX_FILE_BYTES as pickMax, MAX_PAGES as pickPages } from '../assets/pdf-pick-engine.js';
 import { MAX_PDF_PAGES } from '../assets/annotate-engine.js';
 import {
   applyBlackRect as maskBlack,
@@ -17,6 +18,8 @@ assert.equal(fillMax, PDF_DOC_MAX_FILE_BYTES);
 assert.equal(fillPages, PDF_DOC_MAX_PAGES);
 assert.equal(imgMax, PDF_DOC_MAX_FILE_BYTES);
 assert.equal(imgPages, PDF_DOC_MAX_PAGES);
+assert.equal(pickMax, PDF_DOC_MAX_FILE_BYTES);
+assert.equal(pickPages, PDF_DOC_MAX_PAGES);
 assert.equal(MAX_PDF_PAGES, PDF_DOC_MAX_PAGES);
 
 assert.equal(typeof applyBlackRect, 'function');

@@ -41,6 +41,7 @@ python -m http.server 8080
 | [clipboard-trim.html](tools/clipboard-trim.html) | /clipboard-trim | SUGUDASU 余白トリム | 余白トリム | alpha |
 | [watermark.html](tools/watermark.html) | /watermark | SUGUDASU 透かし | 透かし | alpha |
 | [pdf-fill.html](tools/pdf-fill.html) | /pdf-fill | SUGUDASU PDF記入 | PDF記入 | alpha |
+| [pdf-pick.html](tools/pdf-pick.html) | /pdf-pick | SUGUDASU ページ抜き | ページ抜き | alpha |
 | [pdf-images.html](tools/pdf-images.html) | /pdf-images | SUGUDASU PDF画像抽出 | PDF画像 | alpha |
 | [test-data.html](tools/test-data.html) | /test-data | SUGUDASU テストデータ | テストデータ | alpha |
 | [broken-input.html](tools/broken-input.html) | /broken-input | SUGUDASU 壊れ入力 | 壊れ入力 | alpha |
