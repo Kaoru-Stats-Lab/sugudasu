@@ -2446,25 +2446,26 @@
 
 | 項目 | 値 |
 |------|-----|
-| **status** | `approved` |
+| **status** | `executed` |
 | **target** | `core` |
 | **reason** | 提督 Commit&Push&Deploy — 請求書 FAQ に弥生アフィリエイト1本（同日 core 2回目 · P7 オーバーライド） |
 | **change_summary** | `invoice` FAQ · disclaimer/privacy に A8.net · changelog internal |
-| **local_build** | （release:pages:free 前） |
+| **local_build** | `pass`（`npm run release:pages:free` · budget 35/450 · consume 済） |
 | **deploy_count_today** | 2（P7 override · 提督明示） |
-| **pages_build_budget_after** | （executed 後） |
+| **pages_build_budget_after** | 35/450（2026-08 · consume 済） |
 | **gates** | P1–P6 · P7 override · 提督「Commit&Push&Deploy」 |
 | **approver** | 提督 |
 | **agent** | cursor |
 | **cf_project** | `sugudasu` |
-| **cf_deployment_id** | （push 後） |
-| **git_sha** | （push 後） |
+| **cf_deployment_id** | CF Pages auto（`83d23a3` push origin main） |
+| **git_sha** | `83d23a3` |
 | **smoke** | `/invoice` FAQ「PDFと下書き」に個人向け確定申告ソフト · `/disclaimer` · `/privacy` |
 
 ## 変更履歴
 
 | 日付 | 内容 |
 |------|------|
+| 2026-08-19 | 002 executed（83d23a3 · 請求書 FAQ 弥生アフィリエイト1本 · P7 override） |
 | 2026-08-19 | 002 approved（請求書 FAQ 弥生アフィリエイト1本 · P7 override · 提督 Commit&Push&Deploy） |
 | 2026-08-19 | 001 executed（399f27c · ページ抜き公開 · PDF記入 handoff · スキャンOCR FAQ） |
 | 2026-08-19 | 001 approved（ページ抜き公開 · PDF記入 handoff · スキャンOCR FAQ · 提督 Commit&Push&Deploy） |
